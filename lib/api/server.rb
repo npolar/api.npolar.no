@@ -153,7 +153,7 @@ module Api
         end
         
         @response.status = status
-        @response.write(body)
+        @response.write(body) unless @request.request_method == "HEAD"
         @response["Content-Type"] = response_headers["Content-Type"]
         @response.finish
 
