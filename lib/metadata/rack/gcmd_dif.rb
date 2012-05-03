@@ -31,7 +31,7 @@ module Metadata
             headers["Content-Length"] = xml.size.to_s
             [status, headers, [xml]]
           else
-            [406, {"Content-Type" => "text/html"}, body]
+            [406, headers, body]
           end
         else
           [status, headers, body]
