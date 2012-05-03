@@ -31,7 +31,7 @@ describe Metadata::Rack::GcmdDif do
       body.first.should include("<Entry_ID>myID</Entry_ID>", "<Entry_Title>my title</Entry_Title", "<Abstract>my summary</Abstract>")
     end
     
-    it "should return Content-Type: application/xml in the header" do
+    it "should return Content-Type: application/xml in the headers" do
       request = Rack::MockRequest.env_for("/id.xml")
       status, headers, body = Metadata::Rack::GcmdDif.new(@app).call(request)
       headers.should include("Content-Type"=>"application/xml")
@@ -46,7 +46,7 @@ describe Metadata::Rack::GcmdDif do
     
   end
   
-  context "when receiving a request with any format execept (.dif|.xml) or no format" do
+  context "when receiving a GET request with any format execept (.dif|.xml) or no format" do
     
     it "should return json on a request with no extension" do
       request = Rack::MockRequest.env_for("/mydif")
@@ -60,5 +60,12 @@ describe Metadata::Rack::GcmdDif do
       status.should == 406
     end
     
+    it "should return Content-Type: application/json in the headers" do
+      request = Rack::MockRequest.env_for("/mydif")
+      status, headers, body = Metadata::Rack::GcmdDif.new(@app).call(request)
+      headers.should include("Content-Type"=>"application/json")
+    end
+    
   end
+  
 end
