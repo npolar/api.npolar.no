@@ -4,7 +4,6 @@ gem "npolar-rubylib", :git => "git://github.com/npolar/rubylib.git"
 
 gem "rack", ">= 1.4.0"
 gem "rack-contrib", :git => "git://github.com/rack/rack-contrib.git"
-gem "goliath"
 gem "thin"
 
 gem "yajl-ruby" # alternative: "json"
