@@ -1,5 +1,5 @@
 require_relative "../../spec_helper"
-require_relative "../../../lib/metadata/rack/gcmd_dif"
+require "metadata/rack/gcmd_dif"
 
 describe Metadata::Rack::GcmdDif do
   
@@ -33,7 +33,7 @@ describe Metadata::Rack::GcmdDif do
     end
     
     it "should return json with a random extension" do
-      request = Rack::MockRequest.env_for("/mydif.conrad")
+      request = Rack::MockRequest.env_for("/mydif.sagw")
       body = Metadata::Rack::GcmdDif.new(@app).call(request).last
       body.first.should include('"Entry_Title": "my title"')
     end
