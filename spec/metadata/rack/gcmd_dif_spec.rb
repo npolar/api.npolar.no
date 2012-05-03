@@ -43,8 +43,8 @@ describe Metadata::Rack::GcmdDif do
     
     it "should return 406 (Not acceptable) with a random extension" do
       request = Rack::MockRequest.env_for("/mydif.sagw")
-      body = Metadata::Rack::GcmdDif.new(@app).call(request).last
-      body.first.should include('406')
+      status, headers, body = Metadata::Rack::GcmdDif.new(@app).call(request)
+      status.should == 406
     end
     
   end
