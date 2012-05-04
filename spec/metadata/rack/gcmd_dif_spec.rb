@@ -6,6 +6,7 @@ describe Metadata::Rack::GcmdDif do
   before do
     body = '{"Entry_Title": "my title", "Entry_ID": "myID", "Summary": {"Abstract":"my summary"}}'
     @app = lambda { |env| [200, { "Content-Type" => "application/json"}, [body]] }
+    @app_error = lambda { |env| [404, { "Content-Type" => "application/json"}, [body]] }
     
     default_request = Rack::MockRequest.env_for("/")
     @default_body = Metadata::Rack::GcmdDif.new(@app).call(default_request).last
@@ -13,7 +14,7 @@ describe Metadata::Rack::GcmdDif do
     
   context "when receiving a GET" do
     
-    it "should require a valid id" do
+    it "should do nothing when the id is invalid" do
       invalid_request = Rack::MockRequest.env_for("/.xml")      
       invalid_body = Metadata::Rack::GcmdDif.new(@app).call(invalid_request).last
       invalid_body.should == @default_body
@@ -71,16 +72,24 @@ describe Metadata::Rack::GcmdDif do
       request = Rack::MockRequest.env_for("/id.xml")
       status, headers, body = Metadata::Rack::GcmdDif.new(@app).call(request)      
       headers.should include("Content-Length"=>"#{body.first.size.to_s}")
-    end   
+    end
     
   end
   
-  context "when receiving a GET request with any format execept (.dif|.xml|.json|no format)" do    
+  context "when receiving an invalid GET request" do    
     
-    it "should return 406 (Not acceptable) with a random extension" do
+    it "should return 406 (Not acceptable) with a invalid extension" do
       request = Rack::MockRequest.env_for("/mydif.sagw")
       status, headers, body = Metadata::Rack::GcmdDif.new(@app).call(request)
       status.should == 406
+    end
+    
+    it "should do nothing when status > 400" do
+      request = Rack::MockRequest.env_for("/mydif")
+      status, headers, body = Metadata::Rack::GcmdDif.new(@app_error).call(request)
+      status.should be(404)
+      headers.should include("Content-Type"=>"application/json")
+      body.should == @default_body
     end
     
     it "should return json in the body" do
