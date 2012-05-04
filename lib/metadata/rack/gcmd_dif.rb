@@ -13,31 +13,46 @@ module Metadata
       def call(env)
         request = ::Rack::Request.new(env)
 
-        status, headers, body = @app.call(env)        
-         
-        if  request.get? and request.path_info =~ REQUEST_PATH_WITH_ID
-          format = request.path_info.split(".").last        
+        status, headers, body = @app.call(env)
+        
+        if status < 400
+          if request.path_info =~ REQUEST_PATH_WITH_ID
+            format = request.path_info.split(".").last           
 
-          # GET (DIF) XML
-          if status < 400 and format =~ /^(xml|dif)$/ 
-            # Extract JSON response body - there must be a better way
-            j = ""
-            body.each  { |s| j += s }
-  
-            dif = Gcmd::Dif.new(j)
-            xml = dif.to_xml
-  
-            headers["Content-Type"] = "application/xml"
-            headers["Content-Length"] = xml.size.to_s
-            [status, headers, [xml]]
-          else
-            [406, headers, body]
+            if format != "json"
+              if format =~ /^(xml|dif)$/             
+              
+                if request.get?
+                  # Extract JSON response body - there must be a better way
+                  j = ""
+                  body.each  { |s| j += s }
+        
+                  dif = Gcmd::Dif.new(j)
+                  body = dif.to_xml        
+                
+                  headers["Content-Type"] = "application/xml"  
+                  headers["Content-Length"] = body.size.to_s
+                  
+                  body = [body]
+                  
+                elsif request.head?
+                  headers["Content-Type"] = "application/xml"
+                  body = [""]
+                end                
+              else              
+                status = 406              
+              end
+            end
           end
-        else
-          [status, headers, body]
         end
+        
+        if request.head?
+          body = [""]
+        end
+
+        [status, headers, body]
+        
       end
-      
     end
   end
 end
