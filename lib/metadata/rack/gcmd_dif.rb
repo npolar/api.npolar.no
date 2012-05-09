@@ -14,9 +14,11 @@ module Metadata
         request = ::Rack::Request.new(env)
 
         status, headers, body = @app.call(env)
-        
-        if status < 400
-          if request.path_info =~ REQUEST_PATH_WITH_ID
+              
+        if request.path_info =~ REQUEST_PATH_WITH_ID
+          
+          if status < 400
+            
             format = request.path_info.split(".").last           
 
             if format != "json"
@@ -25,7 +27,7 @@ module Metadata
                 if request.get?
                   # Extract JSON response body - there must be a better way
                   j = ""
-                  body.each  { |s| j += s }
+                  body.each  { |s| j += s.to_s }
         
                   dif = Gcmd::Dif.new(j)
                   body = dif.to_xml        
