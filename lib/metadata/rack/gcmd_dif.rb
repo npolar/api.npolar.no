@@ -33,7 +33,7 @@ module Metadata
                   body = dif.to_xml        
                 
                   headers["Content-Type"] = "application/xml"  
-                  headers["Content-Length"] = body.size.to_s
+                  headers["Content-Length"] = body.bytesize.to_s
                   
                   body = [body]
                   
