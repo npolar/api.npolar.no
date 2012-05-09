@@ -12,7 +12,7 @@ module Metadata
       def call(env)
                 
         request = ::Rack::Request.new(env)
-                
+         
         if request.put? || request.post?
           
           if request.env["CONTENT_TYPE"] == "application/xml"
@@ -25,7 +25,7 @@ module Metadata
             json = json.to_json.to_s
             
             env["CONTENT_TYPE"] = "application/json"
-            env["CONTENT_LENGTH"] = (json.size + 1).to_s
+            env["CONTENT_LENGTH"] = json.bytesize.to_s
             
             input = ::Rack::Lint::InputWrapper.new( StringIO.new( json ) )
             
