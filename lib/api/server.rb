@@ -92,10 +92,17 @@ module Api
     # Search request is any Grequest with
     # - GET parameter "q"
     def search_request?
-      if @request.path_info.split("/").size == 0
+      if !request_id? && @request.request_method == "GET"
         return true
       end
       false
+    end
+    
+    def request_id?
+      if @request.path_info.split("/").size == 0
+        return false
+      end
+      true
     end
 
     def document_request?
@@ -131,31 +138,42 @@ module Api
           
           #if true
             
-            headers = {}
-            
-            status, response_headers, body = case @request.request_method
+            headers = {"Content-Type" => "#{@request.env["CONTENT_TYPE"]}"}
+            body = @request.body.read
+             
+            status, response_headers, response_body = case @request.request_method
               when "DELETE"  then @collection.delete(id, headers)
               when "GET"     then @collection.get(id, headers)
               when "HEAD"    then @collection.head(@id, headers)
               when "OPTIONS" then @collection.options(@id, headers)
-              when "PATCH"   then @collection.patch(@id, request.body.read, headers)
-              when "POST"    then @collection.post(request.body.read, headers)
-              when "PUT"     then @collection.put(@id, request.body.read, headers)
-              when "TRACE"   then @collection.trace(@id, headers)
-            
+              when "PATCH"   then @collection.patch(@id, body, headers)
+              when "POST"    then @collection.post(body, headers)
+              when "PUT"
+                if request_id?
+                  @collection.put(@id, body, headers)
+                else
+                  @collection.put(`uuidgen`.chomp, body, headers)
+                end
+              when "TRACE"   then @collection.trace(@id, headers)            
             end
-
             
           #end
           
+          
         else
-          status, response_headers, body = @collection.search
+          status, response_headers, response_body = @collection.search
         end
         
         @response.status = status
-        @response.write(body) unless @request.request_method == "HEAD"
+        @response.write(response_body) unless @request.request_method == "HEAD"
+
         @response["Content-Type"] = response_headers["Content-Type"]
-        @response.finish
+        #@response["Content-Length"] = response_headers["Content-Length"]
+        #@response["Etag"] = response_headers["Etag"]
+        
+        #puts @response.inspect
+        
+        @response#.finish
 
       rescue      
         #server_error
