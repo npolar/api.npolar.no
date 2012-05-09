@@ -12,7 +12,6 @@ module Metadata
       def call(env)
                 
         request = ::Rack::Request.new(env)
-        puts @app.inspect
                 
         if request.put? || request.post?
           
@@ -36,7 +35,7 @@ module Metadata
           
         end
         
-        @app.call(env)
+        @app.call(env)        
         
       end      
     end
