@@ -3,10 +3,10 @@
 require "./lib/api/server"
 require "./lib/api/collection"
 require "./lib/metadata/rack/gcmd_dif"
+require "./lib/metadata/rack/save_gcmd_dif"
 require "./lib/api/storage"
 require "./lib/api/storage/couch"
 require "rack/contrib/jsonp"
-
 
 # Rack middleware
 #use Rack::ShowExceptions
@@ -22,11 +22,12 @@ map "/metadata/dataset" do
     config = config_hash["paths"]["/metadata/dataset"]
     storage = Api::Storage.factory(config["storage"], config["storage_config"])
     collection = Api::Collection.new(storage) # => factory
-    
+            
     server = Api::Server.new
-    server.collection = collection
-
-    use Metadata::Rack::GcmdDif
+    server.collection = collection    
+    
+    use Metadata::Rack::SaveGcmdDif
+    use Metadata::Rack::GcmdDif    
 
     run server
 
