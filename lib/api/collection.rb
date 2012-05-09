@@ -50,12 +50,12 @@ module Api
   
   
     def put(id, data, headers = {})  
-      @response = @depot.put(id, data)      
+      @response = @depot.put(id, data, headers)      
       @response
     end
     
     def post(data, headers = {})
-      @response = @depot.post(id, data)      
+      @response = @depot.post(data, headers)      
       @response
     end
   
