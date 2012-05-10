@@ -48,7 +48,7 @@ module Metadata
           
           @app.call(env)
         else
-          [201, {"Content-Type" => "text/html"}, ["OAI import succesful"]]
+          [201, {"Content-Type" => "text/html"}, ["Successfully imported OAI document."]]
         end
         
       end      
