@@ -28,7 +28,7 @@ module Metadata
               json = nil
             end            
             
-            build_request( env, json )
+            return build_request( env, json )
             
           end      
         end
@@ -48,7 +48,7 @@ module Metadata
           
           @app.call(env)
         else
-          [201, {"Content-Type" => "text/html"}, ["Successfully imported OAI document."]]
+          [201, {"Content-Type" => "text/html"}, ["Successfully imported OAI document"]]
         end
         
       end      
