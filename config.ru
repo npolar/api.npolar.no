@@ -25,6 +25,8 @@ use Rack::ConditionalGet
 use Rack::ETag
 use Rack::Lint
 
+use Rack::Static, :urls => ["/xsl"], :root => "public"
+
 map "/metadata/dataset" do
 
   server = Api::Server.new
