@@ -1,4 +1,5 @@
 require "atom"
+# watch out Exception `LoadError' at /home/ch/github.com/api.npolar.no/rackup/ruby/1.9.1/gems/libxml-ruby-2.3.2/lib/libxml.rb:6 - cannot load such file -- 1.9/libxml_ruby
 
 module Api
   module Metadata
@@ -50,6 +51,22 @@ module Api
         @response[1]["Content-Length"] = @response[2].bytesize.to_s
         @response
 
+      end
+
+      # Support PUTting DIF XML
+      def put(id, data, headers)
+        before_request("PUT", id, headers)
+        if /^(dif|xml)$/ =~ @format.to_s
+          dif = Gcmd::Dif.new
+          json = dif.load_xml(data)
+          data = json
+        end
+        super
+      end
+
+      # support multiple documents
+
+      def post
       end
 
       def atom_entry(atom)
