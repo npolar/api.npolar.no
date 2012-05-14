@@ -34,6 +34,11 @@ module Api
             @response[1]["Content-Type"] = "application/xml"
             @response[2] = xml
 
+          elsif /^iso$/ =~ @format.to_s
+
+            @response[1]["Content-Type"] = "application/xml"
+            @response[2] = iso
+
           else
             # Unacceptable @format
             @response[0] = 406 # HTTP/1.1 406 Not Acceptable
@@ -174,6 +179,10 @@ module Api
           "type" => r["URL_Content_Type"]["Type"]
         }
       }
+      end
+
+      def iso
+        `saxon-xslt 452.dif public/xsl/DIF-ISO.xsl`
       end
 
     end
