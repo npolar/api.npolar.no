@@ -136,42 +136,29 @@ module Api
       begin
         unless search_request?
           
-          #if true
-            
             headers = {"Content-Type" => "#{@request.env["CONTENT_TYPE"]}"}
             body = @request.body.read
              
             status, response_headers, response_body = case @request.request_method
               when "DELETE"  then @collection.delete(id, headers)
               when "GET"     then @collection.get(id, headers)
-              when "HEAD"    then @collection.head(@id, headers)
-              when "OPTIONS" then @collection.options(@id, headers)
-              when "PATCH"   then @collection.patch(@id, body, headers)
+              when "HEAD"    then @collection.head(id, headers)
+              when "OPTIONS" then @collection.options(id, headers)
+              when "PATCH"   then @collection.patch(id, body, headers)
               when "POST"    then @collection.post(body, headers)
-              when "PUT"
-                if request_id?
-                  @collection.put(@id, body, headers)
-                else
-                  @collection.put(`uuidgen`.chomp, body, headers)
-                end
-              when "TRACE"   then @collection.trace(@id, headers)            
+              when "PUT"     then @collection.put(id, body, headers)                
+              when "TRACE"   then @collection.trace(id, headers)            
             end
-            
-          #end
-          
           
         else
           status, response_headers, response_body = @collection.search
         end
-        
+                
         @response.status = status
         @response.write(response_body) unless @request.request_method == "HEAD"
 
         @response["Content-Type"] = response_headers["Content-Type"]
-        #@response["Content-Length"] = response_headers["Content-Length"]
-        #@response["Etag"] = response_headers["Etag"]
-        
-        #puts @response.inspect
+        @response["Content-Length"] = response_headers["Content-Length"] if response_headers["Content-Length"] != ""
         
         @response#.finish
 
