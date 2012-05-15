@@ -11,12 +11,12 @@ module Metadata
 
       def call(env)
                 
-        request = ::Rack::Request.new(env)
+        @request = ::Rack::Request.new(env)
          
-        if request.put? || request.post?          
-          if request.env["CONTENT_TYPE"] == "application/xml"
+        if @request.put? || @request.post?          
+          if @request.env["CONTENT_TYPE"] == "application/xml"
           
-            body = request.body.read
+            body = @request.body.read
             
             dif = Gcmd::Dif.new()
             json = dif.load_xml( body )
@@ -39,19 +39,27 @@ module Metadata
       
       def build_request( env, body )
         
-        unless body.nil?
+        unless body.nil?         
+          
           json = body.to_json.to_s
             
+          env["REQUEST_METHOD"] = "PUT" if env["REQUEST_METHOD"] == "POST"          
+          env["PATH_INFO"] = "/" + uuid( body["Entry_ID"] )  
           env["CONTENT_TYPE"] = "application/json"
           env["CONTENT_LENGTH"] = json.bytesize.to_s          
           env["rack.input"] = ::Rack::Lint::InputWrapper.new( StringIO.new( json ) )
           
           @app.call(env)
         else
-          [201, {"Content-Type" => "text/html"}, ["Successfully imported OAI document"]]
+          [201, {"Content-Type" => "text/html"}, ["Successfully imported OAI document.\n"]]
         end
         
-      end      
+      end
+      
+      def uuid( key )
+        UUIDTools::UUID.sha1_create( UUIDTools::UUID_DNS_NAMESPACE, @request.url + key )
+      end
+      
     end
   end
 end
