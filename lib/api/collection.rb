@@ -16,47 +16,37 @@ module Api
   
     def delete(id, headers = {})
       @response = @depot.delete(id, headers)              
-      @response
-      
     end
   
     def get(id, headers = {})
       before_request("GET", id, headers)
-
       @response = @depot.get(@id, @headers)  
-      @response
     end
   
     def head(id, headers = {})
       before_request("HEAD", id, headers)
-
       @response = @depot.head(@id, @headers)
-      @response
     end
   
     def options(id, headers = {})
       @response = @depot.options(id, headers)
-      @response
     end
     
     def search
-      @depot.feed
+      @response = @depot.feed
     end
   
     def trace(id, headers = {})
       @response = @depot.trace(id, headers)
-      @response
     end
   
   
     def put(id, data, headers = {})  
       @response = @depot.put(id, data, headers)      
-      @response
     end
     
     def post(data, headers = {})
       @response = @depot.post(data, headers)      
-      @response
     end
   
   
