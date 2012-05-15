@@ -1,0 +1,19 @@
+{
+  "id": "78ad069e-bc90-49a9-b014-7ad709d2b5b7",
+  "author": {"name":"Norwegian Polar Institute","uri":"http://data.npolar.no","email":""},
+  "title":"March through August Ice Edge Positions in the Nordic Seas, 1750-2002",
+  "contributors":[{"email":"_no_email_@npolar.no","first_name":"_No_","last_name":"_Name_","role":"Investigator","country":"Norway","city":"Tromsø"}],
+  "summary":"Plain text summary",
+  "links": [
+    {"title":null,"href":"http://nsidc.org/data/g02169.html","rel":"related","type":"GET DATA"}
+
+  ],
+  "published":"2008-06-25T12:00:00Z",
+  "updated":"2008-06-25T12:00:00Z",
+  "rights":null,
+  "north":"86.0","east":"64.2","west":"-36.2","south":"57.7",
+  "categories": [
+    {"term":"CLIMATOLOGY/METEOROLOGY/ATMOSPHERE","scheme":"http://isotc211.org"},
+    {"term":"OCEANS","scheme":"http://isotc211.org"}
+  ]
+}
