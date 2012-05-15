@@ -1,5 +1,4 @@
 require "atom"
-# watch out Exception `LoadError' at /home/ch/github.com/api.npolar.no/rackup/ruby/1.9.1/gems/libxml-ruby-2.3.2/lib/libxml.rb:6 - cannot load such file -- 1.9/libxml_ruby
 
 module Api
   module Metadata
@@ -189,6 +188,7 @@ module Api
       end
 
       def extract_links(dif)
+        return [] if dif["Related_URL"].nil?
         dif["Related_URL"].map { |r| {
           "title" => r["Description"],
           "href" => r["URL"],
