@@ -12,7 +12,7 @@ require "rack/contrib/jsonp"
 #use Rack::ShowExceptions
 #use Rack::JSONP
 #use Rack::ConditionalGet
-#use Rack::ETag
+use Rack::ETag
 #use Rack::Lint
 
 config_hash = JSON.parse(IO.read(File.join(".", "config", "config.json")))
@@ -25,7 +25,7 @@ map "/metadata/dataset" do
             
     server = Api::Server.new
     server.collection = collection    
-    
+        
     use Metadata::Rack::SaveGcmdDif
     use Metadata::Rack::GcmdDif    
 
