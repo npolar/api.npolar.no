@@ -2,11 +2,11 @@ source :rubygems
 
 gem "npolar-rubylib", :git => "git://github.com/npolar/rubylib.git"
 
-gem "rack", :git => "git://github.com/rack/rack.git"    
+gem "rack", :git => "git://github.com/rack/rack-contrib.git"
 gem "rack-contrib", :git => "git://github.com/rack/rack-contrib.git"
+gem "unicorn"
 
-
-gem "yajl-ruby" # alternative: "json"
+gem "yajl-ruby" 
 gem "patron"
 gem "ratom"
 gem "nokogiri"
