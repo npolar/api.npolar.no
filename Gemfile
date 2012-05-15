@@ -10,7 +10,6 @@ gem "yajl-ruby"
 gem "patron"
 gem "ratom"
 gem "nokogiri"
-gem "unicorn"
 gem "uuidtools"
 gem "libxml-ruby", :git => "git://github.com/xml4r/libxml-ruby.git"
 
