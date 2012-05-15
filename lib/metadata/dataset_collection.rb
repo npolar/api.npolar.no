@@ -199,7 +199,7 @@ module Api
       end
 
       def iso
-        `saxon-xslt 452.dif public/xsl/DIF-ISO.xsl`
+        `saxon-xslt /home/ch/github.com/api.npolar.no/452.dif /home/ch/github.com/api.npolar.no/public/xsl/DIF-ISO.xsl`
       end
 
     end
