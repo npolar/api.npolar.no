@@ -1,4 +1,5 @@
 require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
+require "uuidtools"
 
 module Api
   # Searchable RESTful storage: HTTP API for document collections
@@ -93,7 +94,7 @@ module Api
     # - GET parameter "q"
     def search_request?
       if !request_id? && @request.request_method == "GET"
-        return true
+        return true        
       end
       false
     end
@@ -134,33 +135,35 @@ module Api
 
       # Good to go - everything before *must* return on error (or raise Exception)
       begin
+        
+        headers = {"Content-Type" => "#{@request.env["CONTENT_TYPE"]}"}
+        body = @request.body.read
+        
         unless search_request?
           
-            headers = {"Content-Type" => "#{@request.env["CONTENT_TYPE"]}"}
-            body = @request.body.read
-             
-            status, response_headers, response_body = case @request.request_method
-              when "DELETE"  then @collection.delete(id, headers)
-              when "GET"     then @collection.get(id, headers)
-              when "HEAD"    then @collection.head(id, headers)
-              when "OPTIONS" then @collection.options(id, headers)
-              when "PATCH"   then @collection.patch(id, body, headers)
-              when "POST"    then @collection.post(body, headers)
-              when "PUT"     then @collection.put(id, body, headers)                
-              when "TRACE"   then @collection.trace(id, headers)            
-            end
+          response_status, response_headers, response_body = case @request.request_method
+            when "DELETE"  then @collection.delete(id, headers)
+            when "GET"     then @collection.get(id, headers)
+            when "HEAD"    then @collection.head(id, headers)
+            when "OPTIONS" then @collection.options(id, headers)
+            when "PATCH"   then @collection.patch(id, body, headers)
+            when "POST"    then @collection.post(body, headers)
+            when "PUT"     then @collection.put(id, body, headers)
+            when "TRACE"   then @collection.trace(id, headers)            
+          end
           
-        else
-          status, response_headers, response_body = @collection.search
+        else        
+          response_status, response_headers, response_body = @collection.search          
         end
-                
-        @response.status = status
-        @response.write(response_body) unless @request.request_method == "HEAD"
-
-        @response["Content-Type"] = response_headers["Content-Type"]
-        @response["Content-Length"] = response_headers["Content-Length"] if response_headers["Content-Length"] != ""
         
-        @response#.finish
+        
+        @response.status = response_status
+        @response.write(response_body) unless @request.request_method == "HEAD"
+        
+        @response["Content-Type"] = response_headers["Content-Type"]
+        @response["Content-Length"] = response_headers["Content-Lenght"] if !response_headers["Content-Lenght"].nil?
+        
+        @response
 
       rescue      
         #server_error

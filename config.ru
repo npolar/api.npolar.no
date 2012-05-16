@@ -17,7 +17,6 @@ require "./lib/metadata/rack/gcmd_dif"
 require "./lib/metadata/rack/save_gcmd_dif"
 require "rack/contrib/jsonp"
 
-
 # Rack middleware
 use Rack::ShowExceptions
 use Rack::JSONP
