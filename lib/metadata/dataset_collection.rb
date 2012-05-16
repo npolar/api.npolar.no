@@ -144,12 +144,16 @@ module Api
           "published" => dif["DIF_Creation_Date"]+"T12:00:00Z",
           "updated" => dif["Last_DIF_Revision_Date"]+"T12:00:00Z",
           "rights" => dif["Use_Constraints"],
-          "north" => dif["Spatial_Coverage"].first["Northernmost_Latitude"],
-          "east" => dif["Spatial_Coverage"].first["Easternmost_Longitude"],
-          "west" => dif["Spatial_Coverage"].first["Westernmost_Longitude"],
-          "south" => dif["Spatial_Coverage"].first["Southernmost_Latitude"]
+
 
         }
+
+        unless dif["Spatial_Coverage"].nil?
+          atom["north"] = dif["Spatial_Coverage"].first["Northernmost_Latitude"],
+          atom["east"] = dif["Spatial_Coverage"].first["Easternmost_Longitude"],
+          atom["west"] = dif["Spatial_Coverage"].first["Westernmost_Longitude"],
+          atom["south"] = dif["Spatial_Coverage"].first["Southernmost_Latitude"]
+        end
 
         # << add contributors from Data Center
         atom["categories"] = []
@@ -164,7 +168,7 @@ module Api
         dif.delete "Last_DIF_Revision_Date"
         dif.delete "ISO_Topic_Category"
         dif.delete dif["Summary"]["Abstract"]
-        if dif["Spatial_Coverage"].size == 1
+        if dif["Spatial_Coverage"] and dif["Spatial_Coverage"].size == 1
           dif.delete "Spatial_Coverage"
         end
 
@@ -191,7 +195,7 @@ module Api
         return [] if dif["Related_URL"].nil?
         dif["Related_URL"].map { |r| {
           "title" => r["Description"],
-          "href" => r["URL"],
+          "href" => r["URL"].first,
           "rel" => "related",
           "type" => r["URL_Content_Type"]["Type"]
         }
@@ -199,7 +203,13 @@ module Api
       end
 
       def iso
-        `saxon-xslt /home/ch/github.com/api.npolar.no/452.dif /home/ch/github.com/api.npolar.no/public/xsl/DIF-ISO.xsl`
+        tmp = Tempfile.new('dif')
+        begin
+          `saxon-xslt #{tmp.file} /home/ch/github.com/api.npolar.no/public/xsl/DIF-ISO.xsl`
+        ensure
+          tmp.close
+          tmp.unlink   # deletes the temp file
+        end
       end
 
     end
