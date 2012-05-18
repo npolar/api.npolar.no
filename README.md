@@ -33,7 +33,7 @@ Scalable
 
 Testable
 * Test-first development strategy
-* 100% test coverage
+* Aims for 100% test coverage
 
 ## Install
 -------
