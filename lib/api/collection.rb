@@ -3,6 +3,8 @@ module Api
 
     attr_accessor :validators
 
+    FORMAT = "json"
+
     def initialize(depot)
       @depot = depot
       @preprocessors = []
@@ -35,7 +37,7 @@ module Api
     def search
       @response = @depot.feed
     end
-  
+
     def put(id, data, headers = {})
       @response = @depot.put(id, data, headers)
     end
@@ -48,8 +50,10 @@ module Api
 
     def before_request(method, id, headers)
       # Set @id, @format and @headers
-      @id, @format = id.split(".") unless id == ""
-
+      @id, @format = id, FORMAT
+      if id =~ /[.]/
+        @id, @format = id.split(".") unless id == ""
+      end
       #if @id is a uuid => delete "-"
       @headers = headers
     end
