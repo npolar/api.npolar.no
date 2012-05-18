@@ -12,7 +12,7 @@ module Api
 
     # Default header
     HEADER = {
-      "Content-Type"=> "application/json;charset=utf-8"
+      "Content-Type"=> "application/json; charset=utf-8"
     }
 
     # Default known methods
@@ -45,20 +45,20 @@ module Api
       if @request.nil?
         return nil
       end
-      
+
       if @request.GET["id"] != nil
         @request.GET["id"]
       else
         @request.path_info.split("/")[1]
       end
-      
+
     end
-    
+
     def initialize(app=nil)
       @app = app
       @methods = METHODS
     end
-    
+
     def id
       if @id.nil?
         @id = extract_id
@@ -78,7 +78,7 @@ module Api
       @request = Rack::Request.new(env)
       @id = extract_id # If appropriate
       @response = Rack::Response.new([], 200, HEADER ) #(body=[], status=200, header={})
-      
+
       handle(@request, @response)
     end
 
@@ -89,16 +89,16 @@ module Api
         raise Api::Exception.new("Bad collection, missing #get and/or #put methods: #{collection.inspect}")
       end
     end
-    
+
     # Search request is any Grequest with
     # - GET parameter "q"
     def search_request?
       if !request_id? && @request.request_method == "GET"
-        return true        
+        return true
       end
       false
     end
-    
+
     def request_id?
       if @request.path_info.split("/").size == 0
         return false
@@ -135,12 +135,12 @@ module Api
 
       # Good to go - everything before *must* return on error (or raise Exception)
       begin
-        
+
         headers = {"Content-Type" => "#{@request.env["CONTENT_TYPE"]}"}
         body = @request.body.read
-        
+
         unless search_request?
-          
+
           response_status, response_headers, response_body = case @request.request_method
             when "DELETE"  then @collection.delete(id, headers)
             when "GET"     then @collection.get(id, headers)
@@ -149,23 +149,27 @@ module Api
             when "PATCH"   then @collection.patch(id, body, headers)
             when "POST"    then @collection.post(body, headers)
             when "PUT"     then @collection.put(id, body, headers)
-            when "TRACE"   then @collection.trace(id, headers)            
+            when "TRACE"   then @collection.trace(id, headers)
           end
-          
-        else        
-          response_status, response_headers, response_body = @collection.search          
+
+        else
+          response_status, response_headers, response_body = @collection.search
         end
-        
-        
+
+
         @response.status = response_status
         @response.write(response_body) unless @request.request_method == "HEAD"
-        
+
         @response["Content-Type"] = response_headers["Content-Type"]
-        @response["Content-Length"] = response_headers["Content-Lenght"] if !response_headers["Content-Lenght"].nil?
-        
+        if @response["Content-Type"] !~ /; charset=/
+          @response["Content-Type"] +=  "; charset=utf-8"
+        end
+
+        @response["Content-Length"] = response_headers["Content-Lenght"] if response_headers["Content-Lenght"]
+
         @response
 
-      rescue      
+      rescue
         #server_error
       end
 
@@ -190,10 +194,10 @@ module Api
     def authorized?
       true
     end
-    
+
     def handle_document_request
-      
-      
+
+
     end
 
     def http_error(status, reason=nil)
@@ -216,7 +220,7 @@ module Api
       {"error"=>{"status"=>status, "reason"=>reason, "class" => klass}}
 
     end
-    
+
     def server_error
       http_error(500, self.inspect)
     end
