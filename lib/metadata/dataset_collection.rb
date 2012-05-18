@@ -37,7 +37,8 @@ module Api
           elsif /^iso$/ =~ @format.to_s
 
             @response[1]["Content-Type"] = "application/xml"
-            @response[2] = iso
+
+            @response[2] = iso(dif_xml(@response[2]))
 
           else
             # Unacceptable @format
@@ -157,6 +158,7 @@ module Api
 
         # << add contributors from Data Center
         atom["categories"] = []
+        # 
         dif["ISO_Topic_Category"].each do |isotc|
           atom["categories"] << { "term" => isotc, "scheme" => "http://isotc211.org" }
         end
@@ -191,6 +193,8 @@ module Api
         }
       end
 
+      # Subtype!
+      # Multiple URLs
       def extract_links(dif)
         return [] if dif["Related_URL"].nil?
         dif["Related_URL"].map { |r| {
@@ -202,14 +206,19 @@ module Api
       }
       end
 
-      def iso
+      def iso(dif)
         tmp = Tempfile.new('dif')
+        iso = ""
         begin
-          `saxon-xslt #{tmp.file} /home/ch/github.com/api.npolar.no/public/xsl/DIF-ISO.xsl`
+          tmp.write dif
+          tmp.rewind
+          iso = `saxon-xslt #{tmp.path} /home/ch/github.com/api.npolar.no/public/xsl/DIF-ISO.xsl`
         ensure
           tmp.close
           tmp.unlink   # deletes the temp file
         end
+
+        iso
       end
 
     end
