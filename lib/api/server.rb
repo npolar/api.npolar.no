@@ -3,7 +3,7 @@ require "uuidtools"
 
 module Api
   # Searchable RESTful storage: HTTP API for document collections
-  # HTTP/1.1 http://www.ietf.org/rfc/rfc2616
+  # HTTP/1.1 http://www.ietf.org/rfc/rfc2616 http://tools.ietf.org/html/rfc2616
   class Server
 
     attr_reader :collection

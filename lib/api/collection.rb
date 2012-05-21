@@ -3,6 +3,7 @@ module Api
 
     attr_accessor :validators
 
+    # http://stackoverflow.com/questions/5513558/executing-code-for-every-method-call-in-a-ruby-module
     FORMAT = "json"
 
     def initialize(depot)
