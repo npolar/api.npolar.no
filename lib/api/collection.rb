@@ -1,13 +1,16 @@
 module Api
   class Collection
 
-    attr_accessor :validators
+    attr_accessor :validators, :formats, :format
 
     # http://stackoverflow.com/questions/5513558/executing-code-for-every-method-call-in-a-ruby-module
+    FORMATS = ["json"]
+
     FORMAT = "json"
 
     def initialize(depot)
       @depot = depot
+      @formats = FORMATS
       @preprocessors = []
       @validators = []
       @postprocessors = []

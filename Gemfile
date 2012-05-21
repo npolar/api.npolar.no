@@ -12,6 +12,7 @@ gem "ratom"
 gem "nokogiri"
 gem "uuidtools"
 gem "libxml-ruby", :git => "git://github.com/xml4r/libxml-ruby.git"
+gem "rack-accept", :git => "git://github.com/mjijackson/rack-accept.git"
 
 group :development, :test do
   gem "thin"

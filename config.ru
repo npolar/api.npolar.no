@@ -16,6 +16,8 @@ require "./lib/api/storage/couch"
 require "./lib/metadata/rack/gcmd_dif"
 require "./lib/metadata/rack/save_gcmd_dif"
 require "rack/contrib/jsonp"
+require "rack/accept"
+
 
 # Rack middleware
 use Rack::ShowExceptions
@@ -25,6 +27,7 @@ use Rack::ETag
 use Rack::Lint
 
 use Rack::Static, :urls => ["/xsl"], :root => "public"
+use Rack::Accept
 
 map "/metadata/dataset" do
 

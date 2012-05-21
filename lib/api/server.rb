@@ -8,7 +8,7 @@ module Api
 
     attr_reader :collection
 
-    attr_accessor :request, :response, :methods, :log
+    attr_accessor :request, :response, :methods, :log, :format
 
     # Default header
     HEADER = {
@@ -54,6 +54,10 @@ module Api
 
     end
 
+    def extract_format
+      @env['HTTP_ACCEPT'].to_s.scan(/[^;,\s]*\/[^;,\s]*/)[0].to_s
+    end
+
     def initialize(app=nil)
       @app = app
       @methods = METHODS
@@ -76,17 +80,17 @@ module Api
       env["HTTP_COOKIE"] = ""
       @env = env
       @request = Rack::Request.new(env)
-      @id = extract_id # If appropriate
       @response = Rack::Response.new([], 200, HEADER ) #(body=[], status=200, header={})
+
 
       handle(@request, @response)
     end
 
     def collection=collection
-      if collection.respond_to? :put and collection.respond_to? :get
+      if collection.respond_to? :get
         @collection = collection
       else
-        raise Api::Exception.new("Bad collection, missing #get and/or #put methods: #{collection.inspect}")
+        raise Api::Exception.new("Bad collection, missing #get #{collection.inspect}")
       end
     end
 
@@ -113,6 +117,8 @@ module Api
     # Handle HTTP request and return HTTP response triplet (Rack-style)
     def handle(request,response)
 
+
+
       # Check for collection gateway
       if @collection.nil?
         return http_error(503)
@@ -136,7 +142,15 @@ module Api
       # Good to go - everything before *must* return on error (or raise Exception)
       begin
 
-        headers = {"Content-Type" => "#{@request.env["CONTENT_TYPE"]}"}
+        headers = @request.headers #{"Content-Type" => "#{@request.env["CONTENT_TYPE"]}"}
+
+
+      @id = extract_id # If appropriate
+
+
+
+
+
         body = @request.body.read
 
         unless search_request?
