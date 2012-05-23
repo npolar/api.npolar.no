@@ -1,6 +1,6 @@
 source :rubygems
 
-gem "npolar-rubylib", :path => "./../rubylib" #, :git => "git://github.com/npolar/rubylib.git"
+gem "npolar-rubylib", :git => "git://github.com/npolar/rubylib.git"
 
 gem "rack", :git => "git://github.com/rack/rack.git"
 gem "rack-contrib", :git => "git://github.com/rack/rack-contrib.git"
