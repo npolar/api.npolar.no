@@ -1,21 +1,23 @@
 require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
-require "uuidtools"
 
 module Api
-  # Searchable RESTful storage: HTTP API for document collections
-  # HTTP/1.1 http://www.ietf.org/rfc/rfc2616 http://tools.ietf.org/html/rfc2616
+  # API Server
+  # HTTP/1.1 http://tools.ietf.org/html/rfc2616
   class Server
 
     attr_reader :collection
 
-    attr_accessor :request, :response, :methods, :log, :format
+    attr_accessor :methods, :log
 
-    # Default header
+    # Default format
+    FORMAT = "json"
+
+    # Default header - and for errors, the only format
     HEADER = {
       "Content-Type"=> "application/json; charset=utf-8"
     }
 
-    # Default known methods
+    # Default acceptable methods
     METHODS = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "TRACE"]
 
     # HTTP/1.1 Status codes (@see #error_hash)
@@ -38,24 +40,41 @@ module Api
       503 => "Service Unavailable"
     }
 
-    # Extract id
-    # Id is extracted from first path parameter - or GET parameter "id"
-    # GET parameter (?id=abc123) overrides path parameter (/abc123)
-    def extract_id
-      if @request.nil?
-        return nil
+    # Extract id from request
+    def id request
+      id = request.path_info.split("/")[1]
+      
+      if id =~ /[.]/
+        id = id.split(".")[0]
       end
-
-      if @request.GET["id"] != nil
-        @request.GET["id"]
-      else
-        @request.path_info.split("/")[1]
-      end
-
+      
+      id
     end
 
-    def extract_format
-      @env['HTTP_ACCEPT'].to_s.scan(/[^;,\s]*\/[^;,\s]*/)[0].to_s
+    # Extract format from request / collection
+    def format request
+
+      if request.path_info =~ /[.]/
+        format = request.path_info.split(".")[1]
+      elsif collection.respond_to? :formats and collection.formats.include? accept_format(request)
+        format = accept_format(request) 
+      elsif collection.respond_to? :default_format
+        collection.default_format
+      else
+        format = FORMAT
+      end
+      format
+    end
+
+    def accept_format request
+
+      return nil if request.env['HTTP_ACCEPT'].nil?
+
+      format = request.env['HTTP_ACCEPT'].scan(/[^;,\s]*\/[^;,\s]*/)[0].split("/")[1]
+      if format =~ /[+]/
+        format = format.split("+")[0]
+      end
+      format
     end
 
     def initialize(app=nil)
@@ -63,27 +82,11 @@ module Api
       @methods = METHODS
     end
 
-    def id
-      if @id.nil?
-        @id = extract_id
-      end
-      @id
-    end
-
     # Rack application
     def call(env)
-      dup._call(env)
-    end
-
-    # Rack application
-    def _call(env)
       env["HTTP_COOKIE"] = ""
-      @env = env
-      @request = Rack::Request.new(env)
-      @response = Rack::Response.new([], 200, HEADER ) #(body=[], status=200, header={})
-
-
-      handle(@request, @response)
+      request = Rack::Request.new(env)
+      handle(request)
     end
 
     def collection=collection
@@ -96,30 +99,27 @@ module Api
 
     # Search request is any Grequest with
     # - GET parameter "q"
-    def search_request?
-      if !request_id? && @request.request_method == "GET"
+    def search_request? request
+      if !request_id?(request) && request.request_method == "GET"
         return true
       end
       false
     end
 
-    def request_id?
-      if @request.path_info.split("/").size == 0
+    def request_id? request
+      if request.path_info.split("/").size == 0
         return false
       end
       true
     end
 
-    def document_request?
-      true
-    end
-
     # Handle HTTP request and return HTTP response triplet (Rack-style)
-    def handle(request,response)
+    def handle(request)
+
+      
 
 
-
-      # Check for collection gateway
+      # Collection gateway set?
       if @collection.nil?
         return http_error(503)
       end
@@ -134,28 +134,28 @@ module Api
         return http_error(401)
       end
 
-      # Check if HTTP method is known
-      unless known_method?
+      # Check if HTTP method is allowed
+      unless allowed_method? request.request_method
         return http_error(405)
       end
+
+      #unless acceptable_format? request
+      #  return http_error(406)
+      #end 
 
       # Good to go - everything before *must* return on error (or raise Exception)
       begin
 
-        headers = @request.headers #{"Content-Type" => "#{@request.env["CONTENT_TYPE"]}"}
+        headers = Rack::Utils::HeaderHash.new(request.env)
+        #if PUT/POST
+        body = request.body.read
 
+        unless search_request?(request)
 
-      @id = extract_id # If appropriate
+          id = id(request)
+          @collection.format = format(request)
 
-
-
-
-
-        body = @request.body.read
-
-        unless search_request?
-
-          response_status, response_headers, response_body = case @request.request_method
+          response_status, response_headers, response_body = case request.request_method
             when "DELETE"  then @collection.delete(id, headers)
             when "GET"     then @collection.get(id, headers)
             when "HEAD"    then @collection.head(id, headers)
@@ -170,49 +170,55 @@ module Api
           response_status, response_headers, response_body = @collection.search
         end
 
+        response = Rack::Response.new([], response_status, HEADER ) #(body=[], status=200, header={})
+        # set 406 if collection.formats does not include the request format?
 
-        @response.status = response_status
-        @response.write(response_body) unless @request.request_method == "HEAD"
-
-        @response["Content-Type"] = response_headers["Content-Type"]
-        if @response["Content-Type"] !~ /; charset=/
-          @response["Content-Type"] +=  "; charset=utf-8"
+        unless response_headers["Content-Type"].nil?
+          response["Content-Type"] = response_headers["Content-Type"]
         end
 
-        @response["Content-Length"] = response_headers["Content-Lenght"] if response_headers["Content-Lenght"]
+        if response["Content-Type"] !~ /; charset=/
+          response["Content-Type"] +=  "; charset=utf-8"
+        end
 
-        @response
+        response["Content-Length"] = response_body.respond_to?(:bytesize) ? response_body.bytesize.to_s : response_body.size.to_s
+       
+        response.write(response_body) unless request.request_method == "HEAD"
 
-      rescue
-        #server_error
+        response
+
+      rescue => e
+        puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+        http_error(500, "Polar bears ate your request")
+      ensure
+        # log critical error
       end
 
     end
 
-    def known_method?
-      methods.include? @request.request_method
+    def allowed_method? method
+      http_methods.include? method
     end
 
-    def methods
+    def http_methods
       @methods
     end
 
-    protected
+    def http_methods=methods
+      @methods = methods
+    end
 
     # true if collection can handle requested format
     # false if collection cannot handle requested format
-    def acceptable?
-      true
+    def acceptable_format? request
+      collection.formats.include? format(request)
     end
 
     def authorized?
       true
     end
 
-    def handle_document_request
-
-
-    end
+    protected
 
     def http_error(status, reason=nil)
       Rack::Response.new(error_hash(status, reason).to_json+"\n", status, HEADER )
@@ -233,10 +239,6 @@ module Api
 
       {"error"=>{"status"=>status, "reason"=>reason, "class" => klass}}
 
-    end
-
-    def server_error
-      http_error(500, self.inspect)
     end
 
   end

@@ -1,16 +1,17 @@
 module Api
   class Collection
 
-    attr_accessor :validators, :formats, :format
+    attr_accessor :validators, :formats, :format, :storage
 
     # http://stackoverflow.com/questions/5513558/executing-code-for-every-method-call-in-a-ruby-module
     FORMATS = ["json"]
 
     FORMAT = "json"
 
-    def initialize(depot)
-      @depot = depot
+    def initialize(storage=nil)
+      @storage = storage
       @formats = FORMATS
+      @format = FORMAT
       @preprocessors = []
       @validators = []
       @postprocessors = []
@@ -21,45 +22,32 @@ module Api
     end
 
     def delete(id, headers = {})
-      @response = @depot.delete(id, headers)
+      @response = @storage.delete(id, headers)
     end
 
     def get(id, headers = {})
-      before_request("GET", id, headers)
-      @response = @depot.get(@id, @headers)
+
+      @response = @storage.get(id, headers)
     end
 
     def head(id, headers = {})
-      before_request("HEAD", id, headers)
-      @response = @depot.head(@id, @headers)
+      @response = @storage.head(@id, @headers)
     end
 
     def options(id, headers = {})
-      @response = @depot.options(id, headers)
+      @response = @storage.options(id, headers)
     end
 
     def search
-      @response = @depot.feed
+      @response = @storage.feed
     end
 
     def put(id, data, headers = {})
-      @response = @depot.put(id, data, headers)
+      @response = @storage.put(id, data, headers)
     end
 
     def post(data, headers = {})
-      @response = @depot.post(data, headers)
-    end
-
-    protected
-
-    def before_request(method, id, headers)
-      # Set @id, @format and @headers
-      @id, @format = id, FORMAT
-      if id =~ /[.]/
-        @id, @format = id.split(".") unless id == ""
-      end
-      #if @id is a uuid => delete "-"
-      @headers = headers
+      @response = @storage.post(data, headers)
     end
 
   end

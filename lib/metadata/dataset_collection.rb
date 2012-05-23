@@ -4,6 +4,14 @@ module Api
   module Metadata
     class DatasetCollection < Api::Collection
 
+      def default_format
+        "json"
+      end
+    
+      def formats
+        ["atom", "dif", "iso", "json", "raw", "source", "text", "xml"]
+      end
+
       def get(id, headers = {})
         super
 
@@ -47,8 +55,6 @@ module Api
           end
 
         end
-
-        @response[1]["Content-Length"] = @response[2].bytesize.to_s
         @response
 
       end
@@ -93,7 +99,7 @@ module Api
             e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["scheme"])
           end
 
-          if atom["source"] and atom["source"]["dif"]
+          if atom["source"] and atom["source"]["dif"] and atom["source"]["dif"]["Parameters"]
             atom["source"]["dif"]["Parameters"].each do |p|
               p.each do |k,v|
                 e.categories << ::Atom::Category.new(:term => v, :scheme => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/##{k}")
