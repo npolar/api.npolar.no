@@ -25,8 +25,10 @@ module Api
         super
       end
 
-      def put(id, data, headers={})
+      # put with nil id could try to create datavase
 
+      def put(id, data, headers={})
+p [id, data, headers]
         status, headers, body = super
 
         # if successful create, return the saved document
@@ -61,11 +63,11 @@ module Api
         feed["header"] = data_header
         feed["entry"] = entries
 
-        feed_json = {"feed" => feed }.to_json
+        feed_json = {"feed" => feed }
 
         headers = response.headers
         headers["Content-Type"] = "application/json"
-        headers["Content-Lenght"] = feed_json.bytesize.to_s
+  
 
         [200, headers, feed_json]
         # 304 403 200
