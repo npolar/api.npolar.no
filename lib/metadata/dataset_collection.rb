@@ -72,7 +72,6 @@ module Api
           headers["CONTENT_TYPE"] = "application/json"
           headers["CONTENT_LENGTH"] = data.bytesize.to_s          
           headers["rack.input"] = ::Rack::Lint::InputWrapper.new( StringIO.new( data ) )
-p headers
 
         end
         super
@@ -165,9 +164,6 @@ p headers
       
     def search
       response = storage.feed
-      if format == "atom"
-        response[2] = "<feed />"
-      end
       response
     end
 
