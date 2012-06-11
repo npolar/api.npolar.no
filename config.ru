@@ -1,33 +1,50 @@
 # config.ru
+require "bundler/setup"
 
 # Server
+require "./lib/api/exception"
+#require "./lib/api/rack"
+require "./lib/api/rack/middleware"
 require "./lib/api/server"
 
 # Collections
 require "./lib/api/collection"
+require "./lib/metadata/dif_atom.rb"
 require "./lib/metadata/dataset_collection"
-
 
 # Storage
 require "./lib/api/storage"
 require "./lib/api/storage/couch"
 
 # Middleware
-require "./lib/metadata/rack/gcmd_dif"
-require "./lib/metadata/rack/save_gcmd_dif"
+require "./lib/api/rack/require_param"
+#require "./lib/metadata/rack/gcmd_dif"
+#require "./lib/metadata/rack/save_gcmd_dif"
 require "rack/contrib/jsonp"
-require "rack/accept"
 
 
 # Rack middleware
 use Rack::ShowExceptions
-use Rack::JSONP
+
+# Force apikey param (except on GET, HEAD)
+#use Api::Rack::RequireParam, :params => ["apikey"], :except => lambda { |request| ["GET", "HEAD"].include? request.request_method }
 use Rack::ConditionalGet
 use Rack::ETag
 use Rack::Lint
 
 use Rack::Static, :urls => ["/xsl"], :root => "public"
-use Rack::Accept
+
+config = lambda {|filename| JSON.parse(IO.read(File.join(".", "config", filename))) }
+
+map "/_api" do
+  map "/user" do
+    server = Api::Server.new
+    storage = Api::Storage::Couch.new(config.call("_api_user.json")["storage_config"])
+    collection = Api::Collection.new(storage)
+    server.collection = collection
+    run server
+  end
+end
 
 map "/metadata/dataset" do
 
@@ -40,8 +57,10 @@ map "/metadata/dataset" do
 
   server.collection = collection
 
-  use Metadata::Rack::SaveGcmdDif
-  #use Metadata::Rack::GcmdDif
+  map "/feed"
+  map "/feed.atom" do
+
+  end
 
   run server
 
