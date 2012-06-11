@@ -26,7 +26,6 @@ module Api
     end
 
     def get(id, headers = {})
-
       @response = @storage.get(id, headers)
     end
 
