@@ -1,8 +1,24 @@
-Source code for http://api.npolar.no
+# api.npolar.no
 
 * Searchable document storage service
 * RESTful HTTP API
-* Powered by Ruby, CouchDB, Git, Linux, Apache Solr
+* Powered by Ruby, CouchDB, and Apache Solr
+
+# Use
+``` ruby
+# config.ru
+map "/my/api/collection" do
+
+  server = Api::Server.new
+
+  storage = Api::Storage::Couch.new({"read" => "http://localhost:5984/my_api_collection/")
+
+  server.collection = Api::Collection.new(storage)
+
+  run server
+
+end
+```
 
 ## Features
 
@@ -18,7 +34,7 @@ Powerful
 
 Flexible
 * Choose your own storage strategy (per collection/per server)
-* Choose your own storage servers
+* Choose your own storage 
 * Choose your own resource paths
 * Choose your own authorization strategy
 
@@ -48,3 +64,4 @@ For production, we use unicorn + nginx
 ## Similar projects
 * GRAPE
 * https://github.com/olivernn/rackjson
+* https://github.com/fnando/rack-api
