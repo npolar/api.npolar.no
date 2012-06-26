@@ -21,6 +21,7 @@ map "/search" do
   storage = Api::Storage::Solr.new("http://localhost:8993/solr/api/")
   run Api::Endpoint.app, {:storage => storage } 
 end
+```
 
 #### Read-only API
 
