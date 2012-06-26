@@ -13,15 +13,16 @@ $ bundle exec shotgun -d # http://localhost:9393
 ```
 For production, use unicorn + nginx
 
-#### Inject storage
+#### Create API endpoint
+Endpoints are instances of Api::Endpoint, they are defined using Rack::Builder
+#map blocks in config.ru
 
 ``` ruby
 # config.ru
-map "/search" do
-  storage = Api::Storage::Solr.new("http://localhost:8993/solr/api/")
-  run Api::Endpoint.app, {:storage => storage } 
+map "/api/collection1" do
+  storage = Api::Storage::Couch.new("http://localhost:5984/api_collection1")
+  run Api::Endpoint.app, {:storage => storage, :formats => ["json"]} 
 end
-```
 
 #### Read-only API
 
@@ -52,6 +53,26 @@ Use :accepts to set which formats the endpoint will accept in the POST/PUT body
 ``` ruby
   run Api::Endpoint.app({:storage => storage, :formats=>["json","xml"], :accepts => ["json", "xml"]})
 ```
+
+#### Transformers
+
+If you add "xml" to :formats and keep documents in a JSON store like CouchDB,
+you can of course store the XML as an attachment or even inline, but often it's
+useful to have on-the-fly conversions between different formats.
+
+Transformers are Rack middleware that translates the response from from a storage format
+to a response format.
+
+``` ruby
+# config.ru
+map "/metadata/dataset" do
+  use Api::Rack::Transform::Metadata # transform all :formats but json
+  run Api::Endpoint.app({:storage => storage, :formats=>["atom", "dif", "iso", "json", "xml"]})
+end
+```
+#### Validators
+
+
 
 # api.npolar.no
 
