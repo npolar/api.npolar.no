@@ -1,24 +1,58 @@
-# api.npolar.no
+#### Install
 
-* Searchable document storage service
-* RESTful HTTP API
-* Powered by Ruby, CouchDB, and Apache Solr
+``` sh
+$ git clone git@github.com:npolar/api.npolar.no.git
+$ cd api.npolar.no
+$ bundle install
+$ rspec
+```
 
-# Use
+#### Start (development)
+``` sh
+$ bundle exec shotgun -d # http://localhost:9393
+```
+For production, use unicorn + nginx
+
+#### Inject storage
+
 ``` ruby
 # config.ru
-map "/my/api/collection" do
+map "/search" do
+  storage = Api::Storage::Solr.new("http://localhost:8993/solr/api/")
+  run Api::Endpoint.app, {:storage => storage } 
+end
 
-  server = Api::Server.new
+#### Read-only API
 
-  storage = Api::Storage::Couch.new({"read" => "http://localhost:5984/my_api_collection/")
-
-  server.collection = Api::Collection.new(storage)
-
-  run server
-
+Create a read-only CouchDB proxy, by allowing only HTTP GET and HEAD. 
+``` ruby
+# config.ru
+map "/api/collection1" do
+  storage = Api::Storage::Couch.new("http://localhost:5984/api_collection1")
+  run Api::Endpoint.app, {:storage => storage, :methods => ["HEAD", "GET"], :formats => ["json"]} 
 end
 ```
+
+``` sh
+$ curl -i -XPOST http://localhost:9393/api/read-only/ -d '{}'
+```
+
+``` json
+HTTP/1.1 405 Method Not Allowed
+
+{"error":{"status":405,"reason":"Method Not Allowed"}}
+```
+
+#### Formats
+
+Use :formats to set available response formats.
+Use :accepts to set which formats the endpoint will accept in the POST/PUT body
+
+``` ruby
+  run Api::Endpoint.app({:storage => storage, :formats=>["json","xml"], :accepts => ["json", "xml"]})
+```
+
+# api.npolar.no
 
 ## Features
 
@@ -51,17 +85,12 @@ Testable
 * Test-first development strategy
 * Aims for 100% test coverage
 
-## Install
--------
-$ git clone git@github.com:npolar/api.npolar.no.git 
-$ cd api.npolar.no
-$ bundle install
-$ rspec
-$ bundle exec shotgun -d
 
-For production, we use unicorn + nginx
 
 ## Similar projects
 * GRAPE
 * https://github.com/olivernn/rackjson
 * https://github.com/fnando/rack-api
+
+# Requirements
+* Ruby >= 1.9
