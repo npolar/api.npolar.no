@@ -1,11 +1,27 @@
-#### Create API endpoint
+### Create endpoint
+#### Path
 ``` ruby
 # config.ru
-map "/api/collection1" do
-  storage = Api::Storage::Couch.new("http://localhost:5984/api_collection1")
-  run Api::Endpoint.app, {:storage => storage, :formats => ["json"]} 
+map "/link" do
+  run Api::Endpoint.app
 end
 ```
+`GET` http://localhost:9393/link/ will now provide you with a nice [503] error
+
+#### Security
+``` ruby
+  
+```
+
+#### Storage
+``` ruby
+# config.ru
+map "/link" do
+  storage = Api::Storage::Couch.new("http://localhost:5984/api_collection1")
+  run Api::Endpoint.app({:storage => storage)
+end
+```
+
 
 #### Formats
 
