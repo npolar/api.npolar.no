@@ -6,7 +6,7 @@ map "/link" do
   run Api::Endpoint.app
 end
 ```
-`GET` http://localhost:9393/link/ will now provide you with a nice [503] error
+`GET` [/link](http://localhost:9393/link/) will now provide you with a nice [503-Error](https://github.com/npolar/api.npolar.no/wiki/503-Error) in JSON.
 
 #### Security
 ``` ruby
