@@ -100,7 +100,7 @@ to have on-the-fly conversions between different formats.
 # config.ru
 map "/metadata/dataset" do
   use Metadata::Rack::Transform # transform all :formats but json
-  run Npolar::Api::Core.new({:storage => storage, :formats=>["atom", "dif", "iso", "json", "xml"]}, :accepts => ["dif", "json", "xml"])
+  run Npolar::Api::Core.new(nil, config)
 end
 ```
 ### Observers
