@@ -18,7 +18,7 @@ map "/ecotox" do
 end
 ```
 #### Use
-* `curl -i -X POST [/ecotox/report](http://localhost:9393/ecotox/report) -d '{}'`  to create a new (empty) ecotox report
+* `curl -i -X POST` [`/ecotox/report`](http://localhost:9393/ecotox/report) `-d '{}'`  to create a new (empty) ecotox report
 * `PUT /ecotox/report/4cf1ca78.json` to create with id
 * `GET /ecotox/report/.json` to view all existing ids
 * `GET /ecotox/report/4cf1ca78.json` to get a report
