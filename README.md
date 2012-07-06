@@ -18,7 +18,7 @@ map "/ecotox" do
 end
 ```
 #### Use
-* `POST /ecotox/report` to create a new ecotox report
+* `curl -i -X POST [/ecotox/report](http://localhost:9393/ecotox/report) -d '{}'`  to create a new (empty) ecotox report
 * `PUT /ecotox/report/4cf1ca78.json` to create with id
 * `GET /ecotox/report/.json` to view all existing ids
 * `GET /ecotox/report/4cf1ca78.json` to get a report
@@ -61,13 +61,12 @@ end
 
 ```
 #### Transformers
-
-If you add `xml` to `:formats` and keep documents in a JSON store like CouchDB,
-you can of course store the XML as an attachment or even inline, but often it's
-useful to have on-the-fly conversions between different formats.
-
 Transformers are Rack middleware that translates between formats before storing 
 or, more common, after reading from storage.
+
+For example, if you add `xml` to `:formats` and keep documents in a JSON store like CouchDB,
+you can of course store the XML as an attachment or even inline, but often it's
+useful to have on-the-fly conversions between different formats.
 
 ``` ruby
 # config.ru
@@ -77,27 +76,10 @@ map "/metadata/dataset" do
 end
 ```
 
-Processors
-
-Processors are request transformers.
-
 #### Validators
 
 
-#### Install
 
-``` sh
-$ git clone git@github.com:npolar/api.npolar.no.git
-$ cd api.npolar.no
-$ bundle install
-$ rspec
-```
-
-#### Start (development)
-``` sh
-$ bundle exec shotgun -d # http://localhost:9393
-```
-For production, use unicorn + nginx
 
 #### Method filter
 
@@ -122,7 +104,20 @@ HTTP/1.1 405 Method Not Allowed
 {"error":{"status":405,"reason":"Method Not Allowed"}}
 ```
 
+#### Install
 
+``` sh
+$ git clone git@github.com:npolar/api.npolar.no.git
+$ cd api.npolar.no
+$ bundle install
+$ rspec
+```
+
+#### Start (development)
+``` sh
+$ bundle exec shotgun -d # http://localhost:9393
+```
+For production, we use unicorn + nginx
 
 # api.npolar.no
 
