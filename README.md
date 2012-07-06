@@ -72,7 +72,7 @@ Read-only API. Create a bullet-proof read-only proxy, by allowing only GET and H
 # config.ru
 map "/api/collection1" do
   storage = Api::Storage::Couch.new("http://localhost:5984/api_collection1")
-  run Npolar::Api.app, {:storage => storage, :methods => ["HEAD", "GET"], :formats => ["json"]} 
+  run Npolar::Api::Core.new(nil, {:storage => storage, :methods => ["HEAD", "GET"], :formats => ["json"]}) 
 end
 ```
 
@@ -103,7 +103,7 @@ map "/metadata/dataset" do
   run Npolar::Api::Core.new({:storage => storage, :formats=>["atom", "dif", "iso", "json", "xml"]}, :accepts => ["dif", "json", "xml"])
 end
 ```
-
+### Observers
 
 ## Installation
 Requirements:
