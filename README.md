@@ -4,7 +4,7 @@ A [Rack](https://github.com/rack/rack)-based framework for running REST-style AP
 You build an API endpoint [lego](http://lego.dk)-wise by feeding the API [core](https://github.com/npolar/api.npolar.no/wiki/Core) a [storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
 middleware authorizers, validators, transformers and observers.
 
-#### Create
+### Create
 To build an enpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) a path
 and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) the [`Npolar::Api::Core`]().
 
@@ -17,20 +17,20 @@ map "/ecotox" do
   end
 end
 ```
-#### Use
-A brief summary, see [Using-the-API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for details
+### Use
+A brief usage summary, see [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for details:
 * `curl -i -X POST` [`/ecotox/report`](http://localhost:9393/ecotox/report) `-d '{}' -H "Content-Type: application/json"`  to create a new (empty) ecotox report
 * `curl -i -X PUT` [`/ecotox/report/4cf1ca78.json`](http://localhost:9393/ecotox/report/4cf1ca78.json) `-d '{}'` to create with id
 * `curl -i -X GET` [`/ecotox/report`](http://localhost:9393/ecotox/report/) to view all existing ids
 * `curl -i -X GET` [`/ecotox/report/4cf1ca78.json`](http://localhost:9393/ecotox/report/4cf1ca78.json) to get a report
 
-### Security
+## Security
 Run the API using transport-level security (TLS/https). 
 Make sure to set the `HTTP_X_FORWARDED_PROTO` if you use e.g. [Nginx](http://wiki.nginx.org/HttpSslModule) as a proxy.
 
-#### Authentication
+### Authentication
 
-#### Authorization
+### Authorization
 Use `Npolar::Auth::Authorizer` for role-based access control.
 
 The [authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) will restrict `GET` and `HEAD` requests to those with a `reader` role,
