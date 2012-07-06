@@ -18,12 +18,12 @@ map "/ecotox" do
   end
 end
 ```
-
+This is CouchDB-backed endpoint where the storage objects defaults to accepting and delivering "json" only.
 ### Use
 A brief usage summary, see [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for details:
 * `curl -i -X POST` [`/ecotox/report`](http://localhost:9393/ecotox/report) `-d '{}' -H "Content-Type: application/json"`  to create a new (empty) ecotox report
 * `curl -i -X PUT` [`/ecotox/report/4cf1ca78.json`](http://localhost:9393/ecotox/report/4cf1ca78.json) `-d '{}'` to create with id
-* `curl -i -X GET` [`/ecotox/report`](http://localhost:9393/ecotox/report/) to view all existing ids
+* `curl -i -X GET` [`/ecotox/report/.json`](http://localhost:9393/ecotox/report/.json) to view all existing ids
 * `curl -i -X GET` [`/ecotox/report/4cf1ca78.json`](http://localhost:9393/ecotox/report/4cf1ca78.json) to get a report
 
 ## Security
