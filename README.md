@@ -18,6 +18,7 @@ map "/ecotox" do
   end
 end
 ```
+
 ### Use
 A brief usage summary, see [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for details:
 * `curl -i -X POST` [`/ecotox/report`](http://localhost:9393/ecotox/report) `-d '{}' -H "Content-Type: application/json"`  to create a new (empty) ecotox report
@@ -51,9 +52,7 @@ end
 ```
 ## Configuration
 
-### Core
-
-#### Formats and accepts
+### Formats and accepts
 It's easy to specify which formats are available (using `:formats`) and accepted (using `:accepts`):
 ``` ruby
 map "/metadata/dataset" do
@@ -66,7 +65,7 @@ end
 
 ```
 
-#### Methods
+### Methods
 
 Read-only API. Create a bullet-proof read-only proxy, by allowing only GET and HEAD. 
 ``` ruby
@@ -86,28 +85,30 @@ HTTP/1.1 405 Method Not Allowed
 ```
 
 ## Middleware
-#### Transformers
+
+### Validators
+
+### Transformers
 Transformers are Rack middleware that translates between formats before storing 
 or, more common, after reading from storage.
 
 For example, if you add `xml` to `:formats` and keep documents in a JSON store like CouchDB,
-you can of course store the XML as an attachment or even inline, but often it's
-useful to have on-the-fly conversions between different formats.
+you can store the XML as an attachment or even inline, but often it's more convenient
+to have on-the-fly conversions between different formats.
 
 ``` ruby
 # config.ru
 map "/metadata/dataset" do
-  use Api::Rack::Transform::Metadata # transform all :formats but json
+  use Metadata::Rack::Transform # transform all :formats but json
   run Npolar::Api::Core.new({:storage => storage, :formats=>["atom", "dif", "iso", "json", "xml"]}, :accepts => ["dif", "json", "xml"])
 end
 ```
 
-#### Validators
-
-
-
 
 ## Installation
+Requirements:
+* Ruby >= 1.9
+* Probably Linux, CouchDB, Git, Solr and Nginx as well :)
 
 ``` sh
 $ git clone git@github.com:npolar/api.npolar.no.git
@@ -116,50 +117,38 @@ $ bundle install
 $ rspec
 ```
 
-#### Start (development)
+### Start (development)
 ``` sh
 $ bundle exec shotgun -d # http://localhost:9393
 ```
-For production, we use unicorn + nginx
-
+For production, we use [unicorn]() behind [nginx]()
 
 ## Features
 
-Powerful
+**Powerful**
 * Store any kind of document (JSON, XML, HTML, text, media/files)
-* Great search with facets/filters on any document attribute
+* [Great search](http://lucene.apache.org/solr/) with facets/filters on any document attribute
 * Customizable validation
 * Customizable transformation/processing
 * Permanent addresses (URIs/IRIs)
 * Multiple formats (in/out)
-* Access control
+* Role-based access control
 * Revisions: complete document history (edit log)
 
-Flexible
+**Flexible**
 * Choose your own storage strategy (per collection/per server)
 * Choose your own storage 
 * Choose your own resource paths
 * Choose your own authorization strategy
 
-Extensible
+**Extensible**
 * Object-oriented and extensible code
-* Modular design with dependency injection of all components
+* Modular design with dependency injection of major components
 * Easy to implement domain logic (per collection/per server)
 
-Scalable
-* Stateless design
+**Scalable**
+* Stateless
 * Cacheable
 
-Testable
+**Testable**
 * Test-first development strategy
-* Aims for 100% test coverage
-
-
-
-## Similar projects
-* GRAPE
-* https://github.com/olivernn/rackjson
-* https://github.com/fnando/rack-api
-* Goliath api
-# Requirements
-* Ruby >= 1.9
