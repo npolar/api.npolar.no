@@ -18,10 +18,10 @@ map "/ecotox" do
 end
 ```
 #### Use
-* `curl -i -X POST` [`/ecotox/report`](http://localhost:9393/ecotox/report) `-d '{}'`  to create a new (empty) ecotox report
-* `PUT /ecotox/report/4cf1ca78.json` to create with id
+* `curl -i -X POST` [`/ecotox/report`](http://localhost:9393/ecotox/report) `-d '{}' -H "Content-Type: application/json"`  to create a new (empty) ecotox report
+* `curl -i -X PUT` [`/ecotox/report/4cf1ca78.json`](http://localhost:9393/ecotox/report/4cf1ca78.json) `-d '{}'` to create with id
 * `GET /ecotox/report/.json` to view all existing ids
-* `GET /ecotox/report/4cf1ca78.json` to get a report
+* `curl -i -X GET` [`/ecotox/report/4cf1ca78.json`](http://localhost:9393/ecotox/report/4cf1ca78.json) to get a report
 See [Using-the-API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for details
 
 ### Security
