@@ -1,27 +1,42 @@
 # REST-style API framework
-[![Build Status](https://secure.travis-ci.org/npolar/rack-throttle.png)](https://secure.travis-ci.org/npolar/rack-throttle)
 
-`Npolar::Api::Core` is [Rack](https://github.com/rack/rack) class for running REST-like API endpoints.
-
-## Operation guide
-See also [Using the API]
+A [Rack](https://github.com/rack/rack)-based framework for running REST-style API endpoints.
+You build an API endpoint [lego](http://lego.dk)-style by feeding the API [core](https://github.com/npolar/api.npolar.no/wiki/Core) a [storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
+middleware authorizers, validators, transformers and observers.
 
 #### Create API
-You need: a path (for [cool URIs](http://www.w3.org/TR/cooluris/)) - and a [storage]() object:
+To build an enpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) to a path
+and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) the [`Npolar::Api::Core`]().
+
+As minimum, you need to provide the core with a  object:
+
 ``` ruby
+# config.ru
 map "/ecotox" do
   map "/report" do
     storage = Npolar::Storage::Couch.new("https://username:password@couch.local:6984/ecotox_report")
-    run Npolar::Api::Core.new(nil, { :storage => "https://couch.local:6984/ecotox_report" }) 
+    run Npolar::Api::Core.new(nil, { :storage => storage }) 
   end
 end
 ```
+#### Use
+* `POST` [/ecotox/report](https://api.npolar.no/) to create a new ecotox report
+* `PUT` [/ecotox/report/4cf1ca78.json] to create with id
+* `GET` [/ecotox/report/.json](https://api.npolar.no/) to view all existing ids
+* `GET` [/ecotox/report/4cf1ca78.json] to get  report
+See [Using-the-API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for details
 
-#### Security
+### Security
+Run the API using transport-level security (TLS/https). 
+Make sure to set the `HTTP_X_FORWARDED_PROTO` if you use e.g. [Nginx](http://wiki.nginx.org/HttpSslModule) as a proxy.
 
-Use `Npolar::Auth::Authorizer` for role-based access control. The authorizer will
-restrict GET and HEAD requests to those with a `reader` role, and POST, PUT, and
-DELETE to those with a `writer` role.
+#### Authentication
+
+#### Authorization
+Use `Npolar::Auth::Authorizer` for role-based access control.
+
+The [authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) will restrict `GET` and `HEAD` requests to those with a `reader` role,
+and `POST`, `PUT`, and `DELETE` to those with a `writer` role.
 
 ``` ruby
 map "/ecotox" do
@@ -35,37 +50,26 @@ map "/ecotox" do
   end
 end
 ```
-
-The security stack consists of three layers
-* Check user credentials, but only over secure transport (https/SSL) - or else [401]
-* Check that user/group/application is authorized - or else [403]
-* Check document-level access rights - or else [403]  
-
-
 #### Storage
 
 
 #### Formats
-
-`:formats` = available response formats.
-`:accepts` = which formats the endpoint will accept (in the POST or PUT body)
-
+It's east to specify which formats are available (using `:formats`) and accepted (using `:accepts`):
 ``` ruby
 map "/metadata/dataset" do
   storage = Npolar::Storage::Couch.new(config_reader.call("metadata_storage.json"))
-  run Npolar::Api::Core.new({:storage => storage, :formats=>["atom", "dif", "iso", "json", "xml"]}, :accepts => ["dif", "json", "xml"])
+  run Npolar::Api::Core.new({:storage => storage, :formats=>["atom", "dif", "iso", "json", "solr", "xml"]}, :accepts => ["dif", "json", "xml"])
 end
 
 ```
-
 #### Transformers
 
-If you add "xml" to :formats and keep documents in a JSON store like CouchDB,
+If you add `xml` to `:formats` and keep documents in a JSON store like CouchDB,
 you can of course store the XML as an attachment or even inline, but often it's
 useful to have on-the-fly conversions between different formats.
 
-Transformers are Rack middleware that translates the response from from a storage format
-to a response format.
+Transformers are Rack middleware that translates between formats before storing 
+or, more common, after reading from storage.
 
 ``` ruby
 # config.ru
@@ -74,15 +78,13 @@ map "/metadata/dataset" do
   run Npolar::Api::Core.new({:storage => storage, :formats=>["atom", "dif", "iso", "json", "xml"]}, :accepts => ["dif", "json", "xml"])
 end
 ```
-#### Processors
+
+Processors
 
 Processors are request transformers.
 
 #### Validators
 
-#### Auth
-
-#### Security
 
 #### Install
 
@@ -99,7 +101,9 @@ $ bundle exec shotgun -d # http://localhost:9393
 ```
 For production, use unicorn + nginx
 
-#### Read-only API
+#### Method filter
+
+Read-only API
 
 Create a read-only CouchDB proxy, by allowing only HTTP GET and HEAD. 
 ``` ruby
@@ -161,7 +165,6 @@ Testable
 * GRAPE
 * https://github.com/olivernn/rackjson
 * https://github.com/fnando/rack-api
-
+* Goliath api
 # Requirements
 * Ruby >= 1.9
-goliath api
