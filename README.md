@@ -4,11 +4,9 @@ A [Rack](https://github.com/rack/rack)-based framework for running REST-style AP
 You build an API endpoint [lego](http://lego.dk)-wise by feeding the API [core](https://github.com/npolar/api.npolar.no/wiki/Core) a [storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
 middleware authorizers, validators, transformers and observers.
 
-#### Create API
-To build an enpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) to a path
+#### Create
+To build an enpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) a path
 and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) the [`Npolar::Api::Core`]().
-
-As minimum, you need to provide the core with a  object:
 
 ``` ruby
 # config.ru
@@ -20,10 +18,10 @@ map "/ecotox" do
 end
 ```
 #### Use
-* `POST` [/ecotox/report](https://api.npolar.no/) to create a new ecotox report
-* `PUT` [/ecotox/report/4cf1ca78.json] to create with id
-* `GET` [/ecotox/report/.json](https://api.npolar.no/) to view all existing ids
-* `GET` [/ecotox/report/4cf1ca78.json] to get  report
+* `POST /ecotox/report` to create a new ecotox report
+* `PUT /ecotox/report/4cf1ca78.json` to create with id
+* `GET /ecotox/report/.json` to view all existing ids
+* `GET /ecotox/report/4cf1ca78.json` to get a report
 See [Using-the-API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for details
 
 ### Security
