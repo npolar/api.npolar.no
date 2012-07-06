@@ -4,6 +4,7 @@ A [Rack](https://github.com/rack/rack)-based framework for running REST-style AP
 You build an API endpoint [lego](http://lego.dk)-wise by feeding the API [core](https://github.com/npolar/api.npolar.no/wiki/Core) a [storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
 middleware authorizers, validators, transformers and observers.
 
+## Basics
 ### Create
 To build an enpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) a path
 and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) the [`Npolar::Api::Core`]().
@@ -48,18 +49,43 @@ map "/ecotox" do
   end
 end
 ```
-#### Storage
+## Configuration
 
+### Core
 
-#### Formats
-It's east to specify which formats are available (using `:formats`) and accepted (using `:accepts`):
+#### Formats and accepts
+It's easy to specify which formats are available (using `:formats`) and accepted (using `:accepts`):
 ``` ruby
 map "/metadata/dataset" do
   storage = Npolar::Storage::Couch.new(config_reader.call("metadata_storage.json"))
-  run Npolar::Api::Core.new({:storage => storage, :formats=>["atom", "dif", "iso", "json", "solr", "xml"]}, :accepts => ["dif", "json", "xml"])
+  run Npolar::Api::Core.new({:storage => storage,
+    :formats=>["atom", "dif", "iso", "json", "solr", "xml"]},
+    :accepts => ["dif", "json", "xml"]
+  )
 end
 
 ```
+
+#### Methods
+
+Read-only API. Create a bullet-proof read-only proxy, by allowing only GET and HEAD. 
+``` ruby
+# config.ru
+map "/api/collection1" do
+  storage = Api::Storage::Couch.new("http://localhost:5984/api_collection1")
+  run Npolar::Api.app, {:storage => storage, :methods => ["HEAD", "GET"], :formats => ["json"]} 
+end
+```
+
+``` sh
+$ curl -i -XPOST http://localhost:9393/api/read-only/ -d '{}'
+```
+``` http
+HTTP/1.1 405 Method Not Allowed
+{"error":{"status":405,"reason":"Method Not Allowed"}}
+```
+
+## Middleware
 #### Transformers
 Transformers are Rack middleware that translates between formats before storing 
 or, more common, after reading from storage.
@@ -81,30 +107,7 @@ end
 
 
 
-#### Method filter
-
-Read-only API
-
-Create a read-only CouchDB proxy, by allowing only HTTP GET and HEAD. 
-``` ruby
-# config.ru
-map "/api/collection1" do
-  storage = Api::Storage::Couch.new("http://localhost:5984/api_collection1")
-  run Npolar::Api.app, {:storage => storage, :methods => ["HEAD", "GET"], :formats => ["json"]} 
-end
-```
-
-``` sh
-$ curl -i -XPOST http://localhost:9393/api/read-only/ -d '{}'
-```
-
-``` json
-HTTP/1.1 405 Method Not Allowed
-
-{"error":{"status":405,"reason":"Method Not Allowed"}}
-```
-
-#### Install
+## Installation
 
 ``` sh
 $ git clone git@github.com:npolar/api.npolar.no.git
@@ -119,7 +122,6 @@ $ bundle exec shotgun -d # http://localhost:9393
 ```
 For production, we use unicorn + nginx
 
-# api.npolar.no
 
 ## Features
 
