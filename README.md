@@ -1,7 +1,7 @@
 # REST-style API framework
 
 A [Rack](https://github.com/rack/rack)-based framework for running REST-style API endpoints.
-You build an API endpoint [lego](http://lego.dk)-style by feeding the API [core](https://github.com/npolar/api.npolar.no/wiki/Core) a [storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
+You build an API endpoint [lego](http://lego.dk)-wise by feeding the API [core](https://github.com/npolar/api.npolar.no/wiki/Core) a [storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
 middleware authorizers, validators, transformers and observers.
 
 #### Create API
