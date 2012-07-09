@@ -34,7 +34,7 @@ Use `Npolar::Rack::Authorizer` for authentication and role-based access control.
 
 The [Authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) restricts **edits** (`POST`, `PUT`, and `DELETE`) to users with a `editor` role.
 
-The Authorizer uses
+The Authorizer is a generic system that relies on a backend `:auth` object
 * Use `Npolar::Auth::Ldap` (or [Net::LDAP](http://net-ldap.rubyforge.org/Net/LDAP.html)) to use LDAP
 * Use `Npolar::Auth::Couch` for a CouchDB-backed solution
 
@@ -48,7 +48,6 @@ map "/ecotox" do
     run Npolar::Api::Core.new(nil, { :storage => "https://couch.local:6984/ecotox_report" }) 
   end
 end
-
 
 ```
 ## Configuration
