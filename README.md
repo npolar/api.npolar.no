@@ -2,7 +2,7 @@
 
 A [Rack](https://github.com/rack/rack)-based framework for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface) endpoints.
 
-You build an API endpoint [lego](http://lego.dk)-wise by connecting the API [Core](https://github.com/npolar/api.npolar.no/wiki/Core) a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
+You build an API endpoint [lego](http://lego.dk)-wise by connecting the [Core](https://github.com/npolar/api.npolar.no/wiki/Core) with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
 other middleware for security, validation, search-engine indexing, logging, data transformation, etc.
 
 ## Basics
@@ -34,7 +34,7 @@ Use `Npolar::Rack::Authorizer` for authentication and role-based access control.
 
 The [Authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) restricts **edits** (`POST`, `PUT`, and `DELETE`) to users with a `editor` role.
 
-The Authorizer needs a backend:
+The Authorizer uses
 * Use `Npolar::Auth::Ldap` (or [Net::LDAP](http://net-ldap.rubyforge.org/Net/LDAP.html)) to use LDAP
 * Use `Npolar::Auth::Couch` for a CouchDB-backed solution
 
@@ -42,7 +42,7 @@ The Authorizer needs a backend:
 map "/ecotox" do
   map "/report" do
 
-    auth = Npolar::Auth::Lda.new("https://localhost:6984/api_user")
+    auth = Npolar::Auth::Couch.new("https://localhost:6984/api_user")
     
     use Npolar::Auth::Authorizer, { :auth => auth, :system => "ecotox" }
     run Npolar::Api::Core.new(nil, { :storage => "https://couch.local:6984/ecotox_report" }) 
@@ -68,12 +68,12 @@ end
 
 ### Methods
 
-Read-only API. Create a bullet-proof read-only proxy, by allowing only GET and HEAD. 
+Use `:methods` to configure allowed HTTP verbs. Create a bullet-proof read-only API, by allowing only GET and HEAD. 
 ``` ruby
 # config.ru
 map "/api/collection1" do
   storage = Api::Storage::Couch.new("http://localhost:5984/api_collection1")
-  run Npolar::Api::Core.new(nil, {:storage => storage, :methods => ["HEAD", "GET"], :formats => ["json"]}) 
+  run Npolar::Api::Core.new(nil, {:storage => storage, :methods => ["HEAD", "GET"]) 
 end
 ```
 
@@ -105,7 +105,8 @@ map "/metadata/dataset" do
   run Npolar::Api::Core.new(nil, config)
 end
 ```
-### Observers
+### Solrizer
+
 
 ## Installation
 Requirements:
