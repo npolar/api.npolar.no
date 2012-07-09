@@ -1,6 +1,7 @@
 # REST-style API framework
 
-A [Rack](https://github.com/rack/rack)-based framework for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API]() endpoints.
+A [Rack](https://github.com/rack/rack)-based framework for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface) endpoints.
+
 You build an API endpoint [lego](http://lego.dk)-wise by connecting the API [Core](https://github.com/npolar/api.npolar.no/wiki/Core) a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
 other middleware for security, validation, search-engine indexing, logging, data transformation, etc.
 
