@@ -8,7 +8,7 @@ other middleware for security, validation, search-engine indexing, logging, data
 ## Basics
 ### Create
 To build an endpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) a path,
-initialize a storage object and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) a Npolar::Api::Core instance.
+initialize a storage object and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) a `Npolar::Api::Core` instance.
 
 ``` ruby
 # config.ru
@@ -26,8 +26,8 @@ See [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) 
 ## Security
 
 ### Transport-level security
-Run all APIs using transport-level security (TLS/https). 
-Make sure to set the `HTTP_X_FORWARDED_PROTO` if you use e.g. [Nginx](http://wiki.nginx.org/HttpSslModule) as a proxy.
+Run all APIs that require authentication and/or authorization using transport-level security (TLS/https). 
+Make sure to set the `HTTP_X_FORWARDED_PROTO` if you use e.g. [Nginx](http://wiki.nginx.org/HttpSslModule) or other proxies.
 
 ### Authentication and authorization
 Use `Npolar::Rack::Authorizer` for authentication and role-based access control. 
