@@ -1,13 +1,13 @@
 # REST-style API framework
 
-A [Rack](https://github.com/rack/rack)-based framework for running REST-style API endpoints.
-You build an API endpoint [lego](http://lego.dk)-wise by feeding the API [core](https://github.com/npolar/api.npolar.no/wiki/Core) a [storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
-middleware authorizers, validators, transformers and observers.
+A [Rack](https://github.com/rack/rack)-based framework for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API]() endpoints.
+You build an API endpoint [lego](http://lego.dk)-wise by connecting the API [Core](https://github.com/npolar/api.npolar.no/wiki/Core) a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) and assembling
+other middleware for security, validation, search-engine indexing, logging, data transformation, etc.
 
 ## Basics
 ### Create
-To build an enpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) a path
-and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) the [`Npolar::Api::Core`]().
+To build an endpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) a path,
+initialize a storage object and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) a Npolar::Api::Core instance.
 
 ``` ruby
 # config.ru
@@ -18,37 +18,37 @@ map "/ecotox" do
   end
 end
 ```
-This is CouchDB-backed endpoint where the storage objects defaults to accepting and delivering "json" only.
 ### Use
-A brief usage summary, see [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for details:
-* `curl -i -X POST` [`/ecotox/report`](http://localhost:9393/ecotox/report) `-d '{}' -H "Content-Type: application/json"`  to create a new (empty) ecotox report
-* `curl -i -X PUT` [`/ecotox/report/4cf1ca78.json`](http://localhost:9393/ecotox/report/4cf1ca78.json) `-d '{}'` to create with id
-* `curl -i -X GET` [`/ecotox/report/.json`](http://localhost:9393/ecotox/report/.json) to view all existing ids
-* `curl -i -X GET` [`/ecotox/report/4cf1ca78.json`](http://localhost:9393/ecotox/report/4cf1ca78.json) to get a report
+The `/ecotox/report` API is a CouchDB-backed endpoint which by default accepts and delivers `json` documents.
+See [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for usage details.
 
 ## Security
-Run the API using transport-level security (TLS/https). 
+
+### Transport-level security
+Run all APIs using transport-level security (TLS/https). 
 Make sure to set the `HTTP_X_FORWARDED_PROTO` if you use e.g. [Nginx](http://wiki.nginx.org/HttpSslModule) as a proxy.
 
-### Authentication
+### Authentication and authorization
+Use `Npolar::Rack::Authorizer` for authentication and role-based access control. 
 
-### Authorization
-Use `Npolar::Auth::Authorizer` for role-based access control.
+The [Authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) restricts **edits** (`POST`, `PUT`, and `DELETE`) to users with a `editor` role.
 
-The [authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) will restrict `GET` and `HEAD` requests to those with a `reader` role,
-and `POST`, `PUT`, and `DELETE` to those with a `writer` role.
+The Authorizer needs a backend:
+* Use `Npolar::Auth::Ldap` (or [Net::LDAP](http://net-ldap.rubyforge.org/Net/LDAP.html)) to use LDAP
+* Use `Npolar::Auth::Couch` for a CouchDB-backed solution
 
 ``` ruby
 map "/ecotox" do
   map "/report" do
 
-    storage = Npolar::Storage::Couch.new("https://localhost:6984/ecotox_report")
-    auth = Npolar::Auth::Couch.new("https://localhost:6984/api_user")
+    auth = Npolar::Auth::Lda.new("https://localhost:6984/api_user")
     
     use Npolar::Auth::Authorizer, { :auth => auth, :system => "ecotox" }
     run Npolar::Api::Core.new(nil, { :storage => "https://couch.local:6984/ecotox_report" }) 
   end
 end
+
+
 ```
 ## Configuration
 
@@ -79,6 +79,7 @@ end
 ``` sh
 $ curl -i -XPOST http://localhost:9393/api/read-only/ -d '{}'
 ```
+
 ``` http
 HTTP/1.1 405 Method Not Allowed
 {"error":{"status":405,"reason":"Method Not Allowed"}}
