@@ -11,8 +11,6 @@ require "./lib/npolar/rack/response"
 require "./lib/npolar/rack/middleware"
 require "./lib/npolar/api"
 require "./lib/npolar/api/core"
-#require "./lib/npolar/api/json"
-require "./lib/npolar/api/auth/secure_basic"
 require "./lib/npolar/auth"
 require "./lib/npolar/auth/couch"
 
