@@ -1,0 +1,16 @@
+bin
+seed
+config/*
+coverage
+*.lock
+*.log
+.rspec
+*~
+rackup
+tmp
+.yardoc
+.bundle
+doc
+documentation
+Gemfile*.lock
+log
