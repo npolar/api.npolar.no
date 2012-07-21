@@ -10,11 +10,12 @@ module Npolar
 
       CONFIG = {
         :authorized? => lambda { | auth, system, request |
-
           if ["GET", "HEAD"].include? request.request_method
-            auth.roles(system).include? READER_ROLE or auth.roles(system).include? SYSADMIN_ROLE
-          else
+            auth.roles(system).include? READER_ROLE or auth.roles(system).include? EDITOR_ROLE or auth.roles(system).include? SYSADMIN_ROLE
+          elsif ["POST", "PUT", "DELETE"]
             auth.roles(system).include? EDITOR_ROLE or auth.roles(system).include? SYSADMIN_ROLE
+          else
+            false
           end
 
         },
