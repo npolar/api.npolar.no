@@ -1,6 +1,5 @@
 source :rubygems
-gem "npolar-rubylib", :git => "git://github.com/npolar/rubylib.git"
-#, :path => "../npolar-rubylib"
+gem "gcmd", :git => "git://github.com/npolar/gcmd.git"
 gem "rack", :git => "git://github.com/rack/rack.git"
 gem "rack-contrib", :git => "git://github.com/rack/rack-contrib.git"
 gem "unicorn"
@@ -14,7 +13,7 @@ gem "nokogiri"
 gem "uuidtools"
 gem "libxml-ruby", :git => "git://github.com/xml4r/libxml-ruby.git"
 gem "net-ldap"
-gem "npolar-rack-throttle", :path => "../rack-throttle"
+gem "rack-throttle"#, :path => "../rack-throttle"
 #gem "memcached"
 
 group :development, :test do
