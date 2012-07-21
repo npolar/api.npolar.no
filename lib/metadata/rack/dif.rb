@@ -39,12 +39,18 @@ module Metadata
         def dif_save(request)
           xml = request.body.read
           dif = ::Gcmd::Dif.new
-          dif_hash = dif.load_xml(xml)
+          difs = dif.load_xml(xml)
+          j = []
+          difs.each do | dif_hash |
+            dif_atom = ::Metadata::DifAtom.new
+            atom_hash = dif_atom.atom_from_dif(dif_hash)
+            j << atom_hash
+          end
+          if 1 == j.size
+            j = j[0]
+          end
 
-          dif_atom = ::Metadata::DifAtom.new
-          atom_hash = dif_atom.atom_from_dif(dif_hash)
-p atom_hash
-          json = atom_hash.to_json
+          json = j.to_json
 
           request.env["CONTENT_TYPE"] = "application/json"
           request.env["CONTENT_LENGTH"] = json.bytesize.to_s  

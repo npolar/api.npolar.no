@@ -235,10 +235,15 @@ module Metadata
         #p r #r["URL_Content_Type"] #["Type"]
 
         r["URL"].each do | url |
+          if r.key? "URL_Content_Type" and r["URL_Content_Type"].key? "Type"
+            type = r["URL_Content_Type"]["Type"]
+          else
+            type = ""
+          end
           links << {
             "title" => r["Description"],
             "href" => r["URL"].first,
-            "rel" => extract_rel(r["URL_Content_Type"]["Type"]),
+            "rel" => extract_rel(type),
             "type" => nil
           }
         end
