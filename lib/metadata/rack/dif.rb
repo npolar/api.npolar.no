@@ -8,19 +8,53 @@ module Metadata
 
       class Dif < Npolar::Rack::Middleware
 
-        FORMATS = ["atom", "dif", "iso", "xml"] 
+        FORMATS = ["atom", "dif", "iso", "xml"]
+
+        ACCEPTS = ["xml", "dif"]
 
         XML_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
 
+        JSON_HEADER_HASH = {"Content-Type" => "application/json; charset=utf-8"}
+
         def condition? request
-          if FORMATS.include? request.format and ["GET","HEAD"].include? request.request_method and request.id?
+          # GET
+          if request.id? and (FORMATS.include? request.format or request.content_type =~ /application\/xml/) and "GET" == request.request_method
+            true
+          # POST, PUT
+          elsif (ACCEPTS.include? request.format or request.content_type =~ /application\/xml/) and ["POST","PUT"].include? request.request_method
             true
           else
             false
           end
         end
 
+        # Only called if #condition? is true
         def handle(request)
+          case request.request_method
+            when "GET" then dif_from_json(request)
+            when "POST", "PUT" then dif_save(request)
+          end
+        end
+
+        def dif_save(request)
+          xml = request.body.read
+          dif = ::Gcmd::Dif.new
+          dif_hash = dif.load_xml(xml)
+
+          dif_atom = ::Metadata::DifAtom.new
+          atom_hash = dif_atom.atom_from_dif(dif_hash)
+p atom_hash
+          json = atom_hash.to_json
+
+          request.env["CONTENT_TYPE"] = "application/json"
+          request.env["CONTENT_LENGTH"] = json.bytesize.to_s  
+          request.env["rack.input"] = ::Rack::Lint::InputWrapper.new( StringIO.new( json ) )
+          app.call(request.env)
+
+
+        end
+
+        def dif_from_json(request)
 
           response = app.call(request.env)
 
@@ -43,6 +77,8 @@ module Metadata
           end
         end
 
+        protected
+
         def dif_json(metadata_dataset)
           dif_atom = Metadata::DifAtom.new
           dif_json = dif_atom.dif(metadata_dataset)
@@ -57,7 +93,7 @@ module Metadata
         def atom_entry(metadata_dataset)
           atom = metadata_dataset
           entry = ::Atom::Entry.new do |e|
-            e.id = "urn:uuid:#{atom["id"]}"
+            e.id = atom["dif:Entry_ID"] || "urn:uuid:#{atom["id"]}"
   
             e.title = atom["title"]
             e.summary = atom["summary"]
