@@ -104,7 +104,7 @@ module Metadata
         atom = {
           "author" => extract_author, #{ "name" => "Norwegian Polar Institute", "uri" => "http://data.npolar.no", "email" => ""},
           "title" => dif["Entry_Title"],
-          "id" => dif["id"].nil? ? dif["_id"] : dif["id"],
+          "id" => dif["Entry_ID"].nil? ? dif["_id"] : dif["Entry_ID"],
           "contributors" => extract_contributors(dif["Personnel"]),
           "summary" => dif["Summary"]["Abstract"],
           "links" => extract_links(dif),
@@ -136,10 +136,10 @@ module Metadata
         #Data_Center => linkrel=htpp...#Data_Center?
 
         unless dif["Spatial_Coverage"].nil?
-          atom["north"] = dif["Spatial_Coverage"].first["Northernmost_Latitude"],
-          atom["east"] = dif["Spatial_Coverage"].first["Easternmost_Longitude"],
-          atom["west"] = dif["Spatial_Coverage"].first["Westernmost_Longitude"],
-          atom["south"] = dif["Spatial_Coverage"].first["Southernmost_Latitude"]
+          #atom["north"] = dif["Spatial_Coverage"].first["Northernmost_Latitude"],
+          #atom["east"] = dif["Spatial_Coverage"].first["Easternmost_Longitude"],
+          #atom["west"] = dif["Spatial_Coverage"].first["Westernmost_Longitude"],
+          #atom["south"] = dif["Spatial_Coverage"].first["Southernmost_Latitude"]
         end
 
         # << add contributors from Data Center
@@ -190,9 +190,9 @@ module Metadata
         dif.delete "Last_DIF_Revision_Date"
         dif.delete "ISO_Topic_Category"
         dif.delete dif["Summary"]["Abstract"]
-        if dif["Spatial_Coverage"] and dif["Spatial_Coverage"].size == 1
-          dif.delete "Spatial_Coverage"
-        end
+        #if dif["Spatial_Coverage"] and dif["Spatial_Coverage"].size == 1
+          #dif.delete "Spatial_Coverage"
+        #end
 
 
         #"Metadata_Version":"9.8.2","Originating_Metadata_Node":"NPI/RiS","Data_Set_Language":["English"],"IDN_Node":[{"Short_Name":"ARCTIC/NO"},{"Short_Name":"ARCTIC"}]
@@ -232,7 +232,7 @@ module Metadata
           url = r["URL"]
           r["URL"] = [url]
         end
-        p r #r["URL_Content_Type"] #["Type"]
+        #p r #r["URL_Content_Type"] #["Type"]
 
         r["URL"].each do | url |
           links << {
@@ -295,10 +295,8 @@ module Metadata
           atom["id"] = atom["_id"]
         end
 
-p atom
-
         dif = dif.merge({
-          "Entry_ID" => atom["id"],
+          "Entry_ID" => atom["dif:Entry_ID"] || atom["id"],
           "Entry_Title" => atom["title"],
           "Data_Set_Citation" => [],
           "Personnel" => [], #personnel_from_contributors(atom["contributors"]),
