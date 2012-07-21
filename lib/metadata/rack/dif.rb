@@ -18,7 +18,7 @@ module Metadata
 
         def condition? request
           # GET
-          if request.id? and (FORMATS.include? request.format or request.content_type =~ /application\/xml/) and "GET" == request.request_method
+          if (FORMATS.include? request.format or request.content_type =~ /application\/xml/) and "GET" == request.request_method
             true
           # POST, PUT
           elsif (ACCEPTS.include? request.format or request.content_type =~ /application\/xml/) and ["POST","PUT"].include? request.request_method
@@ -68,6 +68,7 @@ module Metadata
 
             metadata_dataset = ::Yajl::Parser.parse(response.io)
 
+            # if id false? and many => pack xml in somethimg p metadata_dataset
   
             xml = case request.format
               when "dif", "xml"
@@ -77,7 +78,18 @@ module Metadata
               when "iso"
                 then iso(dif_xml(dif_json(metadata_dataset)))
             end
-            [200, XML_HEADER_HASH, [xml]]
+
+            if "validate" == request.path_info.split("/").last
+              dif = ::Gcmd::Dif.new
+              dif.load_xml xml
+              report = dif.validate_xml
+              [200, JSON_HEADER_HASH, [report.to_json]]
+            else
+              [200, XML_HEADER_HASH, [xml]]
+            end
+
+
+
           else
             response
           end
