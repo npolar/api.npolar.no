@@ -59,7 +59,6 @@ module Npolar
       end
   
       def parsable?
-        p request
         true
       end
   
