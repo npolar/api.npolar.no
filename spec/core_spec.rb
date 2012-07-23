@@ -221,7 +221,9 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
     end
 
   context "Server errors" do
-    it "No storage should give server error" 
+    it "No storage should give server error" do
+      expect { Npolar::Api::Core.new.get("/") }.to raise_exception Npolar::Exception
+    end
   end
 
   context "JSON" do
@@ -247,6 +249,7 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
       it "POST [{..}, {..}]"
     end
 
+    
     
 
   end
