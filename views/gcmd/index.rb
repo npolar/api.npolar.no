@@ -1,4 +1,4 @@
-class Gcmd::Index < Html
+class Gcmd::Index < Mustache
 
   self.template_path = File.expand_path(File.dirname(__FILE__)+"/..")
 
