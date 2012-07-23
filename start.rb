@@ -1,7 +1,6 @@
 require "bundler/setup"
 
 require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
-
 # Server
 
 
@@ -27,10 +26,18 @@ require "./lib/npolar/storage/couch"
 require "./lib/npolar/rack/require_param"
 require "./lib/metadata/rack/dif"
 require "./lib/npolar/rack/validate_id"
+require "./lib/npolar/rack/require_param"
 
 require "rack/throttle"
 require "rack/contrib/jsonp"
 require "rack/contrib/accept_format"
 require "rack/ssl"
 require "rack/commonlogger"
+require "rack/cache"
 
+require "gcmd/http"
+require "gcmd/concepts"
+
+# Views
+require "mustache"
+require "./views/gcmd/index"

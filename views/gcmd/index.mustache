@@ -1,0 +1,14 @@
+<header>
+  <h1>{{title}}</h1>
+</header>
+
+<article>
+<ul>
+  {{# schemes}}
+    <li><a href="{{ path }}?q=a"> {{ scheme }}</a></li>
+  {{/ schemes}}
+</ul> 
+</article>
+<footer>
+{{credits}}
+</footer>

@@ -1,5 +1,6 @@
 source :rubygems
-gem "gcmd", :git => "git://github.com/npolar/gcmd.git"
+#gem "gcmd", :git => "git://github.com/npolar/gcmd.git"
+gem "gcmd", :path => "../gcmd"
 gem "rack", :git => "git://github.com/rack/rack.git"
 gem "rack-contrib", :git => "git://github.com/rack/rack-contrib.git"
 gem "unicorn"
@@ -15,6 +16,10 @@ gem "libxml-ruby", :git => "git://github.com/xml4r/libxml-ruby.git"
 gem "net-ldap"
 gem "rack-throttle"#, :path => "../rack-throttle"
 #gem "memcached"
+gem "faraday"
+gem "faraday_middleware"
+gem "rack-cache"
+gem "mustache"
 
 group :development, :test do
   gem "thin"
