@@ -129,10 +129,16 @@ module Metadata
       #Data_Center => linkrel=htpp...#Data_Center?
 
       unless dif["Spatial_Coverage"].nil?
-        #atom["north"] = dif["Spatial_Coverage"].first["Northernmost_Latitude"],
-        #atom["east"] = dif["Spatial_Coverage"].first["Easternmost_Longitude"],
-        #atom["west"] = dif["Spatial_Coverage"].first["Westernmost_Longitude"],
-        #atom["south"] = dif["Spatial_Coverage"].first["Southernmost_Latitude"]
+        atom["geo"] = []
+        
+        dif["Spatial_Coverage"].each do | location |
+          atom["geo"] << {
+            "north" => location["Northernmost_Latitude"],
+            "east" => location["Easternmost_Longitude"],
+            "west" => location["Westernmost_Longitude"],
+            "south" => location["Southernmost_Latitude"]
+          }
+        end
       end
 
       # << add contributors from Data Center
@@ -182,9 +188,7 @@ module Metadata
       dif.delete "Last_DIF_Revision_Date"
       dif.delete "ISO_Topic_Category"
       dif.delete dif["Summary"]["Abstract"]
-      #if dif["Spatial_Coverage"] and dif["Spatial_Coverage"].size == 1
-        #dif.delete "Spatial_Coverage"
-      #end
+      dif.delete "Spatial_Coverage"
 
       #"Metadata_Version":"9.8.2","Originating_Metadata_Node":"NPI/RiS","Data_Set_Language":["English"],"IDN_Node":[{"Short_Name":"ARCTIC/NO"},{"Short_Name":"ARCTIC"}]
 
