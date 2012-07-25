@@ -40,5 +40,4 @@ require "gcmd/concepts"
 
 # Views
 require "mustache"
-require "./views/html"
 require "./views/gcmd/index"

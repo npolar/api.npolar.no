@@ -1,6 +1,6 @@
 source :rubygems
-#gem "gcmd", :git => "git://github.com/npolar/gcmd.git"
-gem "gcmd", :path => "../gcmd"
+gem "gcmd", :git => "git://github.com/npolar/gcmd.git"
+#gem "gcmd", :path => "../gcmd"
 gem "rack", :git => "git://github.com/rack/rack.git"
 gem "rack-contrib", :git => "git://github.com/rack/rack-contrib.git"
 gem "unicorn"
