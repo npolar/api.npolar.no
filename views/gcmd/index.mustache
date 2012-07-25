@@ -5,7 +5,7 @@
 <section>
   <h2>Demo</h2>
   <div id="demo" class="yui3-skin-sam">
-    <label for="ac-input">Locations search:</label><br>
+    <label for="ac-input">{{scheme}} search:</label><br>
     <input id="ac-input" type="text">
   </div>
   <script src="http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"></script>
@@ -17,7 +17,7 @@
         Y.log(result);
         return result[1];
       },
-      source: '/gcmd/locations?q={query}&callback={callback}'
+      source: '/gcmd/{{scheme}}?q={query}&callback={callback}'
     });
   });
   </script>
@@ -32,15 +32,11 @@
 <pre>
 {{response}}
 </pre>
-</article>
 
-<article>
 <h3>Endpoints</h3>
-<ul>
   {{# schemes}}
-    <li><a href="{{ path }}?q=a"> {{ scheme }}</a></li>
+    <li><a href="{{ path }}"> {{ scheme }}</a></li>
   {{/ schemes}}
-</ul>
 
 </article>
 <footer>

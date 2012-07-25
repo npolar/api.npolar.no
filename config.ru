@@ -16,7 +16,9 @@ end
 map "/gcmd" do
 
   gcmd_index = lambda {|env|
+    scheme = Rack::Request.new(env)["scheme"] ||= "locations"
     index = Gcmd::Index.new
+    index[:scheme] = scheme
     [200, {"Content-Type" => "text/html"},[index.render]]
   }
   run gcmd_index
