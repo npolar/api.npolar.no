@@ -294,7 +294,7 @@ module Metadata
         "Entry_ID" => atom["dif:Entry_ID"] || atom["id"],
         "Entry_Title" => atom["title"],
         "Data_Set_Citation" => [],
-        "Personnel" => [], #personnel_from_contributors(atom["contributors"]),
+        "Personnel" => personnel_from_contributors(atom["contributors"]),
         "Related_URL" => [],  
         "Discipline" => [],
         "Data_Center" => [],
@@ -317,6 +317,29 @@ module Metadata
       end
       
       dif
+    end
+    
+    def personnel_from_contributors( contributors )
+      personnel = []      
+      return personnel if contributors.empty?
+      
+      contributors.each do | person |
+        
+        first_name = person["first_name"].split(" ")[0]
+        middle_name = person["first_name"].split(" ")[1]
+        middle_name = "" if middle_name == nil
+        
+        personnel << {
+          "First_Name" => first_name,
+          "Middle_Name" => middle_name,
+          "Last_Name" => person["last_name"],
+          "Email" => person["email"],
+          "Role" => person["role"].each { |role| [] << role }
+        }
+      end
+      
+      personnel
+      
     end
     
     def rel(anchor)
