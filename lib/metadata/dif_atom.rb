@@ -202,7 +202,7 @@ module Metadata
       return [] if personnel.nil?
 
       personnel.map { |p| {
-          "email" => p["Email"].nil? ? "" : p["Email"],
+          "email" => p["Email"].nil? ? [] : p["Email"],
           "first_name" =>  "#{p["First_Name"]} #{p["Middle_Name"]}".gsub(/\s+$/, ""),
           "last_name" =>  p["Last_Name"],
           "role" => p["Role"],
