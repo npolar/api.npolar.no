@@ -301,6 +301,7 @@ module Metadata
         "Parameters" => atom["dif:Parameters"],
         "ISO_Topic_Category" => categories_by_scheme(atom["categories"], ISO_TOPIC_CATEGORY).map {| c | c["term"]},
         "Summary" => { "Abstract" => atom["summary"], "Purpose" => "" },
+        "Use_Constraints" => atom["rights"],
         "DIF_Creation_Date" => atom["published"].split("T")[0],
         "Last_DIF_Revision_Date" => atom["updated"].split("T")[0],
         "Private" => ""
