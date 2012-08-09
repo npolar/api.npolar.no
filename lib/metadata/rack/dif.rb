@@ -1,5 +1,6 @@
 require "atom"
-require "gcmd/dif"
+require "gcmd/dif_builder"
+require "gcmd/hash_builder"
 require "yajl"
 
 module Metadata
@@ -15,6 +16,8 @@ module Metadata
         XML_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
 
         JSON_HEADER_HASH = {"Content-Type" => "application/json; charset=utf-8"}
+        
+        XSL = "DIF-ISO-3.1.xsl"
 
         def condition? request
           # GET
@@ -38,8 +41,8 @@ module Metadata
 
         def dif_save(request)
           xml = request.body.read
-          dif = ::Gcmd::Dif.new
-          difs = dif.load_xml(xml)
+          builder = ::Gcmd::HashBuilder.new( xml )
+          difs = builder.build_hash_documents
           j = []
           difs.each do | dif_hash |
             dif_atom = ::Metadata::DifAtom.new
@@ -103,8 +106,8 @@ module Metadata
         end
   
         def dif_xml(dif_json)
-          dif = ::Gcmd::Dif.new(dif_json)
-          dif.to_xml
+          builder = ::Gcmd::DifBuilder.new
+          builder.build_dif( dif_json )
         end
 
 
@@ -157,8 +160,8 @@ module Metadata
         begin
           tmp.write dif
           tmp.rewind
-          xslfile = File.expand_path(File.dirname(__FILE__)+"/../../../public/xsl/DIF-ISO.xsl")
-          iso = `/usr/bin/saxon-xslt #{tmp.path} #{xslfile}`
+          xslfile = File.expand_path(File.dirname(__FILE__)+"/../../../public/xsl/#{XSL}")
+          iso = `/usr/bin/saxonb-xslt -ext:on -s:#{tmp.path} -xsl:#{xslfile}`
         ensure
           tmp.close
           tmp.unlink
