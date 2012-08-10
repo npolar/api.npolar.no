@@ -6,13 +6,12 @@ SimpleCov.start do
   add_group "Collection", "lib/api/collection"
   add_group "Storage", "lib/api/storage"
   add_group "Rack", "lib/api/rack"
-  
-
 end
 
 require "bundler/setup"
 require "rspec"
 require "rack/test"
+require "./start"
 
 # Test environment
 ENV["RACK_ENV"] = "test"
