@@ -1,15 +1,13 @@
 require "spec_helper"
-require "api/rack/middleware"
-require "api/rack/require_param"
 
-describe Api::Rack::RequireParam do
+describe Npolar::Rack::RequireParam do
 
   def testapp
     lambda { |env| [200, {}, [] ]}
   end
 
   def app(config={})
-    Api::Rack::RequireParam.new(testapp, config)
+    Npolar::Rack::RequireParam.new(testapp, config)
   end
 
   context "config" do
@@ -46,7 +44,7 @@ describe Api::Rack::RequireParam do
     end
 
     it "are set via config[:params]" do
-      app = Api::Rack::RequireParam.new(nil, {:params => ["foo", "bar"]})
+      app = Npolar::Rack::RequireParam.new(nil, {:params => ["foo", "bar"]})
       app.required_params.should == ["foo", "bar"]
     end
   end
