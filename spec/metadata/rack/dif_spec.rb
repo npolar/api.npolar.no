@@ -87,5 +87,24 @@ describe Metadata::Rack::Dif do
     end
     
   end
+  
+  context "#handle" do
+    
+    it "should call #dif_from_json if request method is GET" do
+      subject.stub( :dif_from_json ) { true }
+      subject.handle( request() ).should be( true )
+    end
+    
+    it "should call #dif_save if request method is PUT" do
+      subject.stub( :dif_save ) { true }
+      subject.handle( request( "/", "PUT" ) ).should be( true )
+    end
+    
+    it "should call #dif_save if request method is PUT" do
+      subject.stub( :dif_save ) { true }
+      subject.handle( request( "/", "POST" ) ).should be( true )
+    end
+    
+  end
 
 end
