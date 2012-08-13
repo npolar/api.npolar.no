@@ -49,9 +49,6 @@ module Metadata
           atom_hash = dif_atom.atom_from_dif(dif_hash)
           j << atom_hash
         end
-        if 1 == j.size
-          j = j[0]
-        end
 
         json = j.to_json
 
