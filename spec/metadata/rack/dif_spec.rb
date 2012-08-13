@@ -32,7 +32,7 @@ describe Metadata::Rack::Dif do
         subject.condition?( request ).should be( false )
       end
       
-      it "should return false when a wrong format is given" do
+      it "should return false when an unsupported format is given" do
         subject.condition?( request( "/.rdf" ) ).should be( false )
       end
       
@@ -51,6 +51,14 @@ describe Metadata::Rack::Dif do
       it "should return true when Content-Type: application/xml" do
         subject.condition?( request( "/", "PUT", "application/xml" ) ).should be( true )
       end
+      
+      it "should return false when no format is given" do
+        subject.condition?( request( "/", "PUT" ) ).should be( false )
+      end
+      
+      it "should return false when an unsupported format is given" do
+        subject.condition?( request( "/.rdf", "PUT" ) ).should be( false )
+      end
     
     end
     
@@ -66,6 +74,14 @@ describe Metadata::Rack::Dif do
       
       it "should return true when Content-Type: application/xml" do
         subject.condition?( request( "/", "POST", "application/xml" ) ).should be( true )
+      end
+      
+      it "should return false when no format is given" do
+        subject.condition?( request( "/", "POST" ) ).should be( false )
+      end
+      
+      it "should return false when an unsupported format is given" do
+        subject.condition?( request( "/.rdf", "POST" ) ).should be( false )
       end
       
     end
