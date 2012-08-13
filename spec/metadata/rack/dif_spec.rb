@@ -1,108 +1,79 @@
-require_relative "../../spec_helper"
+require "spec_helper"
 
 describe Metadata::Rack::Dif do
-  
-  before do
-    body = '{"Entry_Title": "my title", "Entry_ID": "myID", "Summary": {"Abstract":"my summary"}}'
-    @app = lambda { |env| [200, { "Content-Type" => "application/json"}, [body]] }
-    @app_error = lambda { |env| [404, { "Content-Type" => "application/json"}, [body]] }
-    
-    default_request = Rack::MockRequest.env_for("/")
-    @default_body = Metadata::Rack::Dif.new(@app).call(default_request).last
+
+  subject do
+    Metadata::Rack::Dif.new
   end
+
+  context "#condition?" do
     
-  context "when receiving a GET" do
-    
-    it "should do nothing when the id is invalid" do
-      invalid_request = Rack::MockRequest.env_for("/.xml")      
-      invalid_body = Metadata::Rack::Dif.new(@app).call(invalid_request).last
-      invalid_body.should == @default_body
+    context "for a GET request" do
+      
+      Metadata::Rack::Dif::FORMATS.each do | format |
+      
+        it "should be true with #{format} as fromat " do
+          request = Npolar::Rack::Request.new( Rack::MockRequest.env_for( "/.#{format}" ) )
+          subject.condition?( request ).should be( true )
+        end
+        
+      end
+      
+      it "should return true when Content-Type: application/xml" do
+        request = Npolar::Rack::Request.new(
+                    Rack::MockRequest.env_for( "/", { "CONTENT_TYPE" => "application/xml" } )
+                  )
+        subject.condition?( request ).should be( true )
+      end
+      
     end
     
-    it "should return DIF xml when it receives a request with the .xml extension" do
-      request = Rack::MockRequest.env_for("/mydif.xml")
-      body = Metadata::Rack::Dif.new(@app).call(request).last      
-      body.first.should include("<Entry_ID>myID</Entry_ID>", "<Entry_Title>my title</Entry_Title")
+    context "for a PUT request" do
+    
+      Metadata::Rack::Dif::ACCEPTS.each do | format |
+      
+        it "should be true with #{format} as fromat " do
+          request = Npolar::Rack::Request.new(
+                      Rack::MockRequest.env_for( "/.#{format}", {"REQUEST_METHOD" => "PUT"} )
+                    )
+          subject.condition?( request ).should be( true )
+        end
+        
+      end
+      
+      it "should return true when Content-Type: application/xml" do
+        request = Npolar::Rack::Request.new(
+                    Rack::MockRequest.env_for( "/abc", { "REQUEST_METHOD" => "PUT",
+                                                         "CONTENT_TYPE" => "application/xml" } )
+                  )
+        subject.condition?( request ).should be( true )
+      end
+    
     end
     
-    it "should return DIF xml when it receives a request with the .dif extension" do
-      request = Rack::MockRequest.env_for("/mydif.dif")
-      body = Metadata::Rack::Dif.new(@app).call(request).last
-      body.first.should include("<Entry_ID>myID</Entry_ID>", "<Entry_Title>my title</Entry_Title", "<Abstract>my summary</Abstract>")
-    end
-    
-    it "should return json when getting a request with the .json format" do
-      request = Rack::MockRequest.env_for("/id.json")
-      body = Metadata::Rack::Dif.new(@app).call(request).last
-      body.first.should include('"Entry_ID": "myID"')
-    end
-    
-    it "should return json on a request with no format specified" do
-      request = Rack::MockRequest.env_for("/mydif")
-      body = Metadata::Rack::Dif.new(@app).call(request).last
-      body.first.should include('"Entry_ID": "myID"')
-    end
-    
-    it "should return correct headers for requests with the .xml format" do
-      request = Rack::MockRequest.env_for("/id.xml")
-      status, headers, body = Metadata::Rack::Dif.new(@app).call(request)
-      headers.should include("Content-Type"=>"application/xml")
-    end
-    
-    it "should return correct headers for requests with the .dif format" do
-      request = Rack::MockRequest.env_for("/id.dif")
-      status, headers, body = Metadata::Rack::Dif.new(@app).call(request)
-      headers.should include("Content-Type"=>"application/xml")
-    end
-    
-    it "should return correct headers for requests with the .json format" do
-      request = Rack::MockRequest.env_for("/mydif.json")
-      status, headers, body = Metadata::Rack::Dif.new(@app).call(request)
-      headers.should include("Content-Type"=>"application/json")
-    end
-    
-    it "should return correct headers for requests with no format" do
-      request = Rack::MockRequest.env_for("/mydif")
-      status, headers, body = Metadata::Rack::Dif.new(@app).call(request)
-      headers.should include("Content-Type"=>"application/json")
-    end
-    
-    it "should return the correct Content-Length" do     
-      request = Rack::MockRequest.env_for("/id.xml")
-      status, headers, body = Metadata::Rack::Dif.new(@app).call(request)      
-      headers.should include("Content-Length"=>"#{body.first.size.to_s}")
-    end
-    
-  end
-  
-  context "when receiving an invalid GET request" do    
-    
-    it "should return 406 (Not acceptable) with a invalid extension" do
-      request = Rack::MockRequest.env_for("/mydif.sagw")
-      status, headers, body = Metadata::Rack::Dif.new(@app).call(request)
-      status.should == 406
-    end
-    
-    it "should do nothing when status > 400" do
-      request = Rack::MockRequest.env_for("/mydif")
-      status, headers, body = Metadata::Rack::Dif.new(@app_error).call(request)
-      status.should be(404)
-      headers.should include("Content-Type"=>"application/json")
-      body.should == @default_body
-    end
-    
-    it "should return json in the body" do
-      request = Rack::MockRequest.env_for("/mydif.sagw")
-      body = Metadata::Rack::Dif.new(@app).call(request).last
-      body.first.should include('"Entry_ID": "myID"')
-    end    
-    
-    it "should return Content-Type: application/json in the headers" do
-      request = Rack::MockRequest.env_for("/mydif.sagw")
-      status, headers, body = Metadata::Rack::Dif.new(@app).call(request)
-      headers.should include("Content-Type"=>"application/json")
+    context "for a POST request" do
+      
+      Metadata::Rack::Dif::ACCEPTS.each do | format |
+      
+        it "should be true with #{format} as fromat " do
+          request = Npolar::Rack::Request.new(
+                      Rack::MockRequest.env_for( "/.#{format}", {"REQUEST_METHOD" => "POST"} )
+                    )
+          subject.condition?( request ).should be( true )
+        end
+        
+      end
+      
+      it "should return true when Content-Type: application/xml" do
+        request = Npolar::Rack::Request.new(
+                    Rack::MockRequest.env_for( "/", { "REQUEST_METHOD" => "POST",
+                                                      "CONTENT_TYPE" => "application/xml" } )
+                  )
+        subject.condition?( request ).should be( true )
+      end
+      
     end
     
   end
-    
+
 end
