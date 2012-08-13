@@ -89,8 +89,6 @@ module Metadata
             [200, XML_HEADER_HASH, [xml]]
           end
 
-
-
         else
           response
         end
@@ -107,7 +105,6 @@ module Metadata
         builder = ::Gcmd::DifBuilder.new
         builder.build_dif( dif_json )
       end
-
 
       def atom_entry(metadata_dataset)
         atom = metadata_dataset
