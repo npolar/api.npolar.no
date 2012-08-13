@@ -39,8 +39,7 @@ module Npolar
         trigger?(request) ? handle(request): app.call(env)
         
       end
-  
-      # 
+
       def condition? request
         false 
       end
@@ -82,7 +81,6 @@ module Npolar
         unknown_keys
       end
   
-  
       def error_hash(status, explanation=nil)
   
         {"error"=>{
@@ -119,8 +117,6 @@ module Npolar
       def trigger?(request)
         except?(request) ? false : condition?(request)
       end
-  
-  
   
       def http_error(status, explanation=nil)
         
