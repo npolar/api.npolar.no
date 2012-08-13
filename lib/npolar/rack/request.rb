@@ -59,10 +59,6 @@ module Npolar
     # PUT: Use regular format from path, Content-Type if format is blank
     def media_format
       media_format = ""
-      if put?
-        media_format = format
-      end
-
       if media_type =~ /[\/]/
         media_format = media_type.split("/")[1]
         if "x-www-form-urlencoded" == media_format
