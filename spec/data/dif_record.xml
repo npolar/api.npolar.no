@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<DIF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/" xsi:schemaLocation="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/ http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd">
+  <Entry_ID>test-doc-001</Entry_ID>
+  <Entry_Title>Dif Parsing Test</Entry_Title>
+  <Data_Set_Citation>
+    <Dataset_Creator>RDux, CnrdH</Dataset_Creator>
+    <Dataset_Title>Dif Parsing Test</Dataset_Title>
+  </Data_Set_Citation>
+  <Personnel>
+    <Role>Investigator</Role>
+    <Role>Technical Contact</Role>
+    <First_Name>R</First_Name>
+    <Last_Name>Dux</Last_Name>
+    <Email>rdux@test.to</Email>
+    <Email>rdux.test@account.to</Email>
+    <Fax>555 125424</Fax>
+    <Contact_Address>
+      <Address>Code Test Lane</Address>
+      <Address>Nr.1, Pbox T</Address>
+      <City>Testsville</City>
+      <Province_or_State>Testas</Province_or_State>
+      <Postal_Code>1351</Postal_Code>
+      <Country>Testilvania</Country>
+    </Contact_Address>
+  </Personnel>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Cnrd</First_Name>
+    <Last_Name>H</Last_Name>
+    <Email>cnrdh@test.to</Email>
+    <Phone>555 424521</Phone>
+    <Contact_Address>
+      <Address>Code Test Road</Address>
+      <Address>Nr.2</Address>
+      <City>Testsville</City>
+      <Province_or_State>Testas</Province_or_State>
+      <Postal_Code>1351</Postal_Code>
+      <Country>Testilvania</Country>
+    </Contact_Address>
+  </Personnel>
+  <Parameters>
+    <Category>TEST SCIENCE</Category>
+    <Topic>TEST CLASSIFICATION</Topic>
+    <Term>TEST/CLASS</Term>
+    <Variable_Level_1>CODE</Variable_Level_1>
+    <Variable_Level_2>PARSING</Variable_Level_2>
+    <Variable_Level_3>TRANSFORMATION</Variable_Level_3>
+  </Parameters>
+  <Parameters>
+    <Category>XML</Category>
+    <Topic>STANDARDS</Topic>
+    <Term>CONVERSION</Term>
+    <Variable_Level_1>XML</Variable_Level_1>
+    <Variable_Level_2>STANDARDS</Variable_Level_2>
+    <Variable_Level_3>CONVERSION</Variable_Level_3>
+  </Parameters>
+  <ISO_Topic_Category>CODE</ISO_Topic_Category>
+  <ISO_Topic_Category>RUBY</ISO_Topic_Category>
+  <ISO_Topic_Category>XML</ISO_Topic_Category>
+  <Temporal_Coverage>
+    <Start_Date>2012-07-28</Start_Date>
+    <Stop_Date>2012-08-1</Stop_Date>
+  </Temporal_Coverage>
+  <Temporal_Coverage>
+    <Start_Date>2012-08-05</Start_Date>
+    <Stop_Date>2012-08-07</Stop_Date>
+  </Temporal_Coverage>
+  <Data_Set_Progress>Complete</Data_Set_Progress>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>75.0</Southernmost_Latitude>
+    <Northernmost_Latitude>75.0</Northernmost_Latitude>
+    <Westernmost_Longitude>35.0</Westernmost_Longitude>
+    <Easternmost_Longitude>35.0</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>35.0</Southernmost_Latitude>
+    <Northernmost_Latitude>35.0</Northernmost_Latitude>
+    <Westernmost_Longitude>75.0</Westernmost_Longitude>
+    <Easternmost_Longitude>75.0</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Location>
+    <Location_Category>OCEAN</Location_Category>
+    <Location_Type>DEEP OCEAN</Location_Type>
+    <Location_Subregion1>CODE OCEAN</Location_Subregion1>
+    <Location_Subregion2>DEEP CODE BLUE</Location_Subregion2>
+    <Detailed_Location>CODE STRAIT</Detailed_Location>
+  </Location>
+  <Location>
+    <Location_Category>GEOGRAPHIC REGION</Location_Category>
+    <Location_Type>CODE COUNTRY</Location_Type>
+  </Location>
+  <Data_Set_Language>English</Data_Set_Language>
+  <Data_Center>
+    <Data_Center_Name>
+      <Short_Name>TE/VL</Short_Name>
+      <Long_Name>Testicon</Long_Name>
+    </Data_Center_Name>
+    <Data_Center_URL>http://www.tasti.ts</Data_Center_URL>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <First_Name>R</First_Name>
+      <Last_Name>Dux</Last_Name>
+      <Email>rdux@test.to</Email>
+      <Email>rdux.test@account.to</Email>
+      <Fax>555 125424</Fax>
+      <Contact_Address>
+        <Address>Code Test Lane</Address>
+        <Address>Nr.1, Pbox T</Address>
+        <City>Testsville</City>
+        <Province_or_State>Testas</Province_or_State>
+        <Postal_Code>1351</Postal_Code>
+        <Country>Testilvania</Country>
+      </Contact_Address>
+    </Personnel>
+  </Data_Center>
+  <Summary>
+    <Abstract>A DIF XML to Hash conversion test to see if all edge cases are handled correctly.</Abstract>
+  </Summary>
+  <IDN_Node>
+    <Short_Name>TEST/NODE</Short_Name>
+  </IDN_Node>
+  <IDN_Node>
+    <Short_Name>TEST</Short_Name>
+  </IDN_Node>
+  <Originating_Metadata_Node>TEST/TS</Originating_Metadata_Node>
+  <Metadata_Name>CEOS IDN DIF</Metadata_Name>
+  <Metadata_Version>9.8.3</Metadata_Version>
+  <DIF_Creation_Date>2012-08-07</DIF_Creation_Date>
+  <Last_DIF_Revision_Date>2012-08-07</Last_DIF_Revision_Date>
+  <Private>False</Private>
+</DIF>
