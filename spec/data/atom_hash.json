@@ -1,0 +1,31 @@
+{
+  "title": "myTitle",
+  "contributors": [
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": ["john.doe@ecount.no"],
+      "uri": "http://johnblog.no"
+    }
+  ], "links": [
+    {
+      "href": "http://sample.com",
+      "title": "Data sample"
+    }
+  ], "categories": [
+    {
+			"term": "IDN",
+	    "schema": "http://schema.com/IDN"
+		}
+  ],
+  "published": "2012-08-14",
+  "updated": "2012-08-14",
+  "source": {
+    "dif": {
+      "Parameters": [
+        {"Category": "ICE"},
+        {"Category": "SOLID/WATER"}
+      ]
+    }
+  }
+}
