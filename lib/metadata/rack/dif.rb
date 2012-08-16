@@ -2,6 +2,7 @@ require "atom"
 require "gcmd/dif_builder"
 require "gcmd/hash_builder"
 require "yajl"
+require "uuidtools"
 
 module Metadata
 
@@ -16,6 +17,8 @@ module Metadata
       XML_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
 
       JSON_HEADER_HASH = {"Content-Type" => "application/json; charset=utf-8"}
+      
+      NAMESPACE = "http://data.npolar.no/"
       
       XSL = "DIF-ISO-3.1.xsl"
 
@@ -47,6 +50,7 @@ module Metadata
         difs.each do | dif_hash |
           dif_atom = ::Metadata::DifAtom.new
           atom_hash = dif_atom.atom_from_dif(dif_hash)
+          atom_hash["_id"] = namespaced_uuid( atom_hash["id"] )
           j << atom_hash
         end
 
@@ -77,14 +81,14 @@ module Metadata
               then iso(dif_xml(dif_json(metadata_dataset)))
           end
 
-          if "validate" == request.path_info.split("/").last
-            dif = ::Gcmd::Dif.new
-            dif.load_xml xml
-            report = dif.validate_xml
-            [200, JSON_HEADER_HASH, [report.to_json]]
-          else
+          #if "validate" == request.path_info.split("/").last
+          #  dif = ::Gcmd::Dif.new
+          #  dif.load_xml xml
+          #  report = dif.validate_xml
+          #  [200, JSON_HEADER_HASH, [report.to_json]]
+          #else
             [200, XML_HEADER_HASH, [xml]]
-          end
+          #end
 
         else
           response
@@ -92,6 +96,10 @@ module Metadata
       end
 
       protected
+      
+      def namespaced_uuid( id, namespace = NAMESPACE )
+        UUIDTools::UUID.sha1_create( UUIDTools::UUID_DNS_NAMESPACE, namespace + id )
+      end
 
       def dif_json(metadata_dataset)
         dif_atom = Metadata::DifAtom.new
