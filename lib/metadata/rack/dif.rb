@@ -81,14 +81,13 @@ module Metadata
               then iso(dif_xml(dif_json(metadata_dataset)))
           end
 
-          #if "validate" == request.path_info.split("/").last
-          #  dif = ::Gcmd::Dif.new
-          #  dif.load_xml xml
-          #  report = dif.validate_xml
-          #  [200, JSON_HEADER_HASH, [report.to_json]]
-          #else
+          if "validate" == request.path_info.split("/").last
+            schema = ::Gcmd::Schema.new
+            report = schema.validate_xml( xml )
+            [200, JSON_HEADER_HASH, [report.to_json]]
+          else
             [200, XML_HEADER_HASH, [xml]]
-          #end
+          end
 
         else
           response
