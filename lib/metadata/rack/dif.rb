@@ -106,8 +106,8 @@ module Metadata
       end
 
       def dif_xml(dif_json)
-        builder = ::Gcmd::DifBuilder.new
-        builder.build_dif( dif_json )
+        builder = ::Gcmd::DifBuilder.new( dif_json )
+        builder.build_dif
       end
 
       def atom_entry(metadata_dataset)
