@@ -15,18 +15,15 @@ require "./lib/npolar/auth/couch"
 require "./lib/npolar/rack/authorizer"
 require "./lib/npolar/auth/ldap"
 
-# Collections
-require "./lib/metadata/dif_atom.rb"
-
 # Storage
 require "./lib/npolar/storage/couch"
 
-# Middleware 
+# Middleware
+require "./lib/npolar/rack/middleware"
+require "./lib/npolar/rack/solrizer"
 require "./lib/npolar/rack/require_param"
-require "./lib/metadata/rack/dif"
 require "./lib/npolar/rack/validate_id"
 require "./lib/npolar/rack/require_param"
-require "./lib/npolar/rack/middleware"
 
 require "rack/throttle"
 require "rack/contrib/jsonp"
@@ -37,6 +34,13 @@ require "rack/cache"
 
 require "gcmd/http"
 require "gcmd/concepts"
+
+
+
+
+# Collections
+require "./lib/metadata/dif_atom.rb"
+require "./lib/metadata/rack/dif_jsonizer"
 
 # Views
 require "mustache"
