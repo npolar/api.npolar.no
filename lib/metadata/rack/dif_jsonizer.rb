@@ -8,7 +8,7 @@ module Metadata
 
   module Rack
 
-    class Dif < Npolar::Rack::Middleware
+    class DifJsonizer < Npolar::Rack::Middleware
 
       FORMATS = ["atom", "dif", "iso", "xml"]
 
@@ -81,13 +81,14 @@ module Metadata
               then iso(dif_xml(dif_json(metadata_dataset)))
           end
 
-          if "validate" == request.path_info.split("/").last
-            schema = ::Gcmd::Schema.new
-            report = schema.validate_xml( xml )
-            [200, JSON_HEADER_HASH, [report.to_json]]
-          else
+          #if "validate" == request.path_info.split("/").last
+          #  dif = ::Gcmd::Dif.new
+          #  dif.load_xml xml
+          #  report = dif.validate_xml
+          #  [200, JSON_HEADER_HASH, [report.to_json]]
+          #else
             [200, XML_HEADER_HASH, [xml]]
-          end
+          #end
 
         else
           response
@@ -106,8 +107,8 @@ module Metadata
       end
 
       def dif_xml(dif_json)
-        builder = ::Gcmd::DifBuilder.new( dif_json )
-        builder.build_dif
+        builder = ::Gcmd::DifBuilder.new
+        builder.build_dif( dif_json )
       end
 
       def atom_entry(metadata_dataset)
