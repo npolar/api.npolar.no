@@ -1,0 +1,232 @@
+{
+  "description": "data.npolar.no metadata format",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "DIF:Entry_ID",
+      "type": "string",
+      "required": true
+    },
+    "title": {      
+      "description": "Dataset title. DIF:Entry_Title",
+      "type": "string",
+      "required": true
+    },
+    "summary": {
+      "description": "Free text describing the dataset",
+      "type": "string"
+    },
+    "progress": {
+      "description": "String describing current project progress. DIF:Progress",
+      "type": "string",
+      "required": true,
+      "pattern": "^(ongoing|completed|planned)$"
+    },
+    "license": {
+      "type": "string",
+      "required": true,
+      "pattern": "^(http://creativecommons\\.org/licenses/by/3\\.0/no/|http://data\\.norge\\.no/nlod/no/1\\.0|http://creativecommons\\.org/publicdomain/zero/1\\.0/|http://www\\.lovdata\\.no/all/hl-19610512-002\\.html)$"
+    },
+    "group": {
+      "description": "Research field the data belongs to.",
+      "type": "string",
+      "required": true,
+      "pattern": "^(biodiversity|ecotoxicology|geology|geophysics|glaciology|topography|oceanography|seaice)$"
+    },
+    "editors": {
+      "description": "Array containing a list of persons who changed the metadata and the date when.",
+      "type": "object",
+      "items": {
+        "type": "object",
+        "properties": {
+          "edited": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      }
+    },
+    "investigators": {
+      "description": "Used as authors in the citation string. Should be any personnel directly involved in gathering the dataset. DIF:Personnel[@role0='Investigator']",
+      "type": "object",
+      "items": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "org": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "contributors": {
+      "description": "Any additional institutions and personnel involved in the project. DIF:Personnel[@Role='Contributor']",
+      "type": "object",
+      "items": {
+        "type": "object",
+        "properties": {
+          "org": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      }
+    },
+    "point_of_contact": {
+      "description": "Department that has direct knowledge about the dataset. This can have an optional person listed. Should be as persistant as possible",
+      "type": "object",
+      "items": {
+        "type": "object",
+        "properties": {
+          "org": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      }
+    },
+    "links": {
+      "description": "Links to data, data-citations, references, project, parent, doi, related, self, alternate",
+      "type": "object",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "locations": {
+      "type": "object",
+      "items": {
+        "type": "object",
+        "properties": {
+          "north": {
+            "type": "number"
+          },
+          "east": {
+            "type": "number"
+          },
+          "south": {
+            "type": "number"
+          },
+          "west": {
+            "type": "number"
+          },
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string",
+            "pattern": "^(Svalbard|Jan Mayen|Dronning Maud Land|Bouvetøya|Peter I Øy|Arctic|Antarctic)$"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "sensors": {
+      "type": "object",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "quality": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "object",
+      "items": {
+        "type": "string"
+      }
+    },
+    "owners": {
+      "type": "object",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "publishers": {
+      "type": "object",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "draft": {
+      "type": "string",
+      "pattern": "^(yes|no)$"
+    },
+    "rights": {
+      "type": "string"
+    },
+    "sets": {
+      "description": "Similar to tags and keywords",
+      "type": "object",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dif:Parameters": {
+      "type": "object",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Category": {
+            "type": "string"
+          },
+          "Topic": {
+            "type": "string"
+          },
+          "Term": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
