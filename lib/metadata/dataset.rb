@@ -1,4 +1,5 @@
 require "hashie"
+require "json-schema"
 
 module Metadata
 
@@ -17,10 +18,20 @@ module Metadata
   
   class Dataset < Hashie::Mash
     
+    attr_accessor :schema
+    
     def to_solr
     end
     
     def to_dif
+    end
+    
+    def valid?
+      JSON::Validator.validate( schema, self )
+    end
+    
+    def validate
+      JSON::Validator.fully_validate( schema, self )
     end
     
   end
