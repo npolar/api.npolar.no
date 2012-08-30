@@ -20,6 +20,7 @@ gem "faraday"
 gem "faraday_middleware"
 gem "rack-cache"
 gem "mustache"
+gem "hashie", :git => "git://github.com/intridea/hashie.git"
 
 group :development, :test do
   gem "thin"
