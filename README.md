@@ -32,7 +32,8 @@ if you use [Nginx](http://wiki.nginx.org/HttpSslModule), or other proxies, remem
 ### Authentication and authorization
 Use `Npolar::Rack::Authorizer` for authentication and simple role-based access control. 
 
-The [Authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) restricts **edits** (`POST`, `PUT`, and `DELETE`) to users with a `editor` role.
+The [Authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) restricts **editing** (`POST`, `PUT`, and `DELETE`) to users with a `editor` role,
+and **reading** (`GET`/`HEAD`) to `reader`s.
 
 The Authorizer needs an Auth backend, see
 * `Npolar::Auth::Ldap` (or [Net::LDAP](http://net-ldap.rubyforge.org/Net/LDAP.html)) for LDAP authentication (authorization is @todo)
