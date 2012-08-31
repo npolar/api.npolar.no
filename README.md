@@ -3,7 +3,7 @@
 A [Rack](https://github.com/rack/rack)-based framework for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface) endpoints.
 
 You build an API endpoint [lego](http://lego.dk)-wise by connecting the [Core](https://github.com/npolar/api.npolar.no/wiki/Core) with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
-other middleware for security, validation, search-engine indexing, logging, data transformation, etc.
+other middleware for security, validation, searching, indexing, logging, transformation, etc.
 
 ## Basics
 ### Create
@@ -20,23 +20,23 @@ map "/ecotox" do
 end
 ```
 ### Use
-The `/ecotox/report` API is a CouchDB-backed endpoint which by default accepts and delivers `json` documents.
+The `/ecotox/report` API is now a CouchDB-backed endpoint which by default accepts and delivers `json` documents.
 See [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for usage details.
 
 ## Security
 
 ### Transport-level security
-Run all APIs that require authentication and/or authorization using transport-level security (TLS/https). 
-Make sure to set the `HTTP_X_FORWARDED_PROTO` if you use e.g. [Nginx](http://wiki.nginx.org/HttpSslModule) or other proxies.
+Make sure to run all APIs that require authentication and/or authorization using transport-level security (TLS/https). 
+if you use [Nginx](http://wiki.nginx.org/HttpSslModule), or other proxies, remember to set the `HTTP_X_FORWARDED_PROTO`.
 
 ### Authentication and authorization
-Use `Npolar::Rack::Authorizer` for authentication and role-based access control. 
+Use `Npolar::Rack::Authorizer` for authentication and simple role-based access control. 
 
 The [Authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) restricts **edits** (`POST`, `PUT`, and `DELETE`) to users with a `editor` role.
 
-The Authorizer is a generic system that relies on a backend `:auth` object
-* Use `Npolar::Auth::Ldap` (or [Net::LDAP](http://net-ldap.rubyforge.org/Net/LDAP.html)) to use LDAP
-* Use `Npolar::Auth::Couch` for a CouchDB-backed solution
+The Authorizer needs an Auth backend, see
+* `Npolar::Auth::Ldap` (or [Net::LDAP](http://net-ldap.rubyforge.org/Net/LDAP.html)) for LDAP authentication (authorization is @todo)
+* `Npolar::Auth::Couch` for a CouchDB-backed solution
 
 ``` ruby
 map "/ecotox" do
@@ -50,10 +50,28 @@ map "/ecotox" do
 end
 
 ```
+
+You can modify the behavior of the Authorizer by injecting lambda functions.
+
+For example, here is how you can **tighten security** to users with a `sysadmin` role:
+
+``` ruby
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("https://localhost:6984/api_user"), :system => "api", :authorized? =>
+      lambda { | auth, system, request | auth.roles(system).include? Npolar::Rack::Authorizer::SYSADMIN_ROLE }
+  }
+```
+
+For **free data**, you might want to loosen security by allowing anyone to read. Easy using `:except?`
+``` ruby
+  use Npolar::Rack::Authorizer, { :auth => api_user, :system => "metadata",
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+```
+
 ## Configuration
 
 ### Formats and accepts
-It's easy to specify which formats are available (using `:formats`) and accepted (using `:accepts`):
+Specify which formats are available (using `:formats`) and accepted (using `:accepts`):
+
 ``` ruby
 map "/metadata/dataset" do
   storage = Npolar::Storage::Couch.new(config_reader.call("metadata_storage.json"))
@@ -68,6 +86,7 @@ end
 ### Methods
 
 Use `:methods` to configure allowed HTTP verbs. Create a bullet-proof read-only API, by allowing only GET and HEAD. 
+
 ``` ruby
 # config.ru
 map "/api/collection1" do
@@ -87,24 +106,14 @@ HTTP/1.1 405 Method Not Allowed
 
 ## Middleware
 
-### Validators
-
-### Transformers
-Transformers are Rack middleware that translates between formats before storing 
-or, more common, after reading from storage.
-
-For example, if you add `xml` to `:formats` and keep documents in a JSON store like CouchDB,
-you can store the XML as an attachment or even inline, but often it's more convenient
-to have on-the-fly conversions between different formats.
-
-``` ruby
-# config.ru
-map "/metadata/dataset" do
-  use Metadata::Rack::Transform # transform all :formats but json
-  run Npolar::Api::Core.new(nil, config)
-end
-```
 ### Solrizer
+[Solrizer]() provides search and indexing capabilities to any collection.
+
+Automatic filtering: Combine fulltext search with filtering/faceting on every
+document attribute.
+
+Automatic indexing: Feed the solrizer with a model object (that contains a `#to_solr` method)
+and it will add documents to the Solr index on every POST or PUT, and remove them on DELETE.
 
 
 ## Installation
@@ -123,13 +132,13 @@ $ rspec
 ``` sh
 $ bundle exec shotgun -d # http://localhost:9393
 ```
-For production, we use [unicorn]() behind [nginx]()
+For production, we recommend and use [unicorn](http://unicorn.bogomips.org/) behind [nginx](http://nginx.org/)
 
 ## Features
 
 **Powerful**
 * Store any kind of document (JSON, XML, HTML, text, media/files)
-* [Great search](http://lucene.apache.org/solr/) with facets/filters on any document attribute
+* Great [Solr](http://lucene.apache.org/solr/) search: facets/filters on any document attribute
 * Customizable validation
 * Customizable transformation/processing
 * Permanent addresses (URIs/IRIs)
@@ -138,7 +147,7 @@ For production, we use [unicorn]() behind [nginx]()
 * Revisions: complete document history (edit log)
 
 **Flexible**
-* Choose your own storage strategy (per collection/per server)
+* Choose your own storage strategy (per system/per collection)
 * Choose your own storage 
 * Choose your own resource paths
 * Choose your own authorization strategy
