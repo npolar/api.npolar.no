@@ -23,6 +23,9 @@ module Metadata
     def to_solr
     end
     
+    def from_dif
+    end
+    
     def to_dif
     end
     
