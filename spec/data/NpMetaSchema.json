@@ -35,7 +35,7 @@
     },
     "editors": {
       "description": "Array containing a list of persons who changed the metadata and the date when.",
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
@@ -53,7 +53,7 @@
     },
     "investigators": {
       "description": "Used as authors in the citation string. Should be any personnel directly involved in gathering the dataset. DIF:Personnel[@role0='Investigator']",
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
@@ -75,7 +75,7 @@
     },
     "contributors": {
       "description": "Any additional institutions and personnel involved in the project. DIF:Personnel[@Role='Contributor']",
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
@@ -97,7 +97,7 @@
     },
     "point_of_contact": {
       "description": "Department that has direct knowledge about the dataset. This can have an optional person listed. Should be as persistant as possible",
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
@@ -119,7 +119,7 @@
     },
     "links": {
       "description": "Links to data, data-citations, references, project, parent, doi, related, self, alternate",
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
@@ -134,7 +134,7 @@
       }
     },
     "locations": {
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
@@ -160,15 +160,21 @@
         }
       }
     },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "parameters": {
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "string",
         "format": "uri"
       }
     },
     "sensors": {
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "string",
         "format": "uri"
@@ -178,20 +184,20 @@
       "type": "string"
     },
     "tags": {
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "string"
       }
     },
     "owners": {
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "string",
         "format": "uri"
       }
     },
     "publishers": {
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "string",
         "format": "uri"
@@ -206,13 +212,13 @@
     },
     "sets": {
       "description": "Similar to tags and keywords",
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "string"
       }
     },
     "dif:Parameters": {
-      "type": "object",
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
