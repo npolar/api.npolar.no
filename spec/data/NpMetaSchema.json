@@ -160,6 +160,22 @@
         }
       }
     },
+    "temporal_coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stop_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
     "keywords": {
       "type": "array",
       "items": {
