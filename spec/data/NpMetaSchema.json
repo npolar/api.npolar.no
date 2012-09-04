@@ -176,13 +176,6 @@
         }
       }
     },
-    "publication_reference": {
-      "description": "Free text field allowing the referencing of publications. It's preffered that a citation string is used.",
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
     "keywords": {
       "type": "array",
       "items": {
