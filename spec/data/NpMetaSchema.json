@@ -159,7 +159,7 @@
           },
           "country_code": {
             "type": "string",
-            "pattern": "^([A-Z]{2})$"
+            "pattern": "^(([A-Z]|[a-z]){2})$"
           }
         }
       }
