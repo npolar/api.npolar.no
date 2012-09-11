@@ -158,6 +158,7 @@
             "pattern": "^(Svalbard|Jan Mayen|Dronning Maud Land|Bouvetøya|Peter I Øy|Arctic|Antarctic)$"
           },
           "country_code": {
+            "description": "This field allows the adding of a country code that adheres to ISO 3611-1. For example SJ for Svalbard and Jan Mayen",
             "type": "string",
             "pattern": "^(([A-Z]|[a-z]){2})$"
           }
