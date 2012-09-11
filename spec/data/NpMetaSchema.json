@@ -156,6 +156,10 @@
           "area": {
             "type": "string",
             "pattern": "^(Svalbard|Jan Mayen|Dronning Maud Land|Bouvetøya|Peter I Øy|Arctic|Antarctic)$"
+          },
+          "country_code": {
+            "type": "string",
+            "pattern": "^([A-Z]{2})$"
           }
         }
       }
