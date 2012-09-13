@@ -165,7 +165,7 @@
         }
       }
     },
-    "temporal_coverage": {
+    "research_periods": {
       "type": "array",
       "items": {
         "type": "object",
