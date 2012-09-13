@@ -185,20 +185,6 @@ module Metadata
         "no"
       end
       
-      def links
-        link_data = []
-        
-        # links can represent the following topics:
-        #[
-        # "via", "data", "data-citation", "reference", "project",
-        # "parent", "doi", "related", "self", "alternate"
-        #]
-        #
-        # Translate DIF Related URL to link
-        
-        link_data
-      end
-      
       #################################
       ###### To GCMD DIF Format #######
       #################################
