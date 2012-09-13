@@ -22,7 +22,7 @@ module Metadata
       DATASET_MAP = [
         :id, :title, :summary, :progress, :investigators, :contributors,
         :rights, :research_periods, :locations, :tags, :quality, :draft,
-        :links, :published, :updated, :editors
+        :published, :updated, :editors
       ]
       
       DIF_MAP = [ :entry_id ]
