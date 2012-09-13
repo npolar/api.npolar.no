@@ -1,6 +1,4 @@
 require "hashie"
-require "api_smith"
-#require "npolar/api/client"
 
 module Metadata
   module Dataset
@@ -17,7 +15,7 @@ module Metadata
     # @author Ruben Dens
     # @author Conrad Helgeland
     
-    class DifTransformer #< Npolar::Api::Client
+    class DifTransformer
       
       ISO_8601 = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
       
