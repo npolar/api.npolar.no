@@ -28,6 +28,14 @@ describe Metadata::Dataset::DifTransformer do
         @transformer.to_dataset.should be_a_kind_of( Hash )
       end
       
+      context "#source" do
+        
+        it "should save a copy of the dif under source" do          
+          source = @transformer.source
+          source.dif.should == @transformer.object
+        end
+        
+      end
       
       context "#id" do
       
