@@ -21,7 +21,7 @@ module Metadata
       
       DATASET_MAP = [
         :source, :id, :title, :summary, :progress, :investigators,
-        :contributors, :rights, :research_periods, :locations, :tags,
+        :contributors, :rights, :activity, :locations, :tags,
         :quality, :science_keywords, :draft, :published, :updated, :editors
       ]
       
@@ -98,7 +98,7 @@ module Metadata
         end
       end
       
-      def research_periods
+      def activity
         periods = []
         object.Temporal_Coverage.each do | period |
           
@@ -148,9 +148,14 @@ module Metadata
         
         if ["Investigator", "DIF Author", "Technical Contact"].include?( role )
           object.Personnel.each do | person |
+            
+            first_name = ""
+            first_name += person.First_Name unless person.First_Name.nil?
+            first_name += " " + person.Middle_Name unless person.Middle_Name.nil? or person.Middle_Name == ""
+            
             if person.Role.include?( role )
               contributors << Hashie::Mash.new( {
-                "first_name" => person.First_Name,
+                "first_name" => first_name,
                 "last_name" => person.Last_Name,
                 "email" => person.Email
               } )

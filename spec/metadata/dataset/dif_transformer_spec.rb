@@ -113,14 +113,14 @@ describe Metadata::Dataset::DifTransformer do
         
       end
       
-      context "#research_periods" do
+      context "#activity" do
         
         it "should return an Array" do
-          @transformer.research_periods.should be_a_kind_of( Array )
+          @transformer.activity.should be_a_kind_of( Array )
         end
         
-        it "should map Temporal_Coverage to research_periods" do
-          @transformer.research_periods[0].start_date.should == @transformer.object.Temporal_Coverage[0].Start_Date
+        it "should map Temporal_Coverage to activity" do
+          @transformer.activity[0].start_date.should == @transformer.object.Temporal_Coverage[0].Start_Date
         end
         
       end
@@ -166,7 +166,7 @@ describe Metadata::Dataset::DifTransformer do
         end
         
         it "should include all DIF:personnel with the investigator role" do
-          @transformer.investigators[0].should include( "first_name" => "R", "last_name" => "Dux" )
+          @transformer.investigators[0].should include( "first_name" => "R e", "last_name" => "Dux" )
         end
         
       end

@@ -165,7 +165,7 @@
         }
       }
     },
-    "research_periods": {
+    "activity": {
       "type": "array",
       "items": {
         "type": "object",
