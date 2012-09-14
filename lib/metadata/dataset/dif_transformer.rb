@@ -135,11 +135,7 @@ module Metadata
       
       def contributors
         contributors = role_handler( "Technical Contact" )
-        
-        if contributors.any?
-          contributors = ( contributors | investigators ) - ( contributors & investigators )
-        end
-        
+        contributors = ( contributors | investigators ) - ( investigators ) if contributors.any?
         contributors
       end
       
