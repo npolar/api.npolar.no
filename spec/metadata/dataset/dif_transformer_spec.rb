@@ -127,6 +127,16 @@ describe Metadata::Dataset::DifTransformer do
           @transformer.summary.should == "A brief exploration of the alphabet."
         end
         
+        it "should check if Summary contains the a string directly (old dif versions)" do
+          @transformer.object.Summary = "my summary"
+          @transformer.summary.should == "my summary"
+        end
+        
+        it "should return an empty string if no summary is available" do
+          @transformer.object.Summary = nil
+          @transformer.summary.should == ""
+        end
+        
       end
       
       context "#role_handler" do
