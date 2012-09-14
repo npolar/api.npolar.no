@@ -22,7 +22,7 @@ module Metadata
       DATASET_MAP = [
         :source, :id, :title, :summary, :progress, :investigators,
         :contributors, :rights, :research_periods, :locations, :tags,
-        :quality, :draft, :published, :updated, :editors
+        :quality, :science_keywords, :draft, :published, :updated, :editors
       ]
       
       DIF_MAP = [ :entry_id ]
@@ -179,6 +179,10 @@ module Metadata
         end unless object.Spatial_Coverage.nil?
         
         location_data
+      end
+      
+      def science_keywords
+        object.Parameters
       end
       
       def draft
