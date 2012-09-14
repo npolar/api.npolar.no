@@ -20,9 +20,9 @@ module Metadata
       ISO_8601 = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
       
       DATASET_MAP = [
-        :id, :title, :summary, :progress, :investigators, :contributors,
-        :rights, :research_periods, :locations, :tags, :quality, :draft,
-        :published, :updated, :editors
+        :source, :id, :title, :summary, :progress, :investigators,
+        :contributors, :rights, :research_periods, :locations, :tags,
+        :quality, :draft, :published, :updated, :editors
       ]
       
       DIF_MAP = [ :entry_id ]
@@ -50,6 +50,10 @@ module Metadata
         end
         
         dataset
+      end
+      
+      def source
+        Hashie::Mash.new( { :dif => object } )
       end
       
       def id
