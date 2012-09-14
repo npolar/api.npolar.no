@@ -174,9 +174,23 @@ module Metadata
             "south" => location.Southernmost_Latitude.to_f,
             "west" => location.Westernmost_Longitude.to_f,
             "placename" => "",
-            "area" => ""
+            "area" => "",
+            "country_code" => ""
           })
         end unless object.Spatial_Coverage.nil?
+        
+        object.Location.each do | location |
+          # query placenames for area and nearest placename or central placename (bounding box)?
+          location_data << Hashie::Mash.new({
+            "north" => nil,
+            "east" => nil,
+            "south" => nil,
+            "west" => nil,
+            "placename" => location.Detailed_Location,
+            "area" => "",
+            "country_code" => ""
+          }) unless location.Detailed_Location.nil?
+        end unless object.Location.nil?
         
         location_data
       end
