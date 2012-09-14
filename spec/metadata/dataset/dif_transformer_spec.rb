@@ -178,7 +178,7 @@ describe Metadata::Dataset::DifTransformer do
         end
         
         it "should include all DIF:personnel with the dif Author role" do
-          @transformer.editors[0].should include( "first_name" => "Cnrd", "last_name" => "H" )
+          @transformer.editors[0].should include( "first_name" => "John", "last_name" => "Doe" )
         end
         
         it "should set edited to Last_DIF_Revision_Date" do
@@ -194,7 +194,7 @@ describe Metadata::Dataset::DifTransformer do
         end
         
         it "should include DIF:personnel with the role of Technical Contact in contributors" do
-          @transformer.contributors[0].should include( "first_name" => "Cnrd", "last_name" => "H" )
+          @transformer.contributors[0].should include( "first_name" => "John", "last_name" => "Doe" )
         end
         
         it "should not include Technical Contacts that are also investigators" do
@@ -209,8 +209,12 @@ describe Metadata::Dataset::DifTransformer do
           @transformer.locations.should be_a_kind_of( Array )
         end
         
-        it "should map coordinates in Spatial_Coverage to a location " do
+        it "should map Spatial_Coverage(coordinates) to a location " do
           @transformer.locations[0].north.should == 90
+        end
+        
+        it "should map Locations[detailed_location] to locations" do
+          @transformer.locations[2].placename.should == "Pyramiden"
         end
         
       end
