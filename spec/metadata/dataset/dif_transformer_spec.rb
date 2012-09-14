@@ -215,6 +215,14 @@ describe Metadata::Dataset::DifTransformer do
         
       end
       
+      context "#science_keywords( DIF Paramters )" do
+        
+        it "should map DIF parameters to science keywords" do
+          @transformer.science_keywords.should == @transformer.object.Parameters
+        end
+        
+      end
+      
       context "#draft" do
         
         it "should default to no on import" do
