@@ -22,16 +22,22 @@
       "required": true,
       "pattern": "^(ongoing|completed|planned)$"
     },
-    "license": {
-      "type": "string",
-      "required": true,
-      "pattern": "^(http://creativecommons\\.org/licenses/by/3\\.0/no/|http://data\\.norge\\.no/nlod/no/1\\.0|http://creativecommons\\.org/publicdomain/zero/1\\.0/|http://www\\.lovdata\\.no/all/hl-19610512-002\\.html)$"
+    "licenses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "required": true,
+        "pattern": "^(http://creativecommons\\.org/licenses/by/3\\.0/no/|http://data\\.norge\\.no/nlod/no/1\\.0|http://creativecommons\\.org/publicdomain/zero/1\\.0/|http://www\\.lovdata\\.no/all/hl-19610512-002\\.html)$" 
+      }
     },
-    "group": {
+    "groups": {
       "description": "Research field the data belongs to.",
-      "type": "string",
-      "required": true,
-      "pattern": "^(biodiversity|ecotoxicology|geology|geophysics|glaciology|topography|oceanography|seaice)$"
+      "type": "array",
+      "items": {
+        "type": "string",
+        "required": true,
+        "pattern": "^(biodiversity|ecotoxicology|geology|geophysics|glaciology|topography|oceanography|seaice)$"
+      }
     },
     "editors": {
       "description": "Array containing a list of persons who changed the metadata and the date when.",
