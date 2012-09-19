@@ -176,13 +176,16 @@
       "items": {
         "type": "object",
         "properties": {
-          "start_date": {
+          "start": {
             "type": "string",
             "format": "date-time"
           },
-          "stop_date": {
+          "stop": {
             "type": "string",
             "format": "date-time"
+          },
+          "description": {
+            "type": "string"
           }
         }
       }
