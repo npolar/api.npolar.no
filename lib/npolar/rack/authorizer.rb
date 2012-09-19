@@ -12,20 +12,14 @@ module Npolar
         :authorized? => lambda { | auth, system, request |
           if ["GET", "HEAD"].include? request.request_method
             auth.roles(system).include? READER_ROLE or auth.roles(system).include? EDITOR_ROLE or auth.roles(system).include? SYSADMIN_ROLE
-          elsif ["POST", "PUT", "DELETE"]
+          elsif ["POST", "PUT", "DELETE"].include? request.request_method
             auth.roles(system).include? EDITOR_ROLE or auth.roles(system).include? SYSADMIN_ROLE
           else
             false
           end
-
         },
-        :authenticated? => lambda { | auth, request |
-          
-          if auth.match?(request.username, request.password)
-            true
-          else
-            false
-          end
+        :authenticated? => lambda { | auth, request |          
+          auth.match?(request.username, request.password)
         },
         :auth => nil,
         :system => nil,
@@ -40,10 +34,14 @@ module Npolar
             false
           end
         rescue => e
-          puts __FILE__+":#{__LINE__} #{e.inspect}"
-          puts "="*80+"\n"+e.class.name+"\n"+e.message
-          puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+          
+          unless "test" == ENV["RACK_ENV"]
+            puts __FILE__+":#{__LINE__} #{e.inspect}\n"+"="*80+"\n"+e.class.name+"\n"+e.message
+            puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+          end
+
           false
+
         end
       end
 
@@ -56,10 +54,14 @@ module Npolar
           end
 
         rescue => e
-          puts __FILE__+":#{__LINE__} #{e.inspect}"
-          puts "="*80+"\n"+e.class.name+"\n"+e.message
-          puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+
+          unless "test" == ENV["RACK_ENV"]
+            puts __FILE__+":#{__LINE__} #{e.inspect}\n"+ "="*80+"\n"+e.class.name+"\n"+e.message
+            puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+          end
+
           false
+          
         end
         
       end
@@ -87,11 +89,11 @@ module Npolar
       end
 
       def auth
-        config[:auth]
+        @auth ||= config[:auth]
       end
 
       def auth=auth
-        config[:auth]=auth
+        @auth=auth
       end
 
       def except?
@@ -104,11 +106,11 @@ module Npolar
       end
 
       def system
-        config[:system]
+        @system ||= config[:system]
       end
 
       def system=system
-        config[:system]=system
+        @system=system
       end
 
     end

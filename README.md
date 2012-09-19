@@ -32,8 +32,8 @@ if you use [Nginx](http://wiki.nginx.org/HttpSslModule), or other proxies, remem
 ### Authentication and authorization
 Use `Npolar::Rack::Authorizer` for authentication and simple role-based access control. 
 
-The [Authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) restricts **editing** (`POST`, `PUT`, and `DELETE`) to users with a `editor` role,
-and **reading** (`GET`/`HEAD`) to `reader`s.
+The [Authorizer](https://github.com/npolar/api.npolar.no/wiki/Authorizer) restricts **editing** (`POST`, `PUT`, and `DELETE`) to users with a `editor` role.
+and **reading** to users with a `reader` role.
 
 The Authorizer needs an Auth backend, see
 * `Npolar::Auth::Ldap` (or [Net::LDAP](http://net-ldap.rubyforge.org/Net/LDAP.html)) for LDAP authentication (authorization is @todo)
@@ -62,16 +62,15 @@ For example, here is how you can **tighten security** to users with a `sysadmin`
   }
 ```
 
-For **free data**, you might want to loosen security by allowing anyone to read. Easy using `:except?`
+For **free/open data**, you might want to loosen security by allowing anyone to read. Easy using `:except?`
 ``` ruby
   use Npolar::Rack::Authorizer, { :auth => api_user, :system => "metadata",
     :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
 ```
-
 ## Configuration
 
 ### Formats and accepts
-Specify which formats are available (using `:formats`) and accepted (using `:accepts`):
+Specify available outgoing formats (using `:formats`) and accepted incoming formats (using `:accepts`):
 
 ``` ruby
 map "/metadata/dataset" do
