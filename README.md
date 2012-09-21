@@ -2,8 +2,8 @@
 
 A [Rack](https://github.com/rack/rack)-based kit for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
 
-You build an API endpoint [lego](http://lego.dk)-wise by connecting a [Npolar::Api::Core](https://github.com/npolar/api.npolar.no/wiki/Core) instance with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
-other middleware for security, validation, searching, indexing, logging, transformation, etc.
+Create API endpoints [lego](http://lego.dk)-wise by connecting a [Npolar::Api::Core](https://github.com/npolar/api.npolar.no/wiki/Core) instance with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
+other middleware for security, validation, search/indexing, logging, transformation, etc.
 
 ## Basics
 
@@ -13,23 +13,28 @@ other middleware for security, validation, searching, indexing, logging, transfo
 
 ``` ruby
 # config.ru
-map "/ecotox" do
-  map "/report" do
-    storage = Npolar::Storage::Couch.new("https://username:password@couch.local:6984/ecotox_report")
-    run Npolar::Api::Core.new(nil, { :storage => storage }) 
-  end
+map "/arctic/animal" do
+  storage = Npolar::Storage::Couch.new("https://username:password@couch.local:6984/arctic_animal")
+  run Npolar::Api::Core.new(nil, { :storage => storage }) 
 end
 ```
+`/arctic/animal` is now a CouchDB-backed API that accepts and delivers [`JSON`](http://json.org) documents.
 
-### Use
-The `/ecotox/report` API is now a CouchDB-backed endpoint which by default accepts and delivers `json` documents.
-See [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for usage details.
+### PUT
+``` http
+curl -i -X PUT http://example.com/arctic/animal/polar-bear.json -d'{"id": "polar-bear", "species":"Ursus maritimus" "en": "Polar bear"}'
+curl -i -X PUT http://example.com/arctic/animal/walrus.json -d'{"id": "walrus", "species":"Odobenus rosmarus" "en": "Walrus"}'
+```
+
+### GET
+
+See [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for further details.
 
 ## Security
 
 ### Transport-level security
 Make sure to run all APIs that require authentication and/or authorization using transport-level security (TLS/https). 
-if you use [Nginx](http://wiki.nginx.org/HttpSslModule), or other proxies, remember to set the `HTTP_X_FORWARDED_PROTO`.
+If you use [nginx](http://wiki.nginx.org/HttpSslModule) https, remember to set the `HTTP_X_FORWARDED_PROTO`.
 
 ### Authentication and authorization
 Use `Npolar::Rack::Authorizer` for authentication and simple role-based access control. 
@@ -134,7 +139,7 @@ $ rspec
 ``` sh
 $ bundle exec shotgun -d # http://localhost:9393
 ```
-For production, we recommend and use [unicorn](http://unicorn.bogomips.org/) behind [nginx](http://nginx.org/)
+For production, we recommend and use 
 
 ## Features
 
