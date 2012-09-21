@@ -7,10 +7,6 @@ other middleware for security, validation, search/indexing, logging, transformat
 
 ## Basics
 
-* [Install](https://github.com/npolar/api.npolar.no/wiki/Install)
-
-### Create
-
 ``` ruby
 # config.ru
 map "/arctic/animal" do
@@ -18,17 +14,62 @@ map "/arctic/animal" do
   run Npolar::Api::Core.new(nil, { :storage => storage }) 
 end
 ```
-`/arctic/animal` is now a CouchDB-backed API that accepts and delivers [`JSON`](http://json.org) documents.
+`/arctic/animal` is now a CouchDB-backed HTTP-driven document API that accepts and delivers [`JSON`](http://json.org) documents.
 
-### PUT
+## Document API
+The document API follows key aspects of [HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616.html) 1.1. 
+### Create (PUT)
+
 ``` http
-curl -i -X PUT http://example.com/arctic/animal/polar-bear.json -d'{"id": "polar-bear", "species":"Ursus maritimus" "en": "Polar bear"}'
-curl -i -X PUT http://example.com/arctic/animal/walrus.json -d'{"id": "walrus", "species":"Odobenus rosmarus" "en": "Walrus"}'
+curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d'{"id": "polar-bear", "species":"Ursus maritimus"}'
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{"id": "polar-bear", "species":"Ursus maritimus"}
 ```
 
-### GET
+### Create (POST)
+``` http
+curl -i -X POST http://localhost:9393/arctic/animal/.json -d '{"species":"Odobenus rosmarus", "en": "Walrus"}'
+HTTP/1.1 201 Created
 
-See [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for further details.
+{"_id":"d5fbc7e78bcb21836abf82a96c0009e9","_rev":"1-b3917c5de68075fea8c0e83311c8ad39","species":"Odobenus rosmarus","en":"Walrus"}
+
+```
+
+### Retrieve (GET)
+
+#### List documents
+
+``` http
+curl -i -X GET http://localhost:9393/arctic/animal/.json
+
+["d5fbc7e78bcb21836abf82a96c000182", "polar-bear"]
+
+```
+
+#### Get document
+``` http
+
+curl -i -X GET http://localhost:9393/arctic/animal/d5fbc7e78bcb21836abf82a96c000182.json
+HTTP/1.1 200 OK
+
+{"_id":"d5fbc7e78bcb21836abf82a96c000182","_rev":"1-b3917c5de68075fea8c0e83311c8ad39","species":"Odobenus rosmarus","en":"Walrus"}
+
+```
+
+### Update (PUT)
+
+``` http
+curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d'{"_id":"polar-bear","_rev":"1-9c8fb39bfacc81cc5e39610f9cf81df2","id":"polar-bear","species":"Ursus maritimus", "en": "Polar bear", "nn": "Isbjørn", "nb":"Isbjørn"}'
+```
+The above works '''once''' because the document body contains the correct revision. If you replay the PUT, you will get a HTTP 409 Conflict error.
+
+
+### Delete
+curl -X DELETE http://localhost:9393/arctic/animal/d5fbc7e78bcb21836abf82a96c000182.json?rev=1-b3917c5de68075fea8c0e83311c8ad39
+
+(Attempting to delete without a revision, or with the wrong revision, leads to a HTTP 409 Conflict response.)
 
 ## Security
 
@@ -124,22 +165,7 @@ and it will add documents to the Solr index on every POST or PUT, and remove the
 
 
 ## Installation
-Requirements:
-* Ruby >= 1.9
-* Probably Linux, CouchDB, Git, Solr and Nginx as well :)
-
-``` sh
-$ git clone git@github.com:npolar/api.npolar.no.git
-$ cd api.npolar.no
-$ bundle install
-$ rspec
-```
-
-### Start (development)
-``` sh
-$ bundle exec shotgun -d # http://localhost:9393
-```
-For production, we recommend and use 
+* [Install](https://github.com/npolar/api.npolar.no/wiki/Install)
 
 ## Features
 
