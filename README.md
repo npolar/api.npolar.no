@@ -17,7 +17,8 @@ end
 `/arctic/animal` is now a CouchDB-backed HTTP-driven document API that accepts and delivers [`JSON`](http://json.org) documents.
 
 ## Document API
-The document API follows key aspects of [HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616.html) 1.1. 
+The document API follows key aspects of the [HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616.html) 1.1 protocol, in particular careful use of HTTP status codes.
+
 ### Create (PUT)
 
 ``` http
@@ -25,7 +26,12 @@ curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d'{"id": "po
 HTTP/1.1 201 Created
 Content-Type: application/json
 
-{"id": "polar-bear", "species":"Ursus maritimus"}
+{
+   "_id": "polar-bear",
+   "_rev": "1-9c8fb39bfacc81cc5e39610f9cf81df2",
+   "id": "polar-bear",
+   "species": "Ursus maritimus"
+}
 ```
 
 ### Create (POST)
@@ -50,7 +56,6 @@ curl -i -X GET http://localhost:9393/arctic/animal/.json
 
 #### Get document
 ``` http
-
 curl -i -X GET http://localhost:9393/arctic/animal/d5fbc7e78bcb21836abf82a96c000182.json
 HTTP/1.1 200 OK
 
@@ -63,13 +68,35 @@ HTTP/1.1 200 OK
 ``` http
 curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d'{"_id":"polar-bear","_rev":"1-9c8fb39bfacc81cc5e39610f9cf81df2","id":"polar-bear","species":"Ursus maritimus", "en": "Polar bear", "nn": "Isbjørn", "nb":"Isbjørn"}'
 ```
-The above works '''once''' because the document body contains the correct revision. If you replay the PUT, you will get a HTTP 409 Conflict error.
+The above works '''once''' because the document body contains the correct revision. If you replay the PUT, you will get a HTTP `409` Conflict error.
 
+``` http
+curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d '{}'
+HTTP/1.1 409 Conflict
+```
 
 ### Delete
-curl -X DELETE http://localhost:9393/arctic/animal/d5fbc7e78bcb21836abf82a96c000182.json?rev=1-b3917c5de68075fea8c0e83311c8ad39
 
-(Attempting to delete without a revision, or with the wrong revision, leads to a HTTP 409 Conflict response.)
+``` http
+curl -X DELETE http://localhost:9393/arctic/animal/d5fbc7e78bcb21836abf82a96c000182.json?rev=1-b3917c5de68075fea8c0e83311c8ad39
+```
+
+(Attempting to delete without a revision, or with the wrong revision, leads to a HTTP `409` Conflict response.)
+
+### Revisions
+Use `GET` parameter `rev` or `_rev` (without count prefix) to retrieve a specific document revison
+
+``` http
+curl -X GET http://localhost:9393/arctic/animal/polar-bear.json?rev=1-9c8fb39bfacc81cc5e39610f9cf81df2
+curl -X GET http://localhost:9393/arctic/animal/polar-bear.json?_rev=deb14cd08cfbade0ec5b8f73f79b21fa
+```
+
+Use `GET` parameter `revs=true` to list available revisions
+
+``` http
+curl -X GET http://localhost:9393/arctic/animal/polar-bear.json?revs=true
+
+```
 
 ## Security
 
