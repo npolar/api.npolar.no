@@ -1,7 +1,0 @@
-{
-  "/metadata/dataset": {
-    "workspace": "Metadata",
-    "collection": "Dataset",
-    "storage_config" : { "base_url": "http://user:password@localhost:5984/metadata_dataset/"}
-  }
-}
