@@ -1,14 +1,15 @@
-# REST-style API framework
+# REST-style API kit
 
-A [Rack](https://github.com/rack/rack)-based framework for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface) endpoints.
+A [Rack](https://github.com/rack/rack)-based kit for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
 
-You build an API endpoint [lego](http://lego.dk)-wise by connecting the [Core](https://github.com/npolar/api.npolar.no/wiki/Core) with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
+You build an API endpoint [lego](http://lego.dk)-wise by connecting a [Npolar::Api::Core](https://github.com/npolar/api.npolar.no/wiki/Core) instance with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
 other middleware for security, validation, searching, indexing, logging, transformation, etc.
 
 ## Basics
+
+* [Install](https://github.com/npolar/api.npolar.no/wiki/Install)
+
 ### Create
-To build an endpoint, simply [`#map`](https://github.com/rack/rack/blob/master/lib/rack/builder.rb) a path,
-initialize a storage object and [`#run`](http://m.onkey.org/ruby-on-rack-2-the-builder) a `Npolar::Api::Core` instance.
 
 ``` ruby
 # config.ru
@@ -19,6 +20,7 @@ map "/ecotox" do
   end
 end
 ```
+
 ### Use
 The `/ecotox/report` API is now a CouchDB-backed endpoint which by default accepts and delivers `json` documents.
 See [using the API](https://github.com/npolar/api.npolar.no/wiki/Using-the-API) for usage details.
