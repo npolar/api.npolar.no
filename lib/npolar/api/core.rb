@@ -2,7 +2,7 @@ module Npolar
   module Api
   # Npolar::Api::Core
   #
-  # Rack class to create REST-style HTTP APIs
+  # Rack class for creating REST-style HTTP APIs
   # @link https://github.com/npolar/api.npolar.no/wiki/Core
   # @link Rack http://rack.rubyforge.org/doc/SPEC.html
   # @link HTTP/1.1 http://tools.ieetf.org/html/rfc2616 | http://www.w3.org/Protocols/rfc2616/rfc2616.html
@@ -18,7 +18,6 @@ module Npolar
       :methods => ["DELETE", "GET", "HEAD", "POST", "PUT"], # Allowed HTTP methods
       :headers => [],
     }
-
     attr_accessor :auth, :log
 
     # Delegate HTTP methods handlers to storage
@@ -33,16 +32,18 @@ module Npolar
         @request = Rack::Request.new(env) # <Npolar::Rack::Request>
         handle(request)
       rescue => e
-        puts "="*80+"\n"+e.class.name+"\n"+e.message
-        puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
-        http_error(503, "Polar bears ate your request")
+        unless "test" == ENV["RACK_ENV"]
+          puts "="*80+"\n"+e.class.name+"\n"+e.message
+          puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+        end
+        http_error(500, "Polar bears ate your request")
       ensure
         # log error
       end
     end
 
     # Handle HTTP request and return HTTP response triplet (Rack-style)
-    # @return [status, headers, body#each]
+    # @return Npolar::Rack::Response or [status, headers, body#each]
     def handle(request)
 
       if storage.nil?
@@ -53,9 +54,14 @@ module Npolar
         return http_error(405, "The following HTTP methods are allowed: #{methods.join(", ")}")
       end
 
-      headers = ::Rack::Utils::HeaderHash.new(request.env)
+      # GET, HEAD and POST are the only method where id can be blank
+      unless /(GET|HEAD|POST)/ =~ request_method
+        unless id?
+          return http_error(400, "Missing or blank request id, cannot handle #{request_method} request")
+        end
+      end
 
-      if ["GET", "HEAD"].include? request_method # "DELETE" *not* included, deleting means removing all formats!
+      if ["GET", "HEAD", "DELETE"].include? request_method
         unless acceptable? format
           return http_error(406, "Unacceptable format '#{format}', this API endpoint supports the following #{request_method} formats: #{formats.join(",")}")
         end
@@ -71,26 +77,29 @@ module Npolar
         end
 
         document = request.body.read # request.body is now empty
-
         if 0 == document.bytesize or document =~ /^\s+$/
-          return http_error(412, "#{request_method} document with no body")
+          return http_error(400, "#{request_method} document with no body")
         end
         
         #422  => 'Unprocessable Entity'?
-        if storage.respond_to? :parsable?
-          if false == storage.parsable? #
-            return http_error(422, "#{request_method} document with no body")
-          end
+        #if storage.respond_to? :parsable?
+        #  if false == storage.parsable? #
+        #    return http_error(422, "#{request_method} document with no body")
+        #  end
+        #
+        #end
+        #if model.respond_to? :valid? model?
+        #
+        #  unless model.valid?
+        #    return http_error(422)
+        #  end 
+        #
+        #end
 
-        end
-      end
 
-      # GET, HEAD and POST are the only method where id can be blank
-      unless /(GET|HEAD|POST)/ =~ request_method
-        unless id?
-          return http_error(412, "Missing or blank request id, cannot handle #{request_method} request")
-        end
       end
+      
+      headers = ::Rack::Utils::HeaderHash.new(request.env)
 
       status, headers, body = case request_method
         when "DELETE"  then delete(id, params)
@@ -100,78 +109,79 @@ module Npolar
         when "PUT"     then put(id, document, params)
       end
 
-      if body.respond_to? :body and body.body.respond_to? :force_encoding
-        body = body.body.force_encoding('UTF-8')
-      end
-  
       Rack::Response.new(body, status, headers)
 
     end
 
+    # @return Storage
     def storage
-      config[:storage] or raise Exception, "No storage"
+      @storage ||= config[:storage]
     end
 
+    # Storage setter
+    # @return void
     def storage=storage
-      #case storage
-      #  when Storage::Couch then config[:storage]=storage
-      #  else storage = Storage::Couch.new(storage)
-      #end
-      #  when Storage::Couch then
-      config[:storage]=storage
-
+      @storage=storage
     end
-
-    protected
 
     # @return Boolean
-    #   true if endpoint can deliver requested format
-    #   false if endpoint cannot handle requested format
+    # On GET/HEAD/DELETE
+    # * true  if endpoint can deliver requested format
+    # * false if endpoint cannot deliver requested format
     def acceptable? format
       formats.include? format
     end
 
     # @return Boolean
-    #   true if endpoint can receive requested format
-    #   false if collection cannot receive requested formar
+    # On POST/PUT
+    # * true if endpoint can receive requested format
+    # * false if collection cannot receive requested formar
     def accepts? format
       accepts.include? format
     end
 
+    # @return Array
     def accepts
-      case config[:accepts]
-        when String then [config[:accepts]]
-        when Array then config[:accepts]
-        when Proc then config[:accepts].call(storage)
-      end
+      force_array(config[:accepts], storage)
     end
     
+    # @return String
     def format
-      request.format.empty? ? config[:formats].first : request.format
+      request.format.empty? ? formats.first : request.format
     end
 
+    # @return Array
     def formats
-      case config[:formats]
-        when String then [config[:formats]]
-        when Proc then config[:formats].call(storage)
-        when Array then config[:formats]
-        else []
-      end
+      force_array(config[:formats], storage)
     end
 
+    # @return Array
     def methods
-      case config[:methods]
-        when String then [config[:methods]]
-        when Proc then config[:methods].call(request)
-        when Array then config[:methods]
-        else []
-      end
+      force_array(config[:methods])
     end
 
+    # @return Boolean
     def method_allowed? method
       methods.include? method
     end
 
+    protected
+
+    # @return Boolean
+    def force_array(v, with=nil)
+      with = with.nil? ? request : with
+
+      a = case v
+        when String then [v]
+        when Proc then v.call(with)
+        when Array then v
+        else []
+      end
+      if [] == a and v.respond_to?(:call)
+        a = v.call(with)
+      end
+      a
+    end
   end
 
   class Exception < Exception
@@ -179,3 +189,4 @@ module Npolar
 
   end
 end
+# @todo format <==> Content-Type
