@@ -9,5 +9,5 @@ listen "0.0.0.0:9000", :backlog => 1024
 #listen "/tmp/api-npolar.sock", :backlog => 1024
 
 pid '/home/api/api.npolar.no/api.pid'
-stderr_path '/home/api/api.npolar.no/log/api.stderr.log'
-stdout_path '/home/api/api.npolar.no/log/api.stdout.log'
+stderr_path '/home/api/log/error.log'
+stdout_path '/home/api/log/out.log'
