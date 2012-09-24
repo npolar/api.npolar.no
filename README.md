@@ -1,15 +1,15 @@
-# REST-style API kit
+# REST-style API kit powering http://api.npolar.no
 
 A [Rack](https://github.com/rack/rack)-based kit for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
 
 Create API endpoints [lego](http://lego.dk)-wise by connecting a [Npolar::Api::Core](https://github.com/npolar/api.npolar.no/wiki/Core) instance with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
-other [middleware](https://github.com/npolar/api.npolar.no/wiki/Core) for security, validation, search/indexing, logging, transformation, etc.
+other [middleware](https://github.com/npolar/api.npolar.no/wiki/Middleware) for security, validation, search/indexing, logging, transformation, etc.
 
 ## Basics
 
 ``` ruby
 # config.ru
-map "/arctic/animal" do
+map "/arctic/animal" do 
   storage = Npolar::Storage::Couch.new("https://username:password@couch.local:6984/arctic_animal")
   run Npolar::Api::Core.new(nil, { :storage => storage }) 
 end
@@ -180,6 +180,7 @@ HTTP/1.1 405 Method Not Allowed
 {"error":{"status":405,"reason":"Method Not Allowed"}}
 ```
 
-## Installation
+## Other topics
 * [Install](https://github.com/npolar/api.npolar.no/wiki/Install)
-
+* [Validation](https://github.com/npolar/api.npolar.no/wiki/Validation)
+* [Performance](https://github.com/npolar/api.npolar.no/wiki/Performance)
