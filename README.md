@@ -1,4 +1,4 @@
-# REST-style API kit powering http://api.npolar.no
+# REST kit powering http://api.npolar.no
 
 A [Rack](https://github.com/rack/rack)-based kit for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
 
@@ -10,7 +10,7 @@ other [middleware](https://github.com/npolar/api.npolar.no/wiki/Middleware) for 
 ``` ruby
 # config.ru
 map "/arctic/animal" do 
-  storage = Npolar::Storage::Couch.new("https://username:password@couch.local:6984/arctic_animal")
+  storage = Npolar::Storage::Couch.new("https://username:password@ocalhost:6984/arctic_animal")
   run Npolar::Api::Core.new(nil, { :storage => storage }) 
 end
 ```
@@ -80,24 +80,8 @@ HTTP/1.1 409 Conflict
 ``` http
 curl -X DELETE http://localhost:9393/arctic/animal/d5fbc7e78bcb21836abf82a96c000182.json?rev=1-b3917c5de68075fea8c0e83311c8ad39
 ```
+Attempting to delete without a revision, or with the wrong revision, leads to a HTTP `409` Conflict response.
 
-(Attempting to delete without a revision, or with the wrong revision, leads to a HTTP `409` Conflict response.)
-
-### Revisions
-
-Use `GET` parameter `rev` or `_rev` (without count prefix) to retrieve a specific document revison
-
-``` http
-curl -X GET http://localhost:9393/arctic/animal/polar-bear.json?rev=1-9c8fb39bfacc81cc5e39610f9cf81df2
-curl -X GET http://localhost:9393/arctic/animal/polar-bear.json?_rev=deb14cd08cfbade0ec5b8f73f79b21fa
-```
-
-Use `GET` parameter `revs=true` to list available revisions
-
-``` http
-curl -X GET http://localhost:9393/arctic/animal/polar-bear.json?revs=true
-
-```
 
 ## Security
 
@@ -181,6 +165,9 @@ HTTP/1.1 405 Method Not Allowed
 ```
 
 ## Other topics
-* [Install](https://github.com/npolar/api.npolar.no/wiki/Install)
+* [Installation](https://github.com/npolar/api.npolar.no/wiki/Install)
 * [Validation](https://github.com/npolar/api.npolar.no/wiki/Validation)
 * [Performance](https://github.com/npolar/api.npolar.no/wiki/Performance)
+* [Errors](https://github.com/npolar/api.npolar.no/wiki/Errors)
+* [Revisions] (edit log)
+* [Formats and Media Types] (see also http://www.iana.org/assignments/media-types/index.html)
