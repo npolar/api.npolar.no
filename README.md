@@ -3,7 +3,7 @@
 A [Rack](https://github.com/rack/rack)-based kit for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
 
 Create API endpoints [lego](http://lego.dk)-wise by connecting a [Npolar::Api::Core](https://github.com/npolar/api.npolar.no/wiki/Core) instance with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
-other middleware for security, validation, search/indexing, logging, transformation, etc.
+other [middleware](https://github.com/npolar/api.npolar.no/wiki/Core) for security, validation, search/indexing, logging, transformation, etc.
 
 ## Basics
 
@@ -27,10 +27,10 @@ HTTP/1.1 201 Created
 Content-Type: application/json
 
 {
-   "_id": "polar-bear",
-   "_rev": "1-9c8fb39bfacc81cc5e39610f9cf81df2",
-   "id": "polar-bear",
-   "species": "Ursus maritimus"
+  "_id": "polar-bear",
+  "_rev": "1-9c8fb39bfacc81cc5e39610f9cf81df2",
+  "id": "polar-bear",
+  "species": "Ursus maritimus"
 }
 ```
 
@@ -84,6 +84,7 @@ curl -X DELETE http://localhost:9393/arctic/animal/d5fbc7e78bcb21836abf82a96c000
 (Attempting to delete without a revision, or with the wrong revision, leads to a HTTP `409` Conflict response.)
 
 ### Revisions
+
 Use `GET` parameter `rev` or `_rev` (without count prefix) to retrieve a specific document revison
 
 ``` http
@@ -179,47 +180,6 @@ HTTP/1.1 405 Method Not Allowed
 {"error":{"status":405,"reason":"Method Not Allowed"}}
 ```
 
-## Middleware
-
-### Solrizer
-[Solrizer]() provides search and indexing capabilities to any collection.
-
-Automatic filtering: Combine fulltext search with filtering/faceting on every
-document attribute.
-
-Automatic indexing: Feed the solrizer with a model object (that contains a `#to_solr` method)
-and it will add documents to the Solr index on every POST or PUT, and remove them on DELETE.
-
-
 ## Installation
 * [Install](https://github.com/npolar/api.npolar.no/wiki/Install)
 
-## Features
-
-**Powerful**
-* Store any kind of document (JSON, XML, HTML, text, media/files)
-* Great [Solr](http://lucene.apache.org/solr/) search: facets/filters on any document attribute
-* Customizable validation
-* Customizable transformation/processing
-* Permanent addresses (URIs/IRIs)
-* Multiple formats (in/out)
-* Role-based access control
-* Revisions: complete document history (edit log)
-
-**Flexible**
-* Choose your own storage strategy (per system/per collection)
-* Choose your own storage 
-* Choose your own resource paths
-* Choose your own authorization strategy
-
-**Extensible**
-* Object-oriented and extensible code
-* Modular design with dependency injection of major components
-* Easy to implement domain logic (per collection/per server)
-
-**Scalable**
-* Stateless
-* Cacheable
-
-**Testable**
-* Test-first development strategy
