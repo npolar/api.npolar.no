@@ -1,3 +1,4 @@
+config.rb
 bin
 seed
 config/*
