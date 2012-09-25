@@ -1,6 +1,6 @@
 # REST API powering http://api.npolar.no
 
-[Rack](https://github.com/rack/rack)-based blocks for building [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
+[Rack](https://github.com/rack/rack)-based building blocks for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
 
 Construct API endpoints [lego](http://lego.dk)-wise by connecting a [Npolar::Api::Core](https://github.com/npolar/api.npolar.no/wiki/Core) instance with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
 other [middleware](https://github.com/npolar/api.npolar.no/wiki/Middleware) for security, validation, search/indexing, logging, transformation, etc.
