@@ -40,6 +40,9 @@ module Npolar
         
       end
 
+      ##
+      # @param  [Request] request
+      # @return [true|false]
       def condition? request
         false 
       end
@@ -82,7 +85,6 @@ module Npolar
       end
   
       def error_hash(status, explanation=nil)
-  
         {"error"=>{
           "status"=>status,
           "reason"=>reason(status),
@@ -94,7 +96,6 @@ module Npolar
           "level" => level(status),
           "agent" => request.user_agent,
           "path" => request.script_name,
-          "params" => request.params,
           "format" => request.format,
           "username" => request.username,
           "time" => ::DateTime.now.xmlschema,
@@ -130,18 +131,8 @@ module Npolar
       end
   
       protected
+
       # http://en.wikipedia.org/wiki/Syslog#Severity_levels
-      #RFC 5424 defines eight severity levels:
-  
-      #Code	Severity	Description	General Description
-      #0	Emergency	System is unusable.	A "panic" condition usually affecting multiple apps/servers/sites. At this level it would usually notify all tech staff on call.
-      #1	Alert	Action must be taken immediately.	Should be corrected immediately, therefore notify staff who can fix the problem. An example would be the loss of a backup ISP connection.
-      #2	Critical	Critical conditions.	Should be corrected immediately, but indicates failure in a primary system, an example is a loss of primary ISP connection.
-      #3	Error	Error conditions.	Non-urgent failures, these should be relayed to developers or admins; each item must be resolved within a given time.
-      #4	Warning	Warning conditions.	Warning messages, not an error, but indication that an error will occur if action is not taken, e.g. file system 85% full - each item must be resolved within a given time.
-      #5	Notice	Normal but significant condition.	Events that are unusual but not error conditions - might be summarized in an email to developers or admins to spot potential problems - no immediate action required.
-      #6	Informational	Informational messages.	Normal operational messages - may be harvested for reporting, measuring throughput, etc. - no action required.
-      #7	Debug	Debug-level messages.	Info useful to developers for debugging the application, not useful during operations.
       def level(status)
         case status
           when 100..199 then 6
