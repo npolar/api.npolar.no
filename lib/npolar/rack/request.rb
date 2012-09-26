@@ -1,7 +1,7 @@
 module Npolar
   module Rack
     class Request < ::Rack::Request
-      
+    
     # Extract format from request
     def format
       format = format_from_path
@@ -11,13 +11,12 @@ module Npolar
       end
 
       if format.empty?
-        format = accept_format
+        if ["PUT", "POST"].include? request_method
+          format = media_format
+        else  
+          format = accept_format
+        end
       end
-
-      if format.empty? 
-        format = media_format
-      end
-
       format
     end
 
@@ -69,6 +68,19 @@ module Npolar
       media_format
     end
 
+    # Extract multi params (repeated GET params) like fq=foo:bar&fq=bar:foo
+    def multi(var)
+      vars = self.env["QUERY_STRING"].split("&").select {|p| p =~ /^#{var}=(.*)/}
+      multi = vars.map { |v|
+        v = v.split("#{var}=")[1]
+        v = v.nil? ? "" : v
+      }
+      # Special case for ?foo& or &foo&
+      if self.env["QUERY_STRING"] =~ /(^[?]#{var}|[&]#{var})&/
+        multi << nil
+      end
+      multi
+    end
 
     # Extract id
     def id
@@ -85,7 +97,6 @@ module Npolar
 
       id
 
-
     end
 
     # Request has id?
@@ -96,6 +107,10 @@ module Npolar
         true
       end
     end
+
+
+    #client_ip = request.env['HTTP_X_FORWARDED_FOR'].nil? ? request.remote_ip : request.env['HTTP_X_FORWARDED_FOR']
+
 
     def read?
       not write?
