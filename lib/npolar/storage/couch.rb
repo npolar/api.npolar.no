@@ -10,9 +10,18 @@ module Npolar
         "Accept" => "application/json",
         "Content-Type" => "application/json; charset=utf-8",
         "User-Agent" => self.name }
+
+      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model
   
-      attr_accessor :client, :headers, :read, :write, :accepts, :formats
-  
+      def self.uri=uri
+        uri = uri.gsub(/[\/]$/, "")
+        @@uri=uri
+      end
+
+      def self.uri
+        @@uri ||= "http://localhost:5984"
+      end
+
       def accepts
         @accepts ||= ["json"]
       end
@@ -27,6 +36,15 @@ module Npolar
         @read = read.gsub(/[\/]$/, "")
         @write = write.nil? ? read : write
         @write = @write.gsub(/[\/]$/, "")
+      
+        if @read !~ /^http(s)?:\/\// and self.class.uri =~ /^http(s)?:\/\//
+          @read = self.class.uri+"/"+@read
+        end
+
+        if @write !~ /^http(s)?:\/\// and self.class.uri =~ /^http(s)?:\/\//
+          @write = self.class.uri+"/"+@write
+        end
+
         @headers = HEADERS
       end
   
@@ -70,7 +88,7 @@ module Npolar
         couch = { "docs" => JSON.parse(data) }
         data = couch.to_json
         response = writer.post("_bulk_docs", headers, data)        
-        [202,  { } , ["POSTed #{couch['docs'].size} documents"]]
+        [202,  {"Content-Type" => HEADERS["Content-Type"]} , ["POSTed #{couch['docs'].size} documents"]]
       end
   
       def post(data, params={})
@@ -99,11 +117,16 @@ module Npolar
       # @param String data JSON
       # @param Hash params?
       def put(id, data, params={})
+
+        if data.is_a? Hash
+          data = data.to_json
+        end
         # params?
         #if params.key? "attachment"
         # #couch.put("")
         #end
         response = writer.put(id, headers, data)
+
         if 201 == response.status
           rev = response.headers["Etag"].gsub(/["]/, "") # Get the revision number from the Etag header
           created = writer.get(id, {"rev" => rev }) # GET document back from writer 
@@ -129,12 +152,12 @@ module Npolar
   
       protected
   
-      # Raw client
+      # Raw couch client, use to get _documents (@see #ids)
       def couch
         ::Rack::Client.new(@uri)
       end
   
-      # Protected client
+      # Protected couch client
       def client(uri)
         @client ||= ::Rack::Client.new(uri) do
           # Security feature: Disallow blank ids, and ids starting with _
@@ -161,3 +184,6 @@ end
 # Authorization: AWS + KeyId + : + base64(hmac-sha1(VERB + CONTENT-MD5 + CONTENT-TYPE + DATE + …))
 #http://dagi3d.net/
 # http://dagi3d.net/posts/5-api-authentication
+      #if body.respond_to? :body and body.body.respond_to? :force_encoding
+      #  body = body.body.force_encoding("UTF-8")
+      #end
