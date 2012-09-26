@@ -1,27 +1,51 @@
+require "./lib/npolar/api"
+Npolar::Api.workspaces = ["biology", "ecotox", "gcmd", "seaice", "tracking", "ocean", "metadata"]
+
 require "./start"
 
-config_reader = lambda {|filename| JSON.parse(File.read(File.join(".", "config", filename))) }
-config_loader = lambda {|filename| eval(File.open(File.expand_path("./config/#{filename}")).read) }
+couchdb = ENV["NPOLAR_API_COUCHDB"]
+solr = ENV["NPOLAR_API_SOLR"]
 
-api_user = Npolar::Auth::Couch.new(config_reader.call("api_user_storage.json"))
-ldap = Npolar::Auth::Ldap.new(config_loader.call("ldap.rb"))
+map "/" do
+  # Show index view on anything that is not a global search
+  run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "#{solr}")
+  
+  map "/schema" do
+    schemas = [].sort
+    run lambda { |env| [200, {"Content-Type" => "application/json"},[schemas.to_json]] }
+  end
 
-map "/api" do
   map "/user" do
-    use Npolar::Rack::Authorizer, { :auth => api_user, :system => "api" }
-    run Npolar::Api::Core.new(nil, {:storage => api_user, :methods => ["GET", "HEAD", "POST", "PUT"]}) # No DELETE
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "api", :authorized? =>  lambda {
+      | auth, system, request | auth.roles(system).include? Npolar::Rack::Authorizer::SYSADMIN_ROLE }
+    }
+    run Npolar::Api::Core.new(nil, {:storage => Npolar::Storage::Couch.new("api_user"), :methods => ["GET", "HEAD", "POST", "PUT"]}) # No DELETE
+  end
+end
+
+map "/ecotox" do
+  # Show ecotox index on anything that is not a search
+  run Npolar::Rack::Solrizer.new(Views::Ecotox::Index.new, :core => "#{solr}" )
+
+  map "/report" do
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "ecotox",
+      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
+    }
+    #use Npolar::Rack::TikaExtracter
+    storage = Npolar::Storage::Couch.new("ecotox")
+    run Npolar::Api::Core.new(nil, :storage => storage)
   end
 end
 
 map "/gcmd" do
 
   gcmd_index = lambda {|env|
-    scheme = Rack::Request.new(env)["scheme"] ||= "locations"
     index = Gcmd::Index.new
-    index[:scheme] = scheme
+    index[:scheme] = Rack::Request.new(env)["scheme"] ||= "locations"
     [200, {"Content-Type" => "text/html"},[index.render]]
   }
   run gcmd_index
+  #run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "#{solr}/")
 
   concepts = Gcmd::Concepts.new
   
@@ -41,27 +65,77 @@ map "/gcmd" do
   end
 end
 
-map "/metadata/dataset" do
+map "/metadata" do
 
-  use Npolar::Rack::Authorizer, { :auth => api_user, :system => "metadata",
-    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  Metadata.collections = ["dataset"]
 
-  use Metadata::Rack::Dif
+  metadata_storage = Npolar::Storage::Couch.new("metadata")
 
-  run Npolar::Api::Core.new(nil,
-    { :storage => Npolar::Storage::Couch.new(config_reader.call("metadata_storage.json")),
-      :formats => ["atom", "dif", "iso", "json", "xml"],
-      :accepts => ["json", "dif", "xml"]
-    }
-  )
-  # a nice way to validate all docs?
+  # Show metadata index on anything that is not a search
+  run Npolar::Rack::Solrizer.new(Views::Metadata::Index.new, :core => "#{solr}")
+
+  map "/oai" do
+    run Npolar::Rack::OaiSkeleton.new(nil, :storage => metadata_storage)
+  end
+
+  map "/dataset" do
+
+    model = Metadata::Dataset.new
+    #model.schema = File.read(File.expand_path(File.join(".", "lib", "metadata/dataset-schema.json")))
+    #p model.schema
+
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "metadata",
+      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+    use Metadata::Rack::DifJsonizer
+
+    use Npolar::Rack::Solrizer, { :core => "", :model => model }
+  
+    run Npolar::Api::Core.new(nil,
+      { :storage => metadata_storage,
+        :formats => ["atom", "dif", "iso", "json", "xml"],
+        :accepts => ["json", "dif", "xml"]
+      }
+    )
+  end
 end
 
-map "/observation/fauna" do
-  storage = Npolar::Storage::Couch.new(config_reader.call("observation_fauna_storage.json"))
+map "/ocean" do
+  # Show ocean index on anything that is not a search
+  run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "#{solr}")
+end
+
+map "/seaice" do
+  #Seaice.workspace = "seaice"
+
+  Seaice.collections = ["black-carbon", "em31", "thickness-drilling", "core", "snowpit"]
+
+  # Show seaice index on anything that is not a search
+  run Npolar::Rack::Solrizer.new(Views::Seaice::Index.new, :core => "#{solr}/")
+
+  Seaice.collections.each do |scheme|
+    map "/#{scheme}" do
+
+      use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "seaice",
+        :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+
+      run Npolar::Api::Core.new(nil, :storage => Npolar::Storage::Couch.new("seaice"))
+    
+    end
+  end
+end
+
+map "/biology/observation" do
+
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "observation",
+      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+
+  storage = Npolar::Storage::Couch.new("observation_fauna")
   run Npolar::Api::Core.new(nil, :storage => storage)
 end
 
-# @todo Rack::Static, :urls => ["/xsl"], :root => "public"
-# @todo Use Rack:Cascade to find by UUID/code
-# @todo Validate agent-ip-username
+map "/tracking" do
+  # Show tracking index on anything that is not a search
+  run Npolar::Rack::Solrizer.new(Views::Tracking::Index.new, :core => "#{solr}/")
+  
+end
