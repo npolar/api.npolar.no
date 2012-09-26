@@ -22,6 +22,8 @@ gem "rack-cache"
 gem "mustache"
 gem "hashie", :git => "git://github.com/intridea/hashie.git"
 gem "json-schema", :git => "git://github.com/hoxworth/json-schema.git"
+gem "rsolr", :git => "git://github.com/mwmitchell/rsolr.git"
+gem "oai"
 
 group :development, :test do
   gem "thin"
