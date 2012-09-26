@@ -10,10 +10,9 @@ require "./lib/npolar/api"
 require "./lib/npolar/api/core"
 
 # Auth
-#require "./lib/npolar/auth"
 require "./lib/npolar/auth/couch"
-require "./lib/npolar/rack/authorizer"
 require "./lib/npolar/auth/ldap"
+require "./lib/npolar/rack/authorizer"
 
 # Storage
 require "./lib/npolar/storage/couch"
@@ -37,11 +36,31 @@ require "gcmd/concepts"
 
 
 
-
-# Collections
+# Metadata
+require "./lib/metadata.rb"
+require "./lib/metadata/dataset.rb"
+require "./lib/metadata/dif_atom.rb"
 require "./lib/metadata/dif_atom.rb"
 require "./lib/metadata/rack/dif_jsonizer"
+require "./lib/npolar/rack/oai_skeleton"
+
+# Seaice
+require "./lib/seaice.rb"
 
 # Views
 require "mustache"
-require "./views/gcmd/index"
+require "./views/views"
+
+require "./lib/npolar/mustache"
+require "./lib/npolar/mustache/json_view"
+
+if Npolar::Api.workspaces.nil?
+  Npolar::Api.workspaces = []
+end
+
+(Npolar::Api.workspaces+["api"]).each do | workspace |
+  if File.exists? "./views/#{workspace}/index.rb"
+    require "./views/#{workspace}/index"
+  end
+  
+end
