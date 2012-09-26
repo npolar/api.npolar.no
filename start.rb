@@ -42,6 +42,8 @@ require "./lib/metadata/dataset.rb"
 require "./lib/metadata/dif_atom.rb"
 require "./lib/metadata/dif_atom.rb"
 require "./lib/metadata/rack/dif_jsonizer"
+require "./lib/metadata/oai"
+require "./lib/metadata/oai_repository"
 require "./lib/npolar/rack/oai_skeleton"
 
 # Seaice
