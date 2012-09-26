@@ -3,15 +3,41 @@
 <article>
 
 <section>
-<h4>Collections</h4>
-<ul>{{# collections }}
-  <li><a href="{{ href }}" title="{{ title }}">{{ title }}</a></li>
-{{/ collections}}</ul>
+{{# collections }}
+<h3>{{ title }}</h3>
+
+<ul>
+{{# list_formats }}
+<li><a href="{{href}}/.{{format}}">{{ title }}</a>
+{{/ list_formats }}
+</ul>
+
+{{/ collections}}
 </section>
+
+{{# oai }}
+<section>
+<h3>OAI-PMH repository</h3>
+
+<p>{{ summary }}</p>
+<h4>verbs</h4>
+
+<ol>
+{{# verbs }}
+<li><a href="/metadata/oai?verb={{verb}}{{example}}">{{verb}}</a></li>
+{{/verbs}}
+</ol>
+
+<h4>Documentation</h4>
+<a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">OAI-PMH 2.0 documentation</a>
+</section>
+{{/oai}}
+
 </article>
+<hr/>
 
 <nav>
-Up to <a href="../">api.npolar.no</a>
+<p>Up to <a href="../">api.npolar.no</a></p>
 </nav>
 
 {{{ foot }}}

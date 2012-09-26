@@ -22,10 +22,10 @@ module Views
               :href => "/seaice",
               :title => "Seaice and its physical properties"
             },
-            {
-              :href => "/tracking",
-              :title => "Tracking data"
-            }
+            #{
+            #  :href => "/tracking",
+            #  :title => "Tracking data"
+            #}
           ],
           :title => "api.npolar.no"
         }
