@@ -75,7 +75,8 @@ map "/metadata" do
   run Npolar::Rack::Solrizer.new(Views::Metadata::Index.new, :core => "#{solr}")
 
   map "/oai" do
-    run Npolar::Rack::OaiSkeleton.new(nil, :storage => metadata_storage)
+    #Metadata::OaiRepository.storage = storage
+    run Npolar::Rack::OaiSkeleton.new(nil, :provider => Metadata::OaiRepository.new)
   end
 
   map "/dataset" do
