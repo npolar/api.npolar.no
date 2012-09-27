@@ -26,7 +26,7 @@ module Metadata
     end
 
     def self.sets
-      ["ARCTIC", "ANTARCTICA", "IPY:NO", "IPY", "Cryoclim", "NMDC"]
+      oai_sets.map {|set| set[:spec] }
     end
 
     #<IDN_Node>
@@ -50,16 +50,16 @@ module Metadata
     def self.oai_sets
       [ {:spec => "artic", :name => "Arctic datasets"},
         {:spec => "antarctic", :name => "Antarctic datasets"},
-        {:spec => "IPY:NO", :name => "IPY (Norway)", :description => "Norwegian contributions to the International Polar Year"},
-        {:spec => "IPY", :name => "IPY", :description => "Datasets from the International Polar Year (2007-2008)"},
-        {:spec => "cryoclim", :name => "Cryoclim", :description => "Cold datasets"},
+        {:spec => "IPY:NO", :name => "International Polar Year: Norway", :description => "Norwegian contributions to the International Polar Year"},
+        {:spec => "IPY", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008)"},
+        {:spec => "cryoclim.net", :name => "Cryoclim", :description => "Climate monitoring of the cryosphere, see http://cryoclim.net"},
         {:spec => "nmdc", :name => "Norwegian Marine Data Centre", :description => "Marine datasets"},
         {:spec => "gcmd", :name => "Global Change Master Directory" }
       ]
     end
 
     def self.summary
-      "Discovery-level metadata, in particular DIFs targeted at NASA's Global Change Master Directory."
+      "Discovery-level dataset metadata, in particular DIFs targeted at NASA's Global Change Master Directory."
     end
 
     def self.title
