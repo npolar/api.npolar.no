@@ -3,6 +3,7 @@ module Npolar
   module Rack
     # https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/rack/solrizer.rb
     # @todo Create SolrQuery class to replace :q lambda
+    # @todo Create/use JSON Feed class?
     class Solrizer < Npolar::Rack::Middleware
 
       CONFIG = {
@@ -24,6 +25,18 @@ module Npolar
         :rows => 10
       }
       # q=title:foo OR exact:foo OR text:foo*
+
+      def self.uri=uri
+        if uri.respond_to? :gsub
+          uri = uri.gsub(/[\/]$/, "")
+        end
+        @@uri=uri
+      end
+
+      def self.uri
+        @@uri ||= "http://localhost:8993/solr"
+      end
+
 
       def condition? request
         if ["GET", "HEAD"].include? request.request_method and not request.params["q"].nil? and request.params["q"].size > 0
@@ -57,8 +70,7 @@ module Npolar
         begin
           start = params["start"] ||= 0
           rows  = params["rows"]  ||= config[:rows]
-          fq = params["fq"]
-          response = rsolr.get config[:select], :params => { :q=>q, :start => start, :rows => rows, :fq => fq }
+          response = rsolr.get select, :params => { :q=>q, :start => start, :rows => rows, :fq => fq }
 
           if "solr" == request.format
             # noop
@@ -78,9 +90,12 @@ module Npolar
       protected
 
       def feed(response)
-            #jfeed = Atom::JsonFeed.new
-            #jfeed.entries = response["response"]["docs"]
         config[:feed].call(response)
+      end
+
+      def fq
+        #FIXME merge with config fq
+        params["fq"]
       end
 
       def q
@@ -96,7 +111,18 @@ module Npolar
       end
 
       def rsolr
-        @rsolr ||= RSolr.connect :url => config[:core]
+        @rsolr ||= RSolr.connect :url => uri
+      end
+
+      def uri
+p config[:core]
+        uri = config[:core] ||= self.class.uri
+p uri
+uri
+      end
+
+      def select
+        config[:select] ||= "select"
       end
 
     end
