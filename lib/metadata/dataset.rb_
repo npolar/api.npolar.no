@@ -1,0 +1,51 @@
+module Metadata
+  class Dataset < Hash
+
+    #attr_accessor :json_schema
+
+    #include Npolar::JsonValidator
+
+    def import_dif
+    end
+    
+    def validate
+    end
+
+    def valid?
+
+    end
+
+    def to_solr
+    end
+
+    def to_dif
+    end
+
+    def validate_xml
+      ng_dif_builder = ::Gcmd::DifBuilder.new(self)
+      xml = ng_dif_builder.build_dif
+
+      dif.schema = ::Gcmd::Schema.new
+      schema.validate_xml( xml )
+    end
+
+    protected
+
+    
+
+    #def dif_discipline
+    #  case groups
+    #    when "biodiveristy" then "BIOLOGY"
+    #    when "ecotoxicology" then "" # DIF "TOXICOLOGY" is under "MEDICAL SCIENCES"
+    #  # geology => GEOLOGY
+    #  # geohysics => GEOPHYSICS
+    #  # glaciology => "",
+    #  # topography => "",
+    #  # oceanography => OCEANOGRAPHY # top level? or under physical sciences?
+    #  # seaice => ""
+    #  
+    #  end
+    #end
+
+  end
+end

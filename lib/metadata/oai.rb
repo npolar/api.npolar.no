@@ -3,7 +3,9 @@ require "oai/provider"
 module Metadata
 
   class Oai < ::OAI::Provider::Model
-  
+
+    attr_accessor :storage  
+
     def initialize(storage)
       @storage = storage
     end
@@ -14,6 +16,14 @@ module Metadata
 
     def latest
       Date.new
+    end
+
+    def timestamp_field
+      "updated"
+    end
+
+    def to_oai_dc
+
     end
 
     def sets
@@ -38,7 +48,17 @@ module Metadata
     #                       not all records are available in all formats)
     # [:all, {:metadata_prefix=>"oai_dc", :from=>-4712-01-01 00:43:00 +0043, :until=>-4712-01-01 00:43:00 +0043}]
     def find(selector, options={})
-      raise "Not implemented"
+      if :all == selector
+        JSON.parse(storage.ids[2].join(""))
+      else
+        response = storage.get(selector)
+        if 200 == response[0]
+          hash = JSON.parse(response[2])
+          ::Metadata::Dataset.new(hash)
+        else
+          raise OAI::NoMatchException
+        end
+      end
     end
   end
 

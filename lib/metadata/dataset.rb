@@ -29,6 +29,18 @@ module Metadata
       oai_sets.map {|set| set[:spec] }
     end
 
+    def self.schema_uri
+      "/schema/metadata/dataset"
+    end
+
+    def self.example_id
+      "0b822ea00adc34317df58068fb1c8002"
+    end
+    
+    def self.list_formats
+      [{:format => "json", :title => "JSON"}]
+    end
+
     #<IDN_Node>
     #<Short_Name>IPY</Short_Name>
     #</IDN_Node>
@@ -47,8 +59,25 @@ module Metadata
     #<IDN_Node>
     #<Short_Name>DOKIPY</Short_Name>
     #</IDN_Node>
+
+     #def dif_discipline
+     #  case groups
+     #    when "biodiveristy" then "BIOLOGY"
+     #    when "ecotoxicology" then "" # DIF "TOXICOLOGY" is under "MEDICAL SCIENCES"
+     #  # geology = GEOLOGY
+     #  # geohysics = GEOPHYSICS
+     #  # glaciology = "",
+     #  # topography = "",
+     #  # oceanography = OCEANOGRAPHY # top level? or under physical sciences?
+     #  # seaice = ""
+     #  
+     #  end
+     #end
+
+
+
     def self.oai_sets
-      [ {:spec => "artic", :name => "Arctic datasets"},
+      [ {:spec => "arctic", :name => "Arctic datasets"},
         {:spec => "antarctic", :name => "Antarctic datasets"},
         {:spec => "IPY:NO", :name => "International Polar Year: Norway", :description => "Norwegian contributions to the International Polar Year"},
         {:spec => "IPY", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008)"},

@@ -22,7 +22,7 @@ module Metadata
       
       XSL = "DIF-ISO-3.1.xsl"
 
-      def condition?( request )
+      def condition? request
         # GET
         if (FORMATS.include? request.format or request.content_type =~ /application\/xml/) and "GET" == request.request_method
           true
@@ -84,23 +84,7 @@ module Metadata
           if "validate" == request.path_info.split("/").last
             schema = ::Gcmd::Schema.new
             report = schema.validate_xml( xml )
-            
-            valid = report.any? ? false : true
-            
-            status = valid==false ? 422 : 200
-            
-            if valid
-              error = error_hash(status, "Valid")["error"]
-              error["valid"] = true
-            else
-              error = error_hash(status, "Validation failed")["error"]
-              error["valid"] = false
-              error["report"] = report
-              error["schema"] = schema.schema_location
-            end
-            error = error.select {|k,v| k !~ /^(ip|params|username|host|level|agent|format|path)/}
-            [status, JSON_HEADER_HASH, [error.to_json]]
-
+            [200, JSON_HEADER_HASH, [report.to_json]]
           else
             [200, XML_HEADER_HASH, [xml]]
           end
