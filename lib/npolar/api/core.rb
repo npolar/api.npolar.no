@@ -2,26 +2,21 @@ module Npolar
   module Api
   # Npolar::Api::Core
   #
-  # Rack class for creating REST-style HTTP APIs
+  # Rack class for running a REST-style HTTP document API
+  #
   # @link https://github.com/npolar/api.npolar.no/wiki/Core
   # @link Rack http://rack.rubyforge.org/doc/SPEC.html
   # @link HTTP/1.1 http://tools.ieetf.org/html/rfc2616 | http://www.w3.org/Protocols/rfc2616/rfc2616.html
   class Core < Rack::Middleware
-
-    extend Forwardable # http://www.ruby-doc.org/stdlib-1.9.3/libdoc/forwardable/rdoc/Forwardable.html
 
     # Default configuration
     CONFIG = {
       :accepts => lambda { |storage| storage.respond_to?(:accepts) ? storage.accepts : [] }, # Accepted formats (incoming)
       :formats => lambda { |storage| storage.respond_to?(:formats) ? storage.formats : [] }, # Supported formats (outgoing)
       :storage => nil,
-      :methods => ["DELETE", "GET", "HEAD", "POST", "PUT"], # Allowed HTTP methods
-      :headers => [],
+      :methods => ["DELETE", "GET", "HEAD", "POST", "PUT"], # Allowed HTTP methods,
+      :headers => { "Content-Type" => "application/json; charset=utf-8" }
     }
-    attr_accessor :auth, :log
-
-    # Delegate HTTP methods handlers to storage
-    def_delegators :storage, :delete, :get, :head, :post, :put
 
     # Rack application
     # @param env
@@ -56,72 +51,58 @@ module Npolar
 
       # GET, HEAD and POST are the only method where id can be blank
       unless /(GET|HEAD|POST)/ =~ request_method
-        unless id?
+        unless request.id?
           return http_error(400, "Missing or blank request id, cannot handle #{request_method} request")
         end
       end
 
       if ["GET", "HEAD", "DELETE"].include? request_method
+        # 404 => 410 Gone
+        # 412 Precondition Failed
+        # 414 Request-URI Too Long
         unless acceptable? format
           return http_error(406, "Unacceptable format '#{format}', this API endpoint supports the following #{request_method} formats: #{formats.join(",")}")
         end
       elsif ["PUT", "POST"].include? request_method
-        
-        # Insist on Content-Length on chunked transfers
+        # 411 Length Required
+        # FIXME Insist on Content-Length on chunked transfers
         # if headers["Content-Length"].nil? or headers["Content-Length"].to_i <= 0
         #  return http_error(411)
         # end
+        # FIXME max content length
+        # FIXME PUT with no etag/revision and 409 => new status code for conditional PUT?
 
         unless accepts? request.media_format
           return http_error(415, "This API endpoint does not accept documents in '#{request.media_format}' format, acceptable #{request_method} formats are: '#{accepts.join(", ")}'")
         end
 
         document = request.body.read # request.body is now empty
-        if 0 == document.bytesize or document =~ /^\s+$/
+        if 0 == document.bytesize or /^\s+$/ =~ document
           return http_error(400, "#{request_method} document with no body")
         end
-        
-        #422  => 'Unprocessable Entity'?
-        #if storage.respond_to? :parsable?
-        #  if false == storage.parsable? #
-        #    return http_error(422, "#{request_method} document with no body")
-        #  end
-        #
-        #end
-        #if model.respond_to? :valid? model?
-        #
-        #  unless model.valid?
-        #    return http_error(422)
-        #  end 
-        #
-        #end
 
+        
+        # FIXME 413 Request Entity Too Large
+        # 414 Request-URI Too Long
+
+        unless valid? document
+          return http_error(422)
+        end 
 
       end
       
-      headers = ::Rack::Utils::HeaderHash.new(request.env)
+      #headers = ::Rack::Utils::HeaderHash.new(request.env)
 
       status, headers, body = case request_method
-        when "DELETE"  then delete(id, params)
-        when "GET"     then get(id, params)
-        when "HEAD"    then head(id, params)
-        when "POST"    then post(document, params)
-        when "PUT"     then put(id, document, params)
+        when "DELETE"  then storage.delete(id, params)
+        when "GET"     then storage.get(id, params)
+        when "HEAD"    then storage.head(id, params)
+        when "POST"    then storage.post(document, params)
+        when "PUT"     then storage.put(id, document, params)
       end
 
       Rack::Response.new(body, status, headers)
 
-    end
-
-    # @return Storage
-    def storage
-      @storage ||= config[:storage]
-    end
-
-    # Storage setter
-    # @return void
-    def storage=storage
-      @storage=storage
     end
 
     # @return Boolean
@@ -165,6 +146,26 @@ module Npolar
       methods.include? method
     end
 
+    # @return Storage
+    def storage
+      @storage ||= config[:storage]
+    end
+
+    # Storage setter
+    # @return void
+    def storage=storage
+      @storage=storage
+    end
+
+    # @return Boolean
+    def valid? document
+      if storage.respond_to? :valid?
+        storage.valid? document
+      else
+        true
+      end
+    end
+    
     protected
 
     # @return Boolean
@@ -189,4 +190,3 @@ module Npolar
 
   end
 end
-# @todo format <==> Content-Type
