@@ -56,13 +56,11 @@ require "./views/views"
 require "./lib/npolar/mustache"
 require "./lib/npolar/mustache/json_view"
 
-if Npolar::Api.workspaces.nil?
-  Npolar::Api.workspaces = []
+Dir.glob("./lib/**/*.rb").each do | file |
+  puts file
+  #require file
 end
 
-(Npolar::Api.workspaces+["api"]).each do | workspace |
-  if File.exists? "./views/#{workspace}/index.rb"
-    require "./views/#{workspace}/index"
-  end
-  
+Dir.glob("./views/*/*.rb").each do | file |
+  require file
 end
