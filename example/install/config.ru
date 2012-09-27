@@ -1,4 +1,4 @@
-require "./start"
+require "./load"
 
 Npolar::Api.workspaces = ["biology", "ecotox", "gcmd", "seaice", "tracking", "ocean", "metadata"]
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
