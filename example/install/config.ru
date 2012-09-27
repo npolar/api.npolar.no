@@ -1,14 +1,13 @@
-require "./lib/npolar/api"
-Npolar::Api.workspaces = ["biology", "ecotox", "gcmd", "seaice", "tracking", "ocean", "metadata"]
-
 require "./start"
 
-couchdb = ENV["NPOLAR_API_COUCHDB"]
-solr = ENV["NPOLAR_API_SOLR"]
-
+Npolar::Api.workspaces = ["biology", "ecotox", "gcmd", "seaice", "tracking", "ocean", "metadata"]
+Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
+Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
+ 
 map "/" do
+  # http(s)://api.npolar.no/
   # Show index view on anything that is not a global search
-  run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "#{solr}")
+  run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "")
   
   map "/schema" do
     schemas = [].sort
@@ -25,15 +24,15 @@ end
 
 map "/ecotox" do
   # Show ecotox index on anything that is not a search
-  run Npolar::Rack::Solrizer.new(Views::Ecotox::Index.new, :core => "#{solr}" )
+  run Npolar::Rack::Solrizer.new(Views::Ecotox::Index.new, :core => "" )
 
   map "/report" do
     use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "ecotox",
       :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
     }
     #use Npolar::Rack::TikaExtracter
-    storage = Npolar::Storage::Couch.new("ecotox")
-    run Npolar::Api::Core.new(nil, :storage => storage)
+    run Npolar::Api::Core.new(nil, :storage => Npolar::Storage::Couch.new("ecotox"))
+
   end
 end
 
@@ -45,7 +44,7 @@ map "/gcmd" do
     [200, {"Content-Type" => "text/html"},[index.render]]
   }
   run gcmd_index
-  #run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "#{solr}/")
+  #run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "/")
 
   concepts = Gcmd::Concepts.new
   
@@ -69,13 +68,10 @@ map "/metadata" do
 
   Metadata.collections = ["dataset"]
 
-  metadata_storage = Npolar::Storage::Couch.new("metadata")
-
   # Show metadata index on anything that is not a search
-  run Npolar::Rack::Solrizer.new(Views::Metadata::Index.new, :core => "#{solr}")
+  run Npolar::Rack::Solrizer.new(Views::Metadata::Index.new, :core => "")
 
   map "/oai" do
-    #Metadata::OaiRepository.storage = storage
     run Npolar::Rack::OaiSkeleton.new(nil, :provider => Metadata::OaiRepository.new)
   end
 
@@ -91,9 +87,9 @@ map "/metadata" do
     use Metadata::Rack::DifJsonizer
 
     use Npolar::Rack::Solrizer, { :core => "", :model => model }
-  
+
     run Npolar::Api::Core.new(nil,
-      { :storage => metadata_storage,
+      { :storage => Npolar::Storage::Couch.new("metadata_dataset"),
         :formats => ["atom", "dif", "iso", "json", "xml"],
         :accepts => ["json", "dif", "xml"]
       }
@@ -103,7 +99,7 @@ end
 
 map "/ocean" do
   # Show ocean index on anything that is not a search
-  run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "#{solr}")
+  run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "")
 end
 
 map "/seaice" do
@@ -112,7 +108,7 @@ map "/seaice" do
   Seaice.collections = ["black-carbon", "em31", "thickness-drilling", "core", "snowpit"]
 
   # Show seaice index on anything that is not a search
-  run Npolar::Rack::Solrizer.new(Views::Seaice::Index.new, :core => "#{solr}/")
+  run Npolar::Rack::Solrizer.new(Views::Seaice::Index.new, :core => "/")
 
   Seaice.collections.each do |scheme|
     map "/#{scheme}" do
@@ -137,6 +133,6 @@ end
 
 map "/tracking" do
   # Show tracking index on anything that is not a search
-  run Npolar::Rack::Solrizer.new(Views::Tracking::Index.new, :core => "#{solr}/")
+  run Npolar::Rack::Solrizer.new(Views::Tracking::Index.new, :core => "/")
   
 end
