@@ -14,7 +14,9 @@ module Npolar
       attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model
   
       def self.uri=uri
-        uri = uri.gsub(/[\/]$/, "")
+        if uri.respond_to? :gsub
+          uri = uri.gsub(/[\/]$/, "")
+        end
         @@uri=uri
       end
 
@@ -44,7 +46,6 @@ module Npolar
         if @write !~ /^http(s)?:\/\// and self.class.uri =~ /^http(s)?:\/\//
           @write = self.class.uri+"/"+@write
         end
-
         @headers = HEADERS
       end
   
@@ -74,10 +75,6 @@ module Npolar
   
       def headers
         @headers ||= HEADERS
-      end
-  
-      def parsable?
-        true
       end
   
       def post_many(data, params={})        
@@ -135,8 +132,6 @@ module Npolar
         [response.status, response.headers,response.body]
       end
   
-      protected
-  
       def ids
         ids = []
         response = couch.get(read+"/_all_docs")
@@ -149,7 +144,7 @@ module Npolar
         end
         [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(ids)+"\n"]] # Couch returns text/plain here!?
       end
-  
+
       protected
   
       # Raw couch client, use to get _documents (@see #ids)
