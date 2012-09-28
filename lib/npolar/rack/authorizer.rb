@@ -18,13 +18,17 @@ module Npolar
             false
           end
         },
-        :authenticated? => lambda { | auth, request |          
+        :authenticated? => lambda { | auth, request |
           auth.match?(request.username, request.password)
         },
         :auth => nil,
         :system => nil,
         :except? => nil,
       }
+
+      def self.authorize(role=Npolar::Rack::Authorizer::SYSADMIN_ROLE)
+        lambda {| auth, system, request | auth.roles(system).include? role }
+      end
 
       def authenticated?
         begin
