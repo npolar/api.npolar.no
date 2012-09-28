@@ -20,17 +20,27 @@ module Metadata
     
     attr_accessor :schema
 
+    SCHEMA_URI = { "dif" =>  "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd", "json" => "/schema/metadata-dataset"}
+
+    class << self
+      attr_accessor :formats, :accepts
+    end
+
     def self.country_codes
       #  http://en.wikipedia.org/wiki/Arctic_Council + AQ
-      ["CA", "DK", "GR", "FI", "FO", "IS", "NO", "RU", "SW", "AQ", "US"].sort
+      ["CA", "DK", "GL", "FI", "FO", "IS", "NO", "RU", "SW", "AQ", "US"].sort
     end
 
     def self.sets
       oai_sets.map {|set| set[:spec] }
     end
 
-    def self.schema_uri
-      "/schema/metadata/dataset"
+    def self.schema_uri(format="json")
+      if SCHEMA_URI.key? format
+        SCHEMA_URI[format]
+      else
+        raise ArgumentError, "Unknown schema format"
+      end
     end
 
     def self.example_id
@@ -38,7 +48,11 @@ module Metadata
     end
     
     def self.list_formats
-      [{:format => "json", :title => "JSON"}]
+      [{:format => "json", :title => "List ids (JSON Array)"}]
+    end
+
+    def self.uri
+      "/metadata/dataset"
     end
 
     #<IDN_Node>
@@ -74,8 +88,6 @@ module Metadata
      #  end
      #end
 
-
-
     def self.oai_sets
       [ {:spec => "arctic", :name => "Arctic datasets"},
         {:spec => "antarctic", :name => "Antarctic datasets"},
@@ -88,7 +100,7 @@ module Metadata
     end
 
     def self.summary
-      "Discovery-level dataset metadata, in particular DIFs targeted at NASA's Global Change Master Directory."
+      "Dataset metadata, in particular DIF XML targeted at NASA's Global Change Master Directory."
     end
 
     def self.title
