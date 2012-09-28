@@ -1,8 +1,16 @@
 require "./load"
 
 Npolar::Api.workspaces = ["biology", "ecotox", "gcmd", "seaice", "tracking", "ocean", "metadata"]
+
+Metadata.collections = ["dataset"]
+Seaice.collections = ["black-carbon", "em31", "thickness-drilling", "core", "snowpit"]
+
+Metadata::Dataset.formats = ["atom", "dif", "iso", "json", "xml"]
+Metadata::Dataset.accepts = ["dif", "json"]
+
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
+
  
 map "/" do
   # http(s)://api.npolar.no/
@@ -10,8 +18,12 @@ map "/" do
   run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "")
   
   map "/schema" do
-    schemas = [].sort
-    run lambda { |env| [200, {"Content-Type" => "application/json"},[schemas.to_json]] }
+
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"),
+      :system => "api", :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin"),
+      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
+    }
+    run Npolar::Api::Core.new(nil, {:storage => Npolar::Storage::Couch.new("schema"), :formats => ["html", "json"]})
   end
 
   map "/user" do
@@ -44,8 +56,6 @@ map "/gcmd" do
     [200, {"Content-Type" => "text/html"},[index.render]]
   }
   run gcmd_index
-  #run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "/")
-
   concepts = Gcmd::Concepts.new
   
   Gcmd::Concepts::ROOT_SCHEMES.each do |scheme|
@@ -66,7 +76,7 @@ end
 
 map "/metadata" do
 
-  Metadata.collections = ["dataset"]
+  
 
   # Show metadata index on anything that is not a search
   run Npolar::Rack::Solrizer.new(Views::Metadata::Index.new, :core => "")
@@ -90,7 +100,7 @@ map "/metadata" do
 
     run Npolar::Api::Core.new(nil,
       { :storage => Npolar::Storage::Couch.new("metadata_dataset"),
-        :formats => ["atom", "dif", "iso", "json", "xml"],
+        :formats => Metadata::Dataset.formats,
         :accepts => ["json", "dif", "xml"]
       }
     )
@@ -105,7 +115,7 @@ end
 map "/seaice" do
   #Seaice.workspace = "seaice"
 
-  Seaice.collections = ["black-carbon", "em31", "thickness-drilling", "core", "snowpit"]
+  
 
   # Show seaice index on anything that is not a search
   run Npolar::Rack::Solrizer.new(Views::Seaice::Index.new, :core => "/")
