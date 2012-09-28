@@ -1,4 +1,4 @@
-class Gcmd::Index < Mustache
+class Gcmd::Index < Npolar::Mustache::JsonView
 
   self.template_path = File.expand_path(File.dirname(__FILE__)+"/..")
 

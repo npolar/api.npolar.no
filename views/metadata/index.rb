@@ -6,34 +6,41 @@ module Views
       def initialize  
         @hash = { :_id => "metadata_index",
           :title => "Metadata",
-          :oai => {:verbs => [{:verb => "GetRecord", :example => "&identifier=x&metadataPrefix=dif"},
+          :summary => "Discovery-level metadata",
+          :oai => {:verbs => [
+            {:verb => "GetRecord", :example => "&metadataPrefix=dif&identifier=#{::Metadata::Dataset.example_id}"},
             {:verb => "Identify"},
             {:verb => "ListIdentifiers"},
             {:verb => "ListMetadataFormats"},
             {:verb => "ListRecords"},
             {:verb => "ListSets"}],
-            :summary => ::Metadata::Dataset.summary,
+            :summary => "",
           },
-
           :data => { "workspace" => ::Metadata.workspace, "collections" => collections.map {|c|c[:href]} } 
         }
       end
 
       def collections
-        ::Metadata.collections.sort.map {|c|
-          {:title => c.capitalize, :href => "/#{::Metadata.workspace}/#{c}", :list_formats => list_formats(c)}
+        collections = ::Metadata.collections.sort.map {|c|
+          { :title => c.capitalize,
+            :href => "/#{::Metadata.workspace}/#{c}",
+            :list_formats => static(c, :list_formats),
+            :example_href => static(c, :uri)+"/"+static(c, :example_id),
+            :summary => static(c, :summary),
+            :schema_uri => static(c, :schema_uri),
+            :formats => static(c, :formats).map {|f| { :format => f } },
+            :accepts => static(c, :accepts).map {|a| { :accept => a, :schema_uri => static(c, :schema_uri) } }
+          }
         }
       end
   
-
       protected
 
-      def list_formats(collection)
-        list_formats = [{:format => "json", :title => "JSON"}]
-        if "dataset" == collection
-          #list_formats << {:format => "xml", :title => "XML (OAI-PMH/DIF)"}
+      def static(collection, method)
+        case collection
+          when "dataset" then ::Metadata::Dataset.send(method)
+          else ""
         end
-        list_formats
       end
 
     end

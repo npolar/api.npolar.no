@@ -1,20 +1,52 @@
 {{{ head }}}
 
 <article>
+<section>{{summary}} workspace on <a href="../">api.npolar.no</a></section>
+
+{{# collections }}
+<hr/>
+<section>
+<h3>{{title}}: <a href="{{href}}">{{href}}</a></h3>
+
+{{summary}}
+</section>
 
 <section>
-{{# collections }}
-<h3>{{ title }}</h3>
-
+<h4>List API</h4>
 <ul>
 {{# list_formats }}
 <li><a href="{{href}}/.{{format}}">{{ title }}</a>
 {{/ list_formats }}
 </ul>
-
-{{/ collections}}
 </section>
 
+<section>
+<h4>Document API</h4>
+<dl>
+<dt>Formats (GET, HEAD, DELETE)</dt>
+<dd>{{# formats }}
+  <a href="{{example_href}}/.{{format}}">{{ format }}</a>
+{{/ formats }}
+</dd>
+<dt>Accepts (POST, PUT)</dt>
+<dd>{{# accepts }}
+  {{ accept }} (<a href="">{{schema_uri}}</a>)
+{{/ accepts }}
+</dd>
+<dt>Schema</dt>
+<dd><a href="{{schema_uri}}">{{schema_uri}}</a><dd>
+<dt>Example</dt>
+<dd><a href="{{document_example}}">{{document_example}}</a><dd>
+</dl>
+</section>
+
+<section>
+<h4>Search API</h4>
+</section>
+{{/ collections}}
+
+
+<hr/>
 {{# oai }}
 <section>
 <h3>OAI-PMH repository</h3>
@@ -24,7 +56,7 @@
 
 <ol>
 {{# verbs }}
-<li><a href="/metadata/oai?verb={{verb}}{{example}}">{{verb}}</a></li>
+<li><a href="/metadata/oai?verb={{verb}}{{example}}">{{verb}}{{example}}</a></li>
 {{/verbs}}
 </ol>
 
@@ -37,7 +69,7 @@
 <hr/>
 
 <nav>
-<p>Up to <a href="../">api.npolar.no</a></p>
+
 </nav>
 
 {{{ foot }}}

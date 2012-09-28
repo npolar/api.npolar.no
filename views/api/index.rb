@@ -12,7 +12,7 @@ module Views
             },
             {
               :href => "/metadata",
-              :title => "Discovery-level metadata for datasets"
+              :title => "Discovery-level metadata"
             },
             #{
             #  :href => "/ocean",
