@@ -5,6 +5,7 @@ module Views
       def initialize
         @hash = { "_id" => "api_index",
           :_rev => "11-7dfa6bc5bbe79996432e49760df7d268",
+          :workspaces => Npolar::Api.workspaces.map {|w| {:href => w, :title => w }},
           :xworkspaces => [
             {
               :href => "/ecotox",

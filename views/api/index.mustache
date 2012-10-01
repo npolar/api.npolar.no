@@ -6,23 +6,27 @@
 {{!--Non-developers should probably head over to the <a href="http://data.npolar.no">Norwegian Polar Data Centre</a>.--}}</p>
 
 <p>The API has a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>-style architecture,
-where individual documents that are identified, retrieved and updated via HTTP requests to a persistent web address, the document URI.
-See the project <a href="https://github.com/npolar/api.npolar.no/blob/master/README.md#readme">README</a> for more information.</p>
+where individual documents that are identified, retrieved and updated via HTTP requests to a persistent web address, the document URI.</p>
+
+<p><a href="https://github.com/npolar/api.npolar.no">Source</a> is on <a href="https://github.com/">GitHub</a>, see the project <a href="https://github.com/npolar/api.npolar.no/blob/master/README.md#readme">README</a> for more information.</p>
 
 </section>
 
 <section>
 <h2>Workspaces</h2>
 
-<p>Related data collections are grouped into <a href="/workspaces.json">workspaces</a>: </p>
+<p>Related data collections are grouped into <a href="/workspaces.json">workspaces</a>:</p>
 
- <ul>{{# workspaces }}
-    <li><a href="{{ href }}" title="{{ title }}">{{ href }}</a> – {{title}}</li>
-  {{/ workspaces}}</ul>
+<p>
+{{# workspaces }}
+    <code><a href="{{ href }}" title="{{ title }}">{{ href }}</a></code>
+  {{/ workspaces}}
+</p>
 
 </section>
 
 <!--<section id="search">
+–
 <h2>Search</h2>
 <p>All stored text is searchable (of course with the exception of sensitive data).
 Search using the <code>GET</code> parameter <code><strong>q</strong></code>.
@@ -50,14 +54,5 @@ The result format is a <code>JSON</code> <a href="">feed object</a>).</p>
 </dl>
 </section>-->
 
-<section>
-  <h2>Code</h2>
-  
-  <ul>
-  <li><a href="https://github.com/npolar/api.npolar.no">Source code</a> (on <a href="https://github.com/">GitHub</a>)</li>
-  <li><a href="/code/coverage/index.html">Code coverage</a></li>
-  <li><a href="/code/doc/index.html">Code documentation</a></li>
-  </ul>
-</section>
 </article>
 {{{ foot }}}
