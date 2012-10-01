@@ -14,6 +14,8 @@ Metadata::Dataset.formats = ["atom", "dif", "iso", "json", "xml"]
 Metadata::Dataset.accepts = ["dif", "json"]
 
 use Rack::JSONP
+use Rack::Static, :urls => ["/css", "/img", "/xsl"], :root => "public"
+
 #use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("api_editlog")
 
 map "/" do
@@ -167,6 +169,6 @@ end
 
 map "/tracking" do
   # Show tracking index on anything that is not a search
-  run Npolar::Rack::Solrizer.new(Views::Tracking::Index.new, :core => "/")
+  run Npolar::Rack::Solrizer.new(Views::Tracking::Index.new, :core => "")
   
 end
