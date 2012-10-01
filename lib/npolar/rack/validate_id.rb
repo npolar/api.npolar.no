@@ -23,9 +23,9 @@ module Npolar
           @explanation << "cannot start with _"   
         end
 
-        if id(request) =~ /[\.\/]/
-          @explanation << "cannot contain . or /"   
-        end
+        #if id(request) =~ /[\/]/
+        #  @explanation << "cannot contain /"   
+        #end
 
         if id(request) =~ /(\s|%20)+/
           @explanation << "blanks are banned"   
@@ -43,4 +43,5 @@ module Npolar
 
     end
   end
-end 
+end
+# FIXME: undefined method `handle' for #<Npolar::Rack::ValidateId:0x00000002020448>
