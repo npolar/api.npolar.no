@@ -1,0 +1,275 @@
+{
+    "Entry_ID": "abc",
+    "Entry_Title": "My Alphabet",
+    "Data_Set_Citation": [
+        {
+            "Dataset_Creator": "",
+            "Dataset_Title": "",
+            "Dataset_Series_Name": "",
+            "Dataset_Release_Date": "",
+            "Dataset_Release_Place": "",
+            "Dataset_Publisher": "",
+            "Version": "",
+            "Issue_Identification": "",
+            "Data_Presentation_Form": "",
+            "Other_Citation_Details": "",
+            "Online_Resource": ""
+        }
+    ],
+    "Personnel": [
+        {
+            "Role": ["Dad", "Drunk"],
+            "First_Name": "Homer",
+            "Middle_Name": "Jay",
+            "Last_Name": "Simpson",
+            "Email": ["homer.simpson@cartoon.com"],
+            "Phone": [],
+            "Fax": [],
+            "Contact_Address": {
+                "Address": [],
+                "City": "",
+                "Province_or_State": "",
+                "Postal_Code": "",
+                "Country": ""
+            }
+        },        
+        {
+            "Role": ["Employee"],
+            "First_Name": "Homer",
+            "Middle_Name": "Jay",
+            "Last_Name": "Simpson",
+            "Email": ["homer.simpson@gmail.com"],
+            "Phone": [],
+            "Fax": [],
+            "Contact_Address": {
+                "Address": [],
+                "City": "",
+                "Province_or_State": "",
+                "Postal_Code": "",
+                "Country": ""
+            }
+        },
+        {
+            "Role": ["Investigator", "Technical Contact"],
+            "First_Name": "R",
+            "Middle_Name": "e",
+            "Last_Name": "Dux",
+            "Email": ["rdux@gmail.com"],
+            "Phone": [],
+            "Fax": [],
+            "Contact_Address": {
+                "Address": [],
+                "City": "",
+                "Province_or_State": "",
+                "Postal_Code": "",
+                "Country": ""
+            }
+        },
+        {
+            "Role": ["Technical Contact", "DIF Author"],
+            "First_Name": "John",
+            "Middle_Name": "",
+            "Last_Name": "Doe",
+            "Email": ["john.doe@gmail.com"],
+            "Phone": [],
+            "Fax": [],
+            "Contact_Address": {
+                "Address": [],
+                "City": "",
+                "Province_or_State": "",
+                "Postal_Code": "",
+                "Country": ""
+            }
+        }
+    ],
+    "Discipline": [
+        {
+            "Discipline_Name": "",
+            "Subdiscipline": "",
+            "Detailed_Subdiscipline": ""
+        }
+    ],
+    "Parameters": [
+        {
+            "Category": "",
+            "Topic": "",
+            "Term": "",
+            "Variable_Level_1": "",
+            "Variable_Level_2": "",
+            "Variable_Level_3": "",
+            "Detailed_Variable": ""
+        }
+    ],
+    "ISO_Topic_Category": [],
+    "Keyword": ["letters", "language"],
+    "Sensor_Name": [
+        {
+            "Short_Name": "",
+            "Long_Name": ""
+        }
+    ],
+    "Source_Name": [
+        {
+            "Short_Name": "",
+            "Long_Name": ""
+        }
+    ],
+    "Temporal_Coverage": [
+        {
+            "Start_Date": "2012-09-04T10:41:25Z",
+            "Stop_Date": "2012-09-05"
+        },
+        {
+            "Start_Date": "2012-09-10",
+            "Stop_Date": ""
+        }
+    ],
+    "Paleo_Temporal_Coverage": [
+        {
+            "Paleo_Start_Date": "",
+            "Paleo_Stop_Date": "",
+            "Chronostratigraphic_Unit": [
+                {
+                    "Eon": "",
+                    "Era": "",
+                    "Period": "",
+                    "Epoch": "",
+                    "Stage": "",
+                    "Detailed_Classification": ""
+                }
+            ]
+        }
+    ],
+    "Data_Set_Progress": "In Work",
+    "Spatial_Coverage": [
+        {
+            "Southernmost_Latitude": "-90",
+            "Northernmost_Latitude": "90",
+            "Westernmost_Longitude": "0",
+            "Easternmost_Longitude": "180",
+            "Minimum_Altitude": "",
+            "Maximum_Altitude": "",
+            "Minimum_Depth": "",
+            "Maximum_Depth": ""
+        },
+        {
+            "Southernmost_Latitude": "78.00",
+            "Northernmost_Latitude": "78.00",
+            "Westernmost_Longitude": "11.0",
+            "Easternmost_Longitude": "11.0",
+            "Minimum_Altitude": "",
+            "Maximum_Altitude": "",
+            "Minimum_Depth": "",
+            "Maximum_Depth": ""
+        }
+    ],
+    "Location": [
+        {
+            "Location_Category": "OCEAN",
+            "Location_Type": "ATLANTIC OCEAN",
+            "Location_Subregion1": "NORTH ATLANTIC OCEAN",
+            "Location_Subregion2": "SVALBARD AND JAN MAYEN",
+            "Location_Subregion3": "",
+            "Detailed_Location": "Pyramiden"
+        }
+    ],
+    "Data_Resolution": [
+        {
+            "Latitude_Resolution": "",
+            "Longitude_Resolution": "",
+            "Horizontal_Resolution_Range": "",
+            "Vertical_Resolution": "",
+            "Vertical_Resolution_Range": "",
+            "Temporal_Resolution": "",
+            "Temporal_Resolution_Range": ""
+        }
+    ],
+    "Project": [
+        {
+            "Short_Name": "",
+            "Long_Name": ""
+        }
+    ],
+    "Quality": "Needs spellchecking",
+    "Access_Constraints": "We tell you",
+    "Use_Constraints": "",
+    "Data_Set_Language": [],
+    "Originating_Center": "",
+    "Data_Center": [
+        {
+            "Data_Center_Name": {
+                "Short_Name": "",
+                "Long_Name": ""
+            },
+            "Data_Center_URL": "",
+            "Data_Set_ID": [],
+            "Personnel": [
+                {
+                    "Role": ["Data Center Contact"],
+                    "First_Name": "Homer",
+                    "Middle_Name": "Jay",
+                    "Last_Name": "Simpson",
+                    "Email": ["homer.simpson@dcenter.com"],
+                    "Phone": [],
+                    "Fax": [],
+                    "Contact_Address": {
+                        "Address": [],
+                        "City": "",
+                        "Province_or_State": "",
+                        "Postal_Code": "",
+                        "Country": ""
+                    }
+                }
+            ]
+        }
+    ],
+    "Distribution": [
+        {
+            "Distribution_Media": "",
+            "Distribution_Size": "",
+            "Distribution_Format": "",
+            "Fees": ""
+        }
+    ],
+    "Multimedia_Sample": [
+        {
+            "File": "",
+            "URL": "",
+            "Format": "",
+            "Caption": "",
+            "Description": ""
+        }
+    ],
+    "Reference": [
+        "R. Dens, C. Helgeland, (2012) Modular API Design using Rack Middleware."
+    ],
+    "Summary": {
+        "Abstract": "A brief exploration of the alphabet.",
+        "Purpose": ""
+    },
+    "Related_URL": [
+        {
+            "URL_Content_Type": {
+                "Type": "",
+                "Subtype": ""
+            },
+            "URL": [],
+            "Description": ""
+        }
+    ],
+    "Parent_DIF": [],
+    "IDN_Node": [
+        {
+            "Short_Name": "",
+            "Long_Name": ""
+        }
+    ],
+    "Originating_Metadata_Node": "",
+    "Metadata_Name": "",
+    "Metadata_Version": "",
+    "DIF_Creation_Date": "2012-09-03T13:50:00Z",
+    "Last_DIF_Revision_Date": "2012-09-03",
+    "DIF_Revision_History": "",
+    "Future_DIF_Review_Date": "",
+    "Private": ""
+}
