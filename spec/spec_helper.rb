@@ -1,17 +1,25 @@
-require 'simplecov'
+require "simplecov"
+
 SimpleCov.start do
+  add_filter do |src|
+    src.lines.count < 5
+  end
+  add_filter "/load.rb"
   add_filter "/rackup/"
   add_filter "/spec/"
-  add_group "Server", "lib/api/server"
-  add_group "Collection", "lib/api/collection"
-  add_group "Storage", "lib/api/storage"
-  add_group "Rack", "lib/api/rack"
-end
+  add_group "Api", "lib/npolar/api"
+  add_group "Storage", "lib/npolar/storage"
+  add_group "Rack", "lib/npolar/rack"
+  add_group "Model" do | src |
+    src.filename =~ /lib\/(seaice|metadata)(.*)\.rb$/
+  end
+  add_group "Views", "views"
+  end
 
 require "bundler/setup"
 require "rspec"
 require "rack/test"
-require "./start"
+require "./load"
 
 # Test environment
 ENV["RACK_ENV"] = "test"
