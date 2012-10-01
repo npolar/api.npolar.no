@@ -48,8 +48,8 @@ module Metadata
         difs = builder.build_hash_documents
         j = []
         difs.each do | dif_hash |
-          dif_atom = ::Metadata::DifAtom.new
-          atom_hash = dif_atom.atom_from_dif(dif_hash)
+          transformer = ::Metadata::DifTransformer.new( dif_hash )
+          atom_hash = transformer.to_dataset
           atom_hash["_id"] = namespaced_uuid( atom_hash["id"] )
           j << atom_hash
         end

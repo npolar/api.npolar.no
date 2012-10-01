@@ -108,7 +108,7 @@ module Metadata
         stop = period.Stop_Date unless period.Stop_Date.nil?
         stop += "T12:00:00Z" unless stop == "" or stop =~ ISO_8601
         
-        periods << Hashie::Mash.new({"start_date" => start, "stop_date" => stop})
+        periods << Hashie::Mash.new({"start" => start, "stop" => stop})
       end unless object.Temporal_Coverage.nil?
       periods
     end

@@ -120,7 +120,7 @@ describe Metadata::DifTransformer do
         end
         
         it "should map Temporal_Coverage to activity" do
-          @transformer.activity[0].start_date.should == @transformer.object.Temporal_Coverage[0].Start_Date
+          @transformer.activity[0].start.should == @transformer.object.Temporal_Coverage[0].Start_Date
         end
         
       end
