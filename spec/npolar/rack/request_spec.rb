@@ -43,7 +43,7 @@ describe Npolar::Rack::Request do
       it "format == bar"
     end
 
-end  
+  end  
 end
 
   
@@ -167,3 +167,20 @@ end
     #def basic
     #  ::Rack::Auth::Basic::Request.new(env)
     #end
+
+
+  #describe "#id" do
+  #  it "should extract foo from foo.bar" do
+  #    request = Npolar::Rack::Request.new env("/foo.bar")
+  #    request.id.should == "foo"
+  #  end
+  #
+  #  it "should extract foo from foo.bar.bar/foo" do
+  #    request = Npolar::Rack::Request.new env("/foo.bar.bar/foo")
+  #    request.id.should == "foo"
+  #  end
+  #
+  #end
+
+
+#end
