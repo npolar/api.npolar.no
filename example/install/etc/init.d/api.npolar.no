@@ -12,9 +12,10 @@
 PATH=/home/api/.rvm/bin:/home/api/.rvm/bin/default_ruby:$PATH
 DAEMON=/home/api/api.npolar.no/bin/unicorn
 DAEMON_OPTS="-c /home/api/api.npolar.no/example/install/unicorn.rb -E production -D"
+
 NAME=$0
 DESC=$API_HOME
-PID=/home/api/api.npolar.no/api.pid
+PID=/home/api/api.pid
 
 case "$1" in
   start)
