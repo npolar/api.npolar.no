@@ -30,18 +30,19 @@ module Npolar
       #else
 
       def finish(&block)
-   
-        body = body.to_json if body.is_a? Hash
+        if body.respond_to? :to_json
+          body = body.to_json
+        end
         super
       end
 
+      
+
       def to_s
-        io = StringIO.new
-        body.each {|chunk| io << chunk }
-        io.rewind
-        io
+        s = ""
+        body.each {|chunk| s += chunk }
+        s
       end
-      alias :io :to_s
 
     end
   end
