@@ -14,6 +14,7 @@ module Npolar
       :accepts => lambda { |storage| storage.respond_to?(:accepts) ? storage.accepts : [] }, # Accepted formats (incoming)
       :formats => lambda { |storage| storage.respond_to?(:formats) ? storage.formats : [] }, # Supported formats (outgoing)
       :storage => nil,
+      :log => nil,
       :methods => ["DELETE", "GET", "HEAD", "POST", "PUT"], # Allowed HTTP methods,
       :headers => { "Content-Type" => "application/json; charset=utf-8" }
     }
@@ -22,24 +23,28 @@ module Npolar
     # @param env
     # @return [status, headers, body#each]
     def call(env)
+      
       begin
         env["HTTP_COOKIE"] = ""
         @request = Rack::Request.new(env) # <Npolar::Rack::Request>
+
         handle(request)
+
       rescue => e
-        unless "test" == ENV["RACK_ENV"]
-          puts "="*80+"\n"+e.class.name+"\n"+e.message
-          puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
-        end
+
+        log.fatal e.class.name+": "+e.message
+        log.fatal "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+
         http_error(500, "Polar bears ate your request")
-      ensure
-        # log error
+
       end
     end
 
     # Handle HTTP request and return HTTP response triplet (Rack-style)
     # @return Npolar::Rack::Response or [status, headers, body#each]
     def handle(request)
+
+      log.debug self.class.name+"#handle [#{request.request_method} #{request.url}] #{::DateTime.now.xmlschema(6)}"
 
       if storage.nil?
         return http_error(501, "No storage set for API endpoint, cannot handle request")
@@ -91,8 +96,6 @@ module Npolar
 
       end
       
-      #headers = ::Rack::Utils::HeaderHash.new(request.env)
-
       status, headers, body = case request_method
         when "DELETE"  then storage.delete(id, params)
         when "GET"     then storage.get(id, params)
@@ -100,6 +103,8 @@ module Npolar
         when "POST"    then storage.post(document, params)
         when "PUT"     then storage.put(id, document, params)
       end
+
+      log.debug "#{status} #{headers} #{::DateTime.now.xmlschema(6)}"
 
       Rack::Response.new(body, status, headers)
 
@@ -125,7 +130,7 @@ module Npolar
     def accepts
       force_array(config[:accepts], storage)
     end
-    
+
     # @return String
     def format
       request.format.empty? ? formats.first : request.format
@@ -183,6 +188,11 @@ module Npolar
       end
       a
     end
+
+    def log
+      config[:log] ||= Api.log
+    end
+
   end
 
   class Exception < Exception

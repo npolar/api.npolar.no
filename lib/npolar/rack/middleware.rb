@@ -83,6 +83,20 @@ module Npolar
         end
         unknown_keys
       end
+
+      def request_hash
+        {
+          "method" => request.request_method,
+          "uri" => request.url,
+          "id" => request.id,   
+          "agent" => request.user_agent,
+          "path" => request.script_name,
+          "format" => request.format,
+          "username" => request.username,
+          "time" => ::DateTime.now.xmlschema,
+          "ip" => request.ip
+        }
+      end
   
       def error_hash(status, explanation=nil)
         {"error"=>{
