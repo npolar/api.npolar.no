@@ -20,7 +20,7 @@ module Metadata
     
     attr_accessor :schema
 
-    SCHEMA_URI = { "dif" =>  "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd", "json" => "/schema/metadata-dataset"}
+    SCHEMA_URI = { "dif" =>  "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd", "json" => "http://api.npolar.no/schema/metadata-dataset"}
 
     class << self
       attr_accessor :formats, :accepts
