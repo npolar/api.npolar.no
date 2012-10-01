@@ -9,20 +9,23 @@ module Npolar
       CONFIG = {
         :core => nil,
         :model => nil,
-        :select => "select",
+        :select => nil,
         :q => lambda {|request|
           qstar = request.params["q"].delete(":")+"*"
           "title:#{qstar} OR #{qstar}"
         },
+        :fq => [],
         :feed => lambda {|response|
-          {"feed" => { "entries" => response["response"]["docs"].select{|doc|
-            doc.key? "title" and doc.key? "workspace" and doc.key? "collection"
-          }.map {|doc|
-            { "title" => doc["title"], "workspace" => doc["workspace"], "collection" => doc["collection"],
-              "summary" => doc["text"], "updated" => doc["updated"], "id" => doc["id"], "self" => doc["link"] } } }
-          }
+
+          facets = response.key?("facet_counts") ? response["facet_counts"]["facet_fields"] : []
+
+          {"feed" => { "facets" => facets, "entries" => response["response"]["docs"].select {|doc|
+            doc.key? "title" and doc.key? "id"
+          }}}
         },
-        :rows => 10
+        :summary => lambda {|doc| doc["summary"]},
+        :rows => 10,
+        :wt => "ruby"
       }
       # q=title:foo OR exact:foo OR text:foo*
 
@@ -50,6 +53,7 @@ module Npolar
 
       # Only called if #condition? is true
       def handle(request)
+        @request = request
         case request.request_method
           when "DELETE" then delete(request)
           when "POST", "PUT" then save(request)
@@ -70,7 +74,12 @@ module Npolar
         begin
           start = params["start"] ||= 0
           rows  = params["rows"]  ||= config[:rows]
-          response = rsolr.get select, :params => { :q=>q, :start => start, :rows => rows, :fq => fq }
+          response = rsolr.get select, :params => {
+            :q=>q, :start => start, :rows => rows,
+            :fq => fq,
+            :facet => request.multi("facets").size > 0,
+            :"facet.field" => facets,
+            :fl => fl }
 
           if "solr" == request.format
             # noop
@@ -93,13 +102,20 @@ module Npolar
         config[:feed].call(response)
       end
 
-      def fq
-        #FIXME merge with config fq
-        params["fq"]
+      def facets
+        facets = request.params["facets"]
+        if facets =~ /,/
+          facets = facets.split(",")
+        end
+        facets
       end
 
-      def q
-        config[:q].call(request)
+      def fq
+        fq = (request.multi("fq") + config[:fq]).uniq
+      end
+
+      def fl
+        fl = request.params["fl"] ||= config[:fl]
       end
 
       def model
@@ -115,14 +131,40 @@ module Npolar
       end
 
       def uri
-p config[:core]
-        uri = config[:core] ||= self.class.uri
-p uri
-uri
+        uri = config[:core] ||= ""
+        if self.class.uri.is_a? String and self.class.uri =~ /^http(s)?:\/\// and uri !~ /^http(s)?:\/\//
+          uri = self.class.uri.gsub(/[\/]$/, "") + "/#{uri}"
+        end
+        uri
+      end
+
+      def q
+        config[:q].call(request)
       end
 
       def select
-        config[:select] ||= "select"
+        select = config[:select] ||= "select"
+        if  select =~ /^[\/]/
+          select = select.gsub(/^[\/]/, "")
+        end
+        select
+      end
+
+      def self.summary(doc)
+        config[:summary].call(doc)
+      end
+
+
+      def collection
+        request.path_info.split("/")[1]
+      end
+
+      def workspace
+        request.path_info.split("/")[0]
+      end
+
+      def wt
+        config[:wt]
       end
 
     end
