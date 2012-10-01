@@ -1,6 +1,6 @@
 # REST API powering http://api.npolar.no
 
-[Rack](https://github.com/rack/rack)-based building blocks for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
+[Rack](https://github.com/rack/rack)-based reusable building blocks for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
 
 Construct API endpoints [lego](http://lego.dk)-wise by connecting a [Npolar::Api::Core](https://github.com/npolar/api.npolar.no/wiki/Core) instance with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
 other [middleware](https://github.com/npolar/api.npolar.no/wiki/Middleware) for security, validation, search/indexing, logging, transformation, etc.
@@ -70,7 +70,6 @@ curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d'{"_id":"po
 ```
 The above works '''once''' because the document body contains the correct revision. If you replay the PUT, you will get a HTTP `409` Conflict error, see
 [Revisions]() for how to deal with this.
-.)
 
 ``` http
 curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d '{}'
@@ -160,4 +159,7 @@ run Npolar::Api::Core.new(nil, {:storage => storage, :methods => ["HEAD", "GET"]
 * [Performance](https://github.com/npolar/api.npolar.no/wiki/Performance)
 * [Errors](https://github.com/npolar/api.npolar.no/wiki/Errors)
 * [Revisions]() (edit log)
-* [Formats and Media Types] (see also http://www.iana.org/assignments/media-types/index.html)
+* [Formats and Media Types](https://github.com/npolar/api.npolar.no/wiki/Formats) (see also http://www.iana.org/assignments/media-types/index.html)
+
+## Quality metrics
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/npolar/api.npolar.no)
