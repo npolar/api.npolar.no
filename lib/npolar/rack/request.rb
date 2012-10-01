@@ -119,7 +119,7 @@ module Npolar
     def write?
       ["DELETE", "PUT", "PATCH", "POST"].include? request_method
     end
-    #alias :edit? :write?
+    alias :edit? :write?
 
     # Search request?
     # A serarch is a GET request with GET parameter "q"
