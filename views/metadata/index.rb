@@ -27,18 +27,17 @@ module Views
             :list_formats => static(c, :list_formats),
             :example_href => static(c, :uri)+"/"+static(c, :example_id),
             :summary => static(c, :summary),
-            :schema_uri => static(c, :schema_uri),
             :formats => static(c, :formats).map {|f| { :format => f } },
-            :accepts => static(c, :accepts).map {|a| { :accept => a, :schema_uri => static(c, :schema_uri) } }
+            :accepts => static(c, :accepts).map {|a| { :accept => a, :schema_uri => static(c, :schema_uri, a) } }
           }
         }
       end
   
       protected
 
-      def static(collection, method)
+      def static(collection, method, *args)
         case collection
-          when "dataset" then ::Metadata::Dataset.send(method)
+          when "dataset" then ::Metadata::Dataset.send(method, *args)
           else ""
         end
       end

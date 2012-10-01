@@ -6,19 +6,19 @@
 {{# collections }}
 <hr/>
 <section>
-<h3>{{title}}: <a href="{{href}}">{{href}}</a></h3>
+<h3>{{title}}</h3>
 
 {{summary}}
 </section>
 
 <section>
 <h4>Sets</h4>
-<ul>
+
 {{# list_formats }}
-<li><a href="{{href}}/.{{format}}">{{ title }}</a>
+{{ title }}: <code><a href="{{href}}/.{{format}}">{{href}}/.{{format}}</a></code>
 {{/ list_formats }}
 {{# sets }}
-<li><a href="{{href}}/.{{format}}">{{ title }}</a>
+<code><a href="{{href}}/.{{format}}">{{ title }}</a></code>
 {{/ sets }}
 
 </ul>
@@ -26,27 +26,38 @@
 
 <section>
 <h4>Document API</h4>
+
+<code>DELETE|GET|HEAD|PUT https://api.npolar.no<a href="{{example_href}}/.json">{{ href }}/id.format</a></code>
+<code>POST https://api.npolar.no<a href="{{href}}.{{format}}">{{ href }}</a></code>
+
 <dl>
 <dt>Formats (GET, HEAD, DELETE)</dt>
 <dd>{{# formats }}
-  <a href="{{example_href}}/.{{format}}">{{ format }}</a>
+  <code><a href="{{example_href}}.{{format}}">{{ format }}</a></code>
 {{/ formats }}
 </dd>
 <dt>Accepts (POST, PUT)</dt>
 <dd>{{# accepts }}
-  {{ accept }} (<a href="">{{schema_uri}}</a>)
+  <code>{{ accept }}</code> <code><a href="{{schema_uri}}">{{schema_uri}}</a></code>
 {{/ accepts }}
 </dd>
-<dt>Schema</dt>
-<dd><a href="{{schema_uri}}">{{schema_uri}}</a><dd>
+
+<!--
 <dt>Example</dt>
 <dd><a href="{{document_example}}">{{document_example}}</a><dd>
 </dl>
+-->
+
 </section>
 
+
+
 <section>
-<h4>Search API</h4>
+<!--<h4>Search API</h4>
+Attributes for filters/facets
+-->
 </section>
+
 {{/ collections}}
 
 
@@ -60,7 +71,7 @@
 
 <ol>
 {{# verbs }}
-<li><a href="/metadata/oai?verb={{verb}}{{example}}">{{verb}}{{example}}</a></li>
+<li><code><a href="/metadata/oai?verb={{verb}}{{example}}">{{verb}}</a></code></li>
 {{/verbs}}
 </ol>
 
