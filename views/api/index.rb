@@ -5,7 +5,7 @@ module Views
       def initialize
         @hash = { "_id" => "api_index",
           :_rev => "11-7dfa6bc5bbe79996432e49760df7d268",
-          :workspaces => [
+          :xworkspaces => [
             {
               :href => "/ecotox",
               :title => "Environmental pollutants"
