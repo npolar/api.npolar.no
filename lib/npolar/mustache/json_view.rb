@@ -27,10 +27,10 @@ class Npolar::Mustache::JsonView < ::Mustache
 <html lang="en">
 <head>
   <title>{{title}}</title>
-  <meta charset="utf-8">
-  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
-  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
-  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
+  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" />
 </head>
 <body class="container-fluid">
 
