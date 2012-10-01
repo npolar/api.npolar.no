@@ -7,8 +7,6 @@ require "npolar/rack/response"
 
 require "npolar/api/core"
 
-
-# see describe Rack::Request do
 describe 'Api::Core (accepts == formats == ["foo", bar"])' do
 
   def app
@@ -16,15 +14,17 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
   end
 
   def api
-    config = {
-      :accepts => ["foo", "bar"],
-      #:format => "bar",
-      :formats => ["foo", "bar"],
-      :headers => { "Content-Type" => "application/bar; charset=utf-8" },
-    }
     api = Npolar::Api::Core.new(nil, config)
     api.storage = storage_double
     api
+  end
+
+  def config
+    {
+      :accepts => ["foo", "bar"],
+      :formats => ["foo", "bar"],
+      :headers => { "Content-Type" => "application/bar; charset=utf-8" },
+    }
   end
 
   def storage_double
@@ -44,6 +44,7 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
       storage.accepts.include? format
     end
 
+    #storage.stub(:valid?)
 
     storage.stub(:format)
     storage.stub(:format=)
@@ -63,13 +64,13 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
     if method =~ /POST|PUT/
       status = 201
     end
-    headers = {"CONTENT_TYPE" => "foo/bar" }
+    headers = {"Content-Type" => "foo/bar; charset=utf-8" }
     body = method
     [status, headers, body]
   end
 
   def rack_request(path="/")
-    Api::Rack::Request.new(env(path))
+    Npolar::Rack::Request.new(env(path))
   end
 
   context "Document" do
@@ -82,9 +83,18 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
           last_response.status.should == 200
         end
 
+
+
+        it "Content-Length: #{method == 'HEAD' ? "3 or missing" : method.size }" do
+          request "/foo.bar", :method => method
+          if last_response.headers.keys.include? "Content-Length"
+            last_response.headers.should include ({"Content-Length"=>"#{method == 'HEAD' ? "3" : method.size.to_s }"})
+          end
+        end
+      
         if method == "HEAD"
           it "Body = ''" do
-            head "/foo.bar", {"CONTENT_TYPE" => "foo/bar" }
+            head "/foo.bar"
             last_response.body.should == ""
           end
         else
@@ -93,29 +103,33 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
             last_response.body.should == method
           end
         end
-
-        it "Content-Type: foo/bar; charset=utf-8" do
-          request "/foo.bar", :method => method
-          last_response.headers.should include({"Content-Type" => "application/bar; charset=utf-8"})
-        end
-
-        it "Content-Length: #{method == 'HEAD' ? "3 or missing" : method.size }" do
-          request "/foo.bar", :method => method
-          if last_response.headers.keys.include? "Content-Length"
-            last_response.headers.should include ({"Content-Length"=>"#{method == 'HEAD' ? "3" : method.size.to_s }"})
-          end
-        end
       end
 
+        context "#{method} /foo [Accept: foo/bar]" do
+          it "200 OK" do
+            request "/foo", { :method => method, "HTTP_ACCEPT" => "foo/bar" }
+            last_response.status.should == 200
+          end
+        end
+        context "#{method} /foo.bad" do
+          it "406 Not Acceptable" do
+            request "/foo.bad", :method => method
+            last_response.status.should == 406
+          end
+        end
+        context "#{method} /foo [Accept: foo/bad]" do
+          it "406 Not Acceptable" do
+            request "/foo", { :method => method, "HTTP_ACCEPT" => "foo/bad" }
+            last_response.status.should == 406
+          end
+        end
+        #it "Content-Type: foo/bar; charset=utf-8"
 
+
+      
     end     
     
     context "PUT /foo.bar" do
-      #it "foo" do
-        #  put "foo", "PUT"
-        #  last_response.body.should == "PUT"
-        #  last_response.status.should == 200
-      #end
   
       it "201 Created" do
         put "/foo.bar", "PUT"
@@ -127,131 +141,128 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
         last_response.body.should == "PUT"
       end
 
-      it "Location: URI"
+      it "Invalid document"  
+      it "Location: URI" # after POST|PUT
 
-#ch@birkafjell:~$ curl -i -X PUT -d@/tmp/x http://localhost:9393/metadata/dataset/gps.xml -H "Content-Type: application/xml"
-#oops Server: CouchDB/1.0.1 (Erlang OTP/R14B)
-#oops Location: http://localhost:5984/metadata_dataset/gps
-
+      it "Remove HTTP headers not on Whitelist"
 
       context "without payload" do
-        it "412 Precondition Failed" do
+        it "400 Bad Method" do
           put "/foo.bar"
-          last_response.status.should == 412
+          last_response.status.should == 400
         end
       end
 
-      # PUT foo.bad with bar headers?
-      # PUT foo with bar headers?
+      # 4xx PUT foo.bad with bar Content-Type headers?
+      # 201 PUT foo with bar headers?
       # POST?
-      #context "PUT /foo.bad" do
-      #  # http://tools.ietf.org/html/rfc2616#section-10.4.16
-      #  it "415 Unsupported Media Type" do 
-      #    put "foo.bad", "text", {"Content-Type" => "foo/bad"}
-      #    last_response.status.should == 415
-      #  end
-      #end
-      #
-      #context "POST [Content-Type: foo/bad]"
+      # DELETE foo.bar === DELETE foo ?
+    end
+
+    context "POST" do
+      context "/foo.bar" do
+        it "201 Created" do
+          post "/foo.bar", "{}", {"CONTENT_TYPE" => "foo/bar" }
+          last_response.status.should == 201
+        end
+      end
+      context "/foo.bad" do
+        it "415 Unsupported Media Type" do
+          post "/foo.bad", "{}", {"CONTENT_TYPE" => "foo/bad" }
+          last_response.status.should == 415
+        end
+      end
+      context "/foo [Content-Type: foo/bad]" do
+        it "415 Unsupported Media Type" do
+          post "/foo", "{}", {"CONTENT_TYPE" => "foo/bad" }
+          last_response.status.should == 415
+        end
+      end
+    end
+
+    context "UNKOWN" do
+      context "/foo.bar" do
+        it "405 Method Not Allowed" do
+          request "/foo.bar", :method => "UNKOWN"
+          last_response.status.should == 405
+        end
+      end
+    end
+  end
+
+  context "Blank id" do
+
+    ["PUT", "DELETE"].each do | method |
+      context "#{method}" do
+        it "400 Bad Request" do
+          request "/.bar", :method => method
+          last_response.status.should == 400
+        end
+      end
+    end
+  end
+
+  context "Storage" do
+    context "Missing storage" do
+        it "501 Not Implemented" do
+        core = Npolar::Api::Core.new
+        core.call(env("/foo.foo")).status.should == 501
+      end
+    end
+  end
+
   
-
-
-    end
-
-  end
-
-
-
-    # DELETE foo.bar === DELETE foo ?
-
-  #context "Bad format" do
-  #  ["DELETE", "GET", "HEAD"].each do | method |
-  #   
-  #  end
+  #context "JSON" do
   #
-  #  
-  #end
-
-    
-  #describe "#acceptable? format" do
-  #
-  #  it "Good format" do
-  #    acceptable = api.acceptable? "foo"
-  #    acceptable.should == true
-  #  end
-  #
-  #  it "Bad format" do
-  #    acceptable = api.acceptable? "bad"
-  #    acceptable.should == false
-  #  end
-  #
-  #  it "'' (No format)" do
-  #    acceptable = api.acceptable? ""
-  #    acceptable.should == true
-  #  end
+  #  context "security" do
+  #    context "PUT requests where id in path != id in body" do
+  #      it "403 Forbidden" 
+  #    end
+  #  end  
   #
   #end
 
-      #
-      #context "#{method} /foo.bad" do
-      #  # http://tools.ietf.org/html/rfc2616#section-10.4.16
-      #  it "406 Not Acceptable" do 
-      #    request "/foo.bad", :method => method
-      #    last_response.status.should == 406 
-      #  end
-      #
-      #  unless "HEAD" == method
-      #    it "Body = '{ \"error\": ... }'" do 
-      #      request "/foo.bad", :method => method
-      #      error = JSON.parse(last_response.body) 
-      #      error.keys.should == ["error"]
-      #    end
-      #  end
-      #end
+  context "Polar bears eat Exceptions" do
+    it "500 Internal Server Error" do
 
-  context "POST" do
-      it "/foo.bar" do
-        post "/foo.bad", "{}", {"CONTENT_TYPE" => "foo/bar" }
-        last_response.status.should == 201
-      end
-      it "/foo.bad" do
-        post "/foo.bad", "{}", {"CONTENT_TYPE" => "foo/bad" }
-        last_response.status.should == 415
-      end
-    end
+      storage = double("Api::Storage::Dummy")
+      storage.stub(:get => lambda { }) # will cause Exception
 
-  context "Server errors" do
-    it "No storage should give server error" do
-      expect { Npolar::Api::Core.new.get("/") }.to raise_exception Npolar::Exception
+      core = Npolar::Api::Core.new(nil, :formats => ["foo", "bar"], :accepts => ["foo", "bar"], :storage => storage)
+      core.call(env("/foo.bar")).status.should == 500
     end
   end
 
-  context "JSON" do
-    
-    before do
-      
-      @api = Npolar::Api::Core.new
-      @api
-    end
-
-    context "security" do
-      context "PUT requests where id in path != id in body" do
-        it "403 Forbidden" 
+  context "Configuration" do
+    context ":formats and :accepts" do
+      it "String" do
+        core = Npolar::Api::Core.new(nil, :formats => "zoo", :accepts => "zoo", :storage => storage_double)
+        core.accepts.should == ["zoo"]
+        core.formats.should == ["zoo"]
       end
-    end
-
-    context "POST multiple documents" do
-      it "202 Accepted" do
-        env("/foo.bar", [ '[{"id": "foo"}, {"id": "bar"}]', {"CONTENT_TYPE" => "application/json" } ])
-        @api.call(env)
-        last_response.body.should == 202
+      it "Array" do
+        core = Npolar::Api::Core.new(nil, :formats => ["zoo","tzar"], :accepts => ["zoo","tzar"], :storage => storage_double)
+        core.accepts.should == ["zoo","tzar"]
+        core.formats.should == ["zoo","tzar"]
       end
-      it "POST [{..}, {..}]"
+      it "Proc" do
+        core = Npolar::Api::Core.new(nil, :formats => lambda {|f|["zoo","tzar"]}, :accepts => lambda {|f|["zoo","tzar"]}, :storage => storage_double)
+        core.accepts.should == ["zoo","tzar"]
+        core.formats.should == ["zoo","tzar"]
+      end
+      it "Callable object" do
+        class CallMe
+          def call(env=nil)
+            ["called"]
+          end
+        end
+        core = Npolar::Api::Core.new(nil, :formats => CallMe.new, :accepts => CallMe.new, :storage => storage_double)
+        core.accepts.should == ["called"]
+        core.formats.should == ["called"]
+      end
+      it "storage.accepts"
+      it "storage.formats"
     end
-
-    
-    
-
   end
 
 end
