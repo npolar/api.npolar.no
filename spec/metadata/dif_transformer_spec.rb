@@ -1,16 +1,16 @@
 require "spec_helper"
-require "metadata/dataset/dif_transformer"
+require "metadata/dif_transformer"
 
-describe Metadata::Dataset::DifTransformer do
+describe Metadata::DifTransformer do
     
   context "Object" do
     
     it "should raise an Argumenterror the data isn't a Hash" do
-      expect{ Metadata::Dataset::DifTransformer.new( [] ) }.to raise_error( ArgumentError )
+      expect{ Metadata::DifTransformer.new( [] ) }.to raise_error( ArgumentError )
     end
     
     it "should be a Hash when provided with valid data" do
-      transformer = Metadata::Dataset::DifTransformer.new
+      transformer = Metadata::DifTransformer.new
       subject.object.should be_a_kind_of( Hash )
     end
     
@@ -19,7 +19,7 @@ describe Metadata::Dataset::DifTransformer do
   context "Transformations" do
     
     before(:each) do
-      @transformer = Metadata::Dataset::DifTransformer.new( JSON.parse( File.read( "spec/data/dif.json" ) ) )
+      @transformer = Metadata::DifTransformer.new( JSON.parse( File.read( "spec/data/dif.json" ) ) )
     end
     
     context "#to_dataset" do
@@ -84,7 +84,7 @@ describe Metadata::Dataset::DifTransformer do
         end
         
         it "should format the date to ISO 8601 Date Time format" do
-          @transformer.published.should =~ Metadata::Dataset::DifTransformer::ISO_8601
+          @transformer.published.should =~ Metadata::DifTransformer::ISO_8601
         end
         
       end
@@ -96,7 +96,7 @@ describe Metadata::Dataset::DifTransformer do
         end
         
         it "should format the date to ISO 8601 Date Time format" do
-          @transformer.updated.should =~ Metadata::Dataset::DifTransformer::ISO_8601
+          @transformer.updated.should =~ Metadata::DifTransformer::ISO_8601
         end
         
       end
