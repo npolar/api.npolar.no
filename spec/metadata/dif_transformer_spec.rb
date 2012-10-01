@@ -1,5 +1,5 @@
 require "spec_helper"
-require "metadata/dataset/dif_transformer"
+require "metadata/dif_transformer"
 
 describe Metadata::Dataset::DifTransformer do
     
