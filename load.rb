@@ -1,5 +1,11 @@
 require "bundler/setup"
 require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
+require "logger"
+
+#
+#Dir.glob("./lib/npolar/**/*.rb").each do | file |
+#  require file
+#end
 
 # Server
 require "./lib/npolar/exception"
@@ -9,15 +15,15 @@ require "./lib/npolar/rack/middleware"
 require "./lib/npolar/api"
 require "./lib/npolar/api/core"
 
-# Auth
+## Auth
 require "./lib/npolar/auth/couch"
 require "./lib/npolar/auth/ldap"
 require "./lib/npolar/rack/authorizer"
-
-# Storage
+#
+## Storage
 require "./lib/npolar/storage/couch"
-
-# Middleware
+#
+## Middleware
 require "./lib/npolar/rack/middleware"
 require "./lib/npolar/rack/solrizer"
 require "./lib/npolar/rack/require_param"
@@ -56,10 +62,6 @@ require "./views/views"
 require "./lib/npolar/mustache"
 require "./lib/npolar/mustache/json_view"
 
-Dir.glob("./lib/**/*.rb").each do | file |
-  puts file
-  #require file
-end
 
 Dir.glob("./views/*/*.rb").each do | file |
   require file
