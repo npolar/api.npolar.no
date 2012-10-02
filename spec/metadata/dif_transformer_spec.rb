@@ -18,11 +18,11 @@ describe Metadata::DifTransformer do
   
   context "Transformations" do
     
-    before(:each) do
-      @transformer = Metadata::DifTransformer.new( JSON.parse( File.read( "spec/data/dif.json" ) ) )
-    end
-    
     context "#to_dataset" do
+      
+      before(:each) do
+        @transformer = Metadata::DifTransformer.new( JSON.parse( File.read( "spec/data/dif.json" ) ) )
+      end
       
       it "should return a Hash" do
         @transformer.to_dataset.should be_a_kind_of( Hash )
@@ -231,6 +231,110 @@ describe Metadata::DifTransformer do
         
         it "should default to no on import" do
           @transformer.draft.should == "no"
+        end
+        
+      end
+      
+    end
+    
+    context "#to_dif" do
+      
+      before(:each) do
+        @transformer = Metadata::DifTransformer.new( JSON.parse( File.read( "spec/data/dataset.json" ) ) )
+      end
+      
+      it "should return a Hash" do
+        @transformer.to_dif.should be_a_kind_of( Hash )
+      end
+      
+      context "#entry_id" do
+        
+        it "should translate _id into Entry_ID" do
+          @transformer.entry_id.should == @transformer.object._id
+        end
+        
+      end
+      
+      context "#entry_title" do
+        
+        it "should translate title into Entry_Title" do
+          @transformer.entry_title.should == @transformer.object.title
+        end
+        
+      end
+      
+      context "#summary_abstract" do
+        
+        it "should be a Hash" do
+          @transformer.summary_abstract.should be_a_kind_of( Hash )
+        end
+        
+        it "should translate summary into Summary[Abstract]" do
+          @transformer.summary_abstract.should == { "Abstract" => @transformer.object.summary }
+        end
+        
+      end
+      
+      context "#personnel" do
+        
+        it "should be an Array" do
+          @transformer.personnel.should be_a_kind_of( Array )
+        end
+        
+        it "each person should be represented by a Hash" do
+          @transformer.personnel[0].should be_a_kind_of( Hash )
+        end
+        
+        it "should save investigators as personnel" do
+          @transformer.personnel[0].should include( "First_Name" => "Jack" )
+        end
+        
+      end
+      
+      context "#temporal_coverage" do
+        
+        it "should be a Array" do
+          @transformer.temporal_coverage.should be_a_kind_of( Array )
+        end
+        
+        it "should have a hash for array elements" do
+          @transformer.temporal_coverage[0].should be_a_kind_of( Hash )
+        end
+        
+        it "should translate start|stop into Start_Date|Stop_Date" do
+          @transformer.temporal_coverage.should include( "Start_Date" => @transformer.object.activity[0]["start"], "Stop_Date" => @transformer.object.activity[0]["stop"] )
+        end
+        
+      end
+      
+      context "#dif_creation_date" do
+        
+        it "should map published to DIF_Creation_Date" do
+          @transformer.creation_date.should == @transformer.object.published
+        end
+        
+      end
+      
+      context "#revision_date" do
+        
+        it "should map updated to Last_DIF_Revision_Date" do
+          @transformer.revision_date.should == @transformer.object.updated
+        end
+        
+      end
+      
+      context "#metadata_name" do
+        
+        it "should return CEOS IDN DIF" do
+          @transformer.metadata_name.should == "CEOS IDN DIF"
+        end
+        
+      end
+      
+      context "#metadata_version" do
+        
+        it "should have the same version as the Gcmd Library has" do
+          @transformer.metadata_version.should == Gcmd::Schema::VERSION
         end
         
       end
