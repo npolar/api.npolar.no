@@ -4,37 +4,22 @@ module Views
 
       def initialize
         @hash = { "_id" => "api_index",
-          :_rev => "11-7dfa6bc5bbe79996432e49760df7d268",
           :workspaces => Npolar::Api.workspaces.map {|w| {:href => w, :title => w }},
-          :xworkspaces => [
-            {
-              :href => "/ecotox",
-              :title => "Environmental pollutants"
-            },
-            {
-              :href => "/metadata",
-              :title => "Discovery-level metadata"
-            },
-            #{
-            #  :href => "/ocean",
-            #  :title => "Oceanography data"
-            #},
-            {
-              :href => "/seaice",
-              :title => "Seaice and its physical properties"
-            },
-            #{
-            #  :href => "/tracking",
-            #  :title => "Tracking data"
-            #}
-          ],
-          :title => "api.npolar.no"
+          :title => "api.<a title=\"Norwegian Polar Institute\" href=\"http://npolar.no\">npolar.no</a>",
+          :sections => [{ :section => '<section id="welcome">
+<p>You&apos;ve reached the <a href="http://npolar.no">Norwegian Polar Institute</a>&apos;s <strong>searchable data store</strong>,
+a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>-style web <a href="http://en.wikipedia.org/wiki/Application_programming_interface">API</a>.
+</p>
+
+<p><a href="https://github.com/npolar/api.npolar.no">Source</a> is on <a href="https://github.com/">GitHub</a>, see the project <a href="https://github.com/npolar/api.npolar.no/blob/master/README.md#readme">README</a> for more information.</p>
+
+</section>'}],
         }
 
       end
   
       def data
-        { "workspaces" => ::Npolar::Api.workspaces.map {|w| "/#{w}"} }
+        { "workspaces" => ::Npolar::Api.workspaces.map {|w| "#{w}"} }
       end
 #
 #<dt>Search all documents</dt>
