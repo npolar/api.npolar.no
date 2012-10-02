@@ -26,7 +26,7 @@ class Npolar::Mustache::JsonView < ::Mustache
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>{{title}}</title>
+  <title>{{head_title}}</title>
   <meta charset="utf-8" />
   <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
@@ -34,7 +34,7 @@ class Npolar::Mustache::JsonView < ::Mustache
 </head>
 <body class="container-fluid">
 
-  <header><h1>{{title}}</h1></header>
+  <header><h1>{{{title}}} <a href="/"><img title="api.npolar.no" alt="Logo / Norwegian Polar Institute" src="/img/np_logo_s.png" /></a></h1></header>
  
       eos
     end
@@ -61,6 +61,10 @@ class Npolar::Mustache::JsonView < ::Mustache
     else
       super
     end
+  end
+
+  def head_title
+    title
   end
 
   def respond_to?(method_symbol, include_private = false)
