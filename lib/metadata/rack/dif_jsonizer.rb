@@ -117,8 +117,8 @@ module Metadata
       end
 
       def dif_json(metadata_dataset)
-        dif_atom = Metadata::DifAtom.new
-        dif_json = dif_atom.dif(metadata_dataset)
+        transform = Metadata::DifTransformer.new( metadata_dataset )
+        transform.to_dif
       end
 
       def dif_xml(dif_json)
