@@ -23,7 +23,17 @@ module Metadata
       :quality, :science_keywords, :draft, :published, :updated, :editors
     ]
     
-    DIF_MAP = [ :entry_id ]
+    DIF_MAP = {
+      :entry_id => "Entry_ID",
+      :entry_title => "Entry_Title",
+      :summary_abstract => "Summary",
+      :personnel => "Personnel",
+      :temporal_coverage => "Temporal_Coverage",
+      :creation_date => "DIF_Creation_Date",
+      :revision_date => "Last_DIF_Revision_Date",
+      :metadata_name => "Metadata_Name",
+      :metadata_version => "Metadata_Version"
+    }
     
     attr_accessor :object
     
@@ -211,7 +221,76 @@ module Metadata
     #################################
     
     def to_dif
+      dif = Hashie::Mash.new
+      
+      # Loop equivalent of dataset.temporal_coverage = temporal_coverage
+      DIF_MAP.each do |method, label|
+        dif.send( label + '=', self.send( method ) )
+      end
+      
+      dif
+    end
     
+    def entry_id
+      object._id unless object._id.nil?
+    end
+    
+    def entry_title
+      object.title unless object.title.nil?
+    end
+    
+    def summary_abstract
+      { "Abstract" => object.summary }
+    end
+    
+    def personnel
+      personnel = []
+      
+      object.investigators.each do | investigator |
+        personnel << {
+          "First_Name" => investigator.first_name.split(" ")[0],
+          "Middle_Name" => investigator.first_name.split(" ")[1],
+          "Last_Name" => investigator.last_name,
+          "Email" => investigator.email,
+          "Role" => ["Investigator"]
+        } unless object.investigators.nil?
+      end
+      
+      personnel
+    end
+    
+    def temporal_coverage
+      coverage = []
+      
+      object.activity.each do | act |
+        
+        start = act.start unless act.start.nil?
+        stop = act.stop unless act.stop.nil?
+        
+        coverage << {
+          "Start_Date" => start ,
+          "Stop_Date" => stop
+        }
+        
+      end unless object.activity.nil?
+      
+      coverage
+    end
+    
+    def creation_date
+      object.published
+    end
+    
+    def revision_date
+      object.updated
+    end
+    
+    def metadata_name
+      "CEOS IDN DIF"
+    end
+    
+    def metadata_version
+      Gcmd::Schema::VERSION
     end
     
   end
