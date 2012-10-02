@@ -29,10 +29,12 @@ module Metadata
       :summary_abstract => "Summary",
       :personnel => "Personnel",
       :temporal_coverage => "Temporal_Coverage",
+      :dataset_progress => "Data_Set_Progress",
       :creation_date => "DIF_Creation_Date",
       :revision_date => "Last_DIF_Revision_Date",
       :metadata_name => "Metadata_Name",
-      :metadata_version => "Metadata_Version"
+      :metadata_version => "Metadata_Version",
+      :private => "Private"
     }
     
     attr_accessor :object
@@ -277,6 +279,19 @@ module Metadata
       coverage
     end
     
+    def dataset_progress
+      prog = ""
+      unless object.progress.nil?
+        if object.progress == "ongoing"
+          prog = "In Work"
+        else
+          prog = object.progress.capitalize
+        end
+      end
+      
+      prog
+    end
+    
     def creation_date
       object.published
     end
@@ -291,6 +306,10 @@ module Metadata
     
     def metadata_version
       Gcmd::Schema::VERSION
+    end
+    
+    def private
+      "False"
     end
     
   end
