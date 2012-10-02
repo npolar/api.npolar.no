@@ -307,6 +307,19 @@ describe Metadata::DifTransformer do
         
       end
       
+      context "#dataset_progress" do
+        
+        it "should translate progress to Data_Set_Progress" do
+          @transformer.dataset_progress.should == @transformer.object.progress.capitalize
+        end
+        
+        it "should change ongoing into In Work" do
+          @transformer.object["progress"] = "ongoing"
+          @transformer.dataset_progress.should == "In Work"
+        end
+        
+      end
+      
       context "#dif_creation_date" do
         
         it "should map published to DIF_Creation_Date" do
@@ -335,6 +348,14 @@ describe Metadata::DifTransformer do
         
         it "should have the same version as the Gcmd Library has" do
           @transformer.metadata_version.should == Gcmd::Schema::VERSION
+        end
+        
+      end
+      
+      context "#private" do
+        
+        it "should set private to false" do
+          @transformer.private.should == "False"
         end
         
       end
