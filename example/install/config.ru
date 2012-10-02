@@ -10,13 +10,13 @@ Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
 Metadata.collections = ["dataset"]
 Seaice.collections = ["black-carbon", "em31", "thickness-drilling", "core", "snowpit"]
 
-Metadata::Dataset.formats = ["atom", "dif", "iso", "json", "xml"]
+Metadata::Dataset.formats = ["atom", "dif", "html", "iso", "json", "xml"]
 Metadata::Dataset.accepts = ["dif", "json"]
 
 use Rack::JSONP
-use Rack::Static, :urls => ["/css", "/img", "/xsl"], :root => "public"
-
-#use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("api_editlog")
+use Rack::Static, :urls => ["/css", "/img", "/xsl", "/favicon.ico", "/robots.txt"], :root => "public"
+# use Npolar::Rack::SecureEdits
+# use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("api_editlog")
 
 map "/" do
   # http(s)://api.npolar.no/
@@ -93,6 +93,9 @@ map "/gcmd" do
 end
 
 map "/map" do
+
+  run Npolar::Rack::Solrizer.new(Views::Map::Index.new, :core => "")
+
   map "/archive" do
     run Npolar::Rack::Solrizer.new(
       Views::Map::Index.new,
@@ -124,7 +127,7 @@ map "/metadata" do
 
     use Npolar::Rack::Solrizer, { :core => "", :model => model }
 
-    run Npolar::Api::Core.new(nil,
+    run Npolar::Api::Core.new(Views::Metadata::Index.new,
       { :storage => Npolar::Storage::Couch.new("metadata_dataset"),
         :formats => Metadata::Dataset.formats,
         :accepts => ["json", "dif", "xml"]
