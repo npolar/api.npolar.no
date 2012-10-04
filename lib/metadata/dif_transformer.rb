@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require "hashie"
 
 module Metadata
@@ -19,7 +21,7 @@ module Metadata
     
     DATASET_MAP = [
       :source, :id, :title, :summary, :progress, :investigators,
-      :contributors, :rights, :activity, :locations, :tags,
+      :contributors, :rights, :activity, :locations, :tags, :iso_topics,
       :quality, :science_keywords, :draft, :published, :updated, :editors
     ]
     
@@ -28,7 +30,11 @@ module Metadata
       :entry_title => "Entry_Title",
       :summary_abstract => "Summary",
       :personnel => "Personnel",
+      :spatial_coverage => "Spatial_Coverage",
       :temporal_coverage => "Temporal_Coverage",
+      :iso_topic_category => "ISO_Topic_Category",
+      :keyword => "Keyword",
+      :use_constraints => "Use_Constraints",
       :dataset_progress => "Data_Set_Progress",
       :creation_date => "DIF_Creation_Date",
       :revision_date => "Last_DIF_Revision_Date",
@@ -62,10 +68,6 @@ module Metadata
       dataset
     end
     
-    def source
-      Hashie::Mash.new( { :dif => object } )
-    end
-    
     def id
       object.Entry_ID
     end
@@ -76,6 +78,12 @@ module Metadata
     
     def tags
       object.Keyword
+    end
+    
+    def iso_topics
+      if !object.ISO_Topic_Category.nil? && object.ISO_Topic_Category.any?
+        categories = object.ISO_Topic_Category.map{ |c| c.downcase }
+      end
     end
     
     def quality
@@ -182,7 +190,6 @@ module Metadata
       location_data = []
       
       object.Spatial_Coverage.each do | location |
-        # query placenames for area and nearest placename or central placename (bounding box)?
         location_data << Hashie::Mash.new({
           "north" => location.Northernmost_Latitude.to_f,
           "east" => location.Easternmost_Longitude.to_f,
@@ -195,7 +202,6 @@ module Metadata
       end unless object.Spatial_Coverage.nil?
       
       object.Location.each do | location |
-        # query placenames for area and nearest placename or central placename (bounding box)?
         location_data << Hashie::Mash.new({
           "north" => nil,
           "east" => nil,
@@ -217,6 +223,10 @@ module Metadata
     def draft
       "no"
     end
+    
+    def source
+      Hashie::Mash.new( { :dif => object } )
+    end    
     
     #################################
     ###### To GCMD DIF Format #######
@@ -261,6 +271,33 @@ module Metadata
       personnel
     end
     
+    def spatial_coverage
+      coords = []
+      
+      object.locations.each do | loc |
+        if loc.north || loc.east || loc.south || loc.west
+          
+          north = south = east = west = ""
+          
+          north = loc.north.to_s unless loc.north.nil?
+          east = loc.east.to_s unless loc.east.nil?
+          south = loc.south.to_s unless loc.south.nil?
+          west = loc.west.to_s unless loc.west.nil?
+          
+          coords << {
+            "Northernmost_Latitude" => north,
+            "Easternmost_Longitude" => east,
+            "Southernmost_Latitude" => south,
+            "Westernmost_Longitude" => west,
+          }
+          
+        end
+        
+      end unless object.locations.nil?
+      
+      coords
+    end
+    
     def temporal_coverage
       coverage = []
       
@@ -270,13 +307,35 @@ module Metadata
         stop = act.stop unless act.stop.nil?
         
         coverage << {
-          "Start_Date" => start ,
+          "Start_Date" => start,
           "Stop_Date" => stop
         }
         
       end unless object.activity.nil?
       
       coverage
+    end
+    
+    def use_constraints
+      constraints = ""      
+      object.licenses.each_with_index do |license, i|
+        constraints += license
+        constraints += ", " unless (object.licenses.size - 1) == i
+      end unless object.licenses.nil?
+      
+      constraints += "."
+    end
+    
+    def iso_topic_category
+      categories = []
+      
+      categories = object.iso_topics.map{ |t| t.upcase} unless object.iso_topics.nil?
+      
+      categories
+    end
+    
+    def keyword
+      object.tags unless object.tags.nil?
     end
     
     def dataset_progress
