@@ -69,7 +69,7 @@ HTTP/1.1 200 OK
 curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d'{"_id":"polar-bear","_rev":"1-9c8fb39bfacc81cc5e39610f9cf81df2","id":"polar-bear","species":"Ursus maritimus", "en": "Polar bear", "nn": "Isbjørn", "nb":"Isbjørn"}'
 ```
 The above works '''once''' because the document body contains the correct revision. If you replay the PUT, you will get a HTTP `409` Conflict error, see
-[Revisions]() for how to deal with this.
+[Revisions](wiki/Revisions) for how to deal with this.
 
 ``` http
 curl -i -X PUT http://localhost:9393/arctic/animal/polar-bear.json -d '{}'
