@@ -44,7 +44,11 @@ module Metadata
     end
 
     def self.example_id
-      "0b822ea00adc34317df58068fb1c8002"
+      "fe18cf19-8220-5df8-a22b-34089bfef97e"
+    end
+
+    def self.licenses
+      ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/"]
     end
     
     def self.list_formats
@@ -74,6 +78,7 @@ module Metadata
     #<Short_Name>DOKIPY</Short_Name>
     #</IDN_Node>
 
+    #biology ecotox gcmd map metadata placename ocean seaice tracking
      #def dif_discipline
      #  case groups
      #    when "biodiveristy" then "BIOLOGY"
