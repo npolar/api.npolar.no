@@ -40,8 +40,7 @@ require "rack/ssl"
 require "rack/commonlogger"
 require "rack/cache"
 
-require "gcmd/http"
-require "gcmd/concepts"
+require "gcmd"
 
 # Metadata
 require "./lib/metadata.rb"
