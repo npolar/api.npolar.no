@@ -2,6 +2,7 @@ require "bundler/setup"
 require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
 require "logger"
 
+
 #
 #Dir.glob("./lib/npolar/**/*.rb").each do | file |
 #  require file
@@ -30,6 +31,8 @@ require "./lib/npolar/rack/require_param"
 require "./lib/npolar/rack/validate_id"
 require "./lib/npolar/rack/require_param"
 
+
+require "rack/protection"
 require "rack/throttle"
 require "rack/contrib/jsonp"
 require "rack/contrib/accept_format"
@@ -39,8 +42,6 @@ require "rack/cache"
 
 require "gcmd/http"
 require "gcmd/concepts"
-
-
 
 # Metadata
 require "./lib/metadata.rb"
@@ -54,14 +55,19 @@ require "./lib/npolar/rack/oai_skeleton"
 
 # Seaice
 require "./lib/seaice.rb"
+require "./lib/tracking.rb"
+Dir.glob("./lib/tracking/*.rb").each do | file |
+  require file
+end
+
 
 # Views
 require "mustache"
 require "./views/views"
-
 require "./lib/npolar/mustache"
 require "./lib/npolar/mustache/json_view"
-
+require "./views/workspace"
+require "./views/collection"
 
 Dir.glob("./views/*/*.rb").each do | file |
   require file
