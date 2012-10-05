@@ -19,7 +19,7 @@ Metadata::Dataset.accepts = ["dif", "json"]
 use Rack::Protection, :except => [:session_hijacking, :remote_token]
 use Rack::Protection::EscapedParams
 use Rack::Throttle::Hourly,   :max => 600 # requests
-use Rack::Throttle::Interval, :min => 40.5 # seconds
+use Rack::Throttle::Interval, :min => 0.5 # seconds
 # use Npolar::Rack::SecureEdits
 
 # n. Features
