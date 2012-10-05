@@ -1,5 +1,5 @@
 {{{ head }}}
-<section>{{summary}}</section>
+
 <nav>
 {{# collections }}
   <code><a href="#{{title}}" title="{{ title }}">{{ href }}</a></code>
@@ -9,10 +9,9 @@
 <article>
 
 {{# collections }}
+<section id="{{title}}">
 <hr/>
-<section>
 <h3><a href="{{href}}/.{{format}}">{{href}}</a></h3>
-
 {{summary}}
 </section>
 
@@ -29,13 +28,13 @@
 
 <section>
 <h4>Document</h4>
-<h5>Methods</h5>
-<!--https (Auth) -->
-<code>GET&#160;https://api.npolar.no<a href="{{example_href}}/.json">{{ href }}/id.format</a></code>
-<code>PUT&#160;https://api.npolar.no<a href="{{example_href}}/.json">{{ href }}/id.format</a></code>
-<code>HEAD&#160;https://api.npolar.no<a href="{{example_href}}/.json">{{ href }}/id.format</a></code>
-<code>DELETE&#160;https://api.npolar.no<a href="{{example_href}}/.json">{{ href }}/id.format</a></code>
-<code>POST&#160;https://api.npolar.no<a href="{{href}}.{{format}}">{{ href }}</a></code>
+
+<h5>Open</h5>
+<code>GET|HEAD https://api.npolar.no<a href="{{href}}/{{id}}.{{format}}">{{ href }}/id.format</a></code>
+
+<h5>Auth</h5>
+<code>DELETE|PUT https://api.npolar.no<a href="{{example_href}}/.json">{{ href }}/id.format</a></code>
+<code>POST https://api.npolar.no<a href="{{href}}.{{format}}">{{ href }}</a></code>
 
 <h5>Formats (GET, HEAD, DELETE)</h5>
 <p>{{# formats }}
@@ -56,7 +55,6 @@
 </section>
 
 
-
 <section>
 <!--<h4>Search API</h4>
 Attributes for filters/facets
@@ -64,26 +62,6 @@ Attributes for filters/facets
 </section>
 
 {{/ collections}}
-
-
-<hr/>
-{{# oai }}
-<section>
-<h3>OAI-PMH repository</h3>
-
-<p>{{ summary }}</p>
-<h4>verbs</h4>
-
-<ol>
-{{# verbs }}
-<li><code><a href="/metadata/oai?verb={{verb}}{{example}}">{{verb}}</a></code></li>
-{{/verbs}}
-</ol>
-
-<h4>Documentation</h4>
-<a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">OAI-PMH 2.0 documentation</a>
-</section>
-{{/oai}}
 
 </article>
 

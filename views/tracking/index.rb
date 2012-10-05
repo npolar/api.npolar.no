@@ -1,11 +1,13 @@
 # encoding: utf-8
 module Views
   module Tracking
-    class Index < Npolar::Mustache::JsonView
+    class Index < Views::Workspace
+
+      self.template = Views::Workspace.template
 
       def initialize
         @hash = { :_id => "tracking_index",
-          :title => "Tracking data"
+          :workspace => "tracking",
         }
       end
 

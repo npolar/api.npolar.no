@@ -1,11 +1,13 @@
 # encoding: utf-8
 module Views
   module Metadata
-    class Index < Npolar::Mustache::JsonView
+    class Index < Views::Workspace
 
       def initialize  
-        @hash = { :_id => "metadata_index",
-          :title => "Metadata",
+        @hash = {
+          :_id => "metadata_index",
+          :workspace => "metadata",
+          :licenses => model.licenses,
           :summary => "Discovery-level metadata",
           :oai => {:verbs => [
             {:verb => "GetRecord", :example => "&metadataPrefix=dif&identifier=#{::Metadata::Dataset.example_id}"},
@@ -35,10 +37,15 @@ module Views
   
       protected
 
+      def model
+        ::Metadata::Dataset
+      end
+
       def static(collection, method, *args)
         case collection
           when "dataset" then ::Metadata::Dataset.send(method, *args)
-          else ""
+          when "oai" then []
+          else []
         end
       end
 

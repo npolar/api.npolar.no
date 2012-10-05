@@ -6,7 +6,7 @@ class Gcmd::Index < Npolar::Mustache::JsonView
     "GCMD Concepts (JSONP service)"
   end
 
-  def schemes
+  def schemas
     Gcmd::Concepts::ROOT_SCHEMES.map {|scheme| { :scheme => scheme, :path => path(scheme) } }
   end
 
