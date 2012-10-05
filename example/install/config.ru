@@ -18,11 +18,11 @@ Metadata::Dataset.accepts = ["dif", "json"]
 # a. Security
 use Rack::Protection, :except => [:session_hijacking, :remote_token]
 use Rack::Protection::EscapedParams
-use Rack::Throttle::Hourly,   :max => 600 # requests
-use Rack::Throttle::Interval, :min => 0.5 # seconds
+# use Rack::Throttle::Hourly,   :max => 1200 # requests
+# use Rack::Throttle::Interval, :min => 110.1 # seconds
 # use Npolar::Rack::SecureEdits
 
-# n. Features
+# b. Features
 use Rack::JSONP
 use Rack::Static, :urls => ["/css", "/img", "/xsl", "/favicon.ico", "/robots.txt"], :root => "public"
 # use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("api_editlog")
