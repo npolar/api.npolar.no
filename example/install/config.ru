@@ -1,27 +1,39 @@
+# This config.ru is the *production* configuration for api.npolar.no
 require "./load"
-# This config.ru is the production configuration for api.npolar.no
-# Please keep all map statements in alphabetical order
 
-Npolar::Api.workspaces = ["biology", "ecotox", "gcmd", "map", "metadata", "placename", "ocean", "seaice", "tracking"]
+Npolar::Api.workspaces = ["api", "biology", "ecotox", "gcmd", "map", "metadata", "placename", "ocean", "seaice", "tracking"]
+Npolar::Api.hidden_workspaces = ["api", "biology", "ecotox", "ocean", "tracking"]
 
+Npolar::Api.models = { "metadata" => { "dataset" => Metadata::Dataset }, "tracking" => { "iridium" => Tracking::Iridium } }
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
 
-Metadata.collections = ["dataset"]
+Metadata.collections = Npolar::Api.models["metadata"].keys
 Seaice.collections = ["black-carbon", "em31", "thickness-drilling", "core", "snowpit"]
 
 Metadata::Dataset.formats = ["atom", "dif", "html", "iso", "json", "xml"]
 Metadata::Dataset.accepts = ["dif", "json"]
 
+# Middleware for *all* requests - use with caution
+# a. Security
+use Rack::Protection, :except => [:session_hijacking, :remote_token]
+use Rack::Protection::EscapedParams
+use Rack::Throttle::Hourly,   :max => 600 # requests
+use Rack::Throttle::Interval, :min => 40.5 # seconds
+# use Npolar::Rack::SecureEdits
+
+# n. Features
 use Rack::JSONP
 use Rack::Static, :urls => ["/css", "/img", "/xsl", "/favicon.ico", "/robots.txt"], :root => "public"
-# use Npolar::Rack::SecureEdits
 # use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("api_editlog")
 
+# http(s)://api.npolar.no/
+# 
+# Please keep all map statements below in alphabetical order
 map "/" do
-  # http(s)://api.npolar.no/
+  
   # Show index view on anything that is not a global search
-  run Npolar::Rack::Solrizer.new(Views::Api::Index.new, :core => "")
+  run Npolar::Rack::Solrizer.new(Views::Api::Index.new(), :core => "")
   
   # The map sections below are for the internal "api" workspace
   map "/schema" do
@@ -68,26 +80,26 @@ end
 
 map "/gcmd" do
 
-  gcmd_index = lambda {|env|
-    index = Gcmd::Index.new
-    index[:scheme] = Rack::Request.new(env)["scheme"] ||= "locations"
-    [200, {"Content-Type" => "text/html"},[index.render]]
-  }
-  run gcmd_index
+  run Gcmd::Index.new
+
+  map "/concept" do
+    run Npolar::Api::Core.new(Gcmd::Index.new, :storage => Npolar::Storage::Couch.new("gcmd_concepts"))
+  end
+
+
   concepts = Gcmd::Concepts.new
   
   Gcmd::Concepts::ROOT_SCHEMES.each do |scheme|
     map "/#{scheme}" do
 
-      use Npolar::Rack::RequireParam, :params => ["q"]
-      use Rack::JSONP
-
+      
       gcmd_concept = lambda {|env|
         q = Rack::Request.new(env)["q"]
         [200, {"Content-Type" => "application/json"},[concepts.filter(scheme, q).to_json]]
       }
-      run gcmd_concept
-    
+      use Npolar::Rack::Solrizer, :core => ""
+      
+      
     end
   end
 end
@@ -119,16 +131,19 @@ map "/metadata" do
     model = Metadata::Dataset.new
     #model.schema = File.read(File.expand_path(File.join(".", "lib", "metadata/dataset-schema.json")))
     #p model.schema
+    
+    storage = Npolar::Storage::Couch.new("metadata_dataset")
+    # storage.model = model
 
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "metadata",
-      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+    #use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "metadata",
+    #  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
     use Metadata::Rack::DifJsonizer
 
     use Npolar::Rack::Solrizer, { :core => "", :model => model }
 
-    run Npolar::Api::Core.new(Views::Metadata::Index.new,
-      { :storage => Npolar::Storage::Couch.new("metadata_dataset"),
+    run Npolar::Api::Core.new(Views::Collection.new,
+      { :storage => storage,
         :formats => Metadata::Dataset.formats,
         :accepts => ["json", "dif", "xml"]
       }
@@ -173,5 +188,8 @@ end
 map "/tracking" do
   # Show tracking index on anything that is not a search
   run Npolar::Rack::Solrizer.new(Views::Tracking::Index.new, :core => "")
-  
+  map "/iridium" do
+    iridium = Tracking::Iridium.new
+    run Npolar::Rack::Solrizer.new(Views::Collection.new(iridium), :core => "")
+  end
 end

@@ -1,7 +1,8 @@
 module Npolar
   module Api
     class << self
-      attr_accessor :workspaces
+      attr_accessor :workspaces, :hidden_workspaces
+      attr_accessor :models
       attr_writer   :log
     end
     

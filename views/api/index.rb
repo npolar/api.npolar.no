@@ -4,8 +4,10 @@ module Views
 
       def initialize
         @hash = { "_id" => "api_index",
-          :workspaces => Npolar::Api.workspaces.map {|w| {:href => w, :title => w }},
+          :workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
           :title => "api.<a title=\"Norwegian Polar Institute\" href=\"http://npolar.no\">npolar.no</a>",
+          #:head => {:title => "api.npolar.no"},
+          
           :sections => [{ :section => '<section id="welcome">
 <p>You&apos;ve reached the <a href="http://npolar.no">Norwegian Polar Institute</a>&apos;s <strong>searchable data store</strong>,
 a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>-style web <a href="http://en.wikipedia.org/wiki/Application_programming_interface">API</a>.
@@ -17,10 +19,14 @@ a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a
         }
 
       end
+
+  
   
       def data
         { "workspaces" => ::Npolar::Api.workspaces.map {|w| "#{w}"} }
       end
+
+
 #
 #<dt>Search all documents</dt>
 #<dd><a href="/?q=Polar+bear">Search all documents for "Polar bear"</a></dd>
