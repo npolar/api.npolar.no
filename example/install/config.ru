@@ -2,7 +2,7 @@
 require "./load"
 
 Npolar::Api.workspaces = ["api", "biology", "ecotox", "gcmd", "map", "metadata", "placename", "ocean", "seaice", "tracking"]
-Npolar::Api.hidden_workspaces = ["api", "biology", "ecotox", "ocean", "tracking"]
+Npolar::Api.hidden_workspaces = ["api", "biology", "gcmd", "ecotox", "map", "ocean", "placename", "seaice", "tracking"]
 
 Npolar::Api.models = { "metadata" => { "dataset" => Metadata::Dataset }, "tracking" => { "iridium" => Tracking::Iridium } }
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
@@ -83,7 +83,7 @@ map "/gcmd" do
   run Gcmd::Index.new
 
   map "/concept" do
-    run Npolar::Api::Core.new(Gcmd::Index.new, :storage => Npolar::Storage::Couch.new("gcmd_concepts"))
+    run Npolar::Api::Core.new(Gcmd::Concept.new, :storage => Npolar::Storage::Couch.new("gcmd_concepts"))
   end
 
 
@@ -111,7 +111,7 @@ map "/map" do
   map "/archive" do
     run Npolar::Rack::Solrizer.new(
       Views::Map::Index.new,
-      { :core => "http://olav.npolar.no:8080/solr/map_archive"}
+      { :core => "http://olav.npolar.no:8080/solr/map_archive/"}
     )
   end
 end
