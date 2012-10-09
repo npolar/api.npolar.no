@@ -10,7 +10,8 @@ module Metadata
     repository_url  "http://api.npolar.no/metadata/oai"
     record_prefix "oai:npolar.no"
     admin_email ["data@npolar.no"]
-    source_model ::Metadata::Oai.new(Npolar::Storage::Couch.new("metadata_dataset"))
+
+    source_model ::Metadata::Oai.new(Npolar::Storage::Couch.new(ENV["NPOLAR_API_COUCHDB"].gsub(/[\/]$/, "")+"/metadata_dataset"))
     extra_description ::Metadata::Dataset.summary
     sample_id "13076c3a-9e57-4247-b18a-e99e5cce1cfe"
   end

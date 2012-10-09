@@ -52,15 +52,25 @@ map "/" do
   end
 end
 
+map "/biology" do
 
-map "/biology/observation" do
+  map "/marine" do
 
-  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "biology",
+    use Npolar::Rack::Solrizer, { :core => "http://olav.npolar.no:8080/solr/marine_database" }
+
+    run Npolar::Api::Core.new(nil, :storage => nil)
+
+  end
+
+  map "/observation" do
+
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "biology",
       :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
 
-  use Npolar::Rack::Solrizer, { :core => "", :fq => ["workspace:biology", "collection:observation"]}
+    use Npolar::Rack::Solrizer, { :core => "", :fq => ["workspace:biology", "collection:observation"]}
 
-  run Npolar::Api::Core.new(nil, :storage =>Npolar::Storage::Couch.new("observation_fauna"))
+    run Npolar::Api::Core.new(nil, :storage =>Npolar::Storage::Couch.new("observation_fauna"))
+  end
 end
 
 
