@@ -11,8 +11,18 @@ module Npolar
         :model => nil,
         :select => nil,
         :q => lambda {|request|
-          qstar = request.params["q"].delete(":")+"*"
-          "title:#{qstar} OR #{qstar}"
+          qstar = request.params["q"]
+          if qstar =~ /^[\*]$|^\*\:\*$/
+            "*:*"
+          else
+  
+            unless qstar =~ /\*/
+              qstar = qstar+"*"
+            end
+            qstar = qstar.delete(":")
+            "title:#{qstar} OR #{qstar}"
+          end
+          
         },
         :fq => [],
         :feed => lambda {|response|
@@ -40,11 +50,10 @@ module Npolar
         @@uri ||= "http://localhost:8993/solr"
       end
 
-
       def condition? request
         if ["GET", "HEAD"].include? request.request_method and not request.params["q"].nil? and request.params["q"].size > 0
           true
-        elsif ["POST","PUT", "DELETE"].include? request.request_method and request.id?
+        elsif ["POST","PUT", "DELETE"].include? request.request_method
           true
         else
           false
@@ -62,12 +71,24 @@ module Npolar
       end
 
       def delete(request)
-        raise "Not implemented"
+        log.debug self.class.name+"#delete"
+        log.warn "Not implemented"
+        @app.call(request.env)
       end
 
       def save(request)
-        # no model no_to solr => to text and id, +text?
-        raise "Not implemented"
+        begin
+          #log.debug self.class.name+"#save"
+          #json = JSON.parse(request.body.read)
+          #request.body.rewind
+          #log.debug json.keys
+          # [] => throw directly at Solr
+
+        rescue RSolr::Error::Http => e
+          [e.response[:status].to_i, {"Content-Type" => "text/html"}, [e.response[:body]]]
+        ensure
+          @app.call(request.env)
+        end
       end
 
       def search(request)

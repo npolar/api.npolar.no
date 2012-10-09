@@ -1,4 +1,5 @@
 config.rb
+config.ru
 bin
 seed
 config/*
@@ -15,3 +16,5 @@ doc
 documentation
 Gemfile*.lock
 log
+example/*.txt
+*.txt

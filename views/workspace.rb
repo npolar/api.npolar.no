@@ -4,7 +4,6 @@ module Views
 
     def initialize  
       @hash = { :_id => "workspace_index",
-        :title => "Workspace",
         :workspace => "uknown",
         :summary => "Unknown workspace",
         :data => { "workspace" => ::Metadata.workspace, "collections" => collections.map {|c|c[:href]} } 
@@ -38,6 +37,14 @@ module Views
 
     def title
       "<a title=\"api.npolar.no\" href=\"/\">api</span></a>/#{workspace}"
+    end
+
+    def head_title
+      workspace ||= title
+    end
+
+    def workspace
+      self.class.name.split("::")[1].downcase
     end
 
     protected

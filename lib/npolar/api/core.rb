@@ -25,11 +25,13 @@ module Npolar
     def call(env)
       
       begin
-        env["HTTP_COOKIE"] = ""
         @request = Rack::Request.new(env) # <Npolar::Rack::Request>
-
-        handle(request)
-
+        # except 
+        if request.read? and request.format == "html" and @app.respond_to? :call
+          @app.call(env)
+        else
+          handle(request)
+        end
       rescue => e
 
         log.fatal e.class.name+": "+e.message

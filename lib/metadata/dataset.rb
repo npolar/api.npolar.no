@@ -3,7 +3,7 @@ require "json-schema"
 
 module Metadata
 
-  # Dataset metadata model
+  # Dataset metadata model class
   #
   # [Functionality]
   #   * Holds metadata in a extended Hash (Hashie::Mash)
@@ -19,8 +19,13 @@ module Metadata
   class Dataset < Hashie::Mash
     
     attr_accessor :schema
+    
+    DIF_SCHEMA_URI = "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"
 
-    SCHEMA_URI = { "dif" =>  "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd", "json" => "http://api.npolar.no/schema/metadata-dataset"}
+    SCHEMA_URI = { "dif" =>  DIF_SCHEMA_URI,
+      "json" => "http://api.npolar.no/schema/metadata/dataset",
+      "xml" => DIF_SCHEMA_URI
+    }
 
     class << self
       attr_accessor :formats, :accepts

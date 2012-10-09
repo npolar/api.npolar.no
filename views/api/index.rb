@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Views
   module Api  
     class Index < Npolar::Mustache::JsonView
@@ -9,11 +10,9 @@ module Views
           #:head => {:title => "api.npolar.no"},
           
           :sections => [{ :section => '<section id="welcome">
-<p>You&apos;ve reached the <a href="http://npolar.no">Norwegian Polar Institute</a>&apos;s <strong>searchable data store</strong>,
+<p>You&apos;ve reached the <a href="http://npolar.no">Norwegian Polar Institute</a>&apos;s <strong>searchable data store</strong> —
 a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>-style web <a href="http://en.wikipedia.org/wiki/Application_programming_interface">API</a>.
-</p>
-
-<p><a href="https://github.com/npolar/api.npolar.no">Source</a> is on <a href="https://github.com/">GitHub</a>, see the project <a href="https://github.com/npolar/api.npolar.no/blob/master/README.md#readme">README</a> for more information.</p>
+<a href="https://github.com/npolar/api.npolar.no">Source</a> is on <a href="https://github.com/">GitHub</a>, see the project <a href="https://github.com/npolar/api.npolar.no/blob/master/README.md#readme">README</a> for more information.</p>
 
 </section>'}],
         }

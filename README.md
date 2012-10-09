@@ -161,5 +161,6 @@ run Npolar::Api::Core.new(nil, {:storage => storage, :methods => ["HEAD", "GET"]
 * [Revisions]() (edit log)
 * [Formats and Media Types](https://github.com/npolar/api.npolar.no/wiki/Formats) (see also http://www.iana.org/assignments/media-types/index.html)
 
-## Quality metrics
+## Documentation and quality efforts
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/npolar/api.npolar.no)
+* http://rdoc.info/github/npolar/api.npolar.no

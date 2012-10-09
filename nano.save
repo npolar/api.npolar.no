@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?> <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" 
+location="seed/ocean/framstrait/processed/moorings/fs2004/F11-6/dcm190_1.nc">
+  <dimension name="latitude" length="1" />
+  <dimension name="longitude" length="1" />
+  <dimension name="time" length="4816" />
+  <dimension name="instrtype" length="3" />
+  <attribute name="Comment01" value="NPI Fram Strait Mooring " />
+  <attribute name="Latitude" type="double" value="78.8320166666667" />
+  <attribute name="Longitude" type="double" value="-3.26795" />
+  <attribute name="Water_Depth" type="double" value="-nan" />
+  <attribute name="missing_value" type="double" value="-9999." />
+  <attribute name="DATA_ORIGIN" value="NPI" />
+  <attribute name="INST_TYPE" type="short" value="0" />
+  <attribute name="Serialnumber" type="double" value="190." />
+  <attribute name="Start_Date" type="int" value="7 9 2003" />
+  <attribute name="Stop_Date" type="int" value="26 3 2004" />
+  <variable name="time" shape="time" type="float">
+    <attribute name="units" value="days since 1.1.1940" />
+    <attribute name="longname" value="time in julian days since 1.1.1940" />
+  </variable>
+  <variable name="longitude" shape="longitude" type="float">
+  </variable>
+  <variable name="latitude" shape="latitude" type="float">
+  </variable>
+  <variable name="PRES" shape="time" type="float">
+    <attribute name="units" value="dbar" />
+    <attribute name="longname" value="pressure" />
+  </variable>
+  <variable name="uvel" shape="time" type="float">
+    <attribute name="units" value="cm/s" />
+    <attribute name="longname" value="east-west velocity" />
+  </variable>
+  <variable name="vvel" shape="time" type="float">
+    <attribute name="units" value="cm/s" />
+    <attribute name="longname" value="north-south velocity" />
+  </variable>
+  <variable name="dire" shape="time" type="float">
+    <attribute name="units" value="degree-N" />
+    <attribute name="longname" value="current direction" />
+  </variable>
+  <variable name="velocity" shape="time" type="float">
+    <attribute name="units" value="cm/s" />
+    <attribute name="longname" value="velocity magnitude" />
+  </variable> </netcdf>

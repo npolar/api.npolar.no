@@ -10,7 +10,7 @@ module Npolar
       def_delegators :request, :id, :id=, :id?, :params, :params=, :path, :request_method
       def_delegators :response, :status, :headers, :body, :status=, :headers=, :body=, :<<, :each
    
-      attr_accessor :app, :auth,:explanation, :config, :request, :response, :storage, :log
+      attr_accessor :app, :auth, :explanation, :config, :request, :response, :storage, :log
       
       # Default config hash  
       CONFIG = {
@@ -28,6 +28,7 @@ module Npolar
         config = CONFIG.merge(self.class::CONFIG).merge config
   
         @app, @config = app, config
+        @log = Logger.new(STDERR)
       end
   
       ##

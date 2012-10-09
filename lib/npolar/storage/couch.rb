@@ -21,7 +21,7 @@ module Npolar
       end
 
       def self.uri
-        @@uri ||= "http://localhost:5984"
+        @@uri ||= URI  #"http://localhost:5984"
       end
 
       def accepts
@@ -60,7 +60,8 @@ module Npolar
   
       def get(id, params={})
         case id
-        when "ids", "" then ids
+        when "_ids", "" then ids
+        when "_feed" then titles(params)
         else
           response = reader.get(id, headers, params)
           [response.status, response.headers, response.body]
@@ -83,9 +84,10 @@ module Npolar
         end
   
         couch = { "docs" => JSON.parse(data) }
+        # set _id from id
         data = couch.to_json
         response = writer.post("_bulk_docs", headers, data)        
-        [202,  {"Content-Type" => HEADERS["Content-Type"]} , ["POSTed #{couch['docs'].size} documents"]]
+        [202,  {"Content-Type" => HEADERS["Content-Type"]} , ["POSTed #{couch['docs'].size} documents\n"]]
       end
   
       def post(data, params={})
@@ -111,13 +113,15 @@ module Npolar
       end
   
       # @param String id UUID or SHA1 hash, e.g. "69f3f072-27a0-4d25-a5bf-aac8f7e31d8f"
-      # @param String data JSON
-      # @param Hash params?
+      # @param String|Hash data JSON data
+      # @param Hash params
       def put(id, data, params={})
 
         if data.is_a? Hash
           data = data.to_json
         end
+
+
         # params?
         #if params.key? "attachment"
         # #couch.put("")
@@ -134,10 +138,26 @@ module Npolar
   
       def ids
         ids = []
+
         response = couch.get(read+"/_all_docs")
         
         if 200 == response.status
           ids = Yajl::Parser.parse(response.body)["rows"].map {|row| row["id"] }
+          status = 200
+        else
+          status = 501
+        end
+        [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(ids)+"\n"]] # Couch returns text/plain here!?
+      end
+
+      def titles(params={})
+        ids = []
+
+        response = couch.get(read+"/_all_docs?include_docs=true")
+        
+        if 200 == response.status
+          ids = Yajl::Parser.parse(response.body)["rows"].map {|row| {:title => row["doc"]["title"],
+          :id => row["doc"]["id"], :updated => row["doc"]["updated"] } }
           status = 200
         else
           status = 501

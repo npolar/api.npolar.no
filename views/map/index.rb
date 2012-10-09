@@ -2,6 +2,9 @@
 module Views
   module Map
     class Index < Views::Workspace
+
+      self.template = Views::Workspace.template
+
       def initialize(attr = nil)
         @hash = attr ||= { "_id" => "seaice_index",
           :title => "Maps",
@@ -10,7 +13,7 @@ module Views
       end
 
       def collections
-        ["archive"]
+        ["archive"].sort.map {|c| {:title => c, :href => "/#{workspace}/#{c}"}}
       end
 
     end

@@ -14,11 +14,23 @@ describe Npolar::Rack::Request do
     end
   end
 
+# /.foo POST
+
   context "#format" do
     context "/foo.bar" do
       ["GET", "HEAD", "DELETE", "PUT", "POST"].each do | method |
         it "bar <== #{method} /foo.bar" do
           env = Rack::MockRequest.env_for("/foo.bar", :method => method)
+          request = Npolar::Rack::Request.new(env)
+          request.format.should == "bar"          
+        end
+      end
+    end
+
+    context "/.bar" do
+      ["POST"].each do | method |
+        it "bar <== #{method} /.bar" do
+          env = Rack::MockRequest.env_for("/.bar", :method => method)
           request = Npolar::Rack::Request.new(env)
           request.format.should == "bar"          
         end

@@ -1,8 +1,8 @@
 # This config.ru is the *production* configuration for api.npolar.no
 require "./load"
 
-Npolar::Api.workspaces = ["api", "biology", "ecotox", "gcmd", "map", "metadata", "placename", "ocean", "seaice", "tracking"]
-Npolar::Api.hidden_workspaces = ["api", "biology", "gcmd", "ecotox", "map", "ocean", "placename", "seaice", "tracking"]
+Npolar::Api.workspaces = ["api", "biology", "ecotox", "gcmd", "map", "metadata", "placename", "oceanography", "seaice", "tracking"]
+Npolar::Api.hidden_workspaces = ["api", "biology", "gcmd", "ecotox", "map", "oceanography", "placename", "seaice", "tracking"]
 
 Npolar::Api.models = { "metadata" => { "dataset" => Metadata::Dataset }, "tracking" => { "iridium" => Tracking::Iridium } }
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
@@ -89,7 +89,7 @@ map "/gcmd" do
 
   concepts = Gcmd::Concepts.new
   
-  Gcmd::Concepts::ROOT_SCHEMES.each do |scheme|
+  Gcmd::Concepts::schemas.each do |scheme|
     map "/#{scheme}" do
 
       

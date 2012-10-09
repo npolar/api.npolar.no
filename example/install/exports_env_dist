@@ -1,0 +1,4 @@
+export GCMD_HTTP_USERNAME=username
+export GCMD_HTTP_PASSWORD=password
+export NPOLAR_API_SOLR=http://example.com:8993/solr
+export NPOLAR_API_COUCHDB=https://username:password@example.com:6984
