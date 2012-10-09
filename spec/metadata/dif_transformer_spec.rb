@@ -61,6 +61,18 @@ describe Metadata::DifTransformer do
         
       end
       
+      context "#iso_topics" do
+        
+        it "should be an Array" do
+          @transformer.iso_topics.should be_a_kind_of( Array )
+        end
+        
+        it "should map ISO_Topic_Category to iso_topics" do
+          @transformer.iso_topics[0].should == @transformer.object.ISO_Topic_Category[0].downcase
+        end
+        
+      end
+      
       context "#quality" do
         
         it "should map Quality to quality" do
@@ -289,6 +301,44 @@ describe Metadata::DifTransformer do
           @transformer.personnel[0].should include( "First_Name" => "Jack" )
         end
         
+        it "should split first name into first and middle name" do
+          @transformer.object.investigators = [{"first_name" => "Homer Jay","last_name" => "Simpson"}]
+          @transformer.personnel[0].should include( "First_Name" => "Homer", "Middle_Name" => "Jay", "Last_Name" => "Simpson" )
+        end
+        
+      end
+      
+      context "#spatial_coverage" do
+        
+        it "should be an Array" do
+          @transformer.spatial_coverage.should be_a_kind_of( Array )
+        end
+        
+        it "should have a hash for array elements" do
+          @transformer.spatial_coverage[0].should be_a_kind_of( Hash )
+        end
+        
+        it "should translate north into Northernmost_Latitude" do
+          @transformer.spatial_coverage[0].should include( "Northernmost_Latitude" => @transformer.object.locations[0]["north"] )
+        end
+        
+        it "should translate north into Easternmost_Longitude" do
+          @transformer.spatial_coverage[0].should include( "Easternmost_Longitude" => @transformer.object.locations[0]["east"] )
+        end
+        
+        it "should translate north into Southernmost_Latitude" do
+          @transformer.spatial_coverage[0].should include( "Southernmost_Latitude" => @transformer.object.locations[0]["south"] )
+        end
+        
+        it "should translate north into Westernmost_Longitude" do
+          @transformer.spatial_coverage[0].should include( "Westernmost_Longitude" => @transformer.object.locations[0]["west"] )
+        end
+        
+        it "shouldn't work when no north|south|east|west is present" do
+          @transformer.object.locations = [{"placename" => "Pyramiden"}]
+          @transformer.spatial_coverage.any?.should == false
+        end
+        
       end
       
       context "#temporal_coverage" do
@@ -303,6 +353,38 @@ describe Metadata::DifTransformer do
         
         it "should translate start|stop into Start_Date|Stop_Date" do
           @transformer.temporal_coverage.should include( "Start_Date" => @transformer.object.activity[0]["start"], "Stop_Date" => @transformer.object.activity[0]["stop"] )
+        end
+        
+      end
+      
+      context "#use_constraints" do
+        
+        it "should translate licenses into Use_Constraints" do
+          @transformer.use_constraints.should == "http://creativecommons.org/licenses/by/3.0/no/, http://data.norge.no/nlod/no/1.0."
+        end
+        
+      end
+      
+      context "#iso_topic_category" do
+        
+        it "should return an Array" do
+          @transformer.iso_topic_category.should be_a_kind_of( Array )
+        end
+        
+        it "should translate iso_topics to ISO_Topic_Category" do
+          @transformer.iso_topic_category[0].should == @transformer.object.iso_topics[0].upcase
+        end
+        
+      end
+      
+      context "#keyword" do
+        
+        it "should be an Array" do
+          @transformer.keyword.should be_a_kind_of( Array )
+        end
+        
+        it "should map tags to Keyword" do
+          @transformer.keyword.should == @transformer.object.tags
         end
         
       end
