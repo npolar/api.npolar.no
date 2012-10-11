@@ -265,8 +265,8 @@ module Metadata
           "Last_Name" => investigator.last_name,
           "Email" => investigator.email,
           "Role" => ["Investigator"]
-        } unless object.investigators.nil?
-      end
+        }
+      end unless object.investigators.nil?
       
       personnel
     end
