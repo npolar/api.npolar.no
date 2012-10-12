@@ -8,6 +8,7 @@ module Npolar
   
       HEADERS = {
         "Accept" => "application/json",
+        #Accept-Encoding 
         "Content-Type" => "application/json; charset=utf-8",
         "User-Agent" => self.name }
 
@@ -157,7 +158,7 @@ module Npolar
         
         if 200 == response.status
           ids = Yajl::Parser.parse(response.body)["rows"].map {|row| {:title => row["doc"]["title"],
-          :id => row["doc"]["id"], :updated => row["doc"]["updated"] } }
+          :id => row["doc"]["id"], :_id => row["doc"]["_id"], :updated => row["doc"]["updated"] } }
           status = 200
         else
           status = 501
