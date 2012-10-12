@@ -6,12 +6,40 @@ module Npolar
     # @todo Create/use JSON Feed class?
     class Solrizer < Npolar::Rack::Middleware
 
+      def self.query_or_save
+        lambda {|request|
+          if ["GET", "HEAD"].include? request.request_method and not request.params["q"].nil? and request.params["q"].size > 0
+            true
+          elsif ["POST","PUT", "DELETE"].include? request.request_method
+            true
+          else
+            false
+          end
+        }
+      end
+
+      def self.searcher
+        lambda {|request| ["GET", "HEAD"].include? request.request_method }
+      end
+
+      def self.uri=uri
+        if uri.respond_to? :gsub
+          uri = uri.gsub(/[\/]$/, "")
+        end
+        @@uri=uri
+      end
+
+      def self.uri
+        @@uri ||= "http://localhost:8983/solr"
+      end
+
       CONFIG = {
         :core => nil,
+        :condition => self.query_or_save,
         :model => nil,
         :select => nil,
         :q => lambda {|request|
-          qstar = request.params["q"]
+          qstar = request.params["q"] ||= "*"
           if qstar =~ /^[\*]$|^\*\:\*$/
             "*:*"
           else
@@ -39,25 +67,9 @@ module Npolar
       }
       # q=title:foo OR exact:foo OR text:foo*
 
-      def self.uri=uri
-        if uri.respond_to? :gsub
-          uri = uri.gsub(/[\/]$/, "")
-        end
-        @@uri=uri
-      end
 
-      def self.uri
-        @@uri ||= "http://localhost:8993/solr"
-      end
-
-      def condition? request
-        if ["GET", "HEAD"].include? request.request_method and not request.params["q"].nil? and request.params["q"].size > 0
-          true
-        elsif ["POST","PUT", "DELETE"].include? request.request_method
-          true
-        else
-          false
-        end
+      def condition?(request)
+        config[:condition].call(request)
       end
 
       # Only called if #condition? is true
@@ -83,11 +95,11 @@ module Npolar
           #request.body.rewind
           #log.debug json.keys
           # [] => throw directly at Solr
-
+          @app.call(request.env)
         rescue RSolr::Error::Http => e
           [e.response[:status].to_i, {"Content-Type" => "text/html"}, [e.response[:body]]]
         ensure
-          @app.call(request.env)
+          #@app.call(request.env)
         end
       end
 
@@ -132,6 +144,9 @@ module Npolar
       end
 
       def fq
+        if config[:fq].is_a? String
+          config[:fq] = [config[:fq]]
+        end
         fq = (request.multi("fq") + config[:fq]).uniq
       end
 
