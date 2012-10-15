@@ -22,7 +22,7 @@ module Metadata
     DATASET_MAP = [
       :source, :id, :title, :summary, :progress, :investigators,
       :contributors, :rights, :activity, :locations, :tags, :iso_topics,
-      :quality, :science_keywords, :draft, :published, :updated, :editors
+      :quality, :science_keywords, :draft, :published, :updated, :editors, :sets
     ]
     
     DIF_MAP = {
@@ -34,6 +34,7 @@ module Metadata
       :temporal_coverage => "Temporal_Coverage",
       :iso_topic_category => "ISO_Topic_Category",
       :keyword => "Keyword",
+      :idn_node => "IDN_Node",
       :use_constraints => "Use_Constraints",
       :dataset_progress => "Data_Set_Progress",
       :creation_date => "DIF_Creation_Date",
@@ -216,6 +217,23 @@ module Metadata
       location_data
     end
     
+    def sets
+      sets = []
+      
+      object.IDN_Node.each do | node |
+        
+        case( node["Short_Name"] )
+        when "IPY" then sets << "IPY"
+        when "DOKIPY" then sets << "DOKIPY"
+        when /^ARCTIC\/?.*/ then sets << "arctic"
+        when /^AMD\/?.*/ then sets << "antarctic"
+        end
+        
+      end unless object.IDN_Node.nil? or !object.IDN_Node.any?
+      
+      sets
+    end
+    
     def science_keywords
       object.Parameters
     end
@@ -336,6 +354,21 @@ module Metadata
     
     def keyword
       object.tags unless object.tags.nil?
+    end
+    
+    def idn_node
+      nodes = []
+      
+      object.sets.each do |set|
+        case( set )
+        when "IPY" then nodes << {"Short_Name" => "IPY"}
+        when "DOKIPY" then nodes << {"Short_Name" => "DOKIPY"}
+        when "arctic" then nodes << {"Short_Name" => "ARCTIC"}
+        when "antarctic" then nodes << {"Short_Name" => "AMD"}
+        end
+      end unless object.sets.nil?
+      
+      nodes
     end
     
     def dataset_progress
