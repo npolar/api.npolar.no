@@ -231,7 +231,7 @@ module Metadata
         
       end unless object.IDN_Node.nil? or !object.IDN_Node.any?
       
-      sets
+      sets.uniq
     end
     
     def science_keywords
@@ -368,7 +368,7 @@ module Metadata
         end
       end unless object.sets.nil?
       
-      nodes
+      nodes.uniq
     end
     
     def dataset_progress
