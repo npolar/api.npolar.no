@@ -246,6 +246,44 @@ describe Metadata::DifTransformer do
         end
         
       end
+
+      context "#sets" do
+
+        it "should return an Array" do
+          @transformer.sets.should be_a_kind_of( Array )
+        end
+
+        it "it should translate IDN_NODE[short_name] = ARCTIC to arctic" do
+          @transformer.object.IDN_Node[0] = {"Short_Name" => "ARCTIC"}
+          @transformer.sets.should include( "arctic" )
+        end
+
+        it "it should translate IDN_NODE[short_name] = ARCTIC/NO to arctic" do
+          @transformer.object.IDN_Node[0] = {"Short_Name" => "ARCTIC/NO"}
+          @transformer.sets.should include( "arctic" )
+        end
+
+        it "it should translate IDN_NODE[short_name] = AMD to antarctic" do
+          @transformer.object.IDN_Node[0] = {"Short_Name" => "AMD"}
+          @transformer.sets.should include( "antarctic" )
+        end
+        
+        it "it should translate IDN_NODE[short_name] = AMD/* to antarctic" do
+          @transformer.object.IDN_Node[0] = {"Short_Name" => "AMD/BE"}
+          @transformer.sets.should include( "antarctic" )
+        end
+
+        it "it should include IDN_NODE[short_name] = IPY" do
+          @transformer.object.IDN_Node[0] = {"Short_Name" => "IPY"}
+          @transformer.sets.should include( "IPY" )
+        end
+
+        it "should include IDN_NODE[short_name] = DOKIPY" do
+          @transformer.object.IDN_Node[0] = {"Short_Name" => "DOKIPY"}
+          @transformer.sets.should include( "DOKIPY" )
+        end
+
+      end
       
     end
     
@@ -385,6 +423,39 @@ describe Metadata::DifTransformer do
         
         it "should map tags to Keyword" do
           @transformer.keyword.should == @transformer.object.tags
+        end
+        
+      end
+      
+      context "#idn_node" do
+        
+        it "should be an Array" do
+          @transformer.idn_node.should be_a_kind_of( Array )
+        end
+        
+        it "should translate arctic to ARCTIC" do
+          @transformer.object.sets[0] = "arctic"
+          @transformer.idn_node.should include( "Short_Name" => "ARCTIC" )
+        end
+        
+        it "should translate antarctic to AMD" do
+          @transformer.object.sets[0] = "antarctic"
+          @transformer.idn_node.should include( "Short_Name" => "AMD" )
+        end
+        
+        it "should include IPY" do
+          @transformer.object.sets[0] = "IPY"
+          @transformer.idn_node.should include( "Short_Name" => "IPY" )
+        end
+        
+        it "should include DOKIPY" do
+          @transformer.object.sets[0] = "DOKIPY"
+          @transformer.idn_node.should include( "Short_Name" => "DOKIPY" )
+        end
+        
+        it "should do nothing for cryoclim" do
+          @transformer.object.sets[0] = "cryoclim.net"
+          @transformer.idn_node.should == []
         end
         
       end
