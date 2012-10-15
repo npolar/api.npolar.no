@@ -283,6 +283,12 @@ describe Metadata::DifTransformer do
           @transformer.sets.should include( "DOKIPY" )
         end
 
+        it "should remove duplicates" do
+          @transformer.object.IDN_Node[0] = {"Short_Name" => "AMD/BE"}
+          @transformer.object.IDN_Node[1] = {"Short_Name" => "AMD/BE"}
+          @transformer.sets.should == ["antarctic"]
+        end
+
       end
       
     end
