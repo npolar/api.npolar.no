@@ -246,6 +246,57 @@ describe Metadata::DifTransformer do
         end
         
       end
+      
+      context "#links" do
+        
+        before(:each) do
+          @transformer.object.Related_URL[0]["URL"] = ["http://test.no/", "http://test.be/"]
+        end
+        
+        it "should return an Array" do
+          @transformer.links.should be_a_kind_of( Array )
+        end
+        
+        it "Array elements should be Hashes" do
+          @transformer.object.Related_URL[0]["URL_Content_Type"]["Type"] = "GET DATA"
+          @transformer.object.Related_URL[0]["URL"] = ["http://test.no/"]
+          @transformer.links[0].should be_a_kind_of( Hash )
+        end
+        
+        it "should store addresses starting with http://" do
+          @transformer.links[0].should include( "href" => "http://test.no/" )
+        end
+        
+        it "shouldn't store addresses starting with http://" do
+          @transformer.object.Related_URL[0]["URL"] = ["file://data.txt"]
+          @transformer.links.should == []
+        end
+        
+        it "should store url's with an unknown type as related" do
+          @transformer.links[0].should include( "rel" => "related" )
+        end
+        
+        it "should store GET DATA links as dataset" do
+          @transformer.object.Related_URL[0]["URL_Content_Type"]["Type"] = "GET DATA"
+          @transformer.links.should include( "rel" => "dataset", "href" => "http://test.no/" )
+        end
+        
+        it "should store VIEW PROJECT HOME PAGE links as project" do
+          @transformer.object.Related_URL[0]["URL_Content_Type"]["Type"] = "VIEW PROJECT HOME PAGE"
+          @transformer.links.should include( "rel" => "project", "href" => "http://test.no/" )
+        end
+        
+        it "should store VIEW EXTENDED METADATA links as metadata" do
+          @transformer.object.Related_URL[0]["URL_Content_Type"]["Type"] = "VIEW EXTENDED METADATA"
+          @transformer.links.should include( "rel" => "metadata", "href" => "http://test.no/" )
+        end
+        
+        it "should store GET SERVICE links as service" do
+          @transformer.object.Related_URL[0]["URL_Content_Type"]["Type"] = "GET SERVICE"
+          @transformer.links.should include( "rel" => "service", "href" => "http://test.no/" )
+        end
+        
+      end
 
       context "#sets" do
 
@@ -404,7 +455,7 @@ describe Metadata::DifTransformer do
       context "#use_constraints" do
         
         it "should translate licenses into Use_Constraints" do
-          @transformer.use_constraints.should == "http://creativecommons.org/licenses/by/3.0/no/, http://data.norge.no/nlod/no/1.0."
+          @transformer.use_constraints.should == "http://creativecommons.org/licenses/by/3.0/no/, http://data.norge.no/nlod/no/1.0"
         end
         
       end
@@ -429,6 +480,42 @@ describe Metadata::DifTransformer do
         
         it "should map tags to Keyword" do
           @transformer.keyword.should == @transformer.object.tags
+        end
+        
+      end
+      
+      context "#related_url" do
+        
+        before(:each) do
+          @transformer.object.links = [Hashie::Mash.new( {"rel" => "dataset", "href" => "http://test.no"} )]
+        end
+        
+        it "should be a kind of Array" do
+          @transformer.related_url.should be_a_kind_of( Array )
+        end
+        
+        it "should translate dataset to GET DATA" do
+          @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "GET DATA"} )
+        end
+        
+        it "should translate metadata to VIEW EXTENDED METADATA" do
+          @transformer.object.links[0]["rel"] = "metadata"
+          @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "VIEW EXTENDED METADATA"} )
+        end
+        
+        it "should translate project to VIEW PROJECT HOME PAGE" do
+          @transformer.object.links[0]["rel"] = "project"
+          @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "VIEW PROJECT HOME PAGE"} )
+        end
+        
+        it "should translate service to GET SERVICE" do
+          @transformer.object.links[0]["rel"] = "service"
+          @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "GET SERVICE"} )
+        end
+        
+        it "should translate related to VIEW RELATED INFORMATION" do
+          @transformer.object.links[0]["rel"] = "related"
+          @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "VIEW RELATED INFORMATION"} )
         end
         
       end
@@ -462,6 +549,14 @@ describe Metadata::DifTransformer do
         it "should do nothing for cryoclim" do
           @transformer.object.sets[0] = "cryoclim.net"
           @transformer.idn_node.should == []
+        end
+        
+      end
+      
+      context "#data_quality" do
+        
+        it "should translate quality into Quality" do
+          @transformer.data_quality.should == @transformer.object.quality
         end
         
       end

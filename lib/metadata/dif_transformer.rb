@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 require "hashie"
+require "uuidtools"
 
 module Metadata
   # Dataset Transformer for DIF Documents.
@@ -18,10 +19,10 @@ module Metadata
   class DifTransformer
     
     ISO_8601 = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
-    
+
     DATASET_MAP = [
       :source, :id, :title, :summary, :progress, :investigators,
-      :contributors, :rights, :activity, :locations, :tags, :iso_topics,
+      :contributors, :rights, :activity, :locations, :links, :tags, :iso_topics,
       :quality, :science_keywords, :draft, :published, :updated, :editors, :sets
     ]
     
@@ -34,7 +35,9 @@ module Metadata
       :temporal_coverage => "Temporal_Coverage",
       :iso_topic_category => "ISO_Topic_Category",
       :keyword => "Keyword",
+      :related_url => "Related_URL",
       :idn_node => "IDN_Node",
+      :data_quality => "Quality",
       :use_constraints => "Use_Constraints",
       :dataset_progress => "Data_Set_Progress",
       :creation_date => "DIF_Creation_Date",
@@ -217,6 +220,38 @@ module Metadata
       location_data
     end
     
+    def links
+      links = []
+      
+      object.Related_URL.each do | link |
+        type = link["URL_Content_Type"]["Type"] unless link.nil? or link["URL_Content_Type"].nil?
+        
+        unless type.nil?
+          
+          case( type )
+          when "GET DATA" then type = "dataset"
+          when "VIEW PROJECT HOME PAGE" then type = "project"
+          when "VIEW EXTENDED METADATA" then type = "metadata"
+          when "GET SERVICE" then type = "service"
+          else type = "related"
+          end
+          
+          link.URL.each do | url |
+            if url =~ /^http:\/\/.*/
+              links << {
+                "rel" => type,
+                "href" => url
+              }
+            end
+          end unless link.URL.nil?
+          
+        end
+        
+      end unless object.Related_URL.nil? or !object.Related_URL.any?
+      
+      links
+    end
+    
     def sets
       sets = []
       
@@ -341,7 +376,7 @@ module Metadata
         constraints += ", " unless (object.licenses.size - 1) == i
       end unless object.licenses.nil?
       
-      constraints += "."
+      constraints
     end
     
     def iso_topic_category
@@ -354,6 +389,33 @@ module Metadata
     
     def keyword
       object.tags unless object.tags.nil?
+    end
+    
+    def related_url
+      urls = []
+      
+      object.links.each do |link|
+        
+        type = link["rel"] unless link["rel"].nil?
+        
+        case( type )
+        when "dataset" then type = "GET DATA"
+        when "metadata" then type = "VIEW EXTENDED METADATA"
+        when "project" then type = "VIEW PROJECT HOME PAGE"
+        when "service" then type = "GET SERVICE"
+        when "related" then type = "VIEW RELATED INFORMATION"
+        end
+        
+        urls << {
+          "URL_Content_Type" => {
+            "Type" => type
+          },
+          "URL" => [link["href"]]
+        }
+        
+      end unless links.nil?
+      
+      urls
     end
     
     def idn_node
@@ -369,6 +431,10 @@ module Metadata
       end unless object.sets.nil?
       
       nodes.uniq
+    end
+    
+    def data_quality
+      object.quality unless object.quality.nil?
     end
     
     def dataset_progress
