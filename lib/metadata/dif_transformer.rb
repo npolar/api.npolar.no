@@ -413,7 +413,7 @@ module Metadata
           "URL" => [link["href"]]
         }
         
-      end unless links.nil?
+      end unless object.links.nil?
       
       urls
     end
