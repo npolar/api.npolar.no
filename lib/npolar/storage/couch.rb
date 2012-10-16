@@ -5,6 +5,8 @@ module Npolar
     class Couch
 
       JSON_ARRAY_REGEX = /^(\s+)?\[.*\](\s+)?$/
+
+      LIMIT = 10000
   
       HEADERS = {
         "Accept" => "application/json",
@@ -12,7 +14,7 @@ module Npolar
         "Content-Type" => "application/json; charset=utf-8",
         "User-Agent" => self.name }
 
-      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model
+      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit
   
       def self.uri=uri
         if uri.respond_to? :gsub
@@ -29,7 +31,7 @@ module Npolar
         @accepts ||= ["json"]
       end
   
-      def initialize(read, write = nil)
+      def initialize(read, write = nil, config = {})
         if read.respond_to? :key? and read.key? "read"
           if write.nil? and read.key? "write"
             write = read["write"]
@@ -48,6 +50,11 @@ module Npolar
           @write = self.class.uri+"/"+@write
         end
         @headers = HEADERS
+
+        if config.key? :limit and config[:limit].to_i > 0
+          @limit = config[:limit]
+        end
+
       end
   
       def delete(id, params={})
@@ -60,9 +67,13 @@ module Npolar
       end
   
       def get(id, params={})
+        if params["limit"].to_i > 0
+          @limit = params["limit"].to_i
+        end
+
         case id
         when "_ids", "" then ids
-        when "_feed" then titles(params)
+        when "_feed" then feed(params)
         else
           response = reader.get(id, headers, params)
           [response.status, response.headers, response.body]
@@ -140,7 +151,7 @@ module Npolar
       def ids
         ids = []
 
-        response = couch.get(read+"/_all_docs")
+        response = couch.get(all_docs_uri(false))
         
         if 200 == response.status
           ids = Yajl::Parser.parse(response.body)["rows"].map {|row| row["id"] }
@@ -151,19 +162,46 @@ module Npolar
         [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(ids)+"\n"]] # Couch returns text/plain here!?
       end
 
-      def titles(params={})
-        ids = []
+      def feed(params={})
+        response = couch.get(all_docs_uri(true))
 
-        response = couch.get(read+"/_all_docs?include_docs=true")
-        
         if 200 == response.status
-          ids = Yajl::Parser.parse(response.body)["rows"].map {|row| {:title => row["doc"]["title"],
-          :id => row["doc"]["id"], :_id => row["doc"]["_id"], :updated => row["doc"]["updated"] } }
+
+          feed = Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row| row[:doc] }
+
+          unless params["fields"].nil?
+            if "*" == params["fields"]
+              # no op
+            else
+              fields = params["fields"].split(",").map {|f|f.to_sym}
+              feed = feed.map {|doc|
+                doc = doc.select {|k,v| fields.include? k or fields.include? :* }
+              
+              }
+              feed
+            end
+          else
+            feed = Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row|
+              { :title => row[:doc][:title], :id => row[:doc][:id], :_id => row[:doc][:_id], :updated => row[:doc][:updated] }
+            }
+          end
+          feed = feed.select { |row| row[:_id] !~ /_design/ }
           status = 200
+
         else
+          feed = { "error" => { "status" => 501, "explanation" => "Storage error #{response.status}" } }
           status = 501
         end
-        [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(ids)+"\n"]] # Couch returns text/plain here!?
+        [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(feed)+"\n"]] # Couch returns text/plain here!?
+      end
+
+      def all_docs_uri(include_docs=false)
+        include_docs = (false == include_docs) ? "false" : "true" 
+        # Use a view, if it exists
+        # /#{read}/_design/feed/_view/fields?keys=["id","title","updated"]
+
+        # Otherwise, fallback to _all_docs
+        uri = "#{read}/_all_docs?include_docs=#{true}&limit=#{limit}" #&startkey=%22#{sk}%22&endkey=%22#{ek}%22"
       end
 
       protected
@@ -181,6 +219,10 @@ module Npolar
           use Npolar::Rack::ValidateId
           run ::Rack::Client::Handler::NetHTTP
         end
+      end
+
+      def limit
+        @limit ||= LIMIT
       end
   
       def reader
