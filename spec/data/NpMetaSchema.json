@@ -13,7 +13,7 @@
       "required": true
     },
     "summary": {
-      "description": "Free text describing the dataset",
+      "description": "Free text describing the dataset DIF:Summary[Abstract]",
       "type": "string"
     },
     "progress": {
@@ -23,6 +23,7 @@
       "pattern": "^(ongoing|completed|planned)$"
     },
     "licenses": {
+      "description": "Legal licences defining terms of use for the data. DIF:Use_Constraints",
       "type": "array",
       "items": {
         "type": "string",
@@ -31,7 +32,7 @@
       }
     },
     "groups": {
-      "description": "Research field the data belongs to.",
+      "description": "Research field the data belongs to. Not Mapped in DIF",
       "type": "array",
       "items": {
         "type": "string",
@@ -40,7 +41,7 @@
       }
     },
     "editors": {
-      "description": "Array containing a list of persons who changed the metadata and the date when.",
+      "description": "Array containing a list of persons who changed the metadata and the date when. Last Person in the Array is DIF:Personnel[Role] DIF_Author",
       "type": "array",
       "items": {
         "type": "object",
@@ -72,11 +73,15 @@
           "email": {
             "type": "string",
             "format": "email"
-          },
-          "org": {
-            "type": "string"
           }
         }
+      }
+    },
+    "institutions": {
+      "description": "Participating institutions",
+      "type": "array",
+      "items": {
+        "type": "string"
       }
     },
     "contributors": {
@@ -85,9 +90,6 @@
       "items": {
         "type": "object",
         "properties": {
-          "org": {
-            "type": "string"
-          },
           "first_name": {
             "type": "string"
           },
@@ -188,6 +190,12 @@
             "type": "string"
           }
         }
+      }
+    },
+    "iso_topics": {
+      "type": "array",
+      "items": {
+              "type": "string"
       }
     },
     "tags": {
