@@ -6,11 +6,11 @@ module Npolar
 
       JSON_ARRAY_REGEX = /^(\s+)?\[.*\](\s+)?$/
 
-      LIMIT = 10000
+      LIMIT = 1000
   
       HEADERS = {
         "Accept" => "application/json",
-        #Accept-Encoding 
+        #Accept-Encoding? 
         "Content-Type" => "application/json; charset=utf-8",
         "User-Agent" => self.name }
 
@@ -71,9 +71,9 @@ module Npolar
           @limit = params["limit"].to_i
         end
 
-        case id
-        when "_ids", "" then ids
-        when "_feed" then feed(params)
+        case id    
+          when "_ids", "" then ids
+          when "_feed" then feed(params)
         else
           response = reader.get(id, headers, params)
           [response.status, response.headers, response.body]
@@ -92,13 +92,13 @@ module Npolar
   
       def post_many(data, params={})        
         if data !~ JSON_ARRAY_REGEX
-          raise ArgumentException, "Please provide data as a JSON array string"
+          raise ArgumentException, "Please provide data as a JSON Array"
         end
   
         couch = { "docs" => JSON.parse(data) }
         # set _id from id
         data = couch.to_json
-        response = writer.post("_bulk_docs", headers, data)        
+        response = writer.post("_bulk_docs", headers, data)
         [202,  {"Content-Type" => HEADERS["Content-Type"]} , ["POSTed #{couch['docs'].size} documents\n"]]
       end
   
@@ -189,8 +189,8 @@ module Npolar
           status = 200
 
         else
-          feed = { "error" => { "status" => 501, "explanation" => "Storage error #{response.status}" } }
-          status = 501
+          feed = { "error" => { "status" => response.status, "explanation" => "Storage error #{response.status}" } }
+          status = response.status
         end
         [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(feed)+"\n"]] # Couch returns text/plain here!?
       end
