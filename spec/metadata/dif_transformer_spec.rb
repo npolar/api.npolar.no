@@ -1,3 +1,5 @@
+#encoding: UTF-8
+
 require "spec_helper"
 require "metadata/dif_transformer"
 
@@ -225,9 +227,17 @@ describe Metadata::DifTransformer do
           @transformer.locations[0].north.should == 90
         end
         
-        it "should map Locations[detailed_location] to locations" do
+        it "should map Location[detailed_location] to locations" do
           @transformer.locations[2].placename.should == "Pyramiden"
         end
+        
+        #it "if Location[Location_Type] == ARCTIC" do
+        #  @transformer.locations[3].area.should == "arctic"
+        #end
+        #
+        #it "if Location[Location_Type] == ANTARCTICA" do
+        #  @transformer.locations[4].area.should == "antarctic"
+        #end
         
       end
       
@@ -436,6 +446,120 @@ describe Metadata::DifTransformer do
         
       end
       
+      context "#dif_location" do
+        
+        it "should return an Array" do
+          @transformer.dif_location.should be_a_kind_of( Array )
+        end
+        
+        it "if area arctic => GEOGRAPHIC REGION > POLAR" do
+          @transformer.object.locations = [{"area" => "arctic"}]
+          @transformer.dif_location[1].should include(
+            "Location_Category" => "GEOGRAPHIC REGION",
+            "Location_Type" => "POLAR"
+          )
+        end
+        
+        it "if area arctic => GEOGRAPHIC REGION > ARCTIC" do
+          @transformer.object.locations = [{"area" => "arctic"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "GEOGRAPHIC REGION",
+            "Location_Type" => "ARCTIC"
+          )
+        end
+        
+        it "if area svalbard => OCEAN > ATLANTIC OCEAN > NORTH ATLANTIC OCEAN > SVALBARD AND JAN MAYEN" do
+          @transformer.object.locations = [{"area" => "svalbard"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "OCEAN",
+            "Location_Type" => "ATLANTIC OCEAN",
+            "Location_Subregion1" => "NORTH ATLANTIC OCEAN",
+            "Location_Subregion2" => "SVALBARD AND JAN MAYEN",
+          )
+        end
+        
+        it "if area svalbard => OCEAN > ATLANTIC OCEAN > NORTH ATLANTIC OCEAN > SVALBARD AND JAN MAYEN" do
+          @transformer.object.locations = [{"area" => "svalbard"}]
+          @transformer.dif_location[1].should include(
+            "Location_Category" => "GEOGRAPHIC REGION",
+            "Location_Type" => "POLAR"
+          )
+        end
+        
+        it "if area svalbard => OCEAN > ATLANTIC OCEAN > NORTH ATLANTIC OCEAN > SVALBARD AND JAN MAYEN" do
+          @transformer.object.locations = [{"area" => "svalbard"}]
+          @transformer.dif_location[2].should include(
+            "Location_Category" => "GEOGRAPHIC REGION",
+            "Location_Type" => "ARCTIC"
+          )
+        end
+        
+        it "if area jan mayen => OCEAN > ATLANTIC OCEAN > NORTH ATLANTIC OCEAN > SVALBARD AND JAN MAYEN" do
+          @transformer.object.locations = [{"area" => "jan_mayen"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "OCEAN",
+            "Location_Type" => "ATLANTIC OCEAN",
+            "Location_Subregion1" => "NORTH ATLANTIC OCEAN",
+            "Location_Subregion2" => "SVALBARD AND JAN MAYEN",
+          )
+        end
+        
+        it "if area antarctic => CONTINENT > ANTARCTICA" do
+          @transformer.object.locations = [{"area" => "antarctic"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "ANTARCTICA"
+          )
+        end
+        
+        it "if area antarctic => GEOGRAPHIC REGION > POLAR" do
+          @transformer.object.locations = [{"area" => "antarctic"}]
+          @transformer.dif_location[1].should include(
+            "Location_Category" => "GEOGRAPHIC REGION",
+            "Location_Type" => "POLAR"
+          )
+        end
+        
+        it "if area Dronning Maud Land => CONTINENT < ANTARCTICA" do
+          @transformer.object.locations = [{"area" => "dronning_maud_land"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "ANTARCTICA",
+            "Detailed_Location" => "Dronning Maud Land"
+          )
+        end
+        
+        it "if area Bouvet Øya => OCEAN < ATLANTIC OCEAN < SOUTH ATLANTIC OCEAN < BOUVET ISLAND" do
+          @transformer.object.locations = [{"placename" => "Olavtoppen", "area" => "bouvetøya"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "OCEAN",
+            "Location_Type" => "ATLANTIC OCEAN",
+            "Location_Subregion1" => "SOUTH ATLANTIC OCEAN",
+            "Location_Subregion2" => "BOUVET ISLAND",
+            "Detailed_Location" => "Olavtoppen"
+          )
+        end
+        
+        it "if area Peter I Øy => OCEAN < PACIFIC OCEAN < SOUTH PACIFIC OCEAN" do
+          @transformer.object.locations = [{"placename" => "Lars Christensentoppen", "area" => "peter_i_øy"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "OCEAN",
+            "Location_Type" => "PACIFIC OCEAN",
+            "Location_Subregion1" => "SOUTH PACIFIC OCEAN",
+            "Detailed_Location" => "Lars Christensentoppen (Peter I Øy)"
+          )
+        end
+        
+        it "if placename => Detailed_Location == placename" do
+          @transformer.object.locations = [{"placename" => "pyramiden"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "GEOGRAPHIC REGION",
+            "Detailed_Location" => "pyramiden"
+          )
+        end
+        
+      end
+      
       context "#temporal_coverage" do
         
         it "should be a Array" do
@@ -513,9 +637,31 @@ describe Metadata::DifTransformer do
           @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "GET SERVICE"} )
         end
         
-        it "should translate related to VIEW RELATED INFORMATION" do
-          @transformer.object.links[0]["rel"] = "related"
-          @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "VIEW RELATED INFORMATION"} )
+        #it "should translate related to VIEW RELATED INFORMATION" do
+        #  @transformer.object.links[0]["rel"] = "related"
+        #  @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "VIEW RELATED INFORMATION"} )
+        #end
+        
+      end
+      
+      context "#reference" do
+        
+        before(:each) do
+          @transformer.object.links = []
+        end
+        
+        it "should return an Array" do
+          @transformer.reference.should be_a_kind_of( Array )
+        end
+        
+        it "should translate links of rel DOI to a DIF reference" do
+          @transformer.object.links[0] = {"rel" => "doi", "href" => "http://test.no"}
+          @transformer.reference[0].should include( "DOI" => "http://test.no" )
+        end
+        
+        it "should translate links of rel reference to a Online_Resource reference" do
+          @transformer.object.links[0] = {"rel" => "reference", "href" => "http://test.no"}
+          @transformer.reference[0].should include( "Online_Resource" => "http://test.no" )
         end
         
       end

@@ -32,10 +32,12 @@ module Metadata
       :summary_abstract => "Summary",
       :personnel => "Personnel",
       :spatial_coverage => "Spatial_Coverage",
+      :dif_location => "Location",
       :temporal_coverage => "Temporal_Coverage",
       :iso_topic_category => "ISO_Topic_Category",
       :keyword => "Keyword",
       :related_url => "Related_URL",
+      :reference => "Reference",
       :idn_node => "IDN_Node",
       :data_quality => "Quality",
       :use_constraints => "Use_Constraints",
@@ -206,6 +208,12 @@ module Metadata
       end unless object.Spatial_Coverage.nil?
       
       object.Location.each do | location |
+        
+        #case( location.Location_Type )
+        #when "ARCTIC" then area = "arctic"
+        #when "ANTARCTICA" then area = "antarctic"
+        #end unless location.Location_Type.nil?
+        
         location_data << Hashie::Mash.new({
           "north" => nil,
           "east" => nil,
@@ -351,6 +359,94 @@ module Metadata
       coords
     end
     
+    def dif_location
+      locations = []
+      
+      object.locations.each do | loc |
+        if loc.placename || loc.area || loc.country_code
+          
+          area = loc.area.downcase unless loc.area.nil?
+          detailed_location = loc.placename unless loc.placename.nil?
+          polar_region = {"Location_Category" => "GEOGRAPHIC REGION", "Location_Type" => "POLAR"}
+          
+          case( area )
+          when "arctic" then
+            locations << {
+              "Location_Category" => "GEOGRAPHIC REGION",
+              "Location_Type" => "ARCTIC",
+              "Detailed_Location" => detailed_location
+            }
+            locations << polar_region
+          when /^(svalbard|jan_mayen)$/ then
+            locations << {
+              "Location_Category" => "OCEAN",
+              "Location_Type" => "ATLANTIC OCEAN",
+              "Location_Subregion1" => "NORTH ATLANTIC OCEAN",
+              "Location_Subregion2" => "SVALBARD AND JAN MAYEN",
+              "Detailed_Location" => detailed_location
+            }
+            locations << polar_region
+            locations << {
+              "Location_Category" => "GEOGRAPHIC REGION",
+              "Location_Type" => "ARCTIC"
+            }
+          when "antarctic" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "ANTARCTICA",
+              "Detailed_Location" => detailed_location
+            }
+            locations << polar_region
+          when "dronning_maud_land" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "ANTARCTICA",
+              "Detailed_Location" => location_with_area(detailed_location, "Dronning Maud Land")
+            }
+            locations << polar_region
+          when "bouvetøya" then
+            locations << {
+              "Location_Category" => "OCEAN",
+              "Location_Type" => "ATLANTIC OCEAN",
+              "Location_Subregion1" => "SOUTH ATLANTIC OCEAN",
+              "Location_Subregion2" => "BOUVET ISLAND",
+              "Detailed_Location" => detailed_location
+            }
+            locations << polar_region
+          when "peter_i_øy" then
+            locations << {
+              "Location_Category" => "OCEAN",
+              "Location_Type" => "PACIFIC OCEAN",
+              "Location_Subregion1" => "SOUTH PACIFIC OCEAN",
+              "Detailed_Location" => location_with_area(detailed_location, "Peter I Øy")
+            }
+            locations << polar_region
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "ANTARCTICA",
+              "Detailed_Location" => nil
+            }
+          else
+            locations << {
+              "Location_Category" => "GEOGRAPHIC REGION",
+              "Detailed_Location" => detailed_location
+            } unless detailed_location.nil?
+          end
+          
+        end
+      end
+      
+      locations.uniq
+    end
+    
+    def location_with_area(location, area)
+      if location.nil?
+        area
+      else
+        "#{location} (#{area})"
+      end
+    end
+    
     def temporal_coverage
       coverage = []
       
@@ -398,24 +494,46 @@ module Metadata
         
         type = link["rel"] unless link["rel"].nil?
         
-        case( type )
-        when "dataset" then type = "GET DATA"
-        when "metadata" then type = "VIEW EXTENDED METADATA"
-        when "project" then type = "VIEW PROJECT HOME PAGE"
-        when "service" then type = "GET SERVICE"
-        when "related" then type = "VIEW RELATED INFORMATION"
-        end
+        unless type =~ /reference|doi/
         
-        urls << {
-          "URL_Content_Type" => {
-            "Type" => type
-          },
-          "URL" => [link["href"]]
-        }
+          case( type )
+          when "dataset" then type = "GET DATA"
+          when "metadata" then type = "VIEW EXTENDED METADATA"
+          when "project" then type = "VIEW PROJECT HOME PAGE"
+          when "service" then type = "GET SERVICE"
+          else
+            type = "VIEW RELATED INFORMATION" 
+          end
+          
+          urls << {
+            "URL_Content_Type" => {
+              "Type" => type
+            },
+            "URL" => [link["href"]]
+          }
+        
+        end
         
       end unless object.links.nil?
       
       urls
+    end
+    
+    def reference
+      reference = []
+      
+      object.links.each do |link|
+        
+        type = link["rel"] unless link["rel"].nil?
+        
+        case( type )
+        when "doi" then reference << {"DOI" => link["href"]}
+        when "reference" then reference << {"Online_Resource" => link["href"]}
+        end
+        
+      end unless object.links.nil?
+      
+      reference
     end
     
     def idn_node
