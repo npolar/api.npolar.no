@@ -17,11 +17,12 @@ module Metadata
   # @author Conrad Helgeland
   
   class DifTransformer
+    include Npolar::Api
     
     ISO_8601 = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
 
     DATASET_MAP = [
-      :source, :id, :title, :summary, :progress, :investigators,
+      :source, :_id, :id, :title, :summary, :progress, :investigators,
       :contributors, :rights, :activity, :locations, :links, :tags, :iso_topics,
       :quality, :science_keywords, :draft, :published, :updated, :editors, :sets
     ]
@@ -39,6 +40,7 @@ module Metadata
       :related_url => "Related_URL",
       :reference => "Reference",
       :idn_node => "IDN_Node",
+      :parent_dif => "Parent_DIF",
       :data_quality => "Quality",
       :use_constraints => "Use_Constraints",
       :dataset_progress => "Data_Set_Progress",
@@ -72,6 +74,10 @@ module Metadata
       end
       
       dataset
+    end
+    
+    def _id
+      uuid(Metadata::Dataset.uri + "/" + object.Entry_ID)
     end
     
     def id
@@ -256,6 +262,13 @@ module Metadata
         end
         
       end unless object.Related_URL.nil? or !object.Related_URL.any?
+      
+      object.Parent_DIF.each do | parent |
+        links << {
+          "rel" => "parent",
+          "href" => uuid( Metadata::Dataset.uri + "/" + parent )
+        } unless parent.nil?
+      end unless object.Parent_DIF.nil?
       
       links
     end
@@ -501,6 +514,7 @@ module Metadata
           when "metadata" then type = "VIEW EXTENDED METADATA"
           when "project" then type = "VIEW PROJECT HOME PAGE"
           when "service" then type = "GET SERVICE"
+          when "parent" then type = "GET RELATED METADATA RECORD (DIF)"
           else
             type = "VIEW RELATED INFORMATION" 
           end
@@ -549,6 +563,20 @@ module Metadata
       end unless object.sets.nil?
       
       nodes.uniq
+    end
+    
+    def parent_dif
+      parents = []
+      
+      object.links.each do |link|
+        link.each do |k ,v|
+          if k == "rel" and v == "parent"
+            parents << link["href"]
+          end
+        end
+      end
+      
+      parents
     end
     
     def data_quality

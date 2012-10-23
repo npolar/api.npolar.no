@@ -39,6 +39,14 @@ describe Metadata::DifTransformer do
         
       end
       
+      context "#_id" do
+        
+        it "should map Entry_ID + collection uri to a namespaced UUID" do
+          @transformer._id.should == @transformer.uuid( Metadata::Dataset.uri + "/" + @transformer.object.Entry_ID)
+        end
+        
+      end
+      
       context "#id" do
       
         it "should map Entry_ID to id" do
@@ -279,7 +287,7 @@ describe Metadata::DifTransformer do
         
         it "shouldn't store addresses starting with http://" do
           @transformer.object.Related_URL[0]["URL"] = ["file://data.txt"]
-          @transformer.links.should == []
+          @transformer.links.should_not include("href" => "file://data.txt")
         end
         
         it "should store url's with an unknown type as related" do
@@ -304,6 +312,13 @@ describe Metadata::DifTransformer do
         it "should store GET SERVICE links as service" do
           @transformer.object.Related_URL[0]["URL_Content_Type"]["Type"] = "GET SERVICE"
           @transformer.links.should include( "rel" => "service", "href" => "http://test.no/" )
+        end
+        
+        it "should store parent_DIF information as a link to the parent" do
+          @transformer.links[2].should include(
+            "rel" => "parent",
+            "href" => @transformer.uuid( Metadata::Dataset.uri + "/" + @transformer.object.Parent_DIF[0])
+          )
         end
         
       end
@@ -637,10 +652,15 @@ describe Metadata::DifTransformer do
           @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "GET SERVICE"} )
         end
         
-        #it "should translate related to VIEW RELATED INFORMATION" do
-        #  @transformer.object.links[0]["rel"] = "related"
-        #  @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "VIEW RELATED INFORMATION"} )
-        #end
+        it "should translate parent to GET RELATED METADATA RECORD (DIF)" do
+          @transformer.object.links[0]["rel"] = "parent"
+          @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "GET RELATED METADATA RECORD (DIF)"} )
+        end
+        
+        it "should translate related to VIEW RELATED INFORMATION" do
+          @transformer.object.links[0]["rel"] = "related"
+          @transformer.related_url[0].should include( "URL_Content_Type" => {"Type" => "VIEW RELATED INFORMATION"} )
+        end
         
       end
       
@@ -695,6 +715,19 @@ describe Metadata::DifTransformer do
         it "should do nothing for cryoclim" do
           @transformer.object.sets[0] = "cryoclim.net"
           @transformer.idn_node.should == []
+        end
+        
+      end
+      
+      context "#parent_dif" do
+        
+        it "should return an Array" do
+          @transformer.parent_dif.should be_a_kind_of( Array )
+        end
+        
+        it "translate if links[rel] == parent" do
+          @transformer.object.links = [{"rel" => "parent", "href" => "abc"}]
+          @transformer.parent_dif.should == ["abc"]
         end
         
       end
