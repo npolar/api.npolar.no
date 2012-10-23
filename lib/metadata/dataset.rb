@@ -61,7 +61,7 @@ module Metadata
     end
 
     def self.uri
-      "/metadata/dataset"
+      "http://api.npolar.no/metadata/dataset"
     end
 
     #<IDN_Node>
@@ -124,6 +124,10 @@ module Metadata
     end
     
     def to_dif
+    end
+    
+    def uri(id)
+      self.uri + id
     end
     
     def valid?
