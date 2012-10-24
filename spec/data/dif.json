@@ -100,7 +100,7 @@
             "Detailed_Variable": ""
         }
     ],
-    "ISO_Topic_Category": [],
+    "ISO_Topic_Category": ["BIOTA", "ENVIRONMENT"],
     "Keyword": ["letters", "language"],
     "Sensor_Name": [
         {
@@ -171,6 +171,22 @@
             "Location_Subregion2": "SVALBARD AND JAN MAYEN",
             "Location_Subregion3": "",
             "Detailed_Location": "Pyramiden"
+        },
+        {
+            "Location_Category": "GEOGRAPHIC REGION",
+            "Location_Type": "ARCTIC",
+            "Location_Subregion1": "",
+            "Location_Subregion2": "",
+            "Location_Subregion3": "",
+            "Detailed_Location": ""
+        },
+        {
+            "Location_Category": "CONTINENT",
+            "Location_Type": "ANTARCTICA",
+            "Location_Subregion1": "",
+            "Location_Subregion2": "",
+            "Location_Subregion3": "",
+            "Detailed_Location": ""
         }
     ],
     "Data_Resolution": [
@@ -257,7 +273,7 @@
             "Description": ""
         }
     ],
-    "Parent_DIF": [],
+    "Parent_DIF": ["abc"],
     "IDN_Node": [
         {
             "Short_Name": "",
