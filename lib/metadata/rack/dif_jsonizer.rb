@@ -18,8 +18,6 @@ module Metadata
 
       JSON_HEADER_HASH = {"Content-Type" => "application/json; charset=utf-8"}
       
-      NAMESPACE = "http://data.npolar.no/"
-      
       XSL = "DIF-ISO-3.1.xsl"
 
       def condition?( request )
@@ -50,7 +48,6 @@ module Metadata
         difs.each do | dif_hash |
           transformer = ::Metadata::DifTransformer.new( dif_hash )
           atom_hash = transformer.to_dataset
-          atom_hash["_id"] = namespaced_uuid( atom_hash["id"] )
           j << atom_hash
         end
 
