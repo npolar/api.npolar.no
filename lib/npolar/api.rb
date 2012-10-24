@@ -18,6 +18,10 @@ module Npolar
       end
 
     end
-
+    
+    def uuid(uri)
+      UUIDTools::UUID.sha1_create( UUIDTools::UUID_DNS_NAMESPACE, uri )
+    end
+   
   end
 end
