@@ -447,7 +447,7 @@ module Metadata
           end
           
         end
-      end
+      end unless object.locations.nil?
       
       locations.uniq
     end
