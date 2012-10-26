@@ -126,39 +126,42 @@ module Metadata
       def atom_entry(metadata_dataset)
         atom = metadata_dataset
         entry = ::Atom::Entry.new do |e|
-          e.id = atom["dif:Entry_ID"] || "urn:uuid:#{atom["id"]}"
+          e.id = atom["id"] || "urn:uuid:#{atom["_id"]}"
 
           e.title = atom["title"]
           e.summary = atom["summary"]
 
-          e.authors << ::Atom::Person.new(:name => 'John Doe')
-
+          #e.authors << ::Atom::Person.new(:name => 'John Doe')
+          #
+          atom["investigators"].each do |c|
+            e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => c["email"])
+          end unless atom["investigators"].nil?
           atom["contributors"].each do |c|
-            e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => c["email"], :uri => c["uri"])
-          end
-
-          atom["links"].each do |link|
-            e.links << ::Atom::Link.new(:href => link["href"], :title => link["title"], :rel => link["rel"])
-          end
-          #e.links << ::Atom::Link.new(:href => ".atom", :type => "application/atom+xml", :rel => "self")
-          #e.links << ::Atom::Link.new(:href => ".json", :type => "application/json", :rel => "alternate")
-          #e.links << ::Atom::Link.new(:href => ".dif", :type => "application/dif+xml", :rel => "alternate")
-
-          atom["categories"].each do |category|
-            e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["scheme"], :label => category["label"])
-          end
-
-          if atom["source"] and atom["source"]["dif"] and atom["source"]["dif"]["Parameters"]
-            atom["source"]["dif"]["Parameters"].each do |p|
-              p.each do |k,v|
-                e.categories << ::Atom::Category.new(:term => v, :scheme => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/##{k}")
-              end
-
-            end
-          end
-
-          e.published = Time.parse(atom["published"])
-          e.updated = Time.parse(atom["updated"])
+            e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => c["email"])
+          end unless atom["contributors"].nil?
+          #
+          #atom["links"].each do |link|
+          #  e.links << ::Atom::Link.new(:href => link["href"], :title => link["title"], :rel => link["rel"])
+          #end
+          ##e.links << ::Atom::Link.new(:href => ".atom", :type => "application/atom+xml", :rel => "self")
+          ##e.links << ::Atom::Link.new(:href => ".json", :type => "application/json", :rel => "alternate")
+          ##e.links << ::Atom::Link.new(:href => ".dif", :type => "application/dif+xml", :rel => "alternate")
+          #
+          #atom["categories"].each do |category|
+          #  e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["scheme"], :label => category["label"])
+          #end
+          #
+          #if atom["source"] and atom["source"]["dif"] and atom["source"]["dif"]["Parameters"]
+          #  atom["source"]["dif"]["Parameters"].each do |p|
+          #    p.each do |k,v|
+          #      e.categories << ::Atom::Category.new(:term => v, :scheme => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/##{k}")
+          #    end
+          #
+          #  end
+          #end
+          #
+          #e.published = Time.parse(atom["published"])
+          #e.updated = Time.parse(atom["updated"])
 
          # e.rights = atom["rights"]
 
