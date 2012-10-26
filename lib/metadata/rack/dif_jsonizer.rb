@@ -133,13 +133,12 @@ module Metadata
 
           #e.authors << ::Atom::Person.new(:name => 'John Doe')
           #
-          atom["investigators"].each do |c|
-            e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => c["email"])
-          end unless atom["investigators"].nil?
-          
-          atom["contributors"].each do |c|
-            e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => c["email"])
-          end unless atom["contributors"].nil?
+          [atom["investigators"], atom["contributors"]].each do |group|
+            group.each do |c|
+              email = c["email"].first unless c["email"].nil?
+              e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => email)
+            end unless group.nil?
+          end
           
           atom["links"].each do |link|
             e.links << ::Atom::Link.new(:href => link["href"], :title => link["title"], :rel => link["rel"])
