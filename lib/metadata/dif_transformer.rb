@@ -443,7 +443,7 @@ module Metadata
             locations << {
               "Location_Category" => "GEOGRAPHIC REGION",
               "Detailed_Location" => detailed_location
-            } unless detailed_location.nil?
+            } unless detailed_location.nil? || detailed_location == ""
           end
           
         end
