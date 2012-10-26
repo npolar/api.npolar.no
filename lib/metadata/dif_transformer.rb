@@ -574,7 +574,7 @@ module Metadata
             parents << link["href"]
           end
         end
-      end
+      end unless object.links.nil?
       
       parents
     end
