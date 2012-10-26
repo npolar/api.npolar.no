@@ -126,23 +126,24 @@ module Metadata
       def atom_entry(metadata_dataset)
         atom = metadata_dataset
         entry = ::Atom::Entry.new do |e|
-          e.id = atom["id"] || "urn:uuid:#{atom["_id"]}"
+          e.id = atom["_id"] unless atom["_id"].nil?
 
-          e.title = atom["title"]
-          e.summary = atom["summary"]
+          e.title = atom["title"] unless atom["title"].nil?
+          e.summary = atom["summary"] unless atom["summary"].nil?
 
           #e.authors << ::Atom::Person.new(:name => 'John Doe')
           #
           atom["investigators"].each do |c|
             e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => c["email"])
           end unless atom["investigators"].nil?
+          
           atom["contributors"].each do |c|
             e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => c["email"])
           end unless atom["contributors"].nil?
-          #
-          #atom["links"].each do |link|
-          #  e.links << ::Atom::Link.new(:href => link["href"], :title => link["title"], :rel => link["rel"])
-          #end
+          
+          atom["links"].each do |link|
+            e.links << ::Atom::Link.new(:href => link["href"], :title => link["title"], :rel => link["rel"])
+          end unless atom["links"].nil?
           ##e.links << ::Atom::Link.new(:href => ".atom", :type => "application/atom+xml", :rel => "self")
           ##e.links << ::Atom::Link.new(:href => ".json", :type => "application/json", :rel => "alternate")
           ##e.links << ::Atom::Link.new(:href => ".dif", :type => "application/dif+xml", :rel => "alternate")
