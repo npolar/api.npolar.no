@@ -321,6 +321,24 @@ describe Metadata::DifTransformer do
           )
         end
         
+        it "should store Data_Center_URL as a datacenter link" do          
+          @transformer.object.Data_Center[0]["Data_Center_URL"] = "http://pangea.de/"
+          @transformer.links[3].should include(
+            "rel" => "datacenter",
+            "href" => "http://pangea.de/",
+            "title" => "Data Centre URL"
+          )
+        end
+        
+        it "should rename the Data_Centre_URL from http://www.npolar.no" do
+          @transformer.object.Data_Center[0]["Data_Center_URL"] = "http://www.npolar.no"
+          @transformer.links[3].should include(
+            "rel" => "datacenter",
+            "href" => "http://data.npolar.no/",
+            "title" => "Data Centre URL"
+          )
+        end
+        
       end
 
       context "#sets" do

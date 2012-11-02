@@ -263,12 +263,30 @@ module Metadata
         
       end unless object.Related_URL.nil? or !object.Related_URL.any?
       
+      # Link to parent metadata records
+      
       object.Parent_DIF.each do | parent |
         links << {
           "rel" => "parent",
           "href" => uuid( Metadata::Dataset.uri + "/" + parent )
         } unless parent.nil?
       end unless object.Parent_DIF.nil?
+      
+      # Link to data centre
+      
+      object.Data_Center.each do |datacenter|
+        
+        url = ""        
+        url = datacenter["Data_Center_URL"] unless datacenter["Data_Center_URL"].nil?        
+        url = "http://data.npolar.no/" if url == "http://www.npolar.no"
+        
+        links << {
+          "rel" => "datacenter",
+          "href" => url,
+          "title" => "Data Centre URL"
+        } unless url == ""
+        
+      end unless object.Data_Center.nil?
       
       links
     end
