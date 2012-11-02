@@ -704,6 +704,32 @@ describe Metadata::DifTransformer do
         
       end
       
+      context "#data_center" do
+        
+        it "should be an Array" do
+          @transformer.data_center.should be_a_kind_of( Array )
+        end
+        
+        it "should translate data.npolar.no datacenter links to DIF:Data_Center" do
+          @transformer.object.links[0] = {"rel" => "datacenter", "href" => "http://data.npolar.no/", "title" => ""}
+          @transformer.data_center[0].should == {
+            "Data_Center_Name" => {
+              "Short_Name" => "NO/NPI",
+              "Long_Name" => "Norwegian Polar Data" 
+            },
+            "Data_Center_URL" => "http://data.npolar.no/"
+          }
+        end
+        
+        it "should translate datacenter links to DIF:Data_Center.Data_Center_URL" do
+          @transformer.object.links[0] = {"rel" => "datacenter", "href" => "http://pangea.de/", "title" => ""}
+          @transformer.data_center[0].should == {
+            "Data_Center_URL" => "http://pangea.de/"
+          }
+        end
+        
+      end
+      
       context "#idn_node" do
         
         it "should be an Array" do
