@@ -1,49 +1,214 @@
-# encoding: utf-8
+# encoding: utf-8 
 module Views
   module Api  
     class Index < Npolar::Mustache::JsonView
 
-      def initialize
+      def initialize(app=nil)
+        @app = app
         @hash = { "_id" => "api_index",
           :workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
-          :title => "api.<a title=\"Norwegian Polar Institute\" href=\"http://npolar.no\">npolar.no</a>",
-          #:head => {:title => "api.npolar.no"},
-          
-          :sections => [{ :section => '<section id="welcome">
-<p>You&apos;ve reached the <a href="http://npolar.no">Norwegian Polar Institute</a>&apos;s <strong>searchable data store</strong> —
-a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>-style web <a href="http://en.wikipedia.org/wiki/Application_programming_interface">API</a>.
-<a href="https://github.com/npolar/api.npolar.no">Source</a> is on <a href="https://github.com/">GitHub</a>, see the project <a href="https://github.com/npolar/api.npolar.no/blob/master/README.md#readme">README</a> for more information.</p>
+          :forms => [{:placeholder => "Norwegian Polar Data", :href => "", :id => "api",
+          :source => '.json?q={query}&limit=20&callback={callback}' }],
+          :limit => 30,
+          :svc => { :search => [
+            {:title => "Biology", :href => "/biology/?q="},
+            #{:title => "Ecotox", :href => "/ecotox/?q="},
+            {:title => "Map", :href => "/map/archive?q="},
+            {:title => "Metadata ", :href => "/metadata/?q="},
+            {:title => "Monitoring ", :href => "/monitoring/indicator?q="},
+            {:title => "Org", :href => "/org/?q="},
+            #{:title => "Oceanography", :href => "/oceanography/?q="},
+            {:title => "Person", :href => "/person/?q="},
+            {:title => "Placename", :href => "/placename/?q="},
+            {:title => "Polar bear", :href => "/polar-bear/reference/?q="},
+            {:title => "Project", :href => "/project/?q="},
+            {:title => "Rapportserie", :href => "/rapportserie/105/?q="},
+            #{:title => "Sighting", :href => "/sighting/fauna?q="}
+            #{:title => "Seaice"},
+            #{:title => "Tracking"}
+            ]
+},
+          :welcome_article => '
+<article id="welcome" class="row-fluid">
+  
+  <section class="span4"><h4>About</h4><p>You&apos;ve reached the <a href="http://npolar.no">Norwegian Polar Institute</a>&apos;s <strong>searchable data</strong> storage service.</p>
+  
+  <p><strong>Notice: </strong> The service is in <strong>alpha</strong>. We are harmonising schemas and injecting data from legacy systems.
+  This means that some keys (field names) and consequently links to search results are likely to change.</p></section>
+  <section class="span8">
 
-</section>'}],
+  <h4>Search API</h4>
+  <p>Search by using the <code>GET</code> parameter <code>q</code>, as in:
+  <a href="/?q=Polar+bears">/?q=Polar+bears</a></p>
+
+  <p>The default response is a <a href="http://json.org">JSON</a> feed object (@todo see example), but if you use a web browser,
+or otherwise send <code>Accept: text/html</code>, results are rendered in a data browser with powerful facet filtering (drill-down).
+</p>
+
+  <p>The search API follows the <a href="http://www.opensearch.org/">OpenSearch</a> specification (@todo see description):
+<dl>
+<dt>searchTerms</dt><dd>q</dd>
+</dl>
+
+"limit The "count" parameter Replaced with the number of search results per page desired by the search client.
+The "startIndex" parameter Replaced with the index of the first search result desired by the search client.
+
+  The "startPage" parameter
+
+
+
+
+Response formats other than JSON are in the works, including <a href="http://tools.ietf.org/html/rfc4287">Atom</a>/<a href="http://tools.ietf.org/html/rfc5023">Atom Publishing Protocol</a>
+  (with embedded OpenSearch and <a href="http://georss.org/">GeoRSS</a> elements), CSV, and more.</p>
+ 
+<p>Search is powered by Apache Solr.</p>
+
+  <hr/>
+  <h4>Document API</h4>
+  <p>authorized users to create, update and delete individual 
+  <p>The document API is a REST-style data store with a few nifty features:
+
+independent deployable components 
+  <ul>
+    <li>Persistent URIs</li>
+    <li>Schemas and data validation</li>
+    <li>Versioning</li>
+    <li>Edit logs</li>
+    <li>Indexing</li>
+    <li>Authentication/Authorization</li>
+  </ul>
+</p>
+
+<p>The storage layer is flexible, currently we use CouchDB to hold the following collections:
+  <ul>
+    <li><a href="/metadata/dataset">Discovery-level dataset metadata</a></li>
+    <li>Ecotox (coming soon™)</li>
+    <li>Seaice (coming soon™)</li>
+  </ul>
+</p>
+  </section>
+</article>',
+          :data => { :workspaces => Npolar::Api.workspaces }
         }
-
+        #merge ayyt
       end
 
-  
-  
-      def data
-        { "workspaces" => ::Npolar::Api.workspaces.map {|w| "#{w}"} }
+      def call(env)
+        @request = request = Npolar::Rack::Request.new(env)
+
+        @hash[:base] = request.url and ["GET", "HEAD"].include? request.request_method
+        if request["q"]
+          @hash[:welcome_article] = nil
+          @hash[:bbox] = request["bbox"]
+          @hash[:dtstart] = request["dtstart"]
+          @hash[:dtend] = request["dtend"]
+          @hash[:forms][0][:placeholder] = request.script_name.split("/").map {|p| p.capitalize+" "}.join.gsub(/^\s+/, "")
+
+        end
+
+        unless "html" == request.format
+          @app.call(env)
+        else
+          super # ie render
+        end
+      end
+
+      def head_title
+        "api.npolar.no"
+      end
+          
+
+      def h1_title
+        "<a title=\"api.npolar.no\" href=\"/\">api</a>.npolar.no"
+      end
+
+      def nav
+        workspaces
+      end
+
+      def placeholder
+        request.url.split("/").join(" ")
       end
 
 
-#
-#<dt>Search all documents</dt>
-#<dd><a href="/?q=Polar+bear">Search all documents for "Polar bear"</a></dd>
-#
-#<dt>Limit to a workspace</dt>
-#<dd><a href="/seaice/?q=Lance">Search all collections in the "seaice" workspace for "Lance"</a></dd>
-#
-#<dt>Limit to a collection</dt>
-#<dd><a href="/ecotox/report?q=nvh.no">Search Ecotox reports for <cite>nvh.no</cite></a></dd>
-#
-#<dt>Filter on any attribute</dt>
-#<dd><a href="/metadata/dataset?fq=group:seaice&q=*">Metadata for all "seaice" datasets</a></dd>
-#
-#<dt>Multiple filters</dt>
-#<dd><a href="/ecotox/?fq=compound:PCB*&fq=species:Larus+hyperboreus&q=*">All PCB-measurements of glaucous gull</a></dd>
-#
-#<dt>Geo-search</dt>
-#<dd><a href="/?bbox=n,e,s,w&q=*">Bounding box (N,E,S,W)</a></dd>
+      def document_api?(w)
+        case w.to_sym
+          when :biology, :ecotox, :metadata, :oceanograophy, :seaice, :tracking then true
+          else false
+        end
+      end
+
+      def collection_badge(collection)
+        case collection
+          when "geoname", "placename" then "badge badge-success"
+          else "badge"
+        end
+      end
+
+
+      def entries
+        feed(:entries).map {|e| {:title => e[:title]||e[:title_ss], :id => e[:id], :json => e.to_json , :collection => e[:collection], :badge => collection_badge(e[:collection]) } }
+      end
+
+      def entries_size
+        entries.size
+      end
+
+      def results
+        entries.size > 0
+      end
+
+      def facets
+        facets = feed(:facets).map {|field,v| {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => a_facet(field, c[0], c[1]) } } } }
+        #facets = facets.select {|f| f[:counts].uniq.size > 0 }
+      end
+
+      def result_text
+        opensearch = feed(:opensearch)
+        if opensearch.key? :totalResults
+          size = opensearch[:totalResults]
+          "#{size} result#{ size > 1 ? "s": ""}"
+        end
+      end
+
+      def qtime
+        
+      end
+
+      def page
+1
+      end
+      def next
+        page+1
+      end
+
+      def a_facet(field,facet,count)
+        # raw html encode encode
+        #base = base.gsub(/&/, "&amp;")
+        "<a href=\"#{base}&amp;fq=#{field}:#{facet}&amp;q=\">#{facet}</a>"
+      end
+
+      def add_filter(current_uri, filter)
+      end   
+
+      def feed(key=nil)
+        if feed? key
+          key.nil? ? @hash[:feed] : @hash[:feed][key]
+        else
+[]
+          #raise "No feed (key=#{key})"
+        end
+      end
+
+
+      def feed?(key=nil)
+        if key.nil?
+          @hash.key? :feed
+        else
+          @hash.key? :feed and @hash[:feed].key? key
+        end
+      end
+
 
 
     end

@@ -5,15 +5,32 @@ class Npolar::Mustache::JsonView < ::Mustache
 
   self.view_namespace = ::Views
   
-  attr_accessor :storage, :hash, :head, :foot, :id
+  attr_accessor :app, :storage, :hash, :head, :foot, :id
 
   def call(env)
     request = Npolar::Rack::Request.new(env)
+        
     if "json" === request.format
-      json = respond_to?(:data) ? data.to_json : get(id).to_json
-
-      [200, {"Content-Type" => "application/json"},[json]]
+      if request["q"].nil?
+        json = respond_to?(:data) ? data.to_json : get(id).to_json
+        [200, {"Content-Type" => "application/json"},[json]]
+      else
+        @app.call(env)
+      end
     else
+      unless (request["q"].nil?) or @app.nil?
+        @hash[:q] = request["q"]
+
+        status, headers, body = @app.call(env)
+        if 200 == status and headers["Content-Type"] == "application/json"
+          feed = Yajl::Parser.parse(body.join, {:symbolize_keys => true})
+          if feed.key? :feed
+            @hash[:feed] = feed[:feed]
+          else
+            raise "No feed returned" 
+          end
+        end
+      end
       [200, {"Content-Type" => "text/html"},[render]]
     end
   end
@@ -34,8 +51,8 @@ class Npolar::Mustache::JsonView < ::Mustache
 </head>
 <body class="container-fluid">
 
-  <header><h1>{{{title}}} <a href="/"><img title="api.npolar.no" alt="Logo / Norwegian Polar Institute" src="/img/np_logo_s.png" /></a></h1></header>
- 
+  
+
       eos
     end
   end
@@ -48,13 +65,13 @@ class Npolar::Mustache::JsonView < ::Mustache
     end
   end
 
-  def initialize(hash = {})
+  def initialize(attr = {})
     @hash = hash
   end
 
   # Handles Mustache methods
   # E.g. {{ title}} => [:title, [], nil]
-  def method_missing(method_symbol, *arguments, &block)
+  def method_missing(method_symbol, *arguments, &block) 
     hash = @hash ||= get(id)
     if hash.include? method_symbol
       hash[method_symbol]
@@ -64,7 +81,11 @@ class Npolar::Mustache::JsonView < ::Mustache
   end
 
   def head_title
-    title
+    if respond_to? :title
+      title
+    else
+      ""
+    end
   end
 
   def respond_to?(method_symbol, include_private = false)
@@ -82,6 +103,7 @@ class Npolar::Mustache::JsonView < ::Mustache
     @hash ||= begin
 
       status, headers, str = storage.get(id)
+
       if 200 == status
         y = Yajl::Parser.new(:symbolize_keys => true)
         @hash = y.parse(str)
@@ -92,6 +114,11 @@ class Npolar::Mustache::JsonView < ::Mustache
     end
     
 
+  end
+
+  def link(href, title=nil)
+    title = title.nil? ? href : title
+    "<a href=\"#{href}\">#{title}</a>"
   end
 
 end

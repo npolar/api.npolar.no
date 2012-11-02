@@ -19,6 +19,7 @@ require "./lib/npolar/api/core"
 ## Auth
 require "./lib/npolar/auth/couch"
 require "./lib/npolar/auth/ldap"
+require "./lib/npolar/auth/exception"
 require "./lib/npolar/rack/authorizer"
 #
 ## Storage

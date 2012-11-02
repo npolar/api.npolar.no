@@ -1,45 +1,38 @@
-<section>
-<h4>Collection</h4>
+<article>
 
-{{# list_formats }}
-{{ title }}: <code><a href="{{href}}/.{{format}}">{{href}}/.{{format}}</a></code>
-{{/ list_formats }}
-{{# sets }}
-<code><a href="{{href}}/.{{format}}">{{ title }}</a></code>
-{{/ sets }}
+<section id="search">
+<form class="form-search"><input type="search" autocomplete="autocomplete" id="search_input" name="q" value="" placeholder="{{title}}"
+class="yui3-aclist-input input-medium" /><input type="submit" class="btn" value="Search"/>
+</form>
 </section>
-
-<section>
-<h4>Document</h4>
-
-<h5>Open</h5>
-<code>GET|HEAD https://api.npolar.no<a href="{{href}}/{{id}}.{{format}}">{{ href }}/id.format</a></code>
-
-<h5>Auth</h5>
-<code>DELETE|PUT https://api.npolar.no<a href="{{example_href}}/.json">{{ href }}/id.format</a></code>
-<code>POST https://api.npolar.no<a href="{{href}}.{{format}}">{{ href }}</a></code>
-
-<h5>Formats (GET, HEAD, DELETE)</h5>
-<p>{{# formats }}
-  <code><a href="{{example_href}}.{{format}}">{{ format }}</a></code>
-{{/ formats }}</p>
-
-<h5>Accepts (POST, PUT)</h5>
-<p>{{# accepts }}
-  <code>{{ accept }}</code> <code><a href="{{schema_uri}}">{{schema_uri}}</a></code>
-{{/ accepts }}</p>
 
 <!--
-<dt>Example</dt>
-<dd><a href="{{document_example}}">{{document_example}}</a><dd>
-</dl>
+<nav>
+{{# sets }}
+  <code><a href="{{ href }}" title="{{ title }}">{{ href }}</a></code>
+{{/ sets}}
+</nav>
 -->
 
-</section>
+
+<section id="summary">{{summary}}
+
+<abbr title="List identifiers">List</abbr>: <code><a href="{{href}}/.{{format}}?limit=10" title="{{title}} (ids)">{{href}}/.{{format}}</a></code>
+
+<abbr title="Outgoing formats for GET requests">Formats</abbr>:
+{{# formats }}<code><a href="{{example_id}}.{{format}}" title="Example {{format}} document">{{ format }}</a></code>
+{{/ formats }}
+
+<abbr title="Accepts these incxoming formats on POST or PUT requests">Accepts</abbr>:
+{{# accepts }}
+  <code>{{ accept }}</code> <code><a href="{{schema}}">{{schema_title}}</a></code>
+{{/ accepts }}
+
+<abbr title="HTTP methods">Methods</abbr>:
+{{# verbs }}
+  <code>{{ verb }}</code>
+{{/ verbs }}
 
 
-<section>
-<!--<h4>Search API</h4>
-Attributes for filters/facets
--->
 </section>
+</article>

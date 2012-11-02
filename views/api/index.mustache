@@ -1,20 +1,90 @@
 {{{ head }}}
-<article>
 
-{{# sections }}
-{{{ section }}}
-{{/ sections }}
+{{#forms}}
+<form id="{{id}}-form" action="{{href}}#" method="get" class="yui3-skin-sam form-search">
+  <div class="row-fluid">
 
-<section id="workspaces">
-<h3><a href="/workspaces.json">Workspaces</a></h3>
+    <div class="span4">
 
-<nav>
-{{# workspaces }}
-  <code><a href="{{ href }}" title="{{ title }}">{{ href }}</a></code>
-{{/ workspaces}}
-</nav>
+      <header><h1>{{{h1_title}}} <a href="/"><img title="api.npolar.no" alt="Logo (Norwegian Polar Institute)" src="/img/np_logo_s.png" /></a></h1></header>
+    
+      <input id="q" name="q" value="{{q}}" type="search" autofocus placeholder="{{placeholder}}" class="yui3-aclist-input" />
+      <input type="submit" class="btn" value="Search" />
+  
+      <!-- <label for="{{id}}-what">{{label}} </label><label for="{{id}}-where">{{label}} </label><label for="{{id}}-where">{{label-where}} </label> -->
 
-</section>
+      {{#results}}
+      <div class="pagination format">
+        <ul>
+          <li><a href="{{base}}&amp;format=json">JSON</a></li><!-- Atom CSV -->
+        </ul>
+      </div>
 
-</article>
+      <h5>{{ result_text }}, showing {{ entries_size}} <a href="{{prev}}"> < Previous  </a> | <a href="{{next}}">  Next > </a></h5>
+      {{/results}}
+
+      {{#entries}}
+        <p><a href="?q=&amp;fq=id:{{id}}&amp;format=json&amp;facets=false" title="JSON of {{title}}">{{title}}</a> <span class="">{{collection}}</span></p>
+      {{/entries}}
+
+    </div>
+
+    <div class="span8">
+      <!-- Look's nicer in Bootstrap with multiple dl's... -->
+      {{#results}}
+      <dl class="dl-horizontal">
+        <dt>where</dt><dd><input id="bbox" name="bbox" value="{{bbox}}" type="search" placeholder="W S E N [-180 -90 180 90]" /></dd>
+        <dt>start</dt><dd><input id="dtstart" name="dtstart" value="{{dtstart}}" type="search" placeholder="1999-01-01" /></dd>
+        <dt>end</dt><dd><input id="dtend" name="dtend" value="{{dtend}}" type="search" placeholder="2099-12-31" /></dd>
+      </dl>
+      {{/results}}
+      {{#facets}}
+      <dl class="dl-horizontal">
+        <dt>{{title}}</dt>
+        <dd>{{#counts}}{{{a_facet}}} ({{count}}) {{/counts}}</dd>
+      </dl>
+      {{/facets}}
+
+    </div>
+  </div>
+
+</form>
+{{/ forms }}
+
+{{#svc}}
+<div class="pagination">
+  <ul>
+  {{#search}}
+    <li><a href="{{href}}">{{title}}</a></li>
+  {{/search}}</ul>
+
+{{/svc}}
+</div>
+
+{{{welcome_article}}}
+
+<hr/>
+<footer class="footer">
+  <p><strong>api.npolar.no</strong> is <a href="https://github.com/npolar/api.npolar.no#readme">open source</a> lego for building searchable REST-style APIs.</p>
+</footer>
+
+{{< _yui_loader }}
+
+<script>
+{{# forms }}
+
+  YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
+
+    Y.one('#q').plug(Y.Plugin.AutoComplete, {
+      resultHighlighter: 'phraseMatch',
+      resultListLocator: 'feed.entries',
+      resultTextLocator: function(result) {
+        //Y.log(result);
+        return result.title;
+      },
+      source: '{{source}}'
+    });
+  });
+{{/ forms }}
+</script>
 {{{ foot }}}

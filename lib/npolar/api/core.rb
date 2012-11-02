@@ -26,7 +26,7 @@ module Npolar
       
       begin
         @request = Rack::Request.new(env) # <Npolar::Rack::Request>
-        # except 
+        # Delegete everything except "html" to #handle
         if request.read? and request.format == "html" and @app.respond_to? :call
           @app.call(env)
         else
@@ -70,7 +70,11 @@ module Npolar
         unless acceptable? format
           return http_error(406, "Unacceptable format '#{format}', this API endpoint supports the following #{request_method} formats: #{formats.join(",")}")
         end
+        
       elsif ["PUT", "POST"].include? request_method
+        log.debug accepts? request.media_format
+        document = request.body.read # request.body is now empty
+        log.debug "#{request_method} #{request.media_format} request (#{document.bytesize} bytes)"
         # 411 Length Required
         # FIXME Insist on Content-Length on chunked transfers
         # if headers["Content-Length"].nil? or headers["Content-Length"].to_i <= 0
@@ -83,7 +87,7 @@ module Npolar
           return http_error(415, "This API endpoint does not accept documents in '#{request.media_format}' format, acceptable #{request_method} formats are: '#{accepts.join(", ")}'")
         end
 
-        document = request.body.read # request.body is now empty
+        
         if 0 == document.bytesize or /^\s+$/ =~ document
           return http_error(400, "#{request_method} document with no body")
         end

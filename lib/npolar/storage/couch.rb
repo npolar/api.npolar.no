@@ -71,7 +71,8 @@ module Npolar
           @limit = params["limit"].to_i
         end
 
-        case id    
+        case id
+          when "_meta" then meta
           when "_ids", "" then ids
           when "_feed" then feed(params)
         else
@@ -89,10 +90,12 @@ module Npolar
       def headers
         @headers ||= HEADERS
       end
+
+
   
       def post_many(data, params={})        
         if data !~ JSON_ARRAY_REGEX
-          raise ArgumentException, "Please provide data as a JSON Array"
+          raise ArgumentException, "Please provide ata as JSON Array"
         end
   
         couch = { "docs" => JSON.parse(data) }
@@ -146,6 +149,19 @@ module Npolar
           response.body = created.body
         end
         [response.status, response.headers,response.body]
+      end
+
+      def meta
+        ids = []
+        response = couch.get(read)
+       
+        if 200 == response.status
+          ids = Yajl::Parser.parse(response.body)
+          status = 200
+        else
+          status = 501
+        end
+        [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(ids)+"\n"]] # Couch returns text/plain here!?
       end
   
       def ids
@@ -202,6 +218,28 @@ module Npolar
 
         # Otherwise, fallback to _all_docs
         uri = "#{read}/_all_docs?include_docs=#{true}&limit=#{limit}" #&startkey=%22#{sk}%22&endkey=%22#{ek}%22"
+      end
+
+      def fetch(id,key=nil)
+
+        begin
+    
+          status, headers, jsonstring = get(id)
+    
+          if 200 == status
+            y = Yajl::Parser.new(:symbolize_keys => true)
+            hash = y.parse(jsonstring)
+            if key.nil?
+              hash
+            elsif hash.key? key.to_sym
+              hash[key = key.to_sym]
+            else
+              nil
+            end
+          else
+            raise Exception, "#{self.class.name}#fetch status: #{status}"
+          end
+        end
       end
 
       protected

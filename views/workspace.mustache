@@ -1,10 +1,19 @@
 {{{ head }}}
 
+<section id="search">
+<form class="form-search"><input type="search" autocomplete="autocomplete" id="search_input" name="q" value="" placeholder="{{workspace}}"
+class="yui3-aclist-input input-medium" /><input type="submit" class="btn" value="Search"/>
+</form>
+</section>
+
+{{< _nav }}
 <nav>
 {{# collections }}
   <code><a href="{{href}}" title="{{ title }}">{{ title }}</a></code>
 {{/ collections }}
 </nav>
+
+
 
 
 {{{ foot }}}

@@ -8,7 +8,7 @@ module Npolar
 
       def self.query_or_save
         lambda {|request|
-          if ["GET", "HEAD"].include? request.request_method and not request.params["q"].nil? and request.params["q"].size > 0
+          if ["GET", "HEAD"].include? request.request_method and not request["q"].nil?
             true
           elsif ["POST","PUT", "DELETE"].include? request.request_method
             true
@@ -36,11 +36,13 @@ module Npolar
       CONFIG = {
         :core => nil,
         :condition => self.query_or_save,
+        :facets => nil,
         :model => nil,
         :select => nil,
         :q => lambda {|request|
-          qstar = request.params["q"] ||= "*"
-          if qstar =~ /^[\*]$|^\*\:\*$/
+          qstar = request["q"] ||= "*"
+
+          if qstar =~ /^[\*]$|^\*\:\*$|^(\s+)?$/
             "*:*"
           else
   
@@ -55,14 +57,39 @@ module Npolar
         :fq => [],
         :feed => lambda {|response|
 
-          facets = response.key?("facet_counts") ? response["facet_counts"]["facet_fields"] : []
+          facets = {}
 
-          {"feed" => { "facets" => facets, "entries" => response["response"]["docs"].select {|doc|
-            doc.key? "title" and doc.key? "id"
-          }}}
+          if response.key? "facet_counts" and response["facet_counts"].key? "facet_ranges"
+            response["facet_counts"]["facet_ranges"].each do |ranges|
+              range = ranges[0]
+              counts = ranges[1..-1].flatten.map {|range|
+
+              #range["gap"].to_i => ranges range gap 
+              range["counts"]}.flatten.each_slice(2).map {|r,c| [r,c]}
+              facets[range] = counts
+            end
+          end
+
+          if response.key? "facet_counts" and response["facet_counts"].key? "facet_fields"
+            response["facet_counts"]["facet_fields"].each do |field,key_count|
+              facets[field] = key_count.each_slice(2).map {|slice|[slice[0],slice[1]]}
+            end
+          end
+
+          {"feed" => {
+            # http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements
+            "opensearch" => {
+              "totalResults" =>  response["response"]["numFound"].to_i,
+              "itemsPerPage" => response["responseHeader"]["params"]["rows"].to_i,
+              "startIndex" => response["response"]["start"].to_i
+            },
+
+            "facets" => facets,
+            "entries" => response["response"]["docs"]}}
+
         },
         :summary => lambda {|doc| doc["summary"]},
-        :rows => 10,
+        :rows => 50,
         :wt => "ruby"
       }
       # q=title:foo OR exact:foo OR text:foo*
@@ -95,6 +122,7 @@ module Npolar
           #request.body.rewind
           #log.debug json.keys
           # [] => throw directly at Solr
+          log.warn "Not implemented"
           @app.call(request.env)
         rescue RSolr::Error::Http => e
           [e.response[:status].to_i, {"Content-Type" => "text/html"}, [e.response[:body]]]
@@ -106,12 +134,37 @@ module Npolar
       def search(request)
         begin
           start = params["start"] ||= 0
-          rows  = params["rows"]  ||= config[:rows]
+          rows  = params["limit"]  ||= config[:rows]
+        
+          fq_bbox = []
+          if params["bbox"]
+            w,s,e,n = bbox = params["bbox"].split(" ").map {|c|c.to_f}
+            fq_bbox = ["north:[#{s} TO #{n}]", "east:[#{w} TO #{e}]"]
+          end
+
           response = rsolr.get select, :params => {
             :q=>q, :start => start, :rows => rows,
-            :fq => fq,
-            :facet => request.multi("facets").size > 0,
+            :fq => fq+fq_bbox,
+            :facet => facets.nil? ? false : true,
+            :"facet.range" => ["north", "east", "south", "west", "updated"],
+            :"f.north.facet.range.start" => -90,
+            :"f.north.facet.range.end" => 90,
+            :"f.north.facet.range.gap" => 10,
+            :"f.east.facet.range.start" => -180,
+            :"f.east.facet.range.end" => 180,
+            :"f.east.facet.range.gap" => 20,
+            :"f.south.facet.range.start" => -90,
+            :"f.south.facet.range.end" => 90,
+            :"f.south.facet.range.gap" => 10,
+            :"f.west.facet.range.start" => -180,
+            :"f.west.facet.range.end" => 180,
+            :"f.west.facet.range.gap" => 20,
+            :"f.updated.facet.range.start" => "/NOW-100 YEARS/",
+            :"f.updated.facet.range.end" => "/NOW/",
+            :"f.updated.facet.range.gap" => 10,
             :"facet.field" => facets,
+            :"facet.mincount" => 1,
+            :"facet.limit" => -1,
             :fl => fl }
 
           if "solr" == request.format
@@ -119,6 +172,7 @@ module Npolar
           else
             response = feed(response)
           end
+
           [200, {"Content-Type" => "application/json"}, [response.to_json]]
         rescue RSolr::Error::Http => e
           [e.response[:status].to_i, {"Content-Type" => "text/html"}, [e.response[:body]]]
@@ -136,11 +190,32 @@ module Npolar
       end
 
       def facets
-        facets = request.params["facets"]
-        if facets =~ /,/
-          facets = facets.split(",")
+        unless request["facets"].nil?
+          if request["facets"] =~ /,/
+            request_facets = request["facets"].split(",")
+          else
+            return false if /^false$/ =~ request["facets"]
+            request_facets = [request["facets"]]
+          end
+        end
+        
+        # todo support facet.* `http://wiki.apache.org/solr/SimpleFacetParameters#facet.mincount
+        # todo factes vs. multifacets
+        if request_facets.respond_to? :"+="
+          facets = request_facets += config[:facets]
+        else
+          facets = config[:facets]
+        end
+        
+        unless facets.nil?
+          facets = facets.uniq
+          #facets = facets.map {|f|
+          #  #"{!ex=multi_#{f}}#{f}"
+          #  "#{f}"
+          #}
         end
         facets
+
       end
 
       def fq
@@ -148,6 +223,14 @@ module Npolar
           config[:fq] = [config[:fq]]
         end
         fq = (request.multi("fq") + config[:fq]).uniq
+        # todo factes vs. multifacets
+        #unless fq.nil?
+        #  fq = fq.map {|q|
+        #    k,v = q.split(":")
+        #    #"{!tag=multi_#{k}}#{q}"
+        #    "#{q}"
+        #  }
+        #end
       end
 
       def fl

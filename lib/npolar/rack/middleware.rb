@@ -37,8 +37,7 @@ module Npolar
       # @see    http://rack.rubyforge.org/doc/SPEC.html
       def call(env)
         @request = Npolar::Rack::Request.new(env)
-        trigger?(request) ? handle(request): app.call(env)
-        
+        trigger?(request) ? handle(request): app.call(env)  
       end
 
       ##

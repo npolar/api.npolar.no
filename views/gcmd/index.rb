@@ -12,4 +12,7 @@ class Gcmd::Index < Views::Workspace
     ["concept"].map {|c| {:title => c, :href => "/gcmd/#{c}"}}
   end
 
+  def workspace
+    self.class.name.split("::")[0].downcase
+  end
 end

@@ -1,84 +1,8 @@
 {{{ head }}}
-<section>{{summary}}</section>
-<nav>
+
 {{# collections }}
-  <code><a href="#{{title}}" title="{{ title }}">{{ href }}</a></code>
+{{< _collection }} 
 {{/ collections }}
-</nav>
-
-<article>
-
-{{# collections }}
-<hr/>
-<section>
-<h3><a href="{{href}}/.{{format}}">{{href}}</a></h3>
-
-{{summary}}
-</section>
-
-<section>
-<h5>Methods</h5>
-{{# list_formats }}
-<code>GET&#160;https://api.npolar.no<a href="{{href}}/.{{format}}" title="{{title}}">{{href}}/.{{format}}</a></code>
-{{/ list_formats }}
-{{# sets }}
-<code><a href="{{href}}/.{{format}}" title="{{title}}">{{ title }}</a></code>
-{{/ sets }}
-</section>
-
-<section>
-<code>{ GET | PUT | DELETE | HEAD }&#160;https://api.npolar.no<a href="{{example_href}}/.json">{{ href }}/id.format</a></code>
-<code>POST&#160;https://api.npolar.no<a href="{{href}}">{{ href }}</a></code>
-
-<h5>Formats (GET, HEAD, DELETE)</h5>
-<p>{{# formats }}
-  <code><a href="{{example_href}}.{{format}}">{{ format }}</a></code>
-{{/ formats }}</p>
-
-<h5>Accepts (POST, PUT)</h5>
-<p>{{# accepts }}
-  <code>{{ accept }}</code> <code><a href="{{schema_uri}}">{{schema_uri}}</a></code>
-{{/ accepts }}</p>
-
-<!--
-{
-"_id": "1077c739-0e9e-53b0-8877-2e9746a86a95",
-"_rev": "1-761d7d082c6fef56e7c1e8754caffaa4",
-"source": {},
-"id": "org.polarresearch-501",
-"title": "Serum chemistry of free-ranging white whales (Delphinapterus leucas) in Svalbard",
-"summary": "Abnormal physiological conditions and diseases can change the concentrations of enzymes, metabolites, and mineralsin the body. Serum chemistry information may thus be indicative of a specific disease; interpretion of such information requiresknowledge of serum chemistry reference intervals from a seemingly healthy population of the species. Objective: The aim of thisstudy was to obtain serum chemistry reference intervals for a population of white whales. Methods: Blood samples were collectedfrom 21 free-ranging white whales (beluga; Delphinapterus leucas). The whales were live-captured in nets during 1996–2001 inStorfjorden, Van Mijenfjorden, and Van Keulenfjorden (Svalbard, Norway). While the whales were briefly physically restrained,blood was collected from the caudal vein into vacuum tubes without anticoagulant. The blood was left to clot for 4–6 hours beforeserum was obtained by centrifugation. The serum samples were then kept at *208C until analysis. Enzymes (aspartateaminotransferase, alanine aminotransferase, alkaline phosphatase [ALP], creatine kinase, lactate dehydrogenase [LDH], amylase,lipase), metabolites (urea, creatinine, bilirubin, cholesterol, triglycerides, nonesterified fatty acids, glucose), and minerals (calcium,phosphate, magnesium, sodium, potassium, chloride) were analyzed in an Advia 1650 System (Bayer, Tarrytown, NY, USA).Cortisol was analyzed in an Immulite One system (Diagnostic Products Corporation, Los Angeles, CA, USA). The major bloodproteins (albumin and globulins) were separated by gel electrophoresis in a Beckman Paragon electrophoresis system (BeckmanCoulter, Inc., Fullerton, CA, USA). Results: Serum values for all analytes were reported as median and range, and referenceintervals were calculated as 10–90th percentiles. Activities of ALP andLDHand cortisol concentration were higher, and protein andbilirubin concentrations were lower compared with those previously reported for white whales from Canada; remaining resultswere strikingly similar in these 2 white whale populations. Conclusions: These data provide valuable serum chemistry referenceintervals for future health assessments of white whales in Svalbard and other white whale populations, as well as captiveindividuals. (Vet Clin Pathol. 2006;35:199–203)",
-"progress": "complete",
-"investigators": [],
-"contributors": [],
-"rights": "",
-"activity": [],
-"locations": [],
-"tags": null,
-"quality": null,
-"science_keywords": [],
-"draft": "no",
-"published": "2008-07-10T12:00:00Z",
-"updated": "2008-07-10T12:00:00Z",
-"editors": []-->
-<!--
-<dt>Example</dt>
-<dd><a href="{{document_example}}">{{document_example}}</a><dd>
-</dl>
--->
-
-</section>
-
-
-
-<section>
-<!--<h4>Search API</h4>
-Attributes for filters/facets
--->
-</section>
-
-{{/ collections}}
-
 
 <hr/>
 {{# oai }}

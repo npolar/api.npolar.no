@@ -1,44 +1,57 @@
 {{{head}}}
+<header>
+{{ summary}}
+<nav>
+{{# collections }}
+  <code><a href="{{href}}" title="{{ title }}">{{ title }}</a></code>
+{{/ collections }}
+</nav>
+</header>
 
 <article>
-<h2>Documentation</h2>
+<section id="autocomplete">
+<h3>Autocomplete</h3>
+<p>Autocomplete search in GCMD Keywords (stored in <a href="">Apache Solr</a>) using the <a href="http://yuilibrary.com/">YUI</a> JavaScript library.</p>
 
-<h3>Request</h3>
-<pre>{{{request}}}</pre>
-<h3>Response</h3>
-<pre>
-{{response}}
-</pre>
+<form id="ac-form" action="/stadnamn" method="get" class="yui3-skin-sam">
+{{# collections }}
+   
+<span id="{{collection}}-demo" class="yui3-skin-sam">
+  <!--<label for="{{collection}}-autocomplete"><a href="{{ href }}"> {{ title }}</a></label>-->
+  <input id="{{collection}}-autocomplete" type="search" incremental results="{{limit}}" placeholder="{{collection}}" />
+</span>
+{{/ collections }}
+</form>
 
-<h3>Endpoints</h3>
-  {{# schemas}}
-<section>
-  <h2>Demo</h2>
-  <div id="demo" class="yui3-skin-sam">
-    <label for="ac-input">{{scheme}} search:</label><br>
-    <input id="ac-input" type="text">
-  </div>
-  <script src="http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"></script>
-  <script>
-  YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
-    Y.one('#ac-input').plug(Y.Plugin.AutoComplete, {
-      resultHighlighter: 'phraseMatch',
-      resultTextLocator: function(result) {
-        Y.log(result);
-        return result[1];
-      },
-      source: '/gcmd/{{scheme}}?q={query}&callback={callback}'
-    });
-  });
-  </script>
 </section>
-
-
-    <li><a href="{{ path }}"> {{ scheme }}</a></li>
-  {{/ schemas}}
-
 </article>
+
 <footer>
 {{{credits_html}}}
 </footer>
 {{{foot}}}
+
+{{< _yui_loader }}
+
+<script>
+{{# collections }}
+
+  YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
+    Y.one('#{{concept}}-autocomplete').plug(Y.Plugin.AutoComplete, {
+      resultHighlighter: 'phraseMatch',
+      resultTextLocator: function(result) {
+        Y.log(result);
+        return result.title;
+      },
+      source: '/gcmd/concept/_feed.json?fields=*&limit=10&schema={{schema}}&q={query}&callback={callback}'
+    });
+  });
+{{/ collections }}
+
+
+
+</script>
+
+<!--
+//source: '/gcmd/{{schema}}?q={query}&callback={callback}'
+-->
