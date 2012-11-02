@@ -39,6 +39,7 @@ module Metadata
       :keyword => "Keyword",
       :related_url => "Related_URL",
       :reference => "Reference",
+      :data_center => "Data_Center",
       :idn_node => "IDN_Node",
       :parent_dif => "Parent_DIF",
       :data_quality => "Quality",
@@ -566,6 +567,32 @@ module Metadata
       end unless object.links.nil?
       
       reference
+    end
+    
+    def data_center
+      datacenter = []
+      
+      object.links.each do |link|
+        link.each do |k,v|
+          if k == "rel" and v == "datacenter"
+            if link["href"] == "http://data.npolar.no/"
+              datacenter << {
+                "Data_Center_Name" => {
+                  "Short_Name" => "NO/NPI",
+                  "Long_Name" => "Norwegian Polar Data" 
+                },
+                "Data_Center_URL" => "http://data.npolar.no/"
+              }
+            else
+              datacenter << {
+                "Data_Center_URL" => link["href"]
+              } 
+            end unless link["href"].nil?
+          end
+        end        
+      end unless object.links.nil?
+      
+      datacenter
     end
     
     def idn_node
