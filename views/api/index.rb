@@ -6,7 +6,7 @@ module Views
       def initialize(app=nil)
         @app = app
         @hash = { "_id" => "api_index",
-          :workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
+          #:workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
           :forms => [{:placeholder => "Norwegian Polar Data", :href => "", :id => "api",
           :source => '.json?q={query}&limit=20&callback={callback}' }],
           :limit => 30,
@@ -14,7 +14,7 @@ module Views
             {:title => "Biology", :href => "/biology/?q="},
             #{:title => "Ecotox", :href => "/ecotox/?q="},
             {:title => "Map", :href => "/map/archive?q="},
-            {:title => "Metadata ", :href => "/metadata/?q="},
+            #{:title => "Metadata ", :href => "/metadata/?q="},
             {:title => "Monitoring ", :href => "/monitoring/indicator?q="},
             {:title => "Org", :href => "/org/?q="},
             #{:title => "Oceanography", :href => "/oceanography/?q="},
@@ -41,14 +41,17 @@ module Views
   <p>Search by using the <code>GET</code> parameter <code>q</code>, as in:
   <a href="/?q=Polar+bears">/?q=Polar+bears</a></p>
 
-  <p>The default response is a <a href="http://json.org">JSON</a> feed object (@todo see example), but if you use a web browser,
-or otherwise send <code>Accept: text/html</code>, results are rendered in a data browser with powerful facet filtering (drill-down).
+  <p>The default response is a <a href="http://json.org">JSON</a> feed object (@todo see example), but in web browsers
+or for clients that send <code>Accept: text/html</code>, results are rendered in a data browser with powerful facet filtering (drill-down).
 </p>
 
-  <p>The search API follows the <a href="http://www.opensearch.org/">OpenSearch</a> specification (@todo see description):
-<dl>
-<dt>searchTerms</dt><dd>q</dd>
-</dl>
+  <p>The search API follows the <a href="http://www.opensearch.org/">OpenSearch</a> specification (@todo see description), a brief rundown:
+  <dl class="dl-horizontal">
+  <dt>searchTerms</dt><dd><a href="">q</a></dd>
+  <dt>count</dt><dd><a href="">limit</a></dd>
+  <dt>startPage</dt><dd>page</dd>
+  <dt>Url@type</dt>
+  </dl>
 
 "limit The "count" parameter Replaced with the number of search results per page desired by the search client.
 The "startIndex" parameter Replaced with the index of the first search result desired by the search client.
@@ -103,7 +106,16 @@ independent deployable components
           @hash[:dtstart] = request["dtstart"]
           @hash[:dtend] = request["dtend"]
           @hash[:forms][0][:placeholder] = request.script_name.split("/").map {|p| p.capitalize+" "}.join.gsub(/^\s+/, "")
+        end
 
+        if request["fq"]
+          
+          fq = request.multi("fq").map {|fq|
+            k,v = fq.split(":")
+            {:filter => k, :value => v }
+          }
+          @hash[:fq]=fq
+          @hash[:filters?] = true
         end
 
         unless "html" == request.format

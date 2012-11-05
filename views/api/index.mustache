@@ -12,6 +12,7 @@
       <input type="submit" class="btn" value="Search" />
   
       <!-- <label for="{{id}}-what">{{label}} </label><label for="{{id}}-where">{{label}} </label><label for="{{id}}-where">{{label-where}} </label> -->
+      {{#filters?}}<br/>Filters (<a href="/">remove</a>): {{#fq}} {{filter}}={{value}} {{/fq}} {{/filters?}}
 
       {{#results}}
       <div class="pagination format">
@@ -33,9 +34,9 @@
       <!-- Look's nicer in Bootstrap with multiple dl's... -->
       {{#results}}
       <dl class="dl-horizontal">
-        <dt>where</dt><dd><input id="bbox" name="bbox" value="{{bbox}}" type="search" placeholder="W S E N [-180 -90 180 90]" /></dd>
-        <dt>start</dt><dd><input id="dtstart" name="dtstart" value="{{dtstart}}" type="search" placeholder="1999-01-01" /></dd>
-        <dt>end</dt><dd><input id="dtend" name="dtend" value="{{dtend}}" type="search" placeholder="2099-12-31" /></dd>
+        <dt>bbox</dt><dd><input id="bbox" name="bbox" value="{{bbox}}" type="search" placeholder="W S E N [-180 -90 180 90]" /></dd>
+        <dt>start</dt><dd><input id="dtstart" name="dtstart" value="{{dtstart}}" type="search" placeholder="YYYY-MM-DD" /></dd>
+        <dt>end</dt><dd><input id="dtend" name="dtend" value="{{dtend}}" type="search" placeholder="YYYY-MM-DD" /></dd>
       </dl>
       {{/results}}
       {{#facets}}

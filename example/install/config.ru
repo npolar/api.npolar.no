@@ -13,6 +13,9 @@ search = []
 # service = Npolar::Api::Service.new
 # Service => which collections are searched?
 
+Metadata::Dataset.formats = ["atom", "json", "dif", "iso", "xml"]
+Metadata::Dataset.accepts = ["json", "dif", "xml"]
+
 
 # Middleware for *all* requests - use with caution
 # a. Security
@@ -152,9 +155,9 @@ map "/metadata" do
   solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://olav.npolar.no:8080/pmdb/",
     :fq => ["type:Data*"], :facets => ["region", "institution_long_name"]})
 
-  metadata_workspace_index = Views::Workspace.new(solrizer)
-  metadata_workspace_index.id = "view_metadata_index"
- # metadata_workspace_index.storage = api
+  #metadata_workspace_index = Views::Workspace.new(solrizer)
+  #metadata_workspace_index.id = "view_metadata_index"
+  #metadata_workspace_index.storage = api
   #run Npolar::Api::Core.new(metadata_workspace_index, :storage => nil, :methods =>  ["GET", "HEAD"])
 
 
@@ -169,7 +172,7 @@ map "/metadata" do
     # Show metadata index on anything that is not a search
     index = Views::Metadata::Index.new
     index.id = "view_metadata_dataset_index"
-    index.storage = api
+    #index.storage = api
     run Npolar::Rack::Solrizer.new(index, :core => "")
 
     model = Metadata::Dataset.new
@@ -188,8 +191,8 @@ map "/metadata" do
 
     run Npolar::Api::Core.new(index,
       { :storage => storage,
-        :formats => Metadata::Dataset.formats,
-        :accepts => ["json", "dif", "xml"]
+        :formats => Metadata::Dataset.formats, #,
+        :accepts => Metadata::Dataset.accepts
       }
     )
   end
@@ -237,7 +240,7 @@ end
 
 map "/project" do
   solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/solr/",
-    :fq => ["type:Project"], :facets => ["region", "location_exact", "institution_short_name"]})
+    :fq => ["type:Project"], :facets => ["region", "location_exact", "institution_short_name", "status"]})
   run Views::Api::Index.new(solrizer)
 end
 
