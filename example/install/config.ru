@@ -4,11 +4,11 @@ require "./load"
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
 
-api = Npolar::Storage::Couch.new("api")
-sdoc = api.fetch("service")
+#api = Npolar::Storage::Couch.new("api")
+#sdoc = api.fetch("service")
 
-Npolar::Api.workspaces = sdoc[:workspaces]
-Npolar::Api.hidden_workspaces = ["api", "gcmd"]
+#Npolar::Api.workspaces = sdoc[:workspaces]
+#Npolar::Api.hidden_workspaces = ["api", "gcmd"]
 search = []
 # service = Npolar::Api::Service.new
 # Service => which collections are searched?
@@ -75,7 +75,7 @@ map "/biology" do
   
     index = Views::Collection.new
     index.id = "view_biology_observation_index"
-    index.storage = api
+    #index.storage = api
   
     use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "biology",
       :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
@@ -154,7 +154,7 @@ map "/metadata" do
 
   metadata_workspace_index = Views::Workspace.new(solrizer)
   metadata_workspace_index.id = "view_metadata_index"
-  metadata_workspace_index.storage = api
+ # metadata_workspace_index.storage = api
   #run Npolar::Api::Core.new(metadata_workspace_index, :storage => nil, :methods =>  ["GET", "HEAD"])
 
 
