@@ -161,7 +161,7 @@ map "/metadata" do
   #run Npolar::Api::Core.new(metadata_workspace_index, :storage => nil, :methods =>  ["GET", "HEAD"])
 
 
-  run metadata_workspace_index #Views::Api::Index.new(solrizer)
+  # run metadata_workspace_index #Views::Api::Index.new(solrizer)
 
 
   map "/oai" do
