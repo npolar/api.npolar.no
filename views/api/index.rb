@@ -207,7 +207,7 @@ independent deployable components
       end
 
       def a_facet(field,facet,count)
-        "<a href=\"#{base}&amp;fq=#{CGI.escape(field.to_s)}:#{CGI.escape(facet.to_s)}\">#{facet}</a>"
+        "<a href=\"#{base}&amp;fq=#{CGI.escape(field.to_s)}:#{facet.to_s == "" ? "∅" : CGI.escape(facet.to_s)}\">#{facet.to_s == "" ? "<code>Ø</code>" : CGI.escapeHTML(facet) }</a>"
       end
 
       def add_filter(current_uri, filter)

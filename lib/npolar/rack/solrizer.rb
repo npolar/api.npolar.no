@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Npolar
 
   module Rack
@@ -47,7 +48,7 @@ module Npolar
           else
   
             unless qstar =~ /\*/
-              qstar = qstar+"*"
+              qstar = qstar.downcase+"*"
             end
             qstar = qstar.delete(":")
             "title:#{qstar} OR #{qstar}"
@@ -77,12 +78,18 @@ module Npolar
             end
           end
 
+          pagesize = response["responseHeader"]["params"]["rows"].to_i
+          start = response["response"]["start"]
           {"feed" => {
             # http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements
             "opensearch" => {
               "totalResults" =>  response["response"]["numFound"].to_i,
-              "itemsPerPage" => response["responseHeader"]["params"]["rows"].to_i,
+              "itemsPerPage" => pagesize,
               "startIndex" => response["response"]["start"].to_i
+            },
+            "atom" => {
+              "links" => [{"rel" => "next", "href" => start+pagesize, "type"=>"feed"}
+              ]
             },
 
             "facets" => facets,
@@ -147,25 +154,25 @@ module Npolar
             :q=>q, :start => start, :rows => rows,
             :fq => fq+fq_bbox,
             :facet => facets.nil? ? false : true,
-            :"facet.range" => ["north", "east", "south", "west", "updated"],
-            :"f.north.facet.range.start" => -90,
-            :"f.north.facet.range.end" => 90,
-            :"f.north.facet.range.gap" => 10,
-            :"f.east.facet.range.start" => -180,
-            :"f.east.facet.range.end" => 180,
-            :"f.east.facet.range.gap" => 20,
-            :"f.south.facet.range.start" => -90,
-            :"f.south.facet.range.end" => 90,
-            :"f.south.facet.range.gap" => 10,
-            :"f.west.facet.range.start" => -180,
-            :"f.west.facet.range.end" => 180,
-            :"f.west.facet.range.gap" => 20,
-            :"f.updated.facet.range.start" => "/NOW-100 YEARS/",
-            :"f.updated.facet.range.end" => "/NOW/",
-            :"f.updated.facet.range.gap" => 10,
+            #:"facet.range" => ["north", "east", "south", "west", "updated"],
+            #:"f.north.facet.range.start" => -90,
+            #:"f.north.facet.range.end" => 90,
+            #:"f.north.facet.range.gap" => 10,
+            #:"f.east.facet.range.start" => -180,
+            #:"f.east.facet.range.end" => 180,
+            #:"f.east.facet.range.gap" => 20,
+            #:"f.south.facet.range.start" => -90,
+            #:"f.south.facet.range.end" => 90,
+            #:"f.south.facet.range.gap" => 10,
+            #:"f.west.facet.range.start" => -180,
+            #:"f.west.facet.range.end" => 180,
+            #:"f.west.facet.range.gap" => 20,
+            #:"f.updated.facet.range.start" => "/NOW-100 YEARS/",
+            #:"f.updated.facet.range.end" => "/NOW/",
+            #:"f.updated.facet.range.gap" => 10,
             :"facet.field" => facets,
-            :"facet.mincount" => 1,
-            :"facet.limit" => -1,
+            #:"facet.mincount" => 1,
+            #:"facet.limit" => -1,
             :fl => fl }
 
           if "solr" == request.format
@@ -231,6 +238,8 @@ module Npolar
             
             "#{k}:#{v}"
             
+          elsif v =~ /^(∅|%E2%88%85|null|)$/ui
+            "-#{k}:[\"\" TO *]"
           else
             "#{k}:\"#{CGI.unescape(v.gsub(/(%20|\+)/ui, " "))}\""
           end
