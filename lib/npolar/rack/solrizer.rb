@@ -50,7 +50,6 @@ module Npolar
               qstar = qstar+"*"
             end
             qstar = qstar.delete(":")
-qstar = CGI.escape(qstar)
             "title:#{qstar} OR #{qstar}"
           end
           
@@ -239,6 +238,7 @@ qstar = CGI.escape(qstar)
           fq
         end
       }
+
 
 
 #.map {|k,v| [k, v.)]}
