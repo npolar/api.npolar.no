@@ -93,6 +93,7 @@ independent deployable components
       end
 
       def call(env)
+        @template = nil
         @request = request = Npolar::Rack::Request.new(env)
         @hash[:self] = request.url
 
