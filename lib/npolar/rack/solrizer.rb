@@ -50,8 +50,10 @@ module Npolar
               qstar = qstar+"*"
             end
             qstar = qstar.delete(":")
+qstar = CGI.escape(qstar)
             "title:#{qstar} OR #{qstar}"
           end
+          
           
         },
         :fq => [],
@@ -222,7 +224,25 @@ module Npolar
         if config[:fq].is_a? String
           config[:fq] = [config[:fq]]
         end
-        fq = (request.multi("fq") + config[:fq]).uniq
+        fq = (request.multi("fq") + config[:fq]).uniq.map {|fq|
+
+        if fq =~ /(.*):(.*)/
+          k,v = fq.split(":")
+          if v =~ /true|false/
+            
+            "#{k}:#{v}"
+            
+          else
+            "#{k}:\"#{CGI.unescape(v.gsub(/(%20|\+)/ui, " "))}\""
+          end
+        else
+          fq
+        end
+      }
+
+
+#.map {|k,v| [k, v.)]}
+#qstar = CGI::unescape(qstar)
         # todo factes vs. multifacets
         #unless fq.nil?
         #  fq = fq.map {|q|
@@ -231,6 +251,8 @@ module Npolar
         #    "#{q}"
         #  }
         #end
+
+      fq
       end
 
       def fl

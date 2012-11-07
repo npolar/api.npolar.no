@@ -27,6 +27,7 @@ require "./lib/npolar/storage/couch"
 #
 ## Middleware
 require "./lib/npolar/rack/middleware"
+require "./lib/npolar/rack/atomizer"
 require "./lib/npolar/rack/solrizer"
 require "./lib/npolar/rack/require_param"
 require "./lib/npolar/rack/validate_id"

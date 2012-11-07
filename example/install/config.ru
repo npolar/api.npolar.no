@@ -1,4 +1,8 @@
+# encoding: utf-8
 # This config.ru is the *production* configuration for api.npolar.no
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
+
 require "./load"
 
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
@@ -38,7 +42,9 @@ map "/" do
     :facets => ["collection", "workspace", "methods", "parameter", "person", "org", "project", "draft", "link", "group", "set", "category", "country", "placename", "iso_3166-1", "iso_3166-2", "hemisphere", "source", "year", "month", "day", "editor", "referenceYear", "edited-y-m-d", "updated-y-m-d",  "license"]
   )
   search = Views::Api::Index.new(solrizer)
-  
+
+  use Npolar::Rack::Atomizer
+
   run search #Npolar::Api::Core.new(search)
 
   # The map sections below are for the internal "api" workspace
@@ -67,7 +73,7 @@ map "/biology" do
 
   #run Npolar::Api::Core.new(Views::Biology::Index.new, :storage => nil, :methods =>  ["GET", "HEAD"])
     solrizer = Npolar::Rack::Solrizer.new(nil, {:core => "http://olav.npolar.no:8080/solr/marine_database",
-    :facets => ["collection", "station_ss", "year_ss", "animalgroup_ss", "programs_sms", "species_sms", "sample_types_sms"]})
+    :facets => ["collection", "station_ss", "year_ss", "animalgroup_ss", "programs_sms", "species_sms", "species_groups_sms", "sample_types_sms"]})
     run Views::Api::Index.new(solrizer)
 
   map "/marine" do
@@ -246,7 +252,7 @@ end
 
 map "/placename" do
   solrizer = Npolar::Rack::Solrizer.new(nil, { :select => "select",
-    :fq => ["workspace:geo", "collection:geoname", "approved:*"],
+    :fq => ["workspace:geo", "collection:geoname"],
     :summary => lambda {|doc| doc["definition"] },
     :facets => ["location","hemisphere","workspace", "collection","approved","terrain","country", "map", "reference"]
   })

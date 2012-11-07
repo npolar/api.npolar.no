@@ -1,6 +1,6 @@
 {{{ head }}}
 
-{{#forms}}
+{{#form}}
 <form id="{{id}}-form" action="{{href}}#" method="get" class="yui3-skin-sam form-search">
   <div class="row-fluid">
 
@@ -12,17 +12,26 @@
       <input type="submit" class="btn" value="Search" />
   
       <!-- <label for="{{id}}-what">{{label}} </label><label for="{{id}}-where">{{label}} </label><label for="{{id}}-where">{{label-where}} </label> -->
-      {{#filters?}}<br/>Filters (<a href="/">remove</a>): {{#fq}} {{filter}}={{value}} {{/fq}} {{/filters?}}
+      {{#filters?}}<br/>Filters (<a href="{{collection_uri}}/?q={{q}}">remove</a>): {{#fq}} {{filter}}={{value}} {{/fq}} {{/filters?}}
 
-      {{#results}}
+      {{#results?}}
+
+      <!-- #formats -->
       <div class="pagination format">
         <ul>
-          <li><a href="{{base}}&amp;format=json">JSON</a></li><!-- Atom CSV -->
+          <li><a href="{{base}}&amp;format=atom" title="Atom feed (OpenSearch/GeoRSS)">Atom</a></li>
+          <li><a href="{{base}}&amp;format=json" title="JSON feed object">JSON</a></li>
+
         </ul>
       </div>
+      <!-- /formats -->
 
       <h5>{{ result_text }}, showing {{ entries_size}} <a href="{{prev}}"> < Previous  </a> | <a href="{{next}}">  Next > </a></h5>
-      {{/results}}
+      {{/results?}}
+      {{^results?}}
+      <h5>{{totalResults}} results for "{{q}}" in {{placeholder}}</h5>
+      {{/results?}}
+
 
       {{#entries}}
         <p><a href="?q=&amp;fq=id:{{id}}&amp;format=json&amp;facets=false" title="JSON of {{title}}">{{title}}</a> <span class="">{{collection}}</span></p>
@@ -50,7 +59,7 @@
   </div>
 
 </form>
-{{/ forms }}
+{{/ form }}
 
 {{#svc}}
 <div class="pagination">
@@ -72,7 +81,7 @@
 {{< _yui_loader }}
 
 <script>
-{{# forms }}
+{{# form }}
 
   YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
 
@@ -86,6 +95,6 @@
       source: '{{source}}'
     });
   });
-{{/ forms }}
+{{/ form }}
 </script>
 {{{ foot }}}

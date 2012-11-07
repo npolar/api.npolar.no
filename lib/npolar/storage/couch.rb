@@ -164,6 +164,7 @@ module Npolar
         [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(ids)+"\n"]] # Couch returns text/plain here!?
       end
   
+      #           feed = feed.select { |row| row[:_id] !~ /_design/ }
       def ids
         ids = []
 
