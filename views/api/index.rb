@@ -4,7 +4,6 @@ module Views
     class Index < Npolar::Mustache::JsonView
 
       def initialize(app=nil)
-        @template = nil
         @app = app
         @hash = { "_id" => "api_index",
           #:workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
@@ -94,8 +93,8 @@ independent deployable components
       end
 
       def call(env)
-        @template = nil
         @request = request = Npolar::Rack::Request.new(env)
+
         @hash[:self] = request.url
 
         @hash[:base] = request.url and ["GET", "HEAD"].include? request.request_method
@@ -109,6 +108,7 @@ independent deployable components
           @hash[:form][:placeholder] = request.script_name.split("/").map {|p| p.capitalize+" "}.join.gsub(/^\s+/, "")
         end
 
+        @hash[:filters?] = false
         if request["fq"]
           
           fq = request.multi("fq").map {|fq|
