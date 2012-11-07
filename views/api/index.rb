@@ -4,6 +4,7 @@ module Views
     class Index < Npolar::Mustache::JsonView
 
       def initialize(app=nil)
+        @template = nil
         @app = app
         @hash = { "_id" => "api_index",
           #:workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
