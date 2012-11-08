@@ -251,7 +251,9 @@ map "/project" do
 end
 
 map "/placename" do
-  solrizer = Npolar::Rack::Solrizer.new(nil, { :select => "select",
+  solrizer = Npolar::Rack::Solrizer.new(nil, {
+    :select => "select",
+    :core => "http://dbmaster.data.npolar.no:8983/solr/placename",
     :fq => ["workspace:geo", "collection:geoname"],
     :summary => lambda {|doc| doc["definition"] },
     :facets => ["location","hemisphere","workspace", "collection","approved","terrain","country", "map", "reference"]
