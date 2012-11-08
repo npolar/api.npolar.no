@@ -158,8 +158,8 @@ module Npolar
         
           fq_bbox = []
           if params["bbox"]
-            w,s,e,n = bbox = params["bbox"].split(" ").map {|c|c.to_f}
-            fq_bbox = ["north:[#{s} TO #{n}]", "east:[#{w} TO #{e}]"]
+            #w,s,e,n = bbox = params["bbox"].split(" ").map {|c|c.to_f}
+            #fq_bbox = ["north:[#{s} TO #{n}]", "east:[#{w} TO #{e}]"]
           end
 
           response = rsolr.get select, :params => {

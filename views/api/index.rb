@@ -123,8 +123,6 @@ independent deployable components
       def filters
         request.multi("fq").map {|fq|
           k,v = fq.split(":")
-fq = fq.gsub(/\s/ui, "+")
-p fq
           remove_href = base.gsub(/&fq=#{fq}/ui, "")
           {:filter => k, :value => CGI.unescape(v), :remove_href => remove_href }
         }.uniq
