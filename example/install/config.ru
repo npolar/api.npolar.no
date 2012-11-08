@@ -73,7 +73,7 @@ map "/biology" do
 
   #run Npolar::Api::Core.new(Views::Biology::Index.new, :storage => nil, :methods =>  ["GET", "HEAD"])
     solrizer = Npolar::Rack::Solrizer.new(nil, {:core => "http://olav.npolar.no:8080/solr/marine_database",
-    :facets => ["collection", "station_ss", "year_ss", "animalgroup_ss", "programs_sms", "species_sms", "species_groups_sms", "sample_types_sms"]})
+    :facets => ["collection", "station_ss", "year_ss", "animalgroup_ss", "programs_sms", "species_sms", "species_groups_sms", "sample_types_sms", "long_fs", "lat_fs"]})
     run Views::Api::Index.new(solrizer)
 
   map "/marine" do
@@ -256,7 +256,7 @@ map "/placename" do
     :core => "http://dbmaster.data.npolar.no:8983/solr/placename",
     :fq => ["workspace:geo", "collection:geoname"],
     :summary => lambda {|doc| doc["definition"] },
-    :facets => ["location","hemisphere","workspace", "collection","approved","terrain","country", "map", "reference"]
+    :facets => ["location", "hemisphere", "approved", "terrain", "country", "map", "reference", "north", "east"]
   })
   run Views::Api::Index.new(solrizer)
 end

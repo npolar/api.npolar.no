@@ -11,6 +11,9 @@ describe Npolar::Rack::Request do
       request = Npolar::Rack::Request.new(env)
       request.multi("foo").size.should == 4
       request.multi("foo").should include("bar", "foo", nil, "")
+
+
+# uniq!
     end
   end
 

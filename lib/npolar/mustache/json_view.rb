@@ -48,6 +48,7 @@ class Npolar::Mustache::JsonView < ::Mustache
   <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" />
+  {{{head_links}}}
 </head>
 <body class="container-fluid">
 
