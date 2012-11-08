@@ -96,15 +96,16 @@ independent deployable components
 
         @hash[:request] = @request = Npolar::Rack::Request.new(env)
         @hash[:self] = request.url
-        @hash[:base] = request.url 
+        @hash[:base] = request.url
 
+        @hash[:q] = request["q"]
         if request["q"] 
           @hash[:welcome_article] = nil
-          @hash[:bbox] = request["bbox"]
-          @hash[:dtstart] = request["dtstart"]
-          @hash[:dtend] = request["dtend"]
           @hash[:form][:placeholder] = request.script_name.split("/").map {|p| p.capitalize+" "}.join.gsub(/^\s+/, "")
         end
+        @hash[:bbox] = request["bbox"]
+        @hash[:dtstart] = request["dtstart"]
+        @hash[:dtend] = request["dtend"]
 
         @hash[:filters?] = false
         if request["fq"]         
@@ -207,10 +208,6 @@ independent deployable components
 
       def qtime
         feed(:search)[:qtime].to_f
-      end
-
-      def page
-        1
       end
 
       def next
