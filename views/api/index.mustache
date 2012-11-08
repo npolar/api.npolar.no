@@ -1,5 +1,6 @@
 {{{ head }}}
 
+
 {{#form}}
 <form id="{{id}}-form" action="{{href}}#" method="get" class="yui3-skin-sam form-search">
   <div class="row-fluid">
@@ -12,7 +13,7 @@
       <input type="submit" class="btn" value="Search" />
   
       <!-- <label for="{{id}}-what">{{label}} </label><label for="{{id}}-where">{{label}} </label><label for="{{id}}-where">{{label-where}} </label> -->
-      {{#filters?}}<br/>Filters (<a href="{{collection_uri}}/?q={{q}}">remove</a>): {{#fq}} <code>{{filter}}={{value}}</code> {{/fq}} {{/filters?}}
+      {{#filters?}}<br/>Filters: {{#filters}} <code>{{filter}}={{value}} <a href="{{remove_href}}">⨯</a></code> {{/filters}} {{/filters?}}
 
       {{#results?}}
 
@@ -26,7 +27,7 @@
       </div>
       <!-- /formats -->
 
-      <h5>{{ result_text }}, showing {{ entries_size}} <a href="{{prev}}"> < Previous  </a> | <a href="{{next}}">  Next > </a></h5>
+      <h5>{{ result_text }}, showing {{ entries_size}} {{#previous?}}<a href="{{previous_href}}"> < Previous  </a> |{{/previous?}} {{#next?}}<a href="{{next_href}}">  Next > </a>{{/next?}}</h5>
       {{/results?}}
       {{^results?}}
       <h5>{{totalResults}} results for "{{q}}" in {{placeholder}}</h5>
@@ -41,13 +42,13 @@
 
     <div class="span8">
       <!-- Look's nicer in Bootstrap with multiple dl's... -->
-      {{#results}}
+      {{#results?}}
       <dl class="dl-horizontal">
         <dt>bbox</dt><dd><input id="bbox" name="bbox" value="{{bbox}}" type="search" placeholder="W S E N [-180 -90 180 90]" /></dd>
         <dt>start</dt><dd><input id="dtstart" name="dtstart" value="{{dtstart}}" type="search" placeholder="YYYY-MM-DD" /></dd>
         <dt>end</dt><dd><input id="dtend" name="dtend" value="{{dtend}}" type="search" placeholder="YYYY-MM-DD" /></dd>
       </dl>
-      {{/results}}
+      {{/results?}}
       {{#facets}}
       <dl class="dl-horizontal">
         <dt>{{title}}</dt>

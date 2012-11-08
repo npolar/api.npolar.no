@@ -93,44 +93,55 @@ independent deployable components
       end
 
       def call(env)
-        @request = request = Npolar::Rack::Request.new(env)
 
+        @hash[:request] = @request = Npolar::Rack::Request.new(env)
         @hash[:self] = request.url
+        @hash[:base] = request.url 
 
-        @hash[:base] = request.url and ["GET", "HEAD"].include? request.request_method
-
-        if request["q"]
+        if request["q"] 
           @hash[:welcome_article] = nil
           @hash[:bbox] = request["bbox"]
           @hash[:dtstart] = request["dtstart"]
           @hash[:dtend] = request["dtend"]
-          @hash[:next] = 
           @hash[:form][:placeholder] = request.script_name.split("/").map {|p| p.capitalize+" "}.join.gsub(/^\s+/, "")
         end
 
         @hash[:filters?] = false
-        if request["fq"]
-          
-          fq = request.multi("fq").map {|fq|
-            k,v = fq.split(":")
-            {:filter => k, :value => CGI.unescape(v) }
-          }
-          @hash[:fq]=fq.uniq
+        if request["fq"]         
+          @hash[:filters] = filters
           @hash[:filters?] = true
           @hash[:collection_uri] = request.script_name
         end
 
-        unless "html" == request.format
+        unless "html" == request.format and ["GET", "HEAD", "POST"].include? request.request_method
           feed = @app.call(env)
         else
           super # ie render
         end
       end
 
+      def filters
+        request.multi("fq").map {|fq|
+          k,v = fq.split(":")
+fq = fq.gsub(/\s/ui, "+")
+p fq
+          remove_href = base.gsub(/&fq=#{fq}/ui, "")
+          {:filter => k, :value => CGI.unescape(v), :remove_href => remove_href }
+        }.uniq
+      end
+
       def head_title
         "api.npolar.no"
       end
           
+      def head_links
+        links = []
+        ["atom"].each do |format|
+          
+          links << atom_link(base+facet_href("format", format), "Atom feed")
+        end
+        links.join("\n")
+      end
 
       def h1_title
         "<a title=\"api.npolar.no\" href=\"/\">api</a>.npolar.no"
@@ -144,24 +155,16 @@ independent deployable components
         request.url.split("/").join(" ")
       end
 
-
-      def document_api?(w)
-        case w.to_sym
-          when :biology, :ecotox, :metadata, :oceanograophy, :seaice, :tracking then true
-          else false
-        end
+      def atom_link(href, title="", rel="alternate", type="application/atom+xml")
+        href = CGI.escapeHTML(href)
+        rel = CGI.escapeHTML(rel)
+        title = CGI.escapeHTML(title)
+        type = CGI.escapeHTML(type)
+        "<link href=\"#{href}\" title=\"#{title}\" rel=\"#{rel}\" type=\"#{type}\" />"
       end
-
-      def collection_badge(collection)
-        case collection
-          when "geoname", "placename" then "badge badge-success"
-          else "badge"
-        end
-      end
-
 
       def entries
-        feed(:entries).map {|e| {:title => e[:title]||e[:title_ss], :id => e[:id], :json => e.to_json , :collection => e[:collection], :badge => collection_badge(e[:collection]) } }
+        feed(:entries).map {|e| {:title => e[:title]||e[:title_ss], :id => e[:id], :json => e.to_json , :collection => e[:collection] } }
       end
 
       def entries_size
@@ -176,11 +179,20 @@ independent deployable components
         facets = feed(:facets).map {|field,v|
           {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => a_facet(field, c[0], c[1]) } } }
         }
-        facets = facets.select {|f| f[:counts].uniq.size > 0 }
+        #facets = facets.select {|f| f[:counts].uniq.size > 0 }
+      end
+
+      def facet_href(facet, value)
+        "?"+merge_params(facet, value).map{|k,v| "#{k}=#{v}"}.join("&")
+      end
+
+      def facet_remove_href(facet)
+
+         "?"+request.params.map{|k,v| "#{k}=#{v}"}.join("&")
       end
 
       def result_text
-        "#{totalResults} result#{ totalResults > 1 ? "s": ""}"
+        "#{totalResults} result#{ totalResults > 1 ? "s": ""} in #{qtime/1000} seconds"
       end
 
       def opensearch
@@ -196,22 +208,46 @@ independent deployable components
       end
 
       def qtime
-        
+        feed(:search)[:qtime].to_f
       end
 
       def page
         1
       end
+
       def next
-        page+1
+        feed(:list)[:next]
+      end
+      alias :next_page :next
+
+
+      def next?
+        false != next_page
       end
 
-      def a_facet(field,facet,count)
-        "<a href=\"#{base}&amp;fq=#{CGI.escape(field.to_s)}:#{facet.to_s == "" ? "∅" : CGI.escape(facet.to_s)}\">#{facet.to_s == "" ? "<code>Ø</code>" : CGI.escapeHTML(facet) }</a>"
+      def next_href
+        facet_href("start", self.send(:next))
       end
 
-      def add_filter(current_uri, filter)
-      end   
+      def a_facet(field, facet, count)
+        "<a href=\"#{base}&amp;fq=#{CGI.escape(field.to_s)}:#{facet.to_s == "" ? "∅" : CGI.escape(facet.to_s)}\">#{facet.to_s == "" ? "<code>∅</code>" : CGI.escapeHTML(facet) }</a>"
+      end
+
+      def merge_params(param, value)
+        request.params.merge({param => CGI::escape(value.to_s)})
+      end
+
+      def previous?
+        false != previous
+      end
+
+      def previous
+        feed(:list)[:previous]
+      end
+
+     def previous_href
+        facet_href("start", previous)
+      end
 
       def feed(key=nil)
         if feed? key

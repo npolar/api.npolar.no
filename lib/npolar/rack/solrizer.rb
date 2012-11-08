@@ -57,7 +57,7 @@ module Npolar
           
         },
         :fq => [],
-        :feed => lambda {|response|
+        :feed => lambda {|response, request|
 
           facets = {}
 
@@ -80,16 +80,28 @@ module Npolar
 
           pagesize = response["responseHeader"]["params"]["rows"].to_i
           start = response["response"]["start"]
+          qtime = response["responseHeader"]["QTime"].to_i
+          totalResults = response["response"]["numFound"].to_i
+          last = pagesize*(totalResults/pagesize).ceil.to_i
+          previous = start >= pagesize ? start-pagesize : false
+          nxt = start+pagesize > totalResults ? false : start+pagesize
           {"feed" => {
             # http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements
             "opensearch" => {
-              "totalResults" =>  response["response"]["numFound"].to_i,
+              "totalResults" =>  totalResults,
               "itemsPerPage" => pagesize,
               "startIndex" => response["response"]["start"].to_i
             },
-            "atom" => {
-              "links" => [{"rel" => "next", "href" => start+pagesize, "type"=>"feed"}
-              ]
+            "list" => {
+              "self" => request.url,
+              "next" => nxt,
+              "previous" => previous,
+              "first" => 0,
+              "last" => last
+            },
+            "search" => {
+              "qtime" => qtime,
+              "q" => response["responseHeader"]["params"]["q"],
             },
 
             "facets" => facets,
@@ -172,7 +184,7 @@ module Npolar
             #:"f.updated.facet.range.gap" => 10,
             :"facet.field" => facets,
             #:"facet.mincount" => 1,
-            #:"facet.limit" => -1,
+            :"facet.limit" => 500, #-1,
             :fl => fl }
 
           if "solr" == request.format
@@ -194,7 +206,7 @@ module Npolar
       protected
 
       def feed(response)
-        config[:feed].call(response)
+        config[:feed].call(response, request)
       end
 
       def facets
