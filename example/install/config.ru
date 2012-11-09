@@ -229,7 +229,7 @@ end
 
 map "/oceanography" do
   # Show ocean index on anything that is not a search
-  run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "")
+  run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "http://localhost:8983/solr", :select => "select")
 end
 
 map "/org" do
