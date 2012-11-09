@@ -458,6 +458,70 @@ module Metadata
               "Location_Type" => "ANTARCTICA",
               "Detailed_Location" => nil
             }
+          when "norway" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "EUROPE",
+              "Location_Subregion1" => "NORTHERN EUROPE",
+              "Location_Subregion2" => "SCANDINAVIA",
+              "Location_Subregion3" => "NORWAY",
+              "Detailed_Location" => detailed_location
+            }
+          when "russia" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "EUROPE",
+              "Location_Subregion1" => "EASTERN EUROPE",
+              "Location_Subregion2" => "RUSSIA",
+              "Detailed_Location" => detailed_location
+            }
+          when "sweden" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "EUROPE",
+              "Location_Subregion1" => "NORTHERN EUROPE",
+              "Location_Subregion2" => "SCANDINAVIA",
+              "Location_Subregion3" => "SWEDEN",
+              "Detailed_Location" => detailed_location
+            }
+          when "canada" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "NORTH AMERICA",
+              "Location_Subregion1" => "CANADA",
+              "Detailed_Location" => detailed_location
+            }
+          when "greenland" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "NORTH AMERICA",
+              "Location_Subregion1" => "GREENLAND",
+              "Detailed_Location" => detailed_location
+            }
+          when "finland" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "EUROPE",
+              "Location_Subregion1" => "NORTHERN EUROPE",
+              "Location_Subregion2" => "SCANDINAVIA",
+              "Location_Subregion3" => "FINLAND",
+              "Detailed_Location" => detailed_location
+            }
+          when "iceland" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "EUROPE",
+              "Location_Subregion1" => "NORTHERN EUROPE",
+              "Location_Subregion2" => "ICELAND",
+              "Detailed_Location" => detailed_location
+            }
+          when "united_states" then
+            locations << {
+              "Location_Category" => "CONTINENT",
+              "Location_Type" => "NORTH AMERICA",
+              "Location_Subregion1" => "UNITED STATES OF AMERICA",
+              "Detailed_Location" => detailed_location
+            }
           else
             locations << {
               "Location_Category" => "GEOGRAPHIC REGION",

@@ -583,6 +583,94 @@ describe Metadata::DifTransformer do
           )
         end
         
+        it "if area Norway => CONTINENT < EUROPE < NORTHERN EUROPE < SCANDINAVIA < NORWAY" do
+          @transformer.object.locations = [{"placename" => "Tromsø", "area" => "norway"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "EUROPE",
+            "Location_Subregion1" => "NORTHERN EUROPE",
+            "Location_Subregion2" => "SCANDINAVIA",
+            "Location_Subregion3" => "NORWAY",
+            "Detailed_Location" => "Tromsø"
+          )
+        end        
+        
+        it "if area Russia => CONTINENT < EUROPE < EASTERN EUROPE < RUSSIA" do
+          @transformer.object.locations = [{"placename" => "Moskou", "area" => "russia"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "EUROPE",
+            "Location_Subregion1" => "EASTERN EUROPE",
+            "Location_Subregion2" => "RUSSIA",
+            "Detailed_Location" => "Moskou"
+          )
+        end
+        
+        it "if area Sweden => CONTINENT < EUROPE < NORTHERN EUROPE < SCANDINAVIA < SWEDEN" do
+          @transformer.object.locations = [{"placename" => "Jönköping", "area" => "sweden"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "EUROPE",
+            "Location_Subregion1" => "NORTHERN EUROPE",
+            "Location_Subregion2" => "SCANDINAVIA",
+            "Location_Subregion3" => "SWEDEN",
+            "Detailed_Location" => "Jönköping"
+          )
+        end
+        
+        it "if area Canada => CONTINENT < NORTH AMERICA < CANADA" do
+          @transformer.object.locations = [{"placename" => "Yellowknife", "area" => "canada"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "NORTH AMERICA",
+            "Location_Subregion1" => "CANADA",
+            "Detailed_Location" => "Yellowknife"
+          )
+        end
+        
+        it "if area Greenland => CONTINENT < NORTH AMERICA < GREENLAND" do
+          @transformer.object.locations = [{"placename" => "Nuuk", "area" => "Greenland"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "NORTH AMERICA",
+            "Location_Subregion1" => "GREENLAND",
+            "Detailed_Location" => "Nuuk"
+          )
+        end
+        
+        it "if area Finland => CONTINENT < EUROPE < NORTHERN EUROPE < SCANDINAVIA < FINLAND" do
+          @transformer.object.locations = [{"placename" => "Tornio", "area" => "finland"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "EUROPE",
+            "Location_Subregion1" => "NORTHERN EUROPE",
+            "Location_Subregion2" => "SCANDINAVIA",
+            "Location_Subregion3" => "FINLAND",
+            "Detailed_Location" => "Tornio"
+          )
+        end
+        
+        it "if area Iceland => CONTINENT < EUROPE < NORTHERN EUROPE < ICELAND" do
+          @transformer.object.locations = [{"placename" => "Húsavík", "area" => "iceland"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "EUROPE",
+            "Location_Subregion1" => "NORTHERN EUROPE",
+            "Location_Subregion2" => "ICELAND",
+            "Detailed_Location" => "Húsavík"
+          )
+        end
+        
+        it "if area United States => CONTINENT < NORTH AMERICA < UNITED STATES OF AMERICA" do
+          @transformer.object.locations = [{"placename" => "Barrow", "area" => "united_states"}]
+          @transformer.dif_location[0].should include(
+            "Location_Category" => "CONTINENT",
+            "Location_Type" => "NORTH AMERICA",
+            "Location_Subregion1" => "UNITED STATES OF AMERICA",
+            "Detailed_Location" => "Barrow"
+          )
+        end
+        
         it "if placename => Detailed_Location == placename" do
           @transformer.object.locations = [{"placename" => "pyramiden"}]
           @transformer.dif_location[0].should include(
