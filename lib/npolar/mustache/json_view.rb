@@ -45,7 +45,7 @@ class Npolar::Mustache::JsonView < ::Mustache
   <meta charset="utf-8" />
   <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
-  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" />
+  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" />  
   {{{head_links}}}
 </head>
 <body class="container-fluid">
@@ -60,7 +60,9 @@ class Npolar::Mustache::JsonView < ::Mustache
     if get(id).include? :foot
       get(id)[:foot]
     else
-      "</body></html>"
+      "<script src=\"http://code.jquery.com/jquery-latest.js\"></script>
+<script src=\"http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js\"></script> 
+</body></html>"
     end
   end
 

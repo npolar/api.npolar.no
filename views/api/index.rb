@@ -10,6 +10,10 @@ module Views
           :form => {:placeholder => "Norwegian Polar Data", :href => "", :id => "api",
           :source => '.json?q={query}&limit=20&callback={callback}' },
           :limit => 30,
+          :formats => [{:format=>"atom", :label =>"Atom"},
+            {:format=>"csv", :label => "CSV"},
+            {:format=>"json", :label => "JSON", :active => "active"},
+          ],
           :svc => { :search => [
             {:title => "Biology", :href => "/biology/?q="},
             #{:title => "Ecotox", :href => "/ecotox/?q="},
@@ -41,25 +45,12 @@ module Views
   <p>Search by using the <code>GET</code> parameter <code>q</code>, as in:
   <a href="/?q=Polar+bears">/?q=Polar+bears</a></p>
 
-  <p>The default response is a <a href="http://json.org">JSON</a> feed object (@todo see example), but in web browsers
-or for clients that send <code>Accept: text/html</code>, results are rendered in a data browser with powerful facet filtering (drill-down).
+  <p>The default response is a <a href="http://json.org">JSON</a> feed object.
+In web browsers or other clients that send <code>Accept: text/html</code>, results are rendered in a data browser with powerful facet filtering (drill-down).
 </p>
 
-  <p>The search API follows the <a href="http://www.opensearch.org/">OpenSearch</a> specification (@todo see description), a brief rundown of opensearch:Url attribute mappings:
-  <dl class="dl-horizontal">
-    <dt>searchTerms</dt><dd><a href="">q</a></dd>
-    <dt>count</dt><dd><a href="">limit</a></dd>
-    <dt>startOffset</dt><dd>start</dd>
-  </dl>
-
-"limit The "count" parameter Replaced with the number of search results per page desired by the search client.
-The "startIndex" parameter Replaced with the index of the first search result desired by the search client.
-
-  The "startPage" parameter
-
-Response formats other than JSON are in the works, including <a href="http://tools.ietf.org/html/rfc4287">Atom</a>/<a href="http://tools.ietf.org/html/rfc5023">Atom Publishing Protocol</a>
-  (with embedded OpenSearch and <a href="http://georss.org/">GeoRSS</a> elements), CSV, and more.</p>
- 
+  <p>The search API follows the <a href="http://www.opensearch.org/">OpenSearch</a> specification.</p>
+  
 <p>Search is powered by Apache Solr.</p>
 
   <hr/>
@@ -96,7 +87,7 @@ independent deployable components
 
         @hash[:request] = @request = Npolar::Rack::Request.new(env)
         @hash[:self] = request.url
-        @hash[:base] = request.url
+        @hash[:base] = request.url # CGI.escapeHTML => 
 
         @hash[:q] = request["q"]
         if request["q"] 
@@ -114,7 +105,7 @@ independent deployable components
           @hash[:collection_uri] = request.script_name
         end
 
-        unless "html" == request.format and ["GET", "HEAD", "POST"].include? request.request_method
+        unless "html" == request.format
           feed = @app.call(env)
         else
           super # ie render
@@ -127,6 +118,10 @@ independent deployable components
           remove_href = base.gsub(/&fq=#{fq}/ui, "")
           {:filter => k, :value => CGI.unescape(v), :remove_href => remove_href }
         }.uniq
+      end
+
+      def filtered?(field, value)
+        [] == filters.select {|f| f[:filter] == field.to_s and f[:value] == CGI.unescape(value) }
       end
 
       def head_title
@@ -176,9 +171,9 @@ independent deployable components
 
       def facets
         facets = feed(:facets).map {|field,v|
-          {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => a_facet(field, c[0], c[1]) } } }
+          {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => html_a_facet(field, c[0], c[1]) } } }
         }
-        #facets = facets.select {|f| f[:counts].uniq.size > 0 }
+        facets = facets.select {|f| f[:counts].uniq.size > 0 }
       end
 
       def facet_href(facet, value)
@@ -190,13 +185,34 @@ independent deployable components
          "?"+request.params.map{|k,v| "#{k}=#{v}"}.join("&")
       end
 
+      def first
+        feed(:list)[:first]
+      end
+
+      def first_href
+        facet_href("start", first)
+      end
+
+      def first_to_last
+        "#{start+1} to #{start+entries.size}"
+      end
+
       def result_text
         "#{totalResults} result#{ totalResults > 1 ? "s": ""} in #{qtime/1000} seconds"
       end
 
-      def opensearch
-        feed(:opensearch)
+      def opensearch(key=nil)
+        if key.nil?
+          feed(:opensearch)
+        elsif feed(:opensearch).key? key
+          feed(:opensearch)[key]
+        end
       end
+
+      def start
+        opensearch(:startIndex)
+      end
+      alias :startIndex :start
 
       def totalResults
         if opensearch.respond_to?(:key?) and opensearch.key?(:totalResults)
@@ -224,8 +240,20 @@ independent deployable components
         facet_href("start", self.send(:next))
       end
 
-      def a_facet(field, facet, count)
-        "<a href=\"#{base}&amp;fq=#{CGI.escape(field.to_s)}:#{facet.to_s == "" ? "∅" : CGI.escape(facet.to_s)}\">#{facet.to_s == "" ? "<code>∅</code>" : CGI.escapeHTML(facet) }</a>"
+      # Link to facet (if not already in a filtered)
+      def html_a_facet(field, value, count)
+
+        value = value == "" ? "∅" : value
+
+        if filtered?(field,value)
+          if count > 0
+            "<a href=\"#{base}&amp;fq=#{CGI.escape(field.to_s)}:#{value.to_s == "" ? "∅" : CGI.escape(value.to_s)}\">#{value.to_s == "" ? "<code>∅</code>" : CGI.escapeHTML(value) }</a>"
+          else
+            "#{value}"
+          end
+        else
+          "<strong>#{value}</strong>"
+        end
       end
 
       def merge_params(param, value)

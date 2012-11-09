@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 module Npolar
 
   module Rack
@@ -79,17 +78,13 @@ module Npolar
             end
           end
 
-          qtime = response["responseHeader"]["QTime"].to_i
           pagesize = response["responseHeader"]["params"]["rows"].to_i
+          start = response["response"]["start"]
+          qtime = response["responseHeader"]["QTime"].to_i
           totalResults = response["response"]["numFound"].to_i
-
-          start = response["response"]["start"].to_i
-          last = start < totalResults ? pagesize*(totalResults/pagesize).ceil.to_i : start
-          
+          last = pagesize*(totalResults/pagesize).ceil.to_i
           previous = start >= pagesize ? start-pagesize : false
-          nxt = start+pagesize > totalResults ? false : start+pagesize
-
-
+          nExt = start+pagesize > totalResults ? false : start+pagesize
           {"feed" => {
             # http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements
             "opensearch" => {
@@ -99,7 +94,7 @@ module Npolar
             },
             "list" => {
               "self" => request.url,
-              "next" => nxt,
+              "next" => nExt,
               "previous" => previous,
               "first" => 0,
               "last" => last
@@ -167,18 +162,40 @@ module Npolar
             #fq_bbox = ["north:[#{s} TO #{n}]", "east:[#{w} TO #{e}]"]
           end
 
-          response = rsolr.get select, :params => solr_params
+          response = rsolr.get select, :params => {
+            :q=>q, :start => start, :rows => rows,
+            :fq => fq+fq_bbox,
+            :facet => facets.nil? ? false : true,
+            #:"facet.range" => ["north", "east", "south", "west", "updated"],
+            #:"f.north.facet.range.start" => -90,
+            #:"f.north.facet.range.end" => 90,
+            #:"f.north.facet.range.gap" => 10,
+            #:"f.east.facet.range.start" => -180,
+            #:"f.east.facet.range.end" => 180,
+            #:"f.east.facet.range.gap" => 20,
+            #:"f.south.facet.range.start" => -90,
+            #:"f.south.facet.range.end" => 90,
+            #:"f.south.facet.range.gap" => 10,
+            #:"f.west.facet.range.start" => -180,
+            #:"f.west.facet.range.end" => 180,
+            #:"f.west.facet.range.gap" => 20,
+            #:"f.updated.facet.range.start" => "/NOW-100 YEARS/",
+            #:"f.updated.facet.range.end" => "/NOW/",
+            #:"f.updated.facet.range.gap" => 10,
+            :"facet.field" => facets,
+            #:"facet.mincount" => 1,
+            :"facet.limit" => 500, #-1,
+            :fl => fl,
+            :wt => wt
+          }
 
-          if ["html", "json"].include? request.format
-            [200, headers("json"), [feed(response).to_json]]
-          elsif "solr" == request.format
+          if "json" == request.format
+            [200, headers("json"), [feed(response).to_json]]    
+          elsif ["ruby", "solr"].include? request.format
             [200, headers("json"), [response.to_json]]
-          elsif ["csv", "xml"].include? request.format
-            #http://wiki.apache.org/solr/CSVResponseWriter
+          elsif ["csv", "text", "xml"].include? request.format
             [200, headers(request.format), [response]]
           end
-
-          
         rescue RSolr::Error::Http => e
           [e.response[:status].to_i, {"Content-Type" => "text/html"}, [e.response[:body]]]
         end
@@ -189,6 +206,14 @@ module Npolar
       end
 
       protected
+
+      def headers(format)
+        case format
+          when "json", "xml" then {"Content-Type" => "application/#{format}"}
+          when "csv", "text" then {"Content-Type" => "text/plain"}
+          else raise ArgumentError("Unknown format: #{format}")
+        end
+      end
 
       def feed(response)
         config[:feed].call(response, request)
@@ -265,61 +290,12 @@ module Npolar
         fl = request.params["fl"] ||= config[:fl]
       end
 
-      def headers(format, encoding="utf-8")
-        case format
-          when "json", "xml" then {"Content-Type" => "application/#{format}"}
-          when "atom" then {"Content-Type" => "application/atom+xml"}
-          when "html" then {"Content-Type" => "text/html"}
-          when "csv", "text" then {"Content-Type" => "text/plain; charset=#{encoding}"}
-          else raise ArgumentError("Unknown format: #{format}")
-        end
-      end
-
       def model
         @model ||= config[:model]
       end
 
       def model=model
         @model=model
-      end
-
-      def solr_params
-        start = params["start"] ||= 0
-        rows  = params["limit"]  ||= config[:rows]
-        
-      params = {
-            :q=>q, :start => start, :rows => rows,
-            :fq => fq,
-            :facet => facets.nil? ? false : true,
-            #:"facet.range" => ["north", "east", "south", "west", "updated"],
-            #:"f.north.facet.range.start" => -90,
-            #:"f.north.facet.range.end" => 90,
-            #:"f.north.facet.range.gap" => 10,
-            #:"f.east.facet.range.start" => -180,
-            #:"f.east.facet.range.end" => 180,
-            #:"f.east.facet.range.gap" => 20,
-            #:"f.south.facet.range.start" => -90,
-            #:"f.south.facet.range.end" => 90,
-            #:"f.south.facet.range.gap" => 10,
-            #:"f.west.facet.range.start" => -180,
-            #:"f.west.facet.range.end" => 180,
-            #:"f.west.facet.range.gap" => 20,
-            #:"f.updated.facet.range.start" => "/NOW-100 YEARS/",
-            #:"f.updated.facet.range.end" => "/NOW/",
-            #:"f.updated.facet.range.gap" => 10,
-            :"facet.field" => facets,
-            #:"facet.mincount" => 1,
-            :"facet.limit" => 500, #-1,
-            :fl => fl,
-            :wt => wt,
-            :"csv.separator" => "\t",
-            :"csv.mv.separator" => "|",
-            :"csv.encapsulator" => '"'
-          }
-
-        if request.format == "csv"
-        end
-        params
       end
 
       def rsolr
@@ -361,9 +337,8 @@ module Npolar
 
       def wt
         wt = case request.format
-          when "json" then :ruby
-          when "csv" then :csv
-          when "xml" then :xml
+          when "csv" then :"csv"
+          when "xml" then :"xml"
           else config[:wt]
         end
       end
