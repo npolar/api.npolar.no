@@ -98,7 +98,12 @@ module Npolar
           raise ArgumentException, "Please provide ata as JSON Array"
         end
   
-        couch = { "docs" => JSON.parse(data) }
+        couch = { "docs" => Yajl::Parser.parse(data).map {|r|
+          if r.key? "id" and not r.key "_id"?
+            r["_id"] = r["id"]
+          end
+
+        } }
         # set _id from id
         data = couch.to_json
         response = writer.post("_bulk_docs", headers, data)
