@@ -88,7 +88,7 @@ module Npolar
         if authorized?
           app.call(env)
         else
-          [403, {"Content-Type" => "text/html"}, ["Failed authorization"]]
+          http_error(403, "Failed authorization")
         end
       end
 
