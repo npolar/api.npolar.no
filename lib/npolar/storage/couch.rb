@@ -102,6 +102,7 @@ module Npolar
           if r.key? "id" and not r.key "_id"?
             r["_id"] = r["id"]
           end
+          r
 
         } }
         # set _id from id
