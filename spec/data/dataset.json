@@ -1,0 +1,99 @@
+{
+    "_id": "SomeID",
+    "_rev": "Some Revision",
+    "title": "Some Title",
+    "summary": "Some Summary",
+    "licenses": [
+        "http://creativecommons.org/licenses/by/3.0/no/",
+        "http://data.norge.no/nlod/no/1.0"
+    ],
+    "draft": "no",
+    "groups": [
+        "glaciology",
+        "topography"
+    ],
+    "sets": [
+        "Antarctic"
+    ],
+    "tags": [
+        "Some"
+    ],
+    "links": [
+        {
+            "rel": "dataset",
+            "href": "http://my.data.link.no/",
+            "title": "Raw data"
+        },
+        {
+            "rel": "related",
+            "href": "http://my.project.page.no/",
+            "title": "Project home page"
+        },
+        {
+            "rel": "metadata",
+            "href": "http://my.metadata.page.no/",
+            "title": "Extended metadata"
+        }
+    ],
+    "iso_topics": [
+      "biota",
+      "geophysics"
+    ],
+    "activity": [
+        {
+            "start": "2007-11-15T12:00:00Z",
+            "stop": "2009-02-21T12:00:00Z"
+        }
+    ],
+    "quality": "Fairly Accurate",
+    "locations": [
+        {
+            "north": "-70.0",
+            "east": "56.0",
+            "south": "-90.0",
+            "west": "0.0",
+            "area": "Antarctic",
+            "country_code": "AQ"
+        },
+        {
+            "placename": "Dronning Maud Land",
+            "area": "Dronning Maud Land",
+            "country_code": "AQ"
+        }
+    ],
+    "point_of_contact": [
+        {
+            "name": "My Contact",
+            "org": "My contact's Work Place",
+            "email": "my.contact@work.no"
+        }
+    ],
+    "owners": [
+        "Institute of Owning"
+    ],
+    "investigators": [
+        {
+            "first_name": "My",
+            "last_name": "Name",
+            "email": "my.name@work.no"
+        }
+    ],
+    "contributors": [
+        {
+            "first_name": "An Other",
+            "last_name": "Name",
+            "email": "an.name@work.no"
+        }
+    ],
+    "progress": "completed",
+    "id": "some other id",
+    "published": "2008-10-31T12:00:00Z",
+    "source": "Abstract",
+    "editors": [
+        {
+            "edited": "2012-10-01T11:07:35Z",
+            "email": "editor@edited.no"
+        }
+    ],
+    "updated": "2012-10-01T11:54:07Z"
+}
