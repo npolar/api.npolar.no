@@ -436,7 +436,7 @@ describe Metadata::DifTransformer do
         end
         
         it "should save investigators as personnel" do
-          @transformer.personnel[0].should include( "First_Name" => "Jack" )
+          @transformer.personnel[0].should include( "First_Name" => "My" )
         end
         
         it "should split first name into first and middle name" do
