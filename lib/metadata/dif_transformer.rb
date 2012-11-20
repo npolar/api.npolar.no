@@ -30,6 +30,7 @@ module Metadata
     DIF_MAP = {
       :entry_id => "Entry_ID",
       :entry_title => "Entry_Title",
+      :dataset_citation => "Data_Set_Citation",
       :summary_abstract => "Summary",
       :personnel => "Personnel",
       :spatial_coverage => "Spatial_Coverage",
@@ -40,6 +41,7 @@ module Metadata
       :related_url => "Related_URL",
       :reference => "Reference",
       :data_center => "Data_Center",
+      :parameters => "Parameters",
       :idn_node => "IDN_Node",
       :parent_dif => "Parent_DIF",
       :data_quality => "Quality",
@@ -216,11 +218,6 @@ module Metadata
       
       object.Location.each do | location |
         
-        #case( location.Location_Type )
-        #when "ARCTIC" then area = "arctic"
-        #when "ANTARCTICA" then area = "antarctic"
-        #end unless location.Location_Type.nil?
-        
         location_data << Hashie::Mash.new({
           "north" => nil,
           "east" => nil,
@@ -352,16 +349,56 @@ module Metadata
       personnel = []
       
       object.investigators.each do | investigator |
+        
+        contact_address = {}
+        
+        unless investigator.email.nil?
+          investigator.email.each do |email|
+            if email.split("@")[1] == "npolar.no"
+              contact_address = {
+                "Address" => ["Norwegian Polar Institute", "Framsentret"],
+                "City" => "Tromsø",
+                "Province_or_State" => "Troms",
+                "Postal_Code" => "9296",
+                "Country" => "Norway"
+              }
+            end
+          end
+        end
+        
         personnel << {
           "First_Name" => investigator.first_name.split(" ")[0],
           "Middle_Name" => investigator.first_name.split(" ")[1],
           "Last_Name" => investigator.last_name,
           "Email" => investigator.email,
-          "Role" => ["Investigator"]
+          "Role" => ["Investigator"],
+          "Contact_Address" => contact_address
         }
       end unless object.investigators.nil?
       
       personnel
+    end
+    
+    def dataset_citation
+      citation = []
+
+      citation << {
+        "Dataset_Creator" => dataset_creator,
+        "Dataset_Title" => object.title
+      }
+      
+      citation
+    end
+    
+    def dataset_creator
+      creator = ""
+      
+      object.investigators.each_with_index do |investigator, i|
+        creator += "#{investigator["first_name"][0,1]}. #{investigator["last_name"]}"
+        creator += ", " unless i == object.investigators.size - 1
+      end
+      
+      creator
     end
     
     def spatial_coverage
@@ -657,6 +694,10 @@ module Metadata
       end unless object.links.nil?
       
       datacenter
+    end
+    
+    def parameters
+      object.science_keywords unless object.science_keywords.nil?
     end
     
     def idn_node
