@@ -444,6 +444,45 @@ describe Metadata::DifTransformer do
           @transformer.personnel[0].should include( "First_Name" => "Homer", "Middle_Name" => "Jay", "Last_Name" => "Simpson" )
         end
         
+        it "should set the correct address information if the email address ends on @npolar.no" do
+          @transformer.object.investigators = [{"first_name" => "Homer Jay","last_name" => "Simpson", "email" => ["homer@npolar.no"]}]
+          @transformer.personnel[0].should include( "Contact_Address" => {
+            "Address" => ["Norwegian Polar Institute", "Framsentret"],
+            "City" => "Tromsø",
+            "Province_or_State" => "Troms",
+            "Postal_Code" => "9296",
+            "Country" => "Norway"
+          })
+        end
+        
+      end
+      
+      context "#dataset_citation" do
+        
+        it "should return an Array" do
+          @transformer.dataset_citation.should be_a_kind_of( Array )
+        end
+        
+        it "should translate investigators into Dataset_Creator" do
+          @transformer.dataset_citation[0].should include( "Dataset_Creator" => "M. Name, T. Name" )
+        end
+        
+        it "should translate title into Dataset_Title" do
+          @transformer.dataset_citation[0].should include( "Dataset_Title" => @transformer.object.title )
+        end
+        
+      end
+      
+      context "#dataset_creator" do
+        
+        it "should return a string" do
+          @transformer.dataset_creator.should be_a_kind_of( String )
+        end
+        
+        it "should translate all the first and last names of investigators into citation form" do
+          @transformer.dataset_creator.should == "M. Name, T. Name"
+        end
+        
       end
       
       context "#spatial_coverage" do
@@ -814,6 +853,14 @@ describe Metadata::DifTransformer do
           @transformer.data_center[0].should == {
             "Data_Center_URL" => "http://pangea.de/"
           }
+        end
+        
+      end
+      
+      context "#parameters" do
+        
+        it "should translate science_keywords into DIF:PARAMETERS" do
+          @transformer.parameters.should == @transformer.object.science_keywords
         end
         
       end
