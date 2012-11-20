@@ -75,15 +75,29 @@
         {
             "first_name": "My",
             "last_name": "Name",
-            "email": "my.name@work.no"
+            "email": ["my.name@npolar.no"]
+        },
+        {
+            "first_name": "That",
+            "last_name": "Name",
+            "email": ["that.name@npolar.no"]
         }
     ],
     "contributors": [
         {
             "first_name": "An Other",
             "last_name": "Name",
-            "email": "an.name@work.no"
+            "email": ["an.name@work.no"]
         }
+    ],
+    "science_keywords": [
+      {
+        "Category": "EARTH SCIENCE",
+        "Topic": "BIOSPHERE",
+        "Term": "ECOLOGICAL DYNAMICS",
+        "Variable_Level_1": "SPECIES/POPULATION INTERACTIONS",
+        "Variable_Level_2": "SPECIES PREDATION"
+      }
     ],
     "progress": "completed",
     "id": "some other id",
