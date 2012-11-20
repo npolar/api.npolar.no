@@ -202,7 +202,7 @@ describe Metadata::Rack::DifJsonizer do
     context "#dif_json" do
       
       it "should call a conversion from native hash to dif hash" do
-        Metadata::DifAtom.any_instance.stub( :dif ).and_return( true )
+        Metadata::DifTransformer.any_instance.stub( :to_dif ).and_return( true )
         subject.send( :dif_json, {} ).should be( true )
       end
       
