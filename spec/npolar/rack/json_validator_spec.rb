@@ -1,5 +1,4 @@
 require "spec_helper"
-require "npolar/rack/middleware"
 require "npolar/rack/json_validator"
 
 describe Npolar::Rack::JsonValidator do
@@ -34,6 +33,16 @@ describe Npolar::Rack::JsonValidator do
     it "should be false when GET" do
       @env["REQUEST_METHOD"] = "GET"
       subject.condition?( Npolar::Rack::Request.new(@env) ).should be( false )
+    end
+    
+    it "should be true when PUT with content-type is application/json" do
+      @env = Rack::MockRequest.env_for("/", "REQUEST_METHOD" => "PUT", "CONTENT_TYPE" => "application/json")
+      subject.condition?( Npolar::Rack::Request.new(@env) ).should be( true )
+    end
+    
+    it "should be true when POST with content-type is application/json" do
+      @env = Rack::MockRequest.env_for("/", "REQUEST_METHOD" => "POST", "CONTENT_TYPE" => "application/json")
+      subject.condition?( Npolar::Rack::Request.new(@env) ).should be( true )
     end
     
   end
