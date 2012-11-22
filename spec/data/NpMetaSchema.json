@@ -1,7 +1,18 @@
 {
   "description": "data.npolar.no metadata format",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
+    "_id": {
+      "description": "UUID for the storage object",
+      "type": "string",
+      "required": true
+    },
+    "_rev" : {
+      "description": "Dataset revision",
+      "type": "string",
+      "required": "true"
+    },
     "id": {
       "description": "DIF:Entry_ID",
       "type": "string",
@@ -71,8 +82,11 @@
             "type": "string"
           },
           "email": {
-            "type": "string",
-            "format": "email"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email"
+            }
           }
         }
       }
@@ -97,8 +111,11 @@
             "type": "string"
           },
           "email": {
-            "type": "string",
-            "format": "email"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email"
+            }
           }
         }
       }
@@ -163,7 +180,7 @@
           },
           "area": {
             "type": "string",
-            "pattern": "^(Svalbard|Jan Mayen|Dronning Maud Land|Bouvetøya|Peter I Øy|Arctic|Antarctic)$"
+            "pattern": "^(svalbard|jan_mayen|dronning_maud_land|bouvetøya|peter_i_øy|arctic|antarctic|norway|russia|sweden|iceland|greenland|canada|finland|danmark|faroe_islands|united_states)$"
           },
           "country_code": {
             "description": "This field allows the adding of a country code that adheres to ISO 3611-1. For example SJ for Svalbard and Jan Mayen",
@@ -228,19 +245,9 @@
         "format": "uri"
       }
     },
-    "publishers": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "uri"
-      }
-    },
     "draft": {
       "type": "string",
       "pattern": "^(yes|no)$"
-    },
-    "rights": {
-      "type": "string"
     },
     "sets": {
       "description": "Similar to tags and keywords",
@@ -249,7 +256,8 @@
         "type": "string"
       }
     },
-    "dif:Parameters": {
+    "science_keywords": {
+      "description": "DIF keywords",
       "type": "array",
       "items": {
         "type": "object",
@@ -263,6 +271,25 @@
           "Term": {
             "type": "string"
           }
+        }
+      }
+    },
+    "published": {
+      "description": "Date-time when the metadata was created in ISO 8601 format",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Date-time when the metadata was created in ISO 8601 format",
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "description": "This object holds a copy of the original data if generated from an exisitng dataset",
+      "type": "object",
+      "properties": {
+        "dif" :{
+          "type": "object"
         }
       }
     }
