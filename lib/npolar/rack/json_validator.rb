@@ -21,7 +21,7 @@ module Npolar
           app.call( request.env )
         else
           self.request = request
-          error = error_hash(406, "Invalid Format")
+          error = error_hash(406, "Invalid json")
           error["errors"] = validate(data)
           error = StringIO.new( error.to_json )
           
