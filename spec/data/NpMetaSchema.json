@@ -56,6 +56,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "edited": {
             "type": "string",
@@ -74,6 +75,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "first_name": {
             "type": "string"
@@ -103,6 +105,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "first_name": {
             "type": "string"
@@ -125,14 +128,12 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "org": {
             "type": "string"
           },
-          "first_name": {
-            "type": "string"
-          },
-          "last_name": {
+          "name": {
             "type": "string"
           },
           "email": {
@@ -147,13 +148,19 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "rel": {
-            "type": "string"
+            "type": "string",
+            "required": true
           },
           "href": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "required": true
+          },
+          "title": {
+            "type": "string"
           }
         }
       }
@@ -162,6 +169,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "north": {
             "type": "number"
@@ -194,6 +202,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "start": {
             "type": "string",
@@ -212,7 +221,7 @@
     "iso_topics": {
       "type": "array",
       "items": {
-              "type": "string"
+        "type": "string"
       }
     },
     "tags": {
@@ -261,6 +270,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "Category": {
             "type": "string"
@@ -269,6 +279,18 @@
             "type": "string"
           },
           "Term": {
+            "type": "string"
+          },
+          "Variable_Level_1": {
+            "type": "string"
+          },
+          "Variable_Level_2": {
+            "type": "string"
+          },
+          "Variable_Level_3": {
+            "type": "string"
+          },
+          "Detailed_Variable": {
             "type": "string"
           }
         }
