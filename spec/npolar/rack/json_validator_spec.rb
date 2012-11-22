@@ -45,6 +45,16 @@ describe Npolar::Rack::JsonValidator do
       subject.condition?( Npolar::Rack::Request.new(@env) ).should be( true )
     end
     
+    it "should be false when PUT without format and content-type" do
+      @env = Rack::MockRequest.env_for("/", "REQUEST_METHOD" => "PUT")
+      subject.condition?( Npolar::Rack::Request.new(@env) ).should be(false)
+    end
+    
+    it "should be false when POST without format and content-type" do
+      @env = Rack::MockRequest.env_for("/", "REQUEST_METHOD" => "POST")
+      subject.condition?( Npolar::Rack::Request.new(@env) ).should be(false)
+    end
+    
   end
   
   context "#handle" do
