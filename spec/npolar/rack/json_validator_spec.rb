@@ -4,7 +4,7 @@ require "npolar/rack/json_validator"
 describe Npolar::Rack::JsonValidator do
 
   before(:each) do
-    @data = File.open( "spec/data/ctd-example.json" ).read
+    @data = File.open( "spec/data/schema-data.json" ).read
     @env = Rack::MockRequest.env_for(
       "/test.json",
       "REQUEST_METHOD" => "PUT",
@@ -16,7 +16,7 @@ describe Npolar::Rack::JsonValidator do
     app = mock( "ctd import", :call => Npolar::Rack::Response.new(
       StringIO.new(@data), 200, {"Content-Type" => "application/json"} ) )    
     
-    Npolar::Rack::JsonValidator.new(app, {:schema => "spec/data/CTD-schema.json"} )
+    Npolar::Rack::JsonValidator.new(app, {:schema => "spec/data/example-schema.json"} )
   end
   
   context "#condition?" do
