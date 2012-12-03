@@ -14,7 +14,9 @@ describe Npolar::Rack::DiskStorage do
   
   subject do
     app = mock("file storage", :call => Npolar::Rack::Response.new(
-      StringIO.new(@data), 200, {"Content-Type" => "application/netcdf"}))  
+      StringIO.new(@data), 200, {"Content-Type" => "application/netcdf"}))
+    
+    app.stub( :call ){[201, {}, [""]]}
     
     Npolar::Rack::DiskStorage.new(
       app,
@@ -69,13 +71,9 @@ describe Npolar::Rack::DiskStorage do
       subject.document.should_not be(nil)
     end
     
-    it "should create a file with the respone id" do
+    it "should setup a file with the request id" do
       subject.handle(Npolar::Rack::Request.new(@env))
-      subject.file.should_not be(nil)
-    end
-    
-    it "should write to the specified storage path" do
-      
+      subject.file.should == "/tmp/test.nc"
     end
     
   end
@@ -88,6 +86,12 @@ describe Npolar::Rack::DiskStorage do
       subject.save_to_disk
       
       File.open(subject.file, "rb").should_not be(nil)
+    end
+    
+    it "should raise an exception when an error occurs" do
+      subject.document = nil
+      subject.file = nil
+      expect{ subject.save_to_disk }.to raise_error(Exception)
     end
     
   end
