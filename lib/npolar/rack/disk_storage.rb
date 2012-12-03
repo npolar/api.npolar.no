@@ -32,6 +32,7 @@ module Npolar
         [status, headers, body]
       end
       
+      # Save file to the specified location on disk
       def save_to_disk
         begin
           File.open(file, "wb" ) do |tmp|
@@ -48,19 +49,24 @@ module Npolar
       
       protected
       
+      
+      # Check if the format for the request matches the configured formats
       def format?(request)
         config[:format].include?(request.format)
       end
       
+      # Check if the request content-type matches any of the configured content types
       def content_type?(request)
         config[:type].each{ |regex| return true if request.env["CONTENT_TYPE"] =~ regex }
         false
       end
       
+      # Check if this is a write request
       def write?(request)
         ["PUT", "POST"].include?(request.request_method)
       end
       
+      # Check if 201 Created
       def created?(status)
         status == 201 ? true : false
       end
