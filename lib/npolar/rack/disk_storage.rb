@@ -42,13 +42,14 @@ module Npolar
           # Just Raise an Exception?
           # Leave data posted to database intact or remove since the chain wasn't completed?
           # If data is left require a repost when problem fixed to get source data?
+          raise Exception
         end
       end
       
       protected
       
       def format?(request)
-        config[:format].include?(request.format) ? true : false
+        config[:format].include?(request.format)
       end
       
       def content_type?(request)
@@ -57,7 +58,7 @@ module Npolar
       end
       
       def write?(request)
-        ["PUT", "POST"].include?(request.request_method) ? true : false
+        ["PUT", "POST"].include?(request.request_method)
       end
       
       def created?(status)
