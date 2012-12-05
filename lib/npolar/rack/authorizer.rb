@@ -88,7 +88,8 @@ module Npolar
         if authorized?
           app.call(env)
         else
-          http_error(403, "Failed authorization")
+          error = { "error" => { "status" => 403, "reason" => "Forbidden", "explanation" => "Failed authorization" } }
+          [403, {"Content-Type" => "text/html"}, [error.to_json]]
         end
       end
 
