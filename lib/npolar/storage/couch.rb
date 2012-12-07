@@ -27,6 +27,13 @@ module Npolar
         @@uri ||= URI  #"http://localhost:5984"
       end
 
+      def self.force_underscore_id(doc)
+        if doc.key? "id" and not doc.key? "_id"
+          doc["_id"] = doc["id"]
+        end
+        doc
+      end
+
       def accepts
         @accepts ||= ["json"]
       end
@@ -91,19 +98,13 @@ module Npolar
         @headers ||= HEADERS
       end
 
-
-  
       def post_many(data, params={})        
         if data !~ JSON_ARRAY_REGEX
-          raise ArgumentException, "Please provide ata as JSON Array"
+          raise ArgumentException, "Please provide data as JSON Array"
         end
   
         couch = { "docs" => Yajl::Parser.parse(data).map {
-            |r|
-            if r.key? "id" and not r.key? "_id"
-              r["_id"] = r["id"]
-            end
-            r
+            |doc| self.class.force_underscore_id(doc)
           }
         }
         # set _id from id
@@ -112,6 +113,7 @@ module Npolar
         [202,  {"Content-Type" => HEADERS["Content-Type"]} , ["POSTed #{couch['docs'].size} documents\n"]]
       end
   
+      # @todo force "_id" 
       def post(data, params={})
   
         if data.is_a? Hash
@@ -137,6 +139,7 @@ module Npolar
       # @param String id UUID or SHA1 hash, e.g. "69f3f072-27a0-4d25-a5bf-aac8f7e31d8f"
       # @param String|Hash data JSON data
       # @param Hash params
+      # @todo force "_id" 
       def put(id, data, params={})
 
         if data.is_a? Hash
@@ -163,12 +166,17 @@ module Npolar
         response = couch.get(read)
        
         if 200 == response.status
-          ids = Yajl::Parser.parse(response.body)
+          couch_desc = Yajl::Parser.parse(response.body)
+          meta = {
+            "count" => couch_desc["doc_count"],
+            "data_size" => couch_desc["data_size"],
+            "updated" => nil
+          } 
           status = 200
         else
           status = 501
         end
-        [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(ids)+"\n"]] # Couch returns text/plain here!?
+        [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(meta)+"\n"]] # Couch returns text/plain here!?
       end
   
       #           feed = feed.select { |row| row[:_id] !~ /_design/ }
