@@ -1,18 +1,20 @@
 # encoding: utf-8
-
 module Npolar
 
   module Rack
+    
+    # Solrizer returns a JSON feed on GET with a query ("q" parameter is present)
+    # The #feed is created by a pluggable lambda function, so is the #q (Solr query) and #fq (Solr filter queries).
+    # On PUT or POST Solrizer updates the Solr search index, calling #to_solr on the incoming document
+    #
     # https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/rack/solrizer.rb
-    # @todo Create SolrQuery class to replace :q lambda
-    # @todo Create/use JSON Feed class?
     class Solrizer < Npolar::Rack::Middleware
 
-      def self.query_or_save
+      def self.query_or_save_json
         lambda {|request|
           if ["GET", "HEAD"].include? request.request_method and not request["q"].nil?
             true
-          elsif ["POST","PUT", "DELETE"].include? request.request_method
+          elsif ["POST","PUT", "DELETE"].include? request.request_method and "json" == request.format
             true
           else
             false
@@ -37,85 +39,18 @@ module Npolar
 
       CONFIG = {
         :core => nil,
-        :condition => self.query_or_save,
+        :condition => self.query_or_save_json,
         :facets => nil,
         :model => nil,
         :select => nil,
-        :q => lambda {|request|
-          qstar = request["q"] ||= "*"
-
-          if qstar =~ /^[\*]$|^\*\:\*$|^(\s+)?$/
-            "*:*"
-          else
-  
-            unless qstar =~ /\*/
-              qstar = qstar.downcase+"*"
-            end
-            qstar = qstar.delete(":")
-            "title:#{qstar} OR #{qstar}"
-          end
-          
-          
-        },
+        :q => lambda {|request| Npolar::Api::SolrQuery.q(request)},
         :fq => [],
-        :feed => lambda {|response, request|
-
-          facets = {}
-
-          if response.key? "facet_counts" and response["facet_counts"].key? "facet_ranges"
-            response["facet_counts"]["facet_ranges"].each do |ranges|
-              range = ranges[0]
-              counts = ranges[1..-1].flatten.map {|range|
-
-              #range["gap"].to_i => ranges range gap 
-              range["counts"]}.flatten.each_slice(2).map {|r,c| [r,c]}
-              facets[range] = counts
-            end
-          end
-
-          if response.key? "facet_counts" and response["facet_counts"].key? "facet_fields"
-            response["facet_counts"]["facet_fields"].each do |field,key_count|
-              facets[field] = key_count.each_slice(2).map {|slice|[slice[0],slice[1]]}
-            end
-          end
-
-          qtime = response["responseHeader"]["QTime"].to_i
-          pagesize = response["responseHeader"]["params"]["rows"].to_i
-          totalResults = response["response"]["numFound"].to_i
-
-          start = response["response"]["start"].to_i
-          last = start < totalResults ? pagesize*(totalResults/pagesize).ceil.to_i : start
-          
-          previous = start >= pagesize ? start-pagesize : false
-          nxt = start+pagesize > totalResults ? false : start+pagesize
-
-
-          {"feed" => {
-            # http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements
-            "opensearch" => {
-              "totalResults" =>  totalResults,
-              "itemsPerPage" => pagesize,
-              "startIndex" => response["response"]["start"].to_i
-            },
-            "list" => {
-              "self" => request.url,
-              "next" => nxt,
-              "previous" => previous,
-              "first" => 0,
-              "last" => last
-            },
-            "search" => {
-              "qtime" => qtime,
-              "q" => response["responseHeader"]["params"]["q"],
-            },
-
-            "facets" => facets,
-            "entries" => response["response"]["docs"]}}
-
-        },
+        :feed => lambda { |response, request| Npolar::Api::SolrFeedWriter.feed(response, request)},
+        :log => Npolar::Api.log,
         :summary => lambda {|doc| doc["summary"]},
         :rows => 50,
-        :wt => :ruby
+        :wt => :ruby,
+        :to_solr => lambda {|doc| doc },
       }
       # q=title:foo OR exact:foo OR text:foo*
 
@@ -124,54 +59,103 @@ module Npolar
         config[:condition].call(request)
       end
 
+      def core
+        @core ||= config[:core]
+      end
+
+      def core=core
+        @core = core
+      end
+
       # Only called if #condition? is true
       def handle(request)
         @request = request
+        log.debug self.class.name+"#handle(#{request}) #{request.request_method} #{request.url}"
+        if request["q"] and "POST" == request.request_method
+          # search
+        end
+
         case request.request_method
-          when "DELETE" then delete(request)
-          when "POST", "PUT" then save(request)
-          else search(request)
+          when "DELETE" then handle_delete(request)
+          when "POST", "PUT" then handle_save(request)
+          else handle_search(request)
         end
       end
 
-      def delete(request)
+      def handle_delete(request)
         log.debug self.class.name+"#delete"
-        log.warn "Not implemented"
+        log.warn "NOT IMPLEMENTED: Solr delete"
         @app.call(request.env)
       end
 
-      def save(request)
-        begin
-          #log.debug self.class.name+"#save"
-          #json = JSON.parse(request.body.read)
-          #request.body.rewind
-          #log.debug json.keys
-          # [] => throw directly at Solr
-          log.warn "Not implemented"
-          @app.call(request.env)
-        rescue RSolr::Error::Http => e
-          [e.response[:status].to_i, {"Content-Type" => "text/html"}, [e.response[:body]]]
-        ensure
-          #@app.call(request.env)
-        end
+      def rsolr
+        @rsolr ||= RSolr.connect(:url => uri, :update_format => :json)
       end
 
-      def search(request)
+      def rsolr=rsolr
+        @rsolr=rsolr
+      end
+
+      # Save to Solr
+      def handle_save(request)
+
+        log.debug self.class.name+"#handle_save"
+
         begin
-          start = params["start"] ||= 0
-          rows  = params["limit"]  ||= config[:rows]
+
+          # Save using upstream middleware (@app, if set) and grab the response
+          if @app.nil?
+            response = nil
+          else
+            response = @app.call(request.env)
+          end
+          
+          # Parse incoming JSON
+          json = JSON.parse(request.body.read, :symbolize_keys => true)
+          request.body.rewind
+
+          # Convert to Solr format and add (update index)
+          # Notice we update Solr no matter if the upstream storage middleware succeeds or not
+          solr = to_solr(json)
+          solr_response = rsolr.add(solr)
+
+          # Debug output
+          #log.debug solr.to_json
+          log.debug "Solr response: #{solr_response}"
+
+          # Return upstream response if any, otherwise the Solr response
+          if response.nil?
+            solr_response
+          else
+            response
+          end
+
+        rescue RSolr::Error::Http => e
+          log.debug self.class.name+"#save raised RSolr::Error::Http"
+          json_error_from_exception(e)
+        end
+      end
+      
+      # Solr search
+      # Search request handler that returns a JSON feed (default) or CSV, Solr Ruby Hash, Solr XML
+      # @return Rack-style HTTP triplet
+      def handle_search(request)
+        log.debug self.class.name+"#handle_search"
+        begin
+          
         
           fq_bbox = []
           if params["bbox"]
             #w,s,e,n = bbox = params["bbox"].split(" ").map {|c|c.to_f}
             #fq_bbox = ["north:[#{s} TO #{n}]", "east:[#{w} TO #{e}]"]
           end
+          
+          response = search
+          #log.debug "Solr response: #{response}"
 
-          response = rsolr.get select, :params => solr_params
-
-          if ["html", "json"].include? request.format
+          if ["html", "json", "", nil].include? request.format
             [200, headers("json"), [feed(response).to_json]]
-          elsif "solr" == request.format
+          elsif ["solr"].include? request.format
             [200, headers("json"), [response.to_json]]
           elsif ["csv", "xml"].include? request.format
             #http://wiki.apache.org/solr/CSVResponseWriter
@@ -180,12 +164,29 @@ module Npolar
 
           
         rescue RSolr::Error::Http => e
-          [e.response[:status].to_i, {"Content-Type" => "text/html"}, [e.response[:body]]]
+          log.debug self.class.name+"#handle_search raised RSolr::Error::Http"
+          json_error_from_exception(e)
         end
       end
 
-      def to_solr
-        model.to_solr
+      # Performs search using rsolr
+      # @return Hash
+      def search(params=nil)
+        rsolr.get select, :params => solr_params
+      end
+
+      # Converts incoming JSON (or other document) to Solr-style JSON Hash
+      def to_solr(json)
+        config[:to_solr].call(json)
+      end
+
+      # Solr core URI
+      def uri
+        if core =~ /^http(s)?:\/\//
+          core
+        elsif self.class.uri.is_a? String and self.class.uri =~ /^http(s)?:\/\// 
+          self.class.uri.gsub(/[\/]$/, "") + "/#{core}"
+        end
       end
 
       protected
@@ -221,6 +222,19 @@ module Npolar
         end
         facets
 
+      end
+
+      def json_error_from_exception(e)
+          log.error e
+          status = e.response[:status].to_i
+          body = e.response[:body]
+          explanation = ""
+          if body =~ /<b>message<\/b>/ 
+            explanation = body.split("<b>message</b>")[1]
+          end
+          #elsif explanation = body.split("'error'=>{'msg'=>")[1].split("',")[0]
+          error = { "error" => { "status" => status, "explanation" => "Solr request failed: #{explanation}" , "response" => body } }
+          [status, headers("json"), [error.to_json]]
       end
 
       def fq
@@ -265,14 +279,8 @@ module Npolar
         fl = request.params["fl"] ||= config[:fl]
       end
 
-      def headers(format, encoding="utf-8")
-        case format
-          when "json", "xml" then {"Content-Type" => "application/#{format}"}
-          when "atom" then {"Content-Type" => "application/atom+xml"}
-          when "html" then {"Content-Type" => "text/html"}
-          when "csv", "text" then {"Content-Type" => "text/plain; charset=#{encoding}"}
-          else raise ArgumentError("Unknown format: #{format}")
-        end
+      def log
+        @log ||= config[:log]
       end
 
       def model
@@ -284,14 +292,14 @@ module Npolar
       end
 
       def solr_params
-        start = params["start"] ||= 0
-        rows  = params["limit"]  ||= config[:rows]
+        start = request["start"] ||= 0
+        rows  = request["limit"]  ||= config[:rows]
         
-      params = {
+        params = {
             :q=>q, :start => start, :rows => rows,
             :fq => fq,
             :facet => facets.nil? ? false : true,
-            #:"facet.range" => ["north", "east", "south", "west", "updated"],
+            #:"facet.range" => ["north", "east", "south", "west"],
             #:"f.north.facet.range.start" => -90,
             #:"f.north.facet.range.end" => 90,
             #:"f.north.facet.range.gap" => 10,
@@ -308,30 +316,21 @@ module Npolar
             #:"f.updated.facet.range.end" => "/NOW/",
             #:"f.updated.facet.range.gap" => 10,
             :"facet.field" => facets,
-            #:"facet.mincount" => 1,
+            :"facet.mincount" => request["facet.mincount"] ||= 1,
             :"facet.limit" => 500, #-1,
             :fl => fl,
             :wt => wt,
-            :"csv.separator" => "\t",
-            :"csv.mv.separator" => "|",
-            :"csv.encapsulator" => '"'
+
           }
 
         if request.format == "csv"
+          params = params.merge({
+            :"csv.separator" => "\t",
+            :"csv.mv.separator" => "|",
+            :"csv.encapsulator" => '"'
+          })
         end
         params
-      end
-
-      def rsolr
-        @rsolr ||= RSolr.connect :url => uri
-      end
-
-      def uri
-        uri = config[:core] ||= ""
-        if self.class.uri.is_a? String and self.class.uri =~ /^http(s)?:\/\// and uri !~ /^http(s)?:\/\//
-          uri = self.class.uri.gsub(/[\/]$/, "") + "/#{uri}"
-        end
-        uri
       end
 
       def q
