@@ -1,0 +1,22 @@
+<fields>
+   <!-- gcmd concept fields -->
+   <field name="_id" type="string" indexed="true" stored="true" multiValued="false" />
+   <field name="_rev" type="string" indexed="true" stored="true" multiValued="false" />-->
+   <field name="title" type="text_general" indexed="true" stored="true" multiValued="false" />
+   <field name="label" type="string" indexed="true" stored="true" multiValued="false" />
+   <field name="summary" type="text_general" indexed="true" stored="true" multiValued="false" />
+   <field name="child_ids" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="children" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ancestor_ids" type="string" indexed="true" stored="true"  multiValued="true"/>
+   <field name="ancestors" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ancestor" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="ancestor_id" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="concept" type="text_general" indexed="true" stored="true" multiValued="false"/>
+   <field name="collection" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="workspace" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="edit_comment" type="text_general" indexed="true" stored="true" multiValued="false"/>
+   <field name="version" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="lang" type="string" indexed="true" stored="true" multiValued="false" />
+   <field name="tree" type="string" indexed="true" stored="true" multiValued="false" />
+   <field name="cardinality" type="tint" indexed="true" stored="true" />
+</fields>

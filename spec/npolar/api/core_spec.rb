@@ -211,7 +211,7 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
     end
   end
 
-  
+  # POST tukle med id => overstyre ID altså POST uten id for å sikre at ID = uuid
   #context "JSON" do
   #
   #  context "security" do

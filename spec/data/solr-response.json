@@ -1,0 +1,55 @@
+{
+"responseHeader": {
+"status": 0,
+"QTime": 8,
+"params": {
+"facet": "true",
+"facet.limit": "500",
+"facet.range": [
+"north",
+"east",
+"south",
+"west"
+],
+"facet.field": [
+"collection"
+],
+"facet.mincount": "1",
+"wt": "ruby",
+"rows": "2",
+"start": "0",
+"q": "*:*"
+}
+},
+"response": {
+"numFound": 10,
+"start": 0,
+"docs": [
+{
+"id": "id0",
+"title": "Title Zero",
+"east": 34.13,
+"north": 78.22},
+{
+"id": "id1",
+"title": "Title One",
+"east": 34.13,
+"north": 78.22
+}]
+},
+"facet_counts": {
+"facet_queries": {},
+"facet_fields": {
+"field1": [
+"facet1",
+10,
+"facet2",
+5,
+"facet3",
+1
+]
+},
+"facet_dates": {},
+"facet_ranges": {}
+}
+}
