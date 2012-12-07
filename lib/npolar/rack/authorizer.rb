@@ -89,7 +89,7 @@ module Npolar
           app.call(env)
         else
           error = { "error" => { "status" => 403, "reason" => "Forbidden", "explanation" => "Failed authorization" } }
-          [403, {"Content-Type" => "text/html"}, [error.to_json]]
+          [403, {"Content-Type" => "application/json"}, [error.to_json]]
         end
       end
 
