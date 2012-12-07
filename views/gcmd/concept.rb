@@ -1,4 +1,4 @@
-class Gcmd::Concept < Views::Workspace
+class Gcmd::Concept < Npolar::Mustache::JsonView #Views::Workspace
 
   self.template_path = File.expand_path(File.dirname(__FILE__)+"/..")
   #self.template = Views::Workspace.template
@@ -6,6 +6,7 @@ class Gcmd::Concept < Views::Workspace
   def initialize
     @hash = { :_id => "gcmd_concept_index",
       :workspace => "gcmd",
+      :h1 => "H!",
       :summary => "Searchable GCMD Concepts as JSON/JSONP. For use in metadata editors and other systems where you might want to search and select GCMD Keywords.",
     }
   end
@@ -15,7 +16,7 @@ class Gcmd::Concept < Views::Workspace
   end
 
   def collections
-    Gcmd::Concepts::schemas("root").map {|schema| { :title => schema, :concept => schema, :collection => schema, :href => href(schema) } }
+    Gcmd::Concepts::schemas.map {|schema| { :title => schema, :concept => schema, :collection => schema, :href => href(schema) } }
   end
 
   def credits_html

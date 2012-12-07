@@ -21,10 +21,14 @@ require "./lib/npolar/auth/couch"
 require "./lib/npolar/auth/ldap"
 require "./lib/npolar/auth/exception"
 require "./lib/npolar/rack/authorizer"
-#
+
 ## Storage
 require "./lib/npolar/storage/couch"
-#
+
+## Search/Solr
+require "./lib/npolar/api/solr_query"
+require "./lib/npolar/api/solr_feed_writer"
+
 ## Middleware
 require "./lib/npolar/rack/middleware"
 require "./lib/npolar/rack/atomizer"
@@ -47,7 +51,6 @@ require "gcmd"
 # Metadata
 require "./lib/metadata.rb"
 require "./lib/metadata/dataset.rb"
-require "./lib/metadata/dif_atom.rb"
 require "./lib/metadata/dif_transformer.rb"
 require "./lib/metadata/rack/dif_jsonizer"
 require "./lib/metadata/oai"

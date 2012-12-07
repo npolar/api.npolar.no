@@ -8,11 +8,13 @@ module Views
         @hash = { "_id" => "api_index",
           #:workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
           :form => {:placeholder => "Norwegian Polar Data", :href => "", :id => "api",
-          :source => '.json?q={query}&limit=20&callback={callback}' },
+          :source => '.json?q={query}&amp;callback={callback}' },
           :limit => 30,
-          :formats => [{:format=>"atom", :label =>"Atom"},
+          :formats => [
+            #{:format=>"atom", :label =>"Atom"},
             {:format=>"csv", :label => "CSV"},
-            {:format=>"json", :label => "JSON", :active => "active"},
+            {:format=>"html", :label => "HTML", :active => "active"},
+            {:format=>"json", :label => "JSON", :active => ""},
           ],
           :svc => { :search => [
             {:title => "Biology", :href => "/biology/?q="},
@@ -32,79 +34,38 @@ module Views
             #{:title => "Tracking"}
             ]
 },
-          :welcome_article => '
-<article id="welcome" class="row-fluid">
-  
-  <section class="span4"><h4>About</h4><p>You&apos;ve reached the <a href="http://npolar.no">Norwegian Polar Institute</a>&apos;s <strong>searchable data</strong> storage service.</p>
-  
-  <p><strong>Notice: </strong> The service is in <strong>alpha</strong>. We are harmonising schemas and injecting data from legacy systems.
-  This means that some keys (field names) and consequently links to search results are likely to change.</p></section>
-  <section class="span8">
-
-  <h4>Search API</h4>
-  <p>Search by using the <code>GET</code> parameter <code>q</code>, as in:
-  <a href="/?q=Polar+bears">/?q=Polar+bears</a></p>
-
-  <p>The default response is a <a href="http://json.org">JSON</a> feed object.
-In web browsers or other clients that send <code>Accept: text/html</code>, results are rendered in a data browser with powerful facet filtering (drill-down).
-</p>
-
-  <p>The search API follows the <a href="http://www.opensearch.org/">OpenSearch</a> specification.</p>
-  
-<p>Search is powered by Apache Solr.</p>
-
-  <hr/>
-  <h4>Document API</h4>
-  <p>authorized users to create, update and delete individual 
-  <p>The document API is a REST-style data store with a few nifty features:
-
-independent deployable components 
-  <ul>
-    <li>Persistent URIs</li>
-    <li>Schemas and data validation</li>
-    <li>Versioning</li>
-    <li>Edit logs</li>
-    <li>Indexing</li>
-    <li>Authentication/Authorization</li>
-  </ul>
-</p>
-
-<p>The storage layer is flexible, currently we use CouchDB to hold the following collections:
-  <ul>
-    <li><a href="/metadata/dataset">Discovery-level dataset metadata</a></li>
-    <li>Ecotox (coming soon™)</li>
-    <li>Seaice (coming soon™)</li>
-  </ul>
-</p>
-  </section>
-</article>',
-          :data => { :workspaces => Npolar::Api.workspaces }
+          :welcome_article => '',
+          :data => { :workspaces => [] }
         }
         #merge ayyt
       end
 
       def call(env)
-
+        
         @hash[:request] = @request = Npolar::Rack::Request.new(env)
+        
         @hash[:self] = request.url
-        @hash[:base] = request.url # CGI.escapeHTML => 
+        @hash[:base] =  request.url # CGI.escapeHTML => 
 
         @hash[:q] = request["q"]
         if request["q"] 
           @hash[:welcome_article] = nil
           @hash[:form][:placeholder] = request.script_name.split("/").map {|p| p.capitalize+" "}.join.gsub(/^\s+/, "")
+          #@hash[:form][:source] = "&amp;format=json&amp;q={query}&amp;callback={callback}"
         end
         @hash[:bbox] = request["bbox"]
         @hash[:dtstart] = request["dtstart"]
         @hash[:dtend] = request["dtend"]
 
         @hash[:filters?] = false
+        @hash[:filters] = []
+        @hash[:collection_uri] = request.script_name
+ 
         if request["fq"]         
           @hash[:filters] = filters
           @hash[:filters?] = true
-          @hash[:collection_uri] = request.script_name
+          
         end
-
         unless "html" == request.format
           feed = @app.call(env)
         else
@@ -112,10 +73,15 @@ independent deployable components
         end
       end
 
+      # List of facet filters with link to remove
       def filters
+        # For each filter we need a remove link, equal to current URI minus this filter
         request.multi("fq").map {|fq|
+          # FIXME breaks on space, remove gsub with proper parameter shuffling
           k,v = fq.split(":")
           remove_href = base.gsub(/&fq=#{fq}/ui, "")
+
+          
           {:filter => k, :value => CGI.unescape(v), :remove_href => remove_href }
         }.uniq
       end
@@ -129,12 +95,12 @@ independent deployable components
       end
           
       def head_links
-        links = []
-        ["atom"].each do |format|
-          
-          links << atom_link(base+facet_href("format", format), "Atom feed")
-        end
-        links.join("\n")
+        #links = []
+        #["atom"].each do |format|
+        #  
+        #  links << atom_link(base+facet_href("format", format), "Atom feed")
+        #end
+        #links.join("\n")
       end
 
       def h1_title
@@ -158,7 +124,17 @@ independent deployable components
       end
 
       def entries
-        feed(:entries).map {|e| {:title => e[:title]||e[:title_ss], :id => e[:id], :json => e.to_json , :collection => e[:collection] } }
+        feed(:entries).map {|e| {:label => e[:label], :"title?" => e.key?(:title), :title => e[:title], :id => e[:id], :json => e.to_json, :collection => e[:collection] } }
+      end
+
+      def self.dl(doc)
+        dl = "<dl>"
+        doc.each do |k,v|
+          dl+= "<dt>#{CGI.escapeHTML(k.to_s)}</dt>"
+          dl+= "<dd>#{CGI.escapeHTML(v.to_s)}</dd>"
+        end
+        dl += "</dl>"
+        dl
       end
 
       def entries_size
@@ -171,7 +147,7 @@ independent deployable components
 
       def facets
         facets = feed(:facets).map {|field,v|
-          {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => html_a_facet(field, c[0], c[1]) } } }
+          {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => link_facet(field, c[0], c[1]) } } }
         }
         facets = facets.select {|f| f[:counts].uniq.size > 0 }
       end
@@ -181,12 +157,39 @@ independent deployable components
       end
 
       def facet_remove_href(facet)
-
-         "?"+request.params.map{|k,v| "#{k}=#{v}"}.join("&")
+        request.params.delete(facet)
+        "?"+request.params.map{|k,v| "#{k}=#{v}"}.join("&")
       end
+
+
+      def feed(key=nil)
+        if feed? key
+          key.nil? ? @hash[:feed] : @hash[:feed][key]
+        else
+          []
+        end
+      end
+
+      def feed?(key=nil)
+
+        if key.nil?
+          @hash.key? :feed
+        else
+          @hash.key? :feed and @hash[:feed].key? key
+        end
+      end
+
 
       def first
         feed(:list)[:first]
+      end
+
+      def first?
+        if next_page == false and first < feed(:list)[:last]
+          true
+        else
+          false
+        end
       end
 
       def first_href
@@ -194,7 +197,9 @@ independent deployable components
       end
 
       def first_to_last
-        "#{start+1} to #{start+entries.size}"
+        unless entries.size <= 1
+          "#{start+1}-#{start+entries.size}"
+        end
       end
 
       def result_text
@@ -241,14 +246,18 @@ independent deployable components
       end
 
       # Link to facet (if not already in a filtered)
-      def html_a_facet(field, value, count)
+      def link_facet(field, value, count)
 
         value = value == "" ? "∅" : value
 
-        if filtered?(field,value)
+        if  filtered?(field,value)
           if count > 0
+            # FIXME 
+            # Should remove start here to make sure that after paging you start from page one, but the following destroys base because fq is multi-paramter
+            #base = facet_remove_href("start")
             "<a href=\"#{base}&amp;fq=#{CGI.escape(field.to_s)}:#{value.to_s == "" ? "∅" : CGI.escape(value.to_s)}\">#{value.to_s == "" ? "<code>∅</code>" : CGI.escapeHTML(value) }</a>"
           else
+            # No clickable facet links for 0 counts
             "#{value}"
           end
         else
@@ -268,25 +277,8 @@ independent deployable components
         feed(:list)[:previous]
       end
 
-     def previous_href
+      def previous_href
         facet_href("start", previous)
-      end
-
-      def feed(key=nil)
-        if feed? key
-          key.nil? ? @hash[:feed] : @hash[:feed][key]
-        else
-          []
-        end
-      end
-
-
-      def feed?(key=nil)
-        if key.nil?
-          @hash.key? :feed
-        else
-          @hash.key? :feed and @hash[:feed].key? key
-        end
       end
 
 

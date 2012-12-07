@@ -1,0 +1,45 @@
+<article id="welcome" class="row-fluid">
+  
+  <section class="span4"><h4>About</h4><p>You&apos;ve reached the <a href="http://npolar.no">Norwegian Polar Institute</a>&apos;s <strong>searchable data</strong> storage service.</p>
+  
+  <p><strong>Notice: </strong> The service is in <strong>alpha</strong>. We are harmonising schemas and injecting data from legacy systems.
+  This means that some keys (field names) and consequently links to search results are likely to change.</p></section>
+  <section class="span8">
+
+  <h4>Search API</h4>
+  <p>Search by using the <code>GET</code> parameter <code>q</code>, as in:
+  <a href="/?q=Polar+bears">/?q=Polar+bears</a></p>
+
+  <p>The default response is a <a href="http://json.org">JSON</a> feed object.
+In web browsers or other clients that send <code>Accept: text/html</code>, results are rendered in a data browser with powerful facet filtering (drill-down).
+</p>
+
+  <p>The search API follows the <a href="http://www.opensearch.org/">OpenSearch</a> specification.</p>
+  
+<p>Search is powered by Apache Solr.</p>
+
+  <hr/>
+  <h4>Document API</h4>
+  <p>authorized users to create, update and delete individual 
+  <p>The document API is a REST-style data store with a few nifty features:
+
+independent deployable components 
+  <ul>
+    <li>Persistent URIs</li>
+    <li>Schemas and data validation</li>
+    <li>Versioning</li>
+    <li>Edit logs</li>
+    <li>Indexing</li>
+    <li>Authentication/Authorization</li>
+  </ul>
+</p>
+
+<p>The storage layer is flexible, currently we use CouchDB to hold the following collections:
+  <ul>
+    <li><a href="/metadata/dataset">Discovery-level dataset metadata</a></li>
+    <li>Ecotox (coming soon™)</li>
+    <li>Seaice (coming soon™)</li>
+  </ul>
+</p>
+  </section>
+</article>

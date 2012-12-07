@@ -1,16 +1,12 @@
 {{{head}}}
+<!--
 <header>
 {{ summary}}
-<nav>
-{{# collections }}
-  <code><a href="{{href}}" title="{{ title }}">{{ title }}</a></code>
-{{/ collections }}
-</nav>
 </header>
-
+-->
 <article>
 <section id="autocomplete">
-<h3>Autocomplete</h3>
+<h3>GCMD Concepts autocomplete</h3>
 <p>Autocomplete search in GCMD Keywords (stored in <a href="">Apache Solr</a>) using the <a href="http://yuilibrary.com/">YUI</a> JavaScript library.</p>
 
 <form id="ac-form" action="/stadnamn" method="get" class="yui3-skin-sam">
@@ -29,29 +25,25 @@
 <footer>
 {{{credits_html}}}
 </footer>
-{{{foot}}}
 
 {{< _yui_loader }}
-
 <script>
 {{# collections }}
+
 
   YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
     Y.one('#{{concept}}-autocomplete').plug(Y.Plugin.AutoComplete, {
       resultHighlighter: 'phraseMatch',
+      resultListLocator: 'feed.entries',
       resultTextLocator: function(result) {
         Y.log(result);
         return result.title;
       },
-      source: '/gcmd/concept/_feed.json?fields=*&limit=10&schema={{schema}}&q={query}&callback={callback}'
+      source: '/gcmd/concept?fq=concept:{{collection}}&q={query}*&callback={callback}&format=json'
     });
   });
+
 {{/ collections }}
-
-
-
 </script>
 
-<!--
-//source: '/gcmd/{{schema}}?q={query}&callback={callback}'
--->
+{{{foot}}}
