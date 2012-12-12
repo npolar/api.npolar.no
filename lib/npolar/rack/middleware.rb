@@ -54,6 +54,17 @@ module Npolar
       def explanation(request)
         @explanation ||= []
       end
+
+      def headers(format, encoding="utf-8")
+        content_type = case format
+          when "json", "xml" then "application/#{format}"
+          when "atom" then "application/atom+xml"
+          when "html" then "text/html"
+          when "csv", "text" then "text/plain"
+          else raise ArgumentError("Unknown format: #{format}")
+        end
+        {"Content-Type" => "#{content_type}; charset=#{encoding}"}
+      end
   
       # @config [Array{String}]               :params     ([])
       # @config []                            :methods    (METHODS)  

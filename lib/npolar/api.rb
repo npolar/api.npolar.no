@@ -1,8 +1,7 @@
 module Npolar
   module Api
+
     class << self
-      attr_accessor :workspaces, :hidden_workspaces
-      attr_accessor :models
       attr_writer   :log
     end
     
@@ -16,12 +15,11 @@ module Npolar
         end
         log
       end
-
     end
     
     def uuid(uri)
       UUIDTools::UUID.sha1_create( UUIDTools::UUID_DNS_NAMESPACE, uri )
     end
-   
+
   end
 end

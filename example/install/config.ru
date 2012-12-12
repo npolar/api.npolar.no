@@ -8,30 +8,20 @@ require "./load"
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
 
-#api = Npolar::Storage::Couch.new("api")
-#sdoc = api.fetch("service")
-
-#Npolar::Api.workspaces = sdoc[:workspaces]
-#Npolar::Api.hidden_workspaces = ["api", "gcmd"]
-search = []
-# service = Npolar::Api::Service.new
-# Service => which collections are searched?
-
 Metadata::Dataset.formats = ["atom", "json", "dif", "iso", "xml"]
 Metadata::Dataset.accepts = ["json", "dif", "xml"]
 
 
 # Middleware for *all* requests - use with caution
 # a. Security
-
 # use Rack::Throttle::Hourly,   :max => 1200 # requests
 # use Rack::Throttle::Interval, :min => 110.1 # seconds
-# use Npolar::Rack::SecureEdits
+# use Npolar::Rack::SecureEdits (force TLS/SSL ie. https)
 
 # b. Features
 use Rack::JSONP
 use Rack::Static, :urls => ["/css", "/img", "/xsl", "/favicon.ico", "/robots.txt"], :root => "public"
-# use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("api_editlog")
+# use Npolar::Rack::Editlog, Npolar::Storage::Solr.new("/api/editlog")
 
 # http(s)://api.npolar.no/
 # 
@@ -45,9 +35,12 @@ map "/" do
 
   use Npolar::Rack::Atomizer
 
-  run search #Npolar::Api::Core.new(search)
+  run search
 
   # The map sections below are for the internal "api" workspace
+  map "/parameter" do
+  end
+
   map "/schema" do
     use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"),
       :system => "api", :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin"),
@@ -100,7 +93,8 @@ end
 map "/ecotox" do
   # Show ecotox index on anything that is not a search
   run Npolar::Rack::Solrizer.new(Views::Ecotox::Index.new, :core => "ecotox" )
-
+ 
+  #map compound
   map "/report" do
     use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "ecotox",
       :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
@@ -113,35 +107,25 @@ end
 
 map "/gcmd" do
 
-  run Gcmd::Index.new
+  run Npolar::Api::Core.new(Gcmd::Concept.new, :storage => Npolar::Storage::Couch.new("gcmd_concept"))
 
   map "/concept" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "gcmd",
+
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "api",
+      :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin"),
       :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
     }
-    run Npolar::Api::Core.new(Gcmd::Concept.new, :storage => Npolar::Storage::Couch.new("gcmd_concept"))
-  end
+    use Views::Api::Index
 
-
-  concepts = Gcmd::Concepts.new
-  
-  Gcmd::Concepts::schemas.each do |scheme|
-    map "/#{scheme}" do
-
-      
-      gcmd_concept = lambda {|env|
-        q = Rack::Request.new(env)["q"]
-        [200, {"Content-Type" => "application/json"},[concepts.filter(scheme, q).to_json]]
-      }
-      use Npolar::Rack::Solrizer, :core => ""
-      
-      
-    end
+    use Npolar::Rack::Solrizer, { :core => "http://solr:8983/solr/collection1",
+      :facets => ["concept", "ancestors", "children", "workspace", "collection", "cardinality", "tree", "label", "id"]
+    }
+    run Npolar::Api::Core.new(nil, :storage => Npolar::Storage::Couch.new("gcmd_concept"))
   end
 end
 
 # map /image # image archive
-# gis/geodata => lins
+# gis/geodata
 
 map "/map" do
   
@@ -165,8 +149,6 @@ map "/metadata" do
   #metadata_workspace_index.id = "view_metadata_index"
   #metadata_workspace_index.storage = api
   #run Npolar::Api::Core.new(metadata_workspace_index, :storage => nil, :methods =>  ["GET", "HEAD"])
-
-
   # run metadata_workspace_index #Views::Api::Index.new(solrizer)
 
 
@@ -179,7 +161,6 @@ map "/metadata" do
     index = Views::Metadata::Index.new
     index.id = "view_metadata_dataset_index"
     #index.storage = api
-    run Npolar::Rack::Solrizer.new(index, :core => "")
 
     model = Metadata::Dataset.new
     #model.schema = File.read(File.expand_path(File.join(".", "lib", "metadata/dataset-schema.json")))
@@ -228,6 +209,9 @@ map "/monitoring/" do
 end
 
 map "/oceanography" do
+
+  #map "/cruise"
+  #map 
   # Show ocean index on anything that is not a search
   run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "http://localhost:8983/solr", :select => "select")
 end

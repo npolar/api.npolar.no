@@ -23,7 +23,12 @@ gem "rack-cache"
 gem "mustache"
 gem "hashie", :git => "git://github.com/intridea/hashie.git"
 gem "json-schema", :git => "git://github.com/hoxworth/json-schema.git"
-gem "rsolr", :git => "git://github.com/mwmitchell/rsolr.git"
+
+gem "jsonify"
+#gem "rsolr", :git => "git://github.com/mwmitchell/rsolr.git"
+# Until branch "json_update" is merged...
+gem "rsolr", :git => "git://github.com/mootpointer/rsolr.git", :branch => "json_update"
+
 gem "oai"
 gem "ruby-netcdf"
 

@@ -20,7 +20,7 @@ class Npolar::Mustache::JsonView < ::Mustache
     else
       unless (request["q"].nil?) or @app.nil?
         status, headers, body = @app.call(env)
-        if 200 == status and headers["Content-Type"] == "application/json"
+        if 200 == status and headers["Content-Type"] =~ /application\/json/
           feed = Yajl::Parser.parse(body.join, {:symbolize_keys => true})
           if feed.key? :feed
             @hash[:feed] = feed[:feed]

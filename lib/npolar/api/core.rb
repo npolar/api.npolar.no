@@ -72,9 +72,13 @@ module Npolar
         end
         
       elsif ["PUT", "POST"].include? request_method
-        log.debug accepts? request.media_format
-        document = request.body.read # request.body is now empty
+
+        log.debug "Accepts(#{request.media_format})? #{accepts? request.media_format}"
+
+        document = request.body.read 
+        request.body.rewind # rewind is necessary for request.body is empty after #read
         log.debug "#{request_method} #{request.media_format} request (#{document.bytesize} bytes)"
+        
         # 411 Length Required
         # FIXME Insist on Content-Length on chunked transfers
         # if headers["Content-Length"].nil? or headers["Content-Length"].to_i <= 0
@@ -95,8 +99,10 @@ module Npolar
         
         # FIXME 413 Request Entity Too Large
         # 414 Request-URI Too Long
+        # log.debug document
 
         unless valid? document
+          #log.debug validate(document)
           return http_error(422)
         end 
 
