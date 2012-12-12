@@ -1,0 +1,74 @@
+{
+  "Description": "Satellite tracking deployment.",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "description": "UUID for the deployment",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "revision identifier",
+      "type": "string"
+    },
+    "title": {
+      "description": "Deployment title.",
+      "type": "string"
+    },
+    "summary": {
+      "description": "Free text describing the deployment. Purpose of the deployment. Methods used. Extra sensor data being collected.",
+      "type": "string"
+    },
+    "subject": {
+      "description": "What is the tracking device attached to? (polar bear, human, gull, seal, buoy)",
+      "type": "string"
+    },
+    "start": {
+      "description": "Time the device was deployed in the field in ISO-6801",
+      "type": "date-time"
+    },
+    "stop": {
+      "description": "Time the device died or was recovered in ISO-6801",
+      "type": "date-time"
+    },
+    "equipment": {
+      "description": "Information about the equipment used.",
+      "type": "object",
+      "properties": {
+        "technology": {
+          "description": "Satellite technology observations are made with.",
+          "type": "string",
+          "pattern": "^(Argos|Iridium)*"
+        },
+        "provider": {
+          "description": "Entity responsible for data delivery.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "Name of the data provider",
+              "type": "string"
+            },
+            "project_id": {
+              "description": "Provider specific resource identification (Argos project ID | Iridium asset name)",
+              "type": ["string", "number"]
+            },
+            "links": {
+              "description": "Links to the provider resources (homepage, data access, information)",
+              "type": "array",
+              "items": {
+                "type": "uri"
+              }
+            }
+          }
+        },
+        "sensor": {
+          "description": "Links to the sensor database.",
+          "type": "array",
+          "items": {
+            "type": "uri",
+            "required": true
+          }
+        }
+      }
+    }
+  }
+}
