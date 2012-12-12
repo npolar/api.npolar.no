@@ -10,8 +10,8 @@ module Metadata
   #   * Convert DIF documents into a metadata dataset.
   #   * Exports a metadata dataset to DIF.
   #
-  # [License]
-  #   This code is licensed under the {http://www.gnu.org/licenses/gpl.html GNU General Public License Version 3} (GPLv3)
+  # [Licence]
+  #   This code is licenced under the {http://www.gnu.org/licenses/gpl.html GNU General Public Licence Version 3} (GPLv3)
   #
   # @author Ruben Dens
   # @author Conrad Helgeland
@@ -22,7 +22,7 @@ module Metadata
     ISO_8601 = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
 
     DATASET_MAP = [
-      :source, :_id, :id, :title, :summary, :progress, :investigators,
+      :source, :_id, :title, :summary, :progress, :investigators,
       :contributors, :rights, :activity, :locations, :links, :tags, :iso_topics,
       :quality, :science_keywords, :draft, :published, :updated, :editors, :sets
     ]
@@ -80,12 +80,13 @@ module Metadata
     end
     
     def _id
-      uuid(Metadata::Dataset.uri + "/" + object.Entry_ID)
+      #uuid(Metadata::Dataset.uri + "/" + object.Entry_ID)
+      object.Entry_ID.gsub(/\./, "-")
     end
     
-    def id
-      object.Entry_ID
-    end
+    #def id
+    #  object.Entry_ID
+    #end
     
     def title
       object.Entry_Title
@@ -600,10 +601,10 @@ module Metadata
     
     def use_constraints
       constraints = ""      
-      object.licenses.each_with_index do |license, i|
-        constraints += license
-        constraints += ", " unless (object.licenses.size - 1) == i
-      end unless object.licenses.nil?
+      object.licences.each_with_index do |licence, i|
+        constraints += licence
+        constraints += ", " unless (object.licences.size - 1) == i
+      end unless object.licences.nil?
       
       constraints
     end
