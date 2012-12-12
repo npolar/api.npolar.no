@@ -1,0 +1,121 @@
+{
+  "description": "Storage format for Conductivity Temperature and Depth (CTD) data",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "metadata": {
+      "description": "UUID of the related metadata record. If no metadata available use null",
+      "type": "string",
+      "default": null
+    },
+    "ctd": {
+      "description": "Name of the used CTD. Example Sea-Bird SBE 9 Plus",
+      "type": "string",
+      "required": true
+    },
+    "date-time": {
+      "description": "Date and time ISO 8601(YYYY-MM-DDThh:mm:ssZ). When was the data collected",
+      "format": "date-time",
+      "type": "string",
+      "required": true
+    },
+    "cruise": {
+      "description": "cruise identifier",
+      "type": "string",
+      "required": true
+    },
+    "station": {
+      "description": "Station identifier",
+      "type": "string",
+      "required": true
+    },
+    "platform": {
+      "description": "Platform from which the CTD was deployed. Example: RV Lance, sea-ice",
+      "type": "string"
+    },
+    "latitude": {
+      "description": "The latitude coordinate where the CTD was deployed (decimal WGS-84)",
+      "type": "array",
+      "required": true,
+      "items": {
+        "type": "number"
+      }
+    },
+    "longitude": {
+      "description": "The longitude coordinate where the CTD was deployed (decimal WGS-84)",
+      "type": "array",
+      "required": true,
+      "items": {
+        "type": "number"
+      }
+    },
+    "echodepth": {
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "time": {
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "pressure" :{
+      "description": "Pressure in decibar",
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "temperature" :{
+      "description": "Temperature in degrees Celsius ITS-90",
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "conductivity" :{
+      "description": "Conductivity in Siemens per meter (S/m)",
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "salinity" :{
+      "description": "Salinity in particle salinity units (PSU) PPS-78",
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "oxygen" :{
+      "description": "Oxygen in mililiter per liter (ml/l)",
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "density" :{
+      "description": "Density in kilogram per cubic meter (kg/m³)",
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "potential_temperature" :{
+      "description": "Potential temperature in degrees Celcius ITS-90",
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    },
+    "fluorescence" :{
+      "description": "Fluorescence in microgram per liter (µg/l)",
+      "type": "array",
+      "items": {
+        "type": ["number", "null"]
+      }
+    }
+  }
+}
