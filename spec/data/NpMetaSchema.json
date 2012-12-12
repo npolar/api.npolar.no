@@ -13,11 +13,6 @@
       "type": "string",
       "required": "true"
     },
-    "id": {
-      "description": "DIF:Entry_ID",
-      "type": "string",
-      "required": true
-    },
     "title": {      
       "description": "Dataset title. DIF:Entry_Title",
       "type": "string",
@@ -33,7 +28,7 @@
       "required": true,
       "pattern": "^(ongoing|completed|planned)$"
     },
-    "licenses": {
+    "licences": {
       "description": "Legal licences defining terms of use for the data. DIF:Use_Constraints",
       "type": "array",
       "items": {
@@ -308,7 +303,7 @@
     },
     "source": {
       "description": "This object holds a copy of the original data if generated from an exisitng dataset",
-      "type": "object",
+      "type": ["object", "null"],
       "properties": {
         "dif" :{
           "type": "object"
