@@ -40,22 +40,30 @@ module Metadata
         end
       end
 
+      # Saves DIF XML as JSON
+      # Transforms incoming DIF XML to JSON, sets a new input body with corresponding headers
       def dif_save(request)
+
+
+        # Build Hash of DIF XML(s)
         xml = request.body.read
         builder = ::Gcmd::HashBuilder.new( xml )
         difs = builder.build_hash_documents
         j = []
         difs.each do | dif_hash |
           transformer = ::Metadata::DifTransformer.new( dif_hash )
-          atom_hash = transformer.to_dataset
-          j << atom_hash
+          transformer.base = request.url
+          metadata_dataset = transformer.to_dataset
+          j << metadata_dataset
         end
 
+        # Modify request
         json = j.to_json
-
         request.env["CONTENT_TYPE"] = "application/json"
         request.env["CONTENT_LENGTH"] = json.bytesize.to_s
         request.env["rack.input"] = ::Rack::Lint::InputWrapper.new( StringIO.new( json ) )
+
+        # Save by passing on the request - now with JSON body
         app.call(request.env)
       end
 

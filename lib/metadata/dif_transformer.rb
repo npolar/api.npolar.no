@@ -19,6 +19,9 @@ module Metadata
   class DifTransformer
     include Npolar::Api
     
+    # base = base URI, see #href
+    attr_accessor :base, :object
+
     ISO_8601 = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
 
     DATASET_MAP = [
@@ -54,8 +57,6 @@ module Metadata
       :private => "Private"
     }
     
-    attr_accessor :object
-    
     def initialize( object = {} )
       if object.is_a? Hash
         self.object = Hashie::Mash.new( object )
@@ -67,7 +68,6 @@ module Metadata
     #################################
     ### To Native Metadata Format ###
     #################################
-    
     def to_dataset
       dataset = Hashie::Mash.new
       
@@ -77,6 +77,11 @@ module Metadata
       end
       
       dataset
+    end
+
+
+    def href(id)
+      "#{base.gsub(/\/$/, "")}/#{id}"
     end
     
     def _id
@@ -267,7 +272,7 @@ module Metadata
       object.Parent_DIF.each do | parent |
         links << {
           "rel" => "parent",
-          "href" => uuid( Metadata::Dataset.uri + "/" + parent )
+          "href" => href(parent)
         } unless parent.nil?
       end unless object.Parent_DIF.nil?
       
