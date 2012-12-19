@@ -43,11 +43,12 @@
         <p>
         {{#title?}}
           <strong>{{{title}}}</strong><br/>
+            {{{summary}}}
             <!--{{#formats}} <a href="{{href}}">{{label}}</a>{{/formats}}<br/>-->
             {{#link_relations}} <a href="{{href}}">{{rel}}</a>{{/link_relations}}
             
         {{/title?}}
-        {{^title?}}{{label}}{{/title?}}
+        {{^title?}}<pre>{{json}}</pre>{{/title?}}
 
         </p>
         {{/entries}}
@@ -57,7 +58,7 @@
       <section class="span8">
    
         <h5>{{#filters?}}<p>{{#filters}} <code>{{filter}}={{value}}&#160;<a href="{{remove_href}}">⨯</a></code> {{/filters}}</p>{{/filters?}}</h5>
-        
+     
         {{#facets}}
         <dl class="dl-horizontal">
           <dt title="{{title}}">{{title}}</dt>
@@ -82,6 +83,8 @@
         </dl>
   
         {{/results?}}
+
+
       </section>
     
   

@@ -68,9 +68,12 @@ module Views
           @hash[:filters?] = true
           
         end
+
+
         unless "html" == request.format
           feed = @app.call(env)
         else
+          #html
           super # ie render
         end
       end
@@ -136,7 +139,9 @@ module Views
         
           formats = false
           link_relations = e.select {|k,v| k =~ /^link_/}.map {|k,v| { :rel => k.to_s.gsub(/^link_/, ""), :href => v } }
-
+          if e.key? :title and e[:title].respond_to? :first
+            e[:title] = e[:title].first
+          end
 
           if e.key? :formats
             formats = e[:formats].map {|f| { :format => f, :label => f,
