@@ -15,25 +15,54 @@ module Metadata
   #
   # @author Ruben Dens
   # @author Conrad Helgeland
+  #     #model.schema = File.read(File.expand_path(File.join(".", "lib", "metadata/dataset-schema.json")))
   
   class Dataset < Hashie::Mash
     
     attr_accessor :schema
+
+    BASE = "/metadata/dataset/"
     
     DIF_SCHEMA_URI = "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"
 
-    SCHEMA_URI = { "dif" =>  DIF_SCHEMA_URI,
-      "json" => "http://api.npolar.no/schema/metadata/dataset",
+    SCHEMA_URI = {
+      "dif" =>  DIF_SCHEMA_URI,
+      "json" => "http://api.npolar.no/schema/metadata-dataset.json",
       "xml" => DIF_SCHEMA_URI
     }
 
     class << self
-      attr_accessor :formats, :accepts
+      attr_accessor :formats, :accepts, :base
     end
 
     def self.country_codes
       #  http://en.wikipedia.org/wiki/Arctic_Council + AQ
       ["CA", "DK", "GL", "FI", "FO", "IS", "NO", "RU", "SW", "AQ", "US"].sort
+    end
+
+    # code or URI?
+    #def self.licenses
+    #  ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/"]
+    #end
+
+    def self.licences
+      ["http://data.norge.no/nlod/no/1.0",
+      "http://data.norge.no/nlod/en/1.0",
+      "http://creativecommons.org/licenses/by/3.0/",
+      "http://creativecommons.org/licenses/by/3.0/no/"]
+    end
+
+
+    def self.licence_codes
+      ["nlod", "cc-by", "cc0"]
+    end
+
+    def self.mimetypes
+      ["application/json", "application/xml"]
+    end
+
+    def self.schemas
+      [schema_uri("json"), schema_uri("xml")]
     end
 
     def self.sets
@@ -48,21 +77,7 @@ module Metadata
       end
     end
 
-    def self.example_id
-      "fe18cf19-8220-5df8-a22b-34089bfef97e"
-    end
 
-    def self.licenses
-      ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/"]
-    end
-    
-    def self.list_formats
-      [{:format => "json", :title => "List ids (JSON Array)"}]
-    end
-
-    def self.uri
-      "http://api.npolar.no/metadata/dataset"
-    end
 
     #<IDN_Node>
     #<Short_Name>IPY</Short_Name>
@@ -114,10 +129,75 @@ module Metadata
     end
 
     def self.title
-      "Datasets from the Norwegian Polar Institute"
+      "Norwegian Polar Institute's datasets"
     end
     
     def to_solr
+      doc = self
+
+      id = doc["id"] ||=  doc["_id"]
+      rev = doc["rev"] ||=  doc["_rev"] ||= nil
+
+      solr = { :id => id,
+        :_id => doc["_id"] ||= nil,
+        :rev => doc["_rev"],
+        :title => doc.title,
+        :group => doc["group"],
+        :tags => doc["tags"],
+        :sets => doc["sets"],
+        :iso_topics => doc["iso_topics"],
+        :licences => doc["licenses"],
+        :draft => doc["draft"],
+        :workspace => "metadata",
+        :collection => "dataset",
+        :links => doc.links,
+        :licences => doc.licences,
+        :formats => self.class.formats,
+        :accepts => self.class.accepts,
+        :accept_mimetypes => self.class.mimetypes,
+        :accept_schemas => self.class.schemas,
+        :relations => ["edit"]
+      }
+        if doc.science_keywords.respond_to? :map
+          cat = []
+          cat += doc["science_keywords"].map {|keyword| [keyword.Category ,keyword.Topic, keyword.Term, keyword.Variable_Level_1, keyword.Variable_Level_2, keyword.Variable_Level_3 ]}
+          cat = cat.flatten.uniq
+          solr[:category] = cat
+        end
+        if doc.key? "investigators"
+          solr[:investigators] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
+          #solr[:investigator_emails] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
+        end
+        if doc.locations.respond_to? :map
+          solr[:north] = doc.locations.select {|l|l.north?}.map {|l|l.north}.max
+          solr[:east] = doc.locations.select {|l|l.east?}.map {|l|l.east}.max
+          #solr[:south] = doc.locations.select {|l|l.north?}.map {|l|l.north}.min
+          #solr[:west] = doc.locations.select {|l|l.east?}.map {|l|l.east}.min
+        end
+
+        if doc.links.respond_to? :map
+          relations = doc.links.select {|l|l.rel?}
+          solr[:relations] += relations.map {|l|l.rel}
+          relations.each do |l|
+            solr[:"link_#{l.rel}"] = l.href
+          end
+          
+        end
+
+      text = []
+      text += solr.map {|k,v| "#{k} = #{v} | "}
+      solr[:text] = text.join("")
+
+      
+      solr[:link_edit] = "#{BASE.gsub(/\/$/, "")}/#{id}.json"
+      solr[:link_self] = "#{BASE.gsub(/\/$/, "")}/#{id}.json?rev=#{doc._rev}"
+      solr[:link_html] = "http://data.npolar.no/metadata/dataset/#{id}"
+      solr[:link_dif] = "/metadata/dataset/#{id}.dif"
+      solr[:link_iso] = "/metadata/dataset/#{id}.iso"
+
+
+      solr
+
     end
     
     def from_dif
@@ -127,7 +207,7 @@ module Metadata
     end
     
     def uri(id)
-      self.uri + id
+      self.class.uri + id
     end
     
     def valid?
