@@ -48,6 +48,11 @@ require "rack/cache"
 
 require "gcmd"
 
+require "./lib/biology"
+require "./lib/biology/sighting"
+require "./lib/polarbear"
+require "./lib/polarbear/interaction"
+
 # Metadata
 require "./lib/metadata.rb"
 require "./lib/metadata/dataset.rb"

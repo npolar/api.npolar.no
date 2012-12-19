@@ -8,8 +8,8 @@ require "./load"
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
 
-Metadata::Dataset.formats = ["atom", "json", "dif", "iso", "xml"]
-Metadata::Dataset.accepts = ["json", "dif", "xml"]
+Metadata::Dataset.formats = ["json", "dif", "iso"]
+Metadata::Dataset.accepts = ["json", "xml"]
 
 
 # Middleware for *all* requests - use with caution
@@ -21,26 +21,35 @@ Metadata::Dataset.accepts = ["json", "dif", "xml"]
 # b. Features
 use Rack::JSONP
 use Rack::Static, :urls => ["/css", "/img", "/xsl", "/favicon.ico", "/robots.txt"], :root => "public"
-# use Npolar::Rack::Editlog, Npolar::Storage::Solr.new("/api/editlog")
+# use Npolar::Rack::Editlog, Npolar::Storage::Solr.new("/api/editlog"), except => ["/path"]
+# use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("/api/editlog"), except => ["/path"]
 
 # http(s)://api.npolar.no/
 # 
 # Please keep all map statements below in alphabetical order
-map "/" do 
-  solrizer = Npolar::Rack::Solrizer.new(nil,
-    :core => "",
-    :facets => ["collection", "workspace", "methods", "parameter", "person", "org", "project", "draft", "link", "group", "set", "category", "country", "placename", "iso_3166-1", "iso_3166-2", "hemisphere", "source", "year", "month", "day", "editor", "referenceYear", "edited-y-m-d", "updated-y-m-d",  "license"]
-  )
-  search = Views::Api::Index.new(solrizer)
+map "/" do
+
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"),
+    :system => "api", :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin"),
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
+  }
+
+  use Views::Api::Index
 
   use Npolar::Rack::Atomizer
 
-  run search
+  run Npolar::Rack::Solrizer.new(nil, {
+    :core => "api",
+    :facets => Npolar::Api.facets
+    # Convert from Atom-like JSON => Solr JSON "
+  })
 
   # The map sections below are for the internal "api" workspace
   map "/parameter" do
   end
 
+  # /schema
+  # @todo Setup storage with revisions
   map "/schema" do
     use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"),
       :system => "api", :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin"),
@@ -48,7 +57,25 @@ map "/" do
     }
     run Npolar::Api::Core.new(nil, {:storage => Npolar::Storage::Couch.new("schema"), :formats => ["html", "json"]})
   end
+  
+  map "/service" do
 
+    use Npolar::Rack::Solrizer, { :core => "api",
+      :facets => ["formats", "accepts", "path", "methods", "person", "methods", "protocols", "relations", "project", "group", "set", "category", "editor", 
+"tags", "groups", "licences"],
+      :fq => ["workspace:api", "collection:service"],
+      #:fields => "title"
+    }
+
+    use Views::Api::Index
+
+    # use AtomPubService
+    # http://tools.ietf.org/html/rfc5023#section-8
+
+    run Npolar::Api::Core.new(nil, { :storage => Npolar::Storage::Couch.new("api")})
+
+  end
+  
   map "/user" do
     use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "api",
     :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin") }
@@ -64,27 +91,28 @@ end
 
 map "/biology" do
 
-  #run Npolar::Api::Core.new(Views::Biology::Index.new, :storage => nil, :methods =>  ["GET", "HEAD"])
+  run Npolar::Api::Core.new(Views::Biology::Index.new, :storage => nil, :methods =>  ["GET", "HEAD"])
     solrizer = Npolar::Rack::Solrizer.new(nil, {:core => "http://olav.npolar.no:8080/solr/marine_database",
     :facets => ["collection", "station_ss", "year_ss", "animalgroup_ss", "programs_sms", "species_sms", "species_groups_sms", "sample_types_sms", "long_fs", "lat_fs"]})
     run Views::Api::Index.new(solrizer)
 
   map "/marine" do
-    run Views::Api::Index.new(solrizer)
+    #run Views::Api::Index.new(solrizer)
   end
 
   map "/sighting" do
   
-    index = Views::Collection.new
-    index.id = "view_biology_observation_index"
-    #index.storage = api
-  
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "biology",
-      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  
-    use Npolar::Rack::Solrizer, { :core => "", :fq => ["workspace:arkiv", "collection:*"]}
-  
-    run Npolar::Api::Core.new(index, :storage =>Npolar::Storage::Couch.new("biology_observation"))
+    #use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "biology",
+    #  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+    
+    use Views::Api::Index
+
+    use Npolar::Rack::Solrizer, { :core => "api",
+      :fq => ["workspace:biology", "collection:sighting"],
+      :facets => ["phylum", "class", "genus", "art", "scientificName", "year", "month", "day", "category", "countryCode", "north", "east"],
+      :to_solr => Biology::Sighting.to_solr
+    }
+    run Npolar::Api::Core.new(nil, :storage =>Npolar::Storage::Couch.new("biology_observation"))
 
   end
 
@@ -141,42 +169,49 @@ end
 
 
 map "/metadata" do
-
-  solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://olav.npolar.no:8080/pmdb/",
+  index = Views::Metadata::Index.new
+  solrizer = Npolar::Rack::Solrizer.new(index, { :core => "http://olav.npolar.no:8080/pmdb/",
     :fq => ["type:Data*"], :facets => ["region", "institution_long_name"]})
 
-  #metadata_workspace_index = Views::Workspace.new(solrizer)
-  #metadata_workspace_index.id = "view_metadata_index"
-  #metadata_workspace_index.storage = api
-  #run Npolar::Api::Core.new(metadata_workspace_index, :storage => nil, :methods =>  ["GET", "HEAD"])
-  # run metadata_workspace_index #Views::Api::Index.new(solrizer)
-
+  run index
 
   map "/oai" do
     run Npolar::Rack::OaiSkeleton.new(Views::Api::Index.new, :provider => Metadata::OaiRepository.new)
   end
 
   map "/dataset" do
-    # Show metadata index on anything that is not a search
-    index = Views::Metadata::Index.new
-    index.id = "view_metadata_dataset_index"
-    #index.storage = api
-
-    model = Metadata::Dataset.new
-    #model.schema = File.read(File.expand_path(File.join(".", "lib", "metadata/dataset-schema.json")))
-    #p model.schema
     
-    storage = Npolar::Storage::Couch.new("metadata_dataset")
-    # storage.model = model
-
     use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "metadata",
       :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  
+
+    index = Views::Api::Index.new
+
+    model = Metadata::Dataset.new
+
+    storage = Npolar::Storage::Couch.new("metadata_dataset")
+    storage.model = model
+    
+    # DIF XML <--> JSON
     use Metadata::Rack::DifJsonizer
 
-    use Npolar::Rack::Solrizer, { :core => "", :model => model }
+    #use Npolar::Rack::JsonValidator
 
-    run Npolar::Api::Core.new(index,
+    use Views::Api::Index
+    # Solr search (GET)
+    # Solr save (POST, PUT)
+    # Solr delete (DELETE)
+    # HOW to post! example!
+    use Npolar::Rack::Solrizer, { :core => "api",
+      :facets => Metadata::Dataset.facets,
+      :fq => ["workspace:metadata", "collection:dataset"],
+      :to_solr => lambda {|hash|
+      
+          model = Metadata::Dataset.new(hash)
+          model.to_solr        
+      }
+    }
+
+    run Npolar::Api::Core.new(nil,
       { :storage => storage,
         :formats => Metadata::Dataset.formats, #,
         :accepts => Metadata::Dataset.accepts
@@ -208,6 +243,7 @@ map "/monitoring/" do
   end
 end
 
+# @todo decide collections ie. paths
 map "/oceanography" do
 
   #map "/cruise"
@@ -216,28 +252,36 @@ map "/oceanography" do
   run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "http://localhost:8983/solr", :select => "select")
 end
 
+# @todo fork?
 map "/org" do
   solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/solr/",
     :fq => ["type:Institution"], :facets => ["region", "institution_short_name", "city", "state_or_province", "country"]})
   run Views::Api::Index.new(solrizer)
 end
 
+# @todo fork and merge with LDAP users, create pipeline
 map "/person" do
   solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/solr/",
     :fq => ["type:Person"], :facets => ["region", "institution_short_name"]})
   run Views::Api::Index.new(solrizer)
 end
 
+#
 map "/project" do
   solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/solr/",
     :fq => ["type:Project"], :facets => ["region", "location_exact", "institution_short_name", "status"]})
   run Views::Api::Index.new(solrizer)
 end
 
+# 
 map "/placename" do
   solrizer = Npolar::Rack::Solrizer.new(nil, {
     :select => "select",
-    :core => "http://dbmaster.data.npolar.no:8983/solr/placename",
+    #:core => "http://localhost:8983/solr/api",
+    :core => "http://olav.npolar.no:8080/solr/geonames",
+
+    # New core (not-yet ready):
+    #:core => "http://dbmaster.data.npolar.no:8983/solr/placename",
     :fq => ["workspace:geo", "collection:geoname"],
     :summary => lambda {|doc| doc["definition"] },
     :facets => ["location", "hemisphere", "approved", "terrain", "country", "map", "reference", "north", "east"]
@@ -245,37 +289,50 @@ map "/placename" do
   run Views::Api::Index.new(solrizer)
 end
 
-map "/rapportserie" do
-  map "/105" do
-  solrizer = Npolar::Rack::Solrizer.new(nil, {
-    :core => "http://olav.npolar.no:8080/solr/geonames",
-    :select => "select",
-    :fq => ["workspace:arkiv", "collection:*"],
-    :facets => ["workspace", "collection", "category"]
-  })
-  run Views::Api::Index.new(solrizer)
-  end
-end
+#map "/rapportserie" do
+#  map "/105" do
+#  solrizer = Npolar::Rack::Solrizer.new(nil, {
+#    :core => "http://olav.npolar.no:8080/solr/geonames",
+#    :select => "select",
+#    :fq => ["workspace:arkiv", "collection:*"],
+#    :facets => ["workspace", "collection", "category"]
+#  })
+#  run Views::Api::Index.new(solrizer)
+#  end
+#end
 
-map "/polar-bear" do
+map "/polarbear" do
+
+  map "/interaction" do
+
+    use Views::Api::Index
+
+    use Npolar::Rack::Solrizer, { :core => "pbsg",
+      :facets => Polarbear::Interaction.facets,
+      :to_solr => Polarbear::Interaction.to_solr_lambda
+  } 
+  run Npolar::Api::Core.new(nil, :storage => Npolar::Storage::Couch.new("polarbear_interaction"))
+ 
+  end
+
   map "/reference" do
-    solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/references",
-      :facets => ["source", "popularity", "keyword", "year", "pages", "author_exact", "sku", "periodical", "timestamp"] })
+    solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://localhost:8983/solr/pbsg_reference",
+    :facets => ["source", "year", "periodical", "keyword", "author_exact"]
+})
     run Views::Api::Index.new(solrizer)
   end
 end
 
 # http://brage.bibsys.no/npolar/simple-search?locale=no&query=&submit=%C2%A0S%C3%B8k%21
-#http://brage.bibsys.no/npolar/feed-query/rss_2.0?query=author:*
-#For en informasjonsstrøm som gir de nyeste innførslene for selvvalgt søkeindeks og søketerm bruker du denne syntaksen:
-#http://brage.bibsys.no/[institusjon]/feed-query/rss_2.0?query=[indeks]:[term] 
-#hvor [institusjon] erstattes av den forkortelsen som er brukt i publiseringsarkivets internettadresse, [indeks] erstattes av søkeindeks og [term] erstattes av søkebegrep. Du kan bruke en av følgende indekser:
-#•	author
-#•	title
-#•	keyword
-#•	language
-#•	type
-
+# http://brage.bibsys.no/npolar/feed-query/rss_2.0?query=author:*
+# For en informasjonsstrøm som gir de nyeste innførslene for selvvalgt søkeindeks og søketerm bruker du denne syntaksen:
+# http://brage.bibsys.no/[institusjon]/feed-query/rss_2.0?query=[indeks]:[term] 
+# hvor [institusjon] erstattes av den forkortelsen som er brukt i publiseringsarkivets internettadresse, [indeks] erstattes av søkeindeks og [term] erstattes av søkebegrep. Du kan bruke en av følgende indekser:
+#  •	author
+#  •	title
+#  •	keyword
+#  •	language
+#  •	type
 
 map "/seaice" do
   # Show seaice index on anything that is not a search
