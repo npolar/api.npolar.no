@@ -323,7 +323,7 @@ module Npolar
       # Force _id from id
       def self.force_underscore_id(doc)
         if doc.key? "id" and not doc.key? "_id"
-          doc["_id"] = doc["id"]
+          doc["_id"] = doc["id"].to_s
         end
         doc
       end
