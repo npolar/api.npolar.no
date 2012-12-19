@@ -3,6 +3,8 @@ class Npolar::Api::SolrFeedWriter
 
   def self.feed(response, request)
     facets = {}
+
+    base = request.path.gsub(/\/$/, "")+"/"
     
     if response.key? "facet_counts" and response["facet_counts"].key? "facet_ranges"
       response["facet_counts"]["facet_ranges"].each do |ranges|
@@ -37,6 +39,7 @@ class Npolar::Api::SolrFeedWriter
     
     
     {"feed" => {
+      "base" => base,
       # http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements
       "opensearch" => {
         "totalResults" =>  totalResults,
