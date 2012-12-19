@@ -61,6 +61,7 @@ module Npolar
           when "atom" then "application/atom+xml"
           when "html" then "text/html"
           when "csv", "text" then "text/plain"
+          when "js", "javascript", "jsonp" then "application/javascript"
           else raise ArgumentError("Unknown format: #{format}")
         end
         {"Content-Type" => "#{content_type}; charset=#{encoding}"}
