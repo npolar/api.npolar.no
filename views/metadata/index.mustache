@@ -1,8 +1,14 @@
 {{{ head }}}
 
-{{# collections }}
-{{< _collection }} 
-{{/ collections }}
+<header><h1>{{{h1_title}}} <a href="/"><img title="api.npolar.no" alt="Logo (Norwegian Polar Institute)" src="/img/np_logo_s.png" /></a></h1></header>
+<section id="search">
+<form class="form-search"><input type="search" id="search_input" name="q" value="{{q}}" action="/metadata/dataset" placeholder="{{title}}"
+class="yui3-aclist-input input-medium" /><input type="submit" class="btn" value="Search"/>
+</form>
+</section>
+{{!# collections }}
+{{!< _collection }} 
+{{!/ collections }}
 
 <hr/>
 {{# oai }}
@@ -22,7 +28,5 @@
 <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">OAI-PMH 2.0 documentation</a>
 </section>
 {{/oai}}
-
-</article>
 
 {{{ foot }}}

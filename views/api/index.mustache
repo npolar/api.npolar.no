@@ -1,120 +1,133 @@
-{{{ head }}}
-
-<article class="row-fluid">
-{{#form}}
-<form id="{{id}}-form" action="{{collection_uri}}" method="get" class="yui3-skin-sam form-search">
-
-    <section class="span4">
-      <header><h1>{{{h1_title}}} <a href="/"><img title="api.npolar.no" alt="Logo (Norwegian Polar Institute)" src="/img/np_logo_s.png" /></a></h1></header>
-
-      <input id="q" name="q" value="{{q}}" type="search" autofocus placeholder="{{placeholder}}" class="yui3-aclist-input" />
-      <input type="submit" class="btn" value="Search" />
-
-      {{#results?}}
-      <ul class="nav nav-pills">
-        {{#formats}}
-        <li class="{{active}}"><a href="{{base}}&amp;format={{format}}">{{format}}</a></li>              
-        {{/formats}}
-
-        <!--<li class="dropdown">
-          <a class="dropdown-toggle" id="drop-download" role="button" data-toggle="dropdown" href="#">maps + graphs <b class="caret"></b></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">A</a></li>
-            <li><a href="#">B</a></li>
-            <li><a href="#">C</a></li>
-            <li class="divider"></li>
-            <li><a href="#">json.zip</a></li>
-          </ul>
-        </li>
-        -->      
-      </ul>
-      
-      <h5>{{ result_text }} ({{ first_to_last }} {{#previous?}}<a href="{{previous_href}}">Previous</a>{{/previous?}} {{#next?}}<a href="{{next_href}}">Next</a>{{/next?}}{{#first?}}<a href="{{first_href}}">First</a>{{/first?}})</h5>
-      {{/results?}}
-
-      {{#q}}
-        {{^results?}}
-        <h5>{{totalResults}} results <a href="?q=">Reset</a></h5>
+  {{{ head }}}
+  
+  <article class="row-fluid">
+  {{#form}}
+  <form id="{{id}}-form" action="{{self}}" method="get" class="yui3-skin-sam form-search">
+  
+      <section class="span4">
+        <header><h1>{{{h1_title}}} <a href="/"><img title="api.npolar.no" alt="Logo (Norwegian Polar Institute)" src="/img/np_logo_s.png" /></a></h1></header>
+  
+        <input id="q" name="q" value="{{q}}" type="search" autofocus placeholder="{{placeholder}}" class="yui3-aclist-input" />
+        <input type="submit" class="btn" value="Search" />
+  
+        {{#results?}}
+        <ul class="nav nav-pills">
+          {{#search-formats}}
+          <li class="{{active}}"><a href="{{base}}&amp;format={{format}}">{{format}}</a></li>              
+          {{/search-formats}}
+  
+          <!--<li class="dropdown">
+            <a class="dropdown-toggle" id="drop-download" role="button" data-toggle="dropdown" href="#">maps + graphs <b class="caret"></b></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">A</a></li>
+              <li><a href="#">B</a></li>
+              <li><a href="#">C</a></li>
+              <li class="divider"></li>
+              <li><a href="#">json.zip</a></li>
+            </ul>
+          </li>
+          -->      
+        </ul>
+        
+        <p>{{ result_text }} ({{ first_to_last }} {{#previous?}}<a href="{{previous_href}}">Previous</a>{{/previous?}} {{#next?}}<a href="{{next_href}}">Next</a>{{/next?}}{{#first?}}<a href="{{first_href}}">First</a>{{/first?}})</p>
         {{/results?}}
-      {{/q}}
+  
+        {{#q}}
+          {{^results?}}
+          <h5>{{totalResults}} results <a href="?q=">Reset</a></h5>
+          {{/results?}}
+        {{/q}}
+  
+        {{#entries}}
 
-      {{#entries}}
         <p>
         {{#title?}}
-          {{#edit-uri?}}
-          <a href="{{href}}" title="{{relation}} {{format}}">{{title}}</a> <span class="">{{collection}}</span>
-          {{/edit-uri?}}
-          {{^edit-uri?}}
-            <strong>{{title}}</strong>
-          {{/edit-uri?}}
+          <strong>{{{title}}}</strong><br/>
+            <!--{{#formats}} <a href="{{href}}">{{label}}</a>{{/formats}}<br/>-->
+            {{#link_relations}} <a href="{{href}}">{{rel}}</a>{{/link_relations}}
+            
         {{/title?}}
-
         {{^title?}}{{label}}{{/title?}}
-        <pre>{{json}}</pre></p>
-      {{/entries}}
 
-    </section>
-
-    <section class="span8">
- 
-      <h5>{{#filters?}}<p>{{#filters}} <code>{{filter}}={{value}}&#160;<a href="{{remove_href}}">⨯</a></code> {{/filters}}</p>{{/filters?}}</h5>
-      
-      {{#results?}}
-      <!-- if date if geo -->
-      <dl class="dl-horizontal">
-        <dt>bbox</dt><dd><input id="bbox" name="bbox" value="{{bbox}}" type="search" placeholder="W S E N [-180 -90 180 90]" />
-        <dt>dtstart</dt><dd><input id="dtstart" name="dtstart" value="{{dtstart}}" type="search" placeholder="YYYY-MM-DD" /></dd>
-        <dt>dtend</dt><dd><input id="dtend" name="dtend" value="{{dtend}}" type="search" placeholder="YYYY-MM-DD" /></dd>
-      </dl>
-      {{/results?}}
-      {{#facets}}
-      <dl class="dl-horizontal">
-        <dt>{{title}}</dt>
-        <dd>{{#counts}} {{{a_facet}}} ({{count}}) {{/counts}}</dd>
-      </dl>
-      {{/facets}}
-    </section>
+        </p>
+        {{/entries}}
   
-
-</form>
-{{/ form }}
-</article>
-
-
-{{#svc}}
-<div class="pagination">
-  <ul>
-  {{#search}}
-    <li><a href="{{href}}">{{title}}</a></li>
-  {{/search}}
-  </ul>
-{{/svc}}
-</div>
-
-{{{welcome_article}}}
-
-<hr/>
-<footer class="footer">
-  <p><strong>api.npolar.no</strong> is <a href="https://github.com/npolar/api.npolar.no#readme">open source</a>.</p>
-</footer>
-
-{{< _yui_loader }}
-
-<script>
-{{# form }}
-
-  YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
-
-    Y.one('#q').plug(Y.Plugin.AutoComplete, {
-      resultHighlighter: 'phraseMatch',
-      resultListLocator: 'feed.entries',
-      resultTextLocator: function(result) {
-        //Y.log(result);
-        return result.title;
-      },
-      source: '{{{source}}}'
+      </section>
+  
+      <section class="span8">
+   
+        <h5>{{#filters?}}<p>{{#filters}} <code>{{filter}}={{value}}&#160;<a href="{{remove_href}}">⨯</a></code> {{/filters}}</p>{{/filters?}}</h5>
+        
+        {{#facets}}
+        <dl class="dl-horizontal">
+          <dt title="{{title}}">{{title}}</dt>
+          <dd>{{#counts}}{{{a_facet}}}&#160;({{count}}) {{/counts}}</dd>
+        </dl>
+        {{/facets}}
+  
+        {{#results?}}
+        <!-- if date if geo from service??? -->
+        <!--
+        <dl class="dl-horizontal">
+          <dt>bbox</dt><dd><input id="bbox" name="bbox" value="{{bbox}}" type="search" placeholder="W S E N [-180 -90 180 90]" />
+          <dt>dtstart</dt><dd><input id="dtstart" name="dtstart" value="{{dtstart}}" type="search" placeholder="YYYY-MM-DD" /></dd>
+          <dt>dtend</dt><dd><input id="dtend" name="dtend" value="{{dtend}}" type="search" placeholder="YYYY-MM-DD" /></dd>
+        </dl>
+        -->
+        <dl class="dl-horizontal">
+          <dt>start</dt><dd><input id="start" name="start" value="{{start}}" type="search"  />
+          <dt>limit</dt><dd><input id="limit" name="limit" value="{{limit}}" type="search"  /></dd>
+          <dt>sort</dt><dd><input id="sort" name="sort" value="{{sort}}" type="search"  /></dd>
+          <dt>fields</dt><dd><input id="fields" name="fields" value="{{fields}}" type="search"  /></dd>
+        </dl>
+  
+        {{/results?}}
+      </section>
+    
+  
+  </form>
+  {{/ form }}
+  </article>
+  
+  <!--
+  
+  {{#svc}}
+  <div class="pagination">
+    <ul>
+    {{#search}}
+      <li><a href="{{href}}">{{title}}</a></li>
+    {{/search}}
+    </ul>
+  {{/svc}}
+  </div>
+  -->
+  
+  {{{welcome_article}}}
+  
+  <!--
+  <hr/>
+  <footer class="footer">
+    <p><strong>api.npolar.no</strong> is <a href="https://github.com/npolar/api.npolar.no#readme">open source</a>.</p>
+  </footer>
+  -->
+  
+  {{< _yui_loader }}
+  
+  <script>
+  {{# form }}
+  
+    YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
+  
+      Y.one('#q').plug(Y.Plugin.AutoComplete, {
+        resultHighlighter: 'phraseMatch',
+        resultListLocator: 'feed.entries',
+        resultTextLocator: function(result) {
+          //Y.log(result);
+          return result.title;
+        },
+        source: '{{{source}}}'
+      });
     });
-  });
-{{/ form }}
-</script>
-{{{ foot }}}
+  {{/ form }}
+  </script>
+  {{{ foot }}}

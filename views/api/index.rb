@@ -7,15 +7,16 @@ module Views
         @app = app
         @hash = { "_id" => "api_index",
           #:workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
-          :form => {:placeholder => "Norwegian Polar Data", :href => "", :id => "api",
-          :source => '.json?q={query}&amp;callback={callback}' },
-          :limit => 30,
-          :formats => [
+          :form => {:placeholder => "Norwegian Polar Data API", :href => "", :id => "api",
+          :source => '.json?q={query}&amp;callback={callback}',
+          :"search-formats" => [
             #{:format=>"atom", :label =>"Atom"},
-            {:format=>"csv", :label => "CSV"},
-            {:format=>"html", :label => "HTML", :active => "active"},
-            {:format=>"json", :label => "JSON", :active => ""},
-          ],
+              {:format=>"csv", :label => "CSV"},
+              {:format=>"html", :label => "HTML", :active => "active"},
+              {:format=>"json", :label => "JSON", :active => ""},
+            ]
+          },
+          :limit => 30,
           :svc => { :search => [
             {:title => "Biology", :href => "/biology/?q="},
             #{:title => "Ecotox", :href => "/ecotox/?q="},
@@ -56,11 +57,12 @@ module Views
         @hash[:bbox] = request["bbox"]
         @hash[:dtstart] = request["dtstart"]
         @hash[:dtend] = request["dtend"]
+        @hash[:fields] = request["fields"]
+        @hash[:sort] = request["sort"]
 
         @hash[:filters?] = false
         @hash[:filters] = []
         @hash[:collection_uri] = request.script_name
- 
         if request["fq"]         
           @hash[:filters] = filters
           @hash[:filters?] = true
@@ -78,16 +80,22 @@ module Views
         # For each filter we need a remove link, equal to current URI minus this filter
         request.multi("fq").map {|fq|
           # FIXME breaks on space, remove gsub with proper parameter shuffling
+          # DIXE &fq= (empty => breaks)
           k,v = fq.split(":")
-          remove_href = base.gsub(/&fq=#{fq}/ui, "")
-
-          
-          {:filter => k, :value => CGI.unescape(v), :remove_href => remove_href }
+          unless k.nil? or v.nil? or k == "" or v == ""
+            remove_href = base.gsub(/&fq=#{fq}/ui, "")
+            {:filter => k, :value => CGI.unescape(v), :remove_href => remove_href }
+          else
+            nil
+          end
         }.uniq
       end
 
       def filtered?(field, value)
         [] == filters.select {|f| f[:filter] == field.to_s and f[:value] == CGI.unescape(value) }
+      end
+
+      def formats
       end
 
       def head_title
@@ -124,7 +132,21 @@ module Views
       end
 
       def entries
-        feed(:entries).map {|e| {:label => e[:label], :"title?" => e.key?(:title), :title => e[:title], :id => e[:id], :json => e.to_json, :collection => e[:collection] } }
+        feed(:entries).map {|e|
+        
+          formats = false
+          link_relations = e.select {|k,v| k =~ /^link_/}.map {|k,v| { :rel => k.to_s.gsub(/^link_/, ""), :href => v } }
+
+
+          if e.key? :formats
+            formats = e[:formats].map {|f| { :format => f, :label => f,
+              :href => e.key?(:link_edit) ? "#{e[:link_edit]}.#{f}" : "" }
+            }
+          end
+
+          e.merge(:"title?" => e.key?(:title), :json => e.to_json, :link_edit? => e.key?(:link_edit),
+            :formats => formats, :link_relations => link_relations )
+        }
       end
 
       def self.dl(doc)
