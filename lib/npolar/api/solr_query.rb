@@ -1,3 +1,5 @@
+# 
+
 # JSON feed writer for the "api" Solr core, see
 class Npolar::Api::SolrQuery
 
@@ -7,13 +9,11 @@ class Npolar::Api::SolrQuery
     if qstar =~ /^[\*]$|^\*\:\*$|^(\s+)?$/
       qstar = "*:*"
     else
-      unless qstar =~ /\*/
-        qstar = qstar.downcase #+"*"
+      #unless qstar =~ /\*/
+      #  qstar = qstar.downcase #+"*"
+      #end
+      qstar = "title:#{qstar} OR #{qstar} OR #{qstar}*"
       end
-      qstar = qstar.delete(":")
-      #"title:#{qstar} OR #{qstar}"
-      qstar = "#{qstar} OR #{qstar}"
-    end
     qstar
   end
 end
