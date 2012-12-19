@@ -2,7 +2,9 @@
 module Npolar
 
   module Rack
-    
+        
+    # Solrizer: Search and indexing middleware for Solr
+    #
     # Solrizer returns a JSON feed on GET with a query ("q" parameter is present)
     # The #feed is created by a pluggable lambda function, so is the #q (Solr query) and #fq (Solr filter queries).
     # On PUT or POST Solrizer updates the Solr search index, calling #to_solr on the incoming document
@@ -50,7 +52,7 @@ module Npolar
         :summary => lambda {|doc| doc["summary"]},
         :rows => 50,
         :wt => :ruby,
-        :to_solr => lambda {|doc| doc },
+        :to_solr => lambda {|doc|doc},
       }
       # q=title:foo OR exact:foo OR text:foo*
 
@@ -69,6 +71,7 @@ module Npolar
 
       # Only called if #condition? is true
       def handle(request)
+        log.debug __FILE__
         @request = request
         log.debug self.class.name+"#handle(#{request}) #{request.request_method} #{request.url}"
         if request["q"] and "POST" == request.request_method
@@ -100,36 +103,80 @@ module Npolar
       def handle_save(request)
 
         log.debug self.class.name+"#handle_save"
+        t0 = Time.now
 
         begin
-
+          log.debug "@app: #{@app.class.name}"
           # Save using upstream middleware (@app, if set) and grab the response
           if @app.nil?
             response = nil
           else
+            log.debug "About to call @app"
             response = @app.call(request.env)
+            log.debug response.to_json
           end
           
           # Parse incoming JSON
-          json = JSON.parse(request.body.read, :symbolize_keys => true)
+          json = Yajl::Parser.parse(request.body.read, :symbolize_keys => true)
           request.body.rewind
 
           # Convert to Solr format and add (update index)
           # Notice we update Solr no matter if the upstream storage middleware succeeds or not
-          solr = to_solr(json)
-          solr_response = rsolr.add(solr)
 
-          # Debug output
-          #log.debug solr.to_json
+          # POST/no id => multiple documents
+          if false == request.id? and "POST" == request.request_method and json.respond_to? :each
+            solr = []
+            # FIXME support Refine json
+            # FIXME support Solr response JSON
+            # json[:response][:docs].
+            json.each do |doc|
+              solr << to_solr(doc)
+            end
+            size = solr.size
+            log.debug "About to POST #{size} Solr documents"
+          else
+            # PUT => single document
+            solr = to_solr(json)
+            size = 1
+          end
+
+          t1 = Time.now
+
+          solr_response = rsolr.add(solr) # Hash
+
+          elapsed = Time.now-t1
+
           log.debug "Solr response: #{solr_response}"
+
+          log.debug "Total time: #{Time.now-t0} seconds"
 
           # Return upstream response if any, otherwise the Solr response
           if response.nil?
-            solr_response
+            status = case solr_response["responseHeader"]["status"]
+              when 0 then 201
+              else 503
+            end          
+          else
+            status = response.status
+          end
+
+          if 201 == status
+            log.info "#{request.request_method} #{request.url} #{status} saved #{size} Solr document(s) in #{elapsed} seconds (#{size/elapsed} qps)"
+          else
+            log.error "Failed saving to Solr"
+          end
+
+          if response.nil?
+            qtime = solr_response["responseHeader"]["QTime"]
+            [status, headers("json") , [{"response" => { "status" => status,
+              "summary" => "Updated #{size} Solr documents in #{elapsed} seconds"},
+              "method" => request.request_method, "qps" => size/elapsed, "qtime" => qtime
+          }.to_json+"\n"]]
+
           else
             response
           end
-
+          
         rescue RSolr::Error::Http => e
           log.debug self.class.name+"#save raised RSolr::Error::Http"
           json_error_from_exception(e)
@@ -276,7 +323,7 @@ module Npolar
       end
 
       def fl
-        fl = request.params["fl"] ||= config[:fl]
+        fl = request.params["fields"] ||= config[:fl]
       end
 
       def log
@@ -317,9 +364,13 @@ module Npolar
             #:"f.updated.facet.range.gap" => 10,
             :"facet.field" => facets,
             :"facet.mincount" => request["facet.mincount"] ||= 1,
-            :"facet.limit" => 500, #-1,
+            :"facet.limit" => request["facet.limit"] ||= -1, # all
             :fl => fl,
             :wt => wt,
+            :defType => "edismax",
+            :sort => request["sort"] ||= nil,
+            :"facet.sort" => "count"
+            #:qf => "text"
 
           }
 
@@ -337,6 +388,7 @@ module Npolar
         config[:q].call(request)
       end
 
+      # Returns the Solr serch (select) handler (defeult is "select")
       def select
         select = config[:select] ||= "select"
         if  select =~ /^[\/]/
