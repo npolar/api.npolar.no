@@ -13,6 +13,6 @@ module Metadata
 
     source_model ::Metadata::Oai.new(Npolar::Storage::Couch.new(ENV["NPOLAR_API_COUCHDB"].gsub(/[\/]$/, "")+"/metadata_dataset"))
     extra_description ::Metadata::Dataset.summary
-    sample_id ::Metadata::Dataset.example_id
+    sample_id "" #::Metadata::Dataset.example_id
   end
 end
