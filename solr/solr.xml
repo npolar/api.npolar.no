@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<solr persistent="true">
+  <cores defaultCoreName="api" adminPath="/admin/cores" zkClientTimeout="${zkClientTimeout:15000}" hostPort="8983" hostContext="solr">
+    <core schema="schema.xml" instanceDir="api/" name="api" config="solrconfig.xml" dataDir="data"/>
+    <core schema="schema.xml" instanceDir="pbsg/" name="pbsg" config="solrconfig.xml" dataDir="data"/>
+    <core schema="schema.xml" instanceDir="pbsg_reference/" name="pbsg_reference" config="solrconfig.xml" dataDir="data"/>
+  </cores>
+</solr>
