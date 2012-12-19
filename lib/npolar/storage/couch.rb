@@ -2,6 +2,9 @@ require "rack/client"
 
 module Npolar
   module Storage
+
+    # CouchDB storage client
+    # Needs drying, esp. share code between POST and PUT
     class Couch
 
       JSON_ARRAY_REGEX = /^(\s+)?\[.*\](\s+)?$/
@@ -27,12 +30,7 @@ module Npolar
         @@uri ||= URI  #"http://localhost:5984"
       end
 
-      def self.force_underscore_id(doc)
-        if doc.key? "id" and not doc.key? "_id"
-          doc["_id"] = doc["id"]
-        end
-        doc
-      end
+
 
       def accepts
         @accepts ||= ["json"]
@@ -81,7 +79,7 @@ module Npolar
         case id
           when "_meta" then meta
           when "_ids", "" then ids
-          when "_feed" then feed(params)
+          when "_all" then feed(params)
         else
           response = reader.get(id, headers, params)
           [response.status, response.headers, response.body]
@@ -109,22 +107,61 @@ module Npolar
         }
         # set _id from id
         data = couch.to_json
+        t0 = Time.now
         response = writer.post("_bulk_docs", headers, data)
-        [202,  {"Content-Type" => HEADERS["Content-Type"]} , ["POSTed #{couch['docs'].size} documents\n"]]
+
+        headers = {"Content-Type" => HEADERS["Content-Type"]}
+        elapsed = Time.now-t0
+        size = couch['docs'].size
+        
+        if 201 == response.status
+          summary = "Created #{size} CouchDB documents in #{elapsed} seconds"
+          rk = "response"
+          explanation =  "CouchDB success"
+        else
+          summary = JSON.parse(response.body)["reason"]
+          explanation =  "CouchDB error"
+          rk = "error"
+        end
+        
+        [response.status, headers , [{rk => { "status" => response.status,
+          "uri" => "",
+          "summary" => summary, "explanation" => explanation, "system" => response.headers["Server"] },
+          "method" => "", "qps" => size/elapsed
+          }.to_json+"\n"]]
       end
   
       # @todo force "_id" 
       def post(data, params={})
-  
-        if data.is_a? Hash
-          data = data.to_json
-        end
-  
+
         if data =~ JSON_ARRAY_REGEX
           post_many(data, params)
         else
-          # params?
-          response = writer.post("", headers, data)
+
+          unless data.is_a? Hash
+            data = JSON.parse(data)
+            data = self.class.force_id(data)
+            data = self.class.force_underscore_id(data) 
+          end
+          id = data["id"]
+          data = data.to_json
+
+          # Turn POST into PUT so that we get a real UUID id?
+
+
+#HTTP/1.1 201 Created
+#Content-Type: application/json
+#Server: CouchDB/1.2.0 (Erlang OTP/R15B01)
+#Location: http://localhost:5984/api/svc-polar-bear-interaction
+#Etag: "1-bf53e26c83adaaf5c4e3cb12ca018a4e"
+#Date: Wed, 19 Dec 2012 11:44:56 GMT
+#Content-Length: 674
+#Cache-Control: must-revalidate
+#Connection: keep-alive
+
+
+
+          response = writer.put(id, headers, data)
           if 201 == response.status
             couch = JSON.parse(response.body)
             created = reader.get(couch["id"], {"rev" => couch["rev"] })
@@ -269,11 +306,32 @@ module Npolar
       def client(uri)
         @client ||= ::Rack::Client.new(uri) do
           # Security feature: Disallow blank ids, and ids starting with _
-          # Blank ids plus DELETE means bam!, the second could leak special CouchDB documents
+          # Blank ids plus DELETE means bam! (deleting entire collection), the second could leak special CouchDB documents
           use Npolar::Rack::ValidateId
           run ::Rack::Client::Handler::NetHTTP
         end
       end
+
+      # Force id
+      def self.force_id(doc)
+        unless doc.key? "id"
+          doc["id"] = self.uuid(doc)
+        end
+        doc
+      end
+
+      # Force _id from id
+      def self.force_underscore_id(doc)
+        if doc.key? "id" and not doc.key? "_id"
+          doc["_id"] = doc["id"]
+        end
+        doc
+      end
+
+      def self.uuid(doc)
+        UUIDTools::UUID.timestamp_create
+      end
+
 
       def limit
         @limit ||= LIMIT
@@ -282,6 +340,8 @@ module Npolar
       def reader
         client(read+"/")
       end
+
+
       
       def writer
         client(write+"/")
