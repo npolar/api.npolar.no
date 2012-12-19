@@ -40,6 +40,13 @@ module Metadata
       ["CA", "DK", "GL", "FI", "FO", "IS", "NO", "RU", "SW", "AQ", "US"].sort
     end
 
+    def self.facets
+      ["methods", "parameter", "gcmd_keywords", "person", "methods", "protocols", "relations", "sets",
+        "investigators", "investigator_emails", "org", "project", "draft", "link", "groups", "set", "category", "country", "placename",
+        "iso_3166-1", "iso_3166-2", "hemisphere", "source", "year", "month", "day", "editor", "referenceYear",
+        "tags", "groups", "licences", "rights"]
+    end
+
     # code or URI?
     #def self.licenses
     #  ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/"]
@@ -152,6 +159,7 @@ module Metadata
         :collection => "dataset",
         :links => doc.links,
         :licences => doc.licences,
+        :rights => doc.rights,
         :formats => self.class.formats,
         :accepts => self.class.accepts,
         :accept_mimetypes => self.class.mimetypes,
@@ -166,13 +174,20 @@ module Metadata
         end
         if doc.key? "investigators"
           solr[:investigators] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
-          #solr[:investigator_emails] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
+          solr[:investigator_emails] = doc["investigators"].select {|i|i.email?}.map {|i| "#{i["email"].first}"}
         end
+
+        # Reduce locations to 1 bounding box
         if doc.locations.respond_to? :map
           solr[:north] = doc.locations.select {|l|l.north?}.map {|l|l.north}.max
-          solr[:east] = doc.locations.select {|l|l.east?}.map {|l|l.east}.max
-          #solr[:south] = doc.locations.select {|l|l.north?}.map {|l|l.north}.min
-          #solr[:west] = doc.locations.select {|l|l.east?}.map {|l|l.east}.min
+          solr[:east]  = doc.locations.select {|l|l.east?}.map  {|l|l.east}.max
+          solr[:south] = doc.locations.select {|l|l.south?}.map {|l|l.south}.min
+          solr[:west]  = doc.locations.select {|l|l.west?}.map  {|l|l.west}.min
+          unless solr.key? :placename
+            solr[:placename] = []
+          end
+          solr[:placename] += doc.locations.select {|l|l.placename? and l.placename.size > 0 }.map {|l|l.placename}
+
         end
 
         if doc.links.respond_to? :map
