@@ -1,1 +1,0 @@
-<html><body>You are being <a href="http://ods.data.npolar.no/login">redirected</a>.</body></html>
