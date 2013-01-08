@@ -138,7 +138,9 @@ module Views
         feed(:entries).map {|e|
         
           formats = false
-          link_relations = e.select {|k,v| k =~ /^link_/}.map {|k,v| { :rel => k.to_s.gsub(/^link_/, ""), :href => v } }
+          link_relations = e.select {|k,v| k =~ /^link_/}.map {|k,v|
+            { :rel => k.to_s.gsub(/^link_/, ""), :href => v }
+          }
           if e.key? :title and e[:title].respond_to? :first
             e[:title] = e[:title].first
           end
