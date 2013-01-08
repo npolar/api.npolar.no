@@ -146,8 +146,7 @@ module Metadata
       rev = doc["rev"] ||=  doc["_rev"] ||= nil
 
       solr = { :id => id,
-        :_id => doc["_id"] ||= nil,
-        :rev => doc["_rev"],
+        :rev => rev,
         :title => doc.title,
         :group => doc["group"],
         :tags => doc["tags"],
@@ -164,7 +163,7 @@ module Metadata
         :accepts => self.class.accepts,
         :accept_mimetypes => self.class.mimetypes,
         :accept_schemas => self.class.schemas,
-        :relations => ["edit"]
+        :relations => ["edit", "alternate"]
       }
         if doc.science_keywords.respond_to? :map
           cat = []
@@ -205,7 +204,6 @@ module Metadata
 
       
       solr[:link_edit] = "#{BASE.gsub(/\/$/, "")}/#{id}.json"
-      solr[:link_self] = "#{BASE.gsub(/\/$/, "")}/#{id}.json?rev=#{doc._rev}"
       solr[:link_html] = "http://data.npolar.no/metadata/dataset/#{id}"
       solr[:link_dif] = "/metadata/dataset/#{id}.dif"
       solr[:link_iso] = "/metadata/dataset/#{id}.iso"
