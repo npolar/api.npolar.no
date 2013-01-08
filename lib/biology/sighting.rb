@@ -26,12 +26,15 @@ module Biology
           t = Time.new(year,month,day)
           isodate = t.strftime("%Y-%m-%d")
         rescue ArgumentError
-          isodate = "[Bad date]"
+          isodate = "[Bad date: #{doc[:year]} #{doc[:month]} #{doc[:day]}]"
           doc[:category] = ["Bad date"]
         end
     
         species = doc[:scientificName]
-        if species =~ /\ssp\.$/
+        doc[:species] = species
+
+        # Italic species, except (.sp)
+        if species =~ /\ssp(p)?\.$/
           i_species = "<i>#{species.gsub(/\ssp\.$/, "")}</i> sp."
         else
           i_species = "<i>#{species}</i>"
@@ -41,6 +44,7 @@ module Biology
         text = []
         text += doc.map {|k,v| "#{k} = #{v.to_json} | "}
         doc[:text] = text.join("")
+
 
         doc
       }
