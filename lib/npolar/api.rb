@@ -7,7 +7,7 @@ module Npolar
     
     def self.facets
      ["collection", "workspace", "accept_mimetypes", "accept_schemas", "formats", "relations", "group", "sets", "category", "country",
-      "day", "draft", "edited", "editor",
+      "day", "draft", "editor",
       "hemisphere", "investigators", "iso_3166-1", "iso_3166-2", "licences", "link", "methods", "year", "month", "day", "org", "parameter", "person", "placename", "project", "protocols", "referenceYear",
       "source", "iso_topics", "tags", "updated"]
     end
