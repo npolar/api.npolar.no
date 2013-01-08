@@ -109,7 +109,7 @@ map "/biology" do
 
     use Npolar::Rack::Solrizer, { :core => "api",
       :fq => ["workspace:biology", "collection:sighting"],
-      :facets => ["phylum", "class", "genus", "art", "scientificName", "year", "month", "day", "category", "countryCode", "north", "east"],
+      :facets => ["phylum", "class", "genus", "art", "species", "year", "month", "day", "category", "countryCode"],
       :to_solr => Biology::Sighting.to_solr
     }
     run Npolar::Api::Core.new(nil, :storage =>Npolar::Storage::Couch.new("biology_observation"))
