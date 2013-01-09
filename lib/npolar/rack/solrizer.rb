@@ -113,7 +113,7 @@ module Npolar
           else
             log.debug "About to call @app"
             response = @app.call(request.env)
-            log.debug response.to_json
+            log.debug response.inspect
           end
           
           # Parse incoming JSON
