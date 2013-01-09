@@ -171,9 +171,15 @@ module Metadata
           cat = cat.flatten.uniq
           solr[:category] = cat
         end
+        
         if doc.key? "investigators"
           solr[:investigators] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
           solr[:investigator_emails] = doc["investigators"].select {|i|i.email?}.map {|i| "#{i["email"].first}"}
+        end
+        
+        if doc.key? "contributors"
+          solr[:contributors] = doc["contributors"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
+          solr[:contributors_emails] = doc["contributors"].select {|i|i.email?}.map {|i| "#{i["email"].first}"}
         end
 
         # Reduce locations to 1 bounding box
