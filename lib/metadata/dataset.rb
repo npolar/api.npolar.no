@@ -179,7 +179,7 @@ module Metadata
         
         if doc.key? "contributors"
           solr[:contributors] = doc["contributors"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
-          solr[:contributors_emails] = doc["contributors"].select {|i|i.email?}.map {|i| "#{i["email"].first}"}
+          solr[:contributor_emails] = doc["contributors"].select {|i|i.email?}.map {|i| "#{i["email"].first}"}
         end
 
         # Reduce locations to 1 bounding box
