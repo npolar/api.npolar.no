@@ -102,8 +102,8 @@ map "/biology" do
 
   map "/sighting" do
   
-    #use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "biology",
-    #  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "api",
+      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
     
     use Views::Api::Index
 
@@ -112,7 +112,7 @@ map "/biology" do
       :facets => ["phylum", "class", "genus", "art", "species", "year", "month", "day", "category", "countryCode"],
       :to_solr => Biology::Sighting.to_solr
     }
-    run Npolar::Api::Core.new(nil, :storage =>Npolar::Storage::Couch.new("biology_observation"))
+    run Npolar::Api::Core.new(nil, :storage =>Npolar::Storage::Couch.new("biology_sighting"))
 
   end
 
@@ -307,7 +307,7 @@ map "/polarbear" do
 
     use Views::Api::Index
 
-    use Npolar::Rack::Solrizer, { :core => "pbsg",
+    use Npolar::Rack::Solrizer, { :core => "polarbear_interaction",
       :facets => Polarbear::Interaction.facets,
       :to_solr => Polarbear::Interaction.to_solr_lambda
   } 
