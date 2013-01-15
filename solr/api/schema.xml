@@ -104,6 +104,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 
 <field name="_id" type="string" indexed="true" stored="true" />
 <field name="_rev" type="string" indexed="true" stored="true" />
+<field name="rev" type="string" indexed="true" stored="true" />
 <field name="activity" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="accepts" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="accept_schemas" type="string" indexed="true" stored="true" multiValued="true" />
@@ -123,6 +124,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="editors" type="string" indexed="true" stored="true" />
 <field name="formats" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="investigator_emails" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="contributor_emails" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="gcmd_keywords" type="string" indexed="true" stored="true" multiValued="true" />
 
 <field name="group" type="string" indexed="true" stored="true" />
