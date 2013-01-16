@@ -114,7 +114,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="category" type="string" indexed="true" stored="true" multiValued="true"/>
 
 <field name="collection" type="string" indexed="true" stored="true" />
-<field name="contributors" type="string" indexed="true" stored="true" />
+<field name="contributors" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="country" type="string" indexed="true" stored="true" />
 <field name="day" type="string" indexed="true" stored="true" />
 <field name="draft" type="string" indexed="true" stored="true" />
