@@ -129,10 +129,19 @@ module Npolar
             # FIXME support Refine json
             # FIXME support Solr response JSON
             # json[:response][:docs].
-            json.each do |doc|
-              solr << to_solr(doc)
+            if json.is_a? Array
+              json.each do |doc|
+                solr << to_solr(doc)
+              end
+              size = solr.size
+            else
+              #Grab response from Couch (single post the response body will be the document)
+              json = Yajl::Parser.parse(response.body.first, :symbolize_keys => true)
+              
+              solr = to_solr(json)
+              size = 1
             end
-            size = solr.size
+            
             log.debug "About to POST #{size} Solr documents"
           else
             # PUT => single document
