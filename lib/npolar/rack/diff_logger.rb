@@ -19,14 +19,12 @@ module Npolar
       
       def handle(request)
         begin
-          puts request.inspect
-          puts ""
           data = Yajl::Parser.parse(request.body.read)
           request.body.rewind
 
           # try to find record by id
           response = config[:data_storage].get(data['_id'])
-	  if response[0] == 404
+          if response[0] == 404
             raise "record not found"
           end
 
