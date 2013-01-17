@@ -14,7 +14,7 @@ gem "rack-ssl" #https://github.com/josh/rack-ssl
 gem "ratom"
 gem "nokogiri"
 gem "uuidtools"
-gem "libxml-ruby", :git => "git://github.com/xml4r/libxml-ruby.git"
+gem "libxml-ruby"#,:git => "git://github.com/xml4r/libxml-ruby.git"
 gem "net-ldap"
 gem "npolar-rack-throttle", :git => "git://github.com/npolar/rack-throttle.git" #, :path => "../rack-throttle"
 gem "faraday"
@@ -30,7 +30,8 @@ gem "jsonify"
 gem "rsolr", :git => "git://github.com/mootpointer/rsolr.git", :branch => "json_update"
 
 gem "oai"
-gem "ruby-netcdf"
+#gem "ruby-netcdf"
+gem "hashdiff"
 
 group :development, :test do
   gem "thin"
