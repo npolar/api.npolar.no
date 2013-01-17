@@ -29,23 +29,34 @@ module Npolar
           end
 
           # store diff of new vs. old
-	  diff = HashDiff.diff(Yajl::Parser.parse(response[2]), data)
+          diff = HashDiff.diff(Yajl::Parser.parse(response[2]), data)
 
-	  log.debug "#{request.request_method} on #{data['_id']}" 
+          log.debug "#{request.request_method} on #{data['_id']}" 
           log.debug "user = #{request.username}"
-	  log.debug "diff = #{diff}\n"
-         
+          log.debug "diff = #{diff}\n"
+
+          # parse out workspace and collection from URI
+          uri = request.env["REQUEST_URI"].sub(/^\//, '')
+          uri_toks = uri.split("/")
+          uri_toks.pop()
+          if uri_toks.length != 2
+            raise "URI must contain workspace and collection"
+          end
+          workspace = uri_toks[0]
+          collection = uri_toks[1]
+
           post_hash = {
             :data_id => data['_id'],
-            :db => config[:data_storage].alias,
+            :workspace => workspace,
+            :collection => collection,
             :diff => diff,
-	    :username => request.username,
-	  }
+            :username => request.username,
+          }
 
-	  response = app.call(request.env)
+          response = app.call(request.env)
 
-	  if [200, 201].include?(response.status)
-	    config[:diff_storage].post(post_hash.to_json)
+          if [200, 201].include?(response.status)
+            config[:diff_storage].post(post_hash.to_json)
           end
 
           return response
