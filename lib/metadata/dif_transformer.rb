@@ -402,7 +402,7 @@ module Metadata
       object.investigators.each_with_index do |investigator, i|
         creator += "#{investigator["first_name"][0,1]}. #{investigator["last_name"]}"
         creator += ", " unless i == object.investigators.size - 1
-      end
+      end unless object.investigators.nil? || !object.investigators.any?
       
       creator
     end
