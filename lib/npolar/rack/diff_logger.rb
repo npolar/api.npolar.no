@@ -28,7 +28,7 @@ module Npolar
             raise "record not found"
           end
 
-          # store diff of new vs. old
+          # create diff of new vs. old
           diff = HashDiff.diff(Yajl::Parser.parse(response[2]), data)
 
           log.debug "#{request.request_method} on #{data['_id']}" 
@@ -53,8 +53,10 @@ module Npolar
             :username => request.username,
           }
 
+          # pass req to next layer and check for good response
           response = app.call(request.env)
 
+          # if OK, save the diff
           if [200, 201].include?(response.status)
             config[:diff_storage].post(post_hash.to_json)
           end
