@@ -17,7 +17,7 @@ module Npolar
         "Content-Type" => "application/json; charset=utf-8",
         "User-Agent" => self.name }
 
-      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit
+      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit, :alias
   
       def self.uri=uri
         if uri.respond_to? :gsub
@@ -43,6 +43,7 @@ module Npolar
           end
           read = read["read"]
         end
+        @alias = read
         @read = read.gsub(/[\/]$/, "")
         @write = write.nil? ? read : write
         @write = @write.gsub(/[\/]$/, "")
@@ -63,6 +64,19 @@ module Npolar
       end
   
       def delete(id, params={})
+        # if revision not provided, go and fetch latest rev number; store in params
+        if !params.has_key?('rev')
+          response = writer.get(id, params)
+          puts response
+          if response.status == 200
+            couch = JSON.parse(response.body)
+            puts couch
+            params["rev"] = couch["_rev"]
+          end
+        end
+
+        Npolar::Api.log.debug "Going to delete id = #{id} with rev = #{params['rev']}"
+
         response =  writer.delete(id, headers, params)
         [response.status, response.headers, response.body]
       end
