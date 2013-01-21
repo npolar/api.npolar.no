@@ -87,7 +87,9 @@ module Npolar
 
       def handle_delete(request)
         log.debug self.class.name+"#delete"
-        log.warn "NOT IMPLEMENTED: Solr delete"
+
+        rsolr.delete_by_id request.id
+
         @app.call(request.env)
       end
 
@@ -114,6 +116,11 @@ module Npolar
             log.debug "About to call @app"
             response = @app.call(request.env)
             log.debug response.inspect
+
+            # bail if db write fails
+            if ![200, 201].include?(response.status)
+              raise "DB write failed before we could write to Solr"
+            end
           end
           
           # Parse incoming JSON
