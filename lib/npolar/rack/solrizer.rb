@@ -130,19 +130,19 @@ module Npolar
           # Convert to Solr format and add (update index)
           # Notice we update Solr no matter if the upstream storage middleware succeeds or not
 
-          # get reponse from couch, it might be useful to us...
-          couch = Yajl::Parser.parse(response.body[0])
-
           # POST/no id => multiple documents
           if request.id? and "POST" == request.request_method and json.respond_to? :each
             solr = []
             # FIXME support Refine json
             # FIXME support Solr response JSON
             # json[:response][:docs].
-           
+          
+            # parse reponse from couch, it might be useful to us...
+            couch = Yajl::Parser.parse(response.body[0])
+
             # if couch responds with a populated list of ids, it has generated these for us,
             # so let's use them when we put records into solr 
-            if !couch['response']['ids'].empty?
+            if couch.has_key?('response') and couch['response'].has_key?('ids') and !couch['response']['ids'].empty?
               provide_id = true
             end
 
