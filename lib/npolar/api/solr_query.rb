@@ -8,10 +8,10 @@ class Npolar::Api::SolrQuery
    
     if qstar =~ /^[^\*]+:.+$/ 
       # remove any whitespace around :
-      qstar = qstar.sub(/\s*:\s*/, ':')
+      qstar = qstar.gsub(/\s*:\s*/, ':')
 
       # ensure 'TO' doesn't appear in any other case
-      qstar = qstar.sub(/to/i, 'TO')
+      qstar = qstar.gsub(/to/i, 'TO')
     elsif qstar =~ /^[\*]$|^\*\:\*$|^(\s+)?$/
         qstar = "*:*"
     else
