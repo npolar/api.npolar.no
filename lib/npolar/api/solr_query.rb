@@ -6,16 +6,21 @@ class Npolar::Api::SolrQuery
   def self.q(request)
     qstar = request["q"] ||= "*"
    
-    if not qstar =~ /^[^\*]+:.+$/ 
-      if qstar =~ /^[\*]$|^\*\:\*$|^(\s+)?$/
+    if qstar =~ /^[^\*]+:.+$/ 
+      # remove any whitespace around :
+      qstar = qstar.sub(/\s*:\s*/, ':')
+
+      # ensure 'TO' doesn't appear in any other case
+      qstar = qstar.sub(/to/i, 'TO')
+    elsif qstar =~ /^[\*]$|^\*\:\*$|^(\s+)?$/
         qstar = "*:*"
-      else
+    else
         #unless qstar =~ /\*/
         #  qstar = qstar.downcase #+"*"
         #end
-        qstar = "title:#{qstar} OR #{qstar} OR #{qstar}*"
-      end
+      qstar = "title:#{qstar} OR #{qstar} OR #{qstar}*"
     end
+
     qstar
   end
 end
