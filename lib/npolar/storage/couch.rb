@@ -67,10 +67,8 @@ module Npolar
         # if revision not provided, go and fetch latest rev number; store in params
         if !params.has_key?('rev')
           response = writer.get(id, params)
-          puts response
           if response.status == 200
             couch = JSON.parse(response.body)
-            puts couch
             params["rev"] = couch["_rev"]
           end
         end
@@ -127,11 +125,17 @@ module Npolar
         headers = {"Content-Type" => HEADERS["Content-Type"]}
         elapsed = Time.now-t0
         size = couch['docs'].size
-        
+        couch_ids = []
+
         if 201 == response.status
           summary = "Created #{size} CouchDB documents in #{elapsed} seconds"
           rk = "response"
           explanation =  "CouchDB success"
+
+          # couch responds with id's of written docs, parse them out
+          info = JSON.parse(response.body)
+          info.each { |row| couch_ids << row['id'] }
+          puts couch_ids
         else
           summary = JSON.parse(response.body)["reason"]
           explanation =  "CouchDB error"
@@ -140,6 +144,7 @@ module Npolar
         
         [response.status, headers , [{rk => { "status" => response.status,
           "uri" => "",
+          "ids" => couch_ids, # provide these so solrizer can use them
           "summary" => summary, "explanation" => explanation, "system" => response.headers["Server"] },
           "method" => "", "qps" => size/elapsed
           }.to_json+"\n"]]
