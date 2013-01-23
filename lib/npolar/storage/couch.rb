@@ -133,9 +133,9 @@ module Npolar
           rk = "response"
           explanation =  "CouchDB success"
 
-          # couch responds with id's of written docs, parse them out
+          # couch responds with id's of written docs, parse them out, and seed uuid with them
           info = JSON.parse(response.body)
-          info.each { |row| couch_ids << row['id'] }
+          info.each { |row| couch_ids << UUIDTools::UUID.sha1_create(UUIDTools::UUID_DNS_NAMESPACE, row['id']) }
           puts couch_ids
         else
           summary = JSON.parse(response.body)["reason"]
