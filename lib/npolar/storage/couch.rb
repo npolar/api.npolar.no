@@ -8,6 +8,7 @@ module Npolar
     class Couch
 
       JSON_ARRAY_REGEX = /^(\s+)?\[.*\](\s+)?$/
+      ALL_DOCS_QUERY_REGEX = /^\s*\{\s*"keys"\s*:.*$/
 
       LIMIT = 1000
   
@@ -152,11 +153,12 @@ module Npolar
   
       # @todo force "_id" 
       def post(data, params={})
-
-        if data =~ JSON_ARRAY_REGEX
+        if data =~ ALL_DOCS_QUERY_REGEX
+          # XXX ugly hack to route request to right place
+          return fetch_many(data)
+        elsif data =~ JSON_ARRAY_REGEX
           post_many(data, params)
         else
-
           unless data.is_a? Hash
             data = JSON.parse(data)
             data = self.class.force_id(data)
@@ -167,18 +169,15 @@ module Npolar
 
           # Turn POST into PUT so that we get a real UUID id?
 
-
-#HTTP/1.1 201 Created
-#Content-Type: application/json
-#Server: CouchDB/1.2.0 (Erlang OTP/R15B01)
-#Location: http://localhost:5984/api/svc-polar-bear-interaction
-#Etag: "1-bf53e26c83adaaf5c4e3cb12ca018a4e"
-#Date: Wed, 19 Dec 2012 11:44:56 GMT
-#Content-Length: 674
-#Cache-Control: must-revalidate
-#Connection: keep-alive
-
-
+          #HTTP/1.1 201 Created
+          #Content-Type: application/json
+          #Server: CouchDB/1.2.0 (Erlang OTP/R15B01)
+          #Location: http://localhost:5984/api/svc-polar-bear-interaction
+          #Etag: "1-bf53e26c83adaaf5c4e3cb12ca018a4e"
+          #Date: Wed, 19 Dec 2012 11:44:56 GMT
+          #Content-Length: 674
+          #Cache-Control: must-revalidate
+          #Connection: keep-alive
 
           response = writer.put(id, headers, data)
           if 201 == response.status
@@ -290,6 +289,13 @@ module Npolar
 
         # Otherwise, fallback to _all_docs
         uri = "#{read}/_all_docs?include_docs=#{true}&limit=#{limit}" #&startkey=%22#{sk}%22&endkey=%22#{ek}%22"
+      end
+
+      # retrieve all docs matching requested id's
+      # data takes form of { "keys" : [1, 2, 3, 4, 5] } 
+      def fetch_many(data)
+        response = reader.post("#{read}/_all_docs?include_docs=true", headers, data)
+        [response.status, response.headers,response.body]
       end
 
       def fetch(id,key=nil)
