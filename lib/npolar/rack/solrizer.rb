@@ -132,7 +132,7 @@ module Npolar
           # Notice we update Solr no matter if the upstream storage middleware succeeds or not
 
           # POST/no id => multiple documents
-          if request.id? and "POST" == request.request_method and json.respond_to? :each
+          if request.id? == false and "POST" == request.request_method and json.respond_to? :each
             solr = []
             # FIXME support Refine json
             # FIXME support Solr response JSON
