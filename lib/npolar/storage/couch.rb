@@ -150,9 +150,11 @@ module Npolar
           docs_hash = Hash[docs.collect { |doc| [doc["id"], doc]}]
 
           # update _revs of docs
-          conflict_ids.each do |id|
-            doc = docs_hash[id]
-            doc = update_revision(doc)
+          resp = fetch_many({ "keys" => conflict_ids }.to_json, include_docs=false)
+          resp_data = Yajl::Parser.parse(resp[2])
+          resp_data["rows"].each do |info|
+            doc = docs_hash[info["id"]]
+            doc["_rev"] = info["value"]["rev"]
             docs_to_repost << doc
           end
 
@@ -187,7 +189,7 @@ module Npolar
       def post(data, params={})
         if data =~ ALL_DOCS_QUERY_REGEX
           # XXX ugly hack to route request to right place
-          return fetch_many(data)
+          return fetch_many(data, include_docs=true)
         elsif data =~ JSON_ARRAY_REGEX
           post_many(data, params)
         else
@@ -332,8 +334,12 @@ module Npolar
 
       # retrieve all docs matching requested id's
       # data takes form of { "keys" : [1, 2, 3, 4, 5] } 
-      def fetch_many(data)
-        response = reader.post("#{read}/_all_docs?include_docs=true", headers, data)
+      def fetch_many(data, include_docs=false)
+        uri = "#{read}/_all_docs?"
+        if include_docs
+          uri += "include_docs=true"
+        end
+        response = reader.post(uri, headers, data)
         [response.status, response.headers,response.body]
       end
 
