@@ -1,4 +1,5 @@
 require "rack/client"
+require "pp"
 
 module Npolar
   module Storage
@@ -19,7 +20,11 @@ module Npolar
         "User-Agent" => self.name }
 
       attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit, :alias
-  
+
+      def log
+        Npolar::Api.log
+      end
+
       def self.uri=uri
         if uri.respond_to? :gsub
           uri = uri.gsub(/[\/]$/, "")
@@ -113,36 +118,58 @@ module Npolar
         if data !~ JSON_ARRAY_REGEX
           raise ArgumentException, "Please provide data as JSON Array"
         end
-  
-        couch = { 
-          "docs" => Yajl::Parser.parse(data).map {|doc| self.class.force_ids(doc)},
-        }
 
-        data = couch.to_json
+        docs = Yajl::Parser.parse(data)
+        docs = docs.map {|doc| self.class.force_ids(doc)} 
+
+        couch =  { "docs" => docs }
         t0 = Time.now
-        response = writer.post("_bulk_docs", headers, data)
 
-        puts "post_many: COUCH RESPONSE = #{response.body}"
+        # TRY to post them all
+        response = writer.post("_bulk_docs", headers, couch.to_json)
+
+        # collect ids couch returns, some may be generated for us
+        couch_ids = ids_from_response(response)
+
+        # conflicts? collect id's of conflicted docs
+        conflict_ids = []
         messages = Yajl::Parser.parse(response.body)
         messages.each do |msg|
           if msg.has_key? "error" and msg["error"] == "conflict"
-            puts "CONFLICT id=#{msg["id"]}"
+            log.debug "CONFLICT id=#{msg["id"]}"
+            conflict_ids << msg["id"]
           end
+        end
+
+        # if overwrite=true then repost with updated _revs, overwriting docs in db
+        if params["overwrite"] == "true" and !conflict_ids.empty?
+          # docs we will repost
+          docs_to_repost = []
+
+          # hash the docs by id
+          docs_hash = Hash[docs.collect { |doc| [doc["id"], doc]}]
+
+          # update _revs of docs
+          conflict_ids.each do |id|
+            doc = docs_hash[id]
+            doc = update_revision(doc)
+            docs_to_repost << doc
+          end
+
+          # repost to _bulk_docs
+          log.debug "Re-posting docs with fresh revisions, ids = #{conflict_ids}"
+          response = writer.post("_bulk_docs", headers, { "docs" => docs_to_repost }.to_json)
+          log.debug response.body
         end
 
         headers = {"Content-Type" => HEADERS["Content-Type"]}
         elapsed = Time.now-t0
         size = couch['docs'].size
-        couch_ids = []
 
         if 201 == response.status
-          summary = "Created #{size} CouchDB documents in #{elapsed} seconds"
+          summary = "Posted #{size} CouchDB documents in #{elapsed} seconds"
           rk = "response"
           explanation =  "CouchDB success"
-
-          # couch responds with id's of written docs, parse them out, and seed uuid with them
-          info = JSON.parse(response.body)
-          info.each { |row| couch_ids << row['id'] }
         else
           summary = JSON.parse(response.body)["reason"]
           explanation =  "CouchDB error"
@@ -165,11 +192,9 @@ module Npolar
           post_many(data, params)
         else
           unless data.is_a? Hash
-            data = JSON.parse(data)
-            data = self.class.force_ids(data) 
+            doc = Yajl::Parser.parse(data)
+            doc = self.class.force_ids(doc)
           end
-          id = data["id"]
-          data = data.to_json
 
           # Turn POST into PUT so that we get a real UUID id?
 
@@ -183,12 +208,23 @@ module Npolar
           #Cache-Control: must-revalidate
           #Connection: keep-alive
 
-          response = writer.put(id, headers, data)
+          response = writer.put(doc["id"], headers, doc.to_json)
+
+          # if conflict, and overwrite=true, autoresolve it
+          if 409 == response.status and params["overwrite"] == "true"
+            couch = Yajl::Parser.parse(response.body)
+            if couch["error"] == "conflict"
+              doc = update_revision(doc)
+              response = writer.put(doc["id"], headers, doc.to_json)
+            end
+          end
+          
           if 201 == response.status
-            couch = JSON.parse(response.body)
+            couch = Yajl::Parser.parse(response.body)
             created = reader.get(couch["id"], {"rev" => couch["rev"] })
             response.body = created.body
           end
+
           [response.status, response.headers,response.body]
   
         end
@@ -338,6 +374,25 @@ module Npolar
           use Npolar::Rack::ValidateId
           run ::Rack::Client::Handler::NetHTTP
         end
+      end
+
+      # look up couch doc by doc["id"] and update doc's _rev
+      def update_revision(doc)
+        response = get(doc["id"])
+        if response[0] == 200
+          couch_doc = Yajl::Parser.parse(response[2])
+          rev = couch_doc["_rev"]
+          doc["_rev"] = rev
+        end
+        doc
+      end
+
+      def ids_from_response(response)
+        ids = []
+        # couch responds with id's of written docs, parse them out
+        info = JSON.parse(response.body)
+        info.each { |row| ids << row['id'] }
+        ids
       end
 
       def self.force_ids(doc)
