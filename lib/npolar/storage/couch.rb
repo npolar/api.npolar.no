@@ -8,6 +8,7 @@ module Npolar
     class Couch
 
       JSON_ARRAY_REGEX = /^(\s+)?\[.*\](\s+)?$/
+      ALL_DOCS_QUERY_REGEX = /^\s*\{\s*"keys"\s*:.*$/
 
       LIMIT = 1000
   
@@ -17,7 +18,7 @@ module Npolar
         "Content-Type" => "application/json; charset=utf-8",
         "User-Agent" => self.name }
 
-      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit
+      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit, :alias
   
       def self.uri=uri
         if uri.respond_to? :gsub
@@ -43,6 +44,7 @@ module Npolar
           end
           read = read["read"]
         end
+        @alias = read
         @read = read.gsub(/[\/]$/, "")
         @write = write.nil? ? read : write
         @write = @write.gsub(/[\/]$/, "")
@@ -63,6 +65,17 @@ module Npolar
       end
   
       def delete(id, params={})
+        # if revision not provided, go and fetch latest rev number; store in params
+        if !params.has_key?('rev')
+          response = writer.get(id, params)
+          if response.status == 200
+            couch = JSON.parse(response.body)
+            params["rev"] = couch["_rev"]
+          end
+        end
+
+        Npolar::Api.log.debug "Going to delete id = #{id} with rev = #{params['rev']}"
+
         response =  writer.delete(id, headers, params)
         [response.status, response.headers, response.body]
       end
@@ -101,23 +114,35 @@ module Npolar
           raise ArgumentException, "Please provide data as JSON Array"
         end
   
-        couch = { "docs" => Yajl::Parser.parse(data).map {
-            |doc| self.class.force_underscore_id(doc)
-          }
+        couch = { 
+          "docs" => Yajl::Parser.parse(data).map {|doc| self.class.force_ids(doc)},
         }
-        # set _id from id
+
         data = couch.to_json
         t0 = Time.now
         response = writer.post("_bulk_docs", headers, data)
 
+        puts "post_many: COUCH RESPONSE = #{response.body}"
+        messages = Yajl::Parser.parse(response.body)
+        messages.each do |msg|
+          if msg.has_key? "error" and msg["error"] == "conflict"
+            puts "CONFLICT id=#{msg["id"]}"
+          end
+        end
+
         headers = {"Content-Type" => HEADERS["Content-Type"]}
         elapsed = Time.now-t0
         size = couch['docs'].size
-        
+        couch_ids = []
+
         if 201 == response.status
           summary = "Created #{size} CouchDB documents in #{elapsed} seconds"
           rk = "response"
           explanation =  "CouchDB success"
+
+          # couch responds with id's of written docs, parse them out, and seed uuid with them
+          info = JSON.parse(response.body)
+          info.each { |row| couch_ids << row['id'] }
         else
           summary = JSON.parse(response.body)["reason"]
           explanation =  "CouchDB error"
@@ -126,40 +151,37 @@ module Npolar
         
         [response.status, headers , [{rk => { "status" => response.status,
           "uri" => "",
+          "ids" => couch_ids, # provide these so solrizer can use them
           "summary" => summary, "explanation" => explanation, "system" => response.headers["Server"] },
           "method" => "", "qps" => size/elapsed
           }.to_json+"\n"]]
       end
   
-      # @todo force "_id" 
       def post(data, params={})
-
-        if data =~ JSON_ARRAY_REGEX
+        if data =~ ALL_DOCS_QUERY_REGEX
+          # XXX ugly hack to route request to right place
+          return fetch_many(data)
+        elsif data =~ JSON_ARRAY_REGEX
           post_many(data, params)
         else
-
           unless data.is_a? Hash
             data = JSON.parse(data)
-            data = self.class.force_id(data)
-            data = self.class.force_underscore_id(data) 
+            data = self.class.force_ids(data) 
           end
           id = data["id"]
           data = data.to_json
 
           # Turn POST into PUT so that we get a real UUID id?
 
-
-#HTTP/1.1 201 Created
-#Content-Type: application/json
-#Server: CouchDB/1.2.0 (Erlang OTP/R15B01)
-#Location: http://localhost:5984/api/svc-polar-bear-interaction
-#Etag: "1-bf53e26c83adaaf5c4e3cb12ca018a4e"
-#Date: Wed, 19 Dec 2012 11:44:56 GMT
-#Content-Length: 674
-#Cache-Control: must-revalidate
-#Connection: keep-alive
-
-
+          #HTTP/1.1 201 Created
+          #Content-Type: application/json
+          #Server: CouchDB/1.2.0 (Erlang OTP/R15B01)
+          #Location: http://localhost:5984/api/svc-polar-bear-interaction
+          #Etag: "1-bf53e26c83adaaf5c4e3cb12ca018a4e"
+          #Date: Wed, 19 Dec 2012 11:44:56 GMT
+          #Content-Length: 674
+          #Cache-Control: must-revalidate
+          #Connection: keep-alive
 
           response = writer.put(id, headers, data)
           if 201 == response.status
@@ -182,7 +204,6 @@ module Npolar
         if data.is_a? Hash
           data = data.to_json
         end
-
 
         # params?
         #if params.key? "attachment"
@@ -273,6 +294,13 @@ module Npolar
         uri = "#{read}/_all_docs?include_docs=#{true}&limit=#{limit}" #&startkey=%22#{sk}%22&endkey=%22#{ek}%22"
       end
 
+      # retrieve all docs matching requested id's
+      # data takes form of { "keys" : [1, 2, 3, 4, 5] } 
+      def fetch_many(data)
+        response = reader.post("#{read}/_all_docs?include_docs=true", headers, data)
+        [response.status, response.headers,response.body]
+      end
+
       def fetch(id,key=nil)
 
         begin
@@ -312,18 +340,17 @@ module Npolar
         end
       end
 
-      # Force id
-      def self.force_id(doc)
-        unless doc.key? "id"
-          doc["id"] = self.uuid(doc)
-        end
-        doc
-      end
-
-      # Force _id from id
-      def self.force_underscore_id(doc)
-        if doc.key? "id" and not doc.key? "_id"
-          doc["_id"] = doc["id"].to_s
+      def self.force_ids(doc)
+        # if _id defined make sure id=_id
+        if doc.key? "_id" and !doc["_id"].to_s.empty?
+          doc["id"] = doc["_id"]
+        # if _id not defined and id defined, _id=id
+        elsif doc.key? "id" and !doc["id"].to_s.empty?
+          doc["_id"] = doc["id"]
+        # no _id or id, then generate uuid and set _id=id=uuid
+        else
+          doc["_id"] = self.uuid(doc)
+          doc["id"] = doc["_id"]
         end
         doc
       end
@@ -332,7 +359,6 @@ module Npolar
         UUIDTools::UUID.timestamp_create
       end
 
-
       def limit
         @limit ||= LIMIT
       end
@@ -340,8 +366,6 @@ module Npolar
       def reader
         client(read+"/")
       end
-
-
       
       def writer
         client(write+"/")

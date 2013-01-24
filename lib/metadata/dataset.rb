@@ -204,11 +204,12 @@ module Metadata
           
         end
 
-      text = []
-      text += solr.map {|k,v| "#{k} = #{v} | "}
-      solr[:text] = text.join("")
+      text = ""
+      self.to_hash.each do |k,v|
+         text += "#{k} = #{v} | "
+      end
+      solr[:text] = text
 
-      
       solr[:link_edit] = "#{BASE.gsub(/\/$/, "")}/#{id}.json"
       solr[:link_html] = "http://data.npolar.no/metadata/dataset/#{id}"
       solr[:link_dif] = "/metadata/dataset/#{id}.dif"

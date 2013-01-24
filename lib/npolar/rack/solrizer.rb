@@ -1,4 +1,6 @@
 # encoding: utf-8
+require 'pp'
+
 module Npolar
 
   module Rack
@@ -77,7 +79,6 @@ module Npolar
         if request["q"] and "POST" == request.request_method
           # search
         end
-
         case request.request_method
           when "DELETE" then handle_delete(request)
           when "POST", "PUT" then handle_save(request)
@@ -87,7 +88,9 @@ module Npolar
 
       def handle_delete(request)
         log.debug self.class.name+"#delete"
-        log.warn "NOT IMPLEMENTED: Solr delete"
+
+        rsolr.delete_by_id request.id
+
         @app.call(request.env)
       end
 
@@ -114,6 +117,11 @@ module Npolar
             log.debug "About to call @app"
             response = @app.call(request.env)
             log.debug response.inspect
+
+            # bail if db write fails
+            if ![200, 201].include?(response.status)
+              raise "DB write failed before we could write to Solr"
+            end
           end
           
           # Parse incoming JSON
@@ -124,13 +132,26 @@ module Npolar
           # Notice we update Solr no matter if the upstream storage middleware succeeds or not
 
           # POST/no id => multiple documents
-          if false == request.id? and "POST" == request.request_method and json.respond_to? :each
+          if request.id? == false and "POST" == request.request_method and json.respond_to? :each
             solr = []
             # FIXME support Refine json
             # FIXME support Solr response JSON
             # json[:response][:docs].
+          
+            # parse reponse from couch, it might be useful to us...
+            couch = Yajl::Parser.parse(response.body[0])
+
+            # if couch responds with a populated list of ids, it has generated these for us,
+            # so let's use them when we put records into solr 
+            if couch.has_key?('response') and couch['response'].has_key?('ids') and !couch['response']['ids'].empty?
+              provide_id = true
+            end
+
             if json.is_a? Array
-              json.each do |doc|
+              json.each_with_index do |doc, index|
+                if provide_id
+                  doc['id'] = couch['response']['ids'][index]
+                end
                 solr << to_solr(doc)
               end
               size = solr.size
@@ -199,7 +220,6 @@ module Npolar
         log.debug self.class.name+"#handle_search"
         begin
           
-        
           fq_bbox = []
           if params["bbox"]
             #w,s,e,n = bbox = params["bbox"].split(" ").map {|c|c.to_f}
@@ -207,6 +227,29 @@ module Npolar
           end
           
           response = search
+
+          # if bulk=true in query, proceed
+          if request["bulk"] and request["bulk"] == "true"
+
+            # collect id's from search results
+            ids = []
+            response["response"]["docs"].each do |doc|
+              ids << doc["id"]
+            end
+
+            log.debug("Bulk-query for ids: #{ids}")
+
+            # prepare to POST ids to couch to bulk-fetch the actual documents
+            post_env = request.env
+            post_env["REQUEST_METHOD"] = "POST"
+            post_env["rack.input"] = StringIO.new({ "keys" => ids }.to_json)
+            post_env["CONTENT_TYPE"] = "application/json"
+
+            # POST to couch and return
+            resp = @app.call(post_env)
+            return [200, headers("json"), resp.body]
+          end
+
           #log.debug "Solr response: #{response}"
 
           if ["html", "json", "", nil].include? request.format
@@ -218,7 +261,6 @@ module Npolar
             [200, headers(request.format), [response]]
           end
 
-          
         rescue RSolr::Error::Http => e
           log.debug self.class.name+"#handle_search raised RSolr::Error::Http"
           json_error_from_exception(e)
