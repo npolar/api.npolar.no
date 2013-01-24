@@ -114,14 +114,21 @@ module Npolar
           raise ArgumentException, "Please provide data as JSON Array"
         end
   
-        couch = { "docs" => Yajl::Parser.parse(data).map {
-            |doc| self.class.force_underscore_id(doc)
-          }
+        couch = { 
+          "docs" => Yajl::Parser.parse(data).map {|doc| self.class.force_ids(doc)},
         }
-        # set _id from id
+
         data = couch.to_json
         t0 = Time.now
         response = writer.post("_bulk_docs", headers, data)
+
+        puts "post_many: COUCH RESPONSE = #{response.body}"
+        messages = Yajl::Parser.parse(response.body)
+        messages.each do |msg|
+          if msg.has_key? "error" and msg["error"] == "conflict"
+            puts "CONFLICT id=#{msg["id"]}"
+          end
+        end
 
         headers = {"Content-Type" => HEADERS["Content-Type"]}
         elapsed = Time.now-t0
@@ -135,8 +142,7 @@ module Npolar
 
           # couch responds with id's of written docs, parse them out, and seed uuid with them
           info = JSON.parse(response.body)
-          info.each { |row| couch_ids << UUIDTools::UUID.sha1_create(UUIDTools::UUID_DNS_NAMESPACE, row['id']) }
-          puts couch_ids
+          info.each { |row| couch_ids << row['id'] }
         else
           summary = JSON.parse(response.body)["reason"]
           explanation =  "CouchDB error"
@@ -151,7 +157,6 @@ module Npolar
           }.to_json+"\n"]]
       end
   
-      # @todo force "_id" 
       def post(data, params={})
         if data =~ ALL_DOCS_QUERY_REGEX
           # XXX ugly hack to route request to right place
@@ -161,8 +166,7 @@ module Npolar
         else
           unless data.is_a? Hash
             data = JSON.parse(data)
-            data = self.class.force_id(data)
-            data = self.class.force_underscore_id(data) 
+            data = self.class.force_ids(data) 
           end
           id = data["id"]
           data = data.to_json
@@ -200,7 +204,6 @@ module Npolar
         if data.is_a? Hash
           data = data.to_json
         end
-
 
         # params?
         #if params.key? "attachment"
@@ -337,18 +340,17 @@ module Npolar
         end
       end
 
-      # Force id
-      def self.force_id(doc)
-        unless doc.key? "id"
-          doc["id"] = self.uuid(doc)
-        end
-        doc
-      end
-
-      # Force _id from id
-      def self.force_underscore_id(doc)
-        if doc.key? "id" and not doc.key? "_id"
-          doc["_id"] = doc["id"].to_s
+      def self.force_ids(doc)
+        # if _id defined make sure id=_id
+        if doc.key? "_id" and !doc["_id"].to_s.empty?
+          doc["id"] = doc["_id"]
+        # if _id not defined and id defined, _id=id
+        elsif doc.key? "id" and !doc["id"].to_s.empty?
+          doc["_id"] = doc["id"]
+        # no _id or id, then generate uuid and set _id=id=uuid
+        else
+          doc["_id"] = self.uuid(doc)
+          doc["id"] = doc["_id"]
         end
         doc
       end
@@ -357,7 +359,6 @@ module Npolar
         UUIDTools::UUID.timestamp_create
       end
 
-
       def limit
         @limit ||= LIMIT
       end
@@ -365,8 +366,6 @@ module Npolar
       def reader
         client(read+"/")
       end
-
-
       
       def writer
         client(write+"/")
