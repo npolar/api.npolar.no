@@ -81,7 +81,7 @@ module Metadata
 
 
     def href(id)
-      "#{base.gsub(/\/$/, "")}/#{id}"
+      "#{base.gsub(/\/$/, "")}/#{id}.json"
     end
     
     def _id
@@ -272,7 +272,7 @@ module Metadata
       object.Parent_DIF.each do | parent |
         links << {
           "rel" => "parent",
-          "href" => href(parent)
+          "href" => href(parent.gsub(/\./, "-"))
         } unless parent.nil?
       end unless object.Parent_DIF.nil?
       
