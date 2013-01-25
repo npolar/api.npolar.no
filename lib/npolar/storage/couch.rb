@@ -19,7 +19,7 @@ module Npolar
         "Content-Type" => "application/json; charset=utf-8",
         "User-Agent" => self.name }
 
-      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit, :alias
+      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit
 
       def log
         Npolar::Api.log
@@ -47,7 +47,6 @@ module Npolar
           end
           read = read["read"]
         end
-        @alias = read
         @read = read.gsub(/[\/]$/, "")
         @write = write.nil? ? read : write
         @write = @write.gsub(/[\/]$/, "")
