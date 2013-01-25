@@ -36,8 +36,6 @@ module Npolar
         @@uri ||= URI  #"http://localhost:5984"
       end
 
-
-
       def accepts
         @accepts ||= ["json"]
       end
@@ -136,7 +134,7 @@ module Npolar
         messages = Yajl::Parser.parse(response.body)
         messages.each do |msg|
           if msg.has_key? "error" and msg["error"] == "conflict"
-            log.debug "CONFLICT id=#{msg["id"]}"
+            #log.debug "CONFLICT id=#{msg["id"]}"
             conflict_ids << msg["id"]
           end
         end
@@ -168,17 +166,28 @@ module Npolar
         elapsed = Time.now-t0
         size = couch['docs'].size
 
-        if 201 == response.status
+        # need to override default couch bulk-query response status if we had conflicts
+        if !conflict_ids.empty? 
+          status = 409
+        else
+          status = response.status
+        end
+
+        if 201 == status
           summary = "Posted #{size} CouchDB documents in #{elapsed} seconds"
           rk = "response"
           explanation =  "CouchDB success"
+        elsif 409 == status
+          summary = "document write conflict"
+          explanation  = "CouchDB error"
+          rk = "error"
         else
           summary = JSON.parse(response.body)["reason"]
           explanation =  "CouchDB error"
           rk = "error"
         end
         
-        [response.status, headers , [{rk => { "status" => response.status,
+        [status, headers , [{rk => { "status" => status,
           "uri" => "",
           "ids" => couch_ids, # provide these so solrizer can use them
           "summary" => summary, "explanation" => explanation, "system" => response.headers["Server"] },
@@ -396,7 +405,7 @@ module Npolar
       def ids_from_response(response)
         ids = []
         # couch responds with id's of written docs, parse them out
-        info = JSON.parse(response.body)
+        info = Yajl::Parser.parse(response.body)
         info.each { |row| ids << row['id'] }
         ids
       end
