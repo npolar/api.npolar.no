@@ -107,17 +107,17 @@ module Npolar
           # Get all the keys from the response
           response_keys = Yajl::Parser.parse(response.body.first)['response']['ids']
           
-          # Set keys for newly created docs  
+          # Map the document keys to the keys for the change log
+          # If no document key was available in the post data
+          # get the newly created one from the reponse
+          change_keys = []
           original_keys.each_with_index do |key, i|
             if key.nil?
-              original_keys[i] = response_keys[i]
+              @doc_id = response_keys[i]
+            else
+              @doc_id = key
             end
-          end
-          
-          change_keys = []
-          # Map the document keys to the keys for the change log
-          original_keys.each do |key|
-            @doc_id = key
+            
             change_keys << change_id
           end
           
