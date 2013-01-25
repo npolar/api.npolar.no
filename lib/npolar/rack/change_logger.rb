@@ -112,8 +112,8 @@ module Npolar
           # get the newly created one from the reponse
           change_keys = []
           original_keys.each_with_index do |key, i|
-            if key.nil?
-              @doc_id = response_keys[i]
+            if key.empty?
+              @doc_id = original_keys[i] = response_keys[i]
             else
               @doc_id = key
             end
@@ -140,7 +140,7 @@ module Npolar
               change_logs[i]["changes"] << change_log
             else
               new_log = details
-              new_log["id"] = change_id
+              new_log["id"] = change_keys[i]
               change_logs[i] = new_log
             end
           end
