@@ -27,6 +27,18 @@ module Npolar
         @updated.nil? ? @updated = {} :
         request.body.rewind
         
+        unless batch? && create?
+          response = update_single
+        else
+          response = update_multiple
+        end
+        
+        response
+      end
+      
+      protected
+      
+      def update_single
         # Ask storage for the current document
         status, headers, body = config[:data_storage].get(@doc_id) unless @doc_id.nil?
         
@@ -37,11 +49,12 @@ module Npolar
         # Pass request down the middleware stack
         response = app.call(@env)
         
-        # Set id to the new document id on create
-        @doc_id ||= Yajl::Parser.parse(response.body.first)["_id"] 
-        
         # When all operations are successfull save changes
-        if [200, 201].include?(response.status)
+        if success?(response.status)
+        
+          # Set id to the new document id on create
+          @doc_id ||= Yajl::Parser.parse(response.body.first)["_id"] 
+          
           # Get the past changes for this record
           status, headers, body = config[:diff_storage].get(change_id)
           
@@ -57,16 +70,114 @@ module Npolar
           
           log.info "@ChangeLogger: Saving changes ==> #{changes}"
           status, headers, body = config[:diff_storage].put(change_id, changes)
-          log.error "@ChangeLogger: ERROR! received #{status} while saving" unless [200, 201].include?(status)
+          log.error "@ChangeLogger: ERROR! received #{status} while saving" unless success?(status)
         end
         
-        response        
+        response
       end
       
-      protected
+      def update_multiple
+        log.info "@ChangeLogger: About to save changes for multiple documents"
+        
+        update_batch = @updated
+        
+        # Get ids for documents in the batch
+        original_keys = []
+        update_batch.each do |doc|
+          if doc["_id"]
+            original_keys << doc["_id"]
+          elsif doc["id"]
+            original_keys << doc["id"]
+          else
+            original_keys << ""
+          end
+        end
+        
+        # Do a bulk request for current documents
+        status, headers, body = config[:data_storage].post({:keys => original_keys}.to_json)
+        
+        # Extract documents from the bulk response
+        current_batch = extract_docs(body)
+        
+        # Send request down the stack
+        response = app.call(@env)
+        
+        if success?(response.status)
+          
+          # Get all the keys from the response
+          response_keys = Yajl::Parser.parse(response.body.first)['response']['ids']
+          
+          # Map the document keys to the keys for the change log
+          # If no document key was available in the post data
+          # get the newly created one from the reponse
+          change_keys = []
+          original_keys.each_with_index do |key, i|
+            if key.empty?
+              @doc_id = original_keys[i] = response_keys[i]
+            else
+              @doc_id = key
+            end
+            
+            change_keys << change_id
+          end
+          
+          req = {:keys => change_keys}
+          
+          # Batch get any changes already in the database
+          status, headers, body = config[:diff_storage].post(req.to_json)
+          
+          # Get the actual logs from the response
+          change_logs = extract_docs(body)
+          
+          # Merge changes or create a new log
+          update_batch.each_with_index do |update, i|
+            
+            @updated = update
+            @current = current_batch[i]
+            @doc_id = original_keys[i]
+            
+            unless change_logs[i] == {}
+              change_logs[i]["changes"] << change_log
+            else
+              new_log = details
+              new_log["id"] = change_keys[i]
+              change_logs[i] = new_log
+            end
+          end
+          
+          # Do a batch post with all the changes
+          status, headers, body = config[:diff_storage].post(change_logs.to_json)
+          log.info "@ChangeLogger: Batch save exited with status code ==> #{status}"
+        end
+        
+        response
+      end
       
       def change?(verb)
         ["PUT", "POST", "DELETE"].include?(verb)
+      end
+      
+      def batch?
+        @updated.is_a? Array
+      end
+      
+      def create?
+        return true if @request.request_method == "POST"
+        false
+      end
+      
+      def success?(status)
+        [200, 201].include?(status)
+      end
+      
+      def details
+        {
+          :document => @doc_id,
+          :workspace => workspace,
+          :collection => collection,
+          :additional_namespaces => additional_namespaces,
+          :changes => [change_log]
+        }
       end
       
       def change_log
@@ -86,16 +197,6 @@ module Npolar
       # it's workspace collection and id.
       def change_id
         uuid(workspace + collection + @doc_id)
-      end
-      
-      def details
-        {
-          :document => @doc_id,
-          :workspace => workspace,
-          :collection => collection,
-          :additional_namespaces => additional_namespaces,
-          :changes => [change_log]
-        }
       end
       
       # The first element of the result array is the workspace.
@@ -141,6 +242,21 @@ module Npolar
       def path
         return @env["REQUEST_PATH"].gsub(/#{@env["PATH_INFO"]}/, "") unless @env["PATH_INFO"] == '/'
         @env["REQUEST_PATH"][0..-2]
+      end
+      
+      # Gets the actual documents from a bulk response and
+      # return an empty Hash for non exisiting documents
+      def extract_docs(bulk)
+        documents = []
+        Yajl::Parser.parse(bulk)["rows"].each do |doc|
+          unless doc["doc"].nil?
+            documents << doc["doc"]
+          else
+            documents << {}
+          end
+        end
+        
+        documents
       end
       
     end
