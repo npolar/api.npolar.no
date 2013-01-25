@@ -50,7 +50,7 @@ module Npolar
         response = app.call(@env)
         
         # When all operations are successfull save changes
-        if [200, 201].include?(response.status)
+        if success?(response.status)
         
           # Set id to the new document id on create
           @doc_id ||= Yajl::Parser.parse(response.body.first)["_id"] 
@@ -70,17 +70,15 @@ module Npolar
           
           log.info "@ChangeLogger: Saving changes ==> #{changes}"
           status, headers, body = config[:diff_storage].put(change_id, changes)
-          log.error "@ChangeLogger: ERROR! received #{status} while saving" unless [200, 201].include?(status)
+          log.error "@ChangeLogger: ERROR! received #{status} while saving" unless success?(status)
         end
         
         response
       end
       
       def update_multiple
-        log.info "@ChangeLogger: Saving multiple isn't implemented"
+        log.info "@ChangeLogger: About to save changes for multiple documents"
         
-        ########################## INITIAL STATE RETRIEVAL #######################
-  
         update_batch = @updated
         
         # Get ids for documents in the batch
@@ -104,7 +102,7 @@ module Npolar
         # Send request down the stack
         response = app.call(@env)
         
-        if [200, 201].include?(response.status)
+        if success?(response.status)
           
           # Get all the keys from the response
           response_keys = Yajl::Parser.parse(response.body.first)['response']['ids']
@@ -166,6 +164,10 @@ module Npolar
       def create?
         return true if @request.request_method == "POST"
         false
+      end
+      
+      def success?(status)
+        [200, 201].include?(status)
       end
       
       def details
