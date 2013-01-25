@@ -139,6 +139,13 @@ module Npolar
           end
         end
 
+        # if we had conflicts
+        if !conflict_ids.empty? 
+          status = 409
+        else
+          status = response.status
+        end
+
         # if overwrite=true then repost with updated _revs, overwriting docs in db
         if params["overwrite"] == "true" and !conflict_ids.empty?
           # docs we will repost
@@ -160,18 +167,13 @@ module Npolar
           log.debug "Re-posting docs with fresh revisions, ids = #{conflict_ids}"
           response = writer.post("_bulk_docs", headers, { "docs" => docs_to_repost }.to_json)
           log.debug response.body
+
+          status = response.status
         end
 
         headers = {"Content-Type" => HEADERS["Content-Type"]}
         elapsed = Time.now-t0
         size = couch['docs'].size
-
-        # need to override default couch bulk-query response status if we had conflicts
-        if !conflict_ids.empty? 
-          status = 409
-        else
-          status = response.status
-        end
 
         if 201 == status
           summary = "Posted #{size} CouchDB documents in #{elapsed} seconds"
