@@ -120,7 +120,7 @@ module Npolar
 
             # bail if db write fails
             if ![200, 201].include?(response.status)
-              raise "DB write failed before we could write to Solr"
+              error_hash response.status, "DB write failed before we could write to Solr"
             end
           end
           
