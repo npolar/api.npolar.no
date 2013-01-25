@@ -81,17 +81,8 @@ module Npolar
         
         update_batch = @updated
         
-        # Get ids for documents in the batch
-        original_keys = []
-        update_batch.each do |doc|
-          if doc["_id"]
-            original_keys << doc["_id"]
-          elsif doc["id"]
-            original_keys << doc["id"]
-          else
-            original_keys << ""
-          end
-        end
+        # Get ids for documents in the batch        
+        original_keys = update_batch.map{|doc| doc["_id"] ||= doc["id"]}
         
         # Do a bulk request for current documents
         status, headers, body = config[:data_storage].post({:keys => original_keys}.to_json)
@@ -112,7 +103,7 @@ module Npolar
           # get the newly created one from the reponse
           change_keys = []
           original_keys.each_with_index do |key, i|
-            if key.empty?
+            if key.nil?
               @doc_id = original_keys[i] = response_keys[i]
             else
               @doc_id = key
@@ -247,16 +238,8 @@ module Npolar
       # Gets the actual documents from a bulk response and
       # return an empty Hash for non exisiting documents
       def extract_docs(bulk)
-        documents = []
-        Yajl::Parser.parse(bulk)["rows"].each do |doc|
-          unless doc["doc"].nil?
-            documents << doc["doc"]
-          else
-            documents << {}
-          end
-        end
-        
-        documents
+        rows = Yajl::Parser.parse(bulk)["rows"]
+        documents = rows.map {|row| row['doc'] ||= {} }
       end
       
     end
