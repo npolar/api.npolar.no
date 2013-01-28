@@ -24,6 +24,7 @@ describe Metadata::DifTransformer do
       
       before(:each) do
         @transformer = Metadata::DifTransformer.new( JSON.parse( File.read( "spec/data/dif.json" ) ) )
+        @transformer.base = "http://api.npolar.no/"
       end
       
       it "should return a Hash" do
@@ -42,15 +43,7 @@ describe Metadata::DifTransformer do
       context "#_id" do
         
         it "should map Entry_ID + collection uri to a namespaced UUID" do
-          @transformer._id.should == @transformer.uuid( Metadata::Dataset.uri + "/" + @transformer.object.Entry_ID)
-        end
-        
-      end
-      
-      context "#id" do
-      
-        it "should map Entry_ID to id" do
-          @transformer.id.should == @transformer.object.Entry_ID
+          @transformer._id.should == @transformer.object.Entry_ID.gsub(/\./, "-")
         end
         
       end
@@ -317,7 +310,7 @@ describe Metadata::DifTransformer do
         it "should store parent_DIF information as a link to the parent" do
           @transformer.links[2].should include(
             "rel" => "parent",
-            "href" => @transformer.uuid( Metadata::Dataset.uri + "/" + @transformer.object.Parent_DIF[0])
+            "href" => @transformer.base + @transformer.object.Parent_DIF[0] + ".json"
           )
         end
         
