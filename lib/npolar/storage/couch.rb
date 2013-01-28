@@ -115,35 +115,34 @@ module Npolar
         if data !~ JSON_ARRAY_REGEX
           raise ArgumentException, "Please provide data as JSON Array"
         end
+        t0 = Time.now
 
+        # parse docs and make sure we have 'id' and '_id' set
         docs = Yajl::Parser.parse(data)
         docs = docs.map {|doc| self.class.force_ids(doc)} 
 
+        # try to post them all
         couch =  { "docs" => docs }
-        t0 = Time.now
-
-        # TRY to post them all
         response = writer.post("_bulk_docs", headers, couch.to_json)
 
-        # collect ids couch returns, some may be generated for us
-        couch_ids = ids_from_response(response)
-
-        # conflicts? collect id's of conflicted docs
+        # keep ids here
         conflict_ids = []
+        couch_ids = []
+
+        # inspect for any conflicts
         messages = Yajl::Parser.parse(response.body)
         messages.each do |msg|
           if msg.has_key? "error" and msg["error"] == "conflict"
-            #log.debug "CONFLICT id=#{msg["id"]}"
+            # collect any conflicted ids
             conflict_ids << msg["id"]
           end
+
+          # collect all generated ids
+          couch_ids << msg["id"]
         end
 
         # if we had conflicts
-        if !conflict_ids.empty? 
-          status = 409
-        else
-          status = response.status
-        end
+        status = !conflict_ids.empty? ? 409 : response.status
 
         # if overwrite=true then repost with updated _revs, overwriting docs in db
         if params["overwrite"] == "true" and !conflict_ids.empty?
@@ -157,16 +156,15 @@ module Npolar
           resp = fetch_many({ "keys" => conflict_ids }.to_json, include_docs=false)
           resp_data = Yajl::Parser.parse(resp[2])
           resp_data["rows"].each do |info|
-            doc = docs_hash[info["id"]]
-            doc["_rev"] = info["value"]["rev"]
-            docs_to_repost << doc
+            if docs_hash.has_key? info["id"]
+              doc = docs_hash[info["id"]]
+              doc["_rev"] = info["value"]["rev"]
+              docs_to_repost << doc
+            end
           end
 
           # repost to _bulk_docs
-          log.debug "Re-posting docs with fresh revisions, ids = #{conflict_ids}"
           response = writer.post("_bulk_docs", headers, { "docs" => docs_to_repost }.to_json)
-          log.debug response.body
-
           status = response.status
         end
 
@@ -349,7 +347,7 @@ module Npolar
           uri += "include_docs=true"
         end
         response = reader.post(uri, headers, data)
-        [response.status, response.headers,response.body]
+        [response.status, response.headers, response.body]
       end
 
       def fetch(id,key=nil)
