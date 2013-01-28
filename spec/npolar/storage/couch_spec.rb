@@ -19,8 +19,15 @@ describe Npolar::Storage::Couch do
 
     it "POST-ing single document, if PUT gives us 201, post() should return 201" do
       @couch.stub(:writer) {  
-        double(::Rack::Client.new("uri"), :put => Npolar::Rack::Response.new(StringIO.new("{'id' : '12345a', 'rev' : '54321b'}"), 201, {"Content-Type" => "application/json"}))
+        double(::Rack::Client.new("uri"), :put => Rack::MockResponse.new(201, {"Content-Type" => "application/json"}, [{'id' => '12345a', 'rev' =>'54321b'}.to_json]))
       }
+
+      @couch.stub(:reader) {
+        double(::Rack::Client.new("uri"), :get => Rack::MockResponse.new(201, {"Content-Type" => "application/json"}, [{'id' => '12345a', 'rev' =>'54321b'}.to_json]))
+      }
+
+      resp = Rack::MockResponse.new(201, {"Content-Type" => "application/json"}, [{'id' => '12345a', 'rev' =>'54321b'}.to_json])
+
       status, headers, body = @couch.post({ "id" => "12345a", "foo" => "bar" }.to_json)
       status.should == 201
     end
