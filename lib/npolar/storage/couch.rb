@@ -233,11 +233,10 @@ module Npolar
           
           if 201 == response.status
             couch = Yajl::Parser.parse(response.body)
-            created = reader.get(couch["id"], {"rev" => couch["rev"] })
-            response.body = created.body
+            response = reader.get(couch["id"], {"rev" => couch["rev"] })
           end
 
-          [response.status, response.headers,response.body]
+          [response.status, response.headers, response.body]
   
         end
   
