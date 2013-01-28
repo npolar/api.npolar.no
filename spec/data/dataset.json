@@ -3,7 +3,7 @@
     "_rev": "Some Revision",
     "title": "Some Title",
     "summary": "Some Summary",
-    "licenses": [
+    "licences": [
         "http://creativecommons.org/licenses/by/3.0/no/",
         "http://data.norge.no/nlod/no/1.0"
     ],
