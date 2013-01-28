@@ -33,6 +33,60 @@ describe Npolar::Storage::Couch do
     end
   end
 
+  context "#post_many" do
+    it "with no overwrite and posting conflicting records, expect 409" do
+      @couch.stub(:writer) {
+        double(::Rack::Client.new("uri"), :post => Rack::MockResponse.new(409, {"Content-Type" => "application/json"},[ [{ "id" => 1, "error" => "conflict"}, { "id" => 2, "error" => "conflict"}, {"id" => 3}, {"id" => 4}].to_json ]))
+      }
+
+      status, headers, body = @couch.post_many([{"id" => 1}, {"id" => 2}, {"id" => 3}, {"id" => 4}].to_json)
+      message = Yajl::Parser.parse(body[0])
+      message.should have_key("error")
+      message["error"].should have_key("status")
+      message["error"]["status"].should == 409
+    end
+
+    it "with no overwrite and posting OK records, expect 201" do
+      @couch.stub(:writer) {
+        double(::Rack::Client.new("uri"), :post => Rack::MockResponse.new(201, {"Content-Type" => "application/json"},[ [{ "id" => 1}, { "id" => 2}, {"id" => 3}, {"id" => 4}].to_json ]))
+      }
+
+      status, headers, body = @couch.post_many([{"id" => 1}, {"id" => 2}, {"id" => 3}, {"id" => 4}].to_json)
+      message = Yajl::Parser.parse(body[0])
+      message.should have_key("response")
+      message["response"].should have_key("status")
+      message["response"]["status"].should == 201
+    end
+
+    it "with overwrite=true and posting conflicting records, expect 201" do
+      client = double(::Rack::Client.new("uri"))
+      client.stub(:post).and_return( Rack::MockResponse.new(409, {"Content-Type" => "application/json"}, [ [{ "id" => 1, "error" => "conflict"}, { "id" => 2, "error" => "conflict"}, {"id" => 3}, {"id" => 4}].to_json ]),
+                                     Rack::MockResponse.new(201, {"Content-Type" => "application/json"}, [ "" ]) ) 
+
+      @couch.stub(:writer) { client }
+      @couch.stub(:fetch_many) { 
+        [ 201, 
+          {"Content-Type" => "application/json"},
+          { "rows" => 
+            [
+              { 
+                "id" => "1", 
+                "value" => { "rev" => "asdf1" } 
+              }
+            ]
+          }.to_json 
+        ]
+      }
+
+      status, headers, body = @couch.post_many([{"id" => 1}, {"id" => 2}, {"id" => 3}, {"id" => 4}].to_json, { "overwrite" => "true" })
+      message = Yajl::Parser.parse(body[0])
+      message.should have_key("response")
+      message["response"].should have_key("status")
+      message["response"]["status"].should == 201
+    end
+
+  end
+  
   context "#update_revision" do
     it "if doc has an id matching one in db, _rev should be updated" do
       @couch.stub(:get => [200, "asdf", { "id" => "a100a", "_rev" => "2343434fdfdfdfdf", "foo" => "bar"}.to_json])
