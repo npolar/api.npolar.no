@@ -45,11 +45,7 @@ module Npolar
         data.reject!{|k,v| !v.is_a?( Float ) && (v.nil? || v.empty? )}
         
         data.each do |k,v|
-          if v.is_a? Hash
-            data[k] = clean_hash(v)
-          elsif v.is_a? Array
-            data[k] = clean_array(v)
-          end
+          clean(v)
         end
         
         data
@@ -59,11 +55,7 @@ module Npolar
         data.reject!{|e| !e.is_a?( Float ) && (e.nil? || e.empty?)}
         
         data.each_with_index do |e, i|
-          if e.is_a? Hash
-            data[i] = clean_hash(e)
-          elsif e.is_a? Array
-            data[i] = clean_array(e)
-          end
+          clean(e)
         end
         
         data
