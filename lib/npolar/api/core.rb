@@ -33,7 +33,6 @@ module Npolar
           handle(request)
         end
       rescue => e
-
         log.fatal e.class.name+": "+e.message
         log.fatal "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
 
@@ -46,38 +45,38 @@ module Npolar
     # @return Npolar::Rack::Response or [status, headers, body#each]
     def handle(request)
 
-      log.debug self.class.name+"#handle [#{request.request_method} #{request.url}] #{::DateTime.now.xmlschema(6)}"
+      #log.debug self.class.name+"#handle [#{request.request_method} #{request.url}] #{::DateTime.now.xmlschema(6)}"
 
       if storage.nil?
         return http_error(501, "No storage set for API endpoint, cannot handle request")
       end
 
-      unless method_allowed? request_method
+      unless method_allowed? request.request_method
         return http_error(405, "The following HTTP methods are allowed: #{methods.join(", ")}")
       end
 
       # GET, HEAD and POST are the only method where id can be blank
-      unless /(GET|HEAD|POST)/ =~ request_method
+      unless /(GET|HEAD|POST)/ =~ request.request_method
         unless request.id?
-          return http_error(400, "Missing or blank request id, cannot handle #{request_method} request")
+          return http_error(400, "Missing or blank request id, cannot handle #{request.request_method} request")
         end
       end
 
-      if ["GET", "HEAD", "DELETE"].include? request_method
+      if ["GET", "HEAD", "DELETE"].include? request.request_method
         # 404 => 410 Gone
         # 412 Precondition Failed
         # 414 Request-URI Too Long
-        unless acceptable? format
-          return http_error(406, "Unacceptable format '#{format}', this API endpoint supports the following #{request_method} formats: #{formats.join(",")}")
+        unless acceptable? request.format
+          return http_error(406, "Unacceptable format '#{format}', this API endpoint supports the following #{request.request_method} formats: #{formats.join(",")}")
         end
         
-      elsif ["PUT", "POST"].include? request_method
+      elsif ["PUT", "POST"].include? request.request_method
 
         log.debug "Accepts(#{request.media_format})? #{accepts? request.media_format}"
 
         document = request.body.read 
         request.body.rewind # rewind is necessary for request.body is empty after #read
-        log.debug "#{request_method} #{request.media_format} request (#{document.bytesize} bytes)"
+        log.debug "#{request.request_method} #{request.media_format} request (#{document.bytesize} bytes)"
         
         # 411 Length Required
         # FIXME Insist on Content-Length on chunked transfers
@@ -88,12 +87,12 @@ module Npolar
         # FIXME PUT with no etag/revision and 409 => new status code for conditional PUT?
 
         unless accepts? request.media_format
-          return http_error(415, "This API endpoint does not accept documents in '#{request.media_format}' format, acceptable #{request_method} formats are: '#{accepts.join(", ")}'")
+          return http_error(415, "This API endpoint does not accept documents in '#{request.media_format}' format, acceptable #{request.request_method} formats are: '#{accepts.join(", ")}'")
         end
 
         
         if 0 == document.bytesize or /^\s+$/ =~ document
-          return http_error(400, "#{request_method} document with no body")
+          return http_error(400, "#{request.request_method} document with no body")
         end
 
         
@@ -108,7 +107,7 @@ module Npolar
 
       end
       
-      status, headers, body = case request_method
+      status, headers, body = case request.request_method
         when "DELETE"  then storage.delete(id, params)
         when "GET"     then storage.get(id, params)
         when "HEAD"    then storage.head(id, params)
