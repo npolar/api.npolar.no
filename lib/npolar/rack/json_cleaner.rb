@@ -42,8 +42,10 @@ module Npolar
       end
       
       def clean_hash( data )
+        # Remove the key-value pair from the hash if it is nil or empty and not a Float.
         data.reject!{|k,v| !v.is_a?( Float ) && (v.nil? || v.empty? )}
         
+        # Loop through the remaining items and clean
         data.each do |k,v|
           data[k] = clean(v)
         end
@@ -52,8 +54,10 @@ module Npolar
       end
       
       def clean_array( data )
+        # Remove the element from the array if it is nil or empty and not a Float.
         data.reject!{|e| !e.is_a?( Float ) && (e.nil? || e.empty?)}
         
+        # Loop remaining elements and clean
         data.map!{|e| clean(e)}
       end
       
