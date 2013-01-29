@@ -4,7 +4,7 @@ require "npolar/exception"
 require "npolar/rack/middleware"
 require "npolar/rack/request"
 require "npolar/rack/response"
-
+require "npolar/api"
 require "npolar/api/core"
 
 describe 'Api::Core (accepts == formats == ["foo", bar"])' do
@@ -82,8 +82,6 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
           request "/foo.bar", :method => method
           last_response.status.should == 200
         end
-
-
 
         it "Content-Length: #{method == 'HEAD' ? "3 or missing" : method.size }" do
           request "/foo.bar", :method => method
