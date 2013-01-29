@@ -45,7 +45,7 @@ module Npolar
         data.reject!{|k,v| !v.is_a?( Float ) && (v.nil? || v.empty? )}
         
         data.each do |k,v|
-          clean(v)
+          data[k] = clean(v)
         end
         
         data
@@ -54,11 +54,7 @@ module Npolar
       def clean_array( data )
         data.reject!{|e| !e.is_a?( Float ) && (e.nil? || e.empty?)}
         
-        data.each_with_index do |e, i|
-          clean(e)
-        end
-        
-        data
+        data.map!{|e| clean(e)}
       end
       
     end
