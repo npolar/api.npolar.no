@@ -5,13 +5,11 @@
   "properties": {
     "_id": {
       "description": "UUID for the storage object",
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "_rev" : {
       "description": "Dataset revision",
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "id": {
       "description": "Document ID should be the same as _id",
