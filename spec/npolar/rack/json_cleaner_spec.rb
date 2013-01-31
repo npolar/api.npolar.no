@@ -21,6 +21,19 @@ describe Npolar::Rack::JsonCleaner do
     Npolar::Rack::Request.new(@env)
   end
   
+  context "condition?" do
+    
+    ["PUT", "POST"].each do |method|
+      
+      it "should be true when #{method}" do
+        @env["REQUEST_METHOD"] = method
+        subject.condition?(request).should be(true)
+      end
+      
+    end
+    
+  end
+  
   context "when getting a json object {}" do
   
     it "should remove key-value pairs where the value is null" do
