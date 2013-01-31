@@ -10,14 +10,13 @@ module Npolar
       DATA = ["time", "latitude", "longitude", "pressure", "temperature", "salinity", "fluorescence"]
       
       BUFFER_FILE = "/tmp/buffer.nc"
-      STORAGE = "/home/dens/storage/oceanography/ctd/"
+      STORAGE = "/tmp"
       
       def condition?(request)
         netcdf?(request)
       end
       
       def handle(request)
-        
         if ["PUT", "POST"].include?(request.request_method)
           data = request.body.read
           hash = parse_netcdf( data, request.env['HTTP_LINK'] )
@@ -31,10 +30,9 @@ module Npolar
           data = File.open(file , "rb"){|io| io.read}          
           return [200, {"Content-Type" => "application/netcdf"}, [data]]
         end     
-        
       end
       
-      def parse_netcdf(data, metadata)
+      def parse_netcdf(data, metadata="")
         create_buffer(BUFFER_FILE, data)        
         nc = NetCDF.new(BUFFER_FILE)
         
