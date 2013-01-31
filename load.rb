@@ -2,7 +2,6 @@ require "bundler/setup"
 require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
 require "logger"
 
-
 #
 #Dir.glob("./lib/npolar/**/*.rb").each do | file |
 #  require file
@@ -36,6 +35,11 @@ require "./lib/npolar/rack/solrizer"
 require "./lib/npolar/rack/require_param"
 require "./lib/npolar/rack/validate_id"
 require "./lib/npolar/rack/require_param"
+require "./lib/npolar/rack/disk_storage"
+require "./lib/npolar/rack/nc_parser"
+require "./lib/npolar/rack/json_validator"
+require "./lib/npolar/rack/change_logger"
+require "./lib/npolar/rack/json_cleaner"
 
 
 require "rack/protection"
@@ -45,6 +49,7 @@ require "rack/contrib/accept_format"
 require "rack/ssl"
 require "rack/commonlogger"
 require "rack/cache"
+require "ruby-prof"
 
 require "gcmd"
 

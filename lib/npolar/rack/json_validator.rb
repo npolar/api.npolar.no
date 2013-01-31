@@ -5,7 +5,7 @@ module Npolar
     class JsonValidator < Npolar::Rack::Middleware
       
       CONFIG = {
-        :schema => nil
+        :schema => []
       }
         
       def condition?(request)
@@ -30,11 +30,14 @@ module Npolar
       end
       
       def valid?(data)
-        JSON::Validator.validate(config[:schema], data)
+        config[:schema].each{ |schema| return true if JSON::Validator.validate(schema, data)}
+        false
       end
       
       def validate(data)
-        JSON::Validator.fully_validate(config[:schema], data)
+        errors = []
+        config[:schema].each{ |schema| errors << {schema => JSON::Validator.fully_validate(schema, data)}}
+        errors
       end
       
       protected

@@ -1,3 +1,6 @@
+# Test environment
+ENV['RACK_ENV'] = 'test'
+
 require "simplecov"
 
 SimpleCov.start do
@@ -21,8 +24,6 @@ require "rspec"
 require "rack/test"
 require "./load"
 
-# Test environment
-ENV["RACK_ENV"] = "test"
 
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
