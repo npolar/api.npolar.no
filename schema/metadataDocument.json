@@ -34,6 +34,7 @@
     "licences": {
       "description": "Legal licences defining terms of use for the data. DIF:Use_Constraints",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string",
         "required": true,
@@ -43,6 +44,7 @@
     "groups": {
       "description": "Research field the data belongs to. Not Mapped in DIF",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string",
         "required": true,
@@ -52,6 +54,7 @@
     "editors": {
       "description": "Array containing a list of persons who changed the metadata and the date when. Last Person in the Array is DIF:Personnel[Role] DIF_Author",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -71,6 +74,7 @@
     "investigators": {
       "description": "Used as authors in the citation string. Should be any personnel directly involved in gathering the dataset. DIF:Personnel[@role0='Investigator']",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -83,6 +87,7 @@
           },
           "email": {
             "type": "array",
+            "additionalItems": false,
             "items": {
               "type": "string",
               "format": "email"
@@ -94,6 +99,7 @@
     "institutions": {
       "description": "Participating institutions",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string"
       }
@@ -101,6 +107,7 @@
     "contributors": {
       "description": "Any additional institutions and personnel involved in the project. DIF:Personnel[@Role='Contributor']",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -113,6 +120,7 @@
           },
           "email": {
             "type": "array",
+            "additionalItems": false,
             "items": {
               "type": "string",
               "format": "email"
@@ -124,6 +132,7 @@
     "point_of_contact": {
       "description": "Department that has direct knowledge about the dataset. This can have an optional person listed. Should be as persistant as possible",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -144,6 +153,7 @@
     "links": {
       "description": "Links to data, data-citations, references, project, parent, doi, related, self, alternate",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -165,6 +175,7 @@
     },
     "locations": {
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -198,6 +209,7 @@
     },
     "activity": {
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -222,18 +234,21 @@
     },
     "iso_topics": {
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string"
       }
     },
     "tags": {
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string"
       }
     },
     "parameters": {
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string",
         "format": "uri"
@@ -241,6 +256,7 @@
     },
     "sensors": {
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string",
         "format": "uri"
@@ -251,6 +267,7 @@
     },
     "owners": {
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string",
         "format": "uri"
@@ -263,6 +280,7 @@
     "sets": {
       "description": "Similar to tags and keywords",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "string"
       }
@@ -270,6 +288,7 @@
     "science_keywords": {
       "description": "DIF keywords",
       "type": "array",
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
