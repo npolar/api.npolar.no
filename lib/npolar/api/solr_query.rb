@@ -1,7 +1,14 @@
-# 
-
-# JSON feed writer for the "api" Solr core, see
+# JSON feed writer for the "api" Solr core
 class Npolar::Api::SolrQuery
+
+  attr_writer :request
+
+  def request
+    if @request.nil?
+      raise ArgumentError "Rack::Request instance missing"
+    end
+    @request
+  end
 
   def self.q(request)
     qstar = request["q"] ||= "*"
@@ -23,4 +30,15 @@ class Npolar::Api::SolrQuery
 
     qstar
   end
+
+  def ranges(range_marker=/\.\./)
+    request.params.select {|k,v| v =~ range_marker }
+  end
+
+  # @param range start..end
+  # @return string "field:[start TO end]"
+  def fq_range(field, from, to)
+    "#{field}:[#{from} TO #{to}]"
+  end
+
 end

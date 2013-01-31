@@ -16,7 +16,7 @@ describe Npolar::Rack::JsonValidator do
     app = mock( "ctd import", :call => Npolar::Rack::Response.new(
       StringIO.new(@data), 200, {"Content-Type" => "application/json"} ) )    
     
-    Npolar::Rack::JsonValidator.new(app, {:schema => "spec/data/example-schema.json"} )
+    Npolar::Rack::JsonValidator.new(app, {:schema => ["spec/data/example-schema.json"]} )
   end
   
   context "#condition?" do
