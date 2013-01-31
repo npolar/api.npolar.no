@@ -30,7 +30,7 @@ gem "jsonify"
 gem "rsolr", :git => "git://github.com/mootpointer/rsolr.git", :branch => "json_update"
 
 gem "oai"
-#gem "ruby-netcdf"
+gem "ruby-netcdf"
 gem "hashdiff"
 
 group :development, :test do

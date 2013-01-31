@@ -36,6 +36,8 @@ require "./lib/npolar/rack/solrizer"
 require "./lib/npolar/rack/require_param"
 require "./lib/npolar/rack/validate_id"
 require "./lib/npolar/rack/require_param"
+require "./lib/npolar/rack/disk_storage"
+require "./lib/npolar/rack/nc_parser"
 
 
 require "rack/protection"
