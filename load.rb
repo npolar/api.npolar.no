@@ -41,7 +41,6 @@ require "./lib/npolar/rack/json_validator"
 require "./lib/npolar/rack/change_logger"
 require "./lib/npolar/rack/json_cleaner"
 
-
 require "rack/protection"
 require "rack/throttle"
 require "rack/contrib/jsonp"
