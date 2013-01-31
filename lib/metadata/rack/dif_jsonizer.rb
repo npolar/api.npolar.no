@@ -52,7 +52,7 @@ module Metadata
         j = []
         difs.each do | dif_hash |
           transformer = ::Metadata::DifTransformer.new( dif_hash )
-          transformer.base = request.url
+          transformer.base = request.url.gsub(/\/\?#{request.query_string}/, "")
           metadata_dataset = transformer.to_dataset
           j << metadata_dataset
         end

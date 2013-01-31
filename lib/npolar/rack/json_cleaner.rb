@@ -42,7 +42,7 @@ module Npolar
       end
       
       def clean_hash( data )
-        # Remove the key-value pair from the hash if it is nil or empty and not a Float.
+        # Remove the key-value pair from the hash if the value is nil or empty and not a Float.
         data.reject!{|k,v| !v.is_a?( Float ) && (v.nil? || v.empty? )}
         
         # Loop through the remaining items and clean

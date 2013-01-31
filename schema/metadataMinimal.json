@@ -1,0 +1,45 @@
+{
+  "description": "data.npolar.no metadata format",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "title": {      
+      "description": "Dataset title. DIF:Entry_Title",
+      "type": "string",
+      "required": true
+    },
+    "draft": {
+      "type": "string",
+      "pattern": "^(yes|no)$"
+    },
+    "published": {
+      "description": "Date-time when the metadata was created in ISO 8601 format",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Date-time when the metadata was created in ISO 8601 format",
+      "type": "string",
+      "format": "date-time"
+    },
+    "editors": {
+      "description": "Array containing a list of persons who changed the metadata and the date when. Last Person in the Array is DIF:Personnel[Role] DIF_Author",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "edited": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      }
+    }
+	}
+}
