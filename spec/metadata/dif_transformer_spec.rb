@@ -40,10 +40,10 @@ describe Metadata::DifTransformer do
         
       end
       
-      context "#_id" do
+      context "#id" do
         
-        it "should map Entry_ID + collection uri to a namespaced UUID" do
-          @transformer._id.should == @transformer.object.Entry_ID.gsub(/\./, "-")
+        it "should map Entry_ID id" do
+          @transformer.id.should == @transformer.object.Entry_ID.gsub(/\./, "-")
         end
         
       end
@@ -80,14 +80,6 @@ describe Metadata::DifTransformer do
         
         it "should map Quality to quality" do
           @transformer.quality.should == @transformer.object.Quality
-        end
-        
-      end
-      
-      context "#rights" do
-        
-        it "should map Use_Constraints to rights" do
-          @transformer.rights.should == @transformer.object.Access_Constraints
         end
         
       end
