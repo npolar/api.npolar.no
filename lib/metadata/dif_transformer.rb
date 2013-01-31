@@ -25,8 +25,8 @@ module Metadata
     ISO_8601 = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
 
     DATASET_MAP = [
-      :source, :_id, :title, :summary, :progress, :investigators,
-      :contributors, :rights, :activity, :locations, :links, :tags, :iso_topics,
+      :source, :id, :title, :summary, :progress, :investigators,
+      :contributors, :activity, :locations, :links, :tags, :iso_topics,
       :quality, :science_keywords, :draft, :published, :updated, :editors, :sets
     ]
     
@@ -83,15 +83,10 @@ module Metadata
     def href(id)
       "#{base.gsub(/\/$/, "")}/#{id}.json"
     end
-    
-    def _id
-      #uuid(Metadata::Dataset.uri + "/" + object.Entry_ID)
+
+    def id
       object.Entry_ID.gsub(/\./, "-")
     end
-    
-    #def id
-    #  object.Entry_ID
-    #end
     
     def title
       object.Entry_Title
@@ -109,13 +104,6 @@ module Metadata
     
     def quality
       object.Quality
-    end
-    
-    def rights
-      text = ""
-      #text += object.Use_Constraints unless object.Use_Constraints.nil?
-      text += object.Access_Constraints unless object.Access_Constraints.nil?
-      text
     end
     
     def published
