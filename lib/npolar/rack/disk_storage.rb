@@ -1,5 +1,3 @@
-require 'pp'
-
 # ALWAYS POST with an extension like .nc
 module Npolar
   module Rack
@@ -56,7 +54,10 @@ module Npolar
           body = response.body[0]
 
           json = Yajl::Parser.parse(body)
-          if !json.has_key?("id") or json["id"].empty?
+
+          if !json["ok"]
+            raise "Upstream middleware failed to handle DELETE"
+          elsif !json.has_key?("id") or json["id"].empty?
             raise "id needs to be supplied by upstream middleware"
           end
 
