@@ -16,7 +16,8 @@ describe Npolar::Rack::DiskStorage do
     app = mock("file storage", :call => Npolar::Rack::Response.new(
       StringIO.new(@data), 200, {"Content-Type" => "application/netcdf"}))
     
-    app.stub( :call ){[201, {}, [""]]}
+    app.stub( :call ) { Npolar::Rack::Response.new([ { "id" => "1234asdf" }.to_json ], 201, {}) }
+     # [201, {}, [""]]}
     
     Npolar::Rack::DiskStorage.new(
       app,
@@ -52,11 +53,6 @@ describe Npolar::Rack::DiskStorage do
       subject.condition?(Npolar::Rack::Request.new(@env)).should be(true)
     end
     
-    it "should be false when not a POST or PUT" do
-      @env["REQUEST_METHOD"] = "GET"
-      subject.condition?(Npolar::Rack::Request.new(@env)).should be(false)
-    end
-    
     it "should be false when not the correct format" do
       @env = Rack::MockRequest.env_for("/test.xlsx", "REQUEST_METHOD" => "PUT")
       subject.condition?(Npolar::Rack::Request.new(@env)).should be(false)
@@ -66,14 +62,8 @@ describe Npolar::Rack::DiskStorage do
   
   context "#handle" do
     
-    it "should hold a copy of the request data" do
-      subject.handle(Npolar::Rack::Request.new(@env))
-      subject.document.should_not be(nil)
-    end
-    
-    it "should setup a file with the request id" do
-      subject.handle(Npolar::Rack::Request.new(@env))
-      subject.file.should == "/tmp/test.nc"
+    it "should not raise an exception when id is provided" do
+      expect{ subject.handle(Npolar::Rack::Request.new(@env))}.to_not raise_error(Exception)
     end
     
   end
@@ -81,17 +71,14 @@ describe Npolar::Rack::DiskStorage do
   context "#save_to_disk" do
     
     it "should write a file to disk" do
-      subject.document = @data
-      subject.file = "/tmp/wsad.nc"
-      subject.save_to_disk
+      filepath = subject.send(:path, "1234asdf", Npolar::Rack::Request.new(@env))
+      subject.save_to_disk(filepath, "content")
       
-      File.open(subject.file, "rb").should_not be(nil)
+      File.open(filepath, "rb").should_not be(nil)
     end
     
     it "should raise an exception when an error occurs" do
-      subject.document = nil
-      subject.file = nil
-      expect{ subject.save_to_disk }.to raise_error(Exception)
+      expect{ subject.save_to_disk(nil, nil) }.to raise_error(Exception)
     end
     
   end
