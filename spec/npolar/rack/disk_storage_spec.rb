@@ -10,14 +10,18 @@ describe Npolar::Rack::DiskStorage do
       "REQUEST_METHOD" => "PUT",
       "rack.input" => StringIO.new(@data)
     )
+    @del_env = Rack::MockRequest.env_for(
+      "/test.nc",
+      "REQUEST_METHOD" => "DELETE",
+      "rack.input" => StringIO.new(@data)
+    )
   end
   
   subject do
     app = mock("file storage", :call => Npolar::Rack::Response.new(
       StringIO.new(@data), 200, {"Content-Type" => "application/netcdf"}))
     
-    app.stub( :call ) { Npolar::Rack::Response.new([ { "id" => "1234asdf" }.to_json ], 201, {}) }
-     # [201, {}, [""]]}
+    app.stub( :call ) { Npolar::Rack::Response.new([ { "id" => "1234asdf", "ok" => true }.to_json ], 201, {}) }
     
     Npolar::Rack::DiskStorage.new(
       app,
@@ -67,7 +71,7 @@ describe Npolar::Rack::DiskStorage do
     end
     
   end
-  
+
   context "#save_to_disk" do
     
     it "should write a file to disk" do
@@ -81,6 +85,20 @@ describe Npolar::Rack::DiskStorage do
       expect{ subject.save_to_disk(nil, nil) }.to raise_error(Exception)
     end
     
+  end
+
+  context "#handle_delete" do
+
+    it "should not raise an exception when id is provided and method=POST" do
+      expect{ subject.handle(Npolar::Rack::Request.new(@del_env))}.to_not raise_error(Exception)
+    end
+
+    it "should remove the file we posted" do
+      subject.handle_delete(Npolar::Rack::Request.new(@del_env))
+      filepath = subject.send(:path, "1234asdf", Npolar::Rack::Request.new(@del_env))
+      expect { File.open(filepath, "rb") }.to raise_error(Exception)
+    end
+
   end
   
   context "#format?" do
