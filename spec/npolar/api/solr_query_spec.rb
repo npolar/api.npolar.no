@@ -39,9 +39,9 @@ describe Npolar::Api::SolrQuery do
       @solr_query.request = rack_request("/foo?bar=0..9&north=-90.0..-60.0,60.0..90.0&not-range=123")
     end
     describe "#ranges" do
-
       it "#ranges should return all parameters containing .." do
-        @solr_query.ranges.should == []
+        @solr_query.ranges["bar"].should == "0..9"
+        @solr_query.ranges["north"].should == "-90.0..-60.0,60.0..90.0"
       end
     end
   end
