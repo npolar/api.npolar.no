@@ -40,7 +40,7 @@ module Npolar
       
       def update_single
         # Ask storage for the current document
-        status, headers, body = config[:data_storage].get(@doc_id) unless @doc_id.nil?
+        status, headers, body = config[:data_storage].get(@doc_id) unless @doc_id.nil? || @doc_id.empty?
         
         # Load the current version of the document if it exists
         # otherwise set the current version to an empty hash
