@@ -10,11 +10,7 @@ describe Npolar::Rack::DiskStorage do
       "REQUEST_METHOD" => "PUT",
       "rack.input" => StringIO.new(@data)
     )
-    @del_env = Rack::MockRequest.env_for(
-      "/test.nc",
-      "REQUEST_METHOD" => "DELETE",
-      "rack.input" => StringIO.new(@data)
-    )
+     
   end
   
   subject do
@@ -63,13 +59,25 @@ describe Npolar::Rack::DiskStorage do
     end
     
   end
+
+  context "#path" do
+    it "should give us path ending with format" do
+      filepath = subject.send(:path, "1234asdf", Npolar::Rack::Request.new(@env))
+      File.extname(filepath).should == ".nc"
+    end
+  end
+
+  context "#doc_root" do
+    it "should give use /tmp/1234asdf" do
+      root = subject.send(:doc_root, "1234asdf")
+      root.should == "/tmp/1234asdf"
+    end
+  end
   
   context "#handle" do
-    
     it "should not raise an exception when id is provided" do
       expect{ subject.handle(Npolar::Rack::Request.new(@env))}.to_not raise_error(Exception)
     end
-    
   end
 
   context "#save_to_disk" do
@@ -87,7 +95,50 @@ describe Npolar::Rack::DiskStorage do
     
   end
 
+  context "#handle_get" do
+    before(:each) do
+      @get_env = Rack::MockRequest.env_for(
+        "/test.nc",
+        "REQUEST_METHOD" => "GET",
+        "REQUEST_URI" => "/asdf/asdf/1234asdf.nc",
+        "rack.input" => StringIO.new(@data)
+      )
+
+      # make sure file is there
+      filepath = subject.send(:path, "1234asdf", Npolar::Rack::Request.new(@env))
+      FileUtils.mkdir_p(File.dirname(filepath))
+      File.open(filepath, "wb") do |f|
+        f.write("content")
+      end
+    end
+
+    it "should return 200" do
+      response = subject.handle_get(Npolar::Rack::Request.new(@get_env))
+      response[0].should == 200
+    end
+
+    it "should create a file for us with same content as we fed the middleware initially" do
+      response = subject.handle_get(Npolar::Rack::Request.new(@get_env))
+      content = response[2].read
+      content.should == "content"
+    end
+
+  end
+
   context "#handle_delete" do
+    before(:each) do
+      @del_env = Rack::MockRequest.env_for(
+        "/test.nc",
+        "REQUEST_METHOD" => "DELETE",
+        "rack.input" => StringIO.new(@data)
+      )
+      # make sure file is there
+      filepath = subject.send(:path, "1234asdf", Npolar::Rack::Request.new(@env))
+      FileUtils.mkdir_p(File.dirname(filepath))
+      File.open(filepath, "wb") do |f|
+        f.write("content")
+      end
+    end
 
     it "should not raise an exception when id is provided and method=POST" do
       expect{ subject.handle(Npolar::Rack::Request.new(@del_env))}.to_not raise_error(Exception)
@@ -95,7 +146,7 @@ describe Npolar::Rack::DiskStorage do
 
     it "should remove the file we posted" do
       subject.handle_delete(Npolar::Rack::Request.new(@del_env))
-      filepath = subject.send(:path, "1234asdf", Npolar::Rack::Request.new(@del_env))
+      #filepath = subject.send(:path, "1234asdf", Npolar::Rack::Request.new(@del_env))
       expect { File.open(filepath, "rb") }.to raise_error(Exception)
     end
 
