@@ -21,6 +21,7 @@ class Npolar::Api::SolrQuery
     if !ranges.empty? 
       ranges = ranges.map { |range| self.fq_range(range[0], range[1], range[2]) }
       query = ranges.join(" AND ")
+      puts query
 
     elsif query =~ /^[^\*]+:.+$/ 
       # remove any whitespace around :
@@ -43,7 +44,7 @@ class Npolar::Api::SolrQuery
   end
 
   def self.ranges(query)
-    query.scan(/\s*(\w+)=([0-9\-])?\.\.([0-9\-])?\s*/)
+    query.scan(/\s*(\w+)=([0-9\-]*)?\.\.([0-9\-]*)?\s*/)
   end
 
   # @param range start..end
