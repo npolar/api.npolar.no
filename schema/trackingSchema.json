@@ -2,13 +2,14 @@
   "Description": "Satellite tracking data",
   "type": "object",
   "properties": {
-    "_id": {
+    "id": {
       "description": "UUID for the deployment",
       "type": "string"
     },
-    "_rev": {
-      "description": "revision identifier",
-      "type": "string"
+    "system": {
+      "description": "Tracking system identifier",
+      "type": "string",
+      "pattern": "^(iridium|argos)$"
     },
     "hardware_id": {
       "description": "Hardware identifiers, Argos platform ID and Iridium modem ID",
@@ -21,35 +22,31 @@
     },
     "satellite": {
       "description": "Information about the satellite position and contact quality",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "position": {
-            "description": "Location info registered by the satellite during contact.",
-            "type": "object",
-            "properties": {
-              "latitude": {
-                "description": "Latitude values in WGS-84 decimal notation",
-                "type": "array",
-                "items": {
-                  "type": ["number", null],
-                  "pattern": "^[-]?((([0-8]?[0-9])(\.([0-9]{1,8}))?)|((90)(\.([0]{1,8}))?))$"
-                }
-              },
-              "longitude": {
-                "description": "Longitude values in WGS-84 decimal notation",
-                "type": "array",
-                "items": {
-                  "type": ["number", null],
-                  "pattern": "^[-]?(((([1]?[0-7]?[0-9])|([0-9]?[0-9]))(\.([0-9]{1,8}))?)|((180)(\.([0]{1,8}))?))$"
-                }
-              },
-              "accuracy": {
-                "description": "Location accuracy indication (Argos codes or Iridium CEP).",
-                "type": "string"
-              }
+      "type": "object",
+      "properties": {
+          "latitude": {
+            "description": "Latitude values in WGS-84 decimal notation",
+            "type": "array",
+            "items": {
+              "type": ["number", null],
+              "pattern": "^[-]?((([0-8]?[0-9])(\.([0-9]{1,8}))?)|((90)(\.([0]{1,8}))?))$"
             }
+          },
+          "longitude": {
+            "description": "Longitude values in WGS-84 decimal notation",
+            "type": "array",
+            "items": {
+              "type": ["number", null],
+              "pattern": "^[-]?(((([1]?[0-7]?[0-9])|([0-9]?[0-9]))(\.([0-9]{1,8}))?)|((180)(\.([0]{1,8}))?))$"
+            }
+          },
+          "altitude": {
+            "description": "Device altitude in meter",
+            "type": "number"
+          },
+          "accuracy": {
+            "description": "Location accuracy indication (Argos codes or Iridium CEP radius in km).",
+            "type": "string"
           },
           "contact_time": {
             "description": "Time the satellite received the sensor data in ISO-6801",
@@ -65,14 +62,19 @@
     },
     "latitude": {
       "description": "Subject latitude in decimal WGS-84",
-      "type": "number",
+      "type": ["number", null],
       "pattern": "^[-]?((([0-8]?[0-9])(\.([0-9]{1,8}))?)|((90)(\.([0]{1,8}))?))$",
       "required": true
     },
     "longitude": {
       "description": "Subject longitude in decimal WGS-84",
-      "type": "number",
+      "type": ["number", null],
       "pattern": "^[-]?(((([1]?[0-7]?[0-9])|([0-9]?[0-9]))(\.([0-9]{1,8}))?)|((180)(\.([0]{1,8}))?))$",
+      "required": true
+    },
+    "altitude": {
+      "description": "Platform altitude in meter",
+      "type": "number",
       "required": true
     },
     "quality": {
@@ -80,9 +82,9 @@
       "type": "string"
     },
     "data": {
-      "description": "Array with additional measurements collected by the device (depth, current, temperature, etc...)",
-      "type": "array",
-      "items": {
+      "description": "Object with additional measurements collected by the device (depth, current, temperature, etc...)",
+      "type": "object",
+      "properties": {
         "type": "object"
       }
     }

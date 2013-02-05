@@ -8,7 +8,7 @@ require "./load"
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
 
-Metadata::Dataset.formats = ["json", "dif", "iso"]
+Metadata::Dataset.formats = ["json", "dif", "iso", "atom"]
 Metadata::Dataset.accepts = ["json", "xml"]
 
 
