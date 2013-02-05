@@ -121,22 +121,20 @@ module Npolar
           end
         end
 
-  def ssha(password, salt="salt")
-    "{SSHA}"+Base64.encode64(Digest::SHA1.digest(password+salt)+salt).chomp!
-  end
+        def ssha(password, salt="salt")
+          "{SSHA}"+Base64.encode64(Digest::SHA1.digest(password+salt)+salt).chomp!
+        end
 
-  def base64_ssha(ssha_string)
-    unless ssha_string =~ /^{SSHA}/
-      ssha_string = ssha(ssha_string)
-    end
-    Base64.encode64(ssha_string).chomp!
-  end
+        def base64_ssha(ssha_string)
+          unless ssha_string =~ /^{SSHA}/
+            ssha_string = ssha(ssha_string)
+          end
+          Base64.encode64(ssha_string).chomp!
+        end
 
-  def salt
-    Base64.encode64(Digest::SHA1.digest("#{rand(64)}/#{Time.now.to_f}/#{Process.pid}"))[0..7]
-  end
-
-
+        def salt
+          Base64.encode64(Digest::SHA1.digest("#{rand(64)}/#{Time.now.to_f}/#{Process.pid}"))[0..7]
+        end
     
     end
   end

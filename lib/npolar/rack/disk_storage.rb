@@ -12,8 +12,6 @@ module Npolar
       attr_accessor :document, :file
       
       def condition?(request)
-        puts format?(request)
-        puts content_type?(request)
         return (request.request_method == "DELETE" or format?(request) or content_type?(request))
       end
 
@@ -44,7 +42,6 @@ module Npolar
           log.debug e
           return [500, {"Content-type" => "application/json"}, StringIO.new({ "error" => "Error processing request"}.to_json)]
         end
-
       end
 
       def handle_delete(request)

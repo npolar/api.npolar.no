@@ -36,9 +36,9 @@ module Npolar
         result = bind_as(:filter => "(mail=#{mail})", :password => password)
         if result and result[0].mail[0] == mail
             true
-          else
+        else
             false
-          end
+        end
       end
 
       def domain
@@ -48,7 +48,6 @@ module Npolar
       def domain=domain
         @domain = domain
       end
-
 
     end
   end
