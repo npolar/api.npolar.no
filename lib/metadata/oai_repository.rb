@@ -6,6 +6,7 @@ module Metadata
     # http://www.openarchives.org/OAI/2.0/oai-identifier.xsd#repositoryIdentifierType
     # /[a-zA-Z][a-zA-Z0-9\-]*(\.[a-zA-Z][a-zA-Z0-9\-]*)+/
 
+    register_format ::Metadata::DirectoryInterchangeFormat.instance
     repository_name ::Metadata::Dataset.title
     repository_url  "http://api.npolar.no/metadata/oai"
     record_prefix "oai:npolar.no"
