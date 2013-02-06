@@ -2,12 +2,8 @@
   "Description": "Satellite tracking deployment.",
   "type": "object",
   "properties": {
-    "_id": {
+    "id": {
       "description": "UUID for the deployment",
-      "type": "string"
-    },
-    "_rev": {
-      "description": "revision identifier",
       "type": "string"
     },
     "title": {
