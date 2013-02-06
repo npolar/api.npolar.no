@@ -11,9 +11,9 @@ module Npolar
       CONFIG = {
         :authorized? => lambda { | auth, system, request |
           if ["GET", "HEAD"].include? request.request_method
-            auth.roles(system).include? READER_ROLE or auth.roles(system).include? EDITOR_ROLE or auth.roles(system).include? SYSADMIN_ROLE
+            auth.roles(system, request.username).include? READER_ROLE or auth.roles(system, request.username).include? EDITOR_ROLE or auth.roles(system, request.username).include? SYSADMIN_ROLE
           elsif ["POST", "PUT", "DELETE"].include? request.request_method
-            auth.roles(system).include? EDITOR_ROLE or auth.roles(system).include? SYSADMIN_ROLE
+            auth.roles(system, request.username).include? EDITOR_ROLE or auth.roles(system, request.username).include? SYSADMIN_ROLE
           else
             false
           end
@@ -27,10 +27,11 @@ module Npolar
       }
 
       def self.authorize(role=Npolar::Rack::Authorizer::SYSADMIN_ROLE)
-        lambda {| auth, system, request | auth.roles(system).include? role }
+        lambda {| auth, system, request | auth.roles(system, request.username).include? role }
       end
 
       def authenticated?
+
         begin
           if config[:authenticated?].is_a? Proc
             config[:authenticated?].call(auth, request)

@@ -76,7 +76,7 @@ module Npolar
         end
 
         # roles = user roles + all group_roles
-        def roles(system)
+        def roles(system, username)
 
           roles = []
           user = self.get_user
