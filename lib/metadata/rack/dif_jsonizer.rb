@@ -59,6 +59,7 @@ module Metadata
 
         # Modify request
         json = j.to_json
+        request.env["PATH_INFO"] = request.env["PATH_INFO"].split(".").first + ".json" #XXX
         request.env["CONTENT_TYPE"] = "application/json"
         request.env["CONTENT_LENGTH"] = json.bytesize.to_s
         request.env["rack.input"] = ::Rack::Lint::InputWrapper.new( StringIO.new( json ) )
