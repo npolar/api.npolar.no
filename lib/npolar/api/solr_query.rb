@@ -11,33 +11,47 @@ class Npolar::Api::SolrQuery
   end
 
   def self.q(request)
-    qstar = request["q"] ||= "*"
+    query = request["q"]
+    if query.nil? || query.empty?
+      return "*"
+    end
    
-    if qstar =~ /^[^\*]+:.+$/ 
+    ranges = self.ranges(request["q"])
+       
+    if !ranges.empty? 
+      ranges = ranges.map { |range| self.fq_range(range[0], range[1], range[2]) }
+      query = ranges.join(" AND ")
+      puts query
+
+    elsif query =~ /^[^\*]+:.+$/ 
       # remove any whitespace around :
-      qstar = qstar.gsub(/\s*:\s*/, ':')
+      query = query.gsub(/\s*:\s*/, ':')
 
       # ensure 'TO' doesn't appear in any other case
-      qstar = qstar.gsub(/to/i, 'TO')
-    elsif qstar =~ /^[\*]$|^\*\:\*$|^(\s+)?$/
-        qstar = "*:*"
+      query = query.gsub(/to/i, 'TO')
+
+    elsif query =~ /^[\*]$|^\*\:\*$|^(\s+)?$/
+        query = "*:*"
+
     else
-        #unless qstar =~ /\*/
-        #  qstar = qstar.downcase #+"*"
+        #unless query =~ /\*/
+        #  query = query.downcase #+"*"
         #end
-      qstar = "title:#{qstar} OR #{qstar} OR #{qstar}*"
+      query = "title:#{query} OR #{query} OR #{query}*"
     end
 
-    qstar
+    return query
   end
 
-  def ranges(range_marker=/\.\./)
-    request.params.select {|k,v| v =~ range_marker }
+  def self.ranges(query)
+    query.scan(/\s*(\w+)=([0-9\-]*)?\.\.([0-9\-]*)?\s*/)
   end
 
   # @param range start..end
   # @return string "field:[start TO end]"
-  def fq_range(field, from, to)
+  def self.fq_range(field, from, to)
+    from ||= "*"
+    to ||= "*"
     "#{field}:[#{from} TO #{to}]"
   end
 
