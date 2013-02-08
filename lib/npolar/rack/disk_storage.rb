@@ -61,7 +61,7 @@ module Npolar
           log.debug "handle_delete: #{json["id"]}"
 
           # delete path containing all document files
-          FileUtils.rm_rf(doc_root(json["id"]))
+          FileUtils.rm_rf(doc_root(json["id"], request))
           
         rescue => e
           log.debug e
@@ -145,12 +145,15 @@ module Npolar
         [201, 200].include?(status)
       end
 
+      # full path to file
       def path(id, request)
-        doc_root(id) + "/source/doc." + request.format
+        File.join(doc_root(id, request), "source/doc." + request.format)
       end
 
-      def doc_root(id)
-        config[:file_root] + "/" + id 
+      def doc_root(id, request)
+        # get project dir structure from request.path, mirror it on FS
+        proj_path = request.path.sub(/\/[^\/]+$/, '')
+        File.join(config[:file_root], proj_path, id)
       end
 
     end    
