@@ -6,7 +6,7 @@ describe Npolar::Rack::DiskStorage do
   before(:each) do
     @data = File.open( "spec/data/test.nc", "rb" ){|io| io.read}
     @env = Rack::MockRequest.env_for(
-      "/test.nc",
+      "/metadata/dataset/test.nc",
       "REQUEST_METHOD" => "PUT",
       "rack.input" => StringIO.new(@data)
     )
@@ -68,9 +68,9 @@ describe Npolar::Rack::DiskStorage do
   end
 
   context "#doc_root" do
-    it "should give use /tmp/1234asdf" do
-      root = subject.send(:doc_root, "1234asdf")
-      root.should == "/tmp/1234asdf"
+    it "should give use /tmp/metadata/dataset/1234asdf" do
+      root = subject.send(:doc_root, "1234asdf", Npolar::Rack::Request.new(@env))
+      root.should == "/tmp/metadata/dataset/1234asdf"
     end
   end
   
@@ -98,9 +98,9 @@ describe Npolar::Rack::DiskStorage do
   context "#handle_get" do
     before(:each) do
       @get_env = Rack::MockRequest.env_for(
-        "/test.nc",
+        "/metadata/dataset/1234asdf.nc",
         "REQUEST_METHOD" => "GET",
-        "REQUEST_URI" => "/asdf/asdf/1234asdf.nc",
+        "REQUEST_URI" => "/metadata/dataset/1234asdf.nc",
         "rack.input" => StringIO.new(@data)
       )
 
