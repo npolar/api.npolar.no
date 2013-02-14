@@ -57,6 +57,10 @@ require "./lib/biology/sighting"
 require "./lib/polarbear"
 require "./lib/polarbear/interaction"
 
+# Marine
+require "./lib/marine.rb"
+require "./lib/marine/samples.rb"
+
 # Metadata
 require "./lib/metadata.rb"
 require "./lib/metadata/dataset.rb"
