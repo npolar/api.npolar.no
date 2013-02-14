@@ -17,6 +17,8 @@ module Marine
       id = doc["id"] ||= doc["_id"]
       rev = doc["rev"] ||= doc["_rev"] ||= nil
 
+      sample_types = doc.fetch("sample_types", "").split(',').map{ |e| e.strip }
+
       solr = {
         :id => id,
         :rev => rev,
@@ -30,7 +32,7 @@ module Marine
         :programs => doc.fetch("programs", ""),
         :sample_id => doc.fetch("sample_id", ""),
         :sample_name => doc.fetch("sample_name", ""),
-        :sample_types => doc.fetch("sample_types", ""),
+        :sample_types => sample_types,
         :sampledepth => doc.fetch("sampledepth", ""),
         :station => doc.fetch("station", ""),
         :utc_date => doc.fetch("utc_date", "")
