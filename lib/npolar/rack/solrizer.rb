@@ -15,7 +15,11 @@ module Npolar
     class Solrizer < Npolar::Rack::Middleware
 
       def self.query_or_save_json
+        
         lambda {|request|
+          Npolar::Api.log.debug request.request_method
+          Npolar::Api.log.debug request.format
+
           if ["GET", "HEAD"].include? request.request_method and not request["q"].nil?
             true
           elsif ["POST","PUT", "DELETE"].include? request.request_method and "json" == request.format
@@ -60,6 +64,8 @@ module Npolar
 
 
       def condition?(request)
+        log.debug "Condition?"
+        pp request.inspect
         config[:condition].call(request)
       end
 
@@ -190,10 +196,11 @@ module Npolar
             status = response.status
           end
 
-          if 201 == status
+          if [200, 201].include?(status)
             log.info "#{request.request_method} #{request.url} #{status} saved #{size} Solr document(s) in #{elapsed} seconds (#{size/elapsed} qps)"
           else
             log.error "Failed saving to Solr"
+            puts response.inspect
           end
 
           if response.nil?
