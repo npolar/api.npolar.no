@@ -73,9 +73,6 @@ module Marine
       solr
     end
   end
-
-  def parse_staff(staff_hash)
-  end
 end
 
 
