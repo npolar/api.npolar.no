@@ -6,7 +6,7 @@ module Marine
 
     def self.facets
       [
-        "programs"
+        "animal_group", "bottomdepth", "conveyance", "ctdnr", "filteredwater", "flowmeter", "gear", "sample_id", "institution", "instref", "local_date", "metadata_id", "name", "position_end", "position_start", "preservation", "processed_date", "programs", "staff", "sample_gear", "sample_id", "sample_name", "sample_types", "sampledepth", "station", "status", "substation", "utc_date"
       ]
     end
 
@@ -60,8 +60,8 @@ module Marine
         solr[:staff] = staff_info.join(" | ")
       end
 
-      if doc.has_key?("gear") and doc["gear"].respond_to?(:each)
-        solr[:gear] = doc["gear"].values.join(" ")
+      if doc.has_key?("sample_gear") and doc["sample_gear"].respond_to?(:each)
+        solr[:sample_gear] = doc["sample_gear"].values.join(" ")
       end
 
       text = ""
