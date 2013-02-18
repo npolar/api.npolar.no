@@ -6,7 +6,7 @@ module Marine
 
     def self.facets
       [
-        "name"
+        "class", "family", "genus", "operation", "order", "phylum", "subphylum", "stage_name"
       ]
     end
 
