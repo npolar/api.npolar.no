@@ -6,18 +6,16 @@ module Marine
 
     def self.facets
       [
-        "class", "family", "genus", "operation", "order", "phylum", "subphylum", "stage_name"
+        "phylum", "subphylum", "class", "order", "family", "genus", "name_sci", "stage_name"
       ]
     end
 
     def to_solr
       doc = self
-
-      solr = doc
-
       id = doc["id"] ||= doc["_id"]
       rev = doc["rev"] ||= doc["_rev"] ||= nil
 
+      solr = doc
       solr["id"] = id
       solr["rev"] = rev
  
