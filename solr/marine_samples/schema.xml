@@ -127,7 +127,6 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="programs" type="string" indexed="true" stored="true" />
 <field name="staff" type="string" indexed="true" stored="true" />
 <field name="sample_gear" type="string" indexed="true" stored="true" />
-<field name="sample_id" type="string" indexed="true" stored="true" />
 <field name="sample_name" type="string" indexed="true" stored="true" />
 <field name="sample_types" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="sampledepth" type="string" indexed="true" stored="true" />

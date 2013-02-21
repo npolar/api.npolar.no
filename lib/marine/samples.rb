@@ -37,7 +37,6 @@ module Marine
         :preservation   => doc.fetch("preservation", ""),
         :processed_date => doc.fetch("processed_date", ""),
         :programs       => doc.fetch("programs", ""),
-        :sample_id      => doc.fetch("sample_id", ""),
         :sample_name    => doc.fetch("sample_name", ""),
         :sample_types   => doc.fetch("sample_types", ""),
         :sampledepth    => doc.fetch("sampledepth", ""),
