@@ -107,7 +107,6 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="_rev" type="string" indexed="true" stored="true" />
 <field name="rev" type="string" indexed="true" stored="true" />
 
-<!-- abundances -->
 <field name="animal_group" type="string" indexed="true" stored="true" />
 <field name="bottomdepth" type="string" indexed="true" stored="true" />
 <field name="conveyance" type="string" indexed="true" stored="true" />
