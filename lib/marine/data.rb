@@ -2,7 +2,7 @@ require 'pp'
 require 'hashie'
 
 module Marine
-  class Abundance < Hashie::Mash
+  class Data < Hashie::Mash
 
     def self.facets
       [
