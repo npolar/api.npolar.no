@@ -74,7 +74,7 @@ module Marine
       end
 
       text = ""
-      doc.to_hash.each do |k,v|
+      solr.to_hash.each do |k,v|
         text += "#{k} = #{v} | "
       end
       solr[:text] = text
