@@ -64,8 +64,10 @@ module Npolar
           if status == 200
             changes = Yajl::Parser.parse(body)
             changes["changes"] << change_log
+            changes["version"] = changes["changes"].size - 1
           else
             changes = details
+            changes["version"] = 0
           end
           
           log.info "@ChangeLogger: Saving changes to #{change_id} ==> #{changes}"
@@ -129,9 +131,11 @@ module Npolar
             
             unless change_logs[i] == {}
               change_logs[i]["changes"] << change_log
+              change_logs[i]["version"] = change_logs[i]["changes"].size - 1
             else
               new_log = details
               new_log["id"] = change_keys[i]
+              new_log["version"] = 0
               change_logs[i] = new_log
             end
           end
