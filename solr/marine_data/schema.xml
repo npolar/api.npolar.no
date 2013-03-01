@@ -120,6 +120,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="phylum" type="string" indexed="true" stored="true" />
 <field name="precision" type="string" indexed="true" stored="true" />
 <field name="sample_id" type="string" indexed="true" stored="true" />
+<filed name="sample_type" type="string" indexed="true" stored="true" />
 <field name="subphylum" type="string" indexed="true" stored="true" />
 <field name="stage_id" type="string" indexed="true" stored="true" />
 <field name="stage_name" type="string" indexed="true" stored="true" />
