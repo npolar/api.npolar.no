@@ -15,8 +15,6 @@ module Marine
       id = doc["id"] ||= doc["_id"]
       rev = doc["rev"] ||= doc["_rev"] ||= nil
 
-      sample_types = doc.fetch("sample_types", "").split(',').map{ |e| e.strip }
-     
       solr = {
         :id             => id,
         :rev            => rev,
