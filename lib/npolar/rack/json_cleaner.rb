@@ -47,7 +47,7 @@ module Npolar
         
         # Loop through the remaining items and clean
         data.each do |k,v|
-          data[k] = clean(v)
+          data[k] = clean(clean(v))
         end
         
         data
@@ -58,7 +58,7 @@ module Npolar
         data.reject!{|e| !e.is_a?( Float ) && (e.nil? || e.empty?)}
         
         # Loop remaining elements and clean
-        data.map!{|e| clean(e)}
+        data.map!{|e| clean(clean(e))}
       end
       
     end
