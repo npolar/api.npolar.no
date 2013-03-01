@@ -32,6 +32,11 @@ module Npolar
       end
       
       def clean(data)
+        cleaned = clean_content(data)
+        clean_content(cleaned)
+      end
+      
+      def clean_content(data)
         if data.is_a? Array
           return clean_array(data)
         elsif data.is_a? Hash
@@ -47,7 +52,7 @@ module Npolar
         
         # Loop through the remaining items and clean
         data.each do |k,v|
-          data[k] = clean(clean(v))
+          data[k] = clean(v)
         end
         
         data
@@ -58,7 +63,7 @@ module Npolar
         data.reject!{|e| !e.is_a?( Float ) && (e.nil? || e.empty?)}
         
         # Loop remaining elements and clean
-        data.map!{|e| clean(clean(e))}
+        data.map!{|e| clean(e)}
       end
       
     end
