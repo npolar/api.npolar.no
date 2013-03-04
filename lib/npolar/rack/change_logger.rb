@@ -191,17 +191,19 @@ module Npolar
       # Every document has a dedicated change file based on
       # it's workspace collection and id.
       def change_id
-        uuid(workspace + collection + @doc_id)
+        uuid("/#{workspace}/#{collection}/" + @doc_id)
       end
       
       # The first element of the result array is the workspace.
       def workspace
-        namespaces[0]
+        worksp = namespaces[0]
+        worksp ||= ""
       end
       
       # The second element of the result array is the collection.
       def collection
-        namespaces[1]
+        coll = namespaces[1]
+        coll ||= ""
       end
       
       # Get additional namespaces
