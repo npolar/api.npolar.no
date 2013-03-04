@@ -60,7 +60,10 @@ require "./lib/polarbear/interaction"
 # Marine
 require "./lib/marine.rb"
 require "./lib/marine/samples.rb"
-require "./lib/marine/data.rb"
+require "./lib/marine/abundance.rb"
+require "./lib/marine/pigments.rb"
+require "./lib/marine/lipids.rb"
+require "./lib/marine/nutrients.rb"
 
 # Metadata
 require "./lib/metadata.rb"

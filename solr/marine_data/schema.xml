@@ -107,6 +107,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="_rev" type="string" indexed="true" stored="true" />
 <field name="rev" type="string" indexed="true" stored="true" />
 
+<!-- abundance -->
 <field name="class" type="string" indexed="true" stored="true" />
 <field name="comment" type="string" indexed="true" stored="true" />
 <field name="family" type="string" indexed="true" stored="true" />
@@ -120,13 +121,40 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="phylum" type="string" indexed="true" stored="true" />
 <field name="precision" type="string" indexed="true" stored="true" />
 <field name="sample_id" type="string" indexed="true" stored="true" />
-<filed name="sample_type" type="string" indexed="true" stored="true" />
+<field name="sample_type" type="string" indexed="true" stored="true" />
 <field name="subphylum" type="string" indexed="true" stored="true" />
 <field name="stage_id" type="string" indexed="true" stored="true" />
 <field name="stage_name" type="string" indexed="true" stored="true" />
-<field name="unit" type="string" indexed="true" stored="true" />
-<field name="value" type="string" indexed="true" stored="true" />
 
+<field name="unit" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="value" type="string" indexed="true" stored="true" multiValued="true" />
+
+<!-- lipids -->
+<field name="specimen_length_info" type="string" indexed="true" stored="true" />
+<field name="specimen_length" type="string" indexed="true" stored="true" />
+<field name="specimen_name" type="string" indexed="true" stored="true" />
+<field name="specimen_weight" type="string" indexed="true" stored="true" />
+<field name="specimen_comments" type="string" indexed="true" stored="true" />
+<field name="specimen_sex" type="string" indexed="true" stored="true" />
+<field name="specimen_tissue" type="string" indexed="true" stored="true" />
+<field name="specimen_weight_info" type="string" indexed="true" stored="true" />
+<field name="lab" type="string" indexed="true" stored="true" />
+<field name="institution" type="string" indexed="true" stored="true" />
+<field name="replication" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="individuals" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="analysis" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="lipid_class" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="lipid_fat" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="type" type="string" indexed="true" stored="true" multiValued="true" />
+
+<!-- pigments -->
+<field name="chlorophyll" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="phaeopigment" type="string" indexed="true" stored="true" multiValued="true" />
+
+<!-- nutrients -->
+<field name="nutrient" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="average" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="stdev" type="string" indexed="true" stored="true" multiValued="true" />
 
    <!-- Main body of document extracted by SolrCell.
         NOTE: This field is not indexed by default, since it is also copied to "text"
