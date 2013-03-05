@@ -10,7 +10,7 @@ module Npolar
 
       # TODO: move this to config.ru?
       ROLES_CN = "cn=roles"
-      API_DN = "cn=api,cn=systems,dc=polarresearch,dc=org"
+      API_DN = "cn=systems,dc=polarresearch,dc=org"
       USERS_DN = "cn=users,dc=polarresearch,dc=org"
 
       def self.ssha(password, salt)
@@ -32,8 +32,6 @@ module Npolar
       end
   
       def match? username, password
-        puts "match #{username}, #{password}"
-
         # make sure it's in LDAP form: user@domain.no
         mail = massage_username(username)
 
