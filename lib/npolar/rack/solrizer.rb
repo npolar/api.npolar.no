@@ -64,8 +64,6 @@ module Npolar
 
 
       def condition?(request)
-        log.debug "Condition?"
-        pp request.inspect
         config[:condition].call(request)
       end
 
