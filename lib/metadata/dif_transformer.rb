@@ -621,7 +621,7 @@ module Metadata
         
         type = link["rel"] unless link["rel"].nil?
         
-        unless type =~ /reference|doi/
+        unless type =~ /reference|doi|internal/
         
           case( type )
           when "dataset" then type = "GET DATA"
