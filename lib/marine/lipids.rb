@@ -18,6 +18,8 @@ module Marine
       solr = {}
       solr["id"] = id
       solr["rev"] = rev
+      solr["workspace"] = "marine"
+      solr["collection"] = "lipids"
   
       # flatten specimen hash
       if doc.has_key?("specimen")

@@ -18,6 +18,8 @@ module Marine
       solr = {}
       solr["id"] = id
       solr["rev"] = rev
+      solr["workspace"] = "marine"
+      solr["collection"] = "pigments"
 
       if doc.has_key?("analyses")
         doc["analyses"].each do |analysis|
