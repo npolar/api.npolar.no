@@ -25,14 +25,13 @@ module Marine
       if doc.has_key?("specimen")
         specimen = doc["specimen"]
         if specimen
-          solr["specimen_length_info"] = specimen.fetch("length_info", "")
           solr["specimen_length"]      = specimen.fetch("length", "")
           solr["specimen_name"]        = specimen.fetch("name", "")
           solr["specimen_weight"]      = specimen.fetch("weight", "")
           solr["specimen_comments"]    = specimen.fetch("comments", "")
           solr["specimen_sex"]         = specimen.fetch("sex", "")
           solr["specimen_tissue"]      = specimen.fetch("tissue", "")
-          solr["specimen_weight_info"] = specimen.fetch("weight_info", "")
+          solr["specimen_species"]     = specimen.fetch("species", "")
           solr["lab"]                  = specimen.fetch("lab", "")
           solr["institution"]          = specimen.fetch("institution", "")
         end
