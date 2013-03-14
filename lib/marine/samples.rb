@@ -48,11 +48,11 @@ module Marine
         :collection        => "samples"
       }
 
-      if doc.has_key?("staff")
-        if doc["staff"].is_a?(Hash)
-          staff = [doc["staff"]]
+      if doc.has_key?("sample_staff")
+        if doc["sample_staff"].is_a?(Hash)
+          staff = [doc["sample_staff"]]
         else
-          staff = doc["staff"]
+          staff = doc["sample_staff"]
         end
 
         staff_info = []
