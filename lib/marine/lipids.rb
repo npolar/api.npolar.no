@@ -6,7 +6,7 @@ module Marine
 
     def self.facets
       [
-        "lipid_class", "analysis", "specimen_name", "specimen_sex", "specimen_tissue", "lab", "institution"
+        "lipid_class", "analysis", "specimen_name", "specimen_species", "specimen_sex", "specimen_tissue", "lab", "institution"
       ]
     end
 
