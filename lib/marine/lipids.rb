@@ -32,6 +32,7 @@ module Marine
           solr["specimen_sex"]         = specimen.fetch("sex", "")
           solr["specimen_tissue"]      = specimen.fetch("tissue", "")
           solr["specimen_species"]     = specimen.fetch("species", "")
+          solr["specimen_stage"]       = specimen.fetch("stage", "")
           solr["lab"]                  = specimen.fetch("lab", "")
           solr["institution"]          = specimen.fetch("institution", "")
         end

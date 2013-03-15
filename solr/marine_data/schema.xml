@@ -139,6 +139,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="specimen_sex" type="string" indexed="true" stored="true" />
 <field name="specimen_tissue" type="string" indexed="true" stored="true" />
 <field name="specimen_species" type="string" indexed="true" stored="true" />
+<field name="specimen_stage" type="string" indexed="true" stored="true" />
 <field name="lab" type="string" indexed="true" stored="true" />
 <field name="institution" type="string" indexed="true" stored="true" />
 <field name="replication" type="string" indexed="true" stored="true" multiValued="true" />
