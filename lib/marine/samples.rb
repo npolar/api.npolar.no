@@ -60,14 +60,16 @@ module Marine
 
         staff_info = []
 
-        # for each staff member
-        staff.each do |member|
-          # flatten staff values (name, phone, etc.)
-          staff_info += member.reject{ |k| k == "institution"}.values
+        if staff.is_a?(Array)
+          # for each staff member
+          staff.each do |member|
+            # flatten staff values (name, phone, etc.)
+            staff_info += member.reject{ |k| k == "institution"}.values
 
-          # flatten institute hash
-          if member.has_key?("institution") and member["institution"].respond_to?(:each)
-            staff_info += [member["institution"].values.join(" ")]
+            # flatten institute hash
+            if member.has_key?("institution") and member["institution"].respond_to?(:each)
+              staff_info += [member["institution"].values.join(" ")]
+            end
           end
         end
 
