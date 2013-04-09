@@ -6,7 +6,7 @@ module Marine
 
     def self.facets
       [
-        "workspace", "collection", "animal_group", "conveyance", "gear", "institution", "preservation", "programs", "sample_types", "station", "substation", "status"
+        "workspace", "collection", "animal_group", "conveyance", "gear", "institution", "preservation", "programs", "sample_types", "station", "substation", "status", "year"
       ]
     end
 
@@ -14,6 +14,11 @@ module Marine
       doc = self
       id = doc["id"] ||= doc["_id"]
       rev = doc["rev"] ||= doc["_rev"] ||= nil
+
+      utc_date = doc.fetch("utc_date", "")
+      if !utc_date.empty?
+        year = DateTime.parse(utc_date).year
+      end
 
       solr = {
         :id                => id,
@@ -46,7 +51,8 @@ module Marine
         :status            => doc.fetch("status", ""),
         :substation        => doc.fetch("substation", ""),
         :title             => doc.fetch("title", ""),
-        :utc_date          => doc.fetch("utc_date", ""),
+        :utc_date          => utc_date,
+        :year              => year,
         :workspace         => "marine",
         :collection        => "samples"
       }

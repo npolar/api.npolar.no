@@ -140,6 +140,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="title" type="string" indexed="true" stored="true" />
 <field name="substation" type="string" indexed="true" stored="true" />
 <field name="utc_date" type="string" indexed="true" stored="true" />
+<field name="year" type="string" indexed="true" stored="true" />
 
    <!-- Main body of document extracted by SolrCell.
         NOTE: This field is not indexed by default, since it is also copied to "text"
