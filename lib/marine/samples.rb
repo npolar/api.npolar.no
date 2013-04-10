@@ -87,6 +87,38 @@ module Marine
       end
 
       text = ""
+      # index species information
+      if doc.has_key?("abundances")
+        doc["abundances"].each_with_index do |abund, index|
+          if abund.has_key? "animal"
+            abund["animal"].each do |k, v|
+              text += "#{k}_#{index} = #{v} | "
+            end
+          end
+        end
+      end
+
+      # index lipids info
+      if doc.has_key?("lipids")
+        doc["lipids"].each_with_index do |lipid, index|
+          if lipid.has_key? "specimen"
+            tissue = lipid["specimen"].fetch("tissue", "")
+            species = lipid["specimen"].fetch("species", "")
+            name = lipid["specimen"].fetch("name", "")
+            text += "tissue_#{index} = #{tissue} | "
+            text += "species_#{index} = #{species} | "
+            text += "specimen_name_#{index} = #{name} | "
+          end
+          if lipid.has_key? "analyses"
+            lipid["analyses"].each_with_index do |analysis, index|
+              lipid_class = analysis.fetch("lipid_class", "")
+              text += "lipid_class_#{index} = #{lipid_class} |"
+            end
+          end
+        end
+      end
+
+      # everything else
       solr.to_hash.each do |k,v|
         text += "#{k} = #{v} | "
       end
