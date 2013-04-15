@@ -40,6 +40,7 @@ require "./lib/npolar/rack/nc_parser"
 require "./lib/npolar/rack/json_validator"
 require "./lib/npolar/rack/change_logger"
 require "./lib/npolar/rack/json_cleaner"
+require "./lib/npolar/rack/tsv_parser"
 
 require "rack/protection"
 require "rack/throttle"
@@ -82,6 +83,9 @@ Dir.glob("./lib/tracking/*.rb").each do | file |
   require file
 end
 
+# Zeppelin
+require "./lib/zeppelin.rb"
+require "./lib/zeppelin/readings.rb"
 
 # Views
 require "mustache"
