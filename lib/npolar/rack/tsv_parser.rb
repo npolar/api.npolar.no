@@ -34,10 +34,10 @@ module Npolar
 
         # convert to utf-8
         ic = Iconv.new('UTF-8', 'WINDOWS-1252') # TODO: make 'encoding' a query parameter
-        data = ic.iconv(data + ' ')[0..-2]
+        data_utf8 = ic.iconv(data + ' ')[0..-2]
 
-        data = data.gsub(/\r\n?/, "\n")
-        rows = data.split(/\n/)
+        data_clean = data_utf8.gsub(/\r\n?/, "\n")
+        rows = data_clean.split(/\n/)
 
         # reformat header
         header = []
@@ -66,6 +66,18 @@ module Npolar
             doc[k] = v[0]
           end
         end
+       
+        # create a filename for original document 
+        source_fname = doc.fetch('Filename', 'source')
+        tsv_fname = File.basename(source_fname, File.extname(source_fname)) + '.tsv'
+
+        # store a copy of the file as an attachment
+        doc["_attachments"] = {
+          "#{tsv_fname}" => { 
+            "content_type" => "text/tab-separated-values",
+            "data" => Base64.encode64(data_utf8)
+          }
+        }
 
         doc
       end
