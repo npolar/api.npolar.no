@@ -33,7 +33,7 @@ module Npolar
         doc = {}
 
         # convert to utf-8
-        ic = Iconv.new('UTF-8', 'WINDOWS-1252')
+        ic = Iconv.new('UTF-8', 'WINDOWS-1252') # TODO: make 'encoding' a query parameter
         data = ic.iconv(data + ' ')[0..-2]
 
         data = data.gsub(/\r\n?/, "\n")
