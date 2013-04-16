@@ -1,7 +1,7 @@
 require 'hashie'
 
 module Zeppelin
-  class Readings < Hashie::Mash
+  class Radiation < Hashie::Mash
 
     def self.facets
       []

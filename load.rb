@@ -85,7 +85,7 @@ end
 
 # Zeppelin
 require "./lib/zeppelin.rb"
-require "./lib/zeppelin/readings.rb"
+require "./lib/zeppelin/radiation.rb"
 
 # Views
 require "mustache"
