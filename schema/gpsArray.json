@@ -1,0 +1,9 @@
+{ "description": "Schema for an Array of metadata records",
+  "type": "array",
+  "additionalItems": false,
+  "items": {
+    "extends": {
+      "$ref": "http://localhost:9393/schema/9add810a-ab4e-11e2-8354-d4bed9040c9a"
+    }
+  }
+}
