@@ -25,7 +25,7 @@ module Metadata
     ISO_8601 = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
 
     DATASET_MAP = [
-      :source, :id, :title, :summary, :progress, :investigators,
+      :workspace, :collection, :source, :id, :title, :summary, :progress, :investigators,
       :contributors, :activity, :locations, :links, :tags, :iso_topics,
       :quality, :science_keywords, :draft, :published, :updated, :editors, :sets
     ]
@@ -78,14 +78,21 @@ module Metadata
       
       dataset
     end
-
+  
+    def workspace
+      "data"
+    end
+    
+    def collection
+      "description"
+    end
 
     def href(id)
       "#{base.gsub(/\/$/, "")}/#{id}.json"
     end
 
     def id
-      object.Entry_ID.gsub(/\./, "-")
+      uuid(object.Entry_ID)
     end
     
     def title
