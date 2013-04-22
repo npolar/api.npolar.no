@@ -11,6 +11,16 @@
       "description": "Dataset revision",
       "type": "string"
     },
+    "workspace":{
+			"description": "Top level grouping of the data",
+			"type": "string",
+			"required": true
+		},
+		"collection":{
+			"description": "Data collection. (gps, image, radar, ctd, etc...)",
+			"type": "string",
+			"required": true
+		},
     "id": {
       "description": "Document ID should be the same as _id",
       "type": "string",
