@@ -3,6 +3,16 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+		"workspace":{
+			"description": "Top level grouping of the data",
+			"type": "string",
+			"required": true
+		},
+		"collection":{
+			"description": "Data collection. (gps, image, radar, ctd, etc...)",
+			"type": "string",
+			"required": true
+		},
     "title": {      
       "description": "Dataset title. DIF:Entry_Title",
       "type": "string",
