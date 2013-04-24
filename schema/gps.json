@@ -37,20 +37,14 @@
 				"type": "string"
 			}
 		},
-		"source_uri":{
-			"description": "",
-			"type": "string",
-			"format": "uri",
-			"required": true
-		},
-		"format":{
-			"description": "Indicates what kind of data is contained in the resource. The options are json and/or binary.",
+		"primary_data":{
+			"description": "Indicates what the primary data is. This is either the document data (json) or the attachment.",
 			"type": "array",
 			"required": true,
-			"additionalProperties": false,
+			"additionalItems": false,
 			"items": {
 				"type": "string",
-				"pattern": "^(json|binary)$"
+				"pattern": "^(document|attachment)$"
 			}
 		},
     "latitude": {      
@@ -94,15 +88,9 @@
 					"description": "identifier used when multiple sensors are used for creating a dataset (sensor a, sensor vehicle...)",
 					"type": "string"
 				},
-				"source_uri": {
-					"description": "persistent address where this record originates from",
-					"type": "string",
-					"format": "uri"
-				},
-				"description_uri": {
-					"description": "uri pointing to the persistent web resouce describing this record",
-					"type": "string",
-					"format": "uri"
+				"antenna_height": {
+					"description": "The antenna height in meters.",
+					"type": "float",
 				}
 			}
 		}
