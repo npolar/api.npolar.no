@@ -3,7 +3,7 @@ require 'base64'
 
 module Npolar
   module Rack
-    class BinaryAttachment < Npolar::Rack::Middleware
+    class AttachmentDecoder < Npolar::Rack::Middleware
 
       def condition?(request)
         request.request_method == "GET" and request.params.has_key?('attachments') ? true : false
