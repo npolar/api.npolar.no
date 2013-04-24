@@ -5,7 +5,8 @@ require 'pp'
 
 module Npolar
   module Rack
-    
+   
+    # TODO: rename something specific to Zeppelin 
     class TsvParser < Npolar::Rack::Middleware
       
       def condition?(request)
@@ -39,10 +40,25 @@ module Npolar
         data_clean = data_utf8.gsub(/\r\n?/, "\n")
         rows = data_clean.split(/\n/)
 
+        # to store units info
+        doc['units'] = {}
+
         # reformat header
         header = []
         rows[0].split(/\t/).each do |name|
+          # extract unit information
+          unit_match = name.match(/\[(.+)\]/)
+          if unit_match
+            unit_name = unit_match[1]
+          end
+
+          name = name.gsub(/\[.+\]/, "").strip
           name = name.gsub(/ /, "_")
+
+          if unit_name
+            doc['units'][name] = unit_name
+          end
+
           header << name
           doc[name] = []
         end
@@ -52,6 +68,12 @@ module Npolar
           row.split(/\t/).each_with_index do |value, index|
             name = header[index]
             if !value.nil? and !value.empty?
+              # try to see if this can be a float
+              begin
+                value = Float(value.gsub(',', '.'))
+              rescue ArgumentError
+              end
+
               doc[name] << value
             end
           end
