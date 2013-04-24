@@ -4,22 +4,32 @@ require 'base64'
 module Npolar
   module Rack
     class BinaryAttachment < Npolar::Rack::Middleware
-      
+
       def condition?(request)
-        return true if request.request_method == "GET" and request.params.has_key?('attachments')
-        false
+        request.request_method == "GET" and request.params.has_key?('attachments') ? true : false
       end
       
       def handle(request)
-        puts "^_^ + "*3
         response = @app.call(request.env)
         
+        # If the resource exists load the attachment and return that as the response
         if response.status == 200
           
           attachments = Yajl::Parser.parse(response.body[0])['_attachments']
         
           attachments.each do |filename, stats|
-            return [200, {'Content-Type' => stats['content_type'], "Content-Disposition" => "filename=#{filename}"}, [Base64.decode64(stats['data'])]]
+            
+            data = Base64.decode64(stats['data'])
+            
+            return [
+              200,
+              {
+                'Content-Type' => stats['content_type'],
+                'Content-Length' => data.bytesize.to_s,
+                'Content-Disposition' => "filename=#{filename}"
+              },
+              [data]
+            ]
           end
           
         end
