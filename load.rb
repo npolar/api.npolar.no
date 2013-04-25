@@ -42,7 +42,7 @@ require "./lib/npolar/rack/json_validator"
 require "./lib/npolar/rack/change_logger"
 require "./lib/npolar/rack/json_cleaner"
 require "./lib/npolar/rack/icelastic"
-require "./lib/npolar/rack/attachment_decoder"
+require "./lib/npolar/rack/attachment_downloader"
 
 require "rack/protection"
 require "rack/throttle"
