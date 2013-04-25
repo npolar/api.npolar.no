@@ -23,6 +23,8 @@ module Npolar
       def handle(request)
         filename = request.params['attachment']
         
+        # Respond with the filename and a redirect for Nginx to use and serve the download
+        
         [
           200,
           {
