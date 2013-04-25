@@ -66,8 +66,12 @@
     "date_time": {
       "description": "date-time when the position was registered in ISO 8601 format",
       "type": "string",
-      "format": "date-time"
+      "pattern": "^(.*)T(.*)Z$"
     },
+		"sensor_name": {
+			"description": "identifier used when multiple sensors are used for creating a dataset (sensor a, sensor vehicle...)",
+			"type": "string"
+		},
 		"extra": {
 			"description": "dynamically expanding attribute group that can contain any extra info relevant to the record",
 			"type": "object",
@@ -84,13 +88,9 @@
 					"description": "platform the observation was made from (sledge, snow tractor, ship, etc...)",
 					"type": "string"
 				},
-				"sensor_name": {
-					"description": "identifier used when multiple sensors are used for creating a dataset (sensor a, sensor vehicle...)",
-					"type": "string"
-				},
 				"antenna_height": {
 					"description": "The antenna height in meters.",
-					"type": "float",
+					"type": "float"
 				}
 			}
 		}
