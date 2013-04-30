@@ -12,7 +12,7 @@ module Npolar
   #   @see http://www.elasticsearch.org/guide/reference/api/search/ Elasticsearch search Documentation
   
   module Rack
-    class IceLastic < Npolar::Rack::Middleware
+    class IcElastic < Npolar::Rack::Middleware
       
       CONFIG = {
         :searcher => 'http://localhost:9200/',
@@ -25,15 +25,23 @@ module Npolar
         :facets => []
       }
       
+      attr_accessor :env
+      
       def condition?(request)
         ['GET','HEAD'].include?(request.request_method) and request['q']
       end
       
       def handle(request)
 
+        self.env = request.env
+
         self.params = request.params
         params['start'] ? self.from = params['start'] : self.from = config[:start]
         params['limit'] ? self.size = params['limit'] : self.size = config[:limit]
+        params['fields'] ? self.fields = params['fields'] : self.fields = config[:fields]
+        @params = {'q' => '*'} if params['q'].empty?
+
+        log.info "QUERY: #{query}"
 
         response = searcher.post do |req|
           req.url "/#{config[:index]}/#{config[:type]}/_search"
@@ -41,7 +49,10 @@ module Npolar
           req.body = query
         end
         
-        [200, {'Content-Type' => 'application/json'}, ["#{response.body}"]]
+        results = Yajl::Parser.parse(response.body)
+        results = generate_feed(results).to_json
+        
+        [200, {'Content-Type' => 'application/json'}, [results]]
       end
       
       def searcher
@@ -50,6 +61,33 @@ module Npolar
           faraday.response :logger                  # log requests to STDOUT
           faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
         end
+      end
+      
+      def generate_feed(results)
+        
+        {
+          :feed => {
+            :opensearch => {
+              :totalResults => results['hits']['total'],
+              :itemsPerPage => size,
+              :startIndex => from
+            },
+            :list => {
+              :self => "http://#{env['HTTP_HOST'] + env['REQUEST_PATH'] + env['rack.request.query_string']}",
+              :next => next_page,
+              :previous => previous_page,
+              :first => from.to_i,
+              :last => next_page - 1
+            },
+            :search => {
+              :qtime => results['took'],
+              :q => params['q']
+            },
+            :facets => results['facets'].map{|facet, value| {facet => value['terms']}},
+            :entries => results['hits']['hits'].map{|hit| hit['_source'] ? hit['_source'] : hit['fields']}
+          }
+        }
+        
       end
       
       def params=request_params
@@ -76,8 +114,25 @@ module Npolar
         @from = start
       end
       
+      def fields=fields
+        @fields = fields.split(',') unless fields.nil? || fields.empty?
+      end
+      
+      def fields
+        @fields ||= nil
+      end
+      
+      def next_page
+        val = from.to_i + size.to_i
+      end
+      
+      def previous_page
+        val = from.to_i - size.to_i
+        val > 0 ? val : false
+      end
+      
       def query
-        {
+        data = {
           'from' => from,
           'size' => size,
           'query' => {
@@ -87,7 +142,11 @@ module Npolar
             }
           },
           'facets' => facets
-        }.to_json
+        }
+
+        data['fields'] = fields unless fields.nil?
+        
+        data.to_json
       end
       
       def facets
