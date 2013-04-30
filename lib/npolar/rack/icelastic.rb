@@ -22,7 +22,8 @@ module Npolar
         :df => '_all',
         :start => 0,
         :limit => 50,
-        :facets => []
+        :facets => [],
+        :filter => nil,
       }
       
       attr_accessor :env
@@ -39,6 +40,15 @@ module Npolar
         params['start'] ? self.from = params['start'] : self.from = config[:start]
         params['limit'] ? self.size = params['limit'] : self.size = config[:limit]
         params['fields'] ? self.fields = params['fields'] : self.fields = config[:fields]
+        
+        if params['fq']
+          unless params['fq'].split(':').any?
+            config[:filter] = [params['fq']]
+          else
+            config[:filter] = params['fq'].split(',')
+          end
+        end
+        
         @params = {'q' => '*'} if params['q'].empty?
 
         log.info "QUERY: #{query}"
@@ -130,7 +140,7 @@ module Npolar
         val = from.to_i - size.to_i
         val > 0 ? val : false
       end
-      
+
       def query
         data = {
           'from' => from,
@@ -141,7 +151,8 @@ module Npolar
               'query' => params['q']
             }
           },
-          'facets' => facets
+          'facets' => facets,
+          'filter' => filter
         }
 
         data['fields'] = fields unless fields.nil?
@@ -161,6 +172,20 @@ module Npolar
         end
         
         facet_query
+      end
+      
+      def filter
+        filtered_query = {}
+        
+        config[:filter].each do |filter|
+          
+          terms = filter.split(':')
+          
+          filtered_query['and'] ||= []
+          filtered_query['and'] << {:term => {terms.first => terms.last}}
+        end if config[:filter]
+        
+        filtered_query
       end
       
     end
