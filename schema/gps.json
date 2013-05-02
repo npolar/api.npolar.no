@@ -61,7 +61,7 @@
     },
     "altitude": {
       "description": "altitude at this position in meters",
-      "type": "float"
+      "type": "number"
     },
     "date_time": {
       "description": "date-time when the position was registered in ISO 8601 format",
@@ -78,11 +78,11 @@
 			"properties": {
 				"grid": {
 					"description": "grid size in meters",
-					"type": "float"
+					"type": "number"
 				},
 				"cumulative_distance": {
 					"description": "distance traveled since the first measurement in meters",
-					"type": "float"
+					"type": "number"
 				},
 				"platform": {
 					"description": "platform the observation was made from (sledge, snow tractor, ship, etc...)",
@@ -90,7 +90,7 @@
 				},
 				"antenna_height": {
 					"description": "The antenna height in meters.",
-					"type": "float"
+					"type": "number"
 				}
 			}
 		}
