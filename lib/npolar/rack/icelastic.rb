@@ -1,7 +1,7 @@
 module Npolar
   
   # [Functionality]
-  #   IceLastic is a middleware that provides elasticsearch on a RACK endpoint.
+  #   IcELastic is a middleware that provides elasticsearch on a RACK endpoint.
   #   On GET requests it translates request parameters into the correct elasticsearch
   #   syntax and uses them to query the configured elasticsearch index.
   #
@@ -35,7 +35,6 @@ module Npolar
       def handle(request)
 
         self.env = request.env
-
         self.params = request.params
         params['start'] ? self.from = params['start'] : self.from = config[:start]
         params['limit'] ? self.size = params['limit'] : self.size = config[:limit]
@@ -49,7 +48,7 @@ module Npolar
           end
         end
         
-        @params = {'q' => '*'} if params['q'].empty?
+        @params['q'] = '*' if params['q'].empty?
 
         log.info "QUERY: #{query}"
 
@@ -60,7 +59,13 @@ module Npolar
         end
         
         results = Yajl::Parser.parse(response.body)
-        results = generate_feed(results).to_json
+        results = generate_feed(results)
+        
+        if params['format'] == 'csv' && params['fields']
+          results = to_csv(results) 
+        else
+          results = results.to_json
+        end
         
         [200, {'Content-Type' => 'application/json'}, [results]]
       end
@@ -83,9 +88,9 @@ module Npolar
               :startIndex => from
             },
             :list => {
-              :self => "http://#{env['HTTP_HOST'] + env['REQUEST_PATH'] + env['rack.request.query_string']}",
-              :next => next_page,
-              :previous => previous_page,
+              :self => self_uri,
+              :next => next_uri,
+              :previous => previous_uri,
               :first => from.to_i,
               :last => next_page - 1
             },
@@ -98,6 +103,41 @@ module Npolar
           }
         }
         
+      end
+      
+      def to_csv(results)
+        
+        csv = CSV.generate("", {:col_sep => "\t"}) do |csv|
+          csv << fields.map{|f| f.capitalize}
+          csv << []
+          results[:feed][:entries].each do |entry|
+            
+            row = []
+            
+            fields.each{|field| row << entry[field]}
+            
+            csv << row
+          end
+        end
+        
+        csv
+      end
+      
+      def self_uri
+        "http://#{env['HTTP_HOST'] + env['REQUEST_PATH']}?#{env['rack.request.query_string']}"
+      end
+      
+      def next_uri
+        next_page == false ? false :"http://#{env['HTTP_HOST'] + env['REQUEST_PATH']}?#{start_param(next_page)}"
+      end
+      
+      def previous_uri
+        previous_page == false ? false : "http://#{env['HTTP_HOST'] + env['REQUEST_PATH']}?#{start_param(previous_page)}"
+      end
+      
+      def start_param(page_number)
+        qp = env['rack.request.query_string']
+        qp =~ /&start=(\d+)/ ? qp.gsub!(/&start=(\d+)/, "&start=#{page_number}") : qp << "&start=#{page_number}"
       end
       
       def params=request_params
@@ -138,7 +178,7 @@ module Npolar
       
       def previous_page
         val = from.to_i - size.to_i
-        val > 0 ? val : false
+        val >= 0 ? val : false
       end
 
       def query
