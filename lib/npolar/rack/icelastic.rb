@@ -26,7 +26,7 @@ module Npolar
         :filter => nil,
       }
       
-      attr_accessor :env
+      attr_accessor :env, :total_hits
       
       def condition?(request)
         ['GET','HEAD'].include?(request.request_method) and request['q']
@@ -36,6 +36,7 @@ module Npolar
 
         self.env = request.env
         self.params = request.params
+        
         params['start'] ? self.from = params['start'] : self.from = config[:start]
         params['limit'] ? self.size = params['limit'] : self.size = config[:limit]
         params['fields'] ? self.fields = params['fields'] : self.fields = config[:fields]
@@ -59,6 +60,7 @@ module Npolar
         end
         
         results = Yajl::Parser.parse(response.body)
+        self.total_hits = results['hits']['total']
         results = generate_feed(results)
         
         if params['format'] == 'csv' && params['fields']
@@ -83,7 +85,7 @@ module Npolar
         {
           :feed => {
             :opensearch => {
-              :totalResults => results['hits']['total'],
+              :totalResults => total_hits,
               :itemsPerPage => size,
               :startIndex => from
             },
@@ -92,7 +94,7 @@ module Npolar
               :next => next_uri,
               :previous => previous_uri,
               :first => from.to_i,
-              :last => next_page - 1
+              :last => last
             },
             :search => {
               :qtime => results['took'],
@@ -128,7 +130,7 @@ module Npolar
       end
       
       def next_uri
-        next_page == false ? false :"http://#{env['HTTP_HOST'] + env['REQUEST_PATH']}?#{start_param(next_page)}"
+        next_page == false ? false : "http://#{env['HTTP_HOST'] + env['REQUEST_PATH']}?#{start_param(next_page)}"
       end
       
       def previous_uri
@@ -174,11 +176,17 @@ module Npolar
       
       def next_page
         val = from.to_i + size.to_i
+        val < total_hits ? val : false
       end
       
       def previous_page
         val = from.to_i - size.to_i
         val >= 0 ? val : false
+      end
+      
+      def last
+        return next_page - 1 unless next_page == false
+        total_hits
       end
 
       def query
