@@ -198,7 +198,7 @@ module Npolar
             log.info "#{request.request_method} #{request.url} #{status} saved #{size} Solr document(s) in #{elapsed} seconds (#{size/elapsed} qps)"
           else
             log.error "Failed saving to Solr"
-            puts response.inspect
+            puts solr_response.inspect
           end
 
           if response.nil?
