@@ -24,6 +24,7 @@ module Npolar
         :limit => 50,
         :facets => [],
         :filter => nil,
+        :sort => []
       }
       
       attr_accessor :env, :total_hits
@@ -41,13 +42,8 @@ module Npolar
         params['limit'] ? self.size = params['limit'] : self.size = config[:limit]
         params['fields'] ? self.fields = params['fields'] : self.fields = config[:fields]
         
-        if params['fq']
-          unless params['fq'].split(':').any?
-            config[:filter] = [params['fq']]
-          else
-            config[:filter] = params['fq'].split(',')
-          end
-        end
+        config[:sort] = params['sort'].split(',') if params['sort']
+        config[:filter] = params['fq'].split(',') if params['fq']
         
         @params['q'] = '*' if params['q'].empty?
 
@@ -200,7 +196,8 @@ module Npolar
             }
           },
           'facets' => facets,
-          'filter' => filter
+          'filter' => filter,
+          'sort' => sort
         }
 
         data['fields'] = fields unless fields.nil?
@@ -234,6 +231,19 @@ module Npolar
         end if config[:filter]
         
         filtered_query
+      end
+      
+      def sort
+        sorted_query = []
+        
+        config[:sort].each do |item|
+          
+          d = item.split(':')
+          sorted_query << {d.first => d.last}
+          
+        end if config[:sort].any?
+        
+        sorted_query
       end
       
     end
