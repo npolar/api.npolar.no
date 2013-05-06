@@ -27,7 +27,7 @@
 			"description": "State of the data. This indicates if it is Raw data, processed data or product level data",
 			"type": "string",
 			"required": true,
-			"pattern": "^(raw|processed|product)$"
+			"enum": ["raw", "processed", "product"]
 		},
 		"topic" : {
 			"description": "list of relevant research topics (glaciology, topography, geology, etc...)",
@@ -44,7 +44,7 @@
 			"additionalItems": false,
 			"items": {
 				"type": "string",
-				"pattern": "^(document|attachment)$"
+				"enum": ["document", "attachment"]
 			}
 		},
     "latitude": {      
