@@ -39,7 +39,11 @@
       "description": "String describing current project progress. DIF:Progress",
       "type": "string",
       "required": true,
-      "pattern": "^(ongoing|complete|planned)$"
+      "enum": [
+        "ongoing",
+        "complete",
+        "planned"
+      ]
     },
     "licences": {
       "description": "Legal licences defining terms of use for the data. DIF:Use_Constraints",
@@ -48,7 +52,11 @@
       "items": {
         "type": "string",
         "required": true,
-        "pattern": "^(http://creativecommons\\.org/licences/by/3\\.0/no/|http://data\\.norge\\.no/nlod/no/1\\.0|http://creativecommons\\.org/publicdomain/zero/1\\.0/|http://www\\.lovdata\\.no/all/hl-19610512-002\\.html)$" 
+        "enum": [
+          "http://creativecommons.org/licences/by/3.0/no/",
+          "http://data.norge.no/nlod/no/1.0",
+          "http://creativecommons.org/publicdomain/zero/1.0/|http://www.lovdata.no/all/hl-19610512-002.html"
+        ]
       }
     },
     "groups": {
@@ -58,7 +66,16 @@
       "items": {
         "type": "string",
         "required": true,
-        "pattern": "^(biodiversity|ecotoxicology|geology|geophysics|glaciology|topography|oceanography|sea_ice)$"
+        "enum": [
+          "biodiversity",
+          "ecotoxicology",
+          "geology",
+          "geophysics",
+          "glaciology",
+          "topography",
+          "oceanography",
+          "sea_ice"
+        ]
       }
     },
     "editors": {
@@ -207,7 +224,25 @@
           },
           "area": {
             "type": "string",
-            "pattern": "^(svalbard|jan_mayen|dronning_maud_land|bouvetøya|peter_i_øy|arctic|antarctic|norway|russia|sweden|iceland|greenland|canada|finland|danmark|faroe_islands|united_states)$"
+            "enum": [
+              "svalbard",
+              "jan_mayen",
+              "dronning_maud_land",
+              "bouvetøya",
+              "peter_i_øy",
+              "arctic",
+              "antarctic",
+              "norway",
+              "russia",
+              "sweden",
+              "iceland",
+              "greenland",
+              "canada",
+              "finland",
+              "danmark",
+              "faroe_islands",
+              "united_states"
+            ]
           },
           "country_code": {
             "description": "This field allows the adding of a country code that adheres to ISO 3611-1. For example SJ for Svalbard and Jan Mayen",
