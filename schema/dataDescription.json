@@ -320,7 +320,10 @@
     },
     "draft": {
       "type": "string",
-      "pattern": "^(yes|no)$"
+      "enum": [
+        "yes",
+        "no"
+      ]
     },
     "sets": {
       "description": "Similar to tags and keywords",
