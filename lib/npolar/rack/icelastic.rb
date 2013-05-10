@@ -23,12 +23,13 @@ module Npolar
         :start => 0,
         :limit => 50,
         :facets => [],
+        :date_facets => nil,
         :filter => nil,
         :sort => []
       }
       
       attr_accessor :env, :total_hits
-      
+
       def condition?(request)
         ['GET','HEAD'].include?(request.request_method) and request['q']
       end
@@ -54,7 +55,7 @@ module Npolar
           req.headers['Content-Type'] = 'application/json'
           req.body = query
         end
-        
+
         results = Yajl::Parser.parse(response.body)
         self.total_hits = results['hits']['total']
         results = generate_feed(results)
@@ -77,7 +78,6 @@ module Npolar
       end
       
       def generate_feed(results)
-        
         {
           :feed => {
             :opensearch => {
@@ -96,11 +96,56 @@ module Npolar
               :qtime => results['took'],
               :q => params['q']
             },
-            :facets => results['facets'].map{|facet, value| {facet => value['terms']}},
+            :facets => results['facets'].map do |facet, value|
+              {facet => value['terms']} if value['terms']
+              
+              if value['entries']
+                
+                {
+                  facet => value['entries'].map do |entry|
+                    
+                    range_start = entry['time']
+                    
+                    range_end = case facet
+                    when 'hour' then Time.new()
+                    when 'day' then next_utc_range_milliseconds(range_start, 'day')
+                    when 'month' then next_utc_range_milliseconds(range_start, 'month')
+                    when 'year' then next_utc_range_milliseconds(range_start, 'year')
+                    end    
+                    
+                    {
+                      :term => Time.at(entry['time']/1000).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                      :count => entry['count'],
+                      :uri => "#{self_uri.gsub(/&start=\d+/, '')}&range=#{config[:date_facets][:field]}:#{range_start}|#{range_end}"
+                    }
+                  end
+                }
+              end
+
+            end,
             :entries => results['hits']['hits'].map{|hit| hit['_source'] ? hit['_source'] : hit['fields']}
           }
         }
         
+      end
+      
+      def next_hour_utc_milliseconds(milliseconds)
+        
+      end
+      
+      def next_utc_range_milliseconds(milliseconds, range)
+        year = Time.at(milliseconds/1000).year
+        month = Time.at(milliseconds/1000).month
+        day = Time.at(milliseconds/1000).day
+        
+        
+        next_value = case range
+        when 'year' then Date.new(year, month, day).next_year
+        when 'month' then Date.new(year, month, day).next_month
+        when 'day' then Date.new(year, month, day).next_day
+        end
+        
+        next_value = (Time.utc(next_value.year, next_value.month, next_value.day).to_f * 1000).to_i
       end
       
       def to_csv(results)
@@ -134,8 +179,8 @@ module Npolar
       end
       
       def start_param(page_number)
-        qp = env['rack.request.query_string']
-        qp =~ /&start=(\d+)/ ? qp.gsub!(/&start=(\d+)/, "&start=#{page_number}") : qp << "&start=#{page_number}"
+        qp = orig = env['rack.request.query_string']
+        qp =~ /&start=(\d+)/ ? qp.gsub(/&start=(\d+)/, "&start=#{page_number}") : qp << "&start=#{page_number}"
       end
       
       def params=request_params
@@ -215,6 +260,10 @@ module Npolar
             }
           }
         end
+
+        if config[:date_facets]
+          config[:date_facets][:format].each {|format| facet_query[format] = {:date_histogram => {:field => config[:date_facets][:field], :interval => format}}}
+        end
         
         facet_query
       end
@@ -230,7 +279,39 @@ module Npolar
           filtered_query['and'] << {:term => {terms.first => terms.last}}
         end if config[:filter]
         
+        if params['range']
+          
+          log.info "BUILDING RANGE FILTERS!!!"
+          
+          range_filter.each do |filter|
+            filtered_query['and'] << filter
+          end
+        end
+        
         filtered_query
+      end
+      
+      def range_filter
+        filters = []
+        
+        ranges = params['range'].split(',')
+        
+        ranges.each do |range|
+          field, values = range.split(':')
+          start, stop = values.split('|')
+          
+          filters << {
+            :range => {
+              field => {
+                :from => start,
+                :to => stop
+              }
+            }
+          }
+          
+        end
+        
+        filters
       end
       
       def sort
