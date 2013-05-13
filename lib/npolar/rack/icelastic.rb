@@ -97,26 +97,34 @@ module Npolar
               :q => params['q']
             },
             :facets => results['facets'].map do |facet, value|
-              {facet => value['terms']} if value['terms']
-              
-              if value['entries']
-                
+              if value.has_key?('terms')
+                {
+                  facet => value['terms'].map do |term|
+                    {
+                      :term => term['term'],
+                      :count => term['count'],
+                      :uri => "#{self_uri.gsub(/&start=\d+/, '').gsub(/&fq=#{facet}:#{term['term']}/,'')}&fq=#{facet}:#{term['term']}"
+                    }
+                  end
+                }
+              elsif value.has_key?('entries')
                 {
                   facet => value['entries'].map do |entry|
                     
+                    strf = '%Y-%m-%dT%H:%M:%SZ'
                     range_start = entry['time']
                     
-                    range_end = case facet
-                    when 'hour' then Time.new()
-                    when 'day' then next_utc_range_milliseconds(range_start, 'day')
-                    when 'month' then next_utc_range_milliseconds(range_start, 'month')
-                    when 'year' then next_utc_range_milliseconds(range_start, 'year')
+                    strf, range_end = case facet
+                    when 'hour' then [strf, Time.new()]
+                    when 'day' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'day')]
+                    when 'month' then ['%B-%Y', next_utc_range_milliseconds(range_start, 'month')]
+                    when 'year' then ['%Y', next_utc_range_milliseconds(range_start, 'year')]
                     end    
                     
                     {
-                      :term => Time.at(entry['time']/1000).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                      :term => Time.at(entry['time']/1000).strftime(strf),
                       :count => entry['count'],
-                      :uri => "#{self_uri.gsub(/&start=\d+/, '')}&range=#{config[:date_facets][:field]}:#{range_start}|#{range_end}"
+                      :uri => "#{self_uri.gsub(/&start=\d+/, '').gsub(/&range=.*:\d+\|\d+/, '')}&range=#{config[:date_facets][:field]}:#{range_start}|#{range_end}"
                     }
                   end
                 }
@@ -235,13 +243,17 @@ module Npolar
           'from' => from,
           'size' => size,
           'query' => {
-            'query_string' => {
-              'default_field' => config[:df],
-              'query' => params['q']
+            'filtered' => {
+              'query' => {
+                'query_string' => {
+                  'default_field' => config[:df],
+                  'query' => params['q']
+                }
+              },
+              'filter' => filter
             }
           },
           'facets' => facets,
-          'filter' => filter,
           'sort' => sort
         }
 
@@ -284,6 +296,7 @@ module Npolar
           log.info "BUILDING RANGE FILTERS!!!"
           
           range_filter.each do |filter|
+            filtered_query['and'] ||= []
             filtered_query['and'] << filter
           end
         end
