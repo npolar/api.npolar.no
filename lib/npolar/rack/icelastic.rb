@@ -103,7 +103,14 @@ module Npolar
                     {
                       :term => term['term'],
                       :count => term['count'],
-                      :uri => "#{self_uri.gsub(/&start=\d+/, '').gsub(/&fq=#{facet}:#{term['term']}/,'')}&fq=#{facet}:#{term['term']}"
+                      :uri => if self_uri =~ /&fq=/
+                        #delete the entire fq paramter
+                        link = "#{self_uri.gsub(/&start=\d+/, '').gsub(/&fq=#{params['fq']}/,'')}"
+                        #insert new fq parameter and replace duplicate
+                        link = "#{link}&fq=#{params['fq'].gsub(/#{facet}:#{term['term']}/, '')},#{facet}:#{term['term']}"
+                      else
+                        "#{self_uri.gsub(/&start=\d+/, '')}&fq=#{facet}:#{term['term']}"
+                      end
                     }
                   end
                 }
@@ -284,7 +291,6 @@ module Npolar
         filtered_query = {}
         
         config[:filter].each do |filter|
-          
           terms = filter.split(':')
           
           filtered_query['and'] ||= []
@@ -292,9 +298,6 @@ module Npolar
         end if config[:filter]
         
         if params['range']
-          
-          log.info "BUILDING RANGE FILTERS!!!"
-          
           range_filter.each do |filter|
             filtered_query['and'] ||= []
             filtered_query['and'] << filter
