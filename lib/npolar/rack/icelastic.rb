@@ -107,7 +107,8 @@ module Npolar
                         #delete the entire fq paramter
                         link = "#{self_uri.gsub(/&start=\d+/, '').gsub(/&fq=#{params['fq']}/,'')}"
                         #insert new fq parameter and replace duplicate
-                        link = "#{link}&fq=#{params['fq'].gsub(/#{facet}:#{term['term']}/, '')},#{facet}:#{term['term']}"
+                        fq = params['fq'].gsub(/#{facet}:#{term['term']}(,)?/, '')
+                        link = "#{link}&fq=#{facet}:#{term['term']}#{',' + fq unless fq.empty?}"
                       else
                         "#{self_uri.gsub(/&start=\d+/, '')}&fq=#{facet}:#{term['term']}"
                       end
@@ -247,21 +248,21 @@ module Npolar
 
       def query
         data = {
-          'from' => from,
-          'size' => size,
-          'query' => {
-            'filtered' => {
-              'query' => {
-                'query_string' => {
-                  'default_field' => config[:df],
-                  'query' => params['q']
+          :from => from,
+          :size => size,
+          :query => {
+            :filtered => {
+              :query => {
+                :query_string => {
+                  :default_field => config[:df],
+                  :query => params['q']
                 }
               },
-              'filter' => filter
+              :filter => filter
             }
           },
-          'facets' => facets,
-          'sort' => sort
+          :facets => facets,
+          :sort => sort
         }
 
         data['fields'] = fields unless fields.nil?
