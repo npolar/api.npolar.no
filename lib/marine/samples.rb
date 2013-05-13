@@ -15,11 +15,6 @@ module Marine
       id = doc["id"] ||= doc["_id"]
       rev = doc["rev"] ||= doc["_rev"] ||= nil
 
-      utc_date = doc.fetch("utc_date", "")
-      if !utc_date.empty?
-        year = DateTime.parse(utc_date).year
-      end
-
       solr = {
         :id                => id,
         :rev               => rev,
@@ -33,7 +28,6 @@ module Marine
         :gear              => doc.fetch("gear", ""),
         :institution       => doc.fetch("institution", ""),
         :instref           => doc.fetch("instref", ""),
-        :local_date        => doc.fetch("local_date", ""),
         :metadata_id       => doc.fetch("metadata_id", ""),
         :name              => doc.fetch("name", ""),
         :latitude_start    => doc.fetch("latitude_start", ""),
@@ -41,7 +35,6 @@ module Marine
         :latitude_end      => doc.fetch("latitude_end", ""),
         :longitude_end     => doc.fetch("longitude_end", ""),
         :preservation      => doc.fetch("preservation", ""),
-        :processed_date    => doc.fetch("processed_date", ""),
         :programs          => doc.fetch("programs", ""),
         :sample_name       => doc.fetch("sample_name", ""),
         :sample_types      => doc.fetch("sample_types", ""),
@@ -51,12 +44,28 @@ module Marine
         :status            => doc.fetch("status", ""),
         :substation        => doc.fetch("substation", ""),
         :title             => doc.fetch("title", ""),
-        :utc_date          => utc_date,
-        :year              => year,
         :workspace         => "marine",
         :collection        => "samples"
       }
 
+      # we can't let in any blank dates or solr will scream
+      utc_date = doc.fetch("utc_date", "")
+      if !utc_date.empty?
+        solr[:year] = DateTime.parse(utc_date).year
+        solr[:utc_date] = utc_date
+      end
+
+      local_date = doc.fetch("local_date", "")
+      if !local_date.empty?
+        solr[:local_date] = local_date
+      end
+
+      processed_date = doc.fetch("processed_date", "")
+      if !processed_date.empty?
+        solr[:processed_date] = processed_date
+      end
+
+      # flatten sample_staff when needed
       if doc.has_key?("sample_staff")
         if doc["sample_staff"].is_a?(Hash)
           staff = [doc["sample_staff"]]

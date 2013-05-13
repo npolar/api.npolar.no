@@ -119,7 +119,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="gear" type="string" indexed="true" stored="true" />
 <field name="institution" type="string" indexed="true" stored="true" />
 <field name="instref" type="string" indexed="true" stored="true" />
-<field name="local_date" type="string" indexed="true" stored="true" />
+<field name="local_date" type="date" indexed="true" stored="true" />
 <field name="metadata_id" type="string" indexed="true" stored="true" />
 <field name="name" type="string" indexed="true" stored="true" />
 <field name="latitude_start" type="string" indexed="true" stored="true" />
@@ -127,7 +127,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="latitude_end" type="string" indexed="true" stored="true" />
 <field name="longitude_end" type="string" indexed="true" stored="true" />
 <field name="preservation" type="string" indexed="true" stored="true" />
-<field name="processed_date" type="string" indexed="true" stored="true" />
+<field name="processed_date" type="date" indexed="true" stored="true" />
 <field name="programs" type="string" indexed="true" stored="true" />
 <field name="staff" type="string" indexed="true" stored="true" />
 <field name="sample_gear" type="string" indexed="true" stored="true" />
@@ -139,7 +139,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="status" type="string" indexed="true" stored="true" />
 <field name="title" type="string" indexed="true" stored="true" />
 <field name="substation" type="string" indexed="true" stored="true" />
-<field name="utc_date" type="string" indexed="true" stored="true" />
+<field name="utc_date" type="date" indexed="true" stored="true" />
 <field name="year" type="string" indexed="true" stored="true" />
 
    <!-- Main body of document extracted by SolrCell.
