@@ -51,7 +51,8 @@ map "/" do
     :facets => ['workspace', 'collection', 'topic', 'content', 'state']
   }
   
-  run Npolar::Rack::ServElastic.new
+  run lambda{|env| [200,{"Content-Type" => "application/json"},[{"endpoints" => [
+    "ctd", "dataset", "gps", "org", "person", "project", "publication", "radiation", "schema", "sensor", "telemetry", "webcam"]}.to_json]]}
   
 end
 
