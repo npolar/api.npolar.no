@@ -2,6 +2,8 @@ require "bundler/setup"
 require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
 require "logger"
 require "base64"
+require "csv"
+require "date"
 
 #
 #Dir.glob("./lib/npolar/**/*.rb").each do | file |
@@ -42,6 +44,7 @@ require "./lib/npolar/rack/json_validator"
 require "./lib/npolar/rack/change_logger"
 require "./lib/npolar/rack/json_cleaner"
 require "./lib/npolar/rack/icelastic"
+require "./lib/npolar/rack/servelastic"
 require "./lib/npolar/rack/attachment_downloader"
 
 require "rack/protection"
