@@ -1,16 +1,18 @@
 {
-  "description": "data.npolar.no metadata format",
+  "description": "Minimal schema for data.npolar.no metadata format. Used to validate metadata creation",
   "type": "object",
   "additionalProperties": false,
   "properties": {
 		"workspace":{
 			"description": "Top level grouping of the data",
 			"type": "string",
+			"enum": ["metadata"],
 			"required": true
 		},
 		"collection":{
 			"description": "Data collection. (gps, image, radar, ctd, etc...)",
 			"type": "string",
+			"enum": ["dataset"],
 			"required": true
 		},
     "title": {      
@@ -20,15 +22,15 @@
     },
     "draft": {
       "type": "string",
-      "pattern": "^(yes|no)$"
+      "enum": ["yes","no"]
     },
-    "published": {
+    "created": {
       "description": "Date-time when the metadata was created in ISO 8601 format",
       "type": "string",
       "format": "date-time"
     },
     "updated": {
-      "description": "Date-time when the metadata was created in ISO 8601 format",
+      "description": "Date-time when the metadata was updated in ISO 8601 format",
       "type": "string",
       "format": "date-time"
     },
