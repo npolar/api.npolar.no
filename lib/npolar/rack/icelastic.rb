@@ -169,7 +169,6 @@ module Npolar
         
         csv = CSV.generate("", {:col_sep => "\t"}) do |csv|
           csv << fields.map{|f| f.capitalize}
-          csv << []
           results[:feed][:entries].each do |entry|
             
             row = []
