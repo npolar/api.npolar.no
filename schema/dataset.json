@@ -14,11 +14,13 @@
     "workspace":{
 			"description": "Top level grouping of the data",
 			"type": "string",
+			"enum": ["metadata"],
 			"required": true
 		},
 		"collection":{
 			"description": "Data collection. (gps, image, radar, ctd, etc...)",
 			"type": "string",
+			"enum": ["dataset"],
 			"required": true
 		},
     "id": {
@@ -59,8 +61,8 @@
         ]
       }
     },
-    "groups": {
-      "description": "Research field the data belongs to. Not Mapped in DIF",
+    "topic": {
+      "description": "List of relevant research topics. Not Mapped in DIF",
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -365,13 +367,13 @@
         }
       }
     },
-    "published": {
+    "created": {
       "description": "Date-time when the metadata was created in ISO 8601 format",
       "type": "string",
       "format": "date-time"
     },
     "updated": {
-      "description": "Date-time when the metadata was created in ISO 8601 format",
+      "description": "Date-time when the metadata was updated in ISO 8601 format",
       "type": "string",
       "format": "date-time"
     },
