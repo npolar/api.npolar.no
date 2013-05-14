@@ -16,6 +16,7 @@
 		"workspace":{
 			"description": "Top level grouping of the data",
 			"type": "string",
+			"enum": ["gps"],
 			"required": true
 		},
 		"collection":{
@@ -30,21 +31,19 @@
 			"enum": ["raw", "processed", "product"]
 		},
 		"topic" : {
-			"description": "list of relevant research topics (glaciology, topography, geology, etc...)",
+			"description": "list of relevant research topics (glaciology, topography, geology, etc...). Should ideally match the topics listed in the dataset description",
 			"type": "array",
 			"additionalItems": false,
 			"items": {
 				"type": "string"
 			}
 		},
-		"primary_data":{
-			"description": "Indicates what the primary data is. This is either the document data (json) or the attachment.",
+		"content":{
+			"description": "Indicates what the primary content type is. For example image",
 			"type": "array",
-			"required": true,
 			"additionalItems": false,
 			"items": {
-				"type": "string",
-				"enum": ["document", "attachment"]
+				"type": "string"
 			}
 		},
     "latitude": {      
@@ -60,13 +59,13 @@
 			"pattern": "^[-]?(((([1]?[0-7]?[0-9])|([0-9]?[0-9]))(.([0-9]{1,8}))?)|((180)(.([0]{1,8}))?))$"
     },
     "altitude": {
-      "description": "altitude at this position in meters",
+      "description": "altitude at in meters",
       "type": "number"
     },
-    "date_time": {
-      "description": "date-time when the position was registered in ISO 8601 format",
+    "created": {
+      "description": "date-time when the position was registered in ISO 8601 format. Pattern matched to allow for milliseconds",
       "type": "string",
-      "pattern": "^(.*)T(.*)Z$"
+      "pattern": "^(\\d+)-(\\d+)-(\\d+)T(\\d+):(\\d+):(\\d+)(\\.\\d+)?Z$"
     },
 		"sensor_name": {
 			"description": "identifier used when multiple sensors are used for creating a dataset (sensor a, sensor vehicle...)",
