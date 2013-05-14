@@ -3,7 +3,7 @@
   "additionalItems": false,
   "items": {
     "extends": {
-      "$ref": "link to Document schema"
+      "$ref": "http://localhost:5984/schema/387bcfb4-ab51-11e2-9132-d4bed9040c9a"
     }
   }
 }
