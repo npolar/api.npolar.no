@@ -1,7 +1,7 @@
 module Npolar
   
   # [Functionality]
-  #   IcELastic is a middleware that provides elasticsearch on a RACK endpoint.
+  #   Icelastic is a middleware that provides elasticsearch on a RACK endpoint.
   #   On GET requests it translates request parameters into the correct elasticsearch
   #   syntax and uses them to query the configured elasticsearch index.
   #
@@ -12,7 +12,7 @@ module Npolar
   #   @see http://www.elasticsearch.org/guide/reference/api/search/ Elasticsearch search Documentation
   
   module Rack
-    class IcElastic < Npolar::Rack::Middleware
+    class Icelastic < Npolar::Rack::Middleware
       
       CONFIG = {
         :searcher => 'http://localhost:9200/',
@@ -28,7 +28,7 @@ module Npolar
         :sort => []
       }
       
-      attr_accessor :env, :total_hits
+      attr_accessor :params, :env, :total_hits
 
       def condition?(request)
         ['GET','HEAD'].include?(request.request_method) and request['q']
@@ -38,6 +38,7 @@ module Npolar
 
         self.env = request.env
         self.params = request.params
+        self.params ||= {:q => '*'}
         
         params['start'] ? self.from = params['start'] : self.from = config[:start]
         params['limit'] ? self.size = params['limit'] : self.size = config[:limit]
@@ -48,7 +49,7 @@ module Npolar
         
         @params['q'] = '*' if params['q'].empty?
 
-        log.info "QUERY: #{query}"
+        log.info "ELASTIC QUERY: #{query}"
 
         response = searcher.post do |req|
           req.url "/#{config[:index]}/#{config[:type]}/_search"
@@ -108,7 +109,7 @@ module Npolar
                         link = "#{self_uri.gsub(/&start=\d+/, '').gsub(/&fq=#{params['fq']}/,'')}"
                         #insert new fq parameter and replace duplicate
                         fq = params['fq'].gsub(/#{facet}:#{term['term']}(,)?/, '')
-                        link = "#{link}&fq=#{facet}:#{term['term']}#{',' + fq unless fq.empty?}"
+                        link = "#{link}&fq=#{facet}:#{term['term']}#{',' + fq unless fq.empty?}".gsub(/,$/, '')
                       else
                         "#{self_uri.gsub(/&start=\d+/, '')}&fq=#{facet}:#{term['term']}"
                       end
@@ -197,14 +198,6 @@ module Npolar
       def start_param(page_number)
         qp = orig = env['rack.request.query_string']
         qp =~ /&start=(\d+)/ ? qp.gsub(/&start=(\d+)/, "&start=#{page_number}") : qp << "&start=#{page_number}"
-      end
-      
-      def params=request_params
-        @params = request_params
-      end
-      
-      def params
-        @params ||= {'q' => '*'}
       end
       
       def size=limit
