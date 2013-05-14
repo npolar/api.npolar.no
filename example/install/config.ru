@@ -44,71 +44,104 @@ use Rack::Static, :urls => ["/css", "/img", "/xsl", "/favicon.ico", "/robots.txt
 map "/" do
 
   #use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-  #  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }  
-
-  run lambda{|env| [200,{"Content-Type" => "application/json"},[{"endpoints" => ["data", "project", "publication", "resource", "schema", "service"]}.to_json]]}
-
-end
-
-map "/data" do
-  run lambda{|env| [200,{"Content-Type" => "application/json"},[{"endpoints" => ["description", "glaciology", "oceanography", "telemetry", "topography"]}.to_json]]}
-end
-
-map "/data/biology" do
-end
+  #  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
-map "/data/description" do
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => ['workspace', 'collection', 'topic', 'content', 'state']
+  }
+  
+  run Npolar::Rack::ServElastic.new
+  
+end
+
+########################################################
+################   WORKSPACE: /ctd   ###################
+########################################################
+
+map "/ctd" do
+  
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  use Npolar::Rack::AttachmentDownloader, {:database => "ctd"}
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => ['cruise'],
+    :date_facets => {
+      :field => 'date_time',
+      :format => [:year]
+    },
+    :filter => ["workspace:ctd"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("ctd"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+  
+end
+
+########################################################
+###############   WORKSPACE: /dataset   ################
+########################################################
+
+map "/dataset" do
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
   :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
-  #use Metadata::Rack::IsoJson
   use Metadata::Rack::DifJsonizer
   use Npolar::Rack::JsonCleaner
-  use Npolar::Rack::JsonValidator, {:schema => ["schema/dataDescriptionArray.json", "schema/dataDescription.json", "schema/minimalDataDescription.json"]}
-  #use Npolar::Rack::RubberBand
-  use Npolar::Rack::ChangeLogger, {:data_storage => Npolar::Storage::Couch.new("data_description"), :diff_storage => Npolar::Storage::Couch.new("description_revision")}
+  use Npolar::Rack::JsonValidator, {:schema => ["schema/datasetArray.json", "schema/dataset.json", "schema/minimalDataset.json"]}
+  use Npolar::Rack::ChangeLogger, {:data_storage => Npolar::Storage::Couch.new("dataset"), :diff_storage => Npolar::Storage::Couch.new("dataset_revision")}
   
   run Npolar::Api::Core.new(nil,
-    { :storage => Npolar::Storage::Couch.new("data_description"),
+    {
+      :storage => Npolar::Storage::Couch.new("dataset"),
       :formats => ['json'],
       :accepts => ['json']
     }
   )
 end
-  
-map "/data/glaciology" do
 
-  use Npolar::Rack::AttachmentDownloader, {:database => "glaciology"}
-  use Npolar::Rack::IceLastic, {:facets => ['grid', 'sensor_name', 'collection', 'topic', 'primary_data']}
+map "/dataset/revision" do
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api"}
   
   run Npolar::Api::Core.new(nil,
-    { :storage => Npolar::Storage::Couch.new("glaciology"),
+    {
+      :storage => Npolar::Storage::Couch.new("dataset_revision"),
       :formats => ['json'],
       :accepts => ['json']
     }
   )
-
-end
-  
-map "/data/glaciology/gps" do
-  
-  use Npolar::Rack::AttachmentDownloader, {:database => "glaciology"}
-  use Npolar::Rack::IceLastic, {:facets => ['grid', 'sensor_name', 'collection', 'topic', 'primary_data']}
-  run Npolar::Api::Core.new(nil,
-    { :storage => Npolar::Storage::Couch.new("glaciology"),
-      :formats => ['json'],
-      :accepts => ['json']
-    }
-  )
-  
 end
 
-map "/data/glaciology/gps/position" do
+########################################################
+#################   WORKSPACE: /gps   ##################
+########################################################
+  
+map "/gps/profile" do
+
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
 
   use Npolar::Rack::JsonValidator, {:schema => ["schema/gpsArray.json", "schema/gps.json"]}
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => ['sensor_name', 'grid', 'topic', 'state'],
+    :date_facets => {
+      :field => 'date_time',
+      :format => [:year]
+    },
+    :filter => ["workspace:gps","collection:profile"]
+  }
   
   run Npolar::Api::Core.new(nil,
-    { :storage => Npolar::Storage::Couch.new("glaciology"),
+    {
+      :storage => Npolar::Storage::Couch.new("gps_profile"),
       :formats => ['json'],
       :accepts => ['json']
     }
@@ -116,117 +149,246 @@ map "/data/glaciology/gps/position" do
 
 end
 
-  
-map "/data/image" do
-  
-  map "/webcam" do
-    
-    run Npolar::Api::Core.new(nil,
-      { :storage => Npolar::Storage::Couch.new("images"),
-        :formats => ['json'],
-        :accepts => ['json']
-      }
-    )
-    
-  end
-  
-end
-  
-map "/data/oceanography" do
+########################################################
+#################   WORKSPACE: /org   ##################
+########################################################
+
+map "/org" do
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
-  map "/ctd" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-    
-    run Npolar::Api::Core.new(nil,
-      { :storage => Npolar::Storage::Couch.new("oceanography_ctd"),
-        :formats => ['json'],
-        :accepts => ['json']
-      }
-    )
-  end
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :filter => ["workspace:org"]
+  }
   
-end
-  
-map "/data/telemetry" do
-  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("org"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
 end
 
-map "/data/topography" do
+########################################################
+###############   WORKSPACE: /person   #################
+########################################################
+
+map "/person" do
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => [:org],
+    :filter => ["workspace:person"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("person"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
 end
 
-map "/data/seaice" do
-  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-end
+########################################################
+###############   WORKSPACE: /project   ################
+########################################################
 
 map "/project" do
 
-  run lambda{|env| [200,{"Content-Type" => "application/json"},[{"endpoints" => ["description", "rapport"]}.to_json]]}
-
-  map "/description" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
     :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  end
   
-  map "/rapport" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  end
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => [:author],
+    :filter => ["workspace:project"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("project"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
 
 end
+
+########################################################
+##############   WORKSPACE: /publication   #############
+########################################################
 
 map "/publication" do
-
-  run lambda{|env| [200,{"Content-Type" => "application/json"},[{"endpoints" => ["description", "doc"]}.to_json]]}
-
-  map "/description" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
     :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  end
   
-  map "/doc" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  end
-
+  use Npolar::Rack::AttachmentDownloader, {:database => "publication"}
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => [:author],
+    :filter => ["workspace:publication"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("publication"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
 end
 
-map "/resource" do
+########################################################
+##############   WORKSPACE: /radiation   ###############
+########################################################
 
-  run lambda{|env| [200,{"Content-Type" => "application/json"},[{"endpoints" => ["org", "person", "sensor"]}.to_json]]}
-
-  map "/org" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  end
+map "/radiation" do
   
-  map "/person" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
     :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  end
   
-  map "/sensor" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  end
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => [:placename, :area],
+    :date_facets => {
+      :field => 'created',
+      :format => [:month, :year]
+    },
+    :filter => ["workspace:radiation"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("radiation"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+  
+end
 
+# Specific import pipe for the radiation station on zeppelinfjellet. Dumps into the
+# global radiation database.
+
+map "/radiation/zeppelin" do
+  
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => [:placename, :area],
+    :date_facets => {
+      :field => 'created',
+      :format => [:month, :year]
+    },
+    :filter => ["workspace:radiation","placename:zeppelinfjellet"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("radiation"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+  
 end
   
+########################################################
+################   WORKSPACE: /schema   ################
+########################################################
   
 map "/schema" do
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
     :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
   run Npolar::Api::Core.new(nil,
-    { :storage => Npolar::Storage::Couch.new("schema"),
+    {
+      :storage => Npolar::Storage::Couch.new("schema"),
       :formats => ['json'],
       :accepts => ['json']
     }
   )
+end
+
+########################################################
+################   WORKSPACE: /sensor   ################
+########################################################
+
+map "/sensor" do
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  use Npolar::Rack::AttachmentDownloader, {:database => "sensors"}
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :filter => ["workspace:sensor"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("sensor"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+  
+end
+
+########################################################
+#############   WORKSPACE: /telemetry   ################
+########################################################
+
+map "/telemetry" do
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+    use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :filter => ["workspace:telemetry"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("telemetry"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+end
+
+########################################################
+###############   WORKSPACE: /webcam   #################
+########################################################
+
+map "/webcam" do
+  
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  use Npolar::Rack::AttachmentDownloader, {:database => "webcam"}
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => [:placename, :area],
+    :date_facets => {
+      :field => 'created',
+      :format => [:month, :year]
+    },
+    :filter => ["workspace:webcam"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("webcam"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+  
 end
