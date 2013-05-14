@@ -52,7 +52,7 @@ map "/" do
   }
   
   run lambda{|env| [200,{"Content-Type" => "application/json"},[{"endpoints" => [
-    "ctd", "dataset", "gps", "org", "person", "project", "publication", "radiation", "schema", "sensor", "telemetry", "webcam"]}.to_json]]}
+    "ctd", "dataset", "gps", "org", "person", "project", "publication", "radiation", "schema", "sensor", "service", "telemetry", "webcam"]}.to_json]]}
   
 end
 
@@ -70,7 +70,7 @@ map "/ctd" do
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
     :facets => ['cruise'],
     :date_facets => {
-      :field => 'date_time',
+      :field => 'created',
       :format => [:year]
     },
     :filter => ["workspace:ctd"]
@@ -93,6 +93,16 @@ end
 map "/dataset" do
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
   :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :facets => [:topic, :investigators, :area],
+    :date_facets => {
+      :field => 'created',
+      :format => [:year]
+    },
+    :filter => ["workspace:metadata","collection:dataset"]
+  }
   
   use Metadata::Rack::DifJsonizer
   use Npolar::Rack::JsonCleaner
@@ -134,7 +144,7 @@ map "/gps/profile" do
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
     :facets => ['sensor_name', 'grid', 'topic', 'state'],
     :date_facets => {
-      :field => 'date_time',
+      :field => 'created',
       :format => [:year]
     },
     :filter => ["workspace:gps","collection:profile"]
@@ -335,6 +345,29 @@ map "/sensor" do
   run Npolar::Api::Core.new(nil,
     {
       :storage => Npolar::Storage::Couch.new("sensor"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+  
+end
+
+########################################################
+###############   WORKSPACE: /service   ################
+########################################################
+
+map "/service" do
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :filter => ["workspace:service"]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("service"),
       :formats => ['json'],
       :accepts => ['json']
     }
