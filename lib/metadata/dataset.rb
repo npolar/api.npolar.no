@@ -42,9 +42,9 @@ module Metadata
 
     def self.facets
       ["methods", "parameter", "gcmd_keywords", "person", "methods", "protocols", "relations", "sets",
-        "investigators", "investigator_emails", "org", "project", "draft", "link", "groups", "set", "category", "country", "placename",
+        "investigators", "investigator_emails", "org", "project", "draft", "link", "topic", "set", "category", "country", "placename",
         "iso_3166-1", "iso_3166-2", "hemisphere", "source", "year", "month", "day", "editor", "referenceYear",
-        "tags", "groups", "licences", "rights"]
+        "tags", "licences", "rights"]
     end
 
     # code or URI?
@@ -148,7 +148,7 @@ module Metadata
       solr = { :id => id,
         :rev => rev,
         :title => doc.title,
-        :group => doc["group"],
+        :topic => doc["topic"],
         :tags => doc["tags"],
         :sets => doc["sets"],
         :iso_topics => doc["iso_topics"],
