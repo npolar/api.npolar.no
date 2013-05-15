@@ -80,26 +80,6 @@
         ]
       }
     },
-    "editors": {
-      "description": "Array containing a list of persons who changed the metadata and the date when. Last Person in the Array is DIF:Personnel[Role] DIF_Author",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "edited": {
-            "type": "string",
-            "format": "date-time",
-            "required": true
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          }
-        }
-      }
-    },
     "investigators": {
       "description": "Used as authors in the citation string. Should be any personnel directly involved in gathering the dataset. DIF:Personnel[@role0='Investigator']",
       "type": "array",
@@ -291,14 +271,6 @@
       "additionalItems": false,
       "items": {
         "type": "string"
-      }
-    },
-    "parameters": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string",
-        "format": "uri"
       }
     },
     "sensors": {
