@@ -249,15 +249,15 @@ module Npolar
                   :default_field => config[:df],
                   :query => params['q']
                 }
-              },
-              :filter => filter
+              }
             }
           },
           :facets => facets,
           :sort => sort
         }
 
-        data['fields'] = fields unless fields.nil?
+        data[:query][:filtered]['filter'] = filter unless filter.empty?
+        data[:fields] = fields unless fields.nil?
         
         data.to_json
       end
