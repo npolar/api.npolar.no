@@ -27,7 +27,7 @@ module Metadata
     DATASET_MAP = [
       :workspace, :collection, :source, :id, :title, :summary, :progress, :investigators,
       :contributors, :activity, :locations, :links, :tags, :iso_topics,
-      :quality, :science_keywords, :draft, :published, :updated, :editors, :sets
+      :quality, :science_keywords, :draft, :created, :updated, :editors, :sets
     ]
     
     DIF_MAP = {
@@ -80,11 +80,11 @@ module Metadata
     end
   
     def workspace
-      "data"
+      "metadata"
     end
     
     def collection
-      "description"
+      "dataset"
     end
 
     def href(id)
@@ -113,7 +113,7 @@ module Metadata
       object.Quality
     end
     
-    def published
+    def created
       date = object.DIF_Creation_Date
       date += "T12:00:00Z" unless date == "" or date =~ ISO_8601
       date
@@ -748,7 +748,7 @@ module Metadata
     end
     
     def creation_date
-      object.published
+      object.created
     end
     
     def revision_date
