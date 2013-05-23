@@ -1,7 +1,16 @@
 require 'spec_helper'
 require 'npolar/search/query_builder'
 
-describe Npolar::Search::QueryBuilder do
+describe Npolar::Search::ElasticSearch::Query do
+  
+  CONFIG = {
+    :start => 5,
+    :limit => 30,
+    :facets => [],
+    :date_facets => [],
+    :filters => [],
+    :sort => nil
+  }
   
   subject do
     Npolar::Search::QueryBuilder.new
@@ -127,6 +136,28 @@ describe Npolar::Search::QueryBuilder do
       subject.parse( {'sort' => 'date,latitude,-longitude'} )
       subject.build_query.should include(
         '"sort":[{"date":"asc"},{"latitude":"asc"},{"longitude":"desc"}]'
+      )
+    end
+    
+  end
+  
+  context "Configuration" do
+    
+    it "should run with presets if given anything else then a Hash" do
+      qbuilder = Npolar::Search::QueryBuilder.new(["start"])
+      qbuilder.build_query.should include('"from":0')
+      qbuilder.build_query.should include('"size":25')
+    end
+    
+    it "should show results from the starting point defined in the config" do
+      qbuilder = Npolar::Search::QueryBuilder.new({:start => 20})
+      qbuilder.build_query.should include('"from":20')
+    end
+    
+    it "should limit the number of results based on the configuration" do
+      qbuilder = Npolar::Search::QueryBuilder.new({:limit => 250})
+      qbuilder.build_query.should include(
+        '"size":250'
       )
     end
     
