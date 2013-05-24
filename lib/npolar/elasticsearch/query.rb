@@ -4,8 +4,8 @@ module Search
   module ElasticSearch
   
     # [Functionality]
-    #   This class is used to construct an elasticsearch qeury from a set of
-    #   uri query parameters
+    #   This class is used to constructs a json query
+    #   for Elasticsearch
     #
     # [Defaults]
     #   - start= defaults to 0
@@ -29,27 +29,30 @@ module Search
     
     class Query
       
-      attr_accessor :config
-      
       def initialize(configuration = {})
+        
         if configuration.is_a?( Hash )
           self.config = configuration.select{ |k,v| configurable.include?(k) }
         else
-          log.debug "Npolar::Search::ElasticSearch::Query : Configuration failed!
-            Expecting a Hash but got |#{configuration.class}|. Falling back to presets."
+          log.debug "Search::ElasticSearch::Query : Configuration failed!
+            Expected a Hash but got |#{configuration.class}|. Falling back to defaults."
         end
+      end
+      
+      def config=configuration
+        @cfg = configuration
+      end
+      
+      def config
+        @cfg ||= {}
       end
       
       def configurable
         [:start, :limit, :filters, :facets, :date_facets, :sort]
       end
-
-      def parse(query_parameters)
-        self.params = query_parameters if query_parameters.is_a?(Hash)
-      end
       
       def build
-        if params.select{|k,v| k.match(/^filter-(.*)/)}.empty?
+        if params.select{|k,v| k.match(/^filter-(.*)/)}.empty? and !config.has_key?(:filters)
           body = { :query => query }
         else
           body = { :query => filtered_query }
@@ -72,6 +75,17 @@ module Search
         params['limit'] ? params['limit'].to_i : config[:limit] ||= 25
       end
       
+      # Date facets @see {http://www.elasticsearch.org/guide/reference/api/search/facets/date-histogram-facet/ Date histogram}
+      def dfacets
+        
+      end
+      
+      def facet_params
+        fp = params.select{|k, v| k.match(/^facet-(.*)/)}
+        fp.merge!(config[:facets]) if config[:facets]
+        fp
+      end
+      
       def facets
         fc = {}
         
@@ -79,9 +93,7 @@ module Search
         # loop through the result array and merge them into the facet
         # hash that will be returned to the calling instance
         
-        params.select{|k, v|
-          k.match(/^facet-(.*)/)
-        }.map{ |k,v|
+        facet_params.map{ |k,v|
           {
             k.gsub(/facet-/,'') => {
               :terms => {
@@ -109,28 +121,38 @@ module Search
         }
       end
       
+      # Gather all parameters and configuration items that define a filter
+      def filter_params
+        fp = params.select{|k, v| k =~ /^filter-(.*)/} # Grab filters from the query parameters
+        fp.merge!(config[:filters]) if config.has_key?(:filters) # Merge in configured filters
+        
+        fp
+      end
+      
+      # Build a filter from the filter parameters @see {:filter_params}
       def filter
         {
-          :and => params.select{|k, v|
-            k.match(/^filter-(.*)/)
-          }.map{ |k,v|
-            unless v.match(/\-?\d+\.\.\-?\d+/)
-              {
-                :term => {
-                  k.gsub(/^filter-/, '') => v
-                }
-              }
-            else
-              {
-                :range => {
-                  k.gsub(/^filter-/, '') => {
-                    :from => v.split('..').first,
-                    :to => v.split('..').last
+          :and => filter_params.map{ |k,v|
+            v.split(',').map{|value|
+              unless value.match(/\-?\d+\.\.\-?\d+/)
+                {
+                  :term => {
+                    k.gsub(/^filter-/, '') => value
                   }
                 }
-              }
-            end
-          }
+              else
+                {
+                  :range => {
+                    k.gsub(/^filter-/, '') => {
+                      :from => value.split('..').first,
+                      :to => value.split('..').last
+                    }
+                  }
+                }
+              end
+              
+            }
+          }.flatten
         }
       end
       
