@@ -27,9 +27,10 @@ require "./lib/npolar/rack/authorizer"
 ## Storage
 require "./lib/npolar/storage/couch"
 
-## Search/Solr
-require "./lib/npolar/api/solr_query"
-require "./lib/npolar/api/solr_feed_writer"
+## Search
+require "./lib/npolar/elasticsearch/client"
+require "./lib/npolar/elasticsearch/query"
+require "./lib/npolar/elasticsearch/result"
 
 ## Middleware
 require "./lib/npolar/rack/middleware"
@@ -57,36 +58,14 @@ require "ruby-prof"
 
 require "gcmd"
 
-require "./lib/biology"
-require "./lib/biology/sighting"
-require "./lib/polarbear"
-require "./lib/polarbear/interaction"
-
-# Marine
-require "./lib/marine.rb"
-require "./lib/marine/samples.rb"
-require "./lib/marine/abundance.rb"
-require "./lib/marine/pigments.rb"
-require "./lib/marine/lipids.rb"
-require "./lib/marine/nutrients.rb"
-
 # Metadata
-require "./lib/metadata.rb"
 require "./lib/metadata/dataset.rb"
 require "./lib/metadata/dif_transformer.rb"
 require "./lib/metadata/rack/dif_jsonizer"
 require "./lib/metadata/oai"
 require "./lib/metadata/oai_dif"
-require "./lib/metadata/oai_repository"
+#require "./lib/metadata/oai_repository"
 require "./lib/npolar/rack/oai_skeleton"
-
-# Seaice
-require "./lib/seaice.rb"
-require "./lib/tracking.rb"
-Dir.glob("./lib/tracking/*.rb").each do | file |
-  require file
-end
-
 
 # Views
 require "mustache"
