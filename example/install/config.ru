@@ -52,7 +52,7 @@ map "/" do
   }
   
   run lambda{|env| [200,{"Content-Type" => "application/json"},[{"endpoints" => [
-    "ctd", "dataset", "gps", "org", "person", "project", "publication", "radiation", "schema", "sensor", "service", "telemetry", "webcam"]}.to_json]]}
+    "ctd", "dataset", "gcmd", "gps", "org", "person", "project", "publication", "radiation", "schema", "instrument", "service", "telemetry", "webcam"]}.to_json]]}
   
 end
 
@@ -68,12 +68,15 @@ map "/ctd" do
   use Npolar::Rack::AttachmentDownloader, {:database => "ctd"}
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :index => 'global',
+    :type => 'ctd',
     :facets => ['cruise'],
-    :date_facets => {
-      :field => 'created',
-      :format => [:year]
-    },
-    :filter => ["workspace:ctd"]
+    :date_facets => [
+      { :field => 'created', :interval => 'year' }
+    ],
+    :filters => [
+      {'workspace' => 'oceanography'}
+    ]
   }
   
   run Npolar::Api::Core.new(nil,
@@ -96,12 +99,17 @@ map "/dataset" do
   
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :facets => [:topic, :investigators, :area],
-    :date_facets => {
-      :field => 'created',
-      :format => [:year]
-    },
-    :filter => ["workspace:metadata","collection:dataset"]
+    :index => 'global',
+    :type => 'dataset',
+    :facets => ['iso_topics'],
+    :date_facets => [
+      { :field => 'created', :interval => 'week' },
+      { :field => 'updated', :interval => 'year' }
+    ],
+    :filters => [
+      {'workspace' => 'metadata'},
+      {'collection' => 'dataset'}
+    ]
   }
   
   use Metadata::Rack::DifJsonizer
@@ -131,6 +139,35 @@ map "/dataset/revision" do
 end
 
 ########################################################
+################   WORKSPACE: /gcmd   ##################
+########################################################
+
+map "/gcmd" do
+
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :index => 'global',
+    :type => 'gcmd',
+    :filters => [
+      {'workspace' => 'gcmd'},
+      {'collection' => 'concept'}
+    ]
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("gcmd_concept"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+
+end
+
+########################################################
 #################   WORKSPACE: /gps   ##################
 ########################################################
   
@@ -140,14 +177,19 @@ map "/gps/profile" do
   :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
 
   use Npolar::Rack::JsonValidator, {:schema => ["schema/gpsArray.json", "schema/gps.json"]}
+  
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :facets => ['sensor_name', 'grid', 'topic', 'state'],
-    :date_facets => {
-      :field => 'created',
-      :format => [:year]
-    },
-    :filter => ["workspace:gps","collection:profile"]
+    :index => 'global',
+    :type => 'gps',
+    :facets => ['state', 'sensor_name'],
+    :date_facets => [
+      { :field => 'created', :interval => 'week' }
+    ],
+    :filters => [
+      {'workspace' => 'gps'},
+      {'collection' => 'profile'}
+    ]
   }
   
   run Npolar::Api::Core.new(nil,
@@ -170,7 +212,8 @@ map "/org" do
   
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :filter => ["workspace:org"]
+    :index => 'global',
+    :type => 'org'
   }
   
   run Npolar::Api::Core.new(nil,
@@ -192,8 +235,9 @@ map "/person" do
   
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :facets => [:org],
-    :filter => ["workspace:person"]
+    :index => 'global',
+    :type => 'person',
+    :facets => ['org']
   }
   
   run Npolar::Api::Core.new(nil,
@@ -216,8 +260,9 @@ map "/project" do
   
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :facets => [:author],
-    :filter => ["workspace:project"]
+    :index => 'global',
+    :type => 'project',
+    :facets => ['author'],
   }
   
   run Npolar::Api::Core.new(nil,
@@ -241,8 +286,8 @@ map "/publication" do
   use Npolar::Rack::AttachmentDownloader, {:database => "publication"}
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :facets => [:author],
-    :filter => ["workspace:publication"]
+    :index => 'global',
+    :type => 'publication'
   }
   
   run Npolar::Api::Core.new(nil,
@@ -265,12 +310,13 @@ map "/radiation" do
   
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :index => 'global',
+    :type => 'radiation',
     :facets => [:placename, :area],
-    :date_facets => {
-      :field => 'created',
-      :format => [:month, :year]
-    },
-    :filter => ["workspace:radiation"]
+    :date_facets => [
+      {:field => 'created', :interval => 'month'},
+      {:field => 'created', :interval => 'year'}
+    ]
   }
   
   run Npolar::Api::Core.new(nil,
@@ -293,12 +339,16 @@ map "/radiation/zeppelin" do
   
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :index => 'global',
+    :type => 'radiation',
     :facets => [:placename, :area],
-    :date_facets => {
-      :field => 'created',
-      :format => [:month, :year]
-    },
-    :filter => ["workspace:radiation","placename:zeppelinfjellet"]
+    :date_facets => [
+      { :field => 'created', :interval => 'month' },
+      { :field => 'created', :interval => 'year' }
+    ],
+    :filters => [
+      {'placename' => 'zeppelinfjellet'}
+    ]
   }
   
   run Npolar::Api::Core.new(nil,
@@ -329,17 +379,18 @@ map "/schema" do
 end
 
 ########################################################
-################   WORKSPACE: /sensor   ################
+##############   WORKSPACE: /instrument   ##############
 ########################################################
 
-map "/sensor" do
+map "/instrument" do
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
     :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
   use Npolar::Rack::AttachmentDownloader, {:database => "sensors"}
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :filter => ["workspace:sensor"]
+    :index => 'global',
+    :type => 'instrument'
   }
   
   run Npolar::Api::Core.new(nil,
@@ -362,7 +413,8 @@ map "/service" do
   
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :filter => ["workspace:service"]
+    :index => 'global',
+    :type => 'service'
   }
   
   run Npolar::Api::Core.new(nil,
@@ -385,7 +437,8 @@ map "/telemetry" do
   
     use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :filter => ["workspace:telemetry"]
+    :index => 'global',
+    :type => 'telemetry'
   }
   
   run Npolar::Api::Core.new(nil,
@@ -403,18 +456,19 @@ end
 
 map "/webcam" do
   
-  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  #use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+  #  :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
   use Npolar::Rack::AttachmentDownloader, {:database => "webcam"}
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :facets => [:placename, :area],
-    :date_facets => {
-      :field => 'created',
-      :format => [:month, :year]
-    },
-    :filter => ["workspace:webcam"]
+    :index => 'global',
+    :type => 'webcam',
+    :facets => ['placename', 'area'],
+    :date_facets => [
+      { :field => 'created', :format => 'month' },
+      { :field => 'created', :format => 'year' }
+    ]
   }
   
   run Npolar::Api::Core.new(nil,
