@@ -5,6 +5,11 @@ module Npolar
     #   This class provides some basic methods to manipulate search results comming
     #   from elasticsearch.
     #
+    # @example
+    #   results = Npolar::ElasticSearch::Result.new(search_request, search_response)
+    #   feed = results.to_feed # Output a results feed @see #to_feed
+    #   csv = results.to_csv # Output search results as a feed (works only with top lvl elements)
+    #
     # [Authors]
     #   - Ruben Dens
     
@@ -20,6 +25,7 @@ module Npolar
         self.body = Yajl::Parser.parse(response.body)
       end
       
+      # @see #feed
       def to_feed
         feed.to_json
       end
@@ -66,11 +72,6 @@ module Npolar
         end
         
         csv
-      end
-      
-      # Return the raw response to the client
-      def raw
-        response
       end
       
       protected
