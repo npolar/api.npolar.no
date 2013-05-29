@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'search/elasticsearch/query'
+require 'npolar/elasticsearch/query'
 
-describe Search::ElasticSearch::Query do
+describe Npolar::ElasticSearch::Query do
   
   CONFIG = {
     :start => 5,
@@ -13,7 +13,7 @@ describe Search::ElasticSearch::Query do
   }
   
   subject do
-    Search::ElasticSearch::Query.new
+    Npolar::ElasticSearch::Query.new
   end
   
   context "Basic queries" do
@@ -27,14 +27,14 @@ describe Search::ElasticSearch::Query do
     it "should add a wildcard symbol to query string searches for fuzzy matching" do
       subject.params = {'q' => 'bea'} 
       subject.build.should include(
-        '"query":{"query_string":{"default_field":"_all","query":"bea*"}}'
+        '"query":{"query_string":{"default_field":"_all","query":"bea bea*"}}'
       )
     end
     
     it "should not add the wildcard when the query parameter ends on a whitespace" do
       subject.params = {'q' => 'polar '} 
       subject.build.should include(
-        '"query":{"query_string":{"default_field":"_all","query":"polar*"}}'
+        '"query":{"query_string":{"default_field":"_all","query":"polar polar*"}}'
       )
     end
     
@@ -84,21 +84,60 @@ describe Search::ElasticSearch::Query do
       )
     end
     
+    it "should build a filtered query based on a filter configuration" do
+      query = Npolar::ElasticSearch::Query.new({:filters => {'iso_topic'=>'farming'}})
+      query.build.should include(
+        '"filter":{"and":[{"term":{"iso_topic":"farming"}}]}'
+      )
+    end
+    
+    it "should support multivalued filters through the configuration" do
+      query = Npolar::ElasticSearch::Query.new({:filters => {'iso_topic'=>'farming,oceans'}})
+      query.build.should include(
+        '"filter":{"and":[{"term":{"iso_topic":"farming"}},{"term":{"iso_topic":"oceans"}}]}'
+      )
+    end
+    
   end
   
   context "Facets" do
     
-    it "should generate facets from the facet-{name}= parameter" do
-      subject.params = {'facet-lat' => 'latitude'} 
+    it "should generate facets from the facets= parameter" do
+      subject.params = {'facets' => 'latitude'} 
       subject.build.should include(
-        '"facets":{"lat":{"terms":{"field":"latitude"}}}'
+        '"facets":{"latitude":{"terms":{"field":"latitude"}}}'
       )
     end
     
-    it "should support facets on year when given the facet-date=year parameter" do
-      subject.params = {'dfacet-created' => 'year'}
+    it "should generate multiple facets after facets=a,b,c" do
+      subject.params = {'facets' => 'latitude,longitude'} 
       subject.build.should include(
-        '"facets":{"year":{"date_histogram":{"field":"created","interval":"year"}}}'
+        '"facets":{"latitude":{"terms":{"field":"latitude"}},"longitude":{"terms":{"field":"longitude"}}}'
+      )
+    end
+    
+    it "should support facets provided through the configuration" do
+      query = Npolar::ElasticSearch::Query.new({:facets => ['iso_topics']})
+      query.build.should include(
+        '"facets":{"iso_topics":{"terms":{"field":"iso_topics"}}}'
+      )
+    end
+    
+    it "should generate date facets from the configuration hash" do
+      query = Npolar::ElasticSearch::Query.new(
+        {:date_facets => [{:field => :created, :interval => :year}]}
+      )
+      query.build.should include(
+        '"facets":{"year-created":{"date_histogram":{"field":"created","interval":"year"}}}'
+      )
+    end
+    
+    it "should support mixed date facets and regular facets" do
+      query = Npolar::ElasticSearch::Query.new(
+        {:date_facets => [{:field => :created, :interval => :day}], :facets => ['iso_topics']}
+      )
+      query.build.should include(
+        '"facets":{"iso_topics":{"terms":{"field":"iso_topics"}},"day-created":{"date_histogram":{"field":"created","interval":"day"}}}'
       )
     end
     
@@ -165,40 +204,19 @@ describe Search::ElasticSearch::Query do
   context "Configuration" do
     
     it "should run with presets if given anything else then a Hash" do
-      query = Search::ElasticSearch::Query.new(["start"])
+      query = Npolar::ElasticSearch::Query.new(["start"])
       query.build.should include('"from":0')
       query.build.should include('"size":25')
     end
     
     it "should show results from the starting point defined in the config" do
-      query = Search::ElasticSearch::Query.new({:start => 20})
+      query = Npolar::ElasticSearch::Query.new({:start => 20})
       query.build.should include('"from":20')
     end
     
     it "should limit the number of results based on the configuration" do
-      query = Search::ElasticSearch::Query.new({:limit => 250})
+      query = Npolar::ElasticSearch::Query.new({:limit => 250})
       query.build.should include('"size":250')
-    end
-    
-    it "should build a filtered query based on a filter configuration" do
-      query = Search::ElasticSearch::Query.new({:filters => {'iso_topic'=>'farming'}})
-      query.build.should include(
-        '"filter":{"and":[{"term":{"iso_topic":"farming"}}]}'
-      )
-    end
-    
-    it "should support multivalued filters through the configuration" do
-      query = Search::ElasticSearch::Query.new({:filters => {'iso_topic'=>'farming,oceans'}})
-      query.build.should include(
-        '"filter":{"and":[{"term":{"iso_topic":"farming"}},{"term":{"iso_topic":"oceans"}}]}'
-      )
-    end
-    
-    it "should support facets provided through the configuration" do
-      query = Search::ElasticSearch::Query.new({:facets => {'topics'=>'iso_topics'}})
-      query.build.should include(
-        '"facets":{"topics":{"terms":{"field":"iso_topics"}}}'
-      )
     end
     
   end

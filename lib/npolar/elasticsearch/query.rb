@@ -1,6 +1,6 @@
 require 'logger'
 
-module Search
+module Npolar
   module ElasticSearch
   
     # [Functionality]
@@ -14,15 +14,31 @@ module Search
     #
     # [Facets]
     #   facet-name=field:
-    #     - @param :name is the name the facet is returned with
-    #     - @param :field is the data field to facet on
-    #   @example: &facet-research-topics=topic
+    #     @param :name is the name the facet is returned with
+    #     @param :field is the data field to facet on
+    #
+    # [Date Facets]
+    #   Date facets are supported through the configuration.
+    #   Look at the examples below for syntax
     #
     # [Filtering]
     #   filter-term=value:
-    #     - @param :term is the field you want to filter on
-    #     - @param :value is the field you want to filter for
-    #   @example &filter-topic=biology
+    #     @param :term is the field you want to filter on
+    #     @param :value is the field you want to filter for
+    #
+    # @example Query Examples
+    #   Field query: http://api.npolar.no?q-title=polar
+    #   Filtered query: http://api.npolar.no?q=&filter-topic=biology
+    #   Faceted query: http://api.npolar.no?q=&facet-research-topics=topic
+    #   Query bounds: http://api.npolar.no?q=&start=10&limit=60&sort=created
+    #
+    # @example Configuration
+    #   #Date Facets
+    #   config = {:date_facets => {:publication_year => {:field => :created, :interval => :day}}}
+    #   Npolar::ElasticSearch::Query.new(config)
+    #
+    # @see #filter
+    # @see #facets
     #
     # [Authors]
     #   - Ruben Dens
@@ -30,9 +46,9 @@ module Search
     class Query
       
       def initialize(configuration = {})
-        
+        self.params = params
         if configuration.is_a?( Hash )
-          self.config = configuration.select{ |k,v| configurable.include?(k) }
+          self.config = configuration.select{ |k,v| configurable.include?(k) && !v.nil? }
         else
           log.debug "Search::ElasticSearch::Query : Configuration failed!
             Expected a Hash but got |#{configuration.class}|. Falling back to defaults."
@@ -47,10 +63,12 @@ module Search
         @cfg ||= {}
       end
       
+      # List of valid configuration items
       def configurable
         [:start, :limit, :filters, :facets, :date_facets, :sort]
       end
       
+      # Build an elasticsearch query body from the provided parameters and configuration
       def build
         if params.select{|k,v| k.match(/^filter-(.*)/)}.empty? and !config.has_key?(:filters)
           body = { :query => query }
@@ -75,29 +93,42 @@ module Search
         params['limit'] ? params['limit'].to_i : config[:limit] ||= 25
       end
       
-      # Date facets @see {http://www.elasticsearch.org/guide/reference/api/search/facets/date-histogram-facet/ Date histogram}
-      def dfacets
+      # Date facets are only supported through configuration
+      # to define a date facet you provide this in a config hash
+      # {:date_facets => { "year" => {"created" => "year"}, "published" => {} }
+      # @see {http://www.elasticsearch.org/guide/reference/api/search/facets/date-histogram-facet/ Date histogram}
+      
+      def date_facets
+        df = {}
         
+        if config[:date_facets]
+          config[:date_facets].each do |facet|
+            df["#{facet[:interval]}-#{facet[:field]}"] = {
+              :date_histogram => {
+                :field => facet[:field],
+                :interval => facet[:interval]
+              }
+            }
+          end
+        end
+        
+        df
       end
       
       def facet_params
-        fp = params.select{|k, v| k.match(/^facet-(.*)/)}
-        fp.merge!(config[:facets]) if config[:facets]
+        fp = params.select{|k, v| k == 'facets' }.map{|k,v| v.split(',')}.flatten
+        fp.concat(config[:facets]) if config[:facets]
         fp
       end
       
       def facets
         fc = {}
         
-        # Select facet parameters and map them to the proper structure
-        # loop through the result array and merge them into the facet
-        # hash that will be returned to the calling instance
-        
-        facet_params.map{ |k,v|
+        facet_params.map{ |field|
           {
-            k.gsub(/facet-/,'') => {
+            field => {
               :terms => {
-                :field => v
+                :field => field
               }
             }
           }
@@ -105,7 +136,7 @@ module Search
           fc.merge!(facet)
         }
         
-        fc
+        fc.merge!(date_facets)
       end
       
       def fields
@@ -125,11 +156,11 @@ module Search
       def filter_params
         fp = params.select{|k, v| k =~ /^filter-(.*)/} # Grab filters from the query parameters
         fp.merge!(config[:filters]) if config.has_key?(:filters) # Merge in configured filters
-        
         fp
       end
       
-      # Build a filter from the filter parameters @see {:filter_params}
+      # Build a filter from the filter parameters
+      # @see #filter_params
       def filter
         {
           :and => filter_params.map{ |k,v|
@@ -137,13 +168,13 @@ module Search
               unless value.match(/\-?\d+\.\.\-?\d+/)
                 {
                   :term => {
-                    k.gsub(/^filter-/, '') => value
+                    k.to_s.gsub(/^filter-/, '') => value
                   }
                 }
               else
                 {
                   :range => {
-                    k.gsub(/^filter-/, '') => {
+                    k.to_s.gsub(/^filter-/, '') => {
                       :from => value.split('..').first,
                       :to => value.split('..').last
                     }
@@ -156,6 +187,9 @@ module Search
         }
       end
       
+      # Returns the correct query type
+      # @see #field_query
+      # @see #query_string
       def query
         return field_query unless params.select{|k,v| k.match(/^q-(.*)/)}.empty?
         query_string
@@ -170,9 +204,11 @@ module Search
         }
       end
       
+      # Query parameter q. If no q parameter is present it uses a wildcard.
+      # If a q paramter is present it appends a wildcard to support fuzzy searches
       def q_param
         if params.has_key?('q') && params['q'] != '*'
-          params['q'].match(/(.*)(\s)+$/) ? "#{$1}*" : "#{params['q']}*"
+          params['q'].match(/(.*)(\*+|\s+)$/) ? "#{$1} #{$1}*" : "#{params['q']} #{params['q']}*"
         else
           params['q'] = '*'
         end
@@ -190,13 +226,14 @@ module Search
         sort_items
       end
       
+      # Build a query to match a specific data field
       def field_query
         {
           :query_string => params.select{|k, v|
             k.match(/^q-(.*)/)
           }.map{ |k,v|
             {
-              :default_field => k.gsub(/^q-/, ''),
+              :default_field => k.to_s.gsub(/^q-/, ''),
               :query => v
             }
           }.first
