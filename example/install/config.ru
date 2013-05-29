@@ -66,6 +66,7 @@ map "/ctd" do
     :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
   use Npolar::Rack::AttachmentDownloader, {:database => "ctd"}
+  
   use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
     :index => 'global',
@@ -200,6 +201,32 @@ map "/gps/profile" do
     }
   )
 
+end
+
+########################################################
+##############   WORKSPACE: /instrument   ##############
+########################################################
+
+map "/instrument" do
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  use Npolar::Rack::AttachmentDownloader, {:database => "instruments"}
+  
+  use Npolar::Rack::Icelastic, {
+    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
+    :index => 'global',
+    :type => 'instrument'
+  }
+  
+  run Npolar::Api::Core.new(nil,
+    {
+      :storage => Npolar::Storage::Couch.new("instruments"),
+      :formats => ['json'],
+      :accepts => ['json']
+    }
+  )
+  
 end
 
 ########################################################
@@ -379,31 +406,6 @@ map "/schema" do
 end
 
 ########################################################
-##############   WORKSPACE: /instrument   ##############
-########################################################
-
-map "/instrument" do
-  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
-    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-  
-  use Npolar::Rack::AttachmentDownloader, {:database => "sensors"}
-  use Npolar::Rack::Icelastic, {
-    :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
-    :index => 'global',
-    :type => 'instrument'
-  }
-  
-  run Npolar::Api::Core.new(nil,
-    {
-      :storage => Npolar::Storage::Couch.new("sensor"),
-      :formats => ['json'],
-      :accepts => ['json']
-    }
-  )
-  
-end
-
-########################################################
 ###############   WORKSPACE: /service   ################
 ########################################################
 
@@ -435,7 +437,7 @@ map "/telemetry" do
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(LDAP_CONF), :system => "api",
   :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   
-    use Npolar::Rack::Icelastic, {
+  use Npolar::Rack::Icelastic, {
     :searcher => ENV['NPOLAR_API_ELASTICSEARCH'],
     :index => 'global',
     :type => 'telemetry'
