@@ -122,7 +122,7 @@ module Npolar
         
         if uri =~ /&filter-#{facet}=(.*)(&.*)?$/
           dmatch = $1
-          t = dmatch.match(/#{term}/) ? dmatch.gsub(/#{term}/, term) : "#{dmatch},#{term}"
+          t = dmatch.match(/#{term}/) ? dmatch.gsub(/#{term}/, term.to_s) : "#{dmatch},#{term}"
         end
         
         uri.gsub!(/&filter-#{facet}=(.*)/, "") # Remove any previous filters
