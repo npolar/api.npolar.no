@@ -85,14 +85,14 @@ describe Npolar::ElasticSearch::Query do
     end
     
     it "should build a filtered query based on a filter configuration" do
-      query = Npolar::ElasticSearch::Query.new({:filters => {'iso_topic'=>'farming'}})
+      query = Npolar::ElasticSearch::Query.new({:filters => [{'iso_topic'=>'farming'}]})
       query.build.should include(
         '"filter":{"and":[{"term":{"iso_topic":"farming"}}]}'
       )
     end
     
     it "should support multivalued filters through the configuration" do
-      query = Npolar::ElasticSearch::Query.new({:filters => {'iso_topic'=>'farming,oceans'}})
+      query = Npolar::ElasticSearch::Query.new({:filters => [{'iso_topic'=>'farming,oceans'}]})
       query.build.should include(
         '"filter":{"and":[{"term":{"iso_topic":"farming"}},{"term":{"iso_topic":"oceans"}}]}'
       )

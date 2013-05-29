@@ -155,7 +155,7 @@ module Npolar
       # Gather all parameters and configuration items that define a filter
       def filter_params
         fp = params.select{|k, v| k =~ /^filter-(.*)/} # Grab filters from the query parameters
-        fp.merge!(config[:filters]) if config.has_key?(:filters) # Merge in configured filters
+        config[:filters].each{|filter| fp.merge!(filter)} if config.has_key?(:filters) # Merge in configured filters
         fp
       end
       
