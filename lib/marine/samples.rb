@@ -6,7 +6,7 @@ module Marine
 
     def self.facets
       [
-        "workspace", "collection", "animal_group", "conveyance", "gear", "institution", "preservation", "programs", "sample_types", "station", "substation", "status", "year"
+        "workspace", "collection", "animal_group", "conveyance", "gear", "institution", "preservation", "programs", "sample_types", "station", "substation", "status", "year", "latitude_start", "longitude_start"
       ]
     end
 
@@ -30,10 +30,10 @@ module Marine
         :instref           => doc.fetch("instref", ""),
         :metadata_id       => doc.fetch("metadata_id", ""),
         :name              => doc.fetch("name", ""),
-        :latitude_start    => doc.fetch("latitude_start", ""),
-        :longitude_start   => doc.fetch("longitude_start", ""),
-        :latitude_end      => doc.fetch("latitude_end", ""),
-        :longitude_end     => doc.fetch("longitude_end", ""),
+        :latitude_start    => doc.fetch("latitude_start", -360),
+        :longitude_start   => doc.fetch("longitude_start", -360),
+        :latitude_end      => doc.fetch("latitude_end", -360),
+        :longitude_end     => doc.fetch("longitude_end", -360),
         :preservation      => doc.fetch("preservation", ""),
         :programs          => doc.fetch("programs", ""),
         :sample_name       => doc.fetch("sample_name", ""),
