@@ -126,7 +126,7 @@ module Npolar
         end
 
         def base64_ssha(ssha_string)
-          unless ssha_string =~ /^{SSHA}/
+          unless ssha_string =~ /^\{SSHA\}/
             ssha_string = ssha(ssha_string)
           end
           Base64.encode64(ssha_string).chomp!
