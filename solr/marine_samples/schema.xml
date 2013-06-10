@@ -122,10 +122,10 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="local_date" type="date" indexed="true" stored="true" />
 <field name="metadata_id" type="string" indexed="true" stored="true" />
 <field name="name" type="string" indexed="true" stored="true" />
-<field name="latitude_start" type="float" indexed="true" stored="true" />
-<field name="longitude_start" type="float" indexed="true" stored="true" />
-<field name="latitude_end" type="float" indexed="true" stored="true" />
-<field name="longitude_end" type="float" indexed="true" stored="true" />
+<field name="latitude_start" type="tfloat" indexed="true" stored="true" />
+<field name="longitude_start" type="tfloat" indexed="true" stored="true" />
+<field name="latitude_end" type="tfloat" indexed="true" stored="true" />
+<field name="longitude_end" type="tfloat" indexed="true" stored="true" />
 <field name="preservation" type="string" indexed="true" stored="true" />
 <field name="processed_date" type="date" indexed="true" stored="true" />
 <field name="programs" type="string" indexed="true" stored="true" />
