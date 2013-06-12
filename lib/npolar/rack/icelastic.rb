@@ -2,7 +2,7 @@ module Npolar
   module Rack
     
     # [Functionality]
-    #   Icelastic is a middleware that provides elasticsearch on a RACK endpoint.
+    #   Icelastic is a middleware that exposes elasticsearch on a RACK endpoint.
     #   On GET requests it translates request parameters into the correct elasticsearch
     #   syntax and uses them to query the configured elasticsearch index.
     #
