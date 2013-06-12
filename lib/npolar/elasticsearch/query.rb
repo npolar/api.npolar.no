@@ -79,8 +79,10 @@ module Npolar
         body[:from] = from
         body[:size] = size
         body[:sort] = sort
-        body[:facets] = facets
+        body[:facets] = facets unless facets.empty?
         body[:fields] = fields unless fields.nil?
+        
+        log.info "Npolar::ElasticSearch::Query:\n#{JSON.pretty_generate(body)}"
         
         body.to_json
       end
@@ -165,18 +167,27 @@ module Npolar
         {
           :and => filter_params.map{ |k,v|
             v.split(',').map{|value|
-              unless value.match(/\-?\d+\.\.\-?\d+/)
+              unless value.match(/\-?\d+Z?\.\.\-?\d+/)
                 {
                   :term => {
                     k.to_s.gsub(/^filter-/, '') => value
                   }
                 }
               else
+                vals = value.split('..')
+                
+                # Swap the values if the second one is bigger then the first
+                unless value.match(/\-?\d+Z\.\.\-?\d+/)
+                  unless vals[0].to_f < vals[1].to_f
+                    vals[0], vals[1] = vals[1], vals[0]
+                  end
+                end
+                
                 {
                   :range => {
                     k.to_s.gsub(/^filter-/, '') => {
-                      :from => value.split('..').first,
-                      :to => value.split('..').last
+                      :from => vals.first,
+                      :to => vals.last
                     }
                   }
                 }
