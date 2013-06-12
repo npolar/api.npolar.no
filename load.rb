@@ -31,6 +31,7 @@ require "./lib/npolar/storage/couch"
 require "./lib/npolar/elasticsearch/client"
 require "./lib/npolar/elasticsearch/query"
 require "./lib/npolar/elasticsearch/result"
+require "./lib/npolar/elasticsearch/bulk_request"
 
 ## Middleware
 require "./lib/npolar/rack/middleware"
