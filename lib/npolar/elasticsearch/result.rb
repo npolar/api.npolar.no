@@ -77,41 +77,45 @@ module Npolar
       protected
       
       def facets
-        body['facets'].map do |facet, value|
-          if value.has_key?('terms')
-            {
-              facet => value['terms'].map do |term|
-                {
-                  :term => term['term'],
-                  :count => term['count'],
-                  :uri => facet_uri(facet, term['term'])
-                }
-              end
-            }
-          elsif value.has_key?('entries')
-            {
-              facet => value['entries'].map do |entry|
-                
-                range_start = entry['time']
-                
-                sformat, range_end = case facet.split('-').first
-                when 'day' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'day')]
-                when 'week' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'week')]
-                when 'month' then ['%Y-%m', next_utc_range_milliseconds(range_start, 'month')]
-                when 'year' then ['%Y', next_utc_range_milliseconds(range_start, 'year')]
-                end    
-
-                {
-                  :term => human_time(range_start, sformat),
-                  :count => entry['count'],
-                  :uri => facet_uri(
-                    facet.split('-').last,
-                    "#{human_time(range_start, sformat)}..#{human_time(range_end, sformat)}"
-                  )
-                }
-              end
-            }
+        if body.has_key?('facets') && !body['facets'].nil? && !body['facets'].empty?
+          
+          body['facets'].map do |facet, value|
+            if value.has_key?('terms')
+              {
+                facet => value['terms'].map do |term|
+                  {
+                    :term => term['term'],
+                    :count => term['count'],
+                    :uri => facet_uri(facet, term['term'])
+                  }
+                end
+              }
+            elsif value.has_key?('entries')
+              {
+                facet => value['entries'].map do |entry|
+                  
+                  range_start = entry['time']
+                  
+                  sformat, range_end = case facet.split('-').first
+                  when 'day' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'day')]
+                  when 'week' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'week')]
+                  when 'month' then ['%Y-%m', next_utc_range_milliseconds(range_start, 'month')]
+                  when 'year' then ['%Y', next_utc_range_milliseconds(range_start, 'year')]
+                  end    
+  
+                  {
+                    :term => human_time(range_start, sformat),
+                    :count => entry['count'],
+                    :uri => facet_uri(
+                      facet.split('-').last,
+                      "#{human_time(range_start, sformat)}..#{human_time(range_end, sformat)}"
+                    )
+                  }
+                end
+              }
+            end
           end
+          
         end
       end
       
