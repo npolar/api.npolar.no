@@ -97,10 +97,10 @@ module Npolar
                   range_start = entry['time']
                   
                   sformat, range_end = case facet.split('-').first
-                  when 'day' then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, 'day')]
-                  when 'week' then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, 'week')]
-                  when 'month' then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, 'month')]
-                  when 'year' then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, 'year')]
+                  when 'day' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'day')]
+                  when 'week' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'week')]
+                  when 'month' then ['%Y-%m', next_utc_range_milliseconds(range_start, 'month')]
+                  when 'year' then ['%Y', next_utc_range_milliseconds(range_start, 'year')]
                   when /(\d{1,2}h)/ then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, $1)]
                   end    
   
@@ -109,7 +109,7 @@ module Npolar
                     :count => entry['count'],
                     :uri => facet_uri(
                       facet.split('-').last,
-                      "#{human_time(range_start, sformat)}..#{human_time(range_end, sformat)}"
+                      "#{human_time(range_start, sformat)}..#{human_time(range_end, '%Y-%m-%dT%H:%M:%SZ')}"
                     )
                   }
                 end
@@ -144,7 +144,7 @@ module Npolar
         when 'year' then Date.new(year, month, day).next_year
         when 'month' then Date.new(year, month, day).next_month
         when 'week' then Date.new(year, month, day).next_day(7)
-        when 'day' then Time.utc(year, month, day, 24)
+        when 'day' then Date.new(year, month, day).next_day
         when /(\d{1,2})h/ then Time.utc(year, month, day, $1)
         end
         
