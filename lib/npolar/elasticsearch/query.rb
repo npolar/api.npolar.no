@@ -177,7 +177,7 @@ module Npolar
                 vals = value.split('..')
                 
                 # Swap the values if the second one is bigger then the first
-                unless value.match(/\-?\d+Z\.\.\-?\d+/)
+                unless value.match(/^\d{4}\-(\d{2})?\-?(\d{2})?T?(\d{2}):?(\d{2})?:?(\d{2})?Z?/)
                   unless vals[0].to_f < vals[1].to_f
                     vals[0], vals[1] = vals[1], vals[0]
                   end
