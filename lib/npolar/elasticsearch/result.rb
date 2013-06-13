@@ -97,10 +97,11 @@ module Npolar
                   range_start = entry['time']
                   
                   sformat, range_end = case facet.split('-').first
-                  when 'day' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'day')]
-                  when 'week' then ['%Y-%m-%d', next_utc_range_milliseconds(range_start, 'week')]
-                  when 'month' then ['%Y-%m', next_utc_range_milliseconds(range_start, 'month')]
-                  when 'year' then ['%Y', next_utc_range_milliseconds(range_start, 'year')]
+                  when 'day' then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, 'day')]
+                  when 'week' then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, 'week')]
+                  when 'month' then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, 'month')]
+                  when 'year' then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, 'year')]
+                  when /(\d{1,2}h)/ then ['%Y-%m-%dT%H:%M:%SZ', next_utc_range_milliseconds(range_start, $1)]
                   end    
   
                   {
@@ -143,10 +144,11 @@ module Npolar
         when 'year' then Date.new(year, month, day).next_year
         when 'month' then Date.new(year, month, day).next_month
         when 'week' then Date.new(year, month, day).next_day(7)
-        when 'day' then Date.new(year, month, day).next_day
+        when 'day' then Time.utc(year, month, day, 24)
+        when /(\d{1,2})h/ then Time.utc(year, month, day, $1)
         end
         
-        next_value = (Time.utc(next_value.year, next_value.month, next_value.day).to_f * 1000).to_i
+        next_value = next_value.is_a?(Date) ? (Time.utc(next_value.year, next_value.month, next_value.day).to_i * 1000) : (next_value.to_i * 1000)
       end
       
       # Convert millisecond time to a human readable format
