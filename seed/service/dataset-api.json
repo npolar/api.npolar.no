@@ -1,0 +1,16 @@
+{
+  "schema": "http://data.npolar.no/schema/api",
+  "id": "dataset-api",
+  "path": "/dataset",
+  "title": "Dataset API",
+  "summary": "Norwegian Polar Institute's data products (discovery-level dataset metadata). Storage format is JSON, but metadata is also available in 3 XML variants: DIF, Atom, ISO19139.",
+  "storage": ["Couch", "dataset"],
+  "search": ["Solr", "api"],
+  "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
+  "formats": {"atom":"application/atom+xml", "json":"application/json", "dif":"application/xml", "iso":"application/vnd.iso.19139+xml"},
+  "accepts": {"application/json": "http://data.npolar.no/schema/dataset.json", "application/xml": "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"},
+  "category": ["CouchDB", "Solr", "Lucene", "REST", "Search", "JSON", "JSON Schema", "XML", "XML Schema", "DIF", "HTTP", "Atom", "ISO19139"],
+  "lifecycle": "production",
+  "autorun":false,
+  "open": true
+}

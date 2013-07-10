@@ -1,0 +1,17 @@
+{
+  "schema": "http://data.npolar.no/schema/api",
+  "id": "service-api",
+  "path": "/service",
+  "title": "Service endpoint",
+  "summary": "Service configuration for a HTTP API on http://api.npolar.no",
+  "storage": "Couch",
+  "database": "api_service",
+  "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
+  "formats": {"json":"application/json", "html": "text/html"},
+  "accepts": {"application/json": "http://data.npolar.no/schema/api.json"},
+  "category": ["CouchDB", "REST", "JSON", "HTTP"],
+  "lifecycle": "production",
+  "autorun": true,
+  "open": true,
+  "auth": { "authorize": "sysadmin", "system": "api" }
+}
