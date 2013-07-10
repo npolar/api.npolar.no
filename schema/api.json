@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://data.npolar.no/schema/api",
+  "title": "API (HTTP service)",
+  "description": "Service configuration for an API",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "schema", "path", "verbs", "formats", "accepts", "lifecycle", "open", "autorun"],
+  "properties": {
+    "id": { "type": "string" },
+    "schema": { "type": "string", "format": "uri"},
+    "version": { "type": "string" },
+    "path": { "type": "string", "pattern": "^[/]"},
+    "title": { "type": "string" },
+    "summary": { "type": "string" },
+    "storage": { "type": "string" },
+    "search": { "type": "object" },
+    "database": { "type": "string" },
+    "verbs": { "type": "array" },
+    "formats": { "type": "object" },
+    "accepts": { "type": "object" },
+    "category": { "type": "array" },
+    "lifecycle": { "type": "string" },
+    "autorun": { "type": "bool" },
+    "open": { "type": "bool" },
+    "auth": { "type": "object" },
+    "author": { "type": ["string", "object"] },
+    "editor": { "type": ["string", "object"] },
+    "updated": { "type": "string", "format": "datetime"},
+    "published": { "type": "string", "format": "datetime"}
+  }
+}
