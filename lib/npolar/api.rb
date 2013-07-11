@@ -2,14 +2,17 @@ module Npolar
   module Api
 
     class << self
+      URI = "http://api.npolar.no/"
       attr_writer   :log
     end
     
     def self.facets
-     ["collection", "workspace", "accept_mimetypes", "accept_schemas", "formats", "relations", "group", "sets", "category", "country",
-      "day", "draft", "editor",
-      "hemisphere", "investigators", "iso_3166-1", "iso_3166-2", "licences", "link", "methods", "year", "month", "day", "org", "parameter", "person", "placename", "project", "protocols", "referenceYear",
-      "source", "iso_topics", "tags", "updated"]
+     ["collection", "workspace", "accept_mimetypes", "accept_schemas", "formats", "relations", "topics", "sets", "category", "country",
+      "draft", "editors", "hemisphere", "investigators", "licences", "link", "methods", "parameter", "person", "placename", "project",
+      "source", "iso_topics", "tags"]
+    end
+
+    def self.factory(name)
     end
 
     def self.log

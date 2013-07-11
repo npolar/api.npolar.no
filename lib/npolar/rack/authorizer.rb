@@ -31,7 +31,6 @@ module Npolar
       end
 
       def authenticated?
-
         begin
           if config[:authenticated?].is_a? Proc
             config[:authenticated?].call(auth, request)
@@ -42,7 +41,7 @@ module Npolar
           
           unless "test" == ENV["RACK_ENV"]
             puts __FILE__+":#{__LINE__} #{e.inspect}\n"+"="*80+"\n"+e.class.name+"\n"+e.message
-            puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+            #puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
           end
 
           false

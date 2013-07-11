@@ -1,17 +1,21 @@
 require "rack/client"
-require "pp"
 
 module Npolar
   module Storage
 
     # CouchDB storage client
-    # Needs drying, esp. share code between POST and PUT
+    # Needs drying, esp. share code between POST and PUT (before: valid?)
     class Couch
 
+      # Delegate validation to model
+      #extend Forwardable # http://www.ruby-doc.org/stdlib-1.9.3/libdoc/forwardable/rdoc/Forwardable.html
+      #def_delegators :model, :valid?
+  
       JSON_ARRAY_REGEX = /^(\s+)?\[.*\](\s+)?$/
+
       ALL_DOCS_QUERY_REGEX = /^\s*\{\s*"keys"\s*:.*$/
 
-      LIMIT = 1000
+      LIMIT = 1000000
   
       HEADERS = {
         "Accept" => "application/json",
@@ -19,11 +23,7 @@ module Npolar
         "Content-Type" => "application/json; charset=utf-8",
         "User-Agent" => self.name }
 
-      attr_accessor :client, :headers, :read, :write, :accepts, :formats, :model, :limit
-
-      def log
-        Npolar::Api.log
-      end
+      attr_accessor :accepts, :client, :headers, :read, :write, :formats, :model, :limit
 
       def self.uri=uri
         if uri.respond_to? :gsub
@@ -37,7 +37,7 @@ module Npolar
       end
 
       def accepts
-        @accepts ||= ["json"]
+        @accepts ||= ["application/json"]
       end
   
       def initialize(read, write = nil, config = {})
@@ -76,7 +76,7 @@ module Npolar
           end
         end
 
-        Npolar::Api.log.debug "Going to delete id = #{id} with rev = #{params['rev']}"
+        log.debug "About to delete id = #{id} with rev = #{params['rev']}"
 
         response =  writer.delete(id, headers, params)
         [response.status, response.headers, response.body]
@@ -87,14 +87,15 @@ module Npolar
       end
   
       def get(id, params={})
+
         if params["limit"].to_i > 0
           @limit = params["limit"].to_i
         end
 
         case id
           when "_meta" then meta
-          when "_ids", "" then ids
-          when "_all" then feed(params)
+          when nil, "", "_ids", "" then ids
+          when "_feed", "_all" then feed(params)
         else
           response = reader.get(id, headers, params)
           [response.status, response.headers, response.body]
@@ -110,91 +111,12 @@ module Npolar
       def headers
         @headers ||= HEADERS
       end
-
-      def post_many(data, params={})        
-        if data !~ JSON_ARRAY_REGEX
-          raise ArgumentException, "Please provide data as JSON Array"
-        end
-        t0 = Time.now
-
-        # parse docs and make sure we have 'id' and '_id' set
-        docs = Yajl::Parser.parse(data)
-        docs = docs.map {|doc| self.class.force_ids(doc)} 
-
-        # try to post them all
-        couch =  { "docs" => docs }
-        response = writer.post("_bulk_docs", headers, couch.to_json)
-
-        # keep ids here
-        conflict_ids = []
-        couch_ids = []
-
-        # inspect for any conflicts
-        messages = Yajl::Parser.parse(response.body)
-        messages.each do |msg|
-          if msg.has_key? "error" and msg["error"] == "conflict"
-            # collect any conflicted ids
-            conflict_ids << msg["id"]
-          end
-
-          # collect all generated ids
-          couch_ids << msg["id"]
-        end
-
-        # if we had conflicts
-        status = !conflict_ids.empty? ? 409 : response.status
-
-        # if overwrite=true then repost with updated _revs, overwriting docs in db
-        if params["overwrite"] == "true" and !conflict_ids.empty?
-          # docs we will repost
-          docs_to_repost = []
-
-          # hash the docs by id
-          docs_hash = Hash[docs.collect { |doc| [doc["id"], doc]}]
-
-          # update _revs of docs
-          resp = fetch_many({ "keys" => conflict_ids }.to_json, include_docs=false)
-          resp_data = Yajl::Parser.parse(resp[2])
-          resp_data["rows"].each do |info|
-            if docs_hash.has_key? info["id"]
-              doc = docs_hash[info["id"]]
-              doc["_rev"] = info["value"]["rev"]
-              docs_to_repost << doc
-            end
-          end
-
-          # repost to _bulk_docs
-          response = writer.post("_bulk_docs", headers, { "docs" => docs_to_repost }.to_json)
-          status = response.status
-        end
-
-        headers = {"Content-Type" => HEADERS["Content-Type"]}
-        elapsed = Time.now-t0
-        size = couch['docs'].size
-
-        if 201 == status
-          summary = "Posted #{size} CouchDB documents in #{elapsed} seconds"
-          rk = "response"
-          explanation =  "CouchDB success"
-        elsif 409 == status
-          summary = "document write conflict"
-          explanation  = "CouchDB error"
-          rk = "error"
-        else
-          summary = JSON.parse(response.body)["reason"]
-          explanation =  "CouchDB error"
-          rk = "error"
-        end
-        
-        [status, headers , [{rk => { "status" => status,
-          "uri" => "",
-          "ids" => couch_ids, # provide these so solrizer can use them
-          "summary" => summary, "explanation" => explanation, "system" => response.headers["Server"] },
-          "method" => "", "qps" => size/elapsed
-          }.to_json+"\n"]]
-      end
   
       def post(data, params={})
+        unless valid? data
+          raise Exception
+        end
+
         if data =~ ALL_DOCS_QUERY_REGEX
           # XXX ugly hack to route request to right place
           return fetch_many(data, include_docs=true)
@@ -249,7 +171,9 @@ module Npolar
         if data.is_a? Hash
           data = data.to_json
         end
-
+       unless valid? data
+          raise Exception
+        end
         # params?
         #if params.key? "attachment"
         # #couch.put("")
@@ -294,7 +218,10 @@ module Npolar
         else
           status = 501
         end
-        [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(ids)+"\n"]] # Couch returns text/plain here!?
+        body = Yajl::Encoder.encode({ "ids" => ids })
+        headers = {"Content-Type" => HEADERS["Content-Type"]}
+        #[status, headers, Yajl::Encoder.encode(body)+"\n"] # Couch returns text/plain here!?
+        Rack::Response.new(body, status, headers)
       end
 
       def feed(params={})
@@ -372,6 +299,51 @@ module Npolar
         end
       end
 
+      def valid? data, context="POST"
+        @errors = []
+
+        # First, check JSON syntax
+        begin
+          if data =~ JSON_ARRAY_REGEX
+            docs = JSON.parse data
+          else
+            docs = []
+            docs << JSON.parse(data)
+          end
+
+        rescue JSON::ParserError => e        
+          @errors = "JSON syntax error"
+          return false
+        end
+
+
+        if model.respond_to? :valid?
+    
+        
+          docs.each do | document |
+          
+            # @model already exists, but we need a new clean object
+            m = model.class.new(document)
+
+            v =  m.valid? document            
+            if false == v and m.respond_to? :errors
+               @errors << { document["id"] => m.errors }
+            end
+          end
+          @errors = errors.flatten
+
+          errors.any? ? false : true
+
+        else
+          true # !:)
+        end
+      end
+
+      def errors
+        @errors ||= nil
+      end
+
+
       protected
   
       # Raw couch client, use to get _documents (@see #ids)
@@ -430,13 +402,100 @@ module Npolar
       def limit
         @limit ||= LIMIT
       end
+
+      def log
+        @log ||= Npolar::Api.log
+      end
   
       def reader
         client(read+"/")
-      end
+      end      
       
       def writer
         client(write+"/")
+      end
+
+      def post_many(data, params={})        
+        if data !~ JSON_ARRAY_REGEX
+          raise ArgumentException, "Please provide data as JSON Array"
+        end
+        t0 = Time.now
+
+        # parse docs and make sure we have 'id' and '_id' set
+        docs = Yajl::Parser.parse(data)
+        docs = docs.map {|doc| self.class.force_ids(doc)} 
+
+        # try to post them all
+        couch =  { "docs" => docs }
+        response = writer.post("_bulk_docs", headers, couch.to_json)
+
+        # keep ids here
+        conflict_ids = []
+        couch_ids = []
+
+        # inspect for any conflicts
+        messages = Yajl::Parser.parse(response.body)
+        messages.each do |msg|
+          if msg.has_key? "error" and msg["error"] == "conflict"
+            # collect any conflicted ids
+            conflict_ids << msg["id"]
+          end
+
+          # collect all generated ids
+          couch_ids << msg["id"]
+        end
+
+        # if we had conflicts
+        status = !conflict_ids.empty? ? 409 : response.status
+
+        # if overwrite=true then repost with updated _revs, overwriting docs in db
+        if params["overwrite"] == "true" and !conflict_ids.empty?
+          # docs we will repost
+          docs_to_repost = []
+
+          # hash the docs by id
+          docs_hash = Hash[docs.collect { |doc| [doc["id"], doc]}]
+
+          # update _revs of docs
+          resp = fetch_many({ "keys" => conflict_ids }.to_json, include_docs=false)
+          resp_data = Yajl::Parser.parse(resp[2])
+          resp_data["rows"].each do |info|
+            if docs_hash.has_key? info["id"]
+              doc = docs_hash[info["id"]]
+              doc["_rev"] = info["value"]["rev"]
+              docs_to_repost << doc
+            end
+          end 
+
+          # repost to _bulk_docs
+          response = writer.post("_bulk_docs", headers, { "docs" => docs_to_repost }.to_json)
+          status = response.status
+        end
+
+        headers = {"Content-Type" => HEADERS["Content-Type"]}
+        elapsed = Time.now-t0
+        size = couch['docs'].size
+
+        if 201 == status
+          summary = "Posted #{size} CouchDB documents in #{elapsed} seconds"
+          rk = "response"
+          explanation =  "CouchDB success"
+        elsif 409 == status
+          summary = "document write conflict"
+          explanation  = "CouchDB error"
+          rk = "error"
+        else
+          summary = JSON.parse(response.body)["reason"]
+          explanation =  "CouchDB error"
+          rk = "error"
+        end
+        
+        [status, headers , [{rk => { "status" => status,
+          # "uri" => "",
+          "ids" => couch_ids, # provide these so solrizer can use them
+          "summary" => summary, "explanation" => explanation, "system" => response.headers["Server"] },
+          "method" => "", "qps" => size/elapsed
+          }.to_json+"\n"]]
       end
 
     end

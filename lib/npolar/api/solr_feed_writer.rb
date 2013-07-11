@@ -6,6 +6,11 @@ class Npolar::Api::SolrFeedWriter
 
     base = request.path.gsub(/\/$/, "")+"/"
     
+    if response.is_a? String
+      response = JSON.parse response
+    end
+    
+    
     if response.key? "facet_counts" and response["facet_counts"].key? "facet_ranges"
       response["facet_counts"]["facet_ranges"].each do |ranges|
         range = ranges[0]

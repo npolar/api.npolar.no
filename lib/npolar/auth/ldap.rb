@@ -8,7 +8,7 @@ module Npolar
 
       DEFAULT_DOMAIN = "npolar.no"
 
-      # TODO: move this to config.ru?
+      # TODO: move this to config
       ROLES_CN = "cn=roles"
       API_DN = "cn=systems,dc=polarresearch,dc=org"
       USERS_DN = "cn=users,dc=polarresearch,dc=org"

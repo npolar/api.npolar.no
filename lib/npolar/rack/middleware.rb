@@ -1,4 +1,6 @@
 require "rack/utils"
+require "logger"
+require "yajl/json_gem"
 
 module Npolar
   module Rack
@@ -21,6 +23,7 @@ module Npolar
       # @param  [#call]                       app
       # @param  [Hash{Symbol => Object}]      config
       def initialize(app=nil, config = {})
+        #config = Hashie::Mash.new(config)
         unless only_valid_keys?(config, self.class::CONFIG.keys)
           raise(ArgumentError, "Unknown config key(s): #{unknown_keys(config, self.class::CONFIG.keys).join(", ")}")
         end
@@ -28,7 +31,7 @@ module Npolar
         config = CONFIG.merge(self.class::CONFIG).merge config
   
         @app, @config = app, config
-        @log = Logger.new(STDERR)
+        @log = ::Logger.new(STDERR)
       end
   
       ##

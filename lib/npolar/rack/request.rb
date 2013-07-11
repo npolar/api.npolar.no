@@ -98,6 +98,10 @@ module Npolar
         id
   
       end
+
+      def json?
+        format == "json" or media_type =~ /^application\/json$/  
+      end
   
       # Request has id?
       def id?    

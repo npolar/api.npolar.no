@@ -1,28 +1,41 @@
 # encoding: utf-8
-require 'pp'
-
 module Npolar
 
   module Rack
-        
-    # Solrizer: Search and indexing middleware for Solr
+
+    # Search and indexing middleware for Solr
     #
-    # Solrizer returns a JSON feed on GET with a query ("q" parameter is present)
-    # The #feed is created by a pluggable lambda function, so is the #q (Solr query) and #fq (Solr filter queries).
-    # On PUT or POST Solrizer updates the Solr search index, calling #to_solr on the incoming document
+    # Search
+    # On GET Solrizer returns a JSON feed, if a "q" parameter is given.
+    # The JSON feed is created by a pluggable lambda function, so is the #q (Solr query) and #fq (Solr filter queries).
+
+    # Indexing
+    # On PUT, POST, and DELETE Solrizer can update the Solr search index, calling #to_solr on the incoming document
     #
+    # Use
+    #   use Npolar::Rack::Solrizer, { :core => "http://solr:8983/solr/collection1",
+    #     :facets => ["concept", "ancestors", "children"] }
+    # @todo
+    # Remodule SolrQuery => Npolar::Rack::Solrizer::SolrQuery?
+
     # https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/rack/solrizer.rb
+
     class Solrizer < Npolar::Rack::Middleware
 
+      YEAR_REGEX = /^([-])?\d{4,}/
+      DATE_REGEX = /(-)?(\d{4,})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])/
+      ISODATE_REGEX = /^#{DATE_REGEX}$/
+      MONTH_REGEX = /^(-)?(\d{4,})\-(0[1-9]|1[0-2])$/
+      DATETIME_REGEX = /T\d\d[:]\d\d[:]\d\dZ$/
+
+      # Default condition lambda (see CONFIG)
       def self.query_or_save_json
         
         lambda {|request|
-          Npolar::Api.log.debug request.request_method
-          Npolar::Api.log.debug request.format
-
+          
           if ["GET", "HEAD"].include? request.request_method and not request["q"].nil?
             true
-          elsif ["POST","PUT", "DELETE"].include? request.request_method and "json" == request.format
+          elsif ["POST","PUT", "DELETE"].include? request.request_method #and "json" == request.format
             true
           else
             false
@@ -30,10 +43,12 @@ module Npolar
         }
       end
 
+      # Use this CONFIG condition lambda for a Search-only Solrizer
       def self.searcher
         lambda {|request| ["GET", "HEAD"].include? request.request_method }
       end
 
+      # Set default Solr URI
       def self.uri=uri
         if uri.respond_to? :gsub
           uri = uri.gsub(/[\/]$/, "")
@@ -41,22 +56,32 @@ module Npolar
         @@uri=uri
       end
 
+      # Get default Solr URI
       def self.uri
         @@uri ||= "http://localhost:8983/solr"
       end
 
+      # Middleware config
       CONFIG = {
         :core => nil,
         :condition => self.query_or_save_json,
         :facets => nil,
         :model => nil,
+        :ranges => nil,
         :select => nil,
+        :fl => Npolar::Api::SolrQuery.fields,
         :q => lambda {|request| Npolar::Api::SolrQuery.q(request)},
-        :fq => [],
+        :dates => Npolar::Api::SolrQuery.dates,
+        :force => nil,
+        :fq => lambda {|request|
+          [] + request.params.select {|p|
+            p =~ /^filter-.{1,}/}.select{|k,v| v =~ /.{1}/}.map {|k,v| "#{k.gsub(/^filter-/, "")}:#{v}"
+          }
+        },
         :feed => lambda { |response, request| Npolar::Api::SolrFeedWriter.feed(response, request)},
         :log => Npolar::Api.log,
         :summary => lambda {|doc| doc["summary"]},
-        :rows => 50,
+        :rows => Npolar::Api::SolrQuery.rows,
         :wt => :ruby,
         :to_solr => lambda {|doc|doc},
       }
@@ -75,11 +100,16 @@ module Npolar
         @core = core
       end
 
+      def force
+        config[:force] ||= {}
+      end
+
       # Only called if #condition? is true
       def handle(request)
         log.debug __FILE__
         @request = request
         log.debug self.class.name+"#handle(#{request}) #{request.request_method} #{request.url}"
+        
         if request["q"] and "POST" == request.request_method
           # search
         end
@@ -107,24 +137,27 @@ module Npolar
       end
 
       # Save to Solr
+      # FIXME Upstream stuff to lambda or remove
       def handle_save(request)
 
-        log.debug self.class.name+"#handle_save"
+        log.debug self.class.name+"#handle_save "+core
         t0 = Time.now
 
         begin
-          log.debug "@app: #{@app.class.name}"
+
           # Save using upstream middleware (@app, if set) and grab the response
           if @app.nil?
             response = nil
           else
-            log.debug "About to call @app"
-            response = @app.call(request.env)
-            log.debug response.inspect
 
-            # bail if db write fails
-            if ![200, 201].include?(response.status)
-              log.error error_hash response.status, "DB write failed before we could write to Solr"
+            log.debug "About to call @app"
+
+            response = @app.call(request.env)
+            
+            # Return if upstream save fails
+            unless [200, 201].include?(response.status)
+              log.error "Upstream save failed with status #{response.status} before we could save to Solr"
+              return [response.status, headers("json"), response.body]
             end
           end
           
@@ -133,7 +166,7 @@ module Npolar
           request.body.rewind
 
           # Convert to Solr format and add (update index)
-          # Notice we update Solr no matter if the upstream storage middleware succeeds or not
+          # NOT ANYMORE: Notice we update Solr no matter if the upstream storage middleware succeeds or not
 
           # POST/no id => multiple documents
           if request.id? == false and "POST" == request.request_method and json.respond_to? :each
@@ -180,7 +213,7 @@ module Npolar
 
           elapsed = Time.now-t1
 
-          log.debug "Solr response: #{solr_response}"
+          log.debug "Solr response: #{solr_response[0.255]}"
 
           log.debug "Total time: #{Time.now-t0} seconds"
 
@@ -197,8 +230,7 @@ module Npolar
           if [200, 201].include?(status)
             log.info "#{request.request_method} #{request.url} #{status} saved #{size} Solr document(s) in #{elapsed} seconds (#{size/elapsed} qps)"
           else
-            log.error "Failed saving to Solr"
-            puts solr_response.inspect
+            log.error "Failed saving to Solr (status #{status})"
           end
 
           if response.nil?
@@ -218,11 +250,11 @@ module Npolar
         end
       end
       
-      # Solr search
+      # Solr searchfl
       # Search request handler that returns a JSON feed (default) or CSV, Solr Ruby Hash, Solr XML
       # @return Rack-style HTTP triplet
       def handle_search(request)
-        log.debug self.class.name+"#handle_search"
+        log.debug self.class.name+"#handle_search #{uri} #{solr_params}"
         begin
           
           fq_bbox = []
@@ -255,9 +287,12 @@ module Npolar
             return [200, headers("json"), resp.body]
           end
 
-          #log.debug "Solr response: #{response}"
-
           if ["html", "json", "", nil].include? request.format
+          status = response["responseHeader"]["status"]
+          qtime = response["responseHeader"]["QTime"]
+          hits = response["response"]["numFound"]
+          log.debug "Solr hits=#{hits} status=#{status} qtime=#{qtime}"
+
             [200, headers("json"), [feed(response).to_json]]
           elsif ["solr"].include? request.format
             [200, headers("json"), [response.to_json]]
@@ -331,35 +366,98 @@ module Npolar
           log.error e
           status = e.response[:status].to_i
           body = e.response[:body]
-          explanation = ""
+          explanation = body
           if body =~ /<b>message<\/b>/ 
             explanation = body.split("<b>message</b>")[1]
+          elsif body =~ /\'error\'\=\>\{\'msg\'/
+            explanation = body.split("'error'=>{'msg'=>'")[1].split("',")[0]
           end
-          #elsif explanation = body.split("'error'=>{'msg'=>")[1].split("',")[0]
-          error = { "error" => { "status" => status, "explanation" => "Solr request failed: #{explanation}" , "response" => body } }
+
+          error = { "error" => { "status" => status, "explanation" => "Solr request failed: #{explanation}"  } }
           [status, headers("json"), [error.to_json]]
       end
 
+      # @return Array fq (filter queries)
+      # FIXME draft=not(yes) is currently implemented like
+      #   filter--draft=yes
       def fq
-        if config[:fq].is_a? String
-          config[:fq] = [config[:fq]]
-        end
-        fq = (request.multi("fq") + config[:fq]).uniq.map {|fq|
 
-        if fq =~ /(.*):(.*)/
-          k,v = fq.split(":")
-          if v =~ /true|false/
-            
-            "#{k}:#{v}"
-            
-          elsif v =~ /^(∅|%E2%88%85|null|)$/ui
-            "-#{k}:[\"\" TO *]"
-          else
-            "#{k}:\"#{CGI.unescape(v.gsub(/(%20|\+)/ui, " "))}\""
-          end
+        # config[:fq] should contain a lambda that will extract fq from a request
+        if config[:fq].respond_to?(:call)
+          config_fq = config[:fq].call(request)
+        elsif config[:fq].is_a? Array
+          config_fq = config[:fq]
         else
-          fq
+          config_fq=[]
         end
+
+        # Merge fq's in the request with filter-field= extracted above
+        fq = (request.multi("fq") + config_fq + force.map {|k,v| "#{k}:#{v}" }).uniq.map {|fq|
+
+          if fq =~ /(.*):(.*)/
+            
+            k,v = fq.split(":",2)
+
+            
+            if v =~ /true|false/
+              
+              "#{k}:#{v}"
+              
+            elsif v =~ /^(∅|%E2%88%85|null|)$/ui
+              "-#{k}:[\"\" TO *]"
+            elsif v =~ /(.*)?[.][.](.*)?/ or config[:dates].include? k
+  
+              # Trick all date queries into range query
+              # This makes snazzy shortened year and date queries work for a single year or a single date
+              if config[:dates].include? k           
+                unless v =~ /(.*)?[.][.](.*)?/
+                  v = "#{v}..#{v}"
+                end 
+              end
+  
+              from,to = v.split("..")
+  
+              if from.nil? or "" == from
+                from = "*"
+              end
+              if to.nil? or "" == to
+                to = "*"
+              end
+
+              # Switch from/to if from is greater than to
+              if (from != "*" and to != "*" and from.respond_to?(:<) and to.respond_to?(:>))
+                if from > to
+                  from,to = to,from
+                end
+              end
+              
+              if config[:dates].include? k
+
+                if from =~ DATETIME_REGEX or to =~ DATETIME_REGEX 
+                  from = (from =~ YEAR_REGEX) ? from : "*"
+                  to = (to =~ YEAR_REGEX) ? to : "*"
+                elsif from =~ DATE_REGEX or to =~ DATE_REGEX
+                  from,to = solr_date_range(from,to)
+                  # At least one year (from or to)
+                elsif from =~ MONTH_REGEX or to =~ MONTH_REGEX
+                  from,to = solr_month_range(from,to)
+                elsif from =~ YEAR_REGEX or to =~ YEAR_REGEX 
+                  from,to = solr_year_range(from,to)
+                end
+  
+                
+              end 
+              "#{k}:[#{from} TO #{to}]"
+              # End of Date range
+
+            else
+
+
+              "#{k}:\"#{CGI.unescape(v.gsub(/(%20|\+)/ui, " "))}\""
+            end
+          else # fq does not contain :
+            fq
+          end
       }
 
 
@@ -394,6 +492,51 @@ module Npolar
         @model=model
       end
 
+      def solr_year_range(from,to)
+        unless "*" == from
+          from = DateTime.new(from[0..3].to_i, 1, 1).xmlschema.gsub(/\+00\:00$/, "Z")
+        end
+
+        unless "*" == to
+          to = DateTime.new(to[0..3].to_i, 12, 31, 23, 59, 59).xmlschema.gsub(/\+00\:00$/, "Z")
+        end
+    
+        [from,to]
+      end
+
+      def solr_date_range(from,to)
+        # Get the years, or even *
+        from_year,to_year=solr_year_range(from,to)
+        if "*" == from_year
+          from = "*"
+        else
+          from = DateTime.new(from_year.to_i, from[5..6].to_i, from[8..9].to_i).xmlschema.gsub(/\+00\:00$/, "Z")
+        end
+        if "*" == to_year
+          to = "*"
+        else
+
+          to = DateTime.new(to_year.to_i, to[5..6].to_i, to[8..9].to_i, 23, 59, 59.999).xmlschema.gsub(/\+00\:00$/, "Z")
+        end
+        [from,to]
+      end
+
+      def solr_month_range(from,to)
+        # Get the years, or even *
+        from_year,to_year=solr_year_range(from,to)
+        if "*" == from_year
+          from = "*"
+        else
+          from = DateTime.new(from_year.to_i, from[5..6].to_i).xmlschema.gsub(/\+00\:00$/, "Z")
+        end
+        if "*" == to_year
+          to = "*"
+        else
+          to = DateTime.new(to_year.to_i, to[5..6].to_i, -1, 23, 59, 59).xmlschema.gsub(/\+00\:00$/, "Z")
+        end
+        [from,to]
+      end
+
       def solr_params
         start = request["start"] ||= 0
         rows  = request["limit"]  ||= config[:rows]
@@ -420,13 +563,13 @@ module Npolar
             #:"f.updated.facet.range.gap" => 10,
             :"facet.field" => facets,
             :"facet.mincount" => request["facet.mincount"] ||= 1,
-            :"facet.limit" => request["facet.limit"] ||= -1, # all
+            :"facet.limit" => request["facet.limit"] ||= 100, # -1 == all
             :fl => fl,
             :wt => wt,
             :defType => "edismax",
             :sort => request["sort"] ||= nil,
-            :"facet.sort" => "count"
-            #:qf => "text"
+            :"facet.sort" => request["facet.sort"] ||= "count",
+            :qf => "text"
 
           }
 
@@ -465,6 +608,9 @@ module Npolar
       def workspace
         request.path_info.split("/")[0]
       end
+
+
+      # stats http://wiki.apache.org/solr/StatsComponent
 
       def wt
         wt = case request.format
