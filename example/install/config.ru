@@ -1,32 +1,131 @@
 # encoding: utf-8
-# This config.ru is the *production* configuration for api.npolar.no
+# Configuration for http://api.npolar.no
+
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
-
 require "./load"
 
+log = Npolar::Api.log
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
 
-Metadata::Dataset.formats = ["json", "dif", "iso", "atom"]
-Metadata::Dataset.accepts = ["json", "xml"]
-
-
 # Middleware for *all* requests - use with caution
 # a. Security
-# use Rack::Throttle::Hourly,   :max => 1200 # requests
-# use Rack::Throttle::Interval, :min => 110.1 # seconds
+use Rack::Throttle::Hourly,   :max => 1200000 # requests
+use Rack::Throttle::Interval, :min => 0.00166666666 # 1/600 seconds
 # use Npolar::Rack::SecureEdits (force TLS/SSL ie. https)
 
 # b. Features
 use Rack::JSONP
-use Rack::Static, :urls => ["/css", "/img", "/xsl", "/favicon.ico", "/robots.txt"], :root => "public"
+use Rack::Static, :urls => ["/css", "/img", "/xsl", "schema", "/favicon.ico", "/robots.txt"], :root => "public"
+
+#use Rack::Recursive !?
+#use Npolar::Rack::GeoJSON
+
 # use Npolar::Rack::Editlog, Npolar::Storage::Solr.new("/api/editlog"), except => ["/path"]
 # use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("/api/editlog"), except => ["/path"]
 
-# http(s)://api.npolar.no/
+# Bootstrap /service /user
+service_seed = File.read()
+# Autorun APIs
+#database = "api_42" # is inside seed!
+#client = Npolar::Api::Client.new(Npolar::Storage::Couch.uri+"/#{database}")
+## Get all databases
+#
+#apis.select {|api|
+#  api.autorun and "http://data.npolar.no/schema/api" == api.schema
+#  
+#}.each do | api |
+#
+#  storage, database = api.storage[0], api.storage[1]
+#  log.info "#{api.path} autorunning API with #{storage} database \"#{database}\""
+#
+#  map api.path do
+#
+#    storage = Npolar::Storage::Couch.new(database)
+#
+#    if api.model?
+#      storage.model = Npolar::Api.factory(api.model)
+#    end
+#
+#    if api.auth?
+#      auth = api.auth
+#
+#      # Open data => GET, HEAD are excepted from Authorization 
+#      except = api.open? ? lambda {|request| ["GET", "HEAD"].include? request.request_method } : false
+#      auth_methods = api.open? ? ["POST", "PUT", "DELETE"] : api.methods
+#
+#      authorizer = Npolar::Auth::Factory.instance("Couch", "api_user")
+#
+#      log.info "#{api.path} authorize #{auth_methods.join(", ")} for #{auth.authorize} in system #{auth.system} using #{auth.class.name}"
+#
+#      use Npolar::Rack::Authorizer, { :auth => auth,
+#        :system => auth.system,
+#        :except? => except
+#      }
+#    end
+#
+#    if api.search?
+#  
+#      if "Solr" == api.search[0]
+#
+#        use Views::Api::Index
+#
+#        use Npolar::Rack::Solrizer, { :core => "api",
+#          :fq => ["workspace:biology", "collection:sighting"],
+#          :facets => ["phylum", "class", "genus", "art", "species", "year", "month", "day", "category", "countryCode"],
+#          :to_solr => Biology::Sighting.to_solr
+#        }
+#      elsif "Elastic" == api.search[0]
+#      end
+#
+#    end
+#
+#
+#    if api.accepts.key? "application/json"
+#      before = Npolar::Api::Json.before_lambda
+#      #after = Npolar::Api::Json.before_lambda
+#    else
+#      before = after = nil
+#    end
+#
+#    run Npolar::Api::Core.new(nil,
+#      :storage => storage,
+#      :formats => api.formats.keys,
+#      :methods => api.verbs,
+#      :accepts => api.accepts.keys,
+#      :before => before
+#      # after
+#    )
+#  end
+#end
+
+map "/xapi" do
+  storage = Npolar::Storage::Couch.new("api")
+  storage.model = Api.new
+
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "api",
+    :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin"),
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
+  }
+
+  run Npolar::Api::Core.new(nil, { :storage => storage,
+    :formats=>["json", "html"],
+    :before => Npolar::Api::Json.before_lambda
+  })
+
+end
+
+map "/user" do
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "api",
+    :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin") }
+    run Npolar::Api::Core.new(nil, {:storage => Npolar::Storage::Couch.new("api_user"), :methods => ["GET", "HEAD", "POST", "PUT"]}) # No DELETE
+end
+
 # 
 # Please keep all map statements below in alphabetical order
+
+
 map "/" do
 
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"),
@@ -36,51 +135,16 @@ map "/" do
 
   use Views::Api::Index
 
-  use Npolar::Rack::Atomizer
-
   run Npolar::Rack::Solrizer.new(nil, {
     :core => "api",
     :facets => Npolar::Api.facets
-    # Convert from Atom-like JSON => Solr JSON "
+   #@todo Convert from Atom-like JSON => Solr JSON
   })
 
-  # The map sections below are for the internal "api" workspace
-  map "/parameter" do
-  end
+  #map "/parameter" do
+#unit
+  #end
 
-  # /schema
-  # @todo Setup storage with revisions
-  map "/schema" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"),
-      :system => "api", :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin"),
-      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
-    }
-    run Npolar::Api::Core.new(nil, {:storage => Npolar::Storage::Couch.new("schema"), :formats => ["html", "json"]})
-  end
-  
-  map "/service" do
-
-    use Npolar::Rack::Solrizer, { :core => "api",
-      :facets => ["formats", "accepts", "path", "methods", "person", "methods", "protocols", "relations", "project", "group", "set", "category", "editor", 
-"tags", "groups", "licences"],
-      :fq => ["workspace:api", "collection:service"],
-      #:fields => "title"
-    }
-
-    use Views::Api::Index
-
-    # use AtomPubService
-    # http://tools.ietf.org/html/rfc5023#section-8
-
-    run Npolar::Api::Core.new(nil, { :storage => Npolar::Storage::Couch.new("api")})
-
-  end
-  
-  map "/user" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "api",
-    :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin") }
-    run Npolar::Api::Core.new(nil, {:storage => Npolar::Storage::Couch.new("api_user"), :methods => ["GET", "HEAD", "POST", "PUT"]}) # No DELETE
-  end
 end
 
 
@@ -93,7 +157,7 @@ map "/biology" do
 
   run Npolar::Api::Core.new(Views::Biology::Index.new, :storage => nil, :methods =>  ["GET", "HEAD"])
     solrizer = Npolar::Rack::Solrizer.new(nil, {:core => "http://olav.npolar.no:8080/solr/marine_database",
-    :facets => ["collection", "station_ss", "year_ss", "animalgroup_ss", "programs_sms", "species_sms", "species_groups_sms", "sample_types_sms", "long_fs", "lat_fs"]})
+    :facets => ["collection", "station_ss", "year_ss", "animalgroup_ss", "oograms_sms", "species_sms", "species_groups_sms", "sample_types_sms", "long_fs", "lat_fs"]})
     run Views::Api::Index.new(solrizer)
 
   map "/marine" do
@@ -118,24 +182,84 @@ map "/biology" do
 
 end
 
+# category
+# /topics
+# 
+
+
+# /dataset
+#   Discovery level metadata about a data product
+#
+# $ curl -inX POST https://api.npolar.no/dataset -d@/path/dataset.json -H "Content-Type: application/json"
+map "/dataset" do
+
+  Metadata::Dataset.formats = ["json", "atom", "dif", "iso", "xml"]
+  Metadata::Dataset.accepts = ["application/json", "application/xml"]
+  model = Metadata::Dataset.new
+
+  storage = Npolar::Storage::Couch.new("dataset")
+  storage.model = model
+
+  # Auth
+  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "metadata",
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
+  
+  # DIF XML (<-)-> JSON
+  use Metadata::Rack::DifJsonizer
+
+  # HTML
+  use Views::Api::Index
+
+  # Solr search (GET)
+  # Solr save (POST, PUT)
+  # Solr delete (DELETE)
+  use Npolar::Rack::Solrizer, { :core => "api",
+    :facets => Metadata::Dataset.facets,
+    :force => {"workspace" => "metadata", "collection" => "dataset"},
+    :to_solr => lambda {|hash|
+    
+        model = Metadata::Dataset.new(hash)
+        model.to_solr        
+    }
+  }
+
+
+
+  run Npolar::Api::Core.new(nil,
+    { :storage => storage,
+      :formats => Metadata::Dataset.formats,
+      :accepts => Metadata::Dataset.accepts
+    }
+  )
+
+  # /dataset/oai
+  #   OAI-PMH repository
+  map "/oai" do
+    provider = Metadata::OaiRepository.new
+    run Npolar::Rack::OaiSkeleton.new(Views::Api::Index.new, :provider => provider)
+  end
+
+
+  
+end
+# Best practice new open data API
+# 1. API-description document (schema)
+# 2. JSON schema (in API desc?)
+# 3. Model
+# 4. Middleware
+# 5. Authorization
+
 map "/ecotox" do
   # Show ecotox index on anything that is not a search
   run Npolar::Rack::Solrizer.new(Views::Ecotox::Index.new, :core => "ecotox" )
  
-  #map compound
-  map "/report" do
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "ecotox",
-      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method }
-    }
-    #use Npolar::Rack::TikaExtracter
-    run Npolar::Api::Core.new(nil, :storage => Npolar::Storage::Couch.new("ecotox"))
 
-  end
+
 end
 
 map "/gcmd" do
 
-  run Npolar::Api::Core.new(Gcmd::Concept.new, :storage => Npolar::Storage::Couch.new("gcmd_concept"))
+  run Gcmd::Concept.new
 
   map "/concept" do
 
@@ -145,9 +269,10 @@ map "/gcmd" do
     }
     use Views::Api::Index
 
-    use Npolar::Rack::Solrizer, { :core => "http://solr:8983/solr/collection1",
-      :facets => ["concept", "ancestors", "children", "workspace", "collection", "cardinality", "tree", "label", "id"]
+    use Npolar::Rack::Solrizer, { :core => "gcmd",
+      :facets => ["concept", "ancestors", "children", "workspace", "collection", "cardinality", "tree", "label"]
     }
+
     run Npolar::Api::Core.new(nil, :storage => Npolar::Storage::Couch.new("gcmd_concept"))
   end
 end
@@ -168,59 +293,9 @@ map "/map" do
 end
 
 
-map "/metadata" do
-  index = Views::Metadata::Index.new
-  solrizer = Npolar::Rack::Solrizer.new(index, { :core => "http://olav.npolar.no:8080/pmdb/",
-    :fq => ["type:Data*"], :facets => ["region", "institution_long_name"]})
 
-  run index
 
-  map "/oai" do
-    run Npolar::Rack::OaiSkeleton.new(Views::Api::Index.new, :provider => Metadata::OaiRepository.new)
-  end
-
-  map "/dataset" do
-    
-    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "metadata",
-      :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
-
-    index = Views::Api::Index.new
-
-    model = Metadata::Dataset.new
-
-    storage = Npolar::Storage::Couch.new("metadata_dataset")
-    storage.model = model
-    
-    # DIF XML <--> JSON
-    use Metadata::Rack::DifJsonizer
-
-    #use Npolar::Rack::JsonValidator
-
-    use Views::Api::Index
-    # Solr search (GET)
-    # Solr save (POST, PUT)
-    # Solr delete (DELETE)
-    # HOW to post! example!
-    use Npolar::Rack::Solrizer, { :core => "api",
-      :facets => Metadata::Dataset.facets,
-      :fq => ["workspace:metadata", "collection:dataset"],
-      :to_solr => lambda {|hash|
-      
-          model = Metadata::Dataset.new(hash)
-          model.to_solr        
-      }
-    }
-
-    run Npolar::Api::Core.new(nil,
-      { :storage => storage,
-        :formats => Metadata::Dataset.formats, #,
-        :accepts => Metadata::Dataset.accepts
-      }
-    )
-  end
-end
-
-map "/monitoring/" do
+map "/monitoring" do
 
   solrizer = Npolar::Rack::Solrizer.new(nil,
         :core => "http://bjarne.npolar.no:8983/indicators",
@@ -245,12 +320,42 @@ end
 
 # @todo decide collections ie. paths
 map "/oceanography" do
-
   #map "/cruise"
   #map 
   # Show ocean index on anything that is not a search
-  run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "http://localhost:8983/solr", :select => "select")
+  #run Npolar::Rack::Solrizer.new(Views::Ocean::Index.new, :core => "http://localhost:8983/solr/oceanography/", :select => "select")
+#<!-- ods.data.npolar.no -->
+#<field name="cruise" type="string" indexed="true" stored="true" />
+#<field name="temperature" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="fluorescence" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="turbidity" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="density" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="nitrogen" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="oxygen" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="pressure" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="salinity" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="par" type="tfloat" indexed="true" stored="true" multiValued="true" />
+#<field name="station" type="string" indexed="true" stored="true" />
+#<field name="originalstation" type="string" indexed="true" stored="true" multiValued="true" />
+#<field name="instrument" type="string" indexed="true" stored="true" multiValued="true" />
+#<field name="instrument_type" type="string" indexed="true" stored="true" multiValued="true" />
+#<field name="platform" type="string" indexed="true" stored="true" multiValued="true" />
+#<field name="filename" type="string" indexed="true" stored="true" multiValued="true" />
+#<field name="datetime" type="date" indexed="true" stored="true" multiValued="false"/>
+
+
+    use Views::Api::Index
+    use Npolar::Rack::Solrizer, { :core => "oceanography",
+     #   :fq => ["workspace:#{Oceanography::Physical::WORKSPACE}", "collection:#{Oceanography::Physical::COLLECTION}"],
+      :facets => ["project", "parameter", "set", "mooring", "size", "category", "cruise", "platform", "station", "originalstation", "instrument", "instrument_type", "serial_number", "year", "month", "day"],
+        #:ranges => ["temperature", "salinity", "pressure", "created", "depth", "echodepth", "latitude", "longitude", "oxygen", "nitrogen", "fluorescence", "par", "density"],
+        #:to_solr => Oceanography::Physical.to_solr_lambda
+    }
+    run Npolar::Api::Core.new(nil, :storage =>Npolar::Storage::Couch.new("oceanography_physical"))
+  
+
 end
+
 
 # @todo fork?
 map "/org" do
@@ -259,35 +364,13 @@ map "/org" do
   run Views::Api::Index.new(solrizer)
 end
 
-# @todo fork and merge with LDAP users, create pipeline
-map "/person" do
-  solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/solr/",
-    :fq => ["type:Person"], :facets => ["region", "institution_short_name"]})
-  run Views::Api::Index.new(solrizer)
-end
 
+
+
+# /publication
+#   Publication API
 #
-map "/project" do
-  solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/solr/",
-    :fq => ["type:Project"], :facets => ["region", "location_exact", "institution_short_name", "status"]})
-  run Views::Api::Index.new(solrizer)
-end
-
-# 
-map "/placename" do
-  solrizer = Npolar::Rack::Solrizer.new(nil, {
-    :select => "select",
-    #:core => "http://localhost:8983/solr/api",
-    :core => "http://olav.npolar.no:8080/solr/geonames",
-
-    # New core (not-yet ready):
-    #:core => "http://dbmaster.data.npolar.no:8983/solr/placename",
-    :fq => ["workspace:geo", "collection:geoname"],
-    :summary => lambda {|doc| doc["definition"] },
-    :facets => ["location", "hemisphere", "approved", "terrain", "country", "map", "reference", "north", "east"]
-  })
-  run Views::Api::Index.new(solrizer)
-end
+# $ curl -inX POST https://api.npolar.no/publication -d@/path/publication.json -H "Content-Type: application/json"
 
 #map "/rapportserie" do
 #  map "/105" do
@@ -301,27 +384,6 @@ end
 #  end
 #end
 
-map "/polarbear" do
-
-  map "/interaction" do
-
-    use Views::Api::Index
-
-    use Npolar::Rack::Solrizer, { :core => "polarbear_interaction",
-      :facets => Polarbear::Interaction.facets,
-      :to_solr => Polarbear::Interaction.to_solr_lambda
-  } 
-  run Npolar::Api::Core.new(nil, :storage => Npolar::Storage::Couch.new("polarbear_interaction"))
- 
-  end
-
-  map "/reference" do
-    solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://localhost:8983/solr/pbsg_reference",
-    :facets => ["source", "year", "periodical", "keyword", "author_exact"]
-})
-    run Views::Api::Index.new(solrizer)
-  end
-end
 
 # http://brage.bibsys.no/npolar/simple-search?locale=no&query=&submit=%C2%A0S%C3%B8k%21
 # http://brage.bibsys.no/npolar/feed-query/rss_2.0?query=author:*
@@ -333,6 +395,59 @@ end
 #  •	keyword
 #  •	language
 #  •	type
+
+
+
+
+
+# @todo fork and merge with LDAP users, create pipeline
+map "/person" do
+  solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/solr/",
+    :fq => ["type:Person"], :facets => ["region", "institution_short_name"]})
+  run Views::Api::Index.new(solrizer)
+end
+
+#
+#map "/project" do
+#  solrizer = Npolar::Rack::Solrizer.new(nil, { :core => "http://bjarne.npolar.no:8983/solr/",
+#    :fq => ["type:Project"], :facets => ["region", "location_exact", "institution_short_name", "status"]})
+#  run Views::Api::Index.new(solrizer)
+#end
+
+# 
+map "/placename" do
+  use Views::Api::Index
+
+  #use Npolar::Rack::Solrizer, {
+  #  :select => "select",
+  #  :core => "http://localhost:8983/solr/api",
+  #  :core => "http://olav.npolar.no:8080/solr/geonames",
+  #
+  #   New core (not-yet ready):
+  #  :core => "http://dbmaster.data.npolar.no:8983/solr/placename",
+  #  :fq => ["workspace:geo", "collection:geoname"],
+  #  :summary => lambda {|doc| doc["definition"] },
+  #  :facets => ["location", "hemisphere", "approved", "terrain", "country", "map", "reference", "north", "east"]
+  #}
+
+  run Npolar::Api::Core.new(nil, :storage => Npolar::Storage::Couch.new("placename"))
+
+end
+
+
+
+
+
+
+  # /schema
+  # @todo Setup storage with revisions
+  #map "/schema" do
+  #  use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"),
+  #    :system => "api", :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin"),
+  #    :except? => lambda {|request| ["GET", "HEAD"].include? request.requeschemst_method }
+  #  }
+  #  run Npolar::Api::Core.new(nil, {:storage => Npolar::Storage::Couch.new("schema"), :formats => ["html", "json"]})
+  #end
 
 map "/seaice" do
   # Show seaice index on anything that is not a search
@@ -358,3 +473,10 @@ map "/tracking" do
     run Npolar::Rack::Solrizer.new(Views::Collection.new(iridium), :core => "")
   end
 end
+
+map "/user" do
+    use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Couch.new("api_user"), :system => "api",
+    :authorized? => Npolar::Rack::Authorizer.authorize("sysadmin") }
+    run Npolar::Api::Core.new(nil, {:storage => Npolar::Storage::Couch.new("api_user"), :methods => ["GET", "HEAD", "POST", "PUT"]}) # No DELETE
+end
+

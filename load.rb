@@ -29,12 +29,10 @@ Dir.glob("./views/**/**/*.rb").each do | file |
 end
 
 Dir.glob("./lib/npolar/*.rb").each do | file |
-
   require_relative file
 end
 
 Dir.glob("./lib/npolar/**/**/*.rb").each do | file |
-  puts file
   require_relative file
 end
 

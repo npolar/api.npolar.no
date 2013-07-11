@@ -30,7 +30,6 @@ bootstrap.log = log
 bootstrap.bootstrap("service-api.json")
 bootstrap.bootstrap("user-api.json")
 # An effect of bootstrapping is that it's safe/impossible to DELETE these APIs
-#bootstrap.bootstrap("schema-api.json")map "/my" do
 
 ## Get all services
 service = Service.factory("service-api.json")
@@ -50,7 +49,7 @@ search = { :search => services.select {|api| "production" == api.lifecycle and a
 config = { :svc => search }
 # Autorun APIs
 services.select { |api| ("http://data.npolar.no/schema/api" == api.schema)}.each do |api|
-  if api.run =~ /(Npolar::Api::)?Json$/
+  if api.run =~ /(Npolar::Api::)?Json$/ and api.valid?
     map api.path do
       log.info "#{api.path} API autorunning with Npolar::Api::Json and #{api.storage} database \"#{api.database}\""
       if api.auth?
