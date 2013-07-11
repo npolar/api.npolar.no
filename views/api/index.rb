@@ -3,12 +3,14 @@ module Views
   module Api  
     class Index < Npolar::Mustache::JsonView
 
-      def initialize(app=nil)
+# Coming APIs: Tracking, Monitoring, Placenames,Ecotox
+
+      def initialize(app=nil, hash={})
         @app = app
         @hash = { "_id" => "api_index",
           #:workspaces => (Npolar::Api.workspaces - Npolar::Api.hidden_workspaces).map {|w| {:href => w, :title => w }},
           :form => {:placeholder => "Norwegian Polar Data API", :href => "", :id => "api",
-          :source => '.json?q={query}&amp;callback={callback}',
+          :source => '?q={query}&amp;callback={callback}&amp;format=json',
           :"search-formats" => [
             #{:format=>"atom", :label =>"Atom"},
               {:format=>"csv", :label => "CSV"},
@@ -16,29 +18,34 @@ module Views
               {:format=>"json", :label => "JSON", :active => ""},
             ]
           },
-          :limit => 30,
+          :limit => 10,
           :svc => { :search => [
-            {:title => "Biology", :href => "/biology/?q="},
+            #{:title => "Biology", :href => "/biology/?q="},
             #{:title => "Ecotox", :href => "/ecotox/?q="},
-            {:title => "Map", :href => "/map/archive?q="},
-            #{:title => "Metadata ", :href => "/metadata/?q="},
-            {:title => "Monitoring ", :href => "/monitoring/indicator?q="},
-            {:title => "Org", :href => "/org/?q="},
-            #{:title => "Oceanography", :href => "/oceanography/?q="},
-            {:title => "Person", :href => "/person/?q="},
-            {:title => "Placename", :href => "/placename/?q="},
-            {:title => "Polar bear", :href => "/polar-bear/reference/?q="},
+            {:title => "Dataset", :href => "/dataset/?q=", :alt => "Norwegian Polar Institute's datasets (discovery level metadata"},
+            {:title => "GCMD Concept", :href => "/gcmd/concept/?q="},
+            #{:title => "Map", :href => "/map/archive?q="},
+            
+            #{:title => "Monitoring ", :href => "/monitoring/indicator?q="},
+            #{:title => "Org", :href => "/org/?q="},
+            #{:title => "Marine biology", :href => "/biology/marine/?q="},
+            {:title => "Oceanography", :href => "/oceanography/?q="},
+            #{:title => "Person", :href => "/person/?q="},
+            #{:title => "Placename", :href => "/placename/?q="},
+            #{:title => "Polar bear", :href => "/polar-bear/reference/?q="},
             {:title => "Project", :href => "/project/?q="},
-            {:title => "Rapportserie", :href => "/rapportserie/105/?q="},
+            {:title => "Publication", :href => "/publication/?q="},
+            #{:title => "Rapportserie", :href => "/rapportserie/105/?q="},
             #{:title => "Sighting", :href => "/sighting/fauna?q="}
+            {:title => "Service", :href => "/api/?q="}
             #{:title => "Seaice"},
             #{:title => "Tracking"}
-            ]
-},
-          :welcome_article => '',
-          :data => { :workspaces => [] }
+            ]},
+          #:welcome_article => '<p>This service provides machine readable access to The <a href="http://npolar.no/en">Norwegian Polar Institute</a>\'s data. Humans should head over to <a href="http://data.npolar.no">Norwegian Polar Data</a>.</p>',
+          #:data => { :workspaces => [] }
         }
-        #merge ayyt
+
+        @hash = @hash.merge hash
       end
 
       def call(env)
@@ -57,7 +64,7 @@ module Views
         @hash[:bbox] = request["bbox"]
         @hash[:dtstart] = request["dtstart"]
         @hash[:dtend] = request["dtend"]
-        @hash[:fields] = request["fields"]
+        @hash[:fields] = request["fields"] #Npolar::Api::SolrQuery.fields.join(", ")
         @hash[:sort] = request["sort"]
 
         @hash[:filters?] = false
@@ -70,11 +77,10 @@ module Views
         end
 
 
-        unless "html" == request.format
-          feed = @app.call(env)
-        else
-          #html
+        if "html" == request.format
           super # ie render
+        else
+          @app.call(env) # return feed  
         end
       end
 
@@ -83,7 +89,7 @@ module Views
         # For each filter we need a remove link, equal to current URI minus this filter
         request.multi("fq").map {|fq|
           # FIXME breaks on space, remove gsub with proper parameter shuffling
-          # DIXE &fq= (empty => breaks)
+          # FIXE &fq= (empty => breaks)
           k,v = fq.split(":")
           unless k.nil? or v.nil? or k == "" or v == ""
             remove_href = base.gsub(/&fq=#{fq}/ui, "")
@@ -151,7 +157,7 @@ module Views
             }
           end
 
-          e.merge(:"title?" => e.key?(:title), :json => e.to_json, :link_edit? => e.key?(:link_edit),
+          e.merge(:"title?" => title?(e), :json => e.to_json, :link_edit? => e.key?(:link_edit),
             :formats => formats, :link_relations => link_relations )
         }
       end
@@ -221,6 +227,11 @@ module Views
         end
       end
 
+      def title?(entry)
+        return false if request["title"] =~ /^(false|no)$/
+        entry.key?(:title)
+      end
+
       def first_href
         facet_href("start", first)
       end
@@ -242,6 +253,18 @@ module Views
           feed(:opensearch)[key]
         end
       end
+
+    def ranges?
+      ranges.size > 0
+    end
+
+    def ranges
+        ranges = feed(:facets).map {|field,v|
+          {:title => field, :stats => v.to_json }
+        }
+
+        #ranges = facets.select {|f| f[:counts].uniq.size > 0 }
+    end
 
       def start
         opensearch(:startIndex)

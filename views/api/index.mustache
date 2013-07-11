@@ -16,7 +16,7 @@
           <li class="{{active}}"><a href="{{base}}&amp;format={{format}}">{{format}}</a></li>              
           {{/search-formats}}
   
-          <!--<li class="dropdown">
+          {{!--<li class="dropdown">
             <a class="dropdown-toggle" id="drop-download" role="button" data-toggle="dropdown" href="#">maps + graphs <b class="caret"></b></a>
             <ul class="dropdown-menu" role="menu">
               <li><a href="#">A</a></li>
@@ -26,7 +26,7 @@
               <li><a href="#">json.zip</a></li>
             </ul>
           </li>
-          -->      
+          -->}}      
         </ul>
         
         <p>{{ result_text }} ({{ first_to_last }} {{#previous?}}<a href="{{previous_href}}">Previous</a>{{/previous?}} {{#next?}}<a href="{{next_href}}">Next</a>{{/next?}}{{#first?}}<a href="{{first_href}}">First</a>{{/first?}})</p>
@@ -42,10 +42,13 @@
 
         <p>
         {{#title?}}
-          <strong>{{{title}}}</strong> | {{collection}} <br/>
+        {{^link_edit?}}
+          <strong>{{{title}}}</strong>
+        {{/link_edit?}}
+        {{#link_edit?}}<a href="{{link_edit}}" title="Edit URI">{{{title}}}</a>{{/link_edit?}} | {{collection}} <br/>
             {{{summary}}}
             <!--{{#formats}} <a href="{{href}}">{{label}}</a>{{/formats}}<br/>-->
-            {{#link_relations}} <a href="{{href}}">{{rel}}</a>{{/link_relations}}
+            <!--{{#link_relations}} <a href="{{href}}">{{rel}}</a>{{/link_relations}}-->
             
         {{/title?}}
         {{^title?}}<pre>{{json}}</pre>{{/title?}}
@@ -65,9 +68,18 @@
           <dd>{{#counts}}{{{a_facet}}}&#160;({{count}}) {{/counts}}</dd>
         </dl>
         {{/facets}}
+
+     
+        {{#ranges?}}
+        <dl class="dl-horizontal">
+          <dt title="{{title}}">{{title}}</dt>
+          <dd>{{{v}}}&#160;({{v}})</dd>
+        </dl>
+        {{/ranges?}}
+  
   
         {{#results?}}
-        <!-- if date if geo from service??? -->
+        <!-- if date / if geo from service??? -->
         <!--
         <dl class="dl-horizontal">
           <dt>bbox</dt><dd><input id="bbox" name="bbox" value="{{bbox}}" type="search" placeholder="W S E N [-180 -90 180 90]" />
@@ -79,7 +91,7 @@
           <dt>start</dt><dd><input id="start" name="start" value="{{start}}" type="search"  />
           <dt>limit</dt><dd><input id="limit" name="limit" value="{{limit}}" type="search"  /></dd>
           <dt>sort</dt><dd><input id="sort" name="sort" value="{{sort}}" type="search"  /></dd>
-          <dt>fields</dt><dd><input id="fields" name="fields" value="{{fields}}" type="search"  /></dd>
+          <dt></dt><dd><input id="fields" name="fields" value="{{fields}}" type="hidden"  /></dd>
         </dl>
   
         {{/results?}}
@@ -92,7 +104,7 @@
   {{/ form }}
   </article>
   
-  <!--
+  
   
   {{#svc}}
   <div class="pagination">
@@ -103,16 +115,13 @@
     </ul>
   {{/svc}}
   </div>
-  -->
   
   {{{welcome_article}}}
   
-  <!--
   <hr/>
   <footer class="footer">
     <p><strong>api.npolar.no</strong> is <a href="https://github.com/npolar/api.npolar.no#readme">open source</a>.</p>
   </footer>
-  -->
   
   {{< _yui_loader }}
   

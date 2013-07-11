@@ -3,7 +3,7 @@ class Gcmd::Concept < Npolar::Mustache::JsonView #Views::Workspace
   self.template_path = File.expand_path(File.dirname(__FILE__)+"/..")
   #self.template = Views::Workspace.template
 
-  def initialize
+  def initialize(app=nil)
     @hash = { :_id => "gcmd_concept_index",
       :workspace => "gcmd",
       :h1 => "H!",

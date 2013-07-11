@@ -119,28 +119,28 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="day" type="string" indexed="true" stored="true" />
 <field name="draft" type="string" indexed="true" stored="true" />
 <field name="east" type="tfloat" indexed="true" stored="true" multiValued="false" />
-<field name="edited-y-m-d" type="string" indexed="true" stored="true" />
 <field name="editor" type="string" indexed="true" stored="true" />
 <field name="editors" type="string" indexed="true" stored="true" />
 <field name="formats" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="investigator_emails" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="contributor_emails" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="gcmd_keywords" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="topics" type="string" indexed="true" stored="true" multiValued="true"/>
 
-<field name="group" type="string" indexed="true" stored="true" />
-<field name="groups" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="npolar_topics" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="hemisphere" type="string" indexed="true" stored="true" />
 
 <!--<field name="id" type="string" indexed="true" stored="true" />-->
 <field name="investigators" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="iso_3166-1" type="string" indexed="true" stored="true" />
+<field name="country_code" type="string" indexed="true" stored="true" multiValued="true" />
+
 <field name="iso_3166-2" type="string" indexed="true" stored="true" />
 <field name="iso_topics" type="string" indexed="true" stored="true" multiValued="true" />
 
 
 <field name="licence" type="string" indexed="true" stored="true" />
 <field name="licence_codes" type="string" indexed="true" stored="true" multiValued="true" />
-
 <field name="licences" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="link" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="links" type="string" indexed="true" stored="true" multiValued="true"  />
@@ -152,6 +152,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="month" type="string" indexed="true" stored="true" />
 <field name="north" type="tfloat" indexed="true" stored="true" multiValued="false" />
 <field name="org" type="string" indexed="true" stored="true" />
+<field name="institutions" type="string" indexed="true" stored="true" multiValued="true" />
+
 <field name="owners" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="path" type="string" indexed="true" stored="true" multiValued="true"/>
 
@@ -165,7 +167,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="published" type="string" indexed="true" stored="true" />
 <field name="quality" type="string" indexed="true" stored="true" />
 <field name="rights" type="string" indexed="true" stored="true" />
-<field name="referenceYear" type="string" indexed="true" stored="true" />
+<field name="label" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="relations" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="schema" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="set" type="string" indexed="true" stored="true" />
@@ -173,6 +175,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="species" type="string" indexed="true" stored="true" multiValued="true" />
 
 <field name="source" type="string" indexed="true" stored="true" />
+<field name="schemas" type="string" indexed="true" stored="true" multiValued="true" />
 
 <field name="south" type="tfloat" indexed="true" stored="true" multiValued="true" />
 <field name="summary" type="string" indexed="true" stored="true" />
@@ -217,6 +220,12 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="type" type="string" indexed="true" stored="true" />
 <field name="modified" type="string" indexed="true" stored="true" />
 
+<field name="latitude" type="tfloat" indexed="true" stored="true" multiValued="true" />
+<field name="longitude" type="tfloat" indexed="true" stored="true" multiValued="true" />
+<field name="cruise" type="string" indexed="true" stored="true" />
+<field name="temperature" type="tfloat" indexed="true" stored="true" multiValued="true" />
+<field name="pressure" type="tfloat" indexed="true" stored="true" multiValued="true" />
+<field name="salinity" type="tfloat" indexed="true" stored="true" multiValued="true" />
 
 <!-- 
 

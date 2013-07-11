@@ -10,7 +10,7 @@ module Views
       end
 
       def collections
-        (1980 .. DateTime.now.year).to_a.reverse.map {|c| {:title => c.to_s, :href => "/ecotox/#{c}"}}
+        (1981 .. DateTime.now.year).to_a.reverse.map {|c| {:title => c.to_s, :href => "/oceanography/#{c}"}}
       end
 
     end

@@ -36,10 +36,10 @@
       resultHighlighter: 'phraseMatch',
       resultListLocator: 'feed.entries',
       resultTextLocator: function(result) {
-        Y.log(result);
+        // Y.log(result);
         return result.title;
       },
-      source: '/gcmd/concept?fq=concept:{{collection}}&q={query}*&callback={callback}&format=json'
+      source: '/gcmd/concept?filter-concept={{collection}}&q={query}&callback={callback}&fields=title&format=json'
     });
   });
 

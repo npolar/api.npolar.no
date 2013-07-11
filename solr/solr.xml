@@ -2,7 +2,7 @@
 <solr persistent="true">
   <cores defaultCoreName="api" adminPath="/admin/cores" zkClientTimeout="${zkClientTimeout:15000}" hostPort="8983" hostContext="solr">
     <core schema="schema.xml" instanceDir="api/" name="api" config="solrconfig.xml" dataDir="data"/>
-    <core schema="schema.xml" instanceDir="polarbear_interaction/" name="polarbear_interaction" config="solrconfig.xml" dataDir="data"/>
-    <core schema="schema.xml" instanceDir="polarbear_reference/" name="polarbear_reference" config="solrconfig.xml" dataDir="data"/>
+    <core schema="schema.xml" instanceDir="oceanography/" name="oceanography" config="solrconfig.xml" dataDir="data"/>
+    <core schema="schema.xml" instanceDir="gcmd/" name="gcmd" config="solrconfig.xml" dataDir="data"/>
   </cores>
 </solr>
