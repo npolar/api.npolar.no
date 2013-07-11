@@ -1,0 +1,319 @@
+{
+/*
+originator!
+restricted!
+sets!
+*/
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://data.npolar.no/schema/dataset",
+  "title": "Dataset",
+  "description": "Metadata of a dataset stored or linked to in Norwegian Polar Data (http://data.npolar.no)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "schema", "topics", "licences"],
+  "properties": {
+
+    "id": { "description": "Identifier (UUID | URI)", "type": "string" },
+    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
+    "schema": { "type": "string", "description": "JSON schema URI (revision)"},
+    "summary": { "description": "Abstract", "type": "string"},
+    "draft": { "type": "string", "enum": ["yes", "no"]},
+ 
+    "coverage": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "north": { "type": "number", "minimum": -90.0, "maximum": 90.0 },
+          "east": { "type": "number", "minimum": -180.0, "maximum": 180.0 },
+          "south": { "type": "number", "minimum": -90.0, "maximum": 90.0 },
+          "west": { "type": "number", "minimum": -180.0, "maximum": 180.0 }
+        }
+      }
+    },
+    "progress": { "type": "string", "enum": ["ongoing","complete", "planned"]},
+    "topics": { "$ref": "http://localhost/schema/topics.json" },
+    "xtopics": {
+      "title": "Research topics",
+      "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": ["biology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "topography"]
+      }
+    },
+
+
+    
+    "reflicences": { "$ref": "http://data.npolar.no/schema/licences" },
+    "licences": {
+      "title": "Licence URIs",
+      "type": "array",
+      "additionalItems": false,
+      "default": ["http://data.norge.no/nlod/no/1.0"],
+      "items": {
+        "type": "string",
+        "required": true,
+        "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licences/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://www.lovdata.no/all/hl-19610512-002.html"]
+      }
+    },
+
+    "editors": {
+      "description": "List of metadata editors",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "edited": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      }
+    },
+    "investigators": {
+      "description": "Used as authors in the citation string. Should be any personnel directly involved in gathering the dataset. DIF:Personnel[@role0='Investigator']",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": ["string", null],
+            "format": "email" 
+          }
+        }
+      }
+    },
+    "institutions": {
+      "description": "Participating institutions",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string"
+      }
+    },
+    "contributors": {
+      "description": "Any additional institutions and personnel involved in the project. DIF:Personnel[@Role='Contributor']",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": ["string","null"],
+            "additionalItems": false,
+            "format": "email"
+          }
+        }
+      }
+    },
+    "point_of_contact": {
+      "description": "Department that has direct knowledge about the dataset. This can have an optional person listed. Should be as persistant as possible",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "org": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      }
+    },
+    "links": {
+      "description": "Links to data, references, project, parent, doi, related, self, alternate. See Atom Format",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": { "type": "string", "required": true },
+          "href": { "type": "string", "format": "uri", "required": true },
+          "title": { "type": ["string", null] },
+          "type": { "type": "string"
+          }
+        }
+      }
+    },
+
+    "category": {
+      "description": "",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "term": { "type": "string", "required": true },
+          "schema": { "type": "string", "format": "uri", "required": true, "default":"http://data.npolar.no/schema/category" },
+          "title": { "type": "string" },
+          "label": { "type": "string" },
+          "lang": { "type": "string", "pattern": "^[a-z]{2}$" }
+        }
+      }
+    },
+
+    "placenames": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+
+          "placename": {
+            "type": "string"
+          },
+          "country_code": {
+            "description": "Country code like ISO 3611-1. 'SJ' = Svalbard and Jan Mayen, 'AQ' = Antarctica.",
+            "type": ["string",null],  
+            "pattern": "^(([A-Z]|[a-z]){2})$"
+          }
+        }
+      }
+    },
+    "activity": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "start": { "type": ["string", null], "format": "date-time" },
+          "stop": { "type": ["string", null] }
+        }
+      }
+    },
+    "method_desc": {
+      "description": "Scientific method used when collecting the data",
+      "type": "string"
+    },
+
+    "parameters": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "sensors": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "quality": {
+      "type": ["string", "null"]
+    },
+    "owners": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "sets": {
+      "description": "Similar to tags and keywords",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string"
+      }
+    },
+    "science_keywords": {
+      "description": "DIF keywords",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Category": {
+            "type": "string"
+          },
+          "Topic": {
+            "type": "string"
+          },
+          "Term": {
+            "type": "string"
+          },
+          "Variable_Level_1": {
+            "type": "string"
+          },
+          "Variable_Level_2": {
+            "type": "string"
+          },
+          "Variable_Level_3": {
+            "type": "string"
+          },
+          "Detailed_Variable": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "published": {
+      "description": "Metadata was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Metadata was updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "comment": { "description": "A free text comment", "type": "string" },
+    "source": {
+      "description": "Source data",
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "data": { "type": "object" }
+      }
+      
+    },
+    "_id": { "description": "Internal id", "type": "string" },
+    "_rev" : { "description": "Internal revision", "type": "string" }
+
+  },
+  "html":[]
+}
