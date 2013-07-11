@@ -42,9 +42,9 @@ module Metadata
 
       # Saves DIF XML as JSON
       # Transforms incoming DIF XML to JSON, sets a new input body with corresponding headers
+      # FIXME PUT DIF XML does not work!
       def dif_save(request)
-
-
+        
         # Build Hash of DIF XML(s)
         xml = request.body.read
         builder = ::Gcmd::HashBuilder.new( xml )
@@ -52,14 +52,17 @@ module Metadata
         j = []
         difs.each do | dif_hash |
           transformer = ::Metadata::DifTransformer.new( dif_hash )
-          transformer.base = request.url.gsub(/\/\?#{request.query_string}/, "")
+          
+          #transformer.base = request.url.gsub(/\/\?#{request.query_string}/, "")
+
           metadata_dataset = transformer.to_dataset
           j << metadata_dataset
         end
 
         # Modify request
         json = j.to_json
-        request.env["PATH_INFO"] = request.env["PATH_INFO"].split(".").first + ".json" #XXX
+
+        #request.env["PATH_INFO"] = request.env["PATH_INFO"].split(".").first + ".json" #XXX
         request.env["CONTENT_TYPE"] = "application/json"
         request.env["CONTENT_LENGTH"] = json.bytesize.to_s
         request.env["rack.input"] = ::Rack::Lint::InputWrapper.new( StringIO.new( json ) )
@@ -133,20 +136,17 @@ module Metadata
       end
 
       def atom_entry(metadata_dataset)
-        atom = metadata_dataset
+        atom = Metadata::Dataset.new(metadata_dataset)
         entry = ::Atom::Entry.new do |e|
-          e.id = atom["_id"] unless atom["_id"].nil?
+          e.id = atom.id =~ /^\w{8}[-]\w{4}-\w{4}-\w{4}-\w{12}$/ ? "urn:uuid:#{atom.id}" : atom.id
 
           e.title = atom["title"] unless atom["title"].nil?
           e.summary = atom["summary"] unless atom["summary"].nil?
 
           #e.authors << ::Atom::Person.new(:name => 'John Doe')
-          #
-          [atom["investigators"], atom["contributors"]].each do |group|
-            group.each do |c|
-              email = c["email"].first unless c["email"].nil?
-              e.contributors << ::Atom::Person.new(:name => c["first_name"]+" "+c["last_name"], :email => email)
-            end unless group.nil?
+          
+          atom.investigators.each do |author|
+            e.authors << ::Atom::Person.new(:name => author.first_name+" "+author["last_name"], :email => author.email)
           end
           
           atom["links"].each do |link|
@@ -155,9 +155,9 @@ module Metadata
           ##e.links << ::Atom::Link.new(:href => ".atom", :type => "application/atom+xml", :rel => "self")
           ##e.links << ::Atom::Link.new(:href => ".json", :type => "application/json", :rel => "alternate")
           ##e.links << ::Atom::Link.new(:href => ".dif", :type => "application/dif+xml", :rel => "alternate")
-          #
+    
           #atom["categories"].each do |category|
-          #  e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["scheme"], :label => category["label"])
+          #  e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["schema"], :label => category["label"])
           #end
           #
           #if atom["source"] and atom["source"]["dif"] and atom["source"]["dif"]["Parameters"]
@@ -169,10 +169,10 @@ module Metadata
           #  end
           #end
           #
-          #e.published = Time.parse(atom["published"])
-          #e.updated = Time.parse(atom["updated"])
+          e.published = Time.parse(atom["published"])
+          e.updated = Time.parse(atom["updated"])
 
-         # e.rights = atom["rights"]
+          #e.rights = atom["rights"]
 
         end
         entry

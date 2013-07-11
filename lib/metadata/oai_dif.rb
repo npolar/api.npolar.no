@@ -4,7 +4,7 @@ module Metadata
   class DirectoryInterchangeFormat < ::OAI::Provider::Metadata::Format
 
     def initialize
-      @prefix = 'oai_dif'
+      @prefix = 'dif'
       @schema = 'http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd'
       @namespace = 'http://gcmd.nasa.gov/Aboutus/xml/dif/'
       @element_namespace = 'dif'
@@ -18,9 +18,7 @@ module Metadata
     end
 
     def header_specification
-      {
-        'xmlns:oai_dif' => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/",
-        'xmlns:dif' => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/",
+      { 'xmlns:dif' => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/",
         'xsi:schemaLocation' =>
           %{http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/
             http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd}.gsub(/\s+/, ' ')

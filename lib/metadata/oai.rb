@@ -27,7 +27,6 @@ module Metadata
     end
 
     def sets
-
       sets = ::Metadata::Dataset.oai_sets.map {|set|
         OAI::Set.new(set)
       }
@@ -49,7 +48,9 @@ module Metadata
     # [:all, {:metadata_prefix=>"oai_dc", :from=>-4712-01-01 00:43:00 +0043, :until=>-4712-01-01 00:43:00 +0043}]
     def find(selector, options={})
       if :all == selector
+
         JSON.parse(storage.ids[2].join(""))
+        
       else
         response = storage.get(selector)
         if 200 == response[0]

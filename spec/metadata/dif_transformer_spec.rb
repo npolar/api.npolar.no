@@ -956,6 +956,15 @@ describe Metadata::DifTransformer do
         end
         
       end
+
+
+      context "#guess_country_code" do
+        it "AQ when latitude <= -60"
+      end
+
+      context "#guess_topics" do
+        it "CRYOSPHERE
+      end
       
     end
     
