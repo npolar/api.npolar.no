@@ -20,26 +20,29 @@ module Npolar
         
         uri = @uri ||= ENV["NPOLAR_API_COUCHDB"].gsub(/\/$/, "")
         unless uri =~  /http(s)?:\/\/(\w+):(\w+)@(\w+)(:\d+)?$/
-          raise ArgumentError, "Cannot bootstrap #{service.path}, please set uri like https://username:password@localhost:6984"
+          #raise ArgumentError, "Cannot bootstrap #{service.path}, please set uri like https://username:password@localhost:6984"
         end
         
         # Create service database (the api client is just another rest client)
-        client = Npolar::Api::Client.new(uri +"/"+ service.database)
-        response = client.head 
-        if 404 == response.status
-          log.info "Bootstrapping #{service.storage} \"#{service.database}\" database"
-          client.username = $1
-          client.password = $2
+        if service.database?
         
-          response = client.put
-          if 201 == response.status
-            log.info "Database \"#{service.database}\" created: #{response.body}"
+          client = Npolar::Api::Client.new(uri +"/"+ service.database)
+          response = client.head 
+          if 404 == response.status
+            log.info "Bootstrapping #{service.storage} \"#{service.database}\" database"
+            client.username = $1
+            client.password = $2
+          
+            response = client.put
+            if 201 == response.status
+              log.info "Database \"#{service.database}\" created: #{response.body}"
+            else
+              log.error "Failed creating database \"#{service.database}\" status #{rsponse.status}: #{response.body}"
+              raise "Failed starting API"
+            end
           else
-            log.error "Failed creating database \"#{service.database}\" status #{rsponse.status}: #{response.body}"
-            raise "Failed starting API"
+            log.debug "#{service.storage} database for #{service.path} exists: #{service.database}"
           end
-        else
-          log.debug "#{service.storage} database for #{service.path} exists: #{service.database}"
         end
 
         # PUT service document (in the api database)

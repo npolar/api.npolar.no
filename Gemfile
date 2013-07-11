@@ -1,4 +1,4 @@
-source :rubygems
+source "https://rubygems.org"
 gem "gcmd", :git => "git://github.com/npolar/gcmd.git"
 #gem "gcmd", :path => "../gcmd"
 
