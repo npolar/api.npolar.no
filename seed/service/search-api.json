@@ -1,0 +1,26 @@
+{
+  "schema": "http://data.npolar.no/schema/api",
+  "id": "search-api",
+  "path": "/",
+  "title": "Search Norwegian Polar Data API",
+  "summary": "Service configuration for global search service at http://api.npolar.no/?q=",
+  "storage": null,
+  "database": null,
+  "model": "",
+  "search": { "engine": "Solr",
+    "core": "api",
+    "facets": ["collection", "workspace", "accept_mimetypes", "accept_schemas", "formats", "relations", "topics", "sets", "category", "country",
+      "draft", "editors", "hemisphere", "investigators", "licences", "link", "methods", "parameter", "person", "placename", "project",
+      "source", "iso_topics", "tags"],
+    "force": {}
+    },
+  "before": "Npolar::Api::Json.before_lambda",
+  "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
+  "formats": {"json":"application/json", "html": "text/html"},
+  "accepts": {"application/json": "http://data.npolar.no/schema/api.json"},
+  "category": ["CouchDB", "REST", "JSON", "HTTP"],
+  "lifecycle": "production",
+  "autorun": true,
+  "open": true,
+  "auth": { "authorize": "sysadmin", "system": "api" }
+}

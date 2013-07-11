@@ -6,12 +6,13 @@
   "summary": "JSON API for users",
   "storage": "CouchDB",
   "database": "api_user",
+  "model": "User",
   "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
   "formats": {"json":"application/json", "html": "text/html"},
   "accepts": {"application/json": "http://data.npolar.no/schema/user.json"},
   "category": ["CouchDB", "REST", "JSON", "HTTP"],
   "lifecycle": "production",
-  "autorun": true,
-  "open": true,
+  "run": "Json",
+  "open": false,
   "auth": { "authorize": "sysadmin", "system": "api" }
 }

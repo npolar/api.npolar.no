@@ -1,0 +1,33 @@
+{
+  "schema": "http://data.npolar.no/schema/api",
+  "id": "project-api",
+  "rev": "1-a8a487eec1485ed66fedf3e064cbafa8",
+  "path": "/project",
+  "title": "Projects",
+  "summary": "Projects in the Norwegian Polar Data Centre (JSON HTTP API)",
+  "storage": "Couch",
+  "database": "project",
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT"
+  ],
+  "formats": {
+    "json": "application/json",
+    "html": "text/html"
+  },
+  "accepts": {
+    "application/json": ""
+  },
+  "category": ["CouchDB", "Elasticsearch", "Lucene", "REST", "Search", "JSON", "JSON Schema", "HTTP"],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "auth": {
+    "authorize": "editor",
+    "system": "project"
+  },
+  "base": "http://api.npolar.no"
+}
