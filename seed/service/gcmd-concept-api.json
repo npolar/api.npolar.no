@@ -1,0 +1,21 @@
+{
+  "schema": "http://data.npolar.no/schema/api",
+  "id": "gcmd-concept-api",
+  "path": "/gcmd/concept",
+  "title": "GCMD Concept",
+  "summary": "",
+  "storage": "Couch",
+  "database": "gcmd_concept",
+  "search": { "engine": "Solr",
+    "core": "gcmd",
+    "facets": ["concept", "ancestors", "children", "workspace", "collection", "cardinality", "tree", "label"],
+  },
+  "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
+  "formats": {"json":"application/json", "html": "text/html"},
+  "accepts": {"application/json": "http://data.npolar.no/schema/api.json"},
+  "category": ["CouchDB", "REST", "JSON", "HTTP"],
+  "lifecycle": "production",
+  "autorun": true,
+  "open": true,
+  "auth": { "authorize": "sysadmin", "system": "api" }
+}
