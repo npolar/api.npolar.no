@@ -3,8 +3,20 @@ require "rack/builder"
 
 module Npolar
   module Api
-
+    
+    # JSON lego set: A complete kit for running JSON APIs
     class Json
+
+
+      # # config.ru - simple example
+      # services = [Service.factory("service1.json"), Service.factory("service2.json")]
+      # services.select { |api| ("http://data.npolar.no/schema/api" == api.schema)}.each do |api|
+      #   if api.run =~ /(Npolar::Api::)?Json$/ and api.valid?
+      #     map api.path do
+      #       run Npolar::Api::Json.new(api)
+      #     end
+      #   end
+      # end
 
       def initialize(api, config={})
 
@@ -27,7 +39,6 @@ module Npolar
               storage.model = model
             end
             
-
             if api.auth?
               auth = api.auth
         
@@ -43,9 +54,8 @@ module Npolar
             end
 
             if api.middleware? and api.middleware.is_a? Array
+              raise "@todo Not implemented"
             end
-            
-
 
             if api.search? and api.search.engine?
         
@@ -58,7 +68,7 @@ module Npolar
                   :facets => api.search.facets
                 }
               elsif "Elastic" == api.search.engine
-                raise "@todo"
+                raise "@todo Not implemented"
               end
   
             end
@@ -113,10 +123,8 @@ module Npolar
               request.env["rack.input"] = StringIO.new(d.to_json)
           end
           request
-        }
-  
+        }  
       end
-
 
       def self.after_lambda
         lambda {|request, response|
