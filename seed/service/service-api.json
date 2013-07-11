@@ -1,39 +1,18 @@
-{
-   "_id": "service-api",
-   "_rev": "1-6d9884ac0ca61384ae6b46a60292cde5",
-   "schema": "http://data.npolar.no/schema/api",
-   "id": "service-api",
-   "path": "/service",
-   "title": "Service endpoint",
-   "summary": "Service configuration for a HTTP API on http://api.npolar.no",
-   "storage": "Couch",
-   "database": "api_service",
-   "verbs": [
-       "DELETE",
-       "GET",
-       "HEAD",
-       "POST",
-       "PUT"
-   ],
-   "formats": {
-       "json": "application/json",
-       "html": "text/html"
-   },
-   "accepts": {
-       "application/json": "http://data.npolar.no/schema/api.json"
-   },
-   "category": [
-       "CouchDB",
-       "REST",
-       "JSON",
-       "HTTP"
-   ],
-   "lifecycle": "production",
-   "run": "Npolar::Api::Json",
-   "open": true,
-   "auth": {
-       "authorize": "sysadmin",
-       "system": "api"
-   },
-   "base": "http://api.npolar.no"
+{"_id":"service-api",
+"_rev":"2-3d20915e0a3182b25cfea1fcad3a1f6f",
+"schema":"http://data.npolar.no/schema/api",
+"id":"service-api","path":"/service",
+"title":"Service configuration",
+"summary":"Service configuration for a HTTP API on http://api.npolar.no",
+"storage":"Couch","database":"api_service",
+"model":"Service",
+"verbs":["DELETE","GET","HEAD","POST","PUT"],
+"formats":{"json":"application/json","html":"text/html"},
+"accepts":{"application/json":"http://data.npolar.no/schema/api.json"},
+"category":["CouchDB","REST","JSON","HTTP"],
+"lifecycle":"production",
+"run":"Npolar::Api::Json",
+"open":true,
+"auth":{"authorize":"sysadmin","system":"api"},
+"base":"http://api.npolar.no"
 }
