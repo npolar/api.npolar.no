@@ -8,14 +8,14 @@
   "database": "gcmd_concept",
   "search": { "engine": "Solr",
     "core": "gcmd",
-    "facets": ["concept", "ancestors", "children", "workspace", "collection", "cardinality", "tree", "label"],
+    "facets": ["concept", "ancestors", "children", "workspace", "collection", "cardinality", "tree", "label"]
   },
   "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
   "formats": {"json":"application/json", "html": "text/html"},
-  "accepts": {"application/json": "http://data.npolar.no/schema/api.json"},
+  "accepts": {"application/json": ""},
   "category": ["CouchDB", "REST", "JSON", "HTTP"],
   "lifecycle": "production",
-  "autorun": true,
+  "run": true,
   "open": true,
   "auth": { "authorize": "sysadmin", "system": "api" }
 }
