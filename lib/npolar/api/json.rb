@@ -73,12 +73,13 @@ module Npolar
   
             end
 
-            before = after = []
+            before = []
+            after = []
             
-            if api.before == "Npolar::Api::Json.before_lambda"
+            if true or api.before?
               before << Npolar::Api::Json.before_lambda
             end
-            if api.after == "Npolar::Api::Json.after_lambda"
+            if true or api.after?
               after << Npolar::Api::Json.after_lambda
             end
 
@@ -102,7 +103,7 @@ module Npolar
       # Adds "published" "updated" "author" "editor" before POST/PUT
       def self.before_lambda
         lambda {|request|
-    
+          
           if ["POST", "PUT"].include? request.request_method and "application/json" == request.media_type
               body = request.body.read
               

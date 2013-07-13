@@ -143,7 +143,7 @@ module Npolar
       end
     
       status, headers, body = response
-      log.debug "Core headers: #{status} #{headers}"
+      log.info "#{request.path} [Core]: #{status} #{headers.to_s}"
       Rack::Response.new(body, status, headers)
 
     end
@@ -231,28 +231,39 @@ module Npolar
       config[:log] ||= Api.log
     end
 
+    # Before request
+    # @return request
     def before(request)
-      if config[:before].nil? or [] == config[:before]
+      before = config[:before]
+      if before.nil? or [] == before
         return request
       end
-      if config[:before].respond_to? :call
-        config[:before] = [config[:before]]
+      if before.respond_to? :call
+        before = [before]
       end
-      config[:before].each_with_index do |before, i|
-        log.debug "Before #{request.request_method} #{i} (#{before})"
-        request = before.call(request)
+      before.select{|l|l.respond_to?(:call)}.each_with_index do |before_lambda, i|
+        log.debug "Before lambda #{i+1}/#{before.size} (#{before_lambda})"
+        request = before_lambda.call(request)
       end
       request
       
     end
 
+    # After request
+    # @return response
     def after(request, response)
-      if config[:on].respond_to? :call
-        log.debug "On #{request.request_method} (#{config[:on]})"
-        config[:on].call(request, response)
-      else
-        response
+      after = config[:after]
+      if after.nil? or [] == after
+        return response
       end
+      if after.respond_to? :call
+        after = [after]
+      end
+      after.select {|l|l.respond_to?(:call)}.each_with_index do |after_lambda, i|
+        log.debug "After #{request.request_method} #{i+1}/#{after.size} (#{after_lambda})"
+        response = after_lambda.call(request, response)
+      end
+      response
     end
 
     # @return Boolean
