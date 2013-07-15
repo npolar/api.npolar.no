@@ -143,7 +143,7 @@ module Npolar
       end
     
       status, headers, body = response
-      log.info "#{request.path} [Core]: #{status} #{headers.to_s}"
+      log.info "#{request.request_method} #{request.path} [Core]: #{status} #{headers.to_s}"
       Rack::Response.new(body, status, headers)
 
     end
@@ -275,6 +275,7 @@ module Npolar
         end
         v
       else
+        # @todo validation with schema if defined in service
         true
       end
     end
