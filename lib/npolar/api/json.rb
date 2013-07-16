@@ -59,7 +59,8 @@ module Npolar
 
             if api.search? and api.search.engine?
         
-              use Views::Api::Index , {:svc => config.search }
+              use Views::Api::Index
+                # @todo Support config here {:svc => config.search }
         
               if "Solr" == api.search.engine
                 #log.info "Solrizer #{api.path} #{api.search.core}"
@@ -76,10 +77,14 @@ module Npolar
             before = []
             after = []
             
-            if true or api.before?
+            if api.before?
+              raise "Not implemented"
+            else
               before << Npolar::Api::Json.before_lambda
             end
-            if true or api.after?
+            if api.after?
+              raise "Not implemented"
+            else
               after << Npolar::Api::Json.after_lambda
             end
 
@@ -109,7 +114,7 @@ module Npolar
               
               d = Hashie::Mash.new(JSON.parse body)
 
-              d.updated = DateTime.now.xmlschema
+              d.updated = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
               
               unless d.published?
                 d.published = d.updated
