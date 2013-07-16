@@ -1,6 +1,5 @@
 require "atom"
 require "gcmd/dif_builder"
-require "gcmd/hash_builder"
 require "yajl"
 require "uuidtools"
 
@@ -47,8 +46,8 @@ module Metadata
         
         # Build Hash of DIF XML(s)
         xml = request.body.read
-        builder = ::Gcmd::HashBuilder.new( xml )
-        difs = builder.build_hash_documents
+        builder = ::Gcmd::Dif.new( xml )
+        difs = builder.document_to_array
         j = []
         difs.each do | dif_hash |
           transformer = ::Metadata::DifTransformer.new( dif_hash )
@@ -160,6 +159,11 @@ module Metadata
           #  e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["schema"], :label => category["label"])
           #end
           #
+          if atom.source?
+            source = XML::Reader.string( Gcmd::DifBuilder.new(atom.source.data).build_dif )
+            e.source <<::Atom::Source.new(source)
+          end
+          
           #if atom["source"] and atom["source"]["dif"] and atom["source"]["dif"]["Parameters"]
           #  atom["source"]["dif"]["Parameters"].each do |p|
           #    p.each do |k,v|

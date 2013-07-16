@@ -30,8 +30,8 @@ module Metadata
         end
 
         j = []
-        builder = ::Gcmd::HashBuilder.new( xml )
-        difs = builder.build_hash_documents
+        builder = ::Gcmd::Dif.new( xml )
+        difs = builder.document_to_array
        
         difs.each do | dif_hash |
           transformer = ::Metadata::DifTransformer.new( dif_hash )
