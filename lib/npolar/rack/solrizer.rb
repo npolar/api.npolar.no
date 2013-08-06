@@ -90,7 +90,7 @@ module Npolar
 
       def condition?(request)
         # Only trigger on the mapped path
-        if config[:path] !~ /#{request.path}/
+        if config[:path].gsub(/\/$/, "") !~ Regexp.new(Regexp.quote(request.path.gsub(/\/$/, "")))
           return false
         end 
         config[:condition].call(request)
