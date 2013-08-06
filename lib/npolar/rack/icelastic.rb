@@ -17,7 +17,7 @@ module Npolar
       attr_accessor :env
       
       CONFIG = {
-        :searcher => 'http://localhost:9200/',
+        :uri => 'http://localhost:9200/',
         :index => 'global',
         :type => nil,
         :fields => nil,
