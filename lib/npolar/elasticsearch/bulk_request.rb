@@ -27,11 +27,12 @@ module Npolar
         :type => ''
       }
       
-      attr_accessor :config, :data
+      attr_accessor :config, :data, :log
       
       def initialize(data_array, config = {})
         self.data = data_array
         self.config = CONFIG.merge(config)
+        self.log = ::Logger.new(STDERR)
       end
       
       # @see #build_request_document
@@ -49,7 +50,8 @@ module Npolar
             # and post it to the search engines _bulk interface
             pid = fork do
               body = build_request_document(slice)
-              bulk_post(body)
+              response = bulk_post(body)
+              log.info "Indexing of #{slice.size} items exited with status #{response.status}."
             end
             
             unless workers == 7
