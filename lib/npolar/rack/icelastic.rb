@@ -30,12 +30,38 @@ module Npolar
       }
 
       def condition?(request)
-        ['GET','HEAD'].include?(request.request_method) and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?
+        ['GET','HEAD','PUT','POST'].include?(request.request_method) #and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?
       end
       
       def handle(request)
-        client = Npolar::ElasticSearch::Client.new(request, config)
-        client.search
+
+        if ['GET', 'HEAD'].include?(request.request_method) and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?
+          client = Npolar::ElasticSearch::Client.new(request, config)
+          client.search
+        elsif ['PUT', 'POST'].include?(request.request_method)
+          docs = JSON.parse( request.body.read )
+          request.body.rewind
+          
+          response = app.call(request.env)
+          
+          if [200, 201].include?( response.status )
+
+            body = JSON.parse( response.body.first )
+            if body.has_key?("ids")
+              body['ids'].each_with_index do |id, i|
+                docs[i]["id"] = id
+              end
+            elsif body.has_key?("id")
+                docs["id"] = body["id"]
+            end
+
+            client = Npolar::ElasticSearch::Client.new(request, config)
+            client.index(docs)
+          end
+
+          response
+        end
+
       end
       
     end
