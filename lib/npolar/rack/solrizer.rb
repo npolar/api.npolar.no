@@ -32,14 +32,13 @@ module Npolar
       def self.query_or_save_json
         
         lambda {|request|
-          
           if ["GET", "HEAD"].include? request.request_method and not request["q"].nil?
             true
-          elsif ["POST","PUT", "DELETE"].include? request.request_method #and "json" == request.format
+          elsif ["POST","PUT", "DELETE"].include? request.request_method
             true
           else
             false
-          end
+          end 
         }
       end
 
@@ -83,12 +82,17 @@ module Npolar
         :summary => lambda {|doc| doc["summary"]},
         :rows => Npolar::Api::SolrQuery.rows,
         :wt => :ruby,
+        :path => "/",
         :to_solr => lambda {|doc|doc},
       }
       # q=title:foo OR exact:foo OR text:foo*
 
 
       def condition?(request)
+        # Only trigger on the mapped path
+        if config[:path] !~ /#{request.path}/
+          return false
+        end 
         config[:condition].call(request)
       end
 
