@@ -12,7 +12,7 @@ module Npolar
     #   - Ruben Dens
     #
     # @example
-    #   conf = {:searcher => 'http://my.elasticsearch.com/', :operation => 'index', :index => 'myIndex', :type => 'myDocType', :bulk_size => 200}
+    #   conf = {:uri => 'http://my.elasticsearch.com/', :operation => 'index', :index => 'myIndex', :type => 'myDocType', :bulk_size => 200}
     #   document_array = JSON.parase(File.open(my_document_array.json).read)
     #   request = Npolar::ElasticSearch::BulkRequest.new(document_array, conf)
     #
@@ -20,7 +20,7 @@ module Npolar
     class BulkRequest
       
       CONFIG = {
-        :searcher => 'http://localhost:9200/',
+        :uri => 'http://localhost:9200/',
         :bulk_size => 100,
         :operation => 'index',
         :index => '',
@@ -82,7 +82,7 @@ module Npolar
       # protected
       
       def http
-        Faraday.new(:url => config[:searcher]) do |faraday|
+        Faraday.new(:url => config[:uri]) do |faraday|
           faraday.request  :url_encoded             # form-encode POST params
           faraday.response :logger                  # log requests to STDOUT
           faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP

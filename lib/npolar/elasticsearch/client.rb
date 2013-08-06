@@ -3,7 +3,7 @@ module Npolar
     class Client
       
       CONFIG = {
-        :searcher => "http://localhost:9200/",
+        :uri => "http://localhost:9200/",
         :index => "",
         :type => "",
         :start => 0,
@@ -55,7 +55,7 @@ module Npolar
       protected
       
       def http
-        Faraday.new(:url => config[:searcher]) do |faraday|
+        Faraday.new(:url => config[:uri]) do |faraday|
           faraday.request  :url_encoded             # form-encode POST params
           faraday.response :logger                  # log requests to STDOUT
           faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
