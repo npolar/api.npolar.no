@@ -3,18 +3,19 @@ module Npolar
     class Client
       
       CONFIG = {
-        :searcher => "http://localhost:9200",
+        :searcher => "http://localhost:9200/",
         :index => "",
         :type => "",
         :start => 0,
         :limit => 25
       }
       
-      attr_accessor :request, :config
+      attr_accessor :request, :config, :log
       
       def initialize(request, config = {})
         self.request = request
         self.config = CONFIG.merge(config)
+        self.log = ::Logger.new(STDERR)
       end
       
       def search
@@ -38,6 +39,19 @@ module Npolar
         Rack::Response.new(feed, 200, headers)
       end
       
+      def index( data )
+        if data.is_a?( Array )
+          log.info "Npolar::Elasticsearch::Client - Attempting to save #{data.size} documents to the #{config[:index]} index"
+          store = Npolar::ElasticSearch::BulkRequest.new(data, config)
+          store.execute
+        else
+          puts data
+          log.info "Npolar::Elasticsearch::Client - Indexing 1 document"
+          store = Npolar::ElasticSearch::BulkRequest.new( [data], config )
+          store.execute
+        end
+      end
+
       protected
       
       def http
