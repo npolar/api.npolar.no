@@ -64,8 +64,10 @@ module Npolar
         
               if "Solr" == api.search.engine
                 #log.info "Solrizer #{api.path} #{api.search.core}"
-                use Npolar::Rack::Solrizer, { :core => api.search.core,
+                use Npolar::Rack::Solrizer, {
+                  :core => api.search.core,
                   :force => api.search.force,
+                  :path => api.path,
                   :facets => api.search.facets
                 }
               elsif "Elastic" == api.search.engine
