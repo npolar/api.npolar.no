@@ -125,22 +125,26 @@ module Npolar
           
           if ["POST", "PUT"].include? request.request_method and "application/json" == request.media_type
               body = request.body.read
-              
-              d = Hashie::Mash.new(JSON.parse body)
+              begin
 
-              d.updated = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
-              
-              unless d.published?
-                d.published = d.updated
+                d = Hashie::Mash.new(JSON.parse body)                
+                d.updated = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
+                
+                unless d.published?
+                  d.published = d.updated
+                end
+                unless d.author?
+                  d.author = request.username
+                end
+                unless d.editor?
+                  d.editor = request.username
+                end
+                
+                request.env["rack.input"] = StringIO.new(d.to_json)
+
+              rescue JSON::ParserError
+                # Crap JSON, don't do anyting
               end
-              unless d.author?
-                d.author = request.username
-              end
-              unless d.editor?
-                d.editor = request.username
-              end
-              
-              request.env["rack.input"] = StringIO.new(d.to_json)
           end
           request
         }  
