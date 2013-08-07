@@ -21,7 +21,7 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
 
   def config
     {
-      :accepts => ["foo", "bar"],
+      :accepts => ["foo/bar"],
       :formats => ["foo", "bar"],
       :headers => { "Content-Type" => "application/bar; charset=utf-8" },
     }
@@ -129,19 +129,37 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
     
     context "PUT /foo.bar" do
   
-      it "201 Created" do
+      # should => {"CONTENT_TYPE" => "foo/bar" }
+      it "Format .bar should equal Content-Type: foo/bar" do
         put "/foo.bar", "PUT"
+        last_request.env["CONTENT_TYPE"].should == "foo/bar"
+      end
+
+      it "201 Created" do
+        put "/foo.bar", "PUT", {"CONTENT_TYPE" => "foo/bar" }
         last_response.status.should == 201
       end
 
       it "Body = 'PUT" do
-        put "/foo.bar", "PUT"
+        put "/foo.bar", "PUT", {"CONTENT_TYPE" => "foo/bar" }
         last_response.body.should == "PUT"
+      end
+
+      context "/foo.bad" do
+        it "415 Unsupported Media Type" do
+          put "/foo.bad", "{}", {"CONTENT_TYPE" => "foo/bad" }
+          last_response.status.should == 415
+        end
+      end
+      context "/foo [Content-Type: foo/bad, Accept: foo/bar]" do
+        it "415 Unsupported Media Type" do
+          put "/foo", "{}", {"CONTENT_TYPE" => "foo/bad", "HTTP_ACCEPT" => "foo/bar" }
+          last_response.status.should == 415
+        end
       end
 
       it "Invalid document"  
       it "Location: URI" # after POST|PUT
-
       it "Remove HTTP headers not on Whitelist"
 
       context "without payload" do
@@ -263,8 +281,17 @@ describe 'Api::Core (accepts == formats == ["foo", bar"])' do
     end
   end
 
+  context "#before" do
+    it do
+      b = [lambda{|request|request}]
+      
+    end
+  end
+
 end
+# application/x-www-form-urlencoded
 # todo: uninitialized constant Api::Exception
 # 414 Request-URI Too Long
 # 10.4.14 413 Request Entity Too Large
 # json spec [] => 202 accepted...
+# Location: http://localhost:5984/api_user/ruben
