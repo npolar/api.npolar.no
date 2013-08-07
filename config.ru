@@ -43,7 +43,7 @@ config = { :svc => search }
 
 
 # Autorun all APIs in the /service database
-bootstrap.apis.select {|api| api.run != false }.each do |api|
+bootstrap.apis.select {|api| api.run? and api.run != "" }.each do |api|
 
   if not api.valid?
     log.error "Invalid service description for API #{api.path}: #{api.errors.join("\n")}"
@@ -55,7 +55,7 @@ bootstrap.apis.select {|api| api.run != false }.each do |api|
 
     if api.auth?
       auth_methods = api.open? ? ["POST", "PUT", "DELETE"] : api.verbs
-      log.info "#{api.path} authorize #{auth_methods.join(", ")} to '#{api.auth.authorize}' in system '#{api.auth.system}' using #{api.auth.authorizer}"
+      log.info "#{api.path} authorize #{auth_methods.join(", ")} to '#{api.auth.authorize}' in system '#{api.auth.system}' using #{api.auth.authorizer or "Npolar::Auth::Couch"}"
     end
     run Npolar::Factory.constantize(api.run).new(api, api.config)
 

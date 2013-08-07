@@ -26,7 +26,7 @@
     "accepts": { "type": "object" },
     "category": { "type": "array" },
     "lifecycle": { "type": "string", "default": "production" },
-    "run": { "type": ["string", "bool"] },
+    "run": { "type": ["string", null] },
     "open": { "type": "bool" },
     "auth": { "type": "object" },
     "author": { "type": ["string", "object"] },
