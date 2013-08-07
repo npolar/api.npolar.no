@@ -16,7 +16,8 @@ module Npolar
       
       # Default config hash  
       CONFIG = {
-        :headers => { "Content-Type" => "application/json; charset=utf-8" }
+        :headers => { "Content-Type" => "application/json; charset=utf-8" },
+        :app => lambda {|env| [404, { "Content-Type" => "application/json; charset=utf-8" }, ["404 Not Found"]]}#Npolar::Rack::NotFound
       }
   
       ##
@@ -29,7 +30,10 @@ module Npolar
         end
             
         config = CONFIG.merge(self.class::CONFIG).merge config
-  
+        if app.nil?
+          app = config[:app]
+        end
+        
         @app, @config = app, config
         @log = ::Logger.new(STDERR)
       end
@@ -139,9 +143,8 @@ module Npolar
       end
   
       ##
-      # Returns true if required parameter is missing or blank
-      # Returns false if no config[:params] is set or if it's empty
-      # Returns false if the except block yields true
+      # Returns true if condition is true OR except? is true
+      # Returns false condition is false
       # @param  [Rack::Request] request
       # @return [Boolean]
       def trigger?(request)

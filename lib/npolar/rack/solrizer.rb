@@ -108,15 +108,14 @@ module Npolar
         config[:force] ||= {}
       end
 
-      # Only called if #condition? is true
       def handle(request)
-        log.debug __FILE__
-        @request = request
-        log.debug self.class.name+"#handle(#{request}) #{request.request_method} #{request.url}"
         
-        if request["q"] and "POST" == request.request_method
+        @request = request
+        log.info "#{request.request_method} #{request.path} [#{self.class.name}]"
+        
+        #if request["q"] and "POST" == request.request_method
           # search
-        end
+        #end
         case request.request_method
           when "DELETE" then handle_delete(request)
           when "POST", "PUT" then handle_save(request)
