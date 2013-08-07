@@ -13,6 +13,8 @@ module Npolar
       API_DN = "cn=systems,dc=polarresearch,dc=org"
       USERS_DN = "cn=users,dc=polarresearch,dc=org"
 
+      attr_accessor :log
+
       def self.ssha(password, salt)
         "{SSHA}"+Base64.encode64(Digest::SHA1.digest(password+salt)+salt).chomp!
       end
@@ -22,13 +24,28 @@ module Npolar
       end
 
       def self.authenticator(domain=DEFAULT_DOMAIN)
-        puts "self.authenticator"
+        log.debug "Npolar::Auth::Ldap.authenticator"
 
         lambda { | ldap, request |
   
           ldap.domain = domain
           match?(request.username, request.password)
         } 
+      end
+
+      def self.config=(config)
+        #tpl = { :host => "", :port => 389, :base => "", :auth => { :username => "", :password => "", :method => :simple }}
+        unless config.is_a? Hash
+          if File.exists? config          
+            config = JSON.parse(File.read(config), :symbolize_names => true)
+            config[:auth][:method] = :simple
+          end
+        end
+        @@config=config
+      end
+
+      def self.config
+        @@config
       end
   
       def match? username, password
@@ -56,9 +73,9 @@ module Npolar
         end
 
         if uid == nil
-          Npolar::Api.log.debug "Could not find uid for username=#{username}"
+          log.debug "Could not find uid for username=#{username}"
         else
-          Npolar::Api.log.debug "Discovered LDAP uid=#{uid} for username=#{username}"
+          log.debug "Discovered LDAP uid=#{uid} for username=#{username}"
 
           # see which roles for this system have a roleOccupant with this uid
           filter = Net::LDAP::Filter.eq("roleOccupant", "uid=#{uid}," + USERS_DN)
@@ -68,7 +85,7 @@ module Npolar
           end
         end
       
-        Npolar::Api.log.debug("Discovered LDAP roles: #{discovered_roles} for username=#{username}") 
+          log.debug("Discovered LDAP roles: #{discovered_roles} for username=#{username} in system=#{system}") 
 
         discovered_roles
       end
@@ -87,6 +104,10 @@ module Npolar
           username += "@" + domain
         end
         username
+      end
+
+      def log
+        @log ||= Npolar::Api.log
       end
 
     end

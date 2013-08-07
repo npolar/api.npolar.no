@@ -33,9 +33,11 @@ module Npolar
             end
             
             if api.storage?
-              storage, database = api.storage, api.database
 
-              storage = Npolar::Storage::Couch.new(database) # Factory!
+              # todo if not Couch => WARN
+
+              storage, database = api.storage, api.database
+              storage = Npolar::Storage::Couch.new(database)
               storage.model = model
             end
             
@@ -44,9 +46,12 @@ module Npolar
         
               # Open => open data => GET, HEAD are excepted from Authorization 
               except = api.open? ? lambda {|request| ["GET", "HEAD"].include? request.request_method } : false
-              authorizer = Npolar::Auth::Factory.instance("Couch", "api_user")
 
-        
+              authorizer = case api.auth.authorizer
+                when /Ldap/i then Npolar::Auth::Ldap.new(Npolar::Auth::Ldap.config)
+                else Npolar::Auth::Couch.new("api_user")
+              end
+
               use Npolar::Rack::Authorizer, { :auth => authorizer,
                 :system => auth.system,
                 :except? => except
@@ -54,16 +59,15 @@ module Npolar
             end
 
             if api.middleware? and api.middleware.is_a? Array
-              raise "@todo Not implemented"
+              raise "Not implemented"
             end
 
             if api.search? and api.search.engine?
         
               use Views::Api::Index
-                # @todo Support config here {:svc => config.search }
-        
+                
               if "Solr" == api.search.engine
-                #log.info "Solrizer #{api.path} #{api.search.core}"
+                
                 use Npolar::Rack::Solrizer, {
                   :core => api.search.core,
                   :force => api.search.force,
@@ -71,23 +75,31 @@ module Npolar
                   :facets => api.search.facets
                 }
               elsif "Elastic" == api.search.engine
-                raise "@todo Not implemented"
+                use Npolar::Rack::Icelastic, {
+                  :uri => api.search.uri,
+                  :index => api.search.index,
+                  :type => api.search.type,
+                  :facets => api.search.facets,
+                  :date_facets => api.search.date_facets,
+                  :filters => api.search.filters
+                }
               end
   
             end
 
-            before = []
-            after = []
+            before = [Npolar::Api::Json.before_lambda]
+            after = [Npolar::Api::Json.after_lambda]
             
             if api.before?
-              raise "Not implemented"
-            else
-              before << Npolar::Api::Json.before_lambda
+              name, met = api.before.split(".")
+              bef = Npolar::Factory.constantize(name)
+              before << bef.send(met.to_sym)
             end
+
             if api.after?
-              raise "Not implemented"
-            else
-              after << Npolar::Api::Json.after_lambda
+              name, met = api.after.split(".")
+              aft = Npolar::Factory.constantize(name)
+              after << aft.send(met.to_sym)
             end
 
             run Core.new(nil,
