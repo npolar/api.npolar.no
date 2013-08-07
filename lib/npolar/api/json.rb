@@ -49,7 +49,7 @@ module Npolar
 
               authorizer = case api.auth.authorizer
                 when /Ldap/i then Npolar::Auth::Ldap.new(Npolar::Auth::Ldap.config)
-                else Npolar::Auth::Couch.new("api_user")
+                else Npolar::Auth::Couch.new(Service.factory("user-api.json").database)
               end
 
               use Npolar::Rack::Authorizer, { :auth => authorizer,
