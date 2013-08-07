@@ -4,7 +4,7 @@
   "rev": "1-a8a487eec1485ed66fedf3e064cbafa8",
   "path": "/project",
   "title": "Projects",
-  "summary": "Projects in the Norwegian Polar Data Centre (JSON HTTP API)",
+  "summary": "Projects in the Norwegian Polar Data Centre",
   "storage": "Couch",
   "database": "project",
   "verbs": [
@@ -29,5 +29,11 @@
     "authorize": "editor",
     "system": "project"
   },
+  "search": { "engine": "Elasticsearch",
+    "uri": "http://localhost:9200",
+    "facets": [],
+    "type": "project",
+    "index": "project"
+  },
   "base": "http://api.npolar.no"
-}
+} 

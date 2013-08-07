@@ -20,7 +20,7 @@
   "accepts": {"application/json": "http://data.npolar.no/schema/api.json"},
   "category": ["CouchDB", "REST", "JSON", "HTTP"],
   "lifecycle": "production",
-  "run": true,
+  "run": "Npolar::Api::Search",
   "open": true,
   "auth": { "authorize": "sysadmin", "system": "api" }
 }

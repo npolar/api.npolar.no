@@ -12,7 +12,7 @@
   "accepts": {"application/json": "http://data.npolar.no/schema/user.json"},
   "category": ["CouchDB", "REST", "JSON", "HTTP"],
   "lifecycle": "production",
-  "run": "Json",
+  "run": "Npolar::Api::Json",
   "open": false,
   "auth": { "authorize": "sysadmin", "system": "api" }
 }
