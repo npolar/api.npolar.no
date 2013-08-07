@@ -1,14 +1,26 @@
 # encoding: utf-8
-# Configuration for http://api.npolar.no
+# config.ru for http://api.npolar.no
+
+# How to publish a new API?
+# * https://github.com/npolar/api.npolar.no/wiki/New-API
 
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
-require "./load"
 
+require "./load"
 log = Npolar::Api.log
 
-Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"]
-Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"]
+Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"] # http://user:password@localhost:5984
+Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"] # http://localhost:8983/solr/
+Npolar::Auth::Ldap.config = File.expand_path("./config/ldap.json")
+
+# Bootstrap /service and /user APIs 
+# If not found, the bootstrapping will create databases and inject service
+# descriptions. These 2 APIs are started by the regular autorun below
+bootstrap = Npolar::Api::Bootstrap.new
+bootstrap.log = log
+bootstrap.bootstrap("service-api.json")
+bootstrap.bootstrap("user-api.json")
 
 # Middleware for *all* requests - use with caution
 # a. Security
@@ -23,48 +35,30 @@ use Rack::Static, :urls => ["/css", "/img", "/xsl", "schema", "/favicon.ico", "/
 # use Npolar::Rack::Editlog, Npolar::Storage::Solr.new("/api/editlog"), except => ["/path"]
 # use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("/api/editlog"), except => ["/path"]
 
-
-# Bootstrap /service and /user APIs
-bootstrap = Npolar::Api::Bootstrap.new
-bootstrap.log = log
-bootstrap.bootstrap("service-api.json")
-bootstrap.bootstrap("user-api.json")
-# An effect of bootstrapping is that it's safe/impossible to DELETE these APIs
-
-## Get all services
-service = Service.factory("service-api.json")
-client = Npolar::Api::Client.new(Npolar::Storage::Couch.uri+"/#{service.database}")
-
-services = client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
-
-  Service.new(row.doc)
-
-}
-
-
 # JSON view
-search = { :search => services.select {|api| "production" == api.lifecycle and api.open and "http://data.npolar.no/schema/api" == api.schema }.map {|api|
+search = { :search => bootstrap.services.select {|api| true == api.open and "http://data.npolar.no/schema/api" == api.schema }.map {|api|
   { :href => api.path+"?q=", :title => api.path}
 }}
 config = { :svc => search }
-# Autorun APIs
-services.select { |api| ("http://data.npolar.no/schema/api" == api.schema)}.each do |api|
-  if api.run =~ /(Npolar::Api::)?Json$/ and api.valid?
-    map api.path do
-      log.info "#{api.path} API autorunning with Npolar::Api::Json and #{api.storage} database \"#{api.database}\""
-      if api.auth?
-        auth_methods = api.open? ? ["POST", "PUT", "DELETE"] : api.verbs
-        log.info "#{api.path} authorize #{auth_methods.join(", ")} to '#{api.auth.authorize}' in system '#{api.auth.system}' using #{api.auth.authorizer}"
-      end
-       # merge in middleware from config files!
-      run Npolar::Api::Json.new(api, config)
+
+
+# Autorun all APIs in the /service database
+bootstrap.apis.select {|api| api.run != false }.each do |api|
+
+  if not api.valid?
+    log.error "Invalid service description for API #{api.path}: #{api.errors.join("\n")}"
+  end
+  
+  map api.path do
+  
+    log.info "#{api.path} autoruns #{api.run}"
+
+    if api.auth?
+      auth_methods = api.open? ? ["POST", "PUT", "DELETE"] : api.verbs
+      log.info "#{api.path} authorize #{auth_methods.join(", ")} to '#{api.auth.authorize}' in system '#{api.auth.system}' using #{api.auth.authorizer}"
     end
-  elsif api.search?
-    map api.path do
-      log.info "#{api.path} API autorunning with Npolar::Api::Search"
-      config = {} # merge in middleware from config files!
-      run Npolar::Api::Search.new(api, config)
-    end
+    run Npolar::Factory.constantize(api.run).new(api, api.config)
+
   end
 end
 
@@ -98,6 +92,7 @@ map "/dataset" do
   use Npolar::Rack::Solrizer, { :core => "api",
     :facets => Metadata::Dataset.facets,
     :force => {"workspace" => "metadata", "collection" => "dataset"},
+    :path => "/dataset",
     :to_solr => lambda {|hash|
         model = Metadata::Dataset.new(hash)
         model.to_solr        
@@ -113,10 +108,12 @@ map "/dataset" do
 
   # /dataset/oai
   #   OAI-PMH repository
-  map "/oai" do
-    provider = Metadata::OaiRepository.new
-    run Npolar::Rack::OaiSkeleton.new(Views::Api::Index.new, :provider => provider)
-  end
+  #   /dataset/oai?verb=ListIdentifiers
+  #   /dataset/oai?verb=GetRecord&metadataPrefix=dif&identifier=
+  #map "/oai" do
+  #  provider = Metadata::OaiRepository.new
+  #  run Npolar::Rack::OaiSkeleton.new(Views::Api::Index.new, :provider => provider)
+  #end
 end
 
 map "/gcmd" do
