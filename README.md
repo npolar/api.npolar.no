@@ -18,5 +18,5 @@ over [HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616.html).
 * [Formats and Media Types](https://github.com/npolar/api.npolar.no/wiki/Formats) (see also http://www.iana.org/assignments/media-types/index.html)
 
 ## Documentation and quality efforts
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/npolar/api.npolar.no)
+* https://codeclimate.com/github/npolar/api.npolar.no [![Code Climate](https://codeclimate.com/github/npolar/api.npolar.no.png)](https://codeclimate.com/github/npolar/api.npolar.no)
 * http://rdoc.info/github/npolar/api.npolar.no
