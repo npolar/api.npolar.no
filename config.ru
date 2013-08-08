@@ -7,7 +7,7 @@
 # a "schema" key holding "http://api.npolar.no/schema/api".
 
 # Example usage
-# * https://github.com/npolar/api.npolar.no/blob/master/README.md#document-api 
+# * https://github.com/npolar/api.npolar.no/wiki/Example
 
 # How to publish a new API?
 # $ curl -niXPUT https://api.npolar.no/service/dataset-api -H "Content-Type: application/json" -d@seed/service/dataset-api.json
