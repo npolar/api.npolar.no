@@ -4,6 +4,8 @@ require "base64"
 
 module Npolar
   module Auth
+
+    # https://github.com/ruby-ldap/ruby-net-ldap
     class Ldap < Net::LDAP
 
       DEFAULT_DOMAIN = "npolar.no"
@@ -34,11 +36,13 @@ module Npolar
       end
 
       def self.config=(config)
-        #tpl = { :host => "", :port => 389, :base => "", :auth => { :username => "", :password => "", :method => :simple }}
         unless config.is_a? Hash
           if File.exists? config          
             config = JSON.parse(File.read(config), :symbolize_names => true)
-            config[:auth][:method] = :simple
+            methods = ["simple", "simple_tls", "anonymous"]
+            config[:auth][:method] = methods.include?(config[:auth][:method]) ?
+              config[:auth][:method].to_sym
+              : :simple
           end
         end
         @@config=config
