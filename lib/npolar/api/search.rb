@@ -4,29 +4,10 @@ require "rack/builder"
 module Npolar
   module Api
 
-#
-#services = client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
-#
-#  Service.new(row.doc)
-#
-#}
-#
-#
-#services.select {|api|
-#  ( /^(Npolar::Api::)?Json$/ == api.run
-#    and "http://data.npolar.no/schema/api" == api.schema) }.each_with_index do |api,i|
-#  map api.path do
-#
-#    # merge in middleware from config files!
-#
-#    run Npolar::Api::Json.new(api)
-#  end
-#end
-
-
     class Search
 
       def initialize(api, config={})
+  
         @config = Hashie::Mash.new(config)
         @app = ::Rack::Builder.new do
           map "/" do
@@ -38,21 +19,47 @@ module Npolar
             
             if api.search? and api.search.engine?
         
-              use Views::Api::Index #, {:svc => search}
+              bootstrap = Bootstrap.new
+              search = { :search => bootstrap.apis.select {|svc| svc.path != api.path }.map {|svc|
+                  { :href => (svc.search? and svc.search.engine != "") ? svc.path+"/?q=" : svc.path+"/_ids.json",
+                    :text => svc.path, :title => (svc.search? and svc.search.engine != "") ? "#{svc.path} search" : "#{svc.path} identifiers" }
+                }
+              }
 
-              if "Solr" == api.search.engine
+              use Views::Api::Index, {:svc => search}
 
-                run Npolar::Rack::Solrizer.new(nil, { :core => api.search.core,
+              if /Solr/i =~ api.search.engine
+                
+                run Npolar::Rack::Solrizer.new nil,{
+                  :core => api.search.core,
                   :force => api.search.force,
+                  :path => api.path,
                   :facets => api.search.facets
-                })
-              elsif "Elastic" == api.search.engine
-                raise "@todo"
+                }
+              elsif /Elasticsearch/i =~ api.search.engine
+
+                run Npolar::Rack::Icelastic.new nil, {
+                  :uri => api.search.uri,
+                  :index => api.search["index"],
+                  :type => api.search.type,
+                  :facets => api.search.facets,
+                  :date_facets => api.search.date_facets,
+                  :filters => api.search.filters
+                }
               end
   
             end
 
           end
+        end
+      end
+
+      def middleware(builder)
+
+        ::Rack::Builder.new do
+
+          map "/"
+          
         end
       end
       
