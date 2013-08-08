@@ -1,12 +1,12 @@
 {
   "schema": "http://data.npolar.no/schema/api",
   "id": "project-api",
-  "rev": "1-a8a487eec1485ed66fedf3e064cbafa8",
   "path": "/project",
   "title": "Projects",
   "summary": "Projects in the Norwegian Polar Data Centre",
   "storage": "Couch",
   "database": "project",
+  "model": "Project",
   "verbs": [
     "DELETE",
     "GET",
@@ -29,11 +29,11 @@
     "authorize": "editor",
     "system": "project"
   },
-  "search": { "engine": "Elasticsearch",
-    "uri": "http://localhost:9200",
+  "search": { "engine": "",
+    "uri": "http://dbtest.data.npolar.no:9200",
     "facets": [],
-    "type": "project",
-    "index": "project"
+    "type": "dataset",
+    "index": "global"
   },
   "base": "http://api.npolar.no"
 } 
