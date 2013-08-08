@@ -22,6 +22,7 @@
     "database": { "type": ["string", null] },
     "model": { "type": ["string", null] },
     "verbs": { "type": "array" },
+    "middleware": { "type": "array" },
     "formats": { "type": "object" },
     "accepts": { "type": "object" },
     "category": { "type": "array" },

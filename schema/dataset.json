@@ -33,9 +33,9 @@ sets!
         }
       }
     },
-    "progress": { "type": "string", "enum": ["ongoing","complete", "planned"]},
-    "topics": { "$ref": "http://localhost/schema/topics.json" },
-    "xtopics": {
+    "progress": { "type": ["string",null], "enum": ["ongoing","complete", "planned", null]},
+    "ref_topics": { "$ref": "http://localhost/schema/topics.json" },
+    "topics": {
       "title": "Research topics",
       "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
       "type": "array",
@@ -213,14 +213,10 @@ sets!
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "start": { "type": ["string", null], "format": "date-time" },
+          "start": { "type": ["string", null] /*, "format": "date-time" */ },
           "stop": { "type": ["string", null] }
         }
       }
-    },
-    "method_desc": {
-      "description": "Scientific method used when collecting the data",
-      "type": "string"
     },
 
     "parameters": {
@@ -240,7 +236,7 @@ sets!
       }
     },
     "quality": {
-      "type": ["string", "null"]
+      "type": ["string", null]
     },
     "owners": {
       "type": "array",
@@ -251,7 +247,7 @@ sets!
       }
     },
     "sets": {
-      "description": "Similar to tags and keywords",
+      "description": "Subsets",
       "type": "array",
       "additionalItems": false,
       "items": {
