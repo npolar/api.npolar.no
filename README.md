@@ -1,6 +1,6 @@
 # REST API powering http://api.npolar.no
 
-[Rack](https://github.com/rack/rack)-based reusable building blocks for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s.
+[Rack](https://github.com/rack/rack)-based reusable building blocks for running [REST](http://en.wikipedia.org/wiki/Representational_state_transfer)-style [API](http://en.wikipedia.org/wiki/Application_programming_interface)s
 over [HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616.html).
 
 * [Examples](https://github.com/npolar/api.npolar.no/wiki/Example)
