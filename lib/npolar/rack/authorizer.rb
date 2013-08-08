@@ -30,6 +30,15 @@ module Npolar
         lambda {| auth, system, request | auth.roles(system, request.username).include? role }
       end
 
+      def self.authorize_text(api)
+        writes = ["POST", "PUT", "DELETE"]
+        authorize_text = case api.open
+          when true then "GET, HEAD to * and "+writes.join(", ")
+          else api.verbs.join(", ")
+        end
+        "#{api.path} authorize #{authorize_text} to \"#{api.auth.authorize}\" in system \"#{api.auth.system}\" using #{api.auth.authorizer or "Npolar::Auth::Couch"}"
+      end
+
       def authenticated?
         begin
           if config[:authenticated?].is_a? Proc
