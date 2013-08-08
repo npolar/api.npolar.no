@@ -5,32 +5,40 @@ over [HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616.html).
 
 ## Document API
 
-Examples for /dataset API (discovery level metadata about a dataset)
+Examples for [/dataset](http://api.npolar.no/dataset/) API (discovery level metadata about a dataset)
+* http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.json
+* http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.dif
+* http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.iso
 
 ### GET (Accept)
-$ curl -X GET http://localhost:9393/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922 -H "Accept: application/json"
-$ curl -X GET http://localhost:9393/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922 -H "Accept: application/xml"
-$ curl -X GET http://localhost:9393/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922 -H "Accept: application/atom+xml"
+```json
+$ curl -X GET http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922 -H "Accept: application/json"```
+$ curl -X GET http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922 -H "Accept: application/xml"
+$ curl -X GET http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922 -H "Accept: application/atom+xml"
+```
 
-### GET
-$ curl -X GET http://localhost:9393/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.json
-$ curl -X GET http://localhost:9393/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.dif
-$ curl -X GET http://localhost:9393/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.iso
 
 ### HEAD
-$ curl -iX HEAD http://localhost:9393/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922
+```json
+$ curl -iX HEAD  http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922
+```
 
 ### POST
+```json
 $ curl -niX POST https://api.npolar.no/dataset -d@/path/dataset.json -H "Content-Type: application/json"
+```
 
 ### PUT
-$ curl -niXPUT http://localhost:9393/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922 -d@/path/dataset-.json -H "Content-Type: application/json" 
+```json
+$ curl -niXPUT  https://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922 -d@/path/dataset-.json -H "Content-Type: application/json" 
+```
 
 ### Multiple documents
 Publishing multiple DIF XML, wrapped in OAI-PMH
 
-$ curl -niX POST http://localhost:9393/dataset-d@seed/dataset/ris-dif.xml -H "Content-Type: application/xml"
-
+```json
+$ curl -niX POST  https://api.npolar.no/dataset-d@seed/dataset/ris-dif.xml -H "Content-Type: application/xml"
+```
 
 ## Security
 
