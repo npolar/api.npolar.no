@@ -15,6 +15,11 @@ module Metadata
 
       XML_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
 
+      ATOM_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
+      # The offcial is atom+xml
+
+      ISO_HEADER_HASH = {"Content-Type" => "application/vnd.iso.19139+xml; charset=utf-8"}
+
       JSON_HEADER_HASH = {"Content-Type" => "application/json; charset=utf-8"}
       
       XSL = "DIF-ISO-3.1.xsl"
@@ -81,12 +86,18 @@ module Metadata
           # if id false? and many => pack xml in somethimg p metadata_dataset
 
           xml = case request.format
-            when "dif", "xml"
-              then dif_xml(dif_json(metadata_dataset))
-            when "atom"
-              then atom_entry(metadata_dataset).to_xml
-            when "iso"
-              then iso(dif_xml(dif_json(metadata_dataset)))
+            when "dif", "xml" then begin
+              header = XML_HEADER_HASH
+              dif_xml(dif_json(metadata_dataset))
+              end
+            when "atom" then begin
+              header = ATOM_HEADER_HASH
+              atom_entry(metadata_dataset).to_xml
+              end
+            when "iso", "19139" then begin
+              header = ISO_HEADER_HASH
+              iso(dif_xml(dif_json(metadata_dataset)))
+              end
           end
 
           if "validate" == request.path_info.split("/").last
@@ -110,7 +121,8 @@ module Metadata
             [status, JSON_HEADER_HASH, [error.to_json]]
 
           else
-            [200, XML_HEADER_HASH, [xml]]
+            
+            [200, header, [xml]]
           end
 
         else
@@ -142,26 +154,29 @@ module Metadata
           e.title = atom["title"] unless atom["title"].nil?
           e.summary = atom["summary"] unless atom["summary"].nil?
 
-          #e.authors << ::Atom::Person.new(:name => 'John Doe')
-          
           atom.investigators.each do |author|
             e.authors << ::Atom::Person.new(:name => author.first_name+" "+author["last_name"], :email => author.email)
           end
+          atom.contributors.each do |contributor|
+            e.contributors << ::Atom::Person.new(:name => contributor.first_name+" "+contributor.last_name, :email => contributor.email)
+          end
           
           atom["links"].each do |link|
-            e.links << ::Atom::Link.new(:href => link["href"], :title => link["title"], :rel => link["rel"])
+            e.links << ::Atom::Link.new(:href => link.href, :title => link.title, :rel => link.rel, :type => link.type)
           end unless atom["links"].nil?
           ##e.links << ::Atom::Link.new(:href => ".atom", :type => "application/atom+xml", :rel => "self")
           ##e.links << ::Atom::Link.new(:href => ".json", :type => "application/json", :rel => "alternate")
           ##e.links << ::Atom::Link.new(:href => ".dif", :type => "application/dif+xml", :rel => "alternate")
     
-          #atom["categories"].each do |category|
-          #  e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["schema"], :label => category["label"])
-          #end
+          if atom.category? and atom.category.respond_to?(:each)
+            atom["category"].each do |category|
+              e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["schema"], :label => category["label"])
+            end
+          end
           #
           if atom.source?
-            source = XML::Reader.string( Gcmd::DifBuilder.new(atom.source.data).build_dif )
-            e.source <<::Atom::Source.new(source)
+            #source = XML::Reader.string( Gcmd::DifBuilder.new(atom.source.data).build_dif )
+            #e.source <<::Atom::Source.new(source)
           end
           
           #if atom["source"] and atom["source"]["dif"] and atom["source"]["dif"]["Parameters"]
