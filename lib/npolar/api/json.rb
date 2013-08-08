@@ -7,16 +7,13 @@ module Npolar
     # JSON lego set: A complete kit for running JSON APIs
     class Json
 
+      def middleware
+        @middleware ||= []
+      end
 
-      # # config.ru - simple example
-      # services = [Service.factory("service1.json"), Service.factory("service2.json")]
-      # services.select { |api| ("http://data.npolar.no/schema/api" == api.schema)}.each do |api|
-      #   if api.run =~ /(Npolar::Api::)?Json$/ and api.valid?
-      #     map api.path do
-      #       run Npolar::Api::Json.new(api)
-      #     end
-      #   end
-      # end
+      def middleware=middleware
+        @middleware = middleware
+      end
 
       def initialize(api, config={})
 
@@ -27,18 +24,25 @@ module Npolar
             if api.model?
               model = Npolar::Factory.constantize(api.model).new
               # This will trigger NameError if model is undefined
-
+              to_solr = lambda {|hash|
+                m = model.class.new(hash)
+                m.to_solr        
+            }
             else
               model = nil
+              to_solr = lambda {|hash|hash}
             end
             
             if api.storage?
 
-              # todo if not Couch => WARN
+              if api.storage =~ /Couch(DB)?/i
+                storage, database = api.storage, api.database
+                storage = Npolar::Storage::Couch.new(database)
+                storage.model = model
 
-              storage, database = api.storage, api.database
-              storage = Npolar::Storage::Couch.new(database)
-              storage.model = model
+              else
+                raise "Unsupported database: #{api.storage}"
+              end
             end
             
             if api.auth?
@@ -58,33 +62,48 @@ module Npolar
               }
             end
 
+            use ::Rack::JSONP
+
             if api.middleware? and api.middleware.is_a? Array
-              raise "Not implemented"
+              api.middleware.each do |classname, config|
+                c = {}
+                config.each do |k,v|
+                  c[k.to_sym]=v
+                end
+                use Npolar::Factory.constantize(classname), c
+              end
             end
 
             if api.search? and api.search.engine?
-        
-              use Views::Api::Index
-                
-              if "Solr" == api.search.engine
+              bootstrap = Bootstrap.new
+              search = { :search => bootstrap.apis.select {|svc| svc.path != api.path }.map {|svc|
+                  { :href => (svc.search? and svc.search.engine != "") ? svc.path+"/?q=" : svc.path+"/_ids.json",
+                    :text => svc.path, :title => (svc.search? and svc.search.engine != "") ? "#{svc.path} search" : "#{svc.path} identifiers" }
+                }
+              }
+
+              use Views::Api::Index, {:svc => search}
+
+              if /Solr/i =~ api.search.engine
                 
                 use Npolar::Rack::Solrizer, {
                   :core => api.search.core,
                   :force => api.search.force,
                   :path => api.path,
-                  :facets => api.search.facets
+                  :facets => api.search.facets,
+                  :to_solr => to_solr
                 }
-              elsif "Elastic" == api.search.engine
+              elsif /Elasticsearch/i =~ api.search.engine
+
                 use Npolar::Rack::Icelastic, {
                   :uri => api.search.uri,
-                  :index => api.search.index,
+                  :index => api.search["index"],
                   :type => api.search.type,
                   :facets => api.search.facets,
                   :date_facets => api.search.date_facets,
                   :filters => api.search.filters
                 }
               end
-  
             end
 
             before = [Npolar::Api::Json.before_lambda]
@@ -104,7 +123,7 @@ module Npolar
 
             run Core.new(nil,
               {:storage => storage,
-              :formats => api.formats.keys, #hmm
+              :formats => api.formats.keys,
               :methods => api.verbs,
               :accepts => api.accepts.keys,
               :before => before,
@@ -125,6 +144,12 @@ module Npolar
           
           if ["POST", "PUT"].include? request.request_method and "application/json" == request.media_type
               body = request.body.read
+              request.body.rewind
+              if body !~ /(\s)?\{.*\}(\s)$/                
+                return request
+              end
+              
+              
               begin
 
                 d = Hashie::Mash.new(JSON.parse body)                
