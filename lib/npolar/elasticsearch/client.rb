@@ -45,7 +45,7 @@ module Npolar
           store = Npolar::ElasticSearch::BulkRequest.new(data, config)
           store.execute
         else
-          puts data
+          #puts data
           log.info "Npolar::Elasticsearch::Client - Indexing 1 document"
           store = Npolar::ElasticSearch::BulkRequest.new( [data], config )
           store.execute
