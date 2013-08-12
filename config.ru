@@ -19,6 +19,9 @@
 # For validation on all writes (POST, PUT), setup a "model" in the service document
 # See https://github.com/npolar/api.npolar.no/wiki/Validation
 
+# User API
+# /user
+
 # https://github.com/npolar/api.npolar.no/blob/master/README.md for more topics
 
 Encoding.default_external = Encoding::UTF_8
@@ -30,7 +33,7 @@ Npolar::Auth::Ldap.config = File.expand_path("./config/ldap.json")
 Metadata::Dataset.formats = ["json", "atom", "dif", "iso", "xml"]
   
 # Bootstrap /service database and /user database
-# /service is the service catalog
+# /service is the API catalog
 # /user is for authenticating and authorizing users
 bootstrap = Npolar::Api::Bootstrap.new
 bootstrap.log = log = Npolar::Api.log
