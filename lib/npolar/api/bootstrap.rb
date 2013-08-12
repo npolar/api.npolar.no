@@ -48,6 +48,10 @@ module Npolar
       end
 
       def create_database(service)
+        unless service.database? and service.storage?
+          return
+        end
+        
 
         client = Npolar::Api::Client.new(uri+"/"+service.database)
         response = client.head 
