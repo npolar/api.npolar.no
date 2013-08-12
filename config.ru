@@ -1,17 +1,25 @@
 # encoding: utf-8
 # config.ru for http://api.npolar.no
 
-# All APIs in the /service API database (CouchDB) are autorun by this
-# config.ru file - provided  that the service description contains a "run" key
-# holding the class name of a Rack application (like Npolar::Api::Json) and
-# a "schema" key holding "http://api.npolar.no/schema/api".
-
-# Example usage
-# * https://github.com/npolar/api.npolar.no/wiki/Example
-
-# How to publish a new API?
+# Service API
+# Use /service to create new API endpoints.
 # $ curl -niXPUT https://api.npolar.no/service/dataset-api -H "Content-Type: application/json" -d@seed/service/dataset-api.json
 # Details: https://github.com/npolar/api.npolar.no/wiki/New-API
+
+# Schema API
+# Use /schema to publish JSON or other schemas for your document APIs.
+# $ curl -niXPUT https://api.npolar.no/schema/dataset -H "Content-Type: application/json" -d@schema/dataset.json
+
+# Document API
+# How to POST, PUT, DELETE, and GET documents
+# * https://github.com/npolar/api.npolar.no/wiki/Basics
+# * https://github.com/npolar/api.npolar.no/wiki/Example
+
+# Validation
+# For validation on all writes (POST, PUT), setup a "model" in the service document
+# See https://github.com/npolar/api.npolar.no/wiki/Validation
+
+# https://github.com/npolar/api.npolar.no/blob/master/README.md for more topics
 
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
@@ -23,9 +31,7 @@ Metadata::Dataset.formats = ["json", "atom", "dif", "iso", "xml"]
   
 # Bootstrap /service database and /user database
 # /service is the service catalog
-# /user is used for authenticating and authorizing users
-# Both of these are needed to publishing regular APIs.
-
+# /user is for authenticating and authorizing users
 bootstrap = Npolar::Api::Bootstrap.new
 bootstrap.log = log = Npolar::Api.log
 bootstrap.bootstrap("service-api.json")
@@ -40,8 +46,11 @@ use Rack::Static, :urls => ["/css", "/img", "/xsl", "schema", "code", "/favicon.
 # use Npolar::Rack::Editlog, Npolar::Storage::Solr.new("/api/editlog"), except => ["/path"]
 # use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("/api/editlog"), except => ["/path"]
 
-# Autorun all APIs in the /service database.
+# Autorun all APIs in the /service database
 # The service database is defined in /service/service-api.json
+# APIs are started if they contain a "run" key holding the class name of a Rack
+# application (like "Npolar::Api::Json") and a "schema" key holding
+# "http://api.npolar.no/schema/api".
 bootstrap.apis.select {|api| api.run? and api.run != "" }.each do |api|
 
   map api.path do
