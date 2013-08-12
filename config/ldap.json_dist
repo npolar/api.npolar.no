@@ -2,6 +2,5 @@
   "host": "ldap.example.com",
   "port": 636,
   "base": "dc=example,dc=com",
-  "method": "simple_tls",
-  "auth": { "username": "cn=username,dc=example,dc=com", "password": "secure" }
+  "auth": { "username": "cn=username,dc=example,dc=com", "password": "secure", "method": "simple_tls"}
 }
