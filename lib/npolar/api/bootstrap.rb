@@ -83,7 +83,7 @@ module Npolar
       end
 
       def apis
-        services.select { |api| "http://data.npolar.no/schema/api" == api.schema }
+        services.select { |api| "http://api.npolar.no/schema/api" == api.schema }
       end
 
       def service
