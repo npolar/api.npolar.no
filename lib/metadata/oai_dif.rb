@@ -1,7 +1,7 @@
 module Metadata
 
   # Simple implementation of the Directory Interchange Format metadata format.
-  class DirectoryInterchangeFormat < ::OAI::Provider::Metadata::Format
+  class DirectoryInterchangeFormat #< ::OAI::Provider::Metadata::Format
 
     def initialize
       @prefix = 'dif'
