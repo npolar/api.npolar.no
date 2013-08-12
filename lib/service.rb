@@ -1,7 +1,7 @@
 require "hashie"
 # Service (Service description document)
 # Handles service descriptions at /service and service configuration
-# Schema: http://data.npolar.no/schema/api
+# Schema: http://api.npolar.no/schema/api
 class Service < Hashie::Mash
   
   include Npolar::Validation::MultiJsonSchemaValidator
