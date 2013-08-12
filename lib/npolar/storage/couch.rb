@@ -96,6 +96,10 @@ module Npolar
           when "_meta" then meta
           when nil, "", "_ids", "" then ids
           when "_feed", "_all" then feed(params)
+          when "_invalid" then valid(false, params)
+          when "_valid" then valid(true, params)
+          when "_validate" then validate(params)
+
         else
           response = reader.get(id, headers, params)
           [response.status, response.headers, response.body]
@@ -110,6 +114,33 @@ module Npolar
   
       def headers
         @headers ||= HEADERS
+      end
+
+      def valid(cond=true, params=nil)
+        v = all.select {|d| cond == model.class.new(d).valid? }
+        body = Yajl::Encoder.encode(v)
+        Rack::Response.new(body, 200, {"Content-Type" => HEADERS["Content-Type"]})
+      end
+      def validate(params)
+        report = []
+        all.each do |d|
+          errors = model.class.new(d).errors
+          if errors
+            report << { "errors" => errors, "document" => d }
+          end
+        end
+      
+        body = Yajl::Encoder.encode(report)
+        Rack::Response.new(body, 200, {"Content-Type" => HEADERS["Content-Type"]})
+      end
+
+      def all
+        response = couch.get(all_docs_uri(true))
+        if 200 == response.status
+          Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row| row[:doc] }
+        else
+          raise "HTTP error: #{response.status}"
+        end
       end
   
       def post(data, params={})
