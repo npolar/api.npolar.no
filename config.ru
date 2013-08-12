@@ -88,3 +88,8 @@ end
 map "/gcmd/concept/demo" do
   run Gcmd::Concept.new
 end
+
+map "/metadata/dataset" do
+  use Metadata::Rack::DifJsonizer
+  run Npolar::Api::Core.new(nil, { :storage => Npolar::Storage::Couch.new("dataset"), :formats=>Metadata::Dataset.formats }) 
+end
