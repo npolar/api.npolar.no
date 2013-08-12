@@ -2,6 +2,7 @@ require "bundler/setup"
 require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
 require "logger"
 require "gcmd"
+require "rsolr"
 
 require "rack/throttle"
 require "rack/contrib/jsonp"
