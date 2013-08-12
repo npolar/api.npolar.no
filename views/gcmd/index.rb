@@ -1,6 +1,6 @@
-class Gcmd::Index < Views::Workspace
+class Gcmd::Index
 
-  self.template = Views::Workspace.template
+  #self.template = Views::Workspace.template
 
   def initialize
     @hash = { :_id => "gcmd_index",
