@@ -15,6 +15,8 @@ require "rack/commonlogger"
 require_relative "./lib/npolar"
 require_relative "./lib/npolar/exception"
 require_relative "./lib/npolar/validation"
+require_relative "./lib/npolar/api/"
+require_relative "./lib/npolar/api/solr_query"
 
 require "mustache"
 require "./views/views"
