@@ -30,7 +30,7 @@ module Npolar
       }
 
       def condition?(request)
-        ['GET','HEAD','PUT','POST'].include?(request.request_method) #and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?
+        (['GET','HEAD'].include?(request.request_method) and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?) || ['PUT','POST'].include?(request.request_method)
       end
       
       def handle(request)
