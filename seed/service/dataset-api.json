@@ -1,5 +1,5 @@
 {
-  "schema": "http://data.npolar.no/schema/api",
+  "schema": "http://api.npolar.no/schema/api",
   "id": "dataset-api",
   "path": "/dataset",
   "title": "Dataset API",
@@ -7,7 +7,7 @@
   "storage": "Couch",
   "database": "dataset",
   "model": "Metadata::Dataset",
-  "middleware": [["Metadata::Rack::DifJsonizer", {}]],
+  "middleware": [["Metadata::Rack::DifJsonizer"]],
   "search": {
     "engine": "Solr",
     "facets": [ "topics", "iso_topics", "sets", "relations", "licences", "draft",
@@ -18,7 +18,7 @@
   },
   "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
   "formats": {"atom":"application/atom+xml", "json":"application/json", "dif":"application/xml", "iso":"application/vnd.iso.19139+xml", "vnd.iso.19139":"application/vnd.iso.19139+xml", "xml":"application/xml"},
-  "accepts": {"application/json": "http://data.npolar.no/schema/dataset.json", "application/xml": "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"},
+  "accepts": {"application/json": "http://api.npolar.no/schema/dataset.json", "application/xml": "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"},
   "category": ["CouchDB", "Solr", "Lucene", "REST", "Search", "JSON", "JSON Schema", "XML", "XML Schema", "DIF", "HTTP", "Atom", "ISO19139"],
   "lifecycle": "production",
   "run":"Npolar::Api::Json",

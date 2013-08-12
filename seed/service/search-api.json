@@ -1,5 +1,5 @@
 {
-  "schema": "http://data.npolar.no/schema/api",
+  "schema": "http://api.npolar.no/schema/api",
   "id": "search-api",
   "path": "/",
   "title": "Search Norwegian Polar Data API",
@@ -17,7 +17,7 @@
   "before": "Npolar::Api::Json.before_lambda",
   "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
   "formats": {"json":"application/json", "html": "text/html"},
-  "accepts": {"application/json": "http://data.npolar.no/schema/api.json"},
+  "accepts": {},
   "category": ["CouchDB", "REST", "JSON", "HTTP"],
   "lifecycle": "production",
   "run": "Npolar::Api::Search",

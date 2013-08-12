@@ -1,5 +1,5 @@
 {
-  "schema": "http://data.npolar.no/schema/api",
+  "schema": "http://api.npolar.no/schema/api",
   "id": "gcmd-concept-api",
   "path": "/gcmd/concept",
   "title": "GCMD Concept",

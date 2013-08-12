@@ -1,5 +1,5 @@
 {
-  "schema": "http://data.npolar.no/schema/api",
+  "schema": "http://api.npolar.no/schema/api",
   "id": "user-api",
   "path": "/user",
   "title": "User HTTP service",
@@ -9,7 +9,7 @@
   "model": "User",
   "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
   "formats": {"json":"application/json", "html": "text/html"},
-  "accepts": {"application/json": "http://data.npolar.no/schema/user.json"},
+  "accepts": {"application/json": "http://api.npolar.no/schema/user.json"},
   "category": ["CouchDB", "REST", "JSON", "HTTP"],
   "lifecycle": "production",
   "run": "Npolar::Api::Json",
