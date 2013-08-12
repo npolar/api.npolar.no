@@ -21,16 +21,16 @@ module Npolar
         @app = ::Rack::Builder.new do
           map "/" do
 
+            to_solr = lambda {|hash|hash}
             if api.model?
               model = Npolar::Factory.constantize(api.model).new
               # This will trigger NameError if model is undefined
               to_solr = lambda {|hash|
                 m = model.class.new(hash)
-                m.to_solr        
+                m.to_solr # respond to ?        
             }
             else
               model = nil
-              to_solr = lambda {|hash|hash}
             end
             
             if api.storage?
@@ -82,10 +82,9 @@ module Npolar
                 }
               }
 
-              use Views::Api::Index, {:svc => search}
-
               if /Solr/i =~ api.search.engine
-                
+                use Views::Api::Index, {:svc => search}
+
                 use Npolar::Rack::Solrizer, {
                   :core => api.search.core,
                   :force => api.search.force,
