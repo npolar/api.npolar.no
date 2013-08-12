@@ -91,7 +91,7 @@ end
 
 map "/metadata/dataset" do
   use Npolar::Rack::Authorizer, { :auth => Npolar::Auth::Ldap.new(Npolar::Auth::Ldap.config), :system => "api",
-    :except? => lambda {|request| ["xGET", "HEAD"].include? request.request_method } }
+    :except? => lambda {|request| ["GET", "HEAD"].include? request.request_method } }
   use Metadata::Rack::DifJsonizer
   run Npolar::Api::Core.new(nil, { :storage => Npolar::Storage::Couch.new("dataset"), :formats=>Metadata::Dataset.formats }) 
 end
