@@ -27,6 +27,9 @@
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 require "./load"
+if File.exists? "./config/config.rb"
+  require "./config/config.rb"
+end
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"] # http://user:password@localhost:5984
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"] # http://localhost:8983/solr/
 Npolar::Auth::Ldap.config = File.expand_path("./config/ldap.json")
