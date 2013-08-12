@@ -304,7 +304,7 @@ module Npolar
             [200, headers(request.format), [response]]
           end
 
-        rescue RSolr::Error::Http => e
+        rescue ::RSolr::Error::Http => e
           log.debug self.class.name+"#handle_search raised RSolr::Error::Http"
           json_error_from_exception(e)
         end
