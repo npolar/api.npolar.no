@@ -125,7 +125,7 @@ module Npolar
         report = []
         all.each do |d|
           errors = model.class.new(d).errors
-          if errors
+          if errors.any?
             report << { "errors" => errors, "document" => d }
           end
         end
@@ -144,9 +144,9 @@ module Npolar
       end
   
       def post(data, params={})
-        unless valid? data
-          raise Exception
-        end
+        #unless valid? data
+        #  raise Exception
+        #end
 
         if data =~ ALL_DOCS_QUERY_REGEX
           # XXX ugly hack to route request to right place
@@ -202,9 +202,9 @@ module Npolar
         if data.is_a? Hash
           data = data.to_json
         end
-       unless valid? data
-          raise Exception
-        end
+        #unless valid? data
+        #  raise Exception
+        #end
         # params?
         #if params.key? "attachment"
         # #couch.put("")
