@@ -3,11 +3,12 @@
 originator!
 restricted!
 sets!
+rights
 */
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://data.npolar.no/schema/dataset",
+  "id": "http://api.npolar.no/schema/dataset",
   "title": "Dataset",
-  "description": "Metadata of a dataset stored or linked to in Norwegian Polar Data (http://data.npolar.no)",
+  "description": "Metadata of a dataset",
   "type": "object",
   "additionalProperties": false,
   "required": ["title", "schema", "topics", "licences"],
@@ -48,7 +49,7 @@ sets!
 
 
     
-    "reflicences": { "$ref": "http://data.npolar.no/schema/licences" },
+    "reflicences": { "$ref": "http://api.npolar.no/schema/licences" },
     "licences": {
       "title": "Licence URIs",
       "type": "array",
@@ -179,7 +180,7 @@ sets!
         "additionalProperties": false,
         "properties": {
           "term": { "type": "string", "required": true },
-          "schema": { "type": "string", "format": "uri", "required": true, "default":"http://data.npolar.no/schema/category" },
+          "schema": { "type": "string", "format": "uri", "required": true, "default":"http://api.npolar.no/schema/category" },
           "title": { "type": "string" },
           "label": { "type": "string" },
           "lang": { "type": "string", "pattern": "^[a-z]{2}$" }
@@ -300,16 +301,16 @@ sets!
     "source": {
       "description": "Source data",
       "additionalProperties": false,
-      "type": "object",
+      "type": ["object", null],
       "properties": {
-        "type": { "type": "string" },
+        "schema": { "type": "string" },
         "data": { "type": "object" }
       }
       
     },
+    "rights" : { "type": "string" },
     "_id": { "description": "Internal id", "type": "string" },
     "_rev" : { "description": "Internal revision", "type": "string" }
 
-  },
-  "html":[]
+  }
 }

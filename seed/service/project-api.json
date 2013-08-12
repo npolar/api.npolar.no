@@ -1,5 +1,5 @@
 {
-  "schema": "http://data.npolar.no/schema/api",
+  "schema": "http://api.npolar.no/schema/api",
   "id": "project-api",
   "path": "/project",
   "title": "Projects",
@@ -29,7 +29,7 @@
     "authorize": "editor",
     "system": "project"
   },
-  "search": { "engine": "",
+  "search": { "engine": "Elasticsearch",
     "uri": "http://dbtest.data.npolar.no:9200",
     "facets": [],
     "type": "dataset",

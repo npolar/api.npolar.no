@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://data.npolar.no/schema/user",
+  "id": "http://api.npolar.no/schema/user",
   "title": "User (HTTP service)",
   "description": "User schema",
   "type": "object",

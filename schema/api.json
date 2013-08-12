@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://data.npolar.no/schema/api",
+  "id": "http://api.npolar.no/schema/api",
   "title": "API (HTTP service)",
   "description": "Service configuration for an API",
   "type": "object",
@@ -9,7 +9,7 @@
   "properties": {
     "id": { "type": "string" },
     "rev": { "type": "string" },
-    "schema": { "type": "string", "format": "uri", "default":"http://data.npolar.no/schema/api"},
+    "schema": { "type": "string", "format": "uri", "default":"http://api.npolar.no/schema/api"},
     "base": { "type": "string", "format": "uri", "default":"http://api.npolar.no"},
     "version": { "type": "string" },
     "before": { "type": "string" },
