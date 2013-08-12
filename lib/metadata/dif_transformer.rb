@@ -20,7 +20,7 @@ module Metadata
   class DifTransformer
     include ::Npolar::Api
 
-    BASE = "http://api.npolar.no/dataset/"
+    BASE = "/dataset/"
 
     def self.dif_hash_array(xml_or_file)
         if File.exists? xml_or_file
@@ -344,18 +344,18 @@ module Metadata
         
       end unless object.Related_URL.nil? or !object.Related_URL.any?
       
+
       # Link to parent metadata records
       unless object.Parent_DIF.nil? 
-      
-      
+      #raise object.Parent_DIF.to_json
+
         object.Parent_DIF.each do | parent |
-          if parent =~ /\s+ /
           
             links << {
               "rel" => "parent",
               "href" => href(parent)
             }
-          end 
+           
         end
       end
       
@@ -461,7 +461,7 @@ module Metadata
     end
     
     def source
-      Hashie::Mash.new( { :type => ::Gcmd::Dif::NAMESPACE["dif"], :data => object } )
+      #Hashie::Mash.new( { :type => ::Gcmd::Dif::NAMESPACE["dif"], :data => object } )
     end    
     
     #################################
