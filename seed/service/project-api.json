@@ -30,10 +30,10 @@
     "system": "project"
   },
   "search": { "engine": "Elasticsearch",
-    "uri": "http://dbtest.data.npolar.no:9200",
+    "uri": "http://localhost:9200",
     "facets": [],
-    "type": "dataset",
-    "index": "global"
+    "type": "project",
+    "index": "project"
   },
   "base": "http://api.npolar.no"
 } 
