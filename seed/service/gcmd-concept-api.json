@@ -15,7 +15,7 @@
   "accepts": {"application/json": ""},
   "category": ["CouchDB", "REST", "JSON", "HTTP"],
   "lifecycle": "production",
-  "run": "Npolar::Api::Search",
+  "run": "Npolar::Api::Json",
   "open": true,
   "auth": { "authorize": "sysadmin", "system": "api" }
 }

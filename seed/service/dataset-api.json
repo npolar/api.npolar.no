@@ -5,9 +5,9 @@
   "title": "Dataset API",
   "summary": "Norwegian Polar Institute's data products (discovery-level dataset metadata). Storage format is JSON, but metadata is also available in 3 XML variants: DIF, Atom, ISO19139.",
   "storage": "Couch",
-  "database": "dataset",
+  "database": "metadata_dataset",
   "model": "Metadata::Dataset",
-  "middleware": [["Metadata::Rack::DifJsonizer"]],
+  "middleware": [["Metadata::Rack::DifJsonizer", {}]],
   "search": {
     "engine": "Solr",
     "facets": [ "topics", "iso_topics", "sets", "relations", "licences", "draft",

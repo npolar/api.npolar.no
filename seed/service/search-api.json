@@ -13,8 +13,7 @@
       "draft", "editors", "hemisphere", "investigators", "licences", "link", "methods", "parameter", "person", "placename", "project",
       "source", "iso_topics", "tags"],
     "force": {}
-    },
-  "before": "Npolar::Api::Json.before_lambda",
+  },
   "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
   "formats": {"json":"application/json", "html": "text/html"},
   "accepts": {},
