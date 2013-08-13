@@ -144,7 +144,7 @@ module Npolar
           if ["POST", "PUT"].include? request.request_method and "application/json" == request.media_type
               body = request.body.read
               request.body.rewind
-              if body !~ /(\s)?\{.*\}(\s)$/                
+              if body !~ /^\s*\{.*\}\s*$/                
                 return request
               end
               
