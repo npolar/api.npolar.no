@@ -4,7 +4,7 @@ require "rack/builder"
 module Npolar
   module Api
     
-    # JSON lego set: A complete kit for running JSON APIs
+    # JSON lego: A complete kit for running JSON APIs
     class Json
 
       def middleware
@@ -62,13 +62,13 @@ module Npolar
               }
             end
 
-            use ::Rack::JSONP
-
             if api.middleware? and api.middleware.is_a? Array
               api.middleware.each do |classname, config|
                 c = {}
-                config.each do |k,v|
-                  c[k.to_sym]=v
+                if config.respond_to?(:each)
+                  config.each do |k,v|
+                    c[k.to_sym]=v
+                  end
                 end
                 use Npolar::Factory.constantize(classname), c
               end
@@ -81,9 +81,9 @@ module Npolar
                     :text => svc.path, :title => (svc.search? and svc.search.engine != "") ? "#{svc.path} search" : "#{svc.path} identifiers" }
                 }
               }
-
+              use Views::Api::Index, {:svc => search}
               if /Solr/i =~ api.search.engine
-                use Views::Api::Index, {:svc => search}
+                
 
                 use Npolar::Rack::Solrizer, {
                   :core => api.search.core,
