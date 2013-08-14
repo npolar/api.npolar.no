@@ -121,15 +121,17 @@ module Npolar
         body = Yajl::Encoder.encode(v)
         Rack::Response.new(body, 200, {"Content-Type" => HEADERS["Content-Type"]})
       end
+
       def validate(params)
         report = []
         all.each do |d|
-          errors = model.class.new(d).errors
-          if errors.any?
-            report << { "errors" => errors, "document" => d }
+          m = model.class.new(d)
+          v = m.valid?
+          if false == v
+            report << { d[:id] => m.errors }
           end
         end
-      
+        report = { "errors" => report }
         body = Yajl::Encoder.encode(report)
         Rack::Response.new(body, 200, {"Content-Type" => HEADERS["Content-Type"]})
       end
