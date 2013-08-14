@@ -404,19 +404,19 @@ module Metadata
       links << link("http://data.npolar.no/dataset/#{id}", "alternate", "HTML", "text/html")
 
 
-      unless dif.Project.nil?
-        projects = Gcmd::Concepts.new.tuples("projects")
-
-        links += dif.Project.map {|p|
-          id, label = projects.select { |tup | tup[1] == p["Short_Name"]}[0]
-          unless id.nil?
-            link("/gcmd/concept/#{id}.json", "project", label, "application/json")
-          else
-            link("/gcmd/concept/?q=#{label}&title=false&fields=*&format=json", "project", label, "application/json")
-          end
-          
-        }
-      end
+      #unless dif.Project.nil?
+      #  projects = Gcmd::Concepts.new.tuples("projects")
+      #
+      #  links += dif.Project.map {|p|
+      #    id, label = projects.select { |tup | tup[1] == p["Short_Name"]}[0]
+      #    unless id.nil?
+      #      link("/gcmd/concept/#{id}.json", "project", label, "application/json")
+      #    else
+      #      [] #link("/gcmd/concept/?q=#{label}&title=false&fields=*&format=json", "project", label, "application/json")
+      #    end
+      #    
+      #  }
+      #end
 
       links
     end

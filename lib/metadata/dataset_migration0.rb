@@ -1,29 +1,64 @@
 require "logger"
 
-# ContactsPeople who quit/died
-# org => domain.no
-
 module Metadata
-  class DatasetMigration
+  class DatasetMigration0
 
     attr_writer :log
-    # testing before after
-
+   
     def migrations
-      [[email_to_string, locations_to_coverage_and_placenames] # 0
-      ]
+      [set_schema, contributors_with_roles, just_one_email,
+        locations_to_coverage_and_placenames, groups_to_topics,
+        isoTopics, method_desc_to_comment, sensors_to_comment]
     end
 
     def log
       @log ||= Logger.new(STDERR)
     end
 
-    # We don't want multiple emails
-    def email_to_string
+    def set_schema
       [lambda {|d|
-        d.investigators? and d.investigators.size > 0 },
+        !d.schema? },
       lambda {|d|
-        d.investigators = d.investigators.select {|i|
+        d.schema = Service.factory("dataset-api.json").schema
+        d
+      }]
+    end
+
+    def method_desc_to_comment
+      [lambda {|d|
+        d.method_desc? },
+      lambda {|d|
+        if !d.comment? or d.comment.nil?
+          d.comment = ""
+        end
+        
+        d.comment += "Method: #{d.method_desc}.\n"
+        d.delete :method_desc
+        d
+      }]
+    end
+
+    def sensors_to_comment
+      [lambda {|d|
+        d.sensors? },
+      lambda {|d|
+        if !d.comment? or d.comment.nil?
+          d.comment = ""
+        end
+        
+        d.comment += "Sensors: #{d.sensors.join(", ")}.\n"
+        d.delete :sensors
+        d
+      }]
+    end
+
+
+    # We don't want multiple emails
+    def just_one_email
+      [lambda {|d|
+        d.contributors? and d.contributors.size > 0 },
+      lambda {|d|
+        d.contributors = d.contributors.select {|i|
           i.email? and i.email.is_a? Array
         }.map {
           |i|
@@ -33,6 +68,45 @@ module Metadata
         d
       }]
     end
+
+    # http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml
+    def isoTopics
+      [lambda {|d|
+        d.iso_topics? and d.iso_topics.size > 0 },
+      lambda {|d|
+        d.iso_topics = d.iso_topics.map {|i|
+          case i
+            when "imagery/base maps/earth cover"
+              "imageryBaseMapsEarthCover"
+            when "geoscientific information"
+              "geoscientificInformation"
+            when "climatology/meteorology/atmosphere"
+              "climatologyMeteorologyAtmosphere"
+            else i
+          end
+        }
+        d
+      }]
+    end
+
+    def groups_to_topics
+      [lambda {|d|
+        d.groups? and d.groups.size > 0 },
+      lambda {|d|
+        d.topics = d.groups
+        d.delete :groups
+        d.topics = d.topics.map {|t|
+          case t
+            when "sea_ice"
+              "seaice"
+            else t
+          end
+
+        }
+        d
+      }]
+    end
+
 
     # Broken area names to real placenames, separated from spatial coverage
     #locations=[#<Metadata::Dataset area="dronning_maud_land" country_code="AQ" east=56.0 north=-70.0 south=-90.0 west=0.0>
@@ -49,15 +123,69 @@ module Metadata
         d.placenames = d.locations.map {|l| l.area}.map {|area|
           case area
             when "dronning_maud_land"
-              "Dronning Maud Land"
+              {"placename"=>"Dronning Maud Land", "country" => "AQ" }
+            when "svalbard"
+              {"placename"=>"Svalbard", "country" => "NO" }
+            else {"placename"=>area}
           end
-        }.select{|p|not p.nil?}.uniq
+        }.select{|p|not p.nil? and not p["placename"] =~ /norway|arctic|antartic/ }.uniq
+        d.delete :locations
+        d
+      }]
+    end
+
+    # roles from http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode
+    def contributors_with_roles
+      [lambda {|d|
+        d.point_of_contact? or d.investigators? or d.contributors? or d.owners? },
+      lambda {|d|
+        
+        if !d.contributors? or d.contributors.nil?
+          d.contributors = []
+        else
+          d.contributors.map {|c|
+            if false == c.role?
+              c["role"]="originator"
+            end
+            c
+          }
+        end
+
+        if d.investigators?
+          d.contributors += d.investigators.map {|i|
+            i["role"] = "principalInvestigator"
+            i
+          }
+          d.delete :investigators
+        end
+
+        if d.point_of_contact?
+          d.contributors += d.point_of_contact.map {|p|
+            p["role"] = "pointOfContact"
+            p
+          }
+          d.delete :point_of_contact
+        end
+
+        if d.owners?
+          d.contributors += d.owners.map {|o|
+            {
+              "role" => "owner",
+              "first_name" => o
+            }
+          }
+          d.delete :owners
+        end
+
         d
       }]
     end
 
     # groups=["glaciology", "topography"]
-
     # point_of_contact=[#<Metadata::Dataset email="jack.kohler@npolar.no" name="Geology and geophysics section" org="Norwegian Polar Institute">]
+    # owners=["Norwegian Polar Institute"]
+
+
+
   end
 end

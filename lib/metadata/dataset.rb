@@ -140,7 +140,7 @@ module Metadata
       id = doc["id"] ||=  doc["_id"]
       rev = doc["rev"] ||=  doc["_rev"] ||= nil
 
-      solr = { :id => id,
+      solr = Hashie::Mash.new({ :id => id,
         :rev => rev,
         :title => title,
         :topics => topics,
@@ -149,13 +149,12 @@ module Metadata
         :iso_topics => doc["iso_topics"],
         :licences => doc["licenses"],
         :draft => doc["draft"],
-        :country_code => doc["placenames"].map {|p| p["country_code"]},
         :workspace => "metadata",
         :collection => "dataset",
         :links => links,
         :licences => licences,
         :rights => rights,
-        :institutions => investigators.map {|i|i.email.split("@")[1]},
+        :institutions => contributors.map {|i|i.email.split("@")[1]}.uniq,
         :progress => doc.progress,
         :formats => self.class.formats,
         :accepts => self.class.accepts,
@@ -165,7 +164,11 @@ module Metadata
         :category => [],
         :schemas => self.class.schemas,
         :label => []
-      }
+      })
+
+        if doc.placenames?
+          solr.country = doc.placenames.map {|p| p["country"]}.uniq.select {|c|c != ""}
+        end
 
         if doc.science_keywords.respond_to? :map
           cat = []
@@ -179,7 +182,7 @@ module Metadata
           solr[:schemas] += doc["category"].map {|c| c["schema"] }
           solr[:label] +=  doc["category"].map {|c| c["label"] }
         end
-          solr[:iso_topics] = doc["category"].select {|c| c["schema"] == "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode"}.map {|c| c["term"] }
+          solr[:iso_topics] = doc["iso_topics"] #.select {|c| c["schema"] == "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode"}.map {|c| c["term"] }
 
         if doc.key? "investigators"
           solr[:investigators] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
