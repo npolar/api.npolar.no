@@ -48,6 +48,7 @@ use Rack::Throttle::Hourly,   :max => 1200000 # 1.2M requests
 use Rack::Throttle::Interval, :min => 0.00166 # 1/600 seconds
 # use Npolar::Rack::SecureEdits (force TLS/SSL ie. https)
 use Rack::Static, :urls => ["/css", "/img", "/xsl", "schema", "code", "/favicon.ico", "/robots.txt"], :root => "public"
+use ::Rack::JSONP
 # use Npolar::Rack::GeoJSON
 # use Npolar::Rack::Editlog, Npolar::Storage::Solr.new("/api/editlog"), except => ["/path"]
 # use Npolar::Rack::Editlog, Npolar::Storage::Couch.new("/api/editlog"), except => ["/path"]
