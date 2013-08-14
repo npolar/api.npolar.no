@@ -1,25 +1,17 @@
 {
-/*
-originator!
-restricted!
-sets!
-rights
-*/
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://api.npolar.no/schema/dataset",
   "title": "Dataset",
-  "description": "Metadata of a dataset",
+  "description": "Metadata describing a dataset",
   "type": "object",
   "additionalProperties": false,
   "required": ["title", "schema", "topics", "licences"],
   "properties": {
-
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
     "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
-    "schema": { "type": "string", "description": "JSON schema URI (revision)"},
+    "schema": { "type": "string", "description": "JSON schema URI"},
     "summary": { "description": "Abstract", "type": "string"},
     "draft": { "type": "string", "enum": ["yes", "no"]},
- 
     "coverage": {
       "type": "array",
       "additionalItems": false,
@@ -35,7 +27,6 @@ rights
       }
     },
     "progress": { "type": ["string",null], "enum": ["ongoing","complete", "planned", null]},
-    "ref_topics": { "$ref": "http://localhost/schema/topics.json" },
     "topics": {
       "title": "Research topics",
       "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
@@ -46,10 +37,20 @@ rights
         "enum": ["biology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "topography"]
       }
     },
-
-
-    
-    "reflicences": { "$ref": "http://api.npolar.no/schema/licences" },
+    "iso_topics": {
+      "title": "Research topics",
+      "description": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": ["biota", "boundaries", "climatologyMeteorologyAtmosphere", "economy", "elevation", "environment", "farming", "geoscientificInformation", "health", "imageryBaseMapsEarthCover", "inlandWaters", "intelligenceMilitary", "location", "oceans", "planningCadastre", "society", "structure", "transportation", "utilitiesCommunication"] 
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
     "licences": {
       "title": "Licence URIs",
       "type": "array",
@@ -82,27 +83,7 @@ rights
         }
       }
     },
-    "investigators": {
-      "description": "Used as authors in the citation string. Should be any personnel directly involved in gathering the dataset. DIF:Personnel[@role0='Investigator']",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "first_name": {
-            "type": "string"
-          },
-          "last_name": {
-            "type": "string"
-          },
-          "email": {
-            "type": ["string", null],
-            "format": "email" 
-          }
-        }
-      }
-    },
+
     "institutions": {
       "description": "Participating institutions",
       "type": "array",
@@ -112,7 +93,7 @@ rights
       }
     },
     "contributors": {
-      "description": "Any additional institutions and personnel involved in the project. DIF:Personnel[@Role='Contributor']",
+      "description": "Any institutions or personnel involved in creating the dataset",
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -125,30 +106,14 @@ rights
           "last_name": {
             "type": "string"
           },
+         "role": {
+            "type": "string",
+            "required": true,
+            "enum": ["author", "custodian", "distributor", "originator", "owner", "pointOfContact", "principalInvestigator", "processor", "publisher", "resourceProvider", "user"] 
+          },
           "email": {
             "type": ["string","null"],
             "additionalItems": false,
-            "format": "email"
-          }
-        }
-      }
-    },
-    "point_of_contact": {
-      "description": "Department that has direct knowledge about the dataset. This can have an optional person listed. Should be as persistant as possible",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "org": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
             "format": "email"
           }
         }
@@ -165,6 +130,7 @@ rights
           "rel": { "type": "string", "required": true },
           "href": { "type": "string", "format": "uri", "required": true },
           "title": { "type": ["string", null] },
+          "hreflang": { "type": ["string", null] },
           "type": { "type": "string"
           }
         }
@@ -199,8 +165,8 @@ rights
           "placename": {
             "type": "string"
           },
-          "country_code": {
-            "description": "Country code like ISO 3611-1. 'SJ' = Svalbard and Jan Mayen, 'AQ' = Antarctica.",
+          "country": {
+            "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
             "type": ["string",null],  
             "pattern": "^(([A-Z]|[a-z]){2})$"
           }
@@ -228,24 +194,8 @@ rights
         "format": "uri"
       }
     },
-    "sensors": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string",
-        "format": "uri"
-      }
-    },
     "quality": {
       "type": ["string", null]
-    },
-    "owners": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string",
-        "format": "uri"
-      }
     },
     "sets": {
       "description": "Subsets",
