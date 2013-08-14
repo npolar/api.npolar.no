@@ -181,7 +181,9 @@ module Views
       end
 
       def facets
-
+        unless feed.respond_to?(:facets)
+          return []
+        end 
         facets = (feed.facets ||=[]).map {|field,v|
           {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => link_facet(field, c[0], c[1]) } } }
         }
