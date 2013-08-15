@@ -11,8 +11,8 @@ module Npolar
           "Content-Type" => "application/json",
           "Accept" => "application/json",
           "Accept-Charset" => "UTF-8",
-          "Accept-Encoding" => "gzip,deflate"
-          #Connection',"keep-alive"},
+          "Accept-Encoding" => "gzip,deflate",
+          "Connection" => "keep-alive"
         }
       }
       # Before post, grab schema (get current revision)
@@ -78,6 +78,16 @@ module Npolar
         @errors = m.errors # store to avoid revalidating
         v
       end
+
+    def username
+      # export NPOLAR_HTTP_USERNAME=http_username
+      @username ||= ENV["NPOLAR_API_USERNAME"] ||= ""
+    end
+
+    def password
+      # export NPOLAR_HTTP_PASSWORD=http_password
+      @password ||= ENV["NPOLAR_API_PASSWORD"] ||= ""
+    end
 
     end
   end

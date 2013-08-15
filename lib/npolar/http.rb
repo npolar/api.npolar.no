@@ -11,7 +11,7 @@ module Npolar
     extend Forwardable # http://www.ruby-doc.org/stdlib-1.9.3/libdoc/forwardable/rdoc/Forwardable.html
     
     # Delegate HTTP verbs to Faraday
-    def_delegators :http, :head, :put # not possible if we want exceptions
+    def_delegators :http, :delete, :get, :head, :patch, :post, :put
    
     def initialize(base="http://api.npolar.no", options={}, &builder)
       @base = base
@@ -29,19 +29,17 @@ module Npolar
     def http(&builder)
       @http ||= begin
         f = Faraday.new(base, options)
+
+        if password != "" and username != ""
+          f.basic_auth username, password
+        end
+
         f.build do |b|
           builder.call(b)
         end if builder
+
         f
       end
-    end
-
-    def get(uri, params={})
-      if password != "" and username != ""
-        http.basic_auth username, password
-      end
-      # ugh Faraday base needs to End with "/" and Uri start not with "/" -- @test/FIXME  
-      @response = http.get(uri, params)
     end
   
     def get_body(uri, params={})
