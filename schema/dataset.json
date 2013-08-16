@@ -38,7 +38,7 @@
       }
     },
     "iso_topics": {
-      "title": "Research topics",
+      "title": "ISO topic categories",
       "description": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml",
       "type": "array",
       "additionalItems": false,
@@ -63,8 +63,8 @@
       }
     },
 
-    "editors": {
-      "description": "List of metadata editors",
+    "edits": {
+      "description": "List of edits",
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -83,15 +83,6 @@
         }
       }
     },
-
-    "institutions": {
-      "description": "Participating institutions",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string"
-      }
-    },
     "contributors": {
       "description": "Any institutions or personnel involved in creating the dataset",
       "type": "array",
@@ -100,22 +91,25 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "first_name": {
-            "type": "string"
-          },
-          "last_name": {
-            "type": "string"
-          },
-         "role": {
-            "type": "string",
+          "name": { "type": "string" },
+          "surname": { "type": ["string", null] },
+          "roles": {
+            "type": "array",
             "required": true,
-            "enum": ["author", "custodian", "distributor", "originator", "owner", "pointOfContact", "principalInvestigator", "processor", "publisher", "resourceProvider", "user"] 
+            "items": {
+              "enum": ["author", "custodian", "distributor", "originator", "owner", "pointOfContact", "principalInvestigator", "processor", "publisher", "resourceProvider", "user"]
+            }
           },
           "email": {
-            "type": ["string","null"],
+            "type": ["string",null],
             "additionalItems": false,
             "format": "email"
-          }
+          },
+          "uri": {
+            "type": ["string",null],
+            "additionalItems": false
+          },
+          "person": { "type": "boolean" }
         }
       }
     },
@@ -205,6 +199,9 @@
         "type": "string"
       }
     },
+/*
+  ["chronounits", "discipline", "horizontalresolutionrange", "idnnode", "instruments", "isotopiccategory", "locations", "platforms", "projects", "providers", "rucontenttype", "sciencekeywords", "temporalresolutionrange", "verticalresolutionrange"]
+*/
     "science_keywords": {
       "description": "DIF keywords",
       "type": "array",
@@ -233,7 +230,9 @@
           },
           "Detailed_Variable": {
             "type": "string"
-          }
+          },
+          "ids": { "type": "array" }
+
         }
       }
     },
