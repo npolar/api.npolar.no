@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# ./bin/npolar_api_migrator.rb http://api:9393/dataset ::Metadata::Dataset ::Metadata::DatasetMigration0
+# $ ./bin/npolar_api_migrator.rb http://api:9393/dataset ::Metadata::Dataset ::Metadata::DatasetMigration0 --really=false > /dev/null
 
 require "bundler/setup"
 require "yajl/json_gem"
@@ -18,13 +18,14 @@ module Npolar
 
   begin
   
-    unless 3 == ARGV.size
-      raise ArgumentError, "Usage: \ #{__FILE__} {URI} {Model} {Migration}"
+    unless 4 == ARGV.size
+      raise ArgumentError, "Usage: \ #{__FILE__} {URI} {Model} {Migration} --really=true"
     end
     
     uri = ARGV[0].gsub(/\/$/, "")
     modelclass = ARGV[1]
     migratorclass = ARGV[2]
+    really = (ARGV[3] =~ /^(--really|--really=true)$/) != nil ? true : false
   
     client = Api::Client.new(uri)
     client.model = Factory.constantize(modelclass).new
@@ -35,15 +36,18 @@ module Npolar
     log = ::Logger.new(STDERR)
     log.level = Logger::INFO
 
-
     log.info "Running #{File.absolute_path(__FILE__)} batch #{batch} using #{migratorclass}"
     migrator = Api::Migrator.new
     migrator.log = log
     migrator.uri = uri
     migrator.client = client
-    migrator.migrations = Factory.constantize(migratorclass).new.migrations
+    
+    m = Factory.constantize(migratorclass).new
+    
+    migrator.migrations = m.migrations
+    migrator.select = m.select
     migrator.batch = batch
-    migrator.run
+    migrator.run(really)
 
     exit(0)
   
