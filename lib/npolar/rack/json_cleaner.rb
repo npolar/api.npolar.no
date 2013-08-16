@@ -16,14 +16,14 @@ module Npolar
       end
       
       def handle(request)
-        log.info "@JsonCleaner: Cleaning input!!!"
+        log.info "Cleaning input!!! [#{self.class.to_s}]"
         t0 = Time.now
         data = Yajl::Parser.parse(request.body.read)
         
         cleaned = clean(data)
         request.env["rack.input"] = StringIO.new(cleaned.to_json)
         
-        log.info "@JsonCleaner: Input cleaned in #{Time.now - t0}"
+        log.info "Input cleaned in #{Time.now - t0} [#{self.class.to_s}]"
         app.call(request.env)     
       end
       
