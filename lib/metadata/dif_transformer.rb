@@ -58,7 +58,7 @@ module Metadata
       # api
       :schema,
       # metadata 
-      :topics, :coverage, :progress, :investigators, :contributors, :activity, :placenames,
+      :topics, :coverage, :progress, :contributors, :activity, :placenames,
       :quality, :science_keywords, :editors, :sets, :comment
     ]
     
