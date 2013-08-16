@@ -27,7 +27,10 @@ module Npolar
       end
 
       def all
-        get_body("_all", {:fields=>"*"})
+        all = get_body("_all", {:fields=>"*"})
+        if model?
+          all.map {|d| model.class.new(d)}
+        end
       end
       alias :feed :all
 
@@ -81,12 +84,12 @@ module Npolar
 
     def username
       # export NPOLAR_HTTP_USERNAME=http_username
-      @username ||= ENV["NPOLAR_API_USERNAME"] ||= ""
+      @username ||= ENV["NPOLAR_API_USERNAME"]
     end
 
     def password
       # export NPOLAR_HTTP_PASSWORD=http_password
-      @password ||= ENV["NPOLAR_API_PASSWORD"] ||= ""
+      @password ||= ENV["NPOLAR_API_PASSWORD"]
     end
 
     end
