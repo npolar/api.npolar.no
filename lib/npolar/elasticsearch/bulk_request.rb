@@ -51,7 +51,7 @@ module Npolar
             pid = fork do
               body = build_request_document(slice)
               response = bulk_post(body)
-              log.info "Indexing of #{slice.size} items exited with status #{response.status}."
+              log.info "Indexing: #{slice.size} item(s). Status ==> #{response.status} [#{self.class.to_s}]"
             end
             
             unless workers == 7
