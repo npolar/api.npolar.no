@@ -26,7 +26,7 @@
         }
       }
     },
-    "progress": { "type": ["string",null], "enum": ["ongoing","complete", "planned", null]},
+    "progress": { "type": ["string", "null"], "enum": ["ongoing","complete", "planned", null]},
     "topics": {
       "title": "Research topics",
       "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
@@ -58,11 +58,9 @@
       "default": ["http://data.norge.no/nlod/no/1.0"],
       "items": {
         "type": "string",
-        "required": true,
         "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licences/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://www.lovdata.no/all/hl-19610512-002.html"]
       }
     },
-
     "edits": {
       "description": "List of edits",
       "type": "array",
@@ -73,14 +71,14 @@
         "properties": {
           "edited": {
             "type": "string",
-            "format": "date-time",
-            "required": true
+            "format": "date-time"
           },
           "email": {
             "type": "string",
             "format": "email"
           }
-        }
+        },
+        "required": ["edited"]
       }
     },
     "contributors": {
@@ -92,25 +90,25 @@
         "additionalProperties": false,
         "properties": {
           "name": { "type": "string" },
-          "surname": { "type": ["string", null] },
+          "surname": { "type": ["string", "null"] },
           "roles": {
             "type": "array",
-            "required": true,
             "items": {
               "enum": ["author", "custodian", "distributor", "originator", "owner", "pointOfContact", "principalInvestigator", "processor", "publisher", "resourceProvider", "user"]
             }
           },
           "email": {
-            "type": ["string",null],
+            "type": ["string","null"],
             "additionalItems": false,
             "format": "email"
           },
           "uri": {
-            "type": ["string",null],
+            "type": ["string","null"],
             "additionalItems": false
           },
           "person": { "type": "boolean" }
-        }
+        },
+        "required": ["roles"]
       }
     },
     "links": {
@@ -121,16 +119,15 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "rel": { "type": "string", "required": true },
-          "href": { "type": "string", "format": "uri", "required": true },
-          "title": { "type": ["string", null] },
-          "hreflang": { "type": ["string", null] },
-          "type": { "type": "string"
-          }
-        }
+          "rel": { "type": "string" },
+          "href": { "type": "string", "format": "uri" },
+          "title": { "type": ["string", "null"] },
+          "hreflang": { "type": ["string", "null"] },
+          "type": { "type": "string" }
+        },
+        "required": ["rel", "href"]
       }
     },
-
     "category": {
       "description": "",
       "type": "array",
@@ -139,12 +136,13 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "term": { "type": "string", "required": true },
-          "schema": { "type": "string", "format": "uri", "required": true, "default":"http://api.npolar.no/schema/category" },
+          "term": { "type": "string"},
+          "schema": { "type": "string", "format": "uri", "default":"http://api.npolar.no/schema/category" },
           "title": { "type": "string" },
           "label": { "type": "string" },
           "lang": { "type": "string", "pattern": "^[a-z]{2}$" }
-        }
+        },
+        "required": ["term", "schema"]
       }
     },
 
@@ -155,13 +153,10 @@
         "type": "object",
         "additionalProperties": true,
         "properties": {
-
-          "placename": {
-            "type": "string"
-          },
+          "placename": { "type": "string" },
           "country": {
             "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
-            "type": ["string",null],  
+            "type": ["string", "null"],
             "pattern": "^(([A-Z]|[a-z]){2})$"
           }
         }
@@ -174,8 +169,8 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "start": { "type": ["string", null] /*, "format": "date-time" */ },
-          "stop": { "type": ["string", null] }
+          "start": { "type": ["string", "null"] /*, "format": "date-time" */ },
+          "stop": { "type": ["string", "null"] }
         }
       }
     },
@@ -188,16 +183,12 @@
         "format": "uri"
       }
     },
-    "quality": {
-      "type": ["string", null]
-    },
+    "quality": { "type": ["string", "null"] },
     "sets": {
       "description": "Subsets",
       "type": "array",
       "additionalItems": false,
-      "items": {
-        "type": "string"
-      }
+      "items": { "type": "string" }
     },
 /*
   ["chronounits", "discipline", "horizontalresolutionrange", "idnnode", "instruments", "isotopiccategory", "locations", "platforms", "projects", "providers", "rucontenttype", "sciencekeywords", "temporalresolutionrange", "verticalresolutionrange"]
@@ -210,29 +201,14 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "Category": {
-            "type": "string"
-          },
-          "Topic": {
-            "type": "string"
-          },
-          "Term": {
-            "type": "string"
-          },
-          "Variable_Level_1": {
-            "type": "string"
-          },
-          "Variable_Level_2": {
-            "type": "string"
-          },
-          "Variable_Level_3": {
-            "type": "string"
-          },
-          "Detailed_Variable": {
-            "type": "string"
-          },
+          "Category": { "type": "string" },
+          "Topic": { "type": "string" },
+          "Term": { "type": "string" },
+          "Variable_Level_1": { "type": "string" },
+          "Variable_Level_2": { "type": "string" },
+          "Variable_Level_3": { "type": "string" },
+          "Detailed_Variable": { "type": "string" },
           "ids": { "type": "array" }
-
         }
       }
     },
@@ -250,7 +226,7 @@
     "source": {
       "description": "Source data",
       "additionalProperties": false,
-      "type": ["object", null],
+      "type": ["object", "null"],
       "properties": {
         "schema": { "type": "string" },
         "data": { "type": "object" }
@@ -260,6 +236,5 @@
     "rights" : { "type": "string" },
     "_id": { "description": "Internal id", "type": "string" },
     "_rev" : { "description": "Internal revision", "type": "string" }
-
   }
 }
