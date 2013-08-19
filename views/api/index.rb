@@ -185,7 +185,11 @@ module Views
           return []
         end 
         facets = (feed.facets ||=[]).map {|field,v|
-          {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => link_facet(field, c[0], c[1]) } } }
+          if v.respond_to?(:map)
+            {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => link_facet(field, c[0], c[1]) } } }
+          else
+            return []
+          end
         }
         facets = facets.select {|f| f[:counts].uniq.size > 0 }
       end
