@@ -108,6 +108,7 @@ module Npolar
       end
   
       def head(id, params={})
+        # FIXME => 500
         response = reader.head(id, headers, params)
         [response.status, response.headers, response.body]
       end
@@ -349,10 +350,11 @@ module Npolar
           return false
         end
 
-
-        if model.respond_to? :valid?
-    
+        if model.nil?
+          return true
+        end
         
+        begin
           docs.each do | document |
           
             # @model already exists, but we need a new clean object
@@ -367,8 +369,8 @@ module Npolar
 
           errors.any? ? false : true
 
-        else
-          true # !:)
+        rescue => e
+          raise e
         end
       end
 
