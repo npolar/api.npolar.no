@@ -30,7 +30,7 @@
     "run": { "type": ["string", "null"] },
     "open": { "type": "boolean" },
     "auth": { "type": "object" },
-    "author": { "type": ["string", "object"] },
+    "publisher": { "type": ["string", "object"] },
     "editor": { "type": ["string", "object"] },
     "updated": { "type": "string", "format": "datetime"},
     "published": { "type": "string", "format": "datetime"},
