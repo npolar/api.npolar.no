@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/project.json",
+  "type": "object",
+  "required": ["np_project_number"],
+  "properties": {
+    "id": { "type" :"string" },
+    "schema": { "type": "string" },
+    "title": { "type": "string" },
+    "acronym": { "type": "string" },
+    "summary": { "type": "string" },
+    "area_contribution": { "text": "string" },
+    "knowledge_gap_addressed": { "type": "string" },
+    "np_project_number": { "type": "string" },
+    "state": { "type": "string", "enum": ["planned", "ongoing", "completed"] },
+    "draft": { "type": "string", "enum": ["yes", "no"] },
+    "start_date": { "type": "string", "format": "date-time" },
+    "end_date": { "type": "string", "format": "date-time" },
+    "results_summary": { "type": "string" },
+    "ris_id": { "type": ["number", "null"] },
+    "type": { "type": "string", "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"] },
+    "topics": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": ["biology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "service", "topography"]
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "people": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "role": { "type": "string", "enum": ["projectLeader"] },
+          "employee_no": { "type": "string" },
+          "affiliation": { 
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "org": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "organisations": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "role": { "type": "string", "enum": ["owner"] }
+        }
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "north": { "type": "number", "maximum": 90.0, "minimum": -90.0 },
+          "east": { "type": "number", "maximum": 180.0, "minimum": -180.0 },
+          "south": { "type": "number", "maximum": 90.0, "minimum": -90.0  },
+          "west": { "type": "number", "maximum": 180.0, "minimum": -180.0  }
+        }
+      }
+    },
+    "placenames": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "placename": { "type": "string" },
+          "area": { "type": "string" },
+          "country": {
+            "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
+            "type": ["string", "null"],
+            "pattern": "^(([A-Z]|[a-z]){2})$"
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": { "type": "string" },
+          "href": { "type": "string", "format": "uri" },
+          "title": { "type": ["string", "null"] },
+          "hreflang": { "type": ["string", "null"] },
+          "type": { "type": "string" }
+        },
+        "required": ["rel", "href"]
+      }
+    }
+  }
+}
