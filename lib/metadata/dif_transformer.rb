@@ -5,14 +5,10 @@ require "uuidtools"
 require "gcmd"
 
 module Metadata
-  # Dataset Transformer for DIF Documents.
-  #
-  # [Functionality]
-  #   * Converts DIF into Norwegian Polar Data's dataset (schema)
-  #   * Exports a metadata dataset to DIF.
+  # DIF <-> http://api.npolar.no/schema/dataset.json
   #
   # [Licence]
-  #   This code is licenced under the {http://www.gnu.org/licenses/gpl.html GNU General Public Licence Version 3} (GPLv3)
+  # {http://www.gnu.org/licenses/gpl.html GNU General Public Licence Version 3} (GPLv3)
   #
   # @author Ruben Dens
   # @author Conrad Helgeland
@@ -21,6 +17,12 @@ module Metadata
     include ::Npolar::Api
 
     BASE = "/dataset/"
+
+    ROLE_MAP = {"TECHNICAL CONTACT" => "processor",
+      "INVESTIGATOR" => "principalInvestigator",
+      "DATA CENTER CONTACT" => "pointOfContact",
+      "INVESTIGATOR  (PROJECT LEADER)" => "principalInvestigator"
+    }
 
     def self.dif_hash_array(xml_or_file)
         if File.exists? xml_or_file
@@ -38,6 +40,7 @@ module Metadata
           dataset = transformer.to_dataset
           j << dataset
         end
+
         j
     end
 
@@ -54,40 +57,15 @@ module Metadata
 
     DATASET = [
       # atom
-      :id, :title, :category, :links, :summary, :published, :updated, :draft, :source,
+      :id, :title, :category, :iso_topics, :links, :summary, :published, :updated, :draft, :source,
       # api
       :schema,
       # metadata 
-      :topics, :coverage, :progress, :contributors, :activity, :placenames,
-      :quality, :science_keywords, :editors, :sets, :comment
+      :topics, :coverage, :progress, :people, :organisations, :activity, :placenames,
+      :quality, :gcmd, :edits, :sets, :comment, :rights
     ]
-    
-    DIF_MAP = {
-      :entry_id => "Entry_ID",
-      :entry_title => "Entry_Title",
-      :dataset_citation => "Data_Set_Citation",
-      :summary_abstract => "Summary",
-      :personnel => "Personnel",
-      :spatial_coverage => "Spatial_Coverage",
-      :dif_location => "Location",
-      :temporal_coverage => "Temporal_Coverage",
-      :iso_topic_category => "ISO_Topic_Category",
-      :keyword => "Keyword",
-      :related_url => "Related_URL",
-      :reference => "Reference",
-      :data_center => "Data_Center",
-      :parameters => "Parameters",
-      :idn_node => "IDN_Node",
-      :parent_dif => "Parent_DIF",
-      :data_quality => "Quality",
-      :use_constraints => "Use_Constraints",
-      :dataset_progress => "Data_Set_Progress",
-      :creation_date => "DIF_Creation_Date",
-      :revision_date => "Last_DIF_Revision_Date",
-      :metadata_name => "Metadata_Name",
-      :metadata_version => "Metadata_Version",
-      :private => "Private"
-    }
+
+   
     #!? Originating_Metadata_Node
     # extra metadata => topics
     
@@ -144,27 +122,27 @@ module Metadata
     def licences
       ["NLOD"]
     end
+
+    def iso_topics
+      if dif.ISO_Topic_Category? and dif.ISO_Topic_Category.respond_to?(:map)
+        dif.ISO_Topic_Category.map {|i| normalize_iso_topics(i) }
+      end
+    end
     
     def category
       c = dif.Keyword.nil? ? [] : object.Keyword.map {|k| {:term => k } }
 
-      unless object.ISO_Topic_Category.nil?
-        c += object.ISO_Topic_Category.map {|i| {:term => i, :schema => "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode" } }
-      end
+      #unless object.IDN_Node.nil?
+      #  c += object.IDN_Node.map {|n| { :term => n["Short_Name"], :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#IDN_Node"} }
+      #end
 
-      unless object.IDN_Node.nil?
-        c += object.IDN_Node.map {|n| { :term => n["Short_Name"], :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#IDN_Node"} }
-      end
+      #unless object.Project.nil?
+      #  c += object.Project.map {|p| { :term => p["Short_Name"], :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#Project"} }
+      #end
 
-      unless object.Project.nil?
-        c += object.Project.map {|p| { :term => p["Short_Name"], :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#Project"} }
-      end
-
-      unless dif.Originating_Metadata_Node.nil?
-        c += [{:term => dif.Originating_Metadata_Node, :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#Originating_Metadata_Node"}]
-      end
-
-
+      #unless (dif.Originating_Metadata_Node.nil? or "" == dif.Originating_Metadata_Node)
+      #  c += [{:term => dif.Originating_Metadata_Node, :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#Originating_Metadata_Node"}]
+      #end
       c
     end
 
@@ -172,12 +150,6 @@ module Metadata
       guess_topics
     end
     
-    def iso_topics
-      #if !object.ISO_Topic_Category.nil? && object.ISO_Topic_Category.any?
-      #  categories = object.ISO_Topic_Category.map{ |c| c.downcase }
-      #end
-    end
-
     def quality
       object.Quality
     end
@@ -236,67 +208,94 @@ module Metadata
     end
     
     def investigators
-      role_handler( "Investigator" )
+      contributors.select {|c| c.roles.include? "principalInvestigator" }
     end
     
-    def editors
-      editor = role_handler( "DIF Author" )
-      editor[0].edited = updated unless editor[0].nil?
-      editor
+    def edits
+      [] #editor = contribut( "DIF Author" )
+      #editor[0].edited = updated unless editor[0].nil?
+      #editor
     end
     
-    def contributors
-      contributors = role_handler( "Technical Contact" )
-      contributors = ( contributors | investigators ) - ( investigators ) if contributors.any?
-      contributors
-    end
-    
-    def role_handler( role )
-      contributors = []
-      
-      if ["Investigator", "DIF Author", "Technical Contact"].include?( role )
-        object.Personnel.each do | person |
-          
-          first_name = ""
-          first_name += person.First_Name unless person.First_Name.nil?
-          first_name += " " + person.Middle_Name unless person.Middle_Name.nil? or person.Middle_Name == ""
-          
-          if person.Role.include?( role )
-            contributors << Hashie::Mash.new( {
-              "first_name" => first_name,
-              "last_name" => person.Last_Name,
-              "email" => person.Email.nil? ? "" : person.Email[0]
-            } )
-          end unless person.Role.nil?
-        end unless object.Personnel.nil?
-      else
-        raise ArgumentError, "unknown DIF role!"
+    def people
+
+      people = []
+      if dif.Personnel? # It's not always there (for invalid documents)
+        people += dif.Personnel.map { |p|
+        self.class.contributor_from_personnel(p)
+      }
       end
-      
-      contributors
+      if dif.Data_Center?
+        dif.Data_Center.each do |dc|
+          if dc.Personnel?
+            people += dc.Personnel.map { |p|
+              self.class.contributor_from_personnel(p)
+          }
+          end
+          
+        end
+      end
+      people
+    end
+
+
+    def organisations
+      orgs = []
+      if dif.Data_Center? 
+        dif.Data_Center.select {|dc| dc.Data_Center_Name? }.each {|dc|          
+
+          roles = ["owner"]
+          name = dc.Data_Center_Name.Long_Name
+          url = dc.Data_Center_URL.gsub(/^http:\/\/www./, "http://").gsub(/\/$/, "")
+
+          if  dc.Data_Center_Name.Long_Name =~ /Norwegian Polar Institute/
+            name = "Norwegian Polar Institute"
+            url = "http://data.npolar.no"
+            roles << "publisher"   
+          end
+          
+          orgs << Hashie::Mash.new({
+            "name" => name,
+            "gcmd_short_name" => dc.Data_Center_Name.Short_Name,
+            "roles" => roles,
+            "uri" => url
+          })      
+        }
+      end          
+      orgs
+    end
+    
+    def self.contributor_from_personnel(p)
+      first_name = p.First_Name
+      if p.Middle_Name? and p.Middle_Name.size >= 1
+        first_name += " " + p.Middle_Name 
+      end
+
+      Hashie::Mash.new({
+        "first_name" => first_name,
+        "last_name" => p.Last_Name,
+        "email" => p.Email.nil? ? "" : p.Email[0],
+        "roles" => self.roles_from_dif_role(p.Role),
+      })
+    end
+
+    def self.roles_from_dif_role( role )
+      role.map {|r|
+        ROLE_MAP.key?(r.upcase) ? ROLE_MAP[r.upcase] : role
+      } 
     end
     
     def placenames
-      location_data = []
-
-      object.Location.each do | location |
-         
-          location_data << Hashie::Mash.new({
-            "placename" => location.Detailed_Location,
-            "country_code" => guess_country_code_from_location(location),
-          }) unless location.Detailed_Location.nil?
-      end unless object.Location.nil?
-
-      #if location_data.select {|l| !l["country_code"].nil? }.size == 0
-      #  location_data = location_data.map {|l|
-      #    l["country_code"] = guess_country_code_from_summary(summary)
-      #    l
-      #  }
-      #end
-
       
-      location_data
-    end
+      (dif.Location||[]).select {|location| location.Detailed_Location?}.map {
+        |location|
+          Hashie::Mash.new({
+            "placename" => location.Detailed_Location,
+            "area" => area_from_location(location),
+            "country_code" => guess_country_code_from_location(location),
+        })
+      }
+    end 
 
 
     
@@ -315,35 +314,53 @@ module Metadata
 
     end
     
+    # Links from
+    #  1. Related_URL
+    #  2. Data_Set_Citation
+    #
     def links
       links = []
+      if dif.Entry_ID =~ /^(org[.|-]polarresearch\-)/
+        via = "http://risapi.data.npolar.no/oai?verb=GetRecord&metadataPrefix=dif&identifier=oai:ris.npolar.no:#{dif.Entry_ID}"
+        links << {
+          "rel" => "via",
+          "href" => via,
+          "type" =>  "application/xml"
+        }        
+      end
+            # "metadata"-html <-- DatasetDOI   
+      # "related  " OnlineResource 
+
+      # 1. Related_URL
+      if dif.Related_URL?
       
-      object.Related_URL.each do | link |
-        type = link["URL_Content_Type"]["Type"] unless link.nil? or link["URL_Content_Type"].nil?
-        
-        unless type.nil?
-          
-          case( type )
-          when "GET DATA" then type = "data"
-          when "VIEW PROJECT HOME PAGE" then type = "project"
-          when "VIEW EXTENDED METADATA" then type = "metadata"
-          when "GET SERVICE" then type = "service"
-          else type = "related"
-          end
-          
-          link.URL.each do | url |
-            if url =~ /^http:\/\/.*/
-              links << {
-                "rel" => type,
-                "href" => url
-              }
-            end
-          end unless link.URL.nil?
-          
+      dif.Related_URL.each do | link |
+
+        if link.URL_Content_Type? and link.URL_Content_Type.Type?
+          dif_type = link.URL_Content_Type.Type
+        else
+          dif_type = ""
         end
-        
-      end unless object.Related_URL.nil? or !object.Related_URL.any?
-      
+ 
+        type = case dif_type
+          when "GET DATA" then "data"
+          when "VIEW PROJECT HOME PAGE" then "project"
+          when "VIEW EXTENDED METADATA" then "metadata"
+          when "GET SERVICE" then "service"
+          when "VIEW RELATED INFORMATION" then "related"
+          else dif_type
+        end
+         
+        link.URL.each do | url |
+
+          links << {
+            "rel" => type,
+            "href" => url,
+            "title" => link.Description
+          }  
+        end  
+      end
+      end
 
       # Link to parent metadata records
       unless object.Parent_DIF.nil? 
@@ -353,7 +370,8 @@ module Metadata
           
             links << {
               "rel" => "parent",
-              "href" => href(parent)
+              "href" => href(href(parent, "json")),
+              # FIXME oops "href": "/dataset//dataset/org.polarresearch-494.json.json" http://localhost:9393/dataset/7298f0f5-3c7c-5d95-852b-f2eb7585af47.json
             }
            
         end
@@ -361,21 +379,6 @@ module Metadata
       
       # Link to data centre
       
-      object.Data_Center.each do |datacenter|
-        
-        url = ""        
-        url = datacenter["Data_Center_URL"] unless datacenter["Data_Center_URL"].nil?        
-        url = "http://data.npolar.no" if url == "http://www.npolar.no"
-        if url =~ /data\.npolar\.no/
-          title = "Norwegian Polar Data"
-        end
-        
-        links << {
-          "rel" => "datacenter",
-          "href" => url,
-        } unless url == ""
-        
-      end unless object.Data_Center.nil?
       
       # Remove related if it's to data.npolar.no
       links = links.select {|l|
@@ -390,13 +393,14 @@ module Metadata
       end
       }
 
-      if id =~ /http\:\/\//
+      if id =~ /^http\:\/\//
         uri = id  
       else
         uri = href(id, "json")
       end
       
 
+      # Move to model!?
       links << link(uri, "edit", nil, "application/json")
       links << link(href(id, "dif"), "alternate", "DIF XML", "application/xml")
       links << link(href(id, "iso"), "alternate", "ISO 19139 XML", "application/vnd.iso.19139+xml")
@@ -422,28 +426,43 @@ module Metadata
     end
 
     def rights
-      dif.Use_Constraints +"\n"+dif.Access_Constraints
+      rights = ""
+      if dif.Use_Constraints?
+        #rights += "Use constraints: #{dif.Use_Constraints}"
+      end
+      if dif.Access_Constraints?
+        #rights += "\nAccess_Constraints: #{dif.Access_Constraints}"
+      end
+      rights
     end
     
     def sets
       sets = []
       
-      object.IDN_Node.each do | node |
+      dif.IDN_Node.each do | node |
         
         case( node["Short_Name"] )
-        when "IPY" then sets << "IPY"
-        when "DOKIPY" then sets << "DOKIPY"
-        when /^ARCTIC\/?.*/ then sets << "arctic"
-        when /^AMD\/?.*/ then sets << "antarctic"
+          when "IPY" then sets += ["IPY", "GCMD"]
+          when "DOKIPY" then sets << "DOKIPY"
+          when /^ARCTIC\/?.*/ then sets << "arctic"
+          when /^AMD\/?.*/ then sets << "antarctic"
         end
         
-      end unless object.IDN_Node.nil? or !object.IDN_Node.any?
-      
+      end
       sets.uniq
     end
     
-    def science_keywords
-      object.Parameters ||= []
+    def gcmd
+      { "sciencekeywords" => dif.Parameters || [],
+        "instruments" => dif.Sensor_Name || [],
+        "platforms" => dif.Source_Name || []
+        #"locations" => dif.Location || []
+        # projects
+        # disciplines
+        #  temporalresolutionrange  horizontalresolutionrange verticalresolutionrange
+        #chronounits
+        #idnnode
+      }
     end
     
     def draft
@@ -464,73 +483,13 @@ module Metadata
       #Hashie::Mash.new( { :type => ::Gcmd::Dif::NAMESPACE["dif"], :data => object } )
     end    
     
-    #################################
-    ###### To GCMD DIF Format #######
-    #################################
-    
-    def to_dif
-      dif = Hashie::Mash.new
-      
-      # Loop equivalent of dataset.temporal_coverage = temporal_coverage
-      DIF_MAP.each do |method, label|
-        dif.send( label + '=', self.send( method ) )
-      end
-      
-      dif
-    end
-    
-    def entry_id
-      object._id unless object._id.nil?
-    end
-    
-    def entry_title
-      object.title unless object.title.nil?
-    end
-    
-    def summary_abstract
-      { "Abstract" => object.summary }
-    end
-    
-    def personnel
-      personnel = []
-      
-      object.investigators.each do | investigator |
-        
-        contact_address = {}
-        
-        unless investigator.email.nil?
-
-          if investigator.email.split("@")[1] == "npolar.no"
-            contact_address = {
-              "Address" => ["Norwegian Polar Institute"],
-              "City" => "Tromsø",
-              "Province_or_State" => "Troms",
-              "Postal_Code" => "9296",
-              "Country" => "Norway"
-            }
-          end
-        end
-      
-        
-        personnel << {
-          "First_Name" => investigator.first_name.split(" ")[0],
-          "Middle_Name" => investigator.first_name.split(" ")[1],
-          "Last_Name" => investigator.last_name,
-          "Email" => investigator.email,
-          "Role" => ["Investigator"],
-          "Contact_Address" => contact_address
-        }
-      end unless object.investigators.nil?
-      
-      personnel
-    end
-    
     def dataset_citation
       citation = []
 
       citation << {
         "Dataset_Creator" => dataset_creator,
-        "Dataset_Title" => object.title
+        "Dataset_Title" => object.title,
+        #"Dataset_Publisher" 
       }
       
       citation
@@ -539,18 +498,17 @@ module Metadata
     def dataset_creator
       creator = ""
       
-      object.investigators.each_with_index do |investigator, i|
-        creator += "#{investigator["first_name"][0,1]}. #{investigator["last_name"]}"
-        creator += ", " unless i == object.investigators.size - 1
-      end unless object.investigators.nil? || !object.investigators.any?
-      
+      investigators = object.contributors.select{|c|c.person != false and c.roles.include? "principalInvestigator"}
+      creator = investigators.map {|investigator|
+        "#{investigator.name} #{investigator.surname}"
+      }.join(", ")
       creator
     end
     
     def spatial_coverage
       coords = []
       
-      object.locations.each do | loc |
+      object.coverage.each do | loc |
         if loc.north || loc.east || loc.south || loc.west
           
           north = south = east = west = ""
@@ -569,7 +527,7 @@ module Metadata
           
         end
         
-      end unless object.locations.nil?
+      end
       
       coords
     end
@@ -577,17 +535,17 @@ module Metadata
     def dif_location
       locations = []
       
-      object.locations.each do | loc |
-        if loc.placename || loc.area || loc.country_code
+      object.placenames.each do | loc |
+        if loc.placename || loc.country
           
-          area = loc.area.downcase unless loc.area.nil?
+          
           detailed_location = loc.placename unless loc.placename.nil?
           polar_region = {"Location_Category" => "GEOGRAPHIC REGION", "Location_Type" => "POLAR"}
           
 
           
 
-          case( area )
+          case( loc.placename )
 
           # set ARCTIC from sets
           #when "arctic" then
@@ -610,21 +568,21 @@ module Metadata
               "Location_Category" => "GEOGRAPHIC REGION",
               "Location_Type" => "ARCTIC"
             }
-          when "antarctic" then
+          when "Antarctic" then
             locations << {
               "Location_Category" => "CONTINENT",
               "Location_Type" => "ANTARCTICA",
               "Detailed_Location" => detailed_location
             }
             locations << polar_region
-          when "dronning_maud_land" then
+          when "Dronning Maud Land" then
             locations << {
               "Location_Category" => "CONTINENT",
               "Location_Type" => "ANTARCTICA",
               "Detailed_Location" => location_with_area(detailed_location, "Dronning Maud Land")
             }
             locations << polar_region
-          when "bouvetøya" then
+          when "Bouvetøya" then
             locations << {
               "Location_Category" => "OCEAN",
               "Location_Type" => "ATLANTIC OCEAN",
@@ -633,7 +591,7 @@ module Metadata
               "Detailed_Location" => detailed_location
             }
             locations << polar_region
-          when "peter_i_øy" then
+          when "Peter I Øy" then
             locations << {
               "Location_Category" => "OCEAN",
               "Location_Type" => "PACIFIC OCEAN",
@@ -646,7 +604,7 @@ module Metadata
               "Location_Type" => "ANTARCTICA",
               "Detailed_Location" => nil
             }
-          when "norway" then
+          when "Norway" then
             locations << {
               "Location_Category" => "CONTINENT",
               "Location_Type" => "EUROPE",
@@ -655,7 +613,7 @@ module Metadata
               "Location_Subregion3" => "NORWAY",
               "Detailed_Location" => detailed_location
             }
-          when "russia" then
+          when "Russia" then
             locations << {
               "Location_Category" => "CONTINENT",
               "Location_Type" => "EUROPE",
@@ -927,9 +885,20 @@ module Metadata
     end
     
     def private
-      "False"
+      dataset.draft == "yes" ? "True" : "False"
     end
     
+    protected
+
+    def area_from_location(location)
+      if location.Location_Subregion2 =~ /SVALBARD AND JAN MAYEN/i
+        "Svalbard"
+      else
+        ""
+      end
+
+    end
+
     def guess_country_code_from_location(location)
       if location.Location_Subregion2 =~ /SVALBARD AND JAN MAYEN/i
         "NO"
@@ -948,7 +917,7 @@ module Metadata
       elsif location.Location_Subregion2  =~ /Greenland/i
         "GL"
       else
-       nil
+        nil
       end
     end
 
@@ -968,7 +937,7 @@ module Metadata
       end
     end
 
-    # See #topic
+    # See #topics
     # Intended use is getting at least one topic from legacy DIF XMLs imported from RiS.
     def guess_topics
       topics = []
@@ -1050,6 +1019,37 @@ module Metadata
       else
         nil
       end
+    end
+
+    def normalize_iso_topics(dif_iso_topic)
+      step1 = dif_iso_topic.downcase.gsub(/(\s|\/)/, "")
+      iso_topic = case step1
+        when "geoscientificinformation"
+          "geoscientificInformation"
+        when "climatologymeteorologyatmosphere"
+          "climatologyMeteorologyAtmosphere"
+        when "imagerybasemapsearthcover"
+          "imageryBaseMapsEarthCover"
+        when "inlandwaters"
+          "inlandWaters"
+        when "intelligencemilitary"
+          "intelligenceMilitary"
+        when "planningcadastre"
+          "planningCadastre"
+        when "utilitiescommunication"
+          "utilitiesCommunication"
+        else
+          step1
+      end
+      unless ["biota", "boundaries", "climatologyMeteorologyAtmosphere", "economy",
+        "elevation", "environment", "farming", "geoscientificInformation", "health",
+        "imageryBaseMapsEarthCover", "inlandWaters", "intelligenceMilitary", "location",
+        "oceans", "planningCadastre", "society", "structure", "transportation",
+        "utilitiesCommunication"].include? iso_topic
+        raise "Bad ISO Topic Category: \"#{iso_topic}\""
+      end
+      iso_topic
+
     end
 
 #glaciers =>

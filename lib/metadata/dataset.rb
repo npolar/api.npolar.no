@@ -14,6 +14,10 @@ module Metadata
   #
   # @author Ruben Dens
   # @author Conrad Helgeland
+
+
+  # resourceProvider Data Center Contact
+# npolar.no-dataset originator npolar.no
   
   class Dataset < Hashie::Mash
 
@@ -37,11 +41,81 @@ module Metadata
       attr_accessor :formats, :accepts, :base
     end
 
-    def self.facets
-      [ "topics", "iso_topics", "sets", "relations", "licences", "draft",
-        "investigators", "institutions", "project", "category", "schemas", "placename",
-        "country_code", "progress", "editors", "rights"]
+    # This piece of code is intended to make DIFs valid (Parameter is required)
+    # ["biology", "data", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "topography"]
+#ATMOSPHERE (Science Keywords > EARTH SCIENCE) | concept 
+#HUMAN DIMENSIONS (Science Keywords > EARTH SCIENCE) | concept 
+#REFERENCE AND INFORMATION SERVICES (Science Keywords > EARTH SCIENCE SERVICES) | concept 
+#MODELS (Science Keywords > EARTH SCIENCE SERVICES) | concept 
+#AGRICULTURE (Science Keywords > EARTH SCIENCE) | concept 
+#ENVIRONMENTAL ADVISORIES (Science Keywords > EARTH SCIENCE SERVICES) | 
+# datahandkling
+
+
+    def self.dif_parameter(topic)
+      dif_Topic = case topic
+        when "biology"
+          "BIOSPHERE"
+        when "ecotoxicology"
+          ""
+
+        when "geology"
+          "SOLID EARTH"
+
+        when "glaciology"
+          "CRYOSPHERE"
+
+        when "geophysics"
+          ""
+
+        when "maps", "topography"
+          ""
+
+        when "seaice", "oceanography"
+          "OCEANS"
+
+        else
+          ""
+      end
+
+      dif_Term = case topic
+        when "seaice"
+          "SEA ICE"
+        else
+          ""
+      end
+      
+
+      { "Category" => "EARTH SCIENCE", "Topic" => dif_Topic, "Term" => dif_Term }
     end
+
+
+  #BIOSPHERE
+
+#{
+#"Category": "EARTH SCIENCE",
+#"Topic": "OCEANS",
+#"Term": "OCEAN PRESSURE",
+#"Variable_Level_1": "WATER PRESSURE"
+#},
+#{
+#"Category": "EARTH SCIENCE",
+#"Topic": "OCEANS",
+#"Term": "OCEAN TEMPERATURE",
+#"Variable_Level_1": "WATER TEMPERATURE"
+#},
+#{
+#"Category": "EARTH SCIENCE",
+#"Topic": "OCEANS",
+#"Term": "SALINITY/DENSITY",
+#"Variable_Level_1": "DENSITY"
+#},
+
+
+  #*TERRESTRIAL ECOSYSTEMS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
+  #*VEGETATION (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
+  #*ECOLOGICAL DYNAMICS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
+  #*AQUATIC ECOSYSTEMS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept
 
     # code or URI?
     #def self.licenses
@@ -120,8 +194,8 @@ module Metadata
         {:spec => "IPY:NO", :name => "International Polar Year: Norway", :description => "Norwegian contributions to the International Polar Year"},
         {:spec => "IPY", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008)"},
         {:spec => "cryoclim.net", :name => "Cryoclim", :description => "Climate monitoring of the cryosphere, see http://cryoclim.net"},
-        {:spec => "nmdc", :name => "Norwegian Marine Data Centre", :description => "Marine datasets"},
-        {:spec => "gcmd", :name => "Global Change Master Directory" }
+        {:spec => "NMDC", :name => "Norwegian Marine Data Centre", :description => "Marine datasets"},
+        {:spec => "GCMD", :name => "Global Change Master Directory" }
       ]
     end
 
@@ -154,7 +228,7 @@ module Metadata
         :links => links,
         :licences => licences,
         :rights => rights,
-        :institutions => contributors.map {|i|i.email.split("@")[1]}.uniq,
+        :institutions => organisations.map {|o|o[:uri].gsub(/http:\/\//, "")},
         :progress => doc.progress,
         :formats => self.class.formats,
         :accepts => self.class.accepts,
@@ -170,9 +244,9 @@ module Metadata
           solr.country = doc.placenames.map {|p| p["country"]}.uniq.select {|c|c != ""}
         end
 
-        if doc.science_keywords.respond_to? :map
+        if gcmd? and gcmd.sciencekeywords?
           cat = []
-          cat += doc["science_keywords"].map {|keyword| [keyword.Category ,keyword.Topic, keyword.Term, keyword.Variable_Level_1, keyword.Variable_Level_2, keyword.Variable_Level_3 ]}
+          cat += gcmd.sciencekeywords.map {|keyword| [keyword.Category, keyword.Topic, keyword.Term, keyword.Variable_Level_1, keyword.Variable_Level_2, keyword.Variable_Level_3 ]}
           cat = cat.flatten.uniq
           solr[:category] = cat
         end
@@ -222,6 +296,12 @@ module Metadata
       end
       solr[:text] = text
 
+      schema = ::Gcmd::Schema.new
+      errors = schema.validate_xml( self.to_dif ).map {|e|e["details"].to_s}
+
+      solr[:errors] = errors
+      solr[:valid] = errors.any? ? false : true
+
       solr[:link_edit] = "#{BASE.gsub(/\/$/, "")}/#{id}.json"
       solr[:link_html] = "http://data.npolar.no/dataset/#{id}"
       solr[:link_dif] = "/dataset/#{id}.dif"
@@ -230,17 +310,64 @@ module Metadata
       solr[:published] = doc.updated
       solr[:updated] = doc.updated
 
+      solr[:owners] = owners.map {|o|o.name}
+# org roles => owner publisher resP
+
+
+
       solr
 
     end
-    
+
+    def owners
+      (organisations||[]).select {|o| o.roles.include? "owner"}
+    end
+
     def from_dif
     end
     
+    def temporal_coverage
+    end
+
+    def to_dif_hash
+
+      # Make sure we have at least 1 Data_Center (required)
+      if organisations.nil? or organisations.none?
+        self[:organisations] = [{ "name" => "Norwegian Polar Institute",
+          "gcmd_short_name" => "NO/NPI",
+          "roles" => ["publisher"], "uri" => "http://data.npolar.no"}]
+      end
+      # Make sure we have 1 Data Center Contact (pointOfContact)
+      if pointOfContact.none?
+        self[:people] << {"last_name" => "Norwegian Polar Data Centre",
+          "roles" => ["pointOfContact"], "email" => "data[*]npolar.no"}
+      end
+
+      # Make sure we have at least 1 Parameter (required)
+      if gcmd.sciencekeywords.nil?
+        hash.Parameters = topics.map {|topic| Metadata::Dataset.dif_parameter(topic) }
+      end
+
+      #if hash.ISO_Topic_Category.nil?
+        # Can easily map from topics...
+      #end
+
+      DifHashifier.new(self).to_hash
+    end
+
+    def pointOfContact
+      (people||[]).select {|p| p.roles.include? "pointOfContact"} 
+    end
+
+    #def people(role=nil)
+    #  
+    #end
+
+
+
     def to_dif
-        t = Metadata::DifTransformer.new( self)
-        dif_json = t.to_dif
-        builder = ::Gcmd::DifBuilder.new( dif_json )
+        #t = Metadata::DifTransformer.new(self)
+        builder = ::Gcmd::DifBuilder.new( to_dif_hash )
         xml = builder.build_dif
         if xml =~ /^\<\?xml\sversion=\"1.0\" encoding=\"UTF-8\"\?\>/
           xml = xml.split('<?xml version="1.0" encoding="UTF-8"?>')[1]
@@ -270,13 +397,67 @@ module Metadata
     def uri(id)
       self.class.uri + id
     end
+
+    def self.before_request
+      lambda {|request|
+
+        # if POST, PUT - how about multi...
+
+        dataset = Metadata::Dataset.new
+        dataset = dataset.before_valid?(d)
+
+      #links << link(uri, "edit", nil, "application/json")
+      #links << link(href(id, "dif"), "alternate", "DIF XML", "application/xml")
+      #links << link(href(id, "iso"), "alternate", "ISO 19139 XML", "application/vnd.iso.19139+xml")
+      #links << link(href(id, "atom"), "alternate", "Atom XML", "application/atom+xml")
+      #links << link("http://data.npolar.no/dataset/#{id}", "alternate", "HTML", "text/html")
+
+
+#biology =>
+#<Parameters>
+#<Category>EARTH SCIENCE</Category>
+#<Topic>BIOSPHERE</Topic>
+
+
+    }
+    end
     
-    def schemas
-      JSON_SCHEMAS
+    def before_valid?
+
+      if activity?      
+        activity.map {|a|
+          if a.start? and a.start == ""
+            a.delete :start
+          end
+          if a.stop? and a.stop == ""
+            a.delete :stop
+          end
+          a
+        }
+      end
+
+      if coverage?
+        coverage.map {|c|
+          if c.north?
+            c.north = c.north.to_f
+          end
+          if c.south?
+            c.south = c.south.to_f
+          end
+          if c.east?
+            c.east = c.east.to_f
+          end
+          if c.west?
+            c.west = c.west.to_f
+          end
+        }
+      end      
+      self
+
     end
 
-    def errors
-      @errors ||= nil
+    def schemas
+      JSON_SCHEMAS
     end
     
   end
