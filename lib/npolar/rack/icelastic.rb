@@ -44,12 +44,13 @@ module Npolar
           
           response = app.call(request.env)
           
-          if [200, 201].include?( response.status )
+          if [200, 201].include?( response.status ) && request.request_method == 'POST'
 
             body = JSON.parse( response.body.first )
-            if body.has_key?("ids")
-              body['ids'].each_with_index do |id, i|
-                docs[i]["id"] = id
+
+            if body['response'].has_key?("ids")
+              body['response']['ids'].each_with_index do |id, i|
+                docs[i]["id"] ||= id
               end
             elsif body.has_key?("id")
                 docs["id"] = body["id"]
