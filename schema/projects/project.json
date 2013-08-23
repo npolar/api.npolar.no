@@ -5,6 +5,7 @@
   "required": ["np_project_number"],
   "properties": {
     "id": { "type" :"string" },
+    "collection" : { "type": "string", "default": "project" },
     "schema": { "type": "string" },
     "title": { "type": "string" },
     "acronym": { "type": "string" },
