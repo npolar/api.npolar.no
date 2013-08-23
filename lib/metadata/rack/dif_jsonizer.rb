@@ -39,7 +39,7 @@ module Metadata
       # Only called if #condition? is true
       def handle(request)
         case request.request_method
-          when "GET" then dif_from_json(request)
+          when "GET" then xml_from_json(request)
           when "POST", "PUT" then dif_save(request)
         end
       end
@@ -75,7 +75,7 @@ module Metadata
         app.call(request.env)
       end
 
-      def dif_from_json(request)
+      def xml_from_json(request)
 
         response = app.call(request.env)
 
@@ -137,8 +137,7 @@ module Metadata
       end
 
       def dif_json(metadata_dataset)
-        transform = Metadata::DifTransformer.new( metadata_dataset )
-        transform.to_dif
+        Metadata::Dataset.new( metadata_dataset ).to_dif_hash
       end
 
       def dif_xml(dif_json)
@@ -154,13 +153,17 @@ module Metadata
           e.title = atom["title"] unless atom["title"].nil?
           e.summary = atom["summary"] unless atom["summary"].nil?
 
-          atom.investigators.each do |author|
-            e.authors << ::Atom::Person.new(:name => author.first_name+" "+author["last_name"], :email => author.email)
-          end
+          #atom.investigators.each do |author|
+          #  e.authors << ::Atom::Person.new(:name => author.first_name+" "+author["last_name"], :email => author.email)
+          #end
+          if atom.contributors? and atom.contributors.respond_to?(:each)
+          
+          
           atom.contributors.each do |contributor|
             e.contributors << ::Atom::Person.new(:name => contributor.first_name+" "+contributor.last_name, :email => contributor.email)
           end
-          
+            #code
+          end
           atom["links"].each do |link|
             e.links << ::Atom::Link.new(:href => link.href, :title => link.title, :rel => link.rel, :type => link.type)
           end unless atom["links"].nil?
@@ -188,8 +191,15 @@ module Metadata
           #  end
           #end
           #
-          e.published = Time.parse(atom["published"])
-          e.updated = Time.parse(atom["updated"])
+          unless atom.published.nil?
+            e.published = Time.parse(atom["published"])
+          end
+          unless atom.updated.nil?
+            e.updated = Time.parse(atom["updated"])
+          end
+          
+          #
+          #e. = Time.parse(atom["updated"])
 
           #e.rights = atom["rights"]
 
