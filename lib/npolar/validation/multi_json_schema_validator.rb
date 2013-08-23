@@ -38,7 +38,7 @@ module Npolar
         @errors
       end
       
-      # Implement in model
+      # @override Implement in model
       def schemas(context=nil)
         if @schemas.nil? or [] == @schemas
           raise "Class #{self.class.name} lacks JSON schemas"
@@ -50,8 +50,10 @@ module Npolar
       # Sets @error to Array of error reports
       # @return true|false
       # @raises Exception on blank or invalid schemas
+      # @override
       def valid?(context=nil)
         @errors = []
+        document = before_valid?
 
         if schemas.nil? or [] == schemas
           raise "Class #{self.class.name} lacks JSON schemas"
@@ -68,7 +70,7 @@ module Npolar
           end
 
           # FIXME validate schema and raise Exception
-          result = JSON::Validator.fully_validate(schema, self,
+          result = JSON::Validator.fully_validate(schema, document,
             :errors_as_objects => true, :validate_schema => false,
             :insert_defaults => true).flatten
 
@@ -83,6 +85,11 @@ module Npolar
         
         false # if no schema returned true, it's false (invalid)
 
+      end
+
+      # @override Implement in model
+      def before_valid?
+        self
       end
 
     end
