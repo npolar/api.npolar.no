@@ -1,9 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/dataset",
+  "id": "http://api.npolar.no/schema/dataset-0.10",
   "title": "Dataset",
   "description": "Metadata describing a dataset",
-  "type": "object",
+  "type": "object",   
   "additionalProperties": false,
   "required": ["title", "schema", "topics", "licences"],
   "properties": {
@@ -28,19 +28,19 @@
     },
     "progress": { "type": ["string", "null"], "enum": ["ongoing","complete", "planned", null]},
     "topics": {
-      "title": "Research topics",
-      "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
+      "title": "NPI topics",
+      "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'service', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
       "type": "array",
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["biology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "topography"]
+        "enum": ["biology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "service", "topography"]
       }
     },
     "iso_topics": {
       "title": "ISO topic categories",
       "description": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml",
-      "type": "array",
+      "type": ["array","null"],
       "additionalItems": false,
       "items": {
         "type": "string",
@@ -73,16 +73,50 @@
             "type": "string",
             "format": "date-time"
           },
-          "email": {
-            "type": "string",
-            "format": "email"
-          }
+          "email": { "type": "string" },
+          "name": { "type": "string" }
         },
-        "required": ["edited"]
+        "required": ["edited", "name"]
       }
     },
-    "contributors": {
-      "description": "Any institutions or personnel involved in creating the dataset",
+    "people": {
+      "description": "People involved in creating the dataset, roles from http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml with 'editor' (meaning metadata editor) added",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "roles": {
+            "type": "array",
+            "items": {
+              "enum": ["principalInvestigator", "processor", "pointOfContact", "editor"]
+            }
+          },
+          "email": {
+            "type": ["string","null"],
+            "additionalItems": false
+          },
+          "href": {
+            "type": ["string","null"],
+            "additionalItems": false
+          },
+          "affilation": { "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "name": { "type": "string" },
+              "href": { "type": "string", "format": "uri" }
+            }
+          }
+        },
+        "required": ["first_name", "last_name", "roles"]
+      }
+    },
+
+    "organisations": {
+      "description": "Organisations connected to the dataset",
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -90,11 +124,12 @@
         "additionalProperties": false,
         "properties": {
           "name": { "type": "string" },
-          "surname": { "type": ["string", "null"] },
+          "gcmd_short_name": { "type": ["string", "null"] },
+          "shortname": { "type": ["string", "null"] },
           "roles": {
             "type": "array",
             "items": {
-              "enum": ["author", "custodian", "distributor", "originator", "owner", "pointOfContact", "principalInvestigator", "processor", "publisher", "resourceProvider", "user"]
+              "enum": ["originator", "owner",  "publisher", "resourceProvider"]
             }
           },
           "email": {
@@ -105,10 +140,9 @@
           "uri": {
             "type": ["string","null"],
             "additionalItems": false
-          },
-          "person": { "type": "boolean" }
+          }
         },
-        "required": ["roles"]
+        "required": ["name", "roles", "uri"]
       }
     },
     "links": {
@@ -145,7 +179,6 @@
         "required": ["term", "schema"]
       }
     },
-
     "placenames": {
       "type": "array",
       "additionalItems": false,
@@ -154,6 +187,7 @@
         "additionalProperties": true,
         "properties": {
           "placename": { "type": "string" },
+          "area": { "type": "string" },
           "country": {
             "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
             "type": ["string", "null"],
@@ -169,18 +203,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "start": { "type": ["string", "null"] /*, "format": "date-time" */ },
-          "stop": { "type": ["string", "null"] }
+          "start": { "type": ["string", "null"], "format": "date-time" },
+          "stop": { "type": ["string", "null"],  "format": "date-time" }
         }
-      }
-    },
-
-    "parameters": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string",
-        "format": "uri"
       }
     },
     "quality": { "type": ["string", "null"] },
@@ -190,25 +215,25 @@
       "additionalItems": false,
       "items": { "type": "string" }
     },
-/*
-  ["chronounits", "discipline", "horizontalresolutionrange", "idnnode", "instruments", "isotopiccategory", "locations", "platforms", "projects", "providers", "rucontenttype", "sciencekeywords", "temporalresolutionrange", "verticalresolutionrange"]
-*/
-    "science_keywords": {
-      "description": "DIF keywords",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "Category": { "type": "string" },
-          "Topic": { "type": "string" },
-          "Term": { "type": "string" },
-          "Variable_Level_1": { "type": "string" },
-          "Variable_Level_2": { "type": "string" },
-          "Variable_Level_3": { "type": "string" },
-          "Detailed_Variable": { "type": "string" },
-          "ids": { "type": "array" }
+    "gcmd": { "description": "GCMD DIF, see http://gcmd.gsfc.nasa.gov/add/difguide/index.html", "type": "object",
+      "properties": {
+        "sciencekeywords": {
+          "description": "DIF keywords",
+          "type": "array",
+          "additionalItems": false,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "Category": { "type": "string" },
+              "Topic": { "type": "string" },
+              "Term": { "type": "string" },
+              "Variable_Level_1": { "type": "string" },
+              "Variable_Level_2": { "type": "string" },
+              "Variable_Level_3": { "type": "string" },
+              "Detailed_Variable": { "type": "string" }
+            }
+          }
         }
       }
     },
@@ -235,6 +260,9 @@
     },
     "rights" : { "type": "string" },
     "_id": { "description": "Internal id", "type": "string" },
-    "_rev" : { "description": "Internal revision", "type": "string" }
+    "_rev" : { "description": "Internal revision", "type": "string" },
+    "publisher": { "type": "string" },
+    "collection": { "type": "string" },
+    "editor" : {  "type": "string" }
   }
 }
