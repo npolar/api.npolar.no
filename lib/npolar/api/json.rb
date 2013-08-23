@@ -140,7 +140,7 @@ module Npolar
       # Adds "published" "updated" "author" "editor" before POST/PUT
       def self.before_lambda
         lambda {|request|
-          
+
           if ["POST", "PUT"].include? request.request_method and "application/json" == request.media_type
               body = request.body.read
               request.body.rewind
@@ -158,7 +158,7 @@ module Npolar
                   d.published = d.updated
                 end
                 unless d.author?
-                  d.author = request.username
+                  d.publisher = request.username
                 end
                 unless d.editor?
                   d.editor = request.username
