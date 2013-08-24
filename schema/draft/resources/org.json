@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/org",
+  "type": "object",
+  "additionalPorperties": false,
+  "properties": {
+    "name": {"type": "string"},
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rel": { "enum": ["homepage"] },
+        "href": { "type":"string", "format": "uri" },
+        "hreflang": { "type": "string" },
+        "content_type": { "type": "string", "default": "text/html" }
+      }
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "street": { "enum": ["homepage"] },
+        "city": { "type":"string", "format": "uri" },
+        "postal_code": {"type": "string", "pattern": "^[0-9]+$"},
+        "province": { "type": "string" },
+        "country": { "type": "string" },
+        "content_type": { "type": "string", "default": "text/html" }
+      }
+    }
+  },
+  "required": ["name"]
+}
