@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/publication.json",
+  "title": "NPI Publication Format",
+  "description": "Metadata format for scientific publications on http://api.npolar.no/",
+  "type": "object",
+  "properties": {
+    "id": {"type": "string"},
+    "schema": { "enum": ["http://api.npolar.no/schema/publication.json"] },
+    "title": { "type": "string" },
+    "scientific_summary": { "type": "string" },
+    "date": { "type": "string", "format": "date-time" },
+    "website": { "type": "boolean" },
+    "publication_category": { "enum": ["Peer-reviewed Publications"] },
+    "affiliated_NP": { "type": "boolean" },
+    "affiliated_ICE": { "type": "boolean" },
+    "authors": { 
+      "type": "array", 
+      "additionalItems": false,
+      "items": { 
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "surname": {"type": "string"},
+          "email": {"type": "string", "format": "email"}
+        },
+        "required": ["name", "surname"]
+      } 
+    },
+    "publication": { "type": "string" },
+    "year": { "type": "number" },
+    "publication_ris_id": { "type": ["number", "null"] },
+    "links": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": { "enum": ["project", "dataset", "related"] },
+          "href": { "type": "string", "format": "uri" },
+          "hreflang": { "type": "string" },
+          "title": { "type": "string" },
+          "type": { "type": "string" }
+        }
+      }
+    },
+    "identifiers": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": { "enum": ["DOI", "ISSN"] },
+        "id": { "type": "string" }
+      }
+    },
+    "public": { "type": "boolean" },
+    "volume": { "type": "number" },
+    "issue": { "type": "number" },
+    "suppl": { "type": "number" },
+    "from_page": { "type": "number" },
+    "to_page": { "type": "number" },
+    "tot_number_pages": { "type": ["number", "null"] },
+    "article_no": { "type": "number" },
+    "topic": { 
+      "enum": [
+        "biology", "ecotoxicology", "geology", "geophysics", "glaciology", 
+        "maps", "oceanography", "other", "seaice", "topography"
+      ] 
+    },
+    "internationalization": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lang": { "enum": ["nb", "nn"] },
+          "title": { "type": "string" },
+          "non_scientific_summary": { "type": "string" },
+          "keywords": {
+            "type": "array",
+            "aditionalItems": false,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
