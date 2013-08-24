@@ -1,9 +1,0 @@
-{ "description": "Schema for an Array of metadata records",
-  "type": "array",
-  "additionalItems": false,
-  "items": {
-    "extends": {
-      "$ref": "link to Document schema"
-    }
-  }
-}
