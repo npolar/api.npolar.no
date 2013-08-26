@@ -59,7 +59,7 @@ module Metadata
       # atom
       :id, :title, :category, :iso_topics, :links, :summary, :published, :updated, :draft, :source,
       # api
-      :schema,
+      :schema,:collection,
       # metadata 
       :topics, :coverage, :progress, :people, :organisations, :activity, :placenames,
       :quality, :gcmd, :edits, :sets, :comment, :rights
@@ -164,6 +164,10 @@ module Metadata
       ::Metadata::Dataset::JSON_SCHEMA_URI
     end
     
+    def collection
+      "dataset"
+    end
+
     def updated
       date = object.Last_DIF_Revision_Date ||= Date.new(0).xmlschema
       date += "T12:00:00Z" unless date == "" or date =~ ISO8601_DATETIME_REGEX
