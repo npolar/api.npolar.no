@@ -103,7 +103,7 @@
             "type": ["string","null"],
             "additionalItems": false
           },
-          "affilation": { "type": "object",
+          "affiliation": { "type": "object",
             "additionalProperties": true,
             "properties": {
               "name": { "type": "string" },
