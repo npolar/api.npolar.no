@@ -220,16 +220,15 @@ module Metadata
         :topics => topics,
         :tags => tags,
         :sets => sets,
-        :iso_topics => doc["iso_topics"],
-        :licences => doc["licenses"],
-        :draft => doc["draft"],
+        :iso_topics => iso_topics,
+        :licences => licenses,
+        :draft => draft,
         :workspace => "metadata",
         :collection => "dataset",
         :links => links,
-        :licences => licences,
         :rights => rights,
-        :institutions => organisations.map {|o|o[:uri].gsub(/http:\/\//, "")},
-        :progress => doc.progress,
+        #:institutions => organisations.map {|o|o[:uri].gsub(/http:\/\//, "")},
+        :progress => progress,
         :formats => self.class.formats,
         :accepts => self.class.accepts,
         :accept_mimetypes => self.class.mimetypes,
@@ -240,8 +239,8 @@ module Metadata
         :label => []
       })
 
-        if doc.placenames?
-          solr.country = doc.placenames.map {|p| p["country"]}.uniq.select {|c|c != ""}
+        if placenames?
+          solr.country = placenames.map {|p| p["country"]}.uniq.select {|c|c != ""}
         end
 
         if gcmd? and gcmd.sciencekeywords?
@@ -252,21 +251,21 @@ module Metadata
         end
 
         if category?
-          solr[:category] += doc["category"].map {|c| c["term"] }
-          solr[:schemas] += doc["category"].map {|c| c["schema"] }
-          solr[:label] +=  doc["category"].map {|c| c["label"] }
-        end
-          solr[:iso_topics] = doc["iso_topics"] #.select {|c| c["schema"] == "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode"}.map {|c| c["term"] }
-
-        if doc.key? "investigators"
-          solr[:investigators] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
-          solr[:investigator_emails] = doc["investigators"].select {|i|i.email?}.map {|i| "#{i["email"]}"}
+          solr[:category] += category.map {|c| c["term"] }
+          solr[:schemas] += category.map {|c| c["schema"] }
+          solr[:label] +=  category.map {|c| c["label"] }
         end
         
-        if doc.key? "contributors"
-          solr[:contributors] = doc["contributors"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
-          solr[:contributor_emails] = doc["contributors"].select {|i|i.email?}.map {|i| "#{i["email"]}"}
-        end
+        #if doc.key? "investigators"
+        #TODO
+        #  solr[:investigators] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
+        #  solr[:investigator_emails] = doc["investigators"].select {|i|i.email?}.map {|i| "#{i["email"]}"}
+        #end
+        
+        #if doc.key? "contributors"
+        #  solr[:contributors] = doc["contributors"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
+        #  solr[:contributor_emails] = doc["contributors"].select {|i|i.email?}.map {|i| "#{i["email"]}"}
+        #end
 
         # Reduce locations to 1 bounding box
         if doc.locations.respond_to? :map
@@ -307,8 +306,8 @@ module Metadata
       solr[:link_dif] = "/dataset/#{id}.dif"
       solr[:link_iso] = "/dataset/#{id}.iso"
 
-      solr[:published] = doc.updated
-      solr[:updated] = doc.updated
+      solr[:published] = published
+      solr[:updated] = updated
 
       solr[:owners] = owners.map {|o|o.name}
 # org roles => owner publisher resP
@@ -323,7 +322,7 @@ module Metadata
       (organisations||[]).select {|o| o.roles.include? "owner"}
     end
 
-    def from_dif
+    def load_dif
     end
     
     def temporal_coverage
