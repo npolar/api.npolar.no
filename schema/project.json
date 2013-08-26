@@ -1,8 +1,8 @@
 {
-  "$schema": "http://json-schema/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://api.npolar.no/schema/project.json",
   "type": "object",
-  "required": ["np_project_number"],
+  "required": ["title"],
   "properties": {
     "id": { "type" :"string" },
     "collection" : { "type": "string", "default": "project" },
@@ -15,10 +15,10 @@
     "np_project_number": { "type": "string" },
     "state": { "type": "string", "enum": ["planned", "ongoing", "completed"] },
     "draft": { "type": "string", "enum": ["yes", "no"] },
-    "start_date": { "type": "string", "format": "date-time" },
-    "end_date": { "type": "string", "format": "date-time" },
+    "start_date": { "type": "string" },
+    "end_date": { "type": "string" },
     "results_summary": { "type": "string" },
-    "ris_id": { "type": ["number", "null"] },
+    "ris_id": { "type": ["string", "null"] },
     "type": { "type": "string", "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"] },
     "topics": {
       "type": "array",
@@ -62,7 +62,7 @@
         "additionalProperties": false,
         "properties": {
           "name": { "type": "string" },
-          "role": { "type": "string", "enum": ["owner"] }
+          "role": { "type": "string", "enum": ["owner", "partner"] }
         }
       }
     },
