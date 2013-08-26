@@ -147,8 +147,7 @@ module Npolar
               if body !~ /^\s*\{.*\}\s*$/                
                 return request
               end
-              
-              
+               
               begin
 
                 d = Hashie::Mash.new(JSON.parse body)                
