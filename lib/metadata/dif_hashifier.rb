@@ -34,7 +34,7 @@ module Metadata
           "Source_Name" => nil,
           "Temporal_Coverage" => temporal_coverage,
           "Paleo_Temporal_Coverage" => [],
-          "Data_Set_Progress" => [],
+          "Data_Set_Progress" => data_set_progress,
           "Spatial_Coverage" => spatial_coverage,
           "Location" => location,
           "Data_Resolution" => data_resolution,
@@ -92,6 +92,17 @@ module Metadata
       } 
     end
 
+    def data_set_progress
+      case progress
+        when "complete", "", nil
+          "Complete"
+        when "ongoing"
+          "In Work"
+        when "planned"
+          "Planned"
+      end
+    end
+
     def discipline
       discipline_name = lambda {|topic|
         case topic
@@ -125,6 +136,15 @@ module Metadata
         "Dataset_DOI" =>  doi,
         "Online_Resource" => online_resource 
       }
+    end
+
+    def idn_node
+#      <IDN_Node>
+#<Short_Name>ARCTIC/NO</Short_Name>
+#</IDN_Node>
+#<IDN_Node>
+#<Short_Name>ARCTIC</Short_Name>
+#</IDN_Node>
     end
   
     def iso_topic_category
