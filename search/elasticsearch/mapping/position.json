@@ -1,0 +1,24 @@
+{
+  "position":{
+    "properties": {
+      "system":{"type":"string"},
+      "hardware_id":{"type":"string"},
+      "altitude":{"type":"string"},
+      "date_time":{"type":"date"},
+      "latitude":{"type":"float"},
+      "longitude":{"type":"float"},
+      "quality":{"type":"string"},
+      "satellite":{
+        "properties": {
+          "latitude":{"type":"float"},
+          "longitude":{"type":"float"},
+          "title":{"type":"string"},
+          "quality":{"type":"string"},
+          "contact_time":{"type":"string"}
+        }
+      },
+      "data":{"enabled":false},
+      "_parent":{"type":"deployment"}
+    }
+  }
+}

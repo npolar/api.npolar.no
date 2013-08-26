@@ -1,0 +1,16 @@
+{
+  "result":{
+    "properties":
+    {
+      "title":{"type":"string"},
+      "content":{"type":"string"},
+      "workspace":{"type":"string"},
+      "collection":{"type":"string"},
+      "state":{"type":"string"},
+      "topic":{"type":"string"},
+      "primary_data":{"type":"string"},
+      "resource_uri":{"type":"string"},
+      "description_uri":{"type":"string"}
+    }
+  }
+}

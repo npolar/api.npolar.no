@@ -1,0 +1,105 @@
+{
+  "dataset":{
+    "properties":
+    {
+      "id":{"type":"string"},
+      "title":{"type":"string"},
+      "summary":{"type":"string"},
+      "collection":{"type":"string"},
+      "schema":{"type":"string"},
+      "progress":{"type":"string"},
+      "licences":{"type":"string"},
+      "topic":{"type":"string"},
+      "edits":{
+        "properties":{
+          "edited":{"type":"string"},
+          "email":{"type":"string"},
+          "name":{"type":"string"}
+        }
+      },
+      "people":{
+        "properties": {
+          "first_name":{"type":"string"},
+          "last_name":{"type":"string"},
+          "roles":{"type":"string"},
+          "email":{"type":"string"},
+          "href":{"type":"string"},
+          "affiliation":{"type":"string"}
+        }
+      },
+      "organisations": {
+        "properties": {
+          "name":{"type":"string"},
+          "gcmd_short_name":{"type":"string"},
+          "shortname":{"type":"string"},
+          "roles":{"type":"string"},
+          "email":{"type":"string"},
+          "uri":{"type":"string"}
+        }
+      },
+      "links":{
+        "properties": {
+          "rel":{"type":"string"},
+          "href":{"type":"string"},
+          "hreflang":{"type":"string"},
+          "type":{"type":"string"},
+          "title":{"type":"string"}
+        }
+      },
+      "category":{
+        "properties":{
+          "term":{"type":"string"},
+          "schema":{"type":"string"},
+          "title":{"type":"string"},
+          "label":{"type":"string"},
+          "lang":{"type":"string"}
+        }
+      },
+      "placenames":{
+        "properties": {
+          "placename":{"type":"string"},
+          "area":{"type":"string"},
+          "country":{"type":"string"}
+        }
+      },
+      "coverage":{
+        "properties":{
+          "north":{"type":"float"},
+          "east":{"type":"float"},
+          "south":{"type":"float"},
+          "west":{"type":"float"}
+        }
+      },
+      "activity":{
+        "properties": {
+          "start":{"type":"date"},
+          "stop":{"type":"date"}
+        }
+      },
+      "iso_topics":{"type":"string"},
+      "tags":{"type":"string"},
+      "quality":{"type":"string"},
+      "draft":{"type":"string"},
+      "sets":{"type":"string"},
+      "gcmd":{
+        "properties":{
+          "science_keywords":{
+            "properties": {
+              "Category":{"type":"string"},
+              "Topic":{"type":"string"},
+              "Term":{"type":"string"},
+              "Variable_Level_1":{"type":"string"},
+              "Variable_Level_2":{"type":"string"},
+              "Variable_Level_3":{"type":"string"},
+              "Detailed_Variable":{"type":"string"}
+            }
+          }
+        }
+      },
+      "published":{"type":"date"},
+      "updated":{"type":"date"},
+      "comment":{"type":"string"},
+      "source":{"enabled":"false"}
+    }
+  }
+}

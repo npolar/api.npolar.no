@@ -1,0 +1,23 @@
+{
+  "webcam":{
+    "properties":
+    {
+      "_id":{"type":"string"},
+      "_rev":{"type":"string"},
+      "id":{"type":"string"},
+      "description_id":{"type":"string"},
+      "workspace":{"type":"string"},
+      "collection":{"type":"string"},
+      "state":{"type":"string"},
+      "content":{"type":"string"},
+      "topic":{"type":"string"},
+      "created":{"type":"date"},
+      "placename":{"type":"string"},
+      "area":{"type":"string"},
+      "latitude":{"type":"float"},
+      "longitude":{"type":"float"},
+      "download_uri":{"type":"string"},
+      "_attachments":{"enabled":false}
+    }
+  }
+}

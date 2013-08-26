@@ -1,0 +1,26 @@
+{
+  "polar_bear":{
+    "properties":
+    {
+      "_id":{"type":"string"},
+      "_rev":{"type":"string"},
+      "id":{"type":"string"},
+      "system":{"type":"string"},
+      "hardware_id":{"type":"string"},
+      "date_time":{"type":"date"},
+      "latitude":{"type":"float"},
+      "longitude":{"type":"float"},
+      "altitude":{"type":"float"},
+      "quality":{"type":"string"},
+      "satellite":{
+        "properties": {
+          "latitude":{"type":"float"},
+          "longitude":{"type":"float"},
+          "altitude":{"type":"float"},
+          "contact_time":{"type":"date"},
+          "quality":{"type":"string"}
+        }
+      }
+    }
+  }
+}

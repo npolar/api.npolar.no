@@ -1,0 +1,19 @@
+{
+  "deployment":{
+    "properties": {
+      "system":{"type":"string"},
+      "subject":{"type":"string"},
+      "description":{"type":"string"},
+      "created":{"type":"date"},
+      "latitude":{"type":"string"},
+      "longitude":{"type":"string"},
+      "links":{
+        "properties": {
+          "rel":{"type":"string"},
+          "href":{"type":"string"},
+          "title":{"type":"string"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "revision":{
+    "properties":
+    {
+      "_id":{"type":"string"},
+      "_rev":{"type":"string"},
+      "document":{"type":"string"},
+      "workspace":{"type":"string"},
+      "collection":{"type":"string"},
+      "additional_namespaces":{"type":"string"},
+      "changes":{
+        "properties": {
+          "username":{"type":"string"},
+          "action":{"type":"string"},
+          "time":{"type":"date"},
+          "log":{"enabled":false}
+        },
+        "index_name": "change"
+      },
+      "id":{"type":"string"},
+      "version":{"type":"long"}
+    }
+  }
+}

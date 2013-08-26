@@ -1,0 +1,32 @@
+{
+  "gps":{
+    "properties":
+    {
+      "_id":{"type":"string"},
+      "_rev":{"type":"string"},
+      "id":{"type":"string"},
+      "description_id":{"type":"string"},
+      "workspace":{"type":"string"},
+      "collection":{"type":"string"},
+      "state":{"type":"string"},
+      "topic":{"type":"string"},
+      "primary_data":{"type":"string"},
+      "latitude":{"type":"float"},
+      "longitude":{"type":"float"},
+      "altitude":{"type":"float"},
+      "date_time":{"type":"date"},
+      "sensor_name":{"type":"string"},
+      "extra":{
+        "type": "object",
+        "properties": {
+          "grid":{"type":"float"},
+          "cumulative_distance":{"type":"float"},
+          "north":{"type":"float"},
+          "east":{"type":"float"},
+          "antenna_height":{"type":"float"}
+        }
+      },
+      "_attachments":{"enabled":false}
+    }
+  }
+}

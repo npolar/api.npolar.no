@@ -1,0 +1,31 @@
+{
+  "ctd":{
+    "properties":
+    {
+      "_id":{"type":"string"},
+      "_rev":{"type":"string"},
+      "id":{"type":"string"},
+      "cruise":{"type":"string"},
+      "echodepth":{"type":"float"},
+      "datetime":{"type":"date"},
+      "filename":{"type":"string"},
+      "latitude":{"type":"float"},
+      "longitude":{"type":"float"},
+      "instrument":{"type":"string"},
+      "instrument_type":{"type":"string"},
+      "originalstation":{"type":"string"},
+      "platform":{"type":"string"},
+      "time":{"type":"string"},
+      "parameters":{
+        "properties": {
+          "name":{"type":"string"},
+          "unit":{"type":"string"},
+          "dimensions":{"type":"string"},
+          "type":{"type":"string"},
+          "label":{"type":"string"},
+          "standard_name":{"type":"string"}
+        }
+      }
+    }
+  }
+}
