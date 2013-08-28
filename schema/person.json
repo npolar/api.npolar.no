@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/person.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string"},
+    "schema": {"enum":["http://api.npolar.no/schema/person.json"]},
+    "collection": {"enum":["person"]},
+    "first_name": { "type": "string" },
+    "last_name": { "type": "string" },
+    "email": { "type": ["string"], "format": "email" },
+    "link": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": { "enum": ["related", "affiliation"] },
+          "href": { "type": "string", "format": "uri" },
+          "hreflang": { "type": "string" },
+          "type": { "type": "string", "default": "text/html" }
+        }
+      }
+    }
+  },
+  "required": ["first_name", "last_name", "email"]
+}
