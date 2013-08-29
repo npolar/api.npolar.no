@@ -38,12 +38,11 @@ module Npolar
         end
 
       rescue Npolar::Auth::Exception => e
-        http_error(403, "Polar bears ate your request")
-      # 500 Internal Server Error
+        http_error(403)
       rescue => e
         log.fatal e.class.name+": "+e.message
-        log.fatal "Backtrace:\n\t#{e.backtrace.join("\n\t")}" #except e.class == Npolar::Auth::Exception
-        http_error(500, "Polar bears ate your request")
+        log.fatal "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+        http_error(500, "Polar bears ate your request") # 500 Internal Server Error
       end
 
     end
@@ -85,9 +84,11 @@ module Npolar
         end
         
       elsif ["PUT", "POST"].include? request.request_method
-
         log.debug "Accepts(#{request.media_type})? #{accepts? request.media_type}"
-
+        # 415 Unsupported Media Type
+        unless accepts? request.media_type
+          return http_error(415, "Unsupported: #{request.media_type}. Acceptable POST/PUT media types are: '#{accepts.join(", ")}'")
+        end
         document = request.body.read 
         request.body.rewind # rewind is necessary for request.body is empty after #read
         log.debug "#{request.request_method} #{request.media_format} request (#{document.bytesize} bytes)"
@@ -101,10 +102,6 @@ module Npolar
         # FIXME 413 Request Entity Too Large
         # FIXME PUT with no etag/revision and 409 => new status code for conditional PUT?
 
-        # 415 Unsupported Media Type
-        unless accepts? request.media_type
-          return http_error(415, "Unsupported: #{request.media_type}. Acceptable POST/PUT media types are: '#{accepts.join(", ")}'")
-        end
 
         #400 Bad Request
         if 0 == document.bytesize or /^\s+$/ =~ document
@@ -129,20 +126,8 @@ module Npolar
 
       response = after(request, response)
 
-      if response.is_a? Rack::Response or response.respond_to?(:body)
-        if response.respond_to?(:body) and response.body.is_a? Hash
-          response.body = body.to_json
-        end
-      elsif response.respond_to?(:each)
-        if 1 == response.size and response[0].is_a? Hash
-          response[0]= response[0].to_json
-        end
-        # else: OK
-      else
-        raise "Bad response"
-      end
-    
       status, headers, body = response
+
       log.info "#{request.request_method} #{request.path} [Core]: #{status} #{headers.to_s}"
       Rack::Response.new(body, status, headers)
 
@@ -252,6 +237,37 @@ module Npolar
     # After request
     # @return response
     def after(request, response)
+
+      # Force UTF-8 on all responses
+      if response.respond_to?(:[])
+        headers = response[1]
+  
+        if headers.key? "Content-Type" and headers["Content-Type"] != /; charset=utf-8$/
+          content_type = headers["Content-Type"].split(";")[0]
+          content_type += "; charset=utf-8"
+          response[1]["Content-Type"] = content_type
+        end 
+      end
+      
+      # Auto JSON from Hash
+      if response.is_a? Rack::Response or response.respond_to?(:body)
+
+        headers = response.headers
+
+        if response.respond_to?(:body) and response.body.is_a? Hash
+          response.body = body.to_json
+        end
+      elsif response.respond_to?(:each)
+        
+        if 1 == response.size and response[0].is_a? Hash
+          response[0]= response[0].to_json
+        end
+        # else: OK
+      else
+        raise "Bad response"
+      end
+
+      # After lambdas
       after = config[:after]
       if after.nil? or [] == after
         return response
