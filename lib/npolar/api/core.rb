@@ -239,32 +239,36 @@ module Npolar
     def after(request, response)
 
       # Force UTF-8 on all responses
-      if response.respond_to?(:[])
-        headers = response[1]
-  
-        if headers.key? "Content-Type" and headers["Content-Type"] != /; charset=utf-8$/
-          content_type = headers["Content-Type"].split(";")[0]
-          content_type += "; charset=utf-8"
-          response[1]["Content-Type"] = content_type
-        end 
+      if response.is_a? Rack::Response
+        headers = response.headers
+      elsif response.respond_to?(:[])
+         headers = response[1]
+      else
+        raise "Bad response headers"
+      end
+
+      if headers.key? "Content-Type" and headers["Content-Type"] != /; charset=utf-8$/
+        content_type = headers["Content-Type"].split(";")[0]
+        content_type += "; charset=utf-8"
+      end 
+      if response.is_a? Rack::Response
+        response.header["Content-Type"] = content_type
+      else
+        response[1]["Content-Type"] = content_type
       end
       
       # Auto JSON from Hash
       if response.is_a? Rack::Response or response.respond_to?(:body)
-
-        headers = response.headers
-
         if response.respond_to?(:body) and response.body.is_a? Hash
           response.body = body.to_json
         end
       elsif response.respond_to?(:each)
-        
         if 1 == response.size and response[0].is_a? Hash
           response[0]= response[0].to_json
         end
         # else: OK
       else
-        raise "Bad response"
+        raise "Bad response body"
       end
 
       # After lambdas
