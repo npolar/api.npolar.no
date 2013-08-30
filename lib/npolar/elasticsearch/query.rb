@@ -167,17 +167,11 @@ module Npolar
         {
           :or => filter_params.map{ |k,v|
             # Remove any spaces from the filters
-            v.gsub!(/\s+/, ',')
+            v.gsub!(/\s+/, ',') unless v =~ /\"(.*)\"/
 
             # Split and map to proper query
             v.split(',').map{|value|
-              unless value.match(/\-?\d+Z?\.\.\-?\d+/)
-                {
-                  :term => {
-                    k.to_s.gsub(/^filter-/, '') => value.downcase
-                  }
-                }
-              else
+              if value.match(/\-?\d+Z?\.\.\-?\d+/)
                 vals = value.split('..')
 
                 # Swap the values if the second one is bigger then the first
@@ -193,6 +187,21 @@ module Npolar
                       :from => vals.first,
                       :to => vals.last
                     }
+                  }
+                }
+              elsif value =~ /\"(.*)\"/
+                {
+                  :query => {
+                    :query_string => {
+                      :default_field => k.to_s.gsub(/^filter-/, ''),
+                      :query => value.gsub(/\"/,'').gsub(/\s+/, " AND ")
+                    }
+                  }
+                }
+              else
+                {
+                  :term => {
+                    k.to_s.gsub(/^filter-/, '') => value.downcase
                   }
                 }
               end
