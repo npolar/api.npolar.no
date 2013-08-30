@@ -25,7 +25,7 @@ module Npolar
         
         response = http.post do |req|
           req.url "/#{config[:index]}/#{config[:type]}/_search"
-          req.headers['Content-Type'] = 'application/json'
+          req.headers['Content-Type'] = 'application/json; charset=utf8'
           req.body = query
         end
         
@@ -35,7 +35,7 @@ module Npolar
         else
           feed = result.to_feed
         end
-        headers = {"Content-Type" => "application/json","Content-Length" => feed.bytesize}
+        headers = {"Content-Type" => "application/json; charset=utf8","Content-Length" => feed.bytesize}
         Rack::Response.new(feed, 200, headers)
       end
       
