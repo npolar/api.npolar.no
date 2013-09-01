@@ -138,6 +138,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="iso_3166-2" type="string" indexed="true" stored="true" />
 <field name="iso_topics" type="string" indexed="true" stored="true" multiValued="true" />
 
+<field name="comment" type="text_general" indexed="true" stored="true" />
 
 <field name="licence" type="string" indexed="true" stored="true" />
 <field name="licence_codes" type="string" indexed="true" stored="true" multiValued="true" />
@@ -160,6 +161,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="parameter" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="person" type="string" indexed="true" stored="true" />
 <field name="placename" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="area" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="point_of_contact" type="string" indexed="true" stored="true" />
 <field name="protocols" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="progress" type="string" indexed="true" stored="true" />
