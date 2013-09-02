@@ -62,6 +62,7 @@
         "additionalProperties": false,
         "properties": {
           "name": { "type": "string" },
+          "href": { "type": "string", "format": "uri" },
           "role": { "type": "string", "enum": ["owner", "partner"] }
         }
       }
