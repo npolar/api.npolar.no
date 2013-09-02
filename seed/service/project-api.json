@@ -27,7 +27,8 @@
   "open": true,
   "auth": {
     "authorize": "editor",
-    "system": "project"
+    "system": "project",
+    "authorizer": "Npolar::Auth::Ldap"
   },
   "search": { "engine": "Elasticsearch",
     "uri": "http://localhost:9200",
