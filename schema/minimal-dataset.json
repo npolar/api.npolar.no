@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "The minimal document body for a dataset record on http://api.npolar.no",
+  "type": "object",
+  "additionalPorperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "schema": { "type": "string", "format": "uri" },
+    "title": { "type": "string" },
+    "published": { "type": "string", "format": "date-time" },
+    "updated": { "type": "string", "format": "date-time"},
+    "draft": { "enum": ["yes"] },
+    "edits": {
+      "description": "List of edits",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "edited": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "email": { "type": "string" },
+          "name": { "type": "string" }
+        },
+        "required": ["edited", "name"]
+      }
+    }
+  },
+  "required": ["title", "schema", "published", "updated", "draft"]
+}
