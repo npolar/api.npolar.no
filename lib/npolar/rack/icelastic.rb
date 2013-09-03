@@ -1,6 +1,6 @@
 module Npolar
   module Rack
-    
+
     # [Functionality]
     #   Icelastic is a middleware that exposes elasticsearch on a RACK endpoint.
     #   On GET requests it translates request parameters into the correct elasticsearch
@@ -11,11 +11,11 @@ module Npolar
     #
     # [Links]
     #   @see http://www.elasticsearch.org/guide/reference/api/search/ Elasticsearch search Documentation
-    
+
     class Icelastic < Npolar::Rack::Middleware
 
       attr_accessor :env
-      
+
       CONFIG = {
         :uri => 'http://localhost:9200/',
         :index => 'global',
@@ -32,23 +32,32 @@ module Npolar
       def condition?(request)
         (['GET','HEAD'].include?(request.request_method) and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?) || ['PUT','POST'].include?(request.request_method)
       end
-      
+
       def handle(request)
 
         if ['GET', 'HEAD'].include?(request.request_method) and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?
           client = Npolar::ElasticSearch::Client.new(request, config)
-          client.search
+          response = client.search
+
+          unless response.status == 200
+            response =  Rack::Response.new(error_hash(response.status, response.body).to_json, response.status, {"Content-Type" => "application/json; charset=utf8"})
+          end
+
+          response
+
         elsif ['PUT', 'POST'].include?(request.request_method)
           docs = JSON.parse( request.body.read )
           request.body.rewind
-          
+
           response = app.call(request.env)
-          
+
           if [200, 201].include?( response.status ) && request.request_method == 'POST'
 
             body = JSON.parse( response.body.first )
 
-            if body['response'].has_key?("ids")
+            puts body
+
+            if body['response'] && body['response'].has_key?("ids")
               body['response']['ids'].each_with_index do |id, i|
                 docs[i]["id"] ||= id
               end
@@ -64,7 +73,7 @@ module Npolar
         end
 
       end
-      
+
     end
   end
 end
