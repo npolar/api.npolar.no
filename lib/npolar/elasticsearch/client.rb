@@ -52,14 +52,26 @@ module Npolar
 
       def index( data )
         if data.is_a?( Array )
-          log.info "Npolar::Elasticsearch::Client - Attempting to save #{data.size} documents to the #{config[:index]} index"
+          log.info "Search - Indexing #{data.size} documents. INDEX => #{config[:index]} | Npolar::Elasticsearch::Client"
           store = Npolar::ElasticSearch::BulkRequest.new(data, config)
           store.execute
         else
           #puts data
-          log.info "Npolar::Elasticsearch::Client - Indexing 1 document"
+          log.info "Search: Indexing 1 document. INDEX => #{config[:index]} | Npolar::Elasticsearch::Client"
           store = Npolar::ElasticSearch::BulkRequest.new( [data], config )
           store.execute
+        end
+      end
+
+      def delete( id )
+        if id.is_a?( Array )
+          log.info "Search: Deleting #{id.size} documents. INDEX => #{config[:index]} | Npolar::Elasticsearch::Client"
+        else
+          log.info "Search: Deleting 1 document. INDEX => #{config[:index]} | Npolar::Elasticsearch::Client"
+
+          response = http.delete do |req|
+            req.url "/#{config[:index]}/#{config[:type]}/#{id}"
+          end
         end
       end
 

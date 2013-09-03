@@ -30,13 +30,16 @@ module Npolar
       }
 
       def condition?(request)
-        (['GET','HEAD'].include?(request.request_method) and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?) || ['PUT','POST'].include?(request.request_method)
+        (['GET','HEAD'].include?(request.request_method) and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?) || ['PUT','POST','DELETE'].include?(request.request_method)
       end
 
       def handle(request)
 
+        # New client instance
+        client = Npolar::ElasticSearch::Client.new(request, config)
+
+        # READ
         if ['GET', 'HEAD'].include?(request.request_method) and !request.params.select{|k,v| k.match(/q(\-.*)?/)}.empty?
-          client = Npolar::ElasticSearch::Client.new(request, config)
           response = client.search
 
           unless response.status == 200
@@ -45,6 +48,7 @@ module Npolar
 
           response
 
+        # CREATE & UPDATE
         elsif ['PUT', 'POST'].include?(request.request_method)
           docs = JSON.parse( request.body.read )
           request.body.rewind
@@ -62,11 +66,22 @@ module Npolar
                 docs[i]["id"] ||= id
               end
             elsif body.has_key?("id")
-                docs["id"] = body["id"]
+              docs["id"] = body["id"]
             end
 
-            client = Npolar::ElasticSearch::Client.new(request, config)
             client.index(docs)
+          end
+
+          response
+
+        # DELETE
+        elsif ['DELETE'].include?(request.request_method)
+          id = request.env['PATH_INFO'].gsub(/\//,'')
+
+          response = app.call(request.env)
+
+          if response.status == 200
+            client.delete(id)
           end
 
           response
