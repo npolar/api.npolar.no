@@ -9,6 +9,7 @@
     "title": { "type": "string" },
     "published": { "type": "string", "format": "date-time" },
     "updated": { "type": "string", "format": "date-time"},
+    "progress": { "enum": ["planned"] },
     "draft": { "enum": ["yes"] },
     "edits": {
       "description": "List of edits",
@@ -27,6 +28,36 @@
         },
         "required": ["edited", "name"]
       }
+    }
+  },
+  "organisations": {
+    "description": "Organisations connected to the dataset",
+    "type": "array",
+    "additionalItems": false,
+    "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "gcmd_short_name": { "type": ["string", "null"] },
+        "shortname": { "type": ["string", "null"] },
+        "roles": {
+          "type": "array",
+          "items": {
+            "enum": ["originator", "owner",  "publisher", "resourceProvider"]
+          }
+        },
+        "email": {
+          "type": ["string","null"],
+          "additionalItems": false,
+          "format": "email"
+        },
+        "uri": {
+          "type": ["string","null"],
+          "additionalItems": false
+        }
+      },
+      "required": ["name", "roles", "uri"]
     }
   },
   "required": ["title", "schema", "published", "updated", "draft"]
