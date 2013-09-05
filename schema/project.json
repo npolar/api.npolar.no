@@ -25,7 +25,7 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["biology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "service", "topography"]
+        "enum": ["Biology", "Ecotoxicology", "Geology", "Geophysics", "Glaciology", "Maps", "Oceanography", "Other", "Seaice", "Service", "Topography"]
       }
     },
     "tags": {
