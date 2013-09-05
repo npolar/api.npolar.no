@@ -13,7 +13,7 @@
     "area_contribution": { "text": "string" },
     "knowledge_gap_addressed": { "type": "string" },
     "np_project_number": { "type": "string" },
-    "state": { "type": "string", "enum": ["planned", "ongoing", "completed"] },
+    "state": { "type": "string", "enum": ["planned", "ongoing", "completed", "cancelled"] },
     "draft": { "type": "string", "enum": ["yes", "no"] },
     "start_date": { "type": "string", "format" : "date-time" },
     "end_date": { "type": "string", "format" : "date-time" },
