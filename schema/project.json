@@ -43,7 +43,7 @@
           "first_name": { "type": "string" },
           "last_name": { "type": "string" },
           "email": { "type": "string", "format": "email" },
-          "role": { "type": "string", "enum": ["projectLeader"] },
+          "role": { "type": "string", "enum": ["projectLeader", "projectParticipant"] },
           "employee_no": { "type": "string" },
           "affiliation": { 
             "type": "object",
