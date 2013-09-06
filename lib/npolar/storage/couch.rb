@@ -214,7 +214,14 @@ module Npolar
         #end
         response = writer.put(id, headers, data)
 
-        if 201 == response.status
+        # if conflict, and overwrite=true, autoresolve it
+        if 409 == response.status and params["overwrite"] == "true"
+          couch = Yajl::Parser.parse(response.body)
+          if couch["error"] == "conflict"
+            doc = update_revision(Yajl::Parser.parse(data))
+            response = writer.put(doc["id"], headers, doc.to_json)
+          end
+        elsif 201 == response.status
           rev = response.headers["Etag"].gsub(/["]/, "") # Get the revision number from the Etag header
           created = writer.get(id, {"rev" => rev }) # GET document back from writer 
           response.body = created.body
