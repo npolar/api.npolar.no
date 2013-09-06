@@ -38,13 +38,13 @@ module Npolar
             feed = result.to_feed
           end
 
-          headers = {"Content-Type" => "application/json; charset=utf8","Content-Length" => feed.bytesize}
+          headers = {"Content-Type" => "application/json; charset=utf-8","Content-Length" => feed.bytesize}
           Rack::Response.new(feed, 200, headers)
         else
 
           response = case response.status
-            when 404 then Rack::Response.new('Search engine not found', 404, {"Content-Type" => "text/plain; charset=utf8"})
-            when 500 then Rack::Response.new('Search engine error', 500, {"Content-Type" => "text/plain; charset=utf8"})
+            when 404 then Rack::Response.new('Search engine not found', 404, {"Content-Type" => "text/plain; charset=utf-8"})
+            when 500 then Rack::Response.new('Search engine error', 500, {"Content-Type" => "text/plain; charset=utf-8"})
           end
 
         end
