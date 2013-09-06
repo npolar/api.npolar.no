@@ -43,7 +43,7 @@ module Npolar
           response = client.search
 
           unless response.status == 200
-            response =  Rack::Response.new(error_hash(response.status, response.body).to_json, response.status, {"Content-Type" => "application/json; charset=utf8"})
+            response =  Rack::Response.new(error_hash(response.status, response.body).to_json, response.status, {"Content-Type" => "application/json; charset=utf-8"})
           end
 
           response
