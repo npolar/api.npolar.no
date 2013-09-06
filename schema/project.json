@@ -20,6 +20,7 @@
     "results_summary": { "type": "string" },
     "ris_id": { "type": ["string", "null"] },
     "type": { "type": "string", "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"] },
+    "website" : { "type": "boolean" },
     "topics": {
       "type": "array",
       "additionalItems": false,
