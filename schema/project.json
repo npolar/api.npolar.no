@@ -43,7 +43,7 @@
           "first_name": { "type": "string" },
           "last_name": { "type": "string" },
           "email": { "type": "string", "format": "email" },
-          "profile_url" : { "type": "string", "format": "uri" },
+          "profile_href" : { "type": "string", "format": "uri" },
           "role": { "type": "string", "enum": ["projectLeader", "projectParticipant"] },
           "employee_no": { "type": "string" },
           "affiliation": { 
