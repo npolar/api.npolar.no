@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/dataset-0.10",
+  "id": "http://api.npolar.no/schema/dataset-1.0-dev",
   "title": "Dataset",
   "description": "Metadata describing a dataset",
   "type": "object",   
@@ -10,6 +10,8 @@
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
     "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
     "schema": { "type": "string", "description": "JSON schema URI"},
+    "lang": { "type": "string"},
+    "base": { "type": "string", "description": "Base URI (for relative links)" },
     "summary": { "description": "Abstract", "type": "string"},
     "draft": { "type": "string", "enum": ["yes", "no"]},
     "coverage": {
@@ -83,38 +85,30 @@
       "description": "People involved in creating the dataset, roles from http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml with 'editor' (meaning metadata editor) added",
       "type": "array",
       "additionalItems": false,
+      "required": ["first_name", "last_name", "roles", "organisation"],
       "items": {
         "type": "object",
         "additionalProperties": false,
+
         "properties": {
+          "id": { "type": "string" },
           "first_name": { "type": "string" },
           "last_name": { "type": "string" },
           "roles": {
             "type": "array",
             "items": {
-              "enum": ["principalInvestigator", "processor", "pointOfContact", "editor"]
+              "enum": ["author", "principalInvestigator", "processor", "pointOfContact", "editor"]
             }
           },
           "email": {
             "type": ["string","null"],
             "additionalItems": false
           },
-          "href": {
-            "type": ["string","null"],
-            "additionalItems": false
-          },
-          "affiliation": { "type": "object",
-            "additionalProperties": true,
-            "properties": {
-              "name": { "type": "string" },
-              "href": { "type": "string", "format": "uri" }
-            }
-          }
-        },
-        "required": ["first_name", "last_name", "roles"]
+          "links": { "type": "array"},
+          "organisation": { "type": ["string", "null"]}
+        }
       }
     },
-
     "organisations": {
       "description": "Organisations connected to the dataset",
       "type": "array",
@@ -123,6 +117,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "id": { "type": "string" },
           "name": { "type": "string" },
           "gcmd_short_name": { "type": ["string", "null"] },
           "shortname": { "type": ["string", "null"] },
@@ -137,16 +132,16 @@
             "additionalItems": false,
             "format": "email"
           },
-          "uri": {
-            "type": ["string","null"],
-            "additionalItems": false
+          "links": {
+            "type": ["array","null"],
+            "additionalItems": true
           }
         },
-        "required": ["name", "roles", "uri"]
+        "required": ["name", "roles"]
       }
     },
     "links": {
-      "description": "Links to data, references, project, parent, doi, related, self, alternate. See Atom Format",
+      "description": "Links to data, references, project, parent, doi, related, self, alternate, etc. See IANA's registry: http://www.iana.org/assignments/link-relations/link-relations.xhtml and the Atom Format RFC: http://tools.ietf.org/html/rfc4287 and ",
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -157,6 +152,8 @@
           "href": { "type": "string", "format": "uri" },
           "title": { "type": ["string", "null"] },
           "hreflang": { "type": ["string", "null"] },
+          "length": { "type": ["number", "null"] },
+
           "type": { "type": "string" }
         },
         "required": ["rel", "href"]
@@ -215,10 +212,20 @@
       "additionalItems": false,
       "items": { "type": "string" }
     },
-    "gcmd": { "description": "GCMD DIF, see http://gcmd.gsfc.nasa.gov/add/difguide/index.html", "type": "object",
+    "gcmd": { "description": "GCMD DIF object, see http://gcmd.gsfc.nasa.gov/add/difguide/index.html", "type": "object",
       "properties": {
+        "locations": { "description": "DIF element Location", "type": "array" },
+        "projects": { "description": "DIF element Project", "type": "array"},
+        "resolutions": { "description": "DIF element Data_Resolution", "type": "array"},
+        "disciplines": { "description": "DIF element Discipline", "type": "array"},
+        "idn_nodes": { "description": "DIF element IDN_Node", "type": "array"},
+        "paleo_temporal_coverage": { "description": "DIF element Paleo_Temporal_Coverage", "type": "array"},
+        "instruments": { "description": "DIF instruments (DIF element Sensor_Name)", "type": "array"},
+        "platforms": { "description": "DIF platforms (DIF element Source_Name)", "type": "array"},
+        "additional": { "description": "DIF element Additional_Metadata)", "type": "array"},
+        "citation": { "description": "DIF element Data_Set_Citation", "type": "object"},
         "sciencekeywords": {
-          "description": "DIF keywords",
+          "description": "DIF element Parameters (aka. Science Keywords)",
           "type": "array",
           "additionalItems": false,
           "items": {
@@ -247,17 +254,17 @@
       "type": "string",
       "format": "date-time"
     },
-    "comment": { "description": "A free text comment", "type": "string" },
-    "source": {
-      "description": "Source data",
-      "additionalProperties": false,
-      "type": ["object", "null"],
-      "properties": {
-        "schema": { "type": "string" },
-        "data": { "type": "object" }
-      }
-      
+    "edited": {
+      "description": "Document was stored",
+      "type": ["string","null"],
+      "format": "date-time"
     },
+    "released": {
+      "description": "Data was (or is to be) released the general public",
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "comment": { "type": "string" },
     "rights" : { "type": "string" },
     "_id": { "description": "Internal id", "type": "string" },
     "_rev" : { "description": "Internal revision", "type": "string" },
