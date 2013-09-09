@@ -48,18 +48,16 @@ module Npolar
 
           response
 
-        # CREATE & UPDATE
         elsif ['PUT', 'POST'].include?(request.request_method)
           docs = JSON.parse( request.body.read )
           request.body.rewind
 
           response = app.call(request.env)
 
+          # CREATE
           if [200, 201].include?( response.status ) && request.request_method == 'POST'
 
             body = JSON.parse( response.body.first )
-
-            puts body
 
             if body['response'] && body['response'].has_key?("ids")
               body['response']['ids'].each_with_index do |id, i|
@@ -70,6 +68,10 @@ module Npolar
             end
 
             client.index(docs)
+
+          # CREATE & UPDATE
+          elsif [200, 201].include?( response.status ) && request.request_method == 'PUT'
+            client.update(docs)
           end
 
           response
