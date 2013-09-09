@@ -25,7 +25,7 @@ module Npolar
 
         response = http.post do |req|
           req.url "/#{config[:index]}/#{config[:type]}/_search"
-          req.headers['Content-Type'] = 'application/json; charset=utf8'
+          req.headers['Content-Type'] = 'application/json; charset=utf-8'
           req.body = query
         end
 
@@ -56,10 +56,18 @@ module Npolar
           store = Npolar::ElasticSearch::BulkRequest.new(data, config)
           store.execute
         else
-          #puts data
           log.info "Search: Indexing 1 document. INDEX => #{config[:index]} | Npolar::Elasticsearch::Client"
           store = Npolar::ElasticSearch::BulkRequest.new( [data], config )
           store.execute
+        end
+      end
+
+      def update( data )
+        log.info "Search: Updating 1 document. INDEX => #{config[:index]} | Npolar::Elasticsearch::Client"
+        response = http.post do |req|
+          req.url "/#{config[:index]}/#{config[:type]}/#{data['id']}/_update"
+          req.headers['Content-Type'] = 'application/json; charset=utf-8'
+          req.body = {:doc => data}.to_json
         end
       end
 
