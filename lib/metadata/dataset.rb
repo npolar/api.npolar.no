@@ -35,7 +35,7 @@ module Metadata
       "xml" => DIF_SCHEMA_URI
     }
 
-    JSON_SCHEMAS = ["minimal-dataset.json", "dataset.json"]
+    JSON_SCHEMAS = ["dataset.json", "minimal-dataset.json"]
 
     class << self
       attr_accessor :formats, :accepts, :base
