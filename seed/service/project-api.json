@@ -32,7 +32,7 @@
   },
   "search": { "engine": "Elasticsearch",
     "uri": "http://localhost:9200",
-    "facets": ["state", "tags", "topics"],
+    "facets": ["area", "state", "tags", "topics", "type"],
     "type": "project",
     "index": "project"
   },
