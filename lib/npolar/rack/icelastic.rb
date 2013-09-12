@@ -71,7 +71,14 @@ module Npolar
 
           # CREATE & UPDATE
           elsif [200, 201].include?( response.status ) && request.request_method == 'PUT'
-            client.update(docs)
+            id = request.env['PATH_INFO'].gsub(/\//,'')
+
+            if client.exists?(id)
+              client.update(docs)
+            else
+              client.index(docs)
+            end
+
           end
 
           response
