@@ -6,16 +6,18 @@
       "schema":{"type":"string"},
       "title":{"type":"string"},
       "acronym":{"type":"string"},
+      "summary":{"type":"string"},
       "area_contribution":{"type":"string"},
       "knowledge_gap_addressed":{"type":"string"},
       "np_project_number":{"type":"string"},
       "state":{"type":"string"},
       "draft":{"type":"string"},
-      "start_date":{"type":"string"},
-      "end_date":{"type":"string"},
+      "start_date":{"type":"date"},
+      "end_date":{"type":"date"},
       "results_summary":{"type":"string"},
       "ris_id":{"type":"string"},
       "type":{"type":"string"},
+      "website":{"type":"boolean"},
       "topics":{"type":"string"},
       "tags":{"type":"string"},
       "people":{
@@ -24,6 +26,7 @@
           "last_name":{"type":"string"},
           "email":{"type":"string"},
           "role":{"type":"string"},
+          "profile_href":{"type":"string"},
           "employee_no":{"type":"string"},
           "affiliation":{
             "properties":{
