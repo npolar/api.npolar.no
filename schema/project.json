@@ -26,7 +26,7 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["biology", "biodiversity", "climate", "ecology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "marine ecosystems", "oceanography", "sea ice", "topography", "other"]
+        "enum": ["biology", "biodiversity", "climate", "ecology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "marine", "marine ecosystems", "oceanography", "sea ice", "topography", "other"]
       }
     },
     "tags": {
