@@ -165,7 +165,7 @@ module Npolar
       # @see #filter_params
       def filter
         {
-          :or => filter_params.map{ |k,v|
+          :and => filter_params.map{ |k,v|
             # Remove any spaces from the filters
             v.gsub!(/\s+/, ',') unless v =~ /\"(.*)\"/
 
