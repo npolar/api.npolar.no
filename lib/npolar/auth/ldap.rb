@@ -29,7 +29,6 @@ module Npolar
         log.debug "Npolar::Auth::Ldap.authenticator"
 
         lambda { | ldap, request |
-  
           ldap.domain = domain
           match?(request.username, request.password)
         } 
@@ -55,8 +54,8 @@ module Npolar
       def match? username, password
         # make sure it's in LDAP form: user@domain.no
         mail = massage_username(username)
+        result = bind_as(:base => USERS_DN, :filter => "(mail=#{mail})", :password => password)
 
-        result = bind_as(:filter => "(mail=#{mail})", :password => password)
         if result and result[0].mail[0] == mail
             true
         else
@@ -88,7 +87,7 @@ module Npolar
             discovered_roles << entry[:cn][0]
           end
         end
-      
+
           log.debug("Discovered LDAP roles: #{discovered_roles} for username=#{username} in system=#{system}") 
 
         discovered_roles
