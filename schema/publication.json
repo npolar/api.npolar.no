@@ -22,7 +22,8 @@
       "original_title": {"type": "string"},
       "original_language":{"type":"string"},
       "english_title": { "type" : ["string", "null"] },
-      "published_year": {"type" : "integer"},
+      "publication_year": {"type" : "integer"},
+      "publication_date":{"type":"string", "format": "date-time"},
       "publication_ris_id": {"type": ["integer", "null"]},
       "volume":{ "type" : ["string", "null"] },
       "issue":{ "type" : ["string", "null"] },
@@ -31,7 +32,6 @@
       "to_page": {"type": ["integer", "null"] },
       "tot_no_pages": {"type": ["integer", "null"] },
       "article_no": { "type" : ["string", "null"] },
-      "date":{"type":"string", "format": "date-time"},
       "people": {
         "description": "People involved in creating the publication",
         "type": "array",
