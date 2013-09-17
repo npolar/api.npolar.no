@@ -7,99 +7,98 @@
   "additionalProperties": false,
   "required": ["title", "schema", "authors",  "abstracts"],
   "properties": {
-      "id": { "description": "Identifier (UUID | URI)", "type": "string" },
-      "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
-      "schema": { "enum": ["http://api.npolar.no/schema/publication.json"] },
-      "collection": { "enum": ["publication"] }
-      "lang": { "type": "string"},
-      "base": { "enum": ["http://api.npolar.no"] },
-      "summary": { "description": "Abstract", "type": "string" },
-      "draft": { "enum": ["yes", "no"]},
-      "publication_category": { "enum":["journal", "book", "poster", "map"] },
-      "paper_status": {"type": "string"},
-      "publication_name": { "type": "string"},
-      "publisher": {"type": "string"},
-      "original_title": {"type": "string"},
-      "original_language":{"type":"string"},
-      "english_title": { "type" : ["string", "null"] },
-      "publication_year": {"type" : "integer"},
-      "publication_date":{"type":"string", "format": "date-time"},
-      "publication_ris_id": {"type": ["integer", "null"]},
-      "volume":{ "type" : ["string", "null"] },
-      "issue":{ "type" : ["string", "null"] },
-      "suppl": { "type" : ["string", "null"] },
-      "from_page": {"type": ["integer", "null"] },
-      "to_page": {"type": ["integer", "null"] },
-      "tot_no_pages": {"type": ["integer", "null"] },
-      "article_no": { "type" : ["string", "null"] },
-      "people": {
-        "description": "People involved in creating the publication",
-        "type": "array",
-        "additionalItems": false,
-        "required": ["first_name", "last_name", "roles", "organisation"],
-        "items": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "id": { "type": "string" },
-            "first_name": { "type": "string" },
-            "last_name": { "type": "string" },
-            "roles": {
-              "type": "array",
-              "items": {
-                "enum": ["author"]
-              }
-            },
-            "email": {
-              "type": ["string","null"],
-            },
-            "links": { "type": "array" },
-            "organisation": { "type": ["string", "null"] }
-          }
-        }
-      },
-      "abstracts": {
+    "id": { "description": "Identifier (UUID | URI)", "type": "string" },
+    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
+    "schema": { "enum": ["http://api.npolar.no/schema/publication.json"] },
+    "collection": { "enum": ["publication"] },
+    "lang": { "type": "string"},
+    "base": { "enum": ["http://api.npolar.no"] },
+    "summary": { "description": "Abstract", "type": "string" },
+    "draft": { "enum": ["yes", "no"]},
+    "publication_category": { "enum":["journal", "book", "poster", "map"] },
+    "paper_status": {"type": "string"},
+    "publication_name": { "type": "string"},
+    "publisher": {"type": "string"},
+    "original_title": {"type": "string"},
+    "original_language":{"type":"string"},
+    "english_title": { "type" : ["string", "null"] },
+    "publication_year": {"type" : "integer"},
+    "publication_date":{"type":"string", "format": "date-time"},
+    "publication_ris_id": {"type": ["integer", "null"]},
+    "volume":{ "type" : ["string", "null"] },
+    "issue":{ "type" : ["string", "null"] },
+    "suppl": { "type" : ["string", "null"] },
+    "from_page": {"type": ["integer", "null"] },
+    "to_page": {"type": ["integer", "null"] },
+    "tot_no_pages": {"type": ["integer", "null"] },
+    "article_no": { "type" : ["string", "null"] },
+    "people": {
+      "description": "People involved in creating the publication",
+      "type": "array",
+      "additionalItems": false,
+      "required": ["first_name", "last_name", "roles", "organisation"],
+      "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "scientific_abstract": { "type" : "string" },
-          "norw_summary": { "type" : "string" },
-          "reviewed": { "type": "boolean" }
+          "id": { "type": "string" },
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "roles": {
+            "type": "array",
+            "items": {
+              "enum": ["author"]
+            }
+          },
+          "email": {
+            "type": ["string","null"]
+          },
+          "links": { "type": "array" },
+          "organisation": { "type": ["string", "null"] }
         }
-      },
-      "topics": {
-        "title": "NPI topics",
-        "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'service', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
-        "type": "array",
-        "additionalItems": false,
-        "items": {
-          "type": "string",
-          "enum": ["biology", "ecology", "ecotoxicology", "geology", "geophysics", "glaciology", "marine", "maps", "oceanography", "other", "seaice", "topography"]
+      }
+    },
+    "abstracts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scientific_abstract": { "type" : "string" },
+        "norw_summary": { "type" : "string" },
+        "reviewed": { "type": "boolean" }
+      }
+    },
+    "topics": {
+      "title": "NPI topics",
+      "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'service', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": ["biology", "ecology", "ecotoxicology", "geology", "geophysics", "glaciology", "marine", "maps", "oceanography", "other", "seaice", "topography"]
+      }
+    },
+    "keywords": {
+      "additionalItems": false,
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "links": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": { "type": "string" },
+          "href": { "type": "string", "format": "uri" },
+          "hreflang": { "type": ["string", "null"] },
+          "title": { "type": ["string", "null"] },
+          "type": { "type": ["string", "null"] }
         }
-      },
-      "keywords": {
-        "additionalItems": false,
-        "type": "array",
-        "items": { "type": "string" }
-      },
-      "links": {
-        "type": "array",
-        "additionalItems": false,
-        "items": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "rel": { "type": "string" },
-            "href": { "type": "string", "format": "uri" },
-            "hreflang": { "type": ["string", "null"] },
-            "title": { "type": ["string", "null"] },
-            "type": { "type": ["string", "null"] }
-          }
-        }
-      },
-      "_attachment": {"type": "object"},
-      "comment": {"type": "string"}
-    }
+      }
+    },
+    "_attachment": {"type": "object"},
+    "comment": {"type": "string"}
   }
 }
 
