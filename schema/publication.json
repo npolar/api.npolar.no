@@ -8,7 +8,7 @@
   "required": ["title", "schema", "collection", "people"],
   "properties": {
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
-    "title": { "description": "Title should be specific enough to make sense out of context", "type": ["string", "null"]},
+    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
     "schema": { "enum": ["http://api.npolar.no/schema/publication.json"] },
     "collection": { "enum": ["publication"] },
     "lang": { "type": "string"},
