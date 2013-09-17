@@ -5,10 +5,10 @@
   "description": "Metadata describing a publication",
   "type": "object",
   "additionalProperties": false,
-  "required": ["title", "schema", "authors",  "abstracts"],
+  "required": ["title", "schema", "collection", "people"],
   "properties": {
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
-    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
+    "title": { "description": "Title should be specific enough to make sense out of context", "type": ["string", "null"]},
     "schema": { "enum": ["http://api.npolar.no/schema/publication.json"] },
     "collection": { "enum": ["publication"] },
     "lang": { "type": "string"},
@@ -22,15 +22,15 @@
     "original_title": {"type": "string"},
     "original_language":{"type":"string"},
     "english_title": { "type" : ["string", "null"] },
-    "publication_year": {"type" : "integer"},
+    "publication_year": {"type" : "number"},
     "publication_date":{"type":"string", "format": "date-time"},
-    "publication_ris_id": {"type": ["integer", "null"]},
+    "publication_ris_id": {"type": ["number", "null"]},
     "volume":{ "type" : ["string", "null"] },
     "issue":{ "type" : ["string", "null"] },
     "suppl": { "type" : ["string", "null"] },
-    "from_page": {"type": ["integer", "null"] },
-    "to_page": {"type": ["integer", "null"] },
-    "tot_no_pages": {"type": ["integer", "null"] },
+    "from_page": {"type": ["number", "null"] },
+    "to_page": {"type": ["number", "null"] },
+    "tot_no_pages": {"type": ["number", "null"] },
     "article_no": { "type" : ["string", "null"] },
     "people": {
       "description": "People involved in creating the publication",
@@ -95,6 +95,25 @@
           "title": { "type": ["string", "null"] },
           "type": { "type": ["string", "null"] }
         }
+      }
+    },
+    "edits": {
+      "description": "List of edits",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "edited": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "email": { "type": "string" },
+          "name": { "type": "string" },
+          "comment": { "type": "string" }
+        },
+        "required": ["edited", "name"]
       }
     },
     "_attachment": {"type": "object"},
