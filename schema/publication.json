@@ -15,7 +15,7 @@
     "base": { "enum": ["http://api.npolar.no"] },
     "summary": { "description": "Abstract", "type": "string" },
     "draft": { "enum": ["yes", "no"]},
-    "publication_category": { "enum":["journal", "book", "poster", "map"] },
+    "publication_category": { "enum":["journal", "book", "poster", "map", "rapport"] },
     "paper_status": {"type": "string"},
     "publication_name": { "type": "string"},
     "publisher": {"type": "string"},
