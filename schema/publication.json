@@ -8,23 +8,19 @@
   "required": ["title", "schema", "collection", "people"],
   "properties": {
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
-    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
     "schema": { "enum": ["http://api.npolar.no/schema/publication.json"] },
-    "collection": { "enum": ["publication"] },
+    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
     "lang": { "type": "string"},
+    "english_title": { "type" : ["string", "null"] },
+    "collection": { "enum": ["publication"] },
     "base": { "enum": ["http://api.npolar.no"] },
-    "summary": { "description": "Abstract", "type": "string" },
     "draft": { "enum": ["yes", "no"]},
-    "publication_category": { "enum":["journal", "book", "poster", "map", "rapport"] },
-    "paper_status": {"type": "string"},
+    "publication_category": { "enum":["peer-reviewed", "book", "poster", "map", "report", "abstract", "phd-thesis", "master-thesis", "proceedings", "popular"] },
+    "state": {"enum": ["draft", "submitted", "in-press", "published"]},
     "publication_name": { "type": "string"},
     "publisher": {"type": "string"},
-    "original_title": {"type": "string"},
-    "original_language":{"type":"string"},
-    "english_title": { "type" : ["string", "null"] },
     "publication_year": {"type" : "number"},
     "publication_date":{"type":"string", "format": "date-time"},
-    "publication_ris_id": {"type": ["number", "null"]},
     "volume":{ "type" : ["string", "null"] },
     "issue":{ "type" : ["string", "null"] },
     "suppl": { "type" : ["string", "null"] },
@@ -77,7 +73,7 @@
         "enum": ["biology", "ecology", "ecotoxicology", "geology", "geophysics", "glaciology", "marine", "maps", "oceanography", "other", "seaice", "topography"]
       }
     },
-    "keywords": {
+    "tags": {
       "additionalItems": false,
       "type": "array",
       "items": { "type": "string" }
