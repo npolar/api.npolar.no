@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "description": "The minimal document body for a dataset record on http://api.npolar.no",
   "type": "object",
-  "additionalProperties": false,
   "properties": {
     "id": { "type": "string" },
     "schema": { "type": "string", "format": "uri" },
