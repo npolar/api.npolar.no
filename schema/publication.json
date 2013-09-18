@@ -15,7 +15,7 @@
     "collection": { "enum": ["publication"] },
     "base": { "enum": ["http://api.npolar.no"] },
     "draft": { "enum": ["yes", "no"]},
-    "publication_category": { "enum":["peer-reviewed", "book", "poster", "map", "report", "abstract", "phd-thesis", "master-thesis", "proceedings", "popular"] },
+    "category": { "enum":["reviewed", "book", "poster", "map", "report", "abstract", "phd", "master", "proceedings", "popular"] },
     "state": {"enum": ["draft", "submitted", "in-press", "published"]},
     "publication_name": { "type": "string"},
     "publisher": {"type": "string"},
