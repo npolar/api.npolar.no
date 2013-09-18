@@ -130,7 +130,8 @@ module Npolar
           {
             field => {
               :terms => {
-                :field => field
+                :field => field,
+                :size => 20
               }
             }
           }
