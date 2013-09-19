@@ -5,10 +5,11 @@
   "properties": {
     "id": { "type": "string" },
     "schema": { "type": "string", "format": "uri" },
+    "_attachments":{"type":"object"},
     "title": { "type": "string" },
     "published": { "type": "string", "format": "date-time" },
     "updated": { "type": "string", "format": "date-time"},
-    "progress": { "enum": ["planned"] },
+    "progress": { "enum": ["planned", "ongoing", "complete"] },
     "draft": { "enum": ["yes"] },
     "edits": {
       "description": "List of edits",
