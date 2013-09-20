@@ -17,7 +17,7 @@ module Metadata
   #
   # Open issues
   # * Setting and enforcing defaults
-  # * before_save
+  # * Handling before_save
 
   # resourceProvider Data Center Contact
 # npolar.no-dataset originator npolar.no
@@ -38,7 +38,7 @@ module Metadata
       "xml" => DIF_SCHEMA_URI
     }
 
-    JSON_SCHEMAS = ["dataset.json", "minimal-dataset.json"]
+    JSON_SCHEMAS = ["dataset.json"] # "minimal-dataset.json",
 
     class << self
       attr_accessor :formats, :accepts, :base
@@ -321,7 +321,7 @@ module Metadata
         # if POST, PUT - how about multi...
 
         dataset = Metadata::Dataset.new
-        dataset = dataset.before_valid(d)
+        dataset = dataset.before_valid?(d)
 
       #links << link(uri, "edit", nil, "application/json")
       #links << link(href(id, "dif"), "alternate", "DIF XML", "application/xml")
@@ -355,7 +355,7 @@ module Metadata
     }
     end
     
-    def before_valid?
+    def before_valid
 
       if activity?      
         activity.map {|a|
@@ -385,7 +385,7 @@ module Metadata
           end
         }
       end      
-      selfNormal reg.
+      self
 
     end
 
