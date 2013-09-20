@@ -4,10 +4,12 @@ module Metadata
 
   # Npolar dataset (http://api.npolar.no/schema/dataset) model
   #
-  # [Functionality]
-  #   * Holds metadata in a extended Hash (Hashie::Mash)
+  # [Features]
+  #   * Extends Hashie::Mash for easy method access
+  #   * Before save (POST/PUT) logic
   #   * Transform to Solr-style Hash (for creating Solr JSON)
   #   * Transform to DIF XML Hash (for creating DIF XML)
+  #   * Validation based on JSON Schema
   #
   # [License]
   #   {http://www.gnu.org/licenses/gpl.html GNU General Public License Version 3} (GPLv3)
@@ -16,21 +18,19 @@ module Metadata
   # @author Conrad Helgeland
   #
   # Open issues
-  # * Setting and enforcing defaults
-  # * Handling before_save
-
-  # resourceProvider Data Center Contact
-# npolar.no-dataset originator npolar.no
-  
+  # * Setting and enforcing defaults (defined in schema)
+  # * Defining defaults (originator? publisher?)
   class Dataset < Hashie::Mash
 
     include Npolar::Validation::MultiJsonSchemaValidator
-
+    
     BASE = "http://api.npolar.no/dataset/"
     
     DIF_SCHEMA_URI = "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"
 
     JSON_SCHEMA_URI = "http://api.npolar.no/schema/dataset"
+
+    JSON_SCHEMAS = ["dataset.json", "minimal-dataset.json"]
 
     SCHEMA_URI = {
       "dif" =>  DIF_SCHEMA_URI,
@@ -38,10 +38,47 @@ module Metadata
       "xml" => DIF_SCHEMA_URI
     }
 
-    JSON_SCHEMAS = ["dataset.json"] # "minimal-dataset.json",
-
     class << self
       attr_accessor :formats, :accepts, :base
+    end
+
+    # Streamline incoming datasets before save
+    # @return lambda
+    # See Core#handle and Core#before
+    def self.before
+      lambda {|request|
+        if request.put? or request.post?
+          Dataset.before_save(request)
+        else
+          request
+        end
+      }
+    end
+
+    # @return request
+    def self.before_save(request)
+      body = request.body.read
+      datasets = JSON.parse(body)
+      datasets = datasets.is_a?(Hash) ? [datasets] : datasets
+      
+      datasets = datasets.map {|d|
+        dataset = self.new(d)
+        dataset = dataset.before_valid
+        dataset = dataset.deduplicate_people
+        dataset = dataset.add_edit_and_alternate_links
+        #dataset = dataset.force_licences
+        #force organisation
+        dataset
+      }
+  
+      body = case datasets.size
+        when 1
+          datasets[0].to_json
+        else
+          datasets.to_json
+      end
+      request.body = body 
+      request
     end
 
     def self.licences
@@ -58,73 +95,39 @@ module Metadata
       ["application/json", "application/xml"]
     end
 
+    #def self.sets
+    #  oai_sets.map {|set| set[:spec] }
+    #end
+
     def self.schemas
       [schema_uri("json"), schema_uri("xml")]
-    end
-
-    def self.sets
-      oai_sets.map {|set| set[:spec] }
     end
 
     def self.schema_uri(format="json")
       if SCHEMA_URI.key? format
         SCHEMA_URI[format]
       else
-        raise ArgumentError, "Unknown schema format #{format}"
+        raise ArgumentError, "Unknown schema format: \"#{format}\""
       end
     end
 
-    #<IDN_Node>
-    #<Short_Name>IPY</Short_Name>
-    #</IDN_Node>
-    #<IDN_Node>
-    #<Short_Name>AMD/NO</Short_Name>
-    #</IDN_Node>
-    #<IDN_Node>
-    #<Short_Name>ARCTIC/NO</Short_Name>
-    #</IDN_Node>
-    #<IDN_Node>
-    #<Short_Name>ARCTIC</Short_Name>
-    #</IDN_Node>
-    #<IDN_Node>
-    #<Short_Name>AMD</Short_Name>
-    #</IDN_Node>
-    #<IDN_Node>
-    #<Short_Name>DOKIPY</Short_Name>
-    #</IDN_Node>
+    #def self.oai_sets
+    #  [ {:spec => "arctic", :name => "Arctic datasets"},
+    #    {:spec => "antarctic", :name => "Antarctic datasets"},
+    #    {:spec => "IPY", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008)"},
+    #    {:spec => "cryoclim.net", :name => "Cryoclim", :description => "Climate monitoring of the cryosphere, see http://cryoclim.net"},
+    #    {:spec => "NMDC", :name => "Norwegian Marine Data Centre", :description => "Marine datasets"},
+    #    {:spec => "GCMD", :name => "Global Change Master Directory" }
+    #  ]
+    #end
 
-    #biology ecotox gcmd map metadata placename ocean seaice tracking
-     #def dif_discipline
-     #  case groups
-     #    when "biodiveristy" then "BIOLOGY"
-     #    when "ecotoxicology" then "" # DIF "TOXICOLOGY" is under "MEDICAL SCIENCES"
-     #  # geology = GEOLOGY
-     #  # geohysics = GEOPHYSICS
-     #  # glaciology = "",
-     #  # topography = "",
-     #  # oceanography = OCEANOGRAPHY # top level? or under physical sciences?
-     #  # seaice = ""
-     #  
-     #  end
-     #end
-
-    def self.oai_sets
-      [ {:spec => "arctic", :name => "Arctic datasets"},
-        {:spec => "antarctic", :name => "Antarctic datasets"},
-        {:spec => "IPY", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008)"},
-        {:spec => "cryoclim.net", :name => "Cryoclim", :description => "Climate monitoring of the cryosphere, see http://cryoclim.net"},
-        {:spec => "NMDC", :name => "Norwegian Marine Data Centre", :description => "Marine datasets"},
-        {:spec => "GCMD", :name => "Global Change Master Directory" }
-      ]
-    end
-
-    def self.summary
-      "Dataset metadata in DIF XML, targeted at NASA's Global Change Master Directory."
-    end
-
-    def self.title
-      "Norwegian Polar Institute's datasets"
-    end
+    #def self.summary
+    #  "Dataset metadata in DIF XML, targeted at NASA's Global Change Master Directory."
+    #end
+    #
+    #def self.title
+    #  "Norwegian Polar Institute's datasets"
+    #end
     
     # Map to Solr core "api"
     def to_solr
@@ -223,9 +226,7 @@ module Metadata
       solr[:updated] = updated
 
       solr[:owners] = owners.map {|o|o.id}
-# org roles => owner publisher resP
-
-
+      # org roles => owner publisher resP
 
       solr
 
@@ -235,126 +236,115 @@ module Metadata
       (organisations||[]).select {|o| o.roles.include? "owner"}
     end
 
-    def load_dif
-    end
-    
-    def temporal_coverage
-    end
-
     def to_dif_hash
       DifHashifier.new(self).to_hash
     end
 
     def pointOfContact
-      (people||[]).select {|p| p.roles.include? "pointOfContact"} 
+      (people||[]+organisations||[]).select {|entity| entity.roles.include? "pointOfContact"} 
     end
-
-    #def people(role=nil)
-    #  
-    #end
-
-
 
     def to_dif
-        #t = Metadata::DifTransformer.new(self)
-        builder = ::Gcmd::DifBuilder.new( to_dif_hash )
-        xml = builder.build_dif
-        if xml =~ /^\<\?xml\sversion=\"1.0\" encoding=\"UTF-8\"\?\>/
-          xml = xml.split('<?xml version="1.0" encoding="UTF-8"?>')[1]
-        end
-        xml
+      dif = ::Gcmd::Dif.new( to_dif_hash )
+      dif.to_xml
     end
 
-    def to_oai_dc
-      xml = Builder::XmlMarkup.new
-      xml.tag!("oai_dc:dc",
-        'xmlns:oai_dc' => "http://www.openarchives.org/OAI/2.0/oai_dc/",
-        'xmlns:dc' => "http://purl.org/dc/elements/1.1/",
-        'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
-        'xsi:schemaLocation' =>
-          %{http://www.openarchives.org/OAI/2.0/oai_dc/
-            http://www.openarchives.org/OAI/2.0/oai_dc.xsd}) do
-          xml.tag!('oai_dc:title', title)
-          xml.tag!('oai_dc:description', summary)
-          xml.tag!('oai_dc:creator', investigators.map {|i| i.first_name + " " + i.last_name}.join(", "))
-          tags.each do |tag|
-            xml.tag!('oai_dc:subject', tag)
-          end
-      end
-      xml.target!
-    end
+    #def to_oai_dc
+    #  xml = Builder::XmlMarkup.new
+    #  xml.tag!("oai_dc:dc",
+    #    'xmlns:oai_dc' => "http://www.openarchives.org/OAI/2.0/oai_dc/",
+    #    'xmlns:dc' => "http://purl.org/dc/elements/1.1/",
+    #    'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
+    #    'xsi:schemaLocation' =>
+    #      %{http://www.openarchives.org/OAI/2.0/oai_dc/
+    #        http://www.openarchives.org/OAI/2.0/oai_dc.xsd}) do
+    #      xml.tag!('oai_dc:title', title)
+    #      xml.tag!('oai_dc:description', summary)
+    #      xml.tag!('oai_dc:creator', investigators.map {|i| i.first_name + " " + i.last_name}.join(", "))
+    #      tags.each do |tag|
+    #        xml.tag!('oai_dc:subject', tag)
+    #      end
+    #  end
+    #  xml.target!
+    #end
     
     def uri(id)
       self.class.uri + id
     end
 
-    def self.before_request
-      lambda {|request|
+    def deduplicate_people
+      self[:people] = people.map {|p| [p.first_name, p.last_name] }.uniq.map {|first_name, last_name|
+        persons = people.select {|p| first_name == p.first_name and last_name == p.last_name }
+        person = persons[0]
+        { "first_name" => first_name,
+          "last_name" => last_name,
+          "roles" => persons.map {|p| p.roles }.flatten.uniq,
+          "email" => person.email,
+          "organisation" => person.organisation
+        }
+      }
+      self
+    end
 
+    def add_edit_and_alternate_links
+      api = ENV["NPOLAR_API"] ||= "http://api.npolar.no"
 
-    #def multiple_roles
-    #  [lambda {|d|
-    #    d.contributors? },
-    #  lambda {|d|
-    #    names = d.contributors.map {|c| c.name }.uniq
-    #    
-    #    d.contributors = names.map {|name|
-    #      entity = d.contributors.select {|c| c.name == name }.first
-    #
-    #      uri = nil
-    #      if name =~ /Norwegian Polar (Institute|Data)/
-    #        uri = "http://npolar.no"
-    #      end
-    #
-    #      { "name" => name,
-    #        "roles" => d.contributors.select {|c| c.name == name }.map {|c| c.role }.uniq,
-    #        "email" => entity.email,
-    #        "person" => entity.person == false ? false : true,
-    #        "surname" => entity.surname,
-    #        "uri" => uri
-    #      }
-    #    }
-    #    d
-    #  }]
+      self[:links] = links||[] 
+
+      # edit  ("application/json")
+      if links.select {|link| link.rel=="edit" and link.type == "application/json"}.size == 0
+        self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}",
+          "rel" => "edit", "title" => "Edit URI", "type" => "application/json" })
+      end
+
+      # DIF XML
+      if links.select {|link| link.rel=="alternate" and link.type == "application/xml"}.size == 0
+        self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.xml",
+          "rel" => "alternate", "title" => "DIF XML", "type" => "application/xml"})
+      end
+
+      # DIF XML
+      if links.select {|link| link.rel=="alternate" and link.type == "application/vnd.iso.19139+xml"}.size == 0
+        self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.iso",
+          "rel" => "alternate", "title" => "ISO 19139 XML", "type" => "application/vnd.iso.19139+xml"})
+      end
+
+      # Atom XML
+      if links.select {|link| link.rel=="alternate" and link.type == "application/atom+xml"}.size == 0
+        self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.atom",
+          "rel" => "alternate", "title" => "Atom entry XML", "type" => "application/atom+xml"})
+      end
+
+      # html
+      if links.select {|link| link.rel=="alternate" and link.type == "text/html"}.size == 0
+        self[:links] << Hashie::Mash.new({ "href" => "http://data.npolar.no/dataset/#{id}",
+          "rel" => "alternate", "title" => "HTML", "type" => "text/html" })
+      end
+
+      self
+
+    end
+
+    #def force_organisations
+    #end
+    # Make sure we have at least 1 Data_Center (required)
+    #if organisations.nil? or organisations.none?
+    #  self[:organisations] = [{ "name" => "Norwegian Polar Institute",
+    #    "id" => "npolar.no",
+    #    "gcmd_short_name" => "NO/NPI",
+    #    "roles" => ["publisher"], "links" => [{ "rel" => "publisher",
+    #      "href" => "http://data.npolar.no",
+    #      "title" => "Norwegian Polar Institute", "lang" => "en" }]}]
     #end
 
-        # if POST, PUT - how about multi...
+    # Make sure we have 1 Data Center Contact (pointOfContact)
+    #if pointOfContact.none?
+    #  self[:people] << {"last_name" => "Norwegian Polar Data Centre",
+    #    "roles" => ["pointOfContact"], "email" => "data[*]npolar.no"}
+    #end
 
-        dataset = Metadata::Dataset.new
-        dataset = dataset.before_valid(d)
-
-      #links << link(uri, "edit", nil, "application/json")
-      #links << link(href(id, "dif"), "alternate", "DIF XML", "application/xml")
-      #links << link(href(id, "iso"), "alternate", "ISO 19139 XML", "application/vnd.iso.19139+xml")
-      #links << link(href(id, "atom"), "alternate", "Atom XML", "application/atom+xml")
-      #links << link("http://data.npolar.no/dataset/#{id}", "alternate", "HTML", "text/html")
-
-
-#biology =>
-#<Parameters>
-#<Category>EARTH SCIENCE</Category>
-#<Topic>BIOSPHERE</Topic>
-
-
-      # Make sure we have at least 1 Data_Center (required)
-      #if organisations.nil? or organisations.none?
-      #  self[:organisations] = [{ "name" => "Norwegian Polar Institute",
-      #    "id" => "npolar.no",
-      #    "gcmd_short_name" => "NO/NPI",
-      #    "roles" => ["publisher"], "links" => [{ "rel" => "publisher",
-      #      "href" => "http://data.npolar.no",
-      #      "title" => "Norwegian Polar Institute", "lang" => "en" }]}]
-      #end
-
-      # Make sure we have 1 Data Center Contact (pointOfContact)
-      #if pointOfContact.none?
-      #  self[:people] << {"last_name" => "Norwegian Polar Data Centre",
-      #    "roles" => ["pointOfContact"], "email" => "data[*]npolar.no"}
-      #end
-
-    }
-    end
-    
+    # Manipulates documents before validation
+    # @override MultiJsonSchemaValidator
     def before_valid
 
       if activity?      
@@ -389,6 +379,7 @@ module Metadata
 
     end
 
+    # @override MultiJsonSchemaValidator
     def schemas
       JSON_SCHEMAS
     end
