@@ -2,7 +2,7 @@ require "hashie"
 
 module Metadata
 
-  # Dataset model
+  # Npolar dataset (http://api.npolar.no/schema/dataset) model
   #
   # [Functionality]
   #   * Holds metadata in a extended Hash (Hashie::Mash)
@@ -14,7 +14,10 @@ module Metadata
   #
   # @author Ruben Dens
   # @author Conrad Helgeland
-
+  #
+  # Open issues
+  # * Setting and enforcing defaults
+  # * before_save
 
   # resourceProvider Data Center Contact
 # npolar.no-dataset originator npolar.no
@@ -23,11 +26,11 @@ module Metadata
 
     include Npolar::Validation::MultiJsonSchemaValidator
 
-    BASE = "/dataset"
+    BASE = "http://api.npolar.no/dataset/"
     
     DIF_SCHEMA_URI = "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"
 
-    JSON_SCHEMA_URI = "http://api.npolar.no/schema/dataset.json"
+    JSON_SCHEMA_URI = "http://api.npolar.no/schema/dataset"
 
     SCHEMA_URI = {
       "dif" =>  DIF_SCHEMA_URI,
@@ -41,91 +44,8 @@ module Metadata
       attr_accessor :formats, :accepts, :base
     end
 
-    # This piece of code is intended to make DIFs valid (Parameter is required)
-    # ["biology", "data", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "topography"]
-#ATMOSPHERE (Science Keywords > EARTH SCIENCE) | concept 
-#HUMAN DIMENSIONS (Science Keywords > EARTH SCIENCE) | concept 
-#REFERENCE AND INFORMATION SERVICES (Science Keywords > EARTH SCIENCE SERVICES) | concept 
-#MODELS (Science Keywords > EARTH SCIENCE SERVICES) | concept 
-#AGRICULTURE (Science Keywords > EARTH SCIENCE) | concept 
-#ENVIRONMENTAL ADVISORIES (Science Keywords > EARTH SCIENCE SERVICES) | 
-# datahandkling
-
-
-    def self.dif_parameter(topic)
-      dif_Topic = case topic
-        when "biology"
-          "BIOSPHERE"
-        when "ecotoxicology"
-          ""
-
-        when "geology"
-          "SOLID EARTH"
-
-        when "glaciology"
-          "CRYOSPHERE"
-
-        when "geophysics"
-          ""
-
-        when "maps", "topography"
-          ""
-
-        when "seaice", "oceanography"
-          "OCEANS"
-
-        else
-          ""
-      end
-
-      dif_Term = case topic
-        when "seaice"
-          "SEA ICE"
-        else
-          ""
-      end
-      
-
-      { "Category" => "EARTH SCIENCE", "Topic" => dif_Topic, "Term" => dif_Term }
-    end
-
-
-  #BIOSPHERE
-
-#{
-#"Category": "EARTH SCIENCE",
-#"Topic": "OCEANS",
-#"Term": "OCEAN PRESSURE",
-#"Variable_Level_1": "WATER PRESSURE"
-#},
-#{
-#"Category": "EARTH SCIENCE",
-#"Topic": "OCEANS",
-#"Term": "OCEAN TEMPERATURE",
-#"Variable_Level_1": "WATER TEMPERATURE"
-#},
-#{
-#"Category": "EARTH SCIENCE",
-#"Topic": "OCEANS",
-#"Term": "SALINITY/DENSITY",
-#"Variable_Level_1": "DENSITY"
-#},
-
-
-  #*TERRESTRIAL ECOSYSTEMS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
-  #*VEGETATION (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
-  #*ECOLOGICAL DYNAMICS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
-  #*AQUATIC ECOSYSTEMS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept
-
-    # code or URI?
-    #def self.licenses
-    #  ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/"]
-    #end
-
     def self.licences
       ["http://data.norge.no/nlod/no/1.0",
-      "http://data.norge.no/nlod/en/1.0",
-      "http://creativecommons.org/licenses/by/3.0/",
       "http://creativecommons.org/licenses/by/3.0/no/"]
     end
 
@@ -191,7 +111,6 @@ module Metadata
     def self.oai_sets
       [ {:spec => "arctic", :name => "Arctic datasets"},
         {:spec => "antarctic", :name => "Antarctic datasets"},
-        {:spec => "IPY:NO", :name => "International Polar Year: Norway", :description => "Norwegian contributions to the International Polar Year"},
         {:spec => "IPY", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008)"},
         {:spec => "cryoclim.net", :name => "Cryoclim", :description => "Climate monitoring of the cryosphere, see http://cryoclim.net"},
         {:spec => "NMDC", :name => "Norwegian Marine Data Centre", :description => "Marine datasets"},
@@ -221,13 +140,14 @@ module Metadata
         :tags => tags,
         :sets => sets,
         :iso_topics => iso_topics,
-        :licences => licenses,
+        :licences => licences,
+        :restricted => restricted,
+        :restrictions => restrictions,
         :draft => draft,
         :workspace => "metadata",
         :collection => "dataset",
         :links => links,
         :rights => rights,
-        #:institutions => organisations.map {|o|o[:uri].gsub(/http:\/\//, "")},
         :progress => progress,
         :formats => self.class.formats,
         :accepts => self.class.accepts,
@@ -235,12 +155,16 @@ module Metadata
         :accept_schemas => self.class.schemas,
         :relations => [],
         :category => [],
+        :comment => comment,
         :schemas => self.class.schemas,
-        :label => []
+        :label => [],
+        :people => (people||[]).map {|p| "#{p.first_name} #{p.last_name}"}
       })
 
         if placenames?
-          solr.country = placenames.map {|p| p["country"]}.uniq.select {|c|c != ""}
+          solr.placename = placenames.map {|p| p.placename}.uniq.select {|p|p != ""}
+          solr.area = placenames.map {|p| p.area}.uniq.select {|a|a != ""}
+          solr.country = placenames.map {|p| p.country}.uniq.select {|c|c != ""}
         end
 
         if gcmd? and gcmd.sciencekeywords?
@@ -255,17 +179,6 @@ module Metadata
           solr[:schemas] += category.map {|c| c["schema"] }
           solr[:label] +=  category.map {|c| c["label"] }
         end
-        
-        #if doc.key? "investigators"
-        #TODO
-        #  solr[:investigators] = doc["investigators"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
-        #  solr[:investigator_emails] = doc["investigators"].select {|i|i.email?}.map {|i| "#{i["email"]}"}
-        #end
-        
-        #if doc.key? "contributors"
-        #  solr[:contributors] = doc["contributors"].map {|i| "#{i["first_name"]} #{i["last_name"]}"}
-        #  solr[:contributor_emails] = doc["contributors"].select {|i|i.email?}.map {|i| "#{i["email"]}"}
-        #end
 
         # Reduce locations to 1 bounding box
         if doc.locations.respond_to? :map
@@ -296,12 +209,12 @@ module Metadata
       solr[:text] = text
 
       schema = ::Gcmd::Schema.new
-      errors = schema.validate_xml( self.to_dif ).map {|e|e["details"].to_s}
+      errors = schema.validate_xml( self.to_dif ).map {|e|e["details"].to_s.gsub(/["'\/\\()]/, "")}
 
       solr[:errors] = errors
       solr[:valid] = errors.any? ? false : true
 
-      solr[:link_edit] = "#{BASE.gsub(/\/$/, "")}/#{id}.json"
+      solr[:link_edit] = "/dataset/#{id}.json"
       solr[:link_html] = "http://data.npolar.no/dataset/#{id}"
       solr[:link_dif] = "/dataset/#{id}.dif"
       solr[:link_iso] = "/dataset/#{id}.iso"
@@ -309,7 +222,7 @@ module Metadata
       solr[:published] = published
       solr[:updated] = updated
 
-      solr[:owners] = owners.map {|o|o.name}
+      solr[:owners] = owners.map {|o|o.id}
 # org roles => owner publisher resP
 
 
@@ -329,28 +242,6 @@ module Metadata
     end
 
     def to_dif_hash
-
-      # Make sure we have at least 1 Data_Center (required)
-      if organisations.nil? or organisations.none?
-        self[:organisations] = [{ "name" => "Norwegian Polar Institute",
-          "gcmd_short_name" => "NO/NPI",
-          "roles" => ["publisher"], "uri" => "http://data.npolar.no"}]
-      end
-      # Make sure we have 1 Data Center Contact (pointOfContact)
-      if pointOfContact.none?
-        self[:people] << {"last_name" => "Norwegian Polar Data Centre",
-          "roles" => ["pointOfContact"], "email" => "data[*]npolar.no"}
-      end
-
-      # Make sure we have at least 1 Parameter (required)
-      if gcmd.sciencekeywords.nil?
-        hash.Parameters = topics.map {|topic| Metadata::Dataset.dif_parameter(topic) }
-      end
-
-      #if hash.ISO_Topic_Category.nil?
-        # Can easily map from topics...
-      #end
-
       DifHashifier.new(self).to_hash
     end
 
@@ -400,10 +291,37 @@ module Metadata
     def self.before_request
       lambda {|request|
 
+
+    #def multiple_roles
+    #  [lambda {|d|
+    #    d.contributors? },
+    #  lambda {|d|
+    #    names = d.contributors.map {|c| c.name }.uniq
+    #    
+    #    d.contributors = names.map {|name|
+    #      entity = d.contributors.select {|c| c.name == name }.first
+    #
+    #      uri = nil
+    #      if name =~ /Norwegian Polar (Institute|Data)/
+    #        uri = "http://npolar.no"
+    #      end
+    #
+    #      { "name" => name,
+    #        "roles" => d.contributors.select {|c| c.name == name }.map {|c| c.role }.uniq,
+    #        "email" => entity.email,
+    #        "person" => entity.person == false ? false : true,
+    #        "surname" => entity.surname,
+    #        "uri" => uri
+    #      }
+    #    }
+    #    d
+    #  }]
+    #end
+
         # if POST, PUT - how about multi...
 
         dataset = Metadata::Dataset.new
-        dataset = dataset.before_valid?(d)
+        dataset = dataset.before_valid(d)
 
       #links << link(uri, "edit", nil, "application/json")
       #links << link(href(id, "dif"), "alternate", "DIF XML", "application/xml")
@@ -417,6 +335,22 @@ module Metadata
 #<Category>EARTH SCIENCE</Category>
 #<Topic>BIOSPHERE</Topic>
 
+
+      # Make sure we have at least 1 Data_Center (required)
+      #if organisations.nil? or organisations.none?
+      #  self[:organisations] = [{ "name" => "Norwegian Polar Institute",
+      #    "id" => "npolar.no",
+      #    "gcmd_short_name" => "NO/NPI",
+      #    "roles" => ["publisher"], "links" => [{ "rel" => "publisher",
+      #      "href" => "http://data.npolar.no",
+      #      "title" => "Norwegian Polar Institute", "lang" => "en" }]}]
+      #end
+
+      # Make sure we have 1 Data Center Contact (pointOfContact)
+      #if pointOfContact.none?
+      #  self[:people] << {"last_name" => "Norwegian Polar Data Centre",
+      #    "roles" => ["pointOfContact"], "email" => "data[*]npolar.no"}
+      #end
 
     }
     end
@@ -451,7 +385,7 @@ module Metadata
           end
         }
       end      
-      self
+      selfNormal reg.
 
     end
 

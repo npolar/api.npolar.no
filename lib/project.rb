@@ -7,7 +7,7 @@ class Project < Hashie::Mash
     ["project.json"] 
   end
 
-  def before_valid?
+  def before_valid
   
     if start_date? and start_date == ""
       self.delete :start_date
