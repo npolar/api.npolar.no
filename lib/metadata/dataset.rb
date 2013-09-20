@@ -321,7 +321,7 @@ module Metadata
         # if POST, PUT - how about multi...
 
         dataset = Metadata::Dataset.new
-        dataset = dataset.before_valid?(d)
+        dataset = dataset.before_valid(d)
 
       #links << link(uri, "edit", nil, "application/json")
       #links << link(href(id, "dif"), "alternate", "DIF XML", "application/xml")
