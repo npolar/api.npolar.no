@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/dataset-1.0-dev",
+  "id": "http://api.npolar.no/schema/dataset-1.0-rc1",
   "title": "Dataset",
   "description": "Metadata describing a dataset",
   "type": "object",   
@@ -30,13 +30,13 @@
     },
     "progress": { "type": ["string", "null"], "enum": ["ongoing","complete", "planned", null]},
     "topics": {
-      "title": "NPI topics",
-      "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'service', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
+      "title": "Npolar topics",
+      "description": "Based on http://www.npolar.no/en/research/topics/ (Missing?: Management? Conservation? Human dimensions?)",
       "type": "array",
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["biology", "ecotoxicology", "geology", "geophysics", "glaciology", "maps", "oceanography", "other", "seaice", "service", "topography"]
+        "enum": ["atmosphere", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
       }
     },
     "iso_topics": {
@@ -60,7 +60,7 @@
       "default": ["http://data.norge.no/nlod/no/1.0"],
       "items": {
         "type": "string",
-        "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licences/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://www.lovdata.no/all/hl-19610512-002.html"]
+        "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://www.lovdata.no/all/hl-19610512-002.html", "http://creativecommons.org/publicdomain/zero/1.0/"]
       }
     },
     "edits": {
@@ -76,7 +76,9 @@
             "format": "date-time"
           },
           "email": { "type": "string" },
-          "name": { "type": "string" }
+          "name": { "type": "string" },
+          "comment": { "type": "string" },
+          "rev": { "type": "string" }
         },
         "required": ["edited", "name"]
       }
@@ -92,7 +94,7 @@
 
         "properties": {
           "id": { "type": "string" },
-          "first_name": { "type": "string" },
+          "first_name": { "type": ["string", "null"] },
           "last_name": { "type": "string" },
           "roles": {
             "type": "array",
@@ -100,10 +102,7 @@
               "enum": ["author", "principalInvestigator", "processor", "pointOfContact", "editor"]
             }
           },
-          "email": {
-            "type": ["string","null"],
-            "additionalItems": false
-          },
+          "email": { "type": ["string","null"] },
           "links": { "type": "array"},
           "organisation": { "type": ["string", "null"]}
         }
@@ -120,11 +119,10 @@
           "id": { "type": "string" },
           "name": { "type": "string" },
           "gcmd_short_name": { "type": ["string", "null"] },
-          "shortname": { "type": ["string", "null"] },
           "roles": {
             "type": "array",
             "items": {
-              "enum": ["originator", "owner",  "publisher", "resourceProvider"]
+              "enum": ["originator", "owner",  "publisher", "resourceProvider", "pointOfContact"]
             }
           },
           "email": {
@@ -153,13 +151,16 @@
           "title": { "type": ["string", "null"] },
           "hreflang": { "type": ["string", "null"] },
           "length": { "type": ["number", "null"] },
-
-          "type": { "type": "string" }
+          "type": { "type": "string" },
+          "hash": { "type": "array" },
+          "etag": { "type": "string" },
+          "modified": { "type": "string" },
+          "acccessed": { "type": "string" }
         },
         "required": ["rel", "href"]
       }
     },
-    "category": {
+    "categories": {
       "description": "",
       "type": "array",
       "additionalItems": false,
@@ -206,6 +207,8 @@
       }
     },
     "quality": { "type": ["string", "null"] },
+    "restricted": { "type": ["boolean", "null"] },
+    "restrictions": { "type": ["string", "null"] },
     "sets": {
       "description": "Subsets",
       "type": "array",
@@ -222,8 +225,9 @@
         "paleo_temporal_coverage": { "description": "DIF element Paleo_Temporal_Coverage", "type": "array"},
         "instruments": { "description": "DIF instruments (DIF element Sensor_Name)", "type": "array"},
         "platforms": { "description": "DIF platforms (DIF element Source_Name)", "type": "array"},
-        "additional": { "description": "DIF element Additional_Metadata)", "type": "array"},
-        "citation": { "description": "DIF element Data_Set_Citation", "type": "object"},
+        "references": { "description": "DIF element Reference", "type": "array"},
+        "extended": { "description": "DIF element Extended_Metadata)", "type": "array"},
+        "citation": { "description": "DIF element Data_Set_Citation", "type": "array"},
         "sciencekeywords": {
           "description": "DIF element Parameters (aka. Science Keywords)",
           "type": "array",
@@ -254,18 +258,13 @@
       "type": "string",
       "format": "date-time"
     },
-    "edited": {
-      "description": "Document was stored",
-      "type": ["string","null"],
-      "format": "date-time"
-    },
     "released": {
       "description": "Data was (or is to be) released the general public",
       "type": ["string", "null"],
       "format": "date-time"
     },
     "comment": { "type": "string" },
-    "rights" : { "type": "string" },
+    "rights" : { "type": ["string", "null"] },
     "_id": { "description": "Internal id", "type": "string" },
     "_rev" : { "description": "Internal revision", "type": "string" },
     "publisher": { "type": "string" },
