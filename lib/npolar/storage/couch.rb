@@ -340,6 +340,7 @@ module Npolar
         end
       end
 
+      # Called by Core#valid? see https://github.com/npolar/api.npolar.no/blob/12e741d8897c8c5e9065a6ac283718e0b274b936/lib/npolar/api/core.rb#L290
       def valid? data, context="POST"
         @errors = []
 
@@ -348,8 +349,7 @@ module Npolar
           if data =~ JSON_ARRAY_REGEX
             docs = JSON.parse data
           else
-            docs = []
-            docs << JSON.parse(data)
+            docs = [JSON.parse(data)]
           end
 
         rescue JSON::ParserError => e        
