@@ -57,6 +57,8 @@ module Npolar
         return http_error(501, "No storage set for API endpoint, cannot handle request")
       end
 
+      request = before(request)
+
       # 405 Method not allowed
       unless method_allowed? request.request_method
         return http_error(405, "The following HTTP methods are allowed: #{methods.join(", ")}")
@@ -71,7 +73,6 @@ module Npolar
 
       #414 Request-URI Too Long?
 
-      request = before(request)
 
       if ["GET", "HEAD", "DELETE"].include? request.request_method
         # 404 / 410 Gone?
@@ -216,63 +217,38 @@ module Npolar
       config[:log] ||= Api.log
     end
 
-    # Before request
-    # @return request
-    def before(request)
-      before = config[:before]
-      if before.nil? or [] == before
-        return request
-      end
-      if before.respond_to? :call
-        before = [before]
-      end
-      before.select{|l|l.respond_to?(:call)}.each_with_index do |before_lambda, i|
-        log.debug "Before lambda #{i+1}/#{before.size} (#{before_lambda})"
-        request = before_lambda.call(request)
-      end
-      request
-      
-    end
-
     # After request
-    # @return response
+    # @return response Npolar::Rack::Response
+    # @todo Location on POST/PUT
     def after(request, response)
-
-      # Force UTF-8 on all responses
+      start_response_object_id = response.object_id
+      # Force response to Rack::Response   
       if response.is_a? Rack::Response
         headers = response.headers
-      elsif response.respond_to?(:[])
-         headers = response[1]
+      elsif response.respond_to?(:size) and response.size == 3
+         status, headers, body = response
+         response = Rack::Response.new(body, status, headers)
       else
-        raise "Bad response headers"
+        raise "Bad response"
       end
 
+      # Force UTF-8 on all responses
       if headers.key? "Content-Type" and headers["Content-Type"] != /; charset=utf-8$/
         content_type = headers["Content-Type"].split(";")[0]
         content_type += "; charset=utf-8"
-      end 
-      if response.is_a? Rack::Response
-        response.header["Content-Type"] = content_type
-      else
-        response[1]["Content-Type"] = content_type
       end
+      response.header["Content-Type"] = content_type
       
       # Auto JSON from Hash
-      if response.is_a? Rack::Response or response.respond_to?(:body)
-        if response.respond_to?(:body) and response.body.is_a? Hash
-          response.body = body.to_json
-        end
-      elsif response.respond_to?(:each)
-        if 1 == response.size and response[0].is_a? Hash
-          response[0]= response[0].to_json
-        end
-        # else: OK
-      else
-        raise "Bad response body"
+      if response.body.is_a? Hash
+        response.body = body.to_json
       end
-
+         
       # After lambdas
-      after = config[:after]
+      after = config[:after]||[]
+      if storage.respond_to? :model and storage.model.class.respond_to? :after
+        after << storage.model.class.after
+      end
       if after.nil? or [] == after
         return response
       end
@@ -283,7 +259,39 @@ module Npolar
         log.debug "After #{request.request_method} #{i+1}/#{after.size} (#{after_lambda})"
         response = after_lambda.call(request, response)
       end
-      response
+      if (response.object_id != start_response_object_id and (request.post? or request.put?))
+        # Persist changes  
+        storage.post(response.body.read)
+      else
+        response
+      end
+      
+
+    end
+
+    # Before request
+    # @return request
+    def before(request)
+
+      before = config[:before]||[]
+      if storage.respond_to? :model and storage.model.class.respond_to? :before
+        before << storage.model.class.before
+      end
+      
+      if before.nil? or [] == before
+        return request
+      end
+
+      if before.respond_to? :call
+        before = [before]
+      end
+
+      before.select{|l|l.respond_to?(:call)}.each_with_index do |before_lambda, i|
+        log.debug "Before lambda #{i+1}/#{before.size} (#{before_lambda})"
+        request = before_lambda.call(request)
+      end
+      request
+      
     end
 
     # @return Boolean
