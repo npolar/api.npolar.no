@@ -2,6 +2,10 @@ module Npolar
   module Rack
     class Request < ::Rack::Request
     
+      def body=string
+        env["rack.input"] = StringIO.new(string)
+      end
+
       # Extract format from request
       def format
         format = format_from_path
@@ -114,7 +118,7 @@ module Npolar
   
   
       #client_ip = request.env['HTTP_X_FORWARDED_FOR'].nil? ? request.remote_ip : request.env['HTTP_X_FORWARDED_FOR']
-  
+      # request.media_type == "application/x-www-form-urlencoded"
   
       def read?
         not write?
