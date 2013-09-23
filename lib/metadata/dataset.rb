@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "hashie"
 
 module Metadata
@@ -6,7 +7,7 @@ module Metadata
   #
   # [Features]
   #   * Extends Hashie::Mash for easy method access
-  #   * Before save (POST/PUT) logic
+  #   * Before and after save (POST/PUT) logic
   #   * Transform to Solr-style Hash (for creating Solr JSON)
   #   * Transform to DIF XML Hash (for creating DIF XML)
   #   * Validation based on JSON Schema
@@ -30,8 +31,16 @@ module Metadata
 
     JSON_SCHEMA_URI = "http://api.npolar.no/schema/dataset"
 
-    JSON_SCHEMAS = ["dataset.json", "minimal-dataset.json"]
+    JSON_SCHEMAS = ["dataset.json"]
 
+    NPOLAR_NO = { id: "npolar.no",
+      name: "Norwegian Polar Institute",
+      gcmd_short_name: "NO/NPI",
+      roles: ["originator", "owner", "publisher", "resourceProvider", "pointOfContact"],
+      links: [ {rel: "owner", href: "http://npolar.no", title: "Norwegian Polar Institute" },
+        {rel: "publisher", href: "http://data.npolar.no", title: "Norwegian Polar Institute" }
+      ]
+    }
     SCHEMA_URI = {
       "dif" =>  DIF_SCHEMA_URI,
       "json" => JSON_SCHEMA_URI,
@@ -45,6 +54,43 @@ module Metadata
     # Streamline incoming datasets before save
     # @return lambda
     # See Core#handle and Core#before
+    def self.after
+      lambda {|request,response|
+        if request.post?
+          Dataset.after_create(request,response)
+        else
+          response
+        end
+      }
+    end
+
+    # 
+    # @return response Rack::Response
+    def self.after_create(request,response)
+
+      datasets = JSON.parse(response.body.join(""))
+      datasets = datasets.is_a?(Hash) ? [datasets] : datasets
+      
+      datasets = datasets.map {|d|
+        dataset = self.new(d)
+        dataset = dataset.add_edit_and_alternate_links
+        dataset
+      }
+
+      body = case datasets.size
+        when 1
+          datasets[0].to_json
+        else
+          datasets.to_json
+      end
+      response.body = StringIO.new(body) 
+      response
+
+    end
+
+    # Process incoming dataset(s) before storage interaction
+    # @return lambda
+    # See Core#handle and Core#before
     def self.before
       lambda {|request|
         if request.put? or request.post?
@@ -55,19 +101,58 @@ module Metadata
       }
     end
 
+    # Add default information to dataset(s) before saving
     # @return request
     def self.before_save(request)
       body = request.body.read
       datasets = JSON.parse(body)
       datasets = datasets.is_a?(Hash) ? [datasets] : datasets
-      
+
       datasets = datasets.map {|d|
+
         dataset = self.new(d)
+        dataset.collection = "dataset"
+
+        if not dataset.lang?
+          dataset.lang = "en"
+        end
+        
+        if not dataset.title? or not dataset.topics? or not dataset.licences
+          dataset.draft = "yes"
+        end
+
+        if not dataset.title?
+          dataset.title = "Dataset created by #{request.username} at #{Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")}"
+        end
+
         dataset = dataset.before_valid
+
         dataset = dataset.deduplicate_people
+
         dataset = dataset.add_edit_and_alternate_links
-        #dataset = dataset.force_licences
-        #force organisation
+        
+        if not dataset.licences? or dataset.licences.none?
+          dataset.licences = licences
+        end
+
+        if not dataset.rights? or dataset.rights.nil? or dataset.rights == ""
+          dataset.rights = rights(dataset)
+        end
+
+        if not dataset.organisations? or dataset.organisations.none?
+          dataset.organisations = [NPOLAR_NO]
+        end
+
+        if not dataset.topics? or dataset.topics.none?
+          dataset.topics = ["other"]
+        end
+
+        if not dataset.schema?
+          dataset.schema = JSON_SCHEMA_URI
+        end
+
+        # add resourceProvider if link[rel=="data"]
+
         dataset
       }
   
@@ -77,6 +162,7 @@ module Metadata
         else
           datasets.to_json
       end
+
       request.body = body 
       request
     end
@@ -98,6 +184,22 @@ module Metadata
     #def self.sets
     #  oai_sets.map {|set| set[:spec] }
     #end
+
+    def self.rights(dataset=nil)
+      nlod = /data.norge.no\/nlod/
+      ccby = /creativecommons.org\/licenses\/by/
+      odc = /opendatacommons.org\/licenses\/by/
+      cc0 = /creativecommons.org\/publicdomain\/zero/
+      åvl = /lovdata.no\/all\/(h|n)l-19610512-002/
+      
+      if dataset.licences.select {|l| l =~ cc0 }.size > 0
+        "Dataset is in the public domain."
+      elsif dataset.licences.select {|l| l =~ /#{nlod}|#{ccby}|#{odc}/ }.size > 0
+        "Dataset is open data and free to reuse if you attribute the source.\nLicences: #{licences.join(" or ")}"
+      elsif dataset.licences.select {|l| l =~ åvl }.size > 0
+        "Dataset protected under \"Lov om opphavsrett til åndsverk m.v. (åndsverkloven)\".\n http://www.lovdata.no/all/hl-19610512-002.html"
+      end
+    end
 
     def self.schemas
       [schema_uri("json"), schema_uri("xml")]
@@ -232,6 +334,10 @@ module Metadata
 
     end
 
+    def authors 
+      (people||[]).select {|o| o.roles.include? "author" or  o.roles.include? "principalInvestigator" }
+    end
+
     def owners
       (organisations||[]).select {|o| o.roles.include? "owner"}
     end
@@ -273,7 +379,8 @@ module Metadata
     end
 
     def deduplicate_people
-      self[:people] = people.map {|p| [p.first_name, p.last_name] }.uniq.map {|first_name, last_name|
+      unique_people = (people||[]).map {|p| [p.first_name, p.last_name]}.uniq
+      self[:people] = unique_people.map {|first_name, last_name |
         persons = people.select {|p| first_name == p.first_name and last_name == p.last_name }
         person = persons[0]
         { "first_name" => first_name,
@@ -291,62 +398,47 @@ module Metadata
 
       self[:links] = links||[] 
 
-      # edit  ("application/json")
-      if links.select {|link| link.rel=="edit" and link.type == "application/json"}.size == 0
-        self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}",
-          "rel" => "edit", "title" => "Edit URI", "type" => "application/json" })
-      end
-
-      # DIF XML
-      if links.select {|link| link.rel=="alternate" and link.type == "application/xml"}.size == 0
-        self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.xml",
-          "rel" => "alternate", "title" => "DIF XML", "type" => "application/xml"})
-      end
-
-      # DIF XML
-      if links.select {|link| link.rel=="alternate" and link.type == "application/vnd.iso.19139+xml"}.size == 0
-        self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.iso",
-          "rel" => "alternate", "title" => "ISO 19139 XML", "type" => "application/vnd.iso.19139+xml"})
-      end
-
-      # Atom XML
-      if links.select {|link| link.rel=="alternate" and link.type == "application/atom+xml"}.size == 0
-        self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.atom",
-          "rel" => "alternate", "title" => "Atom entry XML", "type" => "application/atom+xml"})
-      end
-
-      # html
-      if links.select {|link| link.rel=="alternate" and link.type == "text/html"}.size == 0
-        self[:links] << Hashie::Mash.new({ "href" => "http://data.npolar.no/dataset/#{id}",
-          "rel" => "alternate", "title" => "HTML", "type" => "text/html" })
+      if id? # => These links are not added on POST (see #after_save for a fix)
+      
+        # edit  ("application/json")
+        if links.select {|link| link.rel=="edit" and link.type == "application/json"}.size == 0
+          self[:links] << Hashie::Mash.new({ "href" => "#{api.gsub(/^http[:]/, "https:")}/dataset/#{id}",
+            "rel" => "edit", "title" => "Edit URI", "type" => "application/json" })
+        end
+  
+        # DIF XML
+        if links.select {|link| link.rel=="alternate" and link.type == "application/xml"}.size == 0
+          self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.xml",
+            "rel" => "alternate", "title" => "DIF XML", "type" => "application/xml"})
+        end
+  
+        # DIF XML
+        if links.select {|link| link.rel=="alternate" and link.type == "application/vnd.iso.19139+xml"}.size == 0
+          self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.iso",
+            "rel" => "alternate", "title" => "ISO 19139 XML", "type" => "application/vnd.iso.19139+xml"})
+        end
+  
+        # Atom XML
+        if links.select {|link| link.rel=="alternate" and link.type == "application/atom+xml"}.size == 0
+          self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.atom",
+            "rel" => "alternate", "title" => "Atom entry XML", "type" => "application/atom+xml"})
+        end
+  
+        # html
+        if links.select {|link| link.rel=="alternate" and link.type == "text/html"}.size == 0
+          self[:links] << Hashie::Mash.new({ "href" => "http://data.npolar.no/dataset/#{id}",
+            "rel" => "alternate", "title" => "HTML", "type" => "text/html" })
+        end
       end
 
       self
 
     end
 
-    #def force_organisations
-    #end
-    # Make sure we have at least 1 Data_Center (required)
-    #if organisations.nil? or organisations.none?
-    #  self[:organisations] = [{ "name" => "Norwegian Polar Institute",
-    #    "id" => "npolar.no",
-    #    "gcmd_short_name" => "NO/NPI",
-    #    "roles" => ["publisher"], "links" => [{ "rel" => "publisher",
-    #      "href" => "http://data.npolar.no",
-    #      "title" => "Norwegian Polar Institute", "lang" => "en" }]}]
-    #end
-
-    # Make sure we have 1 Data Center Contact (pointOfContact)
-    #if pointOfContact.none?
-    #  self[:people] << {"last_name" => "Norwegian Polar Data Centre",
-    #    "roles" => ["pointOfContact"], "email" => "data[*]npolar.no"}
-    #end
-
     # Manipulates documents before validation
     # @override MultiJsonSchemaValidator
     def before_valid
-
+      
       if activity?      
         activity.map {|a|
           if a.start? and a.start == ""
