@@ -28,7 +28,7 @@
         }
       }
     },
-    "progress": { "type": ["string", "null"], "enum": ["ongoing","complete", "planned", null]},
+    "progress": {"enum": ["ongoing","complete", "planned"]},
     "topics": {
       "title": "Npolar topics",
       "description": "Based on http://www.npolar.no/en/research/topics/ (Missing?: Management? Conservation? Human dimensions?)",
