@@ -267,6 +267,7 @@
     "rights" : { "type": ["string", "null"] },
     "_id": { "description": "Internal id", "type": "string" },
     "_rev" : { "description": "Internal revision", "type": "string" },
+    "_attachments":{"type":"object"},
     "publisher": { "type": "string" },
     "collection": { "type": "string" },
     "editor" : {  "type": "string" }
