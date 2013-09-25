@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "spec_helper"
 require "metadata/dataset"
 
@@ -58,11 +59,23 @@ describe Metadata::Dataset do
         end
       end
 
-      context "Saving {}" do
+      context "Saving empty {}" do
           
         context "licences" do
           it do
             before_save.licences.should == ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/"]
+          end
+        end
+
+        context "collection" do
+          it do
+            before_save.collection.should == "dataset"
+          end
+        end
+
+        context "progrress" do
+          it do
+            before_save.progress.should == "planned"
           end
         end
 
@@ -74,7 +87,7 @@ describe Metadata::Dataset do
 
         context "#rights" do
           it do
-            before_save.rights.should =~ /Open data. Free to reuse if you attribute the Norwegian Polar Institute./
+            before_save.rights.should =~ /Open data. Free to reuse if attributed to the Norwegian Polar Institute./
           end
         end
 
@@ -143,6 +156,25 @@ describe Metadata::Dataset do
         end
         end
 
+      end
+    end
+
+    context "licences" do
+      context "when CC0" do
+        it "other licences are removed" do
+          dataset = Metadata::Dataset.new
+          dataset.licences = ["http://creativecommons.org/publicdomain/zero/1.0/", "a", "b"]
+          dataset = dataset.before_save
+          dataset.licences.should == ["http://creativecommons.org/publicdomain/zero/1.0/"]
+        end
+      end
+      context "when ÅVL" do
+        it "other licences are removed" do
+          dataset = Metadata::Dataset.new
+          dataset.licences = ["http://www.lovdata.no/all/hl-19610512-002.html", "a", "b"]
+          dataset = dataset.before_save
+          dataset.licences.should == ["http://www.lovdata.no/all/hl-19610512-002.html"]
+        end
       end
     end
 

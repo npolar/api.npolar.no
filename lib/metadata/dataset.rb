@@ -21,6 +21,8 @@ module Metadata
     include Npolar::Validation::MultiJsonSchemaValidator
     
     BASE = "http://api.npolar.no/dataset/"
+
+    CC0 = "http://creativecommons.org/publicdomain/zero/1.0/"
     
     DIF_SCHEMA_URI = "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"
 
@@ -33,6 +35,8 @@ module Metadata
       "json" => JSON_SCHEMA_URI,
       "xml" => DIF_SCHEMA_URI
     }
+
+    AVL = "http://www.lovdata.no/all/hl-19610512-002.html"
 
     class << self
       attr_accessor :formats, :accepts, :base
@@ -153,16 +157,15 @@ module Metadata
       if dataset.publicdomain?
         "Public domain."
       elsif dataset.open?
-        "Open data. Free to reuse if you attribute the Norwegian Polar Institute.\nLicences: #{licences.join(" or ")}"
+        "Open data. Free to reuse if attributed to the Norwegian Polar Institute.\nLicences: #{licences.join(" or ")}"
       elsif dataset.åvl?
-        "Protected under \"Lov om opphavsrett til åndsverk m.v. (åndsverkloven)\".\n http://www.lovdata.no/all/hl-19610512-002.html"
+        "Protected by Norwegian copyright law:\nhttp://www.lovdata.no/all/hl-19610512-002.html"
       end
     end
 
     # Åndsverksloven?
     def åvl?
-      åvl = /lovdata.no\/all\/(h|n)l-19610512-002/
-      (licences||[]).select {|l| l =~ åvl }.size > 0
+      (licences||[]).select {|l| l == AVL }.size > 0
     end
 
     # Accept schemas
@@ -201,14 +204,20 @@ module Metadata
     # Before save: Add information to dataset
     # See self.before_save
     def before_save(request=nil)
-        username = request.nil? ? "anonymous" : request.username    
-        collection = "dataset"
+        username = request.nil? ? "anonymous" : request.username
+
+        self[:collection] = "dataset"
+
+        if not progress?
+          self[:progress] = "planned"
+        end
+        
 
         if not lang?
           self[:lang] = "en"
         end
         
-        if not title? or not topics? or not licences
+        if not title? or not topics? or not licences?
           self[:draft] = "yes"
         end
 
@@ -220,6 +229,12 @@ module Metadata
           self[:licences] = self.class.licences
         end
 
+        if licences.include? CC0
+          self[:licences] = [CC0]
+        elsif licences.include? AVL
+          self[:licences] = [AVL]
+        end
+        
         if not rights? or rights.nil? or rights == ""
           self[:rights] = self.class.rights(self)
         end
@@ -260,6 +275,7 @@ module Metadata
 
         self
     end
+    alias :empty :before_save
 
 
 # Manipulates dataset before validation
