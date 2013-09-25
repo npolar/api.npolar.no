@@ -16,7 +16,7 @@ module Metadata
       XML_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
 
       ATOM_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
-      # The offcial is atom+xml
+      # The official is atom+xml but browsers refuse to display nice XML anymore :)
 
       ISO_HEADER_HASH = {"Content-Type" => "application/vnd.iso.19139+xml; charset=utf-8"}
 
@@ -56,9 +56,7 @@ module Metadata
         j = []
         difs.each do | dif_hash |
           transformer = ::Metadata::DifTransformer.new( dif_hash )
-          
           #transformer.base = request.url.gsub(/\/\?#{request.query_string}/, "")
-
           metadata_dataset = transformer.to_dataset
           j << metadata_dataset
         end
@@ -146,62 +144,86 @@ module Metadata
       end
 
       def atom_entry(metadata_dataset)
-        atom = Metadata::Dataset.new(metadata_dataset)
+        dataset = dataset = Metadata::Dataset.new(metadata_dataset)
         entry = ::Atom::Entry.new do |e|
-          e.id = atom.id =~ /^\w{8}[-]\w{4}-\w{4}-\w{4}-\w{12}$/ ? "urn:uuid:#{atom.id}" : atom.id
+          e.id = dataset.id =~ /^\w{8}[-]\w{4}-\w{4}-\w{4}-\w{12}$/ ? "urn:uuid:#{dataset.id}" : dataset.id
 
-          e.title = atom["title"] unless atom["title"].nil?
-          e.summary = atom["summary"] unless atom["summary"].nil?
+          e.title = dataset["title"] unless dataset["title"].nil?
+          e.summary = dataset["summary"] unless dataset["summary"].nil?
+          #e.draft = dataset.draft
 
-          #atom.investigators.each do |author|
-          #  e.authors << ::Atom::Person.new(:name => author.first_name+" "+author["last_name"], :email => author.email)
-          #end
-          if atom.contributors? and atom.contributors.respond_to?(:each)
-          
-          
-          atom.contributors.each do |contributor|
-            e.contributors << ::Atom::Person.new(:name => contributor.first_name+" "+contributor.last_name, :email => contributor.email)
+          dataset.authors.each do |author|
+            e.authors << ::Atom::Person.new(:name => author.first_name+" "+author["last_name"], :email => author.email)
           end
-            #code
+          dataset.people.reject {|p| dataset.authors.include? p}.each do |c|
+            e.contributors << ::Atom::Person.new(:name => c.first_name+" "+c.last_name, :email => c.email)
           end
-          atom["links"].each do |link|
+
+          e.links = []
+
+          (dataset.links||[]).each do |link|
             e.links << ::Atom::Link.new(:href => link.href, :title => link.title, :rel => link.rel, :type => link.type)
-          end unless atom["links"].nil?
-          ##e.links << ::Atom::Link.new(:href => ".atom", :type => "application/atom+xml", :rel => "self")
-          ##e.links << ::Atom::Link.new(:href => ".json", :type => "application/json", :rel => "alternate")
-          ##e.links << ::Atom::Link.new(:href => ".dif", :type => "application/dif+xml", :rel => "alternate")
-    
-          if atom.category? and atom.category.respond_to?(:each)
-            atom["category"].each do |category|
+          end
+          # http://tools.ietf.org/html/rfc4946#page-3
+          (dataset.licences||[]).each do |href|
+            e.links << ::Atom::Link.new(:href => href, :rel => "license", :type => "text/html")
+          end
+          (dataset.organisations||[]).each do |o|
+            e.links << ::Atom::Link.new(:href => "http://api.npolar.no/organisation/"+o.id, :rel => "organisation", :type => "application/json")
+          end
+
+          ##e.links << ::Atom::Link.new(:href => ".dataset", :type => "application/dataset+xml", :rel => "self")
+
+          e.categories = []
+          
+          e.categories += (dataset||[]).topics.map {|topic|
+            ::Atom::Category.new(:term => topic, :scheme => "http://api.npolar.no/schema/topics")
+          }
+          e.categories += (dataset.iso_topics||[]).map {|topic|
+            ::Atom::Category.new(:term => topic, :scheme => "http://api.npolar.no/schema/iso_topics")
+          }
+          if dataset.category? and dataset.category.respond_to?(:each)
+            dataset["category"].each do |category|
               e.categories << ::Atom::Category.new(:term => category["term"], :scheme => category["schema"], :label => category["label"])
             end
           end
-          #
-          if atom.source?
-            #source = XML::Reader.string( Gcmd::DifBuilder.new(atom.source.data).build_dif )
-            #e.source <<::Atom::Source.new(source)
-          end
-          
-          #if atom["source"] and atom["source"]["dif"] and atom["source"]["dif"]["Parameters"]
-          #  atom["source"]["dif"]["Parameters"].each do |p|
-          #    p.each do |k,v|
-          #      e.categories << ::Atom::Category.new(:term => v, :scheme => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/##{k}")
-          #    end
-          #
-          #  end
-          #end
-          #
-          unless atom.published.nil?
-            e.published = Time.parse(atom["published"])
-          end
-          unless atom.updated.nil?
-            e.updated = Time.parse(atom["updated"])
-          end
-          
-          #
-          #e. = Time.parse(atom["updated"])
+          e.categories += (dataset.tags||[]).map {|tag|
+            ::Atom::Category.new(:term => tag)
+          }
+          e.categories += (dataset.sets||[]).map {|set|
+            ::Atom::Category.new(:term => set)
+          }
 
-          #e.rights = atom["rights"]
+          e.categories += (dataset.placenames||[]).map {|p|
+            ::Atom::Category.new(:term => p.placename)
+          }
+          e.categories << ::Atom::Category.new(:term => dataset.progress)
+
+          e.summary = dataset.summary
+          
+          if dataset.gcmd? and dataset.gcmd.sciencekeywords?
+            dataset.gcmd.sciencekeywords.each do |p|
+              p.each do |k,v|
+                e.categories << ::Atom::Category.new(:term => v, :scheme => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/##{k}")
+              end
+            end
+          end
+
+          if dataset.gcmd? and dataset.gcmd.idn_nodes?
+            dataset.gcmd.idn_nodes.each do |idn_node|
+              e.categories << ::Atom::Category.new(:term => idn_node.Short_Name, :scheme => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/#IDN_Node")
+            end
+          end          
+
+
+          unless dataset.published.nil?
+            e.published = Time.parse(dataset["published"])
+          end
+          unless dataset.updated.nil?
+            e.updated = Time.parse(dataset["updated"])
+          end
+
+          # e.rights = dataset.rights
 
         end
         entry
