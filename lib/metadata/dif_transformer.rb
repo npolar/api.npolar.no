@@ -446,21 +446,11 @@ module Metadata
     end
 
     def restricted
-      # npolar.no-datasets are not restricted
-      if organisations.select {|o|o.id == "npolar.no" }.size > 0
-        false
-      elsif !restrictions.nil?
-        true
-      end
+      restrictions.nil?
     end
 
     def restrictions
-      # Only keep access constraint from external organisations
-      if organisations.select {|o|o.id == "npolar.no" }.size == 0
-        dif.Access_Constraints
-      else
-        nil
-      end
+      return dif.Access_Constraints
     end
     
     def sets
