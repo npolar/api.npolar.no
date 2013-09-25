@@ -2,21 +2,21 @@
 
 require "hashie"
 require "uuidtools"
+require "uri"
 require "gcmd"
 
 module Metadata
-  # DIF <-> http://api.npolar.no/schema/dataset.json
+  # DIF XML => http://api.npolar.no/schema/dataset.json
   #
   # [Licence]
   # {http://www.gnu.org/licenses/gpl.html GNU General Public Licence Version 3} (GPLv3)
   #
   # @author Ruben Dens
   # @author Conrad Helgeland
-  
   class DifTransformer
     include ::Npolar::Api
 
-    BASE = "/dataset/"
+    BASE = "http://api.npolar.no/dataset/"
 
     ROLE_MAP = {"TECHNICAL CONTACT" => "processor",
       "INVESTIGATOR" => "principalInvestigator",
@@ -48,6 +48,41 @@ module Metadata
       self.dif_hash_array(xml)[0]
     end
 
+    def self.person_from_personnel(p)
+
+      first_name = p.First_Name
+      if p.Middle_Name? and p.Middle_Name.size >= 1
+        first_name += " " + p.Middle_Name 
+      end
+
+      email = p.Email.nil? ? "" : p.Email[0]
+      organisation = email.split("@")[1]
+      if organisation.nil?
+        if p.Contact_Address? and p.Contact_Address.respond_to?(:Address) and p.Contact_Address.Address.any?
+          if p.Contact_Address.Address.join("") =~ /Norwegian Polar Institute|Norsk Polarinstitutt/
+            organisation = "npolar.no"
+          else
+            organisation = p.Contact_Address.Address[0]
+          end
+        end
+        
+      end
+
+      Hashie::Mash.new({
+        "first_name" => first_name,
+        "last_name" => p.Last_Name,
+        "email" => email,
+        "roles" => self.roles_from_dif_role(p.Role),
+        "organisation" => organisation
+      })
+    end
+
+    def self.roles_from_dif_role( role )
+      role.map {|r|
+        ROLE_MAP.key?(r.upcase) ? ROLE_MAP[r.upcase] : role
+      } 
+    end
+
     # base = base URI, see #href
     attr_accessor :base, :object
     alias :dif :object
@@ -56,13 +91,13 @@ module Metadata
     ISO8601_DATETIME_REGEX = /^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)Z$/
 
     DATASET = [
-      # atom
-      :id, :title, :category, :iso_topics, :links, :summary, :published, :updated, :draft, :source,
       # api
-      :schema,:collection,
+      :id, :schema, :collection, :topics, :iso_topics, :tags, :rights, :restricted, :restrictions, :licences,
+      # atom
+      :title, :links, :summary, :published, :updated, :draft,
       # metadata 
-      :topics, :coverage, :progress, :people, :organisations, :activity, :placenames,
-      :quality, :gcmd, :edits, :sets, :comment, :rights
+      :coverage, :progress, :people, :organisations, :activity, :placenames,
+      :quality, :gcmd, :edits, :sets, :comment
     ]
 
    
@@ -80,6 +115,7 @@ module Metadata
     
     # DIF => dataset (http://data.npolar.no/schema/dataset)
     def to_dataset
+
       dataset = Hashie::Mash.new
       # Loop equivalent of dataset.temporal_coverage = temporal_coverage
       DATASET.each do |method|
@@ -90,37 +126,43 @@ module Metadata
     end
 
     def link(href, rel="related", title="", type="text/html")
-      {
+      Hashie::Mash.new({
           "rel" => rel,
           "href" => href,
           "type" => type,
           "title" => title
-      }
+      })
     end
 
     def comment
-      object.comment ||= object.Entry_ID
+      comment = ""
+      if dif.Entry_ID =~ /^(org[.|-]polarresearch\-)/
+        comment += "Source: http://risapi.data.npolar.no/oai?verb=GetRecord&metadataPrefix=dif&identifier=oai:ris.npolar.no:#{dif.Entry_ID} \n"
+      end
+      comment += "Transformed from DIF XML by #{self.class.name} at #{DateTime.now.xmlschema}"
+      comment
     end
 
     def href(id, format="json")
       "#{base.gsub(/\/$/, "")}/#{id}.#{format}"
     end
 
-    def id
-      if object.Entry_ID =~ /^org[.|-]polarresearch\-/
-        uuid(href(object.Entry_ID).gsub(/\.json$/, ""))
-      else
-        # hmm
-        object.Entry_ID
-      end
-    end
-    
-    def title
-      object.Entry_Title
+    def licences
+        []
     end
 
-    def licences
-      ["NLOD"]
+    # id = SHA1-UUID of http://api.npolar.no/dataset/{Entry_ID}
+    # (or SHA1-UUID of DOI)
+    def id
+      if doi?
+        uuid(doi)
+      else
+        uuid(self.class.uri(dif.Entry_ID))
+      end
+    end
+
+    def self.uri(id)
+      "http://api.npolar.no/dataset/#{id}"
     end
 
     def iso_topics
@@ -129,21 +171,15 @@ module Metadata
       end
     end
     
-    def category
-      c = dif.Keyword.nil? ? [] : object.Keyword.map {|k| {:term => k } }
-
-      #unless object.IDN_Node.nil?
-      #  c += object.IDN_Node.map {|n| { :term => n["Short_Name"], :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#IDN_Node"} }
-      #end
-
-      #unless object.Project.nil?
-      #  c += object.Project.map {|p| { :term => p["Short_Name"], :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#Project"} }
-      #end
-
-      #unless (dif.Originating_Metadata_Node.nil? or "" == dif.Originating_Metadata_Node)
-      #  c += [{:term => dif.Originating_Metadata_Node, :schema => "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif.xsd#Originating_Metadata_Node"}]
-      #end
-      c
+    def tags
+      tags = []
+      if dif.Keyword?
+        tags += dif.Keyword
+      end
+      if dif.Project?
+        tags += dif.Project.map {|p| p.Short_Name }
+      end
+      tags.uniq
     end
 
     def topics
@@ -151,11 +187,11 @@ module Metadata
     end
     
     def quality
-      object.Quality
+      dif.Quality
     end
     
     def published
-      date = object.DIF_Creation_Date ||= Date.new(-1).xmlschema
+      date = dif.DIF_Creation_Date ||= Date.new(-1).xmlschema
       date += "T12:00:00Z" unless date == "" or date =~ ISO8601_DATETIME_REGEX
       date
     end
@@ -198,97 +234,103 @@ module Metadata
       end unless object.Temporal_Coverage.nil?
       periods
     end
+
+    def draft
+      draft = "no"
+      if dif.Private == "True"
+        draft = "yes"
+      end
+      draft
+    end
     
     def summary
-      unless object.Summary.nil?
-        unless object.Summary.is_a?( String )
-          return object.Summary.Abstract unless object.Summary.Abstract.nil?
+      summary = ""
+
+      if dif.Summary?
+        if dif.Summary.is_a?(Hashie::Mash) and dif.Summary.Abstract?
+          summary += dif.Summary.Abstract
         else
-          return object.Summary
+          summary += dif.Summary
         end
-      else
-        ""
       end
+      summary
     end
     
     def investigators
-      contributors.select {|c| c.roles.include? "principalInvestigator" }
+      people.select {|c| c.roles.include? "principalInvestigator" }
     end
     
     def edits
-      [] #editor = contribut( "DIF Author" )
-      #editor[0].edited = updated unless editor[0].nil?
-      #editor
+      []
     end
     
+    # people <= Personnel
     def people
-
       people = []
+
       if dif.Personnel? # It's not always there (for invalid documents)
         people += dif.Personnel.map { |p|
-        self.class.contributor_from_personnel(p)
+        self.class.person_from_personnel(p)
       }
       end
       if dif.Data_Center?
         dif.Data_Center.each do |dc|
           if dc.Personnel?
             people += dc.Personnel.map { |p|
-              self.class.contributor_from_personnel(p)
+              self.class.person_from_personnel(p)
           }
           end
-          
         end
       end
-      people
+
+      people  
     end
 
-
+    # organisations <= Data_Center
+    # DIF Data_Center => organisation with "owner" role.
+    # If the Data_Center is the Norwegian Polar Institute, default roles are used
     def organisations
+
       orgs = []
-      if dif.Data_Center? 
+
+      if dif.Data_Center? and dif.Data_Center.any?
         dif.Data_Center.select {|dc| dc.Data_Center_Name? }.each {|dc|          
 
           roles = ["owner"]
           name = dc.Data_Center_Name.Long_Name
-          url = dc.Data_Center_URL.gsub(/^http:\/\/www./, "http://").gsub(/\/$/, "")
+          url = dc.Data_Center_URL.gsub(/^http:\/\/www\./, "http://").gsub(/\/$/, "")
+          links = [{ "rel" => "owner", "href" => url, "title" => dc.Data_Center_Name.Long_Name }]
 
           if  dc.Data_Center_Name.Long_Name =~ /Norwegian Polar Institute/
             name = "Norwegian Polar Institute"
-            url = "http://data.npolar.no"
-            roles << "publisher"   
+            roles += ["originator", "publisher", "pointOfContact", "resourceProvider"]
+            links << { "rel" => "publisher", "href" => "http://data.npolar.no", "title" => "Norwegian Polar Institute" }
           end
           
+          id = URI.parse(url).host
+
           orgs << Hashie::Mash.new({
+            "id" => id,
             "name" => name,
             "gcmd_short_name" => dc.Data_Center_Name.Short_Name,
             "roles" => roles,
-            "uri" => url
+            "links" => links
           })      
         }
-      end          
+      end
+      
+      if orgs.none?
+        if self.dif.to_json =~ /(NPI|Norwegian Polar Institute)/
+          orgs << Hashie::Mash.new(Metadata::Dataset.npolar)
+        elsif not dif.Originating_Metadata_Node?
+          orgs << Hashie::Mash.new(Metadata::Dataset.npolar("publisher"))
+        end
+      end
+
       orgs
     end
     
-    def self.contributor_from_personnel(p)
-      first_name = p.First_Name
-      if p.Middle_Name? and p.Middle_Name.size >= 1
-        first_name += " " + p.Middle_Name 
-      end
-
-      Hashie::Mash.new({
-        "first_name" => first_name,
-        "last_name" => p.Last_Name,
-        "email" => p.Email.nil? ? "" : p.Email[0],
-        "roles" => self.roles_from_dif_role(p.Role),
-      })
-    end
-
-    def self.roles_from_dif_role( role )
-      role.map {|r|
-        ROLE_MAP.key?(r.upcase) ? ROLE_MAP[r.upcase] : role
-      } 
-    end
-    
+    # Placenames <= Location    
     def placenames
       
       (dif.Location||[]).select {|location| location.Detailed_Location?}.map {
@@ -296,13 +338,13 @@ module Metadata
           Hashie::Mash.new({
             "placename" => location.Detailed_Location,
             "area" => area_from_location(location),
-            "country_code" => guess_country_code_from_location(location),
+            "country" => guess_country_code_from_location(location),
         })
       }
     end 
 
 
-    
+    # coverage <= Spatial_Coverage
     def coverage
       return [] if object.Spatial_Coverage.nil?
 
@@ -314,26 +356,15 @@ module Metadata
           "west" => sc.Westernmost_Longitude.to_f,
         })
       }
-
-
     end
     
     # Links from
     #  1. Related_URL
-    #  2. Data_Set_Citation
+    #  2. Parent_DIF
+    #  3. Data_Set_Citation (DOI + online resource)
     #
     def links
       links = []
-      if dif.Entry_ID =~ /^(org[.|-]polarresearch\-)/
-        via = "http://risapi.data.npolar.no/oai?verb=GetRecord&metadataPrefix=dif&identifier=oai:ris.npolar.no:#{dif.Entry_ID}"
-        links << {
-          "rel" => "via",
-          "href" => via,
-          "type" =>  "application/xml"
-        }        
-      end
-            # "metadata"-html <-- DatasetDOI   
-      # "related  " OnlineResource 
 
       # 1. Related_URL
       if dif.Related_URL?
@@ -346,7 +377,7 @@ module Metadata
           dif_type = ""
         end
  
-        type = case dif_type
+        rel = case dif_type
           when "GET DATA" then "data"
           when "VIEW PROJECT HOME PAGE" then "project"
           when "VIEW EXTENDED METADATA" then "metadata"
@@ -358,58 +389,39 @@ module Metadata
         link.URL.each do | url |
 
           links << {
-            "rel" => type,
+            "rel" => rel,
             "href" => url,
-            "title" => link.Description
+            "title" => link.Description,
+            "type" => "text/html",
           }  
         end  
       end
       end
 
-      # Link to parent metadata records
+      # 2. Link to parent metadata
       unless object.Parent_DIF.nil? 
-      #raise object.Parent_DIF.to_json
-
-        object.Parent_DIF.each do | parent |
+        dif.Parent_DIF.each do | parent |
           
             links << {
               "rel" => "parent",
-              "href" => href(href(parent, "json")),
-              # FIXME oops "href": "/dataset//dataset/org.polarresearch-494.json.json" http://localhost:9393/dataset/7298f0f5-3c7c-5d95-852b-f2eb7585af47.json
+              "href" => base+uuid(self.class.uri(parent))+".json",
+              "type" => "application/json"
             }
            
         end
       end
       
-      # Link to data centre
-      
-      
-      # Remove related if it's to data.npolar.no
-      links = links.select {|l|
-      if l["href"] =~ /data\.npolar\.no(\/)?$/
-        if l["rel"] =~ /related$/
-          false
-        else
-          true
-        end 
-      else
-        true
-      end
-      }
+      # 3. Links to DOI and "Online Resource" (metadata)
+      # @todo
 
-      if id =~ /^http\:\/\//
-        uri = id  
-      else
-        uri = href(id, "json")
-      end
-      
+      #if id =~ /^http\:\/\//
+      #  uri = id  
+      #else
+      #  uri = href(id, "json")
+      #end
 
-      # Move to model!?
-      links << link(uri, "edit", nil, "application/json")
-      links << link(href(id, "dif"), "alternate", "DIF XML", "application/xml")
-      links << link(href(id, "iso"), "alternate", "ISO 19139 XML", "application/vnd.iso.19139+xml")
-      links << link(href(id, "atom"), "alternate", "Atom XML", "application/atom+xml")
-      links << link("http://data.npolar.no/dataset/#{id}", "alternate", "HTML", "text/html")
+      # Move to model
+
 
 
       #unless dif.Project.nil?
@@ -430,20 +442,31 @@ module Metadata
     end
 
     def rights
-      rights = ""
-      if dif.Use_Constraints?
-        #rights += "Use constraints: #{dif.Use_Constraints}"
+      dif.Use_Constraints
+    end
+
+    def restricted
+      # npolar.no-datasets are not restricted
+      if organisations.select {|o|o.id == "npolar.no" }.size > 0
+        false
+      elsif !restrictions.nil?
+        true
       end
-      if dif.Access_Constraints?
-        #rights += "\nAccess_Constraints: #{dif.Access_Constraints}"
+    end
+
+    def restrictions
+      # Only keep access constraint from external organisations
+      if organisations.select {|o|o.id == "npolar.no" }.size == 0
+        dif.Access_Constraints
+      else
+        nil
       end
-      rights
     end
     
     def sets
       sets = []
       
-      dif.IDN_Node.each do | node |
+      (dif.IDN_Node||[]).each do | node |
         
         case( node["Short_Name"] )
           when "IPY" then sets += ["IPY", "GCMD"]
@@ -453,407 +476,36 @@ module Metadata
         end
         
       end
+      if (topics||[]).include? "oceanography" or (topics||[]).include? "seaice" or (iso_topics||[]).include? "oceans"
+        sets << "NMDC"
+      end
+
       sets.uniq
     end
     
-    def gcmd
-      { "sciencekeywords" => dif.Parameters || [],
-        "instruments" => dif.Sensor_Name || [],
-        "platforms" => dif.Source_Name || []
-        #"locations" => dif.Location || []
-        # projects
-        # disciplines
-        #  temporalresolutionrange  horizontalresolutionrange verticalresolutionrange
-        #chronounits
-        #idnnode
+    def gcmd      
+      { "sciencekeywords" => dif.Parameters||[],
+        "instruments" => dif.Sensor_Name||[],
+        "locations" => dif.Location||[],
+        "projects" => dif.Project||[],
+        "resolutions" => dif.Data_Resolution||[], # unbounded
+        "disciplines" => dif.Discipline||[],
+        "idn_nodes" => dif.IDN_Node||[],
+        "paleo_temporal_coverage" => dif.Paleo_Temporal_Coverage||[],
+        "instruments" => dif.Sensor_Name||[],
+        "platforms" => dif.Source_Name||[],
+        "extended" => dif.Extended_Metadata||[],
+        "citation" => dif.Entry_ID !~ /^org[.|-]polarresearch\-/ ? dif.Data_Set_Citation||[] : [], # Yes, it's unbounded
+        "references" => dif.Reference||[],
+        "entry_id" => dif.Entry_ID
       }
     end
-    
-    def draft
-      draft = "no"
-      if object.Private == "True"
-        draft = "yes"
-      else
-        # Set to draft if NOT npolar or ipy
-        if object.Entry_ID =~ /polarresearch/ and object.to_s !~ /(npolar|Norwegian Polar Institute|Norsk Polarinstitutt|Owned by NPI|IPY|DOKIPY)/
-          draft = "yes"
-        end
-        
-      end
-      draft
-    end
-    
-    def source
-      #Hashie::Mash.new( { :type => ::Gcmd::Dif::NAMESPACE["dif"], :data => object } )
-    end    
-    
-    def dataset_citation
-      citation = []
-
-      citation << {
-        "Dataset_Creator" => dataset_creator,
-        "Dataset_Title" => object.title,
-        #"Dataset_Publisher" 
-      }
-      
-      citation
-    end
-    
-    def dataset_creator
-      creator = ""
-      
-      investigators = object.contributors.select{|c|c.person != false and c.roles.include? "principalInvestigator"}
-      creator = investigators.map {|investigator|
-        "#{investigator.name} #{investigator.surname}"
-      }.join(", ")
-      creator
-    end
-    
-    def spatial_coverage
-      coords = []
-      
-      object.coverage.each do | loc |
-        if loc.north || loc.east || loc.south || loc.west
-          
-          north = south = east = west = ""
-          
-          north = loc.north.to_s unless loc.north.nil?
-          east = loc.east.to_s unless loc.east.nil?
-          south = loc.south.to_s unless loc.south.nil?
-          west = loc.west.to_s unless loc.west.nil?
-          
-          coords << {
-            "Northernmost_Latitude" => north,
-            "Easternmost_Longitude" => east,
-            "Southernmost_Latitude" => south,
-            "Westernmost_Longitude" => west,
-          }
-          
-        end
-        
-      end
-      
-      coords
-    end
-    
-    def dif_location
-      locations = []
-      
-      object.placenames.each do | loc |
-        if loc.placename || loc.country
-          
-          
-          detailed_location = loc.placename unless loc.placename.nil?
-          polar_region = {"Location_Category" => "GEOGRAPHIC REGION", "Location_Type" => "POLAR"}
-          
-
-          
-
-          case( loc.placename )
-
-          # set ARCTIC from sets
-          #when "arctic" then
-          #  locations << {
-          #    "Location_Category" => "GEOGRAPHIC REGION",
-          #    "Location_Type" => "ARCTIC",
-          #    "Detailed_Location" => detailed_location
-          #  }
-          #  locations << polar_region
-          when /^(Svalbard|Jan Mayen)$/ then
-            locations << {
-              "Location_Category" => "OCEAN",
-              "Location_Type" => "ATLANTIC OCEAN",
-              "Location_Subregion1" => "NORTH ATLANTIC OCEAN",
-              "Location_Subregion2" => "SVALBARD AND JAN MAYEN",
-              "Detailed_Location" => detailed_location
-            }
-            locations << polar_region
-            locations << {
-              "Location_Category" => "GEOGRAPHIC REGION",
-              "Location_Type" => "ARCTIC"
-            }
-          when "Antarctic" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "ANTARCTICA",
-              "Detailed_Location" => detailed_location
-            }
-            locations << polar_region
-          when "Dronning Maud Land" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "ANTARCTICA",
-              "Detailed_Location" => location_with_area(detailed_location, "Dronning Maud Land")
-            }
-            locations << polar_region
-          when "Bouvetøya" then
-            locations << {
-              "Location_Category" => "OCEAN",
-              "Location_Type" => "ATLANTIC OCEAN",
-              "Location_Subregion1" => "SOUTH ATLANTIC OCEAN",
-              "Location_Subregion2" => "BOUVET ISLAND",
-              "Detailed_Location" => detailed_location
-            }
-            locations << polar_region
-          when "Peter I Øy" then
-            locations << {
-              "Location_Category" => "OCEAN",
-              "Location_Type" => "PACIFIC OCEAN",
-              "Location_Subregion1" => "SOUTH PACIFIC OCEAN",
-              "Detailed_Location" => location_with_area(detailed_location, "Peter I Øy")
-            }
-            locations << polar_region
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "ANTARCTICA",
-              "Detailed_Location" => nil
-            }
-          when "Norway" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "EUROPE",
-              "Location_Subregion1" => "NORTHERN EUROPE",
-              "Location_Subregion2" => "SCANDINAVIA",
-              "Location_Subregion3" => "NORWAY",
-              "Detailed_Location" => detailed_location
-            }
-          when "Russia" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "EUROPE",
-              "Location_Subregion1" => "EASTERN EUROPE",
-              "Location_Subregion2" => "RUSSIA",
-              "Detailed_Location" => detailed_location
-            }
-          when "sweden" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "EUROPE",
-              "Location_Subregion1" => "NORTHERN EUROPE",
-              "Location_Subregion2" => "SCANDINAVIA",
-              "Location_Subregion3" => "SWEDEN",
-              "Detailed_Location" => detailed_location
-            }
-          when "canada" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "NORTH AMERICA",
-              "Location_Subregion1" => "CANADA",
-              "Detailed_Location" => detailed_location
-            }
-          when "greenland" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "NORTH AMERICA",
-              "Location_Subregion1" => "GREENLAND",
-              "Detailed_Location" => detailed_location
-            }
-          when "finland" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "EUROPE",
-              "Location_Subregion1" => "NORTHERN EUROPE",
-              "Location_Subregion2" => "SCANDINAVIA",
-              "Location_Subregion3" => "FINLAND",
-              "Detailed_Location" => detailed_location
-            }
-          when "iceland" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "EUROPE",
-              "Location_Subregion1" => "NORTHERN EUROPE",
-              "Location_Subregion2" => "ICELAND",
-              "Detailed_Location" => detailed_location
-            }
-          when "united_states" then
-            locations << {
-              "Location_Category" => "CONTINENT",
-              "Location_Type" => "NORTH AMERICA",
-              "Location_Subregion1" => "UNITED STATES OF AMERICA",
-              "Detailed_Location" => detailed_location
-            }
-          else
-            locations << {
-              "Location_Category" => "GEOGRAPHIC REGION",
-              "Detailed_Location" => detailed_location
-            } unless detailed_location.nil? || detailed_location == ""
-          end
-          
-        end
-      end unless object.locations.nil?
-      
-      locations.uniq
-    end
-    
-    def location_with_area(location, area)
-      if location.nil?
-        area
-      else
-        "#{location} (#{area})"
-      end
-    end
-    
-    def temporal_coverage
-      coverage = []
-      
-      object.activity.each do | act |
-        
-        start = act.start unless act.start.nil?
-        stop = act.stop unless act.stop.nil?
-        
-        coverage << {
-          "Start_Date" => start,
-          "Stop_Date" => stop
-        }
-        
-      end unless object.activity.nil?
-      
-      coverage
-    end
-    
-    def use_constraints
-      constraints = ""      
-      object.licences.each_with_index do |licence, i|
-        constraints += licence
-        constraints += ", " unless (object.licences.size - 1) == i
-      end unless object.licences.nil?
-      
-      constraints
-    end
-    
-    def iso_topic_category
-      categories = []
-      
-      categories = object.iso_topics.map{ |t| t.upcase} unless object.iso_topics.nil?
-      
-      categories
-    end
-    
-    def keyword
-      object.tags unless object.tags.nil?
-    end
-    
-    def related_url
-      urls = []
-      
-      object.links.each do |link|
-        
-        type = link["rel"] unless link["rel"].nil?
-        # FIXME DOI
-        unless type =~ /reference|doi|internal/
-        
-          case( type )
-          when "dataset" then type = "GET DATA"
-          when "metadata" then type = "VIEW EXTENDED METADATA"
-          when "project" then type = "VIEW PROJECT HOME PAGE"
-          when "service" then type = "GET SERVICE"
-          when "parent" then type = "GET RELATED METADATA RECORD (DIF)"
-          when "edit", "alternate" then type = nil
-
-          else
-            type = "VIEW RELATED INFORMATION" 
-          end
-          
-          if type.nil?
-            if link["href"] =~ /\.(iso|xml|json)$/
-              type = "VIEW RELATED INFORMATION"
-            end
-            
-          end
-          
-        # links to datacenter => Online_Resource?
-          
-          urls << {
-            "URL_Content_Type" => {
-              "Type" => type
-            },
-            "URL" => [link["href"]]
-          }
-        
-        end
-        
-      end unless object.links.nil?
-      
-      urls
-    end
-    
-    def reference
-      reference = []
-      
-      object.links.each do |link|
-        
-        type = link["rel"] unless link["rel"].nil?
-        
-        case( type )
-        when "doi" then reference << {"DOI" => link["href"]}
-        when "reference" then reference << {"Online_Resource" => link["href"]}
-        end
-        
-      end unless object.links.nil?
-      
-      reference
-    end
-    
-    def data_center
-      datacenter = []
-      
-      object.links.each do |link|
-        link.each do |k,v|
-          if k == "rel" and v == "datacenter"
-            if link["href"] =~ /data\.npolar\.no/
-              datacenter << {
-                "Data_Center_Name" => {
-                  "Short_Name" => "NO/NPI",
-                  "Long_Name" => "Norwegian Polar Data" 
-                },
-                "Data_Center_URL" => "http://data.npolar.no/"
-              }
-            else
-              datacenter << {
-                "Data_Center_URL" => link["href"]
-              } 
-            end unless link["href"].nil?
-          end
-        end        
-      end unless object.links.nil?
-      
-      datacenter
-    end
-    
+       
     def parameters
       return [] if object.Parameters.nil?
       object.Parameters
     end
     
-    # FIXME */no !?
-    def idn_node
-      nodes = []
-      
-      object.sets.each do |set|
-        case( set )
-        when "IPY" then nodes << {"Short_Name" => "IPY"}
-        when "DOKIPY" then nodes << {"Short_Name" => "DOKIPY"}
-        when "arctic" then nodes << {"Short_Name" => "ARCTIC"}
-        when "antarctic" then nodes << {"Short_Name" => "AMD"}
-        end
-      end unless object.sets.nil?
-      
-      nodes.uniq
-    end
-    
-    def parent_dif
-      parents = []
-      
-      object.links.each do |link|
-        link.each do |k ,v|
-          if k == "rel" and v == "parent"
-            parents << link["href"]
-          end
-        end
-      end unless object.links.nil?
-      
-      parents
-    end
     
     def data_quality
       object.quality unless object.quality.nil?
@@ -893,6 +545,20 @@ module Metadata
     end
     
     protected
+
+  
+    def doi?
+      dif.Data_Set_Citation? and dif.Data_Set_Citation.any? and dif.Data_Set_Citation[0].Dataset_DOI?
+    end
+
+    def doi
+      dif.Data_Set_Citation[0].Dataset_DOI
+    end
+
+
+    def title
+      dif.Entry_Title
+    end
 
     def area_from_location(location)
       if location.Location_Subregion2 =~ /SVALBARD AND JAN MAYEN/i
@@ -947,7 +613,7 @@ module Metadata
       topics = []
       topics = parameters.map {|p| guess_topic_from_parameter(p)}
       if topics.none?
-        topics = category.map {|c| guess_topic_from_category(c)}
+        topics = tags.map {|c| guess_topic_from_tags(c)}
       end
       if topics.none?
         topics << guess_topic_from_title(title)
@@ -961,12 +627,11 @@ module Metadata
 
     def guess_topic_from_parameter(parameter)
       if parameter.Variable_Level_1 =~ /FISHERIES/i
-        "biology"
+        ["biology", "marine"]
       elsif parameter.Term =~ /VEGETATION/i
-        "biology"
-
+        ["biology", "vegetation"]
       elsif parameter.Term =~ /ECOLOGICAL DYNAMICS|ECOSYSTEMS/i
-        "biology"
+        ["biology", "ecology"]
       elsif parameter.Term =~ /ANIMALS\/VERTEBRATES/i
         "biology"
 
@@ -989,12 +654,12 @@ module Metadata
         "seaice"
 
       elsif parameter.Term =~ /RADIATION/
-        "geophysics"
+        "atmosphere"
       end
     end
 
-    def guess_topic_from_category(category)
-      if category =~ /(Persistent organic pollutants|POPs)/
+    def guess_topic_from_tags(tag)
+      if tag =~ /(Persistent organic pollutants|POPs)/
         "ecotoxicology"
       end
     end
@@ -1005,11 +670,13 @@ module Metadata
       elsif title =~ /bird|reindeer|fauna|ecology|faeces|fox|seal|walrus|vegetation|population dynamics|lichen/i
         "biology"
       elsif title =~ /radiation|spectral|meteorological|aerosol|ozone/i
-        "geophysics"
-      elsif title =~ /sea ice|fast ice|iceberg/i
+        "atmosphere"
+      elsif title =~ /sea ice|fast ice|iceberg|ice/i
         "seaice"
       elsif title =~ /snow/i
         "glaciology"
+      elsif title =~ /map|maps/
+        "maps"
       else
         nil
       end
@@ -1052,13 +719,11 @@ module Metadata
         "utilitiesCommunication"].include? iso_topic
         raise "Bad ISO Topic Category: \"#{iso_topic}\""
       end
+
       iso_topic
 
     end
 
-#glaciers =>
-#GLACIERS (Science Keywords > EARTH SCIENCE > CRYOSPHERE > GLACIERS/ICE SHEETS) | concept 
-#GLACIERS (Science Keywords > EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > GLACIERS/ICE SHEETS) | concept 
   end
   
 end

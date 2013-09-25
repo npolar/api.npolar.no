@@ -131,6 +131,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="hemisphere" type="string" indexed="true" stored="true" />
 
 <!--<field name="id" type="string" indexed="true" stored="true" />-->
+<field name="people" type="string" indexed="true" stored="true" multiValued="true"/>
+
 <field name="investigators" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="iso_3166-1" type="string" indexed="true" stored="true" />
 <field name="country_code" type="string" indexed="true" stored="true" multiValued="true" />
@@ -169,11 +171,15 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="published" type="string" indexed="true" stored="true" />
 <field name="quality" type="string" indexed="true" stored="true" />
 <field name="rights" type="string" indexed="true" stored="true" />
+<field name="restrictions" type="string" indexed="true" stored="true" />
+
+
 <field name="label" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="relations" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="schema" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="errors" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="valid" type="boolean" indexed="true" stored="true" multiValued="false" />
+<field name="restricted" type="boolean" indexed="true" stored="true" multiValued="false" default="false" />
 
 <field name="set" type="string" indexed="true" stored="true" />
 <field name="sets" type="string" indexed="true" stored="true" multiValued="true"/>
