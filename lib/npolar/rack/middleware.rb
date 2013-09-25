@@ -17,7 +17,7 @@ module Npolar
       # Default config hash  
       CONFIG = {
         :headers => { "Content-Type" => "application/json; charset=utf-8" },
-        :app => lambda {|env| [404, { "Content-Type" => "application/json; charset=utf-8" }, ["404 Not Found"]]}#Npolar::Rack::NotFound
+        :app => lambda {|env| [404, { "Content-Type" => "application/json; charset=utf-8" }, ["404 Not Found"]]}# @todo FIXME JSONize Npolar::Rack::NotFound
       }
   
       ##
