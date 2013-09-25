@@ -212,7 +212,6 @@ module Metadata
           self[:progress] = "planned"
         end
         
-
         if not lang?
           self[:lang] = "en"
         end
@@ -422,11 +421,11 @@ module Metadata
       end
       solr[:text] = text
 
-      #schema = ::Gcmd::Schema.new
-      #errors = schema.validate_xml( self.to_dif ).map {|e|e["details"].to_s.gsub(/["'\/\\()]/, "")}
+      schema = ::Gcmd::Schema.new
+      errors = schema.validate_xml( self.to_dif ).map {|e|e["details"].to_s.gsub(/["'\/\\()]/, "")}
 
-      #solr[:errors] = errors
-      #solr[:valid] = errors.any? ? false : true
+      solr[:errors] = errors
+      solr[:valid] = errors.any? ? false : true
 
       solr[:link_edit] = "/dataset/#{id}.json"
       solr[:link_html] = "http://data.npolar.no/dataset/#{id}"
