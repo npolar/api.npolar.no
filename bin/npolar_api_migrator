@@ -9,7 +9,11 @@ require_relative "./../lib/npolar/http"
 require_relative "./../lib/npolar/api/client"
 require_relative "./../lib/npolar/validation/multi_json_schema_validator"
 require_relative "./../lib/metadata/dataset"
+
+# @todo Smart autoload of migration
 require_relative "./../lib/metadata/dataset_migration0"
+require_relative "./../lib/metadata/dataset_migration1"
+
 require_relative "./../lib/service"
 require_relative "./../lib/npolar/factory"
 require_relative "./../lib/npolar/api/migrator"
@@ -18,7 +22,7 @@ module Npolar
 
   begin
   
-    unless 4 == ARGV.size
+    unless ARGV.size >= 4
       raise ArgumentError, "Usage: \ #{__FILE__} {URI} {Model} {Migration} --really=true"
     end
     
@@ -26,15 +30,20 @@ module Npolar
     modelclass = ARGV[1]
     migratorclass = ARGV[2]
     really = (ARGV[3] =~ /^(--really|--really=true)$/) != nil ? true : false
-  
+
+    log_level = Logger::INFO
+    if 5 == ARGV.size and ARGV[4] =~ /debug/
+      log_level = Logger::DEBUG
+    end
+
     client = Api::Client.new(uri)
     client.model = Factory.constantize(modelclass).new
 
     log = client.log
     batch = `uuidgen`.chomp
-    number = 0
+
     log = ::Logger.new(STDERR)
-    log.level = Logger::INFO
+    log.level = log_level
 
     log.info "Running #{File.absolute_path(__FILE__)} batch #{batch} using #{migratorclass}"
     migrator = Api::Migrator.new
