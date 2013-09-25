@@ -112,8 +112,10 @@
         "required": ["edited", "name"]
       }
     },
-    "_attachment": {"type": "object"},
-    "comment": {"type": "string"}
+    "comment": {"type": "string"},
+    "_id": {"type": "string"},
+    "_rev": {"type": "string"},
+    "_attachment": {"type": "object"}
   }
 }
 
