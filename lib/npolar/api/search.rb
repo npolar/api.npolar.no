@@ -34,6 +34,7 @@ module Npolar
                   :core => api.search.core,
                   :force => api.search.force,
                   :path => api.path,
+                  :fl => api.search.fields||"",
                   :facets => api.search.facets
                 }
               elsif /Elasticsearch/i =~ api.search.engine
