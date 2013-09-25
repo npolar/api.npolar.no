@@ -15,6 +15,9 @@
     "collection": { "enum": ["publication"] },
     "base": { "enum": ["http://api.npolar.no"] },
     "draft": { "enum": ["yes", "no"]},
+    "scientific_abstract": { "type" : "string" },
+    "norw_summary": { "type" : "string" },
+    "review_progress": { "enum": ["none", "started", "reviewed"] },
     "category": { "enum":["reviewed", "book", "poster", "map", "report", "abstract", "phd", "master", "proceedings", "popular"] },
     "state": {"enum": ["draft", "submitted", "in-press", "published"]},
     "publication_name": { "type": "string"},
@@ -54,15 +57,6 @@
         }
       }
     },
-    "abstracts": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "scientific_abstract": { "type" : "string" },
-        "norw_summary": { "type" : "string" },
-        "reviewed": { "type": "boolean" }
-      }
-    },
     "topics": {
       "title": "NPI topics",
       "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'service', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
@@ -70,7 +64,7 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["biology", "ecology", "ecotoxicology", "geology", "geophysics", "glaciology", "marine", "maps", "oceanography", "other", "seaice", "topography"]
+        "enum": ["atmosphere", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
       }
     },
     "tags": {
