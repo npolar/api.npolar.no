@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Npolar
   module Api
   # Npolar::Api::Core
@@ -221,7 +222,7 @@ module Npolar
     # @return response Npolar::Rack::Response
     # @todo Location on POST/PUT
     def after(request, response)
-      start_response_object_id = response.object_id
+      
       # Force response to Rack::Response   
       if response.is_a? Rack::Response
         headers = response.headers
@@ -231,7 +232,7 @@ module Npolar
       else
         raise "Bad response"
       end
-
+      
       # Force UTF-8 on all responses
       if headers.key? "Content-Type" and headers["Content-Type"] != /; charset=utf-8$/
         content_type = headers["Content-Type"].split(";")[0]
@@ -255,14 +256,20 @@ module Npolar
       if after.respond_to? :call
         after = [after]
       end
+
       after.select {|l|l.respond_to?(:call)}.each_with_index do |after_lambda, i|
         log.debug "After #{request.request_method} #{i+1}/#{after.size} (#{after_lambda})"
         response = after_lambda.call(request, response)
       end
-      if (response.object_id != start_response_object_id and (request.post? or request.put?))
-        # Persist changes  
+
+      # @todo Only persist if changed
+      # @todo Check that response.body.read is a method
+      # Persist changes on POST/PUT - otherwise return response
+      if request.post?
         storage.post(response.body.read)
-      else
+      elsif request.put?
+        storage.put(response.body.read)
+      else 
         response
       end
       
