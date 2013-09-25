@@ -263,12 +263,12 @@ module Npolar
       end
 
       # @todo Only persist if changed
-      # @todo Check that response.body.read is a method
       # Persist changes on POST/PUT - otherwise return response
+      body = response.body.respond_to?(:read) ? response.body.read : response.body.join("")
       if request.post?
-        storage.post(response.body.read)
+        storage.post(body)
       elsif request.put?
-        storage.put(response.body.read)
+        storage.put(body)
       else 
         response
       end
