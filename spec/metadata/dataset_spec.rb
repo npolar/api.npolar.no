@@ -58,12 +58,8 @@ describe Metadata::Dataset do
         end
       end
 
-
-
-      context "before POST {}" do
+      context "Saving {}" do
           
-        
-        
         context "licences" do
           it do
             before_save.licences.should == ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/"]
@@ -114,16 +110,45 @@ describe Metadata::Dataset do
           end
         end
   
-        context "#to_hash" do
-          it do
-            d = before_save
-            d.title = "D"
-            d.to_hash.should == {"collection"=>"dataset", "lang"=>"en", "draft"=>"yes", "title"=>"D", "licences"=>["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/"], "rights"=>"Open data. Free to reuse if you attribute the Norwegian Polar Institute.\nLicences: http://data.norge.no/nlod/no/1.0 or http://creativecommons.org/licenses/by/3.0/no/", "organisations"=>[{"id"=>"npolar.no", "name"=>"Norwegian Polar Institute", "gcmd_short_name"=>"NO/NPI", "roles"=>["originator", "owner", "publisher", "pointOfContact"], "links"=>[{"rel"=>"owner", "href"=>"http://npolar.no", "title"=>"Norwegian Polar Institute"}, {"rel"=>"publisher", "href"=>"http://data.npolar.no", "title"=>"Norwegian Polar Institute"}, {"rel"=>"pointOfContact", "href"=>"http://data.npolar.no/contact", "title"=>"Norwegian Polar Data", "email"=>"data[*]npolar.no"}]}], "topics"=>["other"], "schema"=>"http://api.npolar.no/schema/dataset", "people"=>[], "links"=>[]}
-          end
-        end
+        
       end
 
+    context "Saving dataset with data link" do
+        
+      context "roles" do
+        it do
+          dataset = Metadata::Dataset.new.before_save
+          dataset.links << {rel: "data"}
+          @request.body = dataset.to_json
+          before_save.organisations.map {|o|o.roles}.flatten.should include("resourceProvider")
+        end
+        context "open data" do
+          context "released is missing" do
+            it "released datestamp from published" do
+              dataset = Metadata::Dataset.new.before_save
+              dataset.links << {rel: "data"}
+              dataset.published = "1999-12-31T23:59:59Z"
+              @request.body = dataset.to_json
+              before_save.released.should == "1999-12-31T23:59:59Z"
+            end
+          end
+          context "released is set to 9999-12-31" do
+          it "released is unchanged (not set to published)" do
+            dataset = Metadata::Dataset.new.before_save
+            dataset.links << {rel: "data"}
+            dataset.released = "9999-12-31T23:59:59Z"
+            @request.body = dataset.to_json
+            before_save.released.should == "9999-12-31T23:59:59Z"
+          end
+        end
+        end
+
+      end
     end
+
+    end
+
+
 
     context "Cleaning" do
 

@@ -91,69 +91,16 @@ module Metadata
     # Machine readable data policy aka. adding default information to dataset(s)
     # @return request
     def self.before_save(request)
-      body = request.body.read
+
+      body = request.body.respond_to?(:read) ? request.body.read : request.body.join("")
+
       datasets = JSON.parse(body)
       datasets = datasets.is_a?(Hash) ? [datasets] : datasets
 
-      datasets = datasets.map {|d|
+      datasets = datasets.map {|dataset|
 
-        dataset = new(d)
+        new(dataset).before_save(request)
 
-        dataset.collection = "dataset"
-
-        if not dataset.lang?
-          dataset.lang = "en"
-        end
-        
-        if not dataset.title? or not dataset.topics? or not dataset.licences
-          dataset.draft = "yes"
-        end
-
-        if not dataset.title?
-          dataset.title = "Dataset created by #{request.username} at #{Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")}"
-        end
-
-        if dataset.data? and restricted? and [false, nil].include? restricted
-          if not released? and open?
-            dataset.released = published
-          end
-        end
-
-        if dataset.data? and false == resourceProvider?
-          dataset.organisations << npolar(["resourceProvider"])
-        end
-
-        if not dataset.licences? or dataset.licences.none?
-          dataset.licences = licences
-        end
-
-        if not dataset.rights? or dataset.rights.nil? or dataset.rights == ""
-          dataset.rights = rights(dataset)
-        end
-
-        if not dataset.organisations? or dataset.organisations.none?
-          dataset.organisations = [npolar]
-        elsif not dataset.publisher?
-          dataset.organisations << npolar(["publisher"])
-        end
-
-        if not dataset.topics? or dataset.topics.none?
-          dataset.topics = ["other"]
-        end
-
-        if not dataset.schema?
-          dataset.schema = JSON_SCHEMA_URI
-        end
-
-        dataset = dataset.before_valid
-
-        dataset = dataset.deduplicate_people
-        
-        dataset = dataset.deduplicate_organisations
-        
-        dataset = dataset.add_edit_and_alternate_links
-
-        dataset
       }
   
       body = case datasets.size
@@ -206,7 +153,7 @@ module Metadata
       if dataset.publicdomain?
         "Public domain."
       elsif dataset.open?
-        "Open data. Free to reuse provided attributing the Norwegian Polar Institute.\nLicences: #{licences.join(" or ")}"
+        "Open data. Free to reuse if you attribute the Norwegian Polar Institute.\nLicences: #{licences.join(" or ")}"
       elsif dataset.åvl?
         "Protected under \"Lov om opphavsrett til åndsverk m.v. (åndsverkloven)\".\n http://www.lovdata.no/all/hl-19610512-002.html"
       end
@@ -249,6 +196,107 @@ module Metadata
     #def self.title
     #  "Norwegian Polar Institute's datasets"
     #end
+
+
+    # Before save: Add information to dataset
+    # See self.before_save
+    def before_save(request=nil)
+        username = request.nil? ? "anonymous" : request.username    
+        collection = "dataset"
+
+        if not lang?
+          self[:lang] = "en"
+        end
+        
+        if not title? or not topics? or not licences
+          self[:draft] = "yes"
+        end
+
+        if not title?
+          self[:title] = "Dataset created by #{username} at #{Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")}"
+        end
+
+        if not licences? or licences.none?
+          self[:licences] = self.class.licences
+        end
+
+        if not rights? or rights.nil? or rights == ""
+          self[:rights] = self.class.rights(self)
+        end
+
+        if not organisations? or organisations.none?
+          self[:organisations] = [self.class.npolar]
+        end
+
+        if data? and not resourceProvider?
+          self[:organisations] << self.class.npolar(["resourceProvider"])
+        end
+
+        if not publisher?
+          self[:organisations] << self.class.npolar(["publisher"])
+        end
+
+        if data? #and restricted? and not (true == restricted)
+          if not released? and open?
+            self[:released] = published
+          end
+        end
+
+        if not topics? or topics.none?
+          self[:topics] = ["other"]
+        end
+
+        if not schema?
+          self[:schema] = JSON_SCHEMA_URI
+        end
+
+        before_valid
+
+        deduplicate_people
+        
+        deduplicate_organisations
+        
+        add_edit_and_alternate_links
+
+        self
+    end
+
+
+# Manipulates dataset before validation
+    # @override MultiJsonSchemaValidator
+    def before_valid
+      
+      if activity?      
+        activity.map {|a|
+          if a.start? and a.start == ""
+            a.delete :start
+          end
+          if a.stop? and a.stop == ""
+            a.delete :stop
+          end
+          a
+        }
+      end
+
+      if coverage?
+        coverage.map {|c|
+          if c.north?
+            c.north = c.north.to_f
+          end
+          if c.south?
+            c.south = c.south.to_f
+          end
+          if c.east?
+            c.east = c.east.to_f
+          end
+          if c.west?
+            c.west = c.west.to_f
+          end
+        }
+      end      
+      self
+
+    end
 
     # Data link?
     def data?
@@ -358,11 +406,11 @@ module Metadata
       end
       solr[:text] = text
 
-      schema = ::Gcmd::Schema.new
-      errors = schema.validate_xml( self.to_dif ).map {|e|e["details"].to_s.gsub(/["'\/\\()]/, "")}
+      #schema = ::Gcmd::Schema.new
+      #errors = schema.validate_xml( self.to_dif ).map {|e|e["details"].to_s.gsub(/["'\/\\()]/, "")}
 
-      solr[:errors] = errors
-      solr[:valid] = errors.any? ? false : true
+      #solr[:errors] = errors
+      #solr[:valid] = errors.any? ? false : true
 
       solr[:link_edit] = "/dataset/#{id}.json"
       solr[:link_html] = "http://data.npolar.no/dataset/#{id}"
@@ -496,42 +544,6 @@ module Metadata
         end
       end
 
-      self
-
-    end
-
-    # Manipulates dataset before validation
-    # @override MultiJsonSchemaValidator
-    def before_valid
-      
-      if activity?      
-        activity.map {|a|
-          if a.start? and a.start == ""
-            a.delete :start
-          end
-          if a.stop? and a.stop == ""
-            a.delete :stop
-          end
-          a
-        }
-      end
-
-      if coverage?
-        coverage.map {|c|
-          if c.north?
-            c.north = c.north.to_f
-          end
-          if c.south?
-            c.south = c.south.to_f
-          end
-          if c.east?
-            c.east = c.east.to_f
-          end
-          if c.west?
-            c.west = c.west.to_f
-          end
-        }
-      end      
       self
 
     end
