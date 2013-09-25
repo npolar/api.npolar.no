@@ -7,7 +7,7 @@ module Metadata
   #
   # [Features]
   #   * Extends Hashie::Mash for easy method access
-  #   * Before and after save (POST/PUT) logic
+  #   * Before and after logic
   #   * Transform to Solr-style Hash (for creating Solr JSON)
   #   * Transform to DIF XML Hash (for creating DIF XML)
   #   * Validation based on JSON Schema
@@ -15,12 +15,7 @@ module Metadata
   # [License]
   #   {http://www.gnu.org/licenses/gpl.html GNU General Public License Version 3} (GPLv3)
   #
-  # @author Ruben Dens
   # @author Conrad Helgeland
-  #
-  # Open issues
-  # * Setting and enforcing defaults (defined in schema)
-  # * Defining defaults (originator? publisher?)
   class Dataset < Hashie::Mash
 
     include Npolar::Validation::MultiJsonSchemaValidator
@@ -33,14 +28,6 @@ module Metadata
 
     JSON_SCHEMAS = ["dataset.json"]
 
-    NPOLAR_NO = { id: "npolar.no",
-      name: "Norwegian Polar Institute",
-      gcmd_short_name: "NO/NPI",
-      roles: ["originator", "owner", "publisher", "resourceProvider", "pointOfContact"],
-      links: [ {rel: "owner", href: "http://npolar.no", title: "Norwegian Polar Institute" },
-        {rel: "publisher", href: "http://data.npolar.no", title: "Norwegian Polar Institute" }
-      ]
-    }
     SCHEMA_URI = {
       "dif" =>  DIF_SCHEMA_URI,
       "json" => JSON_SCHEMA_URI,
@@ -51,9 +38,9 @@ module Metadata
       attr_accessor :formats, :accepts, :base
     end
 
-    # Streamline incoming datasets before save
+    # Process storage response (after all HTTP methods)
     # @return lambda
-    # See Core#handle and Core#before
+    # See Core#handle and Core#after
     def self.after
       lambda {|request,response|
         if request.post?
@@ -64,11 +51,11 @@ module Metadata
       }
     end
 
-    # 
+    # Process storage response after create (POST)
     # @return response Rack::Response
     def self.after_create(request,response)
-
-      datasets = JSON.parse(response.body.join(""))
+      body = response.body.respond_to?(:read) ? response.body.read : response.body.join("")
+      datasets = JSON.parse(body)
       datasets = datasets.is_a?(Hash) ? [datasets] : datasets
       
       datasets = datasets.map {|d|
@@ -101,7 +88,7 @@ module Metadata
       }
     end
 
-    # Add default information to dataset(s) before saving
+    # Machine readable data policy aka. adding default information to dataset(s)
     # @return request
     def self.before_save(request)
       body = request.body.read
@@ -110,7 +97,8 @@ module Metadata
 
       datasets = datasets.map {|d|
 
-        dataset = self.new(d)
+        dataset = new(d)
+
         dataset.collection = "dataset"
 
         if not dataset.lang?
@@ -125,12 +113,16 @@ module Metadata
           dataset.title = "Dataset created by #{request.username} at #{Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")}"
         end
 
-        dataset = dataset.before_valid
+        if dataset.data? and [false, nil].include? restriced
+          if not released? and open?
+            dataset.released = published
+          end
+        end
 
-        dataset = dataset.deduplicate_people
+        if dataset.data? and false == resourceProvider?
+          dataset.organisations << npolar(["resourceProvider"])
+        end
 
-        dataset = dataset.add_edit_and_alternate_links
-        
         if not dataset.licences? or dataset.licences.none?
           dataset.licences = licences
         end
@@ -140,7 +132,9 @@ module Metadata
         end
 
         if not dataset.organisations? or dataset.organisations.none?
-          dataset.organisations = [NPOLAR_NO]
+          dataset.organisations = [npolar]
+        elsif not dataset.publisher?
+          dataset.organisations << npolar(["publisher"])
         end
 
         if not dataset.topics? or dataset.topics.none?
@@ -151,7 +145,13 @@ module Metadata
           dataset.schema = JSON_SCHEMA_URI
         end
 
-        # add resourceProvider if link[rel=="data"]
+        dataset = dataset.before_valid
+
+        dataset = dataset.deduplicate_people
+        
+        dataset = dataset.deduplicate_organisations
+        
+        dataset = dataset.add_edit_and_alternate_links
 
         dataset
       }
@@ -167,44 +167,63 @@ module Metadata
       request
     end
 
+    # Default licences
     def self.licences
       ["http://data.norge.no/nlod/no/1.0",
       "http://creativecommons.org/licenses/by/3.0/no/"]
     end
 
-
+    # Not used atm.
     def self.licence_codes
       ["nlod", "cc-by", "cc0"]
     end
 
+    # Accepts
     def self.mimetypes
       ["application/json", "application/xml"]
     end
 
+    # Organisation template for npolar.no
+    def self.npolar(roles=["originator", "owner", "publisher", "pointOfContact"])
+      Hashie::Mash.new({ id: "npolar.no",
+        name: "Norwegian Polar Institute",
+        gcmd_short_name: "NO/NPI",
+        roles: roles,
+        links: [ {rel: "owner", href: "http://npolar.no", title: "Norwegian Polar Institute" },
+          {rel: "publisher", href: "http://data.npolar.no", title: "Norwegian Polar Institute" },
+          {rel: "pointOfContact", href: "http://data.npolar.no/contact", title: "Norwegian Polar Data", email: "data[*]npolar.no" }
+        ]
+      })
+    end
+
+    # Not used atm.
     #def self.sets
     #  oai_sets.map {|set| set[:spec] }
     #end
 
+    # Default rights (human readable usage requirements)
     def self.rights(dataset=nil)
-      nlod = /data.norge.no\/nlod/
-      ccby = /creativecommons.org\/licenses\/by/
-      odc = /opendatacommons.org\/licenses\/by/
-      cc0 = /creativecommons.org\/publicdomain\/zero/
-      åvl = /lovdata.no\/all\/(h|n)l-19610512-002/
-      
-      if dataset.licences.select {|l| l =~ cc0 }.size > 0
-        "Dataset is in the public domain."
-      elsif dataset.licences.select {|l| l =~ /#{nlod}|#{ccby}|#{odc}/ }.size > 0
-        "Dataset is open data and free to reuse if you attribute the source.\nLicences: #{licences.join(" or ")}"
-      elsif dataset.licences.select {|l| l =~ åvl }.size > 0
-        "Dataset protected under \"Lov om opphavsrett til åndsverk m.v. (åndsverkloven)\".\n http://www.lovdata.no/all/hl-19610512-002.html"
+      if dataset.publicdomain?
+        "Public domain."
+      elsif dataset.open?
+        "Open data. Free to reuse provided attributing the Norwegian Polar Institute.\nLicences: #{licences.join(" or ")}"
+      elsif dataset.åvl?
+        "Protected under \"Lov om opphavsrett til åndsverk m.v. (åndsverkloven)\".\n http://www.lovdata.no/all/hl-19610512-002.html"
       end
     end
 
+    # Åndsverksloven?
+    def åvl?
+      åvl = /lovdata.no\/all\/(h|n)l-19610512-002/
+      (licences||[]).select {|l| l =~ åvl }.size > 0
+    end
+
+    # Accept schemas
     def self.schemas
       [schema_uri("json"), schema_uri("xml")]
     end
 
+    # Schema URI for format
     def self.schema_uri(format="json")
       if SCHEMA_URI.key? format
         SCHEMA_URI[format]
@@ -230,8 +249,34 @@ module Metadata
     #def self.title
     #  "Norwegian Polar Institute's datasets"
     #end
+
+    # Data link?
+    def data?
+      (links||[]).select {|link| link.rel == "data" }.size > 0
+    end
     
-    # Map to Solr core "api"
+    # Free data?
+    def free?
+      open? or publicdomain?
+    end
+
+    # Open data?
+    def open?
+      nlod = /data.norge.no\/nlod/
+      ccby = /creativecommons.org\/licenses\/by/
+      odc = /opendatacommons.org\/licenses\/by/
+      (licences||[]).select {|l| l =~ /#{nlod}|#{ccby}|#{odc}/ }.size > 0
+    end
+
+    # Public domain? (CC0?)
+    def cc0?
+      cc0 = /creativecommons.org\/publicdomain\/zero/
+      (licences||[]).select {|l| l =~ cc0 }.size > 0
+    end
+    alias :publicdomain? :cc0?
+    
+    # Map dataset to Solr "api" schema
+    # See https://github.com/npolar/api.npolar.no/blob/master/search/solr/api/schema.xml
     def to_solr
       doc = self
 
@@ -378,6 +423,7 @@ module Metadata
       self.class.uri + id
     end
 
+    # Uniqify people (see #before_save)
     def deduplicate_people
       unique_people = (people||[]).map {|p| [p.first_name, p.last_name]}.uniq
       self[:people] = unique_people.map {|first_name, last_name |
@@ -393,6 +439,25 @@ module Metadata
       self
     end
 
+    # Uniqify organisations (see #before_save)
+    def deduplicate_organisations
+      unique_organisations = (organisations||[]).map {|o| o.id }.uniq
+
+      self[:organisations] = unique_organisations.map {|id|
+          same_id = (organisations||[]).select {|o| o.id == id }
+          
+          roles = same_id.map {|o| o.roles }.flatten.uniq
+          links = same_id.map {|o| o.links }.flatten.uniq
+          org = same_id[0]
+          org[:roles] = roles
+          org[:links] = links
+          org
+          
+        }
+      self
+    end
+
+    # Add links for "edit" (application/json) and alternate formats
     def add_edit_and_alternate_links
       api = ENV["NPOLAR_API"] ||= "http://api.npolar.no"
 
@@ -435,7 +500,7 @@ module Metadata
 
     end
 
-    # Manipulates documents before validation
+    # Manipulates dataset before validation
     # @override MultiJsonSchemaValidator
     def before_valid
       

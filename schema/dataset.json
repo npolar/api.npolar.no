@@ -5,7 +5,7 @@
   "description": "Metadata describing a dataset",
   "type": "object",   
   "additionalProperties": false,
-  "required": ["title", "schema", "topics", "licences"],
+  "required": ["title"],
   "properties": {
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
     "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
@@ -57,7 +57,6 @@
       "title": "Licence URIs",
       "type": "array",
       "additionalItems": false,
-      "default": ["http://data.norge.no/nlod/no/1.0"],
       "items": {
         "type": "string",
         "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://www.lovdata.no/all/hl-19610512-002.html", "http://creativecommons.org/publicdomain/zero/1.0/"]
@@ -169,7 +168,7 @@
         "additionalProperties": false,
         "properties": {
           "term": { "type": "string"},
-          "schema": { "type": "string", "format": "uri", "default":"http://api.npolar.no/schema/category" },
+          "schema": { "type": "string", "format": "uri" },
           "title": { "type": "string" },
           "label": { "type": "string" },
           "lang": { "type": "string", "pattern": "^[a-z]{2}$" }
@@ -259,7 +258,7 @@
       "format": "date-time"
     },
     "released": {
-      "description": "Data was (or is to be) released the general public",
+      "description": "Data was (or is to be) released to the general public",
       "type": ["string", "null"],
       "format": "date-time"
     },
