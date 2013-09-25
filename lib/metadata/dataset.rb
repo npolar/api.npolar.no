@@ -113,7 +113,7 @@ module Metadata
           dataset.title = "Dataset created by #{request.username} at #{Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")}"
         end
 
-        if dataset.data? and [false, nil].include? restriced
+        if dataset.data? and restricted? and [false, nil].include? restricted
           if not released? and open?
             dataset.released = published
           end
