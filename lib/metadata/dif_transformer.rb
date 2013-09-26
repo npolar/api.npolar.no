@@ -374,7 +374,7 @@ module Metadata
         if link.URL_Content_Type? and link.URL_Content_Type.Type?
           dif_type = link.URL_Content_Type.Type
         else
-          dif_type = ""
+          dif_type = "related"
         end
  
         rel = case dif_type
