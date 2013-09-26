@@ -107,6 +107,17 @@
       }
     },
     "comment": {"type": "string"},
+    "published": {
+      "description": "Metadata was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Metadata was updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "editor" : {  "type": "string" },
     "_id": {"type": "string"},
     "_rev": {"type": "string"},
     "_attachment": {"type": "object"}
