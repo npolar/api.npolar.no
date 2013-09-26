@@ -3,13 +3,22 @@
     "properties":
     {
       "id":{"type":"string"},
-      "title":{"type":"string"},
-      "summary":{"type":"string"},
       "collection":{"type":"string"},
       "schema":{"type":"string"},
+      "title":{
+        "type":"multi_field",
+        "fields":{
+          "title": {"type":"string","index":"analyzed"},
+          "untouched": {"type":"string","index":"not_analyzed"}
+        }
+      },
+      "summary":{"type":"string"},
+      "topics":{"type":"string"},
+      "lang":{"type":"string"},
+      "base":{"type":"string"},
+      "draft":{"type":"string"},
       "progress":{"type":"string"},
       "licences":{"type":"string"},
-      "topic":{"type":"string"},
       "edits":{
         "properties":{
           "edited":{"type":"string"},
@@ -19,22 +28,21 @@
       },
       "people":{
         "properties": {
+          "id":{"type":"string"},
           "first_name":{"type":"string"},
           "last_name":{"type":"string"},
           "roles":{"type":"string"},
           "email":{"type":"string"},
-          "href":{"type":"string"},
-          "affiliation":{"type":"string"}
+          "organisation":{"type":"string"}
         }
       },
       "organisations": {
         "properties": {
+          "id":{"type":"string"},
           "name":{"type":"string"},
           "gcmd_short_name":{"type":"string"},
-          "shortname":{"type":"string"},
           "roles":{"type":"string"},
-          "email":{"type":"string"},
-          "uri":{"type":"string"}
+          "email":{"type":"string"}
         }
       },
       "links":{
@@ -43,10 +51,14 @@
           "href":{"type":"string"},
           "hreflang":{"type":"string"},
           "type":{"type":"string"},
-          "title":{"type":"string"}
+          "title":{"type":"string"},
+          "hash":{"type":"string"},
+          "etag":{"type":"string"},
+          "modified":{"type":"string"},
+          "accessed":{"type":"string"}
         }
       },
-      "category":{
+      "categories":{
         "properties":{
           "term":{"type":"string"},
           "schema":{"type":"string"},
@@ -79,7 +91,8 @@
       "iso_topics":{"type":"string"},
       "tags":{"type":"string"},
       "quality":{"type":"string"},
-      "draft":{"type":"string"},
+      "restricted":{"type":"string"},
+      "restrictions":{"type":"string"},
       "sets":{"type":"string"},
       "gcmd":{
         "properties":{
@@ -98,8 +111,14 @@
       },
       "published":{"type":"date"},
       "updated":{"type":"date"},
+      "released":{"type":"string"},
+      "rights":{"type":"string"},
       "comment":{"type":"string"},
-      "source":{"enabled":"false"}
+      "publisher":{"type":"string"},
+      "editor":{"type":"string"},
+      "_id":{"type":"string"},
+      "_rev":{"type":"string"},
+      "_attachments":{"enabled":"false"}
     }
   }
 }
