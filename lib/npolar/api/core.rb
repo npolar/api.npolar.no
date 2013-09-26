@@ -262,14 +262,8 @@ module Npolar
         response = after_lambda.call(request, response)
       end
 
-      # @todo Only persist if changed
-      # Persist changes on POST/PUT - otherwise return response
-      body = response.body.respond_to?(:read) ? response.body.read : response.body.join("")
-      if request.post? or request.put?
-        storage.post(body)
-      else
-        response
-      end
+      # Note that after changes are not persisted!
+      response
     end
 
     # Before request
