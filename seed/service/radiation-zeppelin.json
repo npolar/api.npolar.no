@@ -1,0 +1,26 @@
+{
+  "schema": "http://api.npolar.no/schema/api",
+  "id": "radiation-zeppelin-api",
+  "path": "/radiation-zeppelin",
+  "title": "Incoming radiation at Zeppelin Station",
+  "summary": "",
+  "storage": "Couch",
+  "database": "radiation-zeppelin",
+  "search": { 
+    "engine": "Solr",
+    "core": "radiation-zeppelin",
+    "facets": []
+  },
+  "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
+  "formats": {"json":"application/json", "html": "text/html"},
+  "accepts": {"application/json": ""},
+  "category": ["CouchDB", "REST", "JSON", "HTTP"],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "auth": {
+    "authorize": "editor",
+    "system": "radiation-zeppelin",
+    "authorizer": "Npolar::Auth::Ldap"
+  },
+}
