@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/publication",
-  "title": "Publication",
+  "id": "http://api.npolar.no/schema/minimal-publication",
+  "title": "Minimal-Publication",
   "description": "Metadata describing a publication",
   "type": "object",
   "additionalProperties": false,
