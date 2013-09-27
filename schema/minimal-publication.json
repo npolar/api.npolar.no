@@ -14,7 +14,7 @@
     "english_title": { "type" : ["string", "null"] },
     "collection": { "enum": ["publication"] },
     "base": { "enum": ["http://api.npolar.no"] },
-    "draft": { "enum": ["yes", "no"]},
+    "draft": { "enum": ["yes"]},
     "scientific_abstract": { "type" : "string" },
     "norw_summary": { "type" : "string" },
     "review_progress": { "enum": ["none", "started", "reviewed"] },
