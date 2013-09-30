@@ -9,20 +9,6 @@
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
     "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
     "draft":{ "enum": ["yes"]}
-    "published": {
-      "description": "Metadata was published",
-      "type": "string",
-      "format": "date-time"
-    },
-    "updated": {
-      "description": "Metadata was updated",
-      "type": "string",
-      "format": "date-time"
-    },
-    "editor" : {  "type": "string" },
-    "_id": {"type": "string"},
-    "_rev": {"type": "string"},
-    "_attachment": {"type": "object"}
   }
 }
 
