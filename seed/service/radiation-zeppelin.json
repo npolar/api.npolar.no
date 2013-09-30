@@ -9,7 +9,7 @@
   "search": { 
     "engine": "Elasticsearch",
     "uri": "http://localhost:9200",
-    "facets": []
+    "facets": [],
     "type": "radiation-zeppelin",
     "index": "radiation-zeppelin"
   },
