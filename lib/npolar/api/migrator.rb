@@ -1,12 +1,15 @@
 module Npolar
   module Api
+# 184
+#/home/ch/.rvm/rubies/ruby-1.9.3-p429/lib/ruby/1.9.1/net/protocol.rb:146:in `rescue in rbuf_fill': Timeout::Error (Faraday::Error::TimeoutError)
+#	from /home/ch/github.com/api.npolar.no/lib/npolar/api/migrator.rb:64:in `run'
 
     class Migrator
       attr_accessor :client, :migrations, :log, :batch, :uri
       attr_writer :select, :documents
 
       def documents
-        @documents ||= client.invalid
+        @documents ||= client.all
       end
 
       def select
@@ -23,7 +26,13 @@ module Npolar
         
         fixed = []
         failed = []
+        unaffected = []
         selected.each_with_index do |d,j|
+        
+          if j == 0
+            before = d.dup
+          end
+
           valid?(d)
           log.debug "Errors before: #{client.errors(d).to_json}\n#{d.to_json}"
 
@@ -41,18 +50,23 @@ module Npolar
               log.debug "#{" "*2}Document #{d.id} not selected by condition #{condition}: [migration #{i}/#{migrations.size}]"
             end
           end
+        
 
           # 4. Validate document
-          if valid?(d)
-            fixed << d
+          if before.to_json != d.to_json 
+            if valid?(d)
+              fixed << d
+            else
+              log.error "Failed migrating #{d.id}, errors: #{client.errors(d).to_json}\n#{d.to_json}"
+              failed << d
+            end
           else
-            log.error "Failed migrating #{d.id}, errors: #{client.errors(d).to_json}\n#{d.to_json}"
-            failed << d
+            unaffected << d
           end
           log.debug "Finished document #{d.id} [##{j+1}/#{selected.size}]"
           
         end
-        log.info "Finished processing #{batch}; failed: #{failed.size}, fixed (or valid): #{fixed.size}"
+        log.info "Finished processing #{batch}; failed: #{failed.size}, fixed: #{fixed.size}, unaffected: #{unaffected.size}"
       
         # 5. Save (if --really)
         if true == really
