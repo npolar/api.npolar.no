@@ -266,6 +266,8 @@ module Metadata
 
         before_valid
 
+        deduplicate_links
+
         deduplicate_people
         
         deduplicate_organisations
@@ -277,7 +279,7 @@ module Metadata
     alias :empty :before_save
 
 
-# Manipulates dataset before validation
+    # Manipulates dataset before validation
     # @override MultiJsonSchemaValidator
     def before_valid
       
@@ -484,6 +486,11 @@ module Metadata
     
     def uri(id)
       self.class.uri + id
+    end
+
+    # A href can only exist once for the same rel
+    def deduplicate_links
+      self[:links] = links.uniq
     end
 
     # Uniqify people (see #before_save)
