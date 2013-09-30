@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/dataset-1.0-rc3",
+  "id": "http://api.npolar.no/schema/dataset-1.0-rc4",
   "title": "Dataset",
   "description": "Metadata describing a dataset",
   "type": "object",   
@@ -249,12 +249,12 @@
     },
     "created": {
       "description": "Metadata was published",
-      "type": "string",
+      "type": ["string","null"],
       "format": "date-time"
     },
     "updated": {
       "description": "Metadata was updated",
-      "type": "string",
+      "type": ["string", "null"],
       "format": "date-time"
     },
     "released": {
