@@ -151,5 +151,4 @@
     "updated_by" : {  "type": "string" },
     "_id": { "description": "Internal id", "type": "string" },
     "_rev" : { "description": "Internal revision", "type": "string" }
-  }
 }
