@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/dataset-1.0-rc1",
+  "id": "http://api.npolar.no/schema/dataset-1.0-rc2",
   "title": "Dataset",
   "description": "Metadata describing a dataset",
   "type": "object",   
@@ -156,7 +156,7 @@
           "modified": { "type": "string" },
           "acccessed": { "type": "string" }
         },
-        "required": ["rel", "href"]
+        "required": ["href"]
       }
     },
     "categories": {
@@ -267,8 +267,8 @@
     "_id": { "description": "Internal id", "type": "string" },
     "_rev" : { "description": "Internal revision", "type": "string" },
     "_attachments":{"type":"object"},
-    "publisher": { "type": "string" },
+    "created_by": { "type": "string" },
     "collection": { "type": "string" },
-    "editor" : {  "type": "string" }
+    "updated_by" : {  "type": "string" }
   }
 }
