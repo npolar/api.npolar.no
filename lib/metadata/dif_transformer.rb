@@ -97,7 +97,7 @@ module Metadata
       :title, :links, :summary, :created, :updated, :draft,
       # metadata 
       :coverage, :progress, :people, :organisations, :activity, :placenames,
-      :quality, :gcmd, :edits, :sets, :comment
+      :quality, :gcmd, :edits, :sets
     ]
 
    
@@ -132,15 +132,6 @@ module Metadata
           "type" => type,
           "title" => title
       })
-    end
-
-    def comment
-      comment = ""
-      if dif.Entry_ID =~ /^(org[.|-]polarresearch\-)/
-        comment += "Source: http://risapi.data.npolar.no/oai?verb=GetRecord&metadataPrefix=dif&identifier=oai:ris.npolar.no:#{dif.Entry_ID} \n"
-      end
-      comment += "Transformed from DIF XML by #{self.class.name} at #{DateTime.now.xmlschema}"
-      comment
     end
 
     def href(id, format="json")
@@ -361,7 +352,7 @@ module Metadata
     # Links from
     #  1. Related_URL
     #  2. Parent_DIF
-    #  3. Data_Set_Citation (DOI + online resource)
+    #  3. Data_Set_Citation (DOI + online resource) @todo
     #
     def links
       links = []
@@ -414,16 +405,15 @@ module Metadata
       # 3. Links to DOI and "Online Resource" (metadata)
       # @todo
 
-      #if id =~ /^http\:\/\//
-      #  uri = id  
-      #else
-      #  uri = href(id, "json")
-      #end
-
-      # Move to model
-
-
-
+      if dif.Entry_ID =~ /^(org[.|-]polarresearch\-)/
+      links << {
+        "rel" => "via",
+        "href" => "http://risapi.data.npolar.no/oai?verb=GetRecord&metadataPrefix=dif&identifier=oai:ris.npolar.no:#{dif.Entry_ID}",
+        "type" => "application/json"
+      }
+      end
+     
+      # Links to GCMD project on api.npolar.no
       #unless dif.Project.nil?
       #  projects = Gcmd::Concepts.new.tuples("projects")
       #
