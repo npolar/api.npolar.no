@@ -1,7 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/project.json",
+  "id": "http://api.npolar.no/schema/project-1.0-rc1",
   "type": "object",
+  "additionalProperties": false,
   "required": ["title"],
   "properties": {
     "id": { "type" :"string" },
@@ -40,18 +41,14 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "id": { "type": "string" },
           "first_name": { "type": "string" },
           "last_name": { "type": "string" },
           "email": { "type": "string", "format": "email" },
           "profile_href" : { "type": "string", "format": "uri" },
           "role": { "type": "string", "enum": ["projectLeader", "projectParticipant"] },
           "employee_no": { "type": "string" },
-          "affiliation": { 
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "org": { "type": "string" }
-            }
+          "organisation": { "type": "string" }
           }
         }
       }
@@ -119,6 +116,20 @@
     },
     "translations" : {
       "type" : "object"
-    }
+    },
+    "created": {
+      "description": "Metadata was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Metadata was updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": { "type": "string" },
+    "updated_by" : {  "type": "string" },
+    "_id": { "description": "Internal id", "type": "string" },
+    "_rev" : { "description": "Internal revision", "type": "string" }
   }
 }
