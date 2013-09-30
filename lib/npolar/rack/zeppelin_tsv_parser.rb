@@ -6,8 +6,7 @@ require 'pp'
 module Npolar
   module Rack
    
-    # TODO: rename something specific to Zeppelin 
-    class TsvParser < Npolar::Rack::Middleware
+    class ZeppelinTsvParser < Npolar::Rack::Middleware
       
       def condition?(request)
         create?(request)
