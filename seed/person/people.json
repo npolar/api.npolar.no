@@ -16,7 +16,7 @@
       }
     ],
     "email": "jon.aars@npolar.no",
-    "id": "jon.aars@npolar.no",
+    "id": "jon.aars",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -38,7 +38,7 @@
       }
     ],
     "email": "harald.faste.aas@npolar.no",
-    "id": "harald.faste.aas@npolar.no",
+    "id": "harald.faste.aas",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -60,7 +60,7 @@
       }
     ],
     "email": "atle.aasen@npolar.no",
-    "id": "atle.aasen@npolar.no",
+    "id": "atle.aasen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -82,7 +82,7 @@
       }
     ],
     "email": "jens.abild@npolar.no",
-    "id": "jens.abild@npolar.no",
+    "id": "jens.abild",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -104,7 +104,7 @@
       }
     ],
     "email": "steinar.aksnes@npolar.no",
-    "id": "steinar.aksnes@npolar.no",
+    "id": "steinar.aksnes",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -126,7 +126,7 @@
       }
     ],
     "email": "geir.andersen@npolar.no",
-    "id": "geir.andersen@npolar.no",
+    "id": "geir.andersen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -148,7 +148,7 @@
       }
     ],
     "email": "magnus.andersen2@npolar.no",
-    "id": "magnus.andersen2@npolar.no",
+    "id": "magnus.andersen2",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -170,7 +170,7 @@
       }
     ],
     "email": "magnus.andersen@npolar.no",
-    "id": "magnus.andersen@npolar.no",
+    "id": "magnus.andersen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -192,7 +192,7 @@
       }
     ],
     "email": "kristin.arntzen@npolar.no",
-    "id": "kristin.arntzen@npolar.no",
+    "id": "kristin.arntzen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -214,7 +214,7 @@
       }
     ],
     "email": "philipp.assmy@npolar.no",
-    "id": "philipp.assmy@npolar.no",
+    "id": "philipp.assmy",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -236,7 +236,7 @@
       }
     ],
     "email": "jenny.baeseman@npolar.no",
-    "id": "jenny.baeseman@npolar.no",
+    "id": "jenny.baeseman",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -258,7 +258,7 @@
       }
     ],
     "email": "ann.kristin.balto@npolar.no",
-    "id": "ann.kristin.balto@npolar.no",
+    "id": "ann.kristin.balto",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -280,7 +280,7 @@
       }
     ],
     "email": "ingrid.berthinussen@npolar.no",
-    "id": "ingrid.berthinussen@npolar.no",
+    "id": "ingrid.berthinussen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -302,7 +302,7 @@
       }
     ],
     "email": "are.bjordal@npolar.no",
-    "id": "are.bjordal@npolar.no",
+    "id": "are.bjordal",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -324,7 +324,7 @@
       }
     ],
     "email": "marie.anne.blanchet@npolar.no",
-    "id": "marie.anne.blanchet@npolar.no",
+    "id": "marie.anne.blanchet",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -346,7 +346,7 @@
       }
     ],
     "email": "dierk.blomeier@npolar.no",
-    "id": "dierk.blomeier@npolar.no",
+    "id": "dierk.blomeier",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -368,7 +368,7 @@
       }
     ],
     "email": "kent-ove.bolli@npolar.no",
-    "id": "kent-ove.bolli@npolar.no",
+    "id": "kent-ove.bolli",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -390,7 +390,7 @@
       }
     ],
     "email": "sophie.bourgeon@npolar.no",
-    "id": "sophie.bourgeon@npolar.no",
+    "id": "sophie.bourgeon",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -412,7 +412,7 @@
       }
     ],
     "email": "rita.brannfjell@npolar.no",
-    "id": "rita.brannfjell@npolar.no",
+    "id": "rita.brannfjell",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -434,7 +434,7 @@
       }
     ],
     "email": "marius.bratrein@npolar.no",
-    "id": "marius.bratrein@npolar.no",
+    "id": "marius.bratrein",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -456,7 +456,7 @@
       }
     ],
     "email": "joel.brown@npolar.no",
-    "id": "joel.brown@npolar.no",
+    "id": "joel.brown",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -478,7 +478,7 @@
       }
     ],
     "email": "roy.bruun@npolar.no",
-    "id": "roy.bruun@npolar.no",
+    "id": "roy.bruun",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -500,7 +500,7 @@
       }
     ],
     "email": "bernt.bye@npolar.no",
-    "id": "bernt.bye@npolar.no",
+    "id": "bernt.bye",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -522,7 +522,7 @@
       }
     ],
     "email": "malin.daase@npolar.no",
-    "id": "malin.daase@npolar.no",
+    "id": "malin.daase",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -544,7 +544,7 @@
       }
     ],
     "email": "lars.dahle@npolar.no",
-    "id": "lars.dahle@npolar.no",
+    "id": "lars.dahle",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -566,7 +566,7 @@
       }
     ],
     "email": "winfried.dallmann@npolar.no",
-    "id": "winfried.dallmann@npolar.no",
+    "id": "winfried.dallmann",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -588,7 +588,7 @@
       }
     ],
     "email": "fiona.danks@npolar.no",
-    "id": "fiona.danks@npolar.no",
+    "id": "fiona.danks",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -610,7 +610,7 @@
       }
     ],
     "email": "ruben.dens@npolar.no",
-    "id": "ruben.dens@npolar.no",
+    "id": "ruben.dens",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -632,7 +632,7 @@
       }
     ],
     "email": "sebastien.descamps@npolar.no",
-    "id": "sebastien.descamps@npolar.no",
+    "id": "sebastien.descamps",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -654,7 +654,7 @@
       }
     ],
     "email": "dmitry.divine@npolar.no",
-    "id": "dmitry.divine@npolar.no",
+    "id": "dmitry.divine",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -676,7 +676,7 @@
       }
     ],
     "email": "paul.dodd@npolar.no",
-    "id": "paul.dodd@npolar.no",
+    "id": "paul.dodd",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -698,7 +698,7 @@
       }
     ],
     "email": "jorn.dybdahl@npolar.no",
-    "id": "jorn.dybdahl@npolar.no",
+    "id": "jorn.dybdahl",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -720,7 +720,7 @@
       }
     ],
     "email": "inger.brattsti.dypas@npolar.no",
-    "id": "inger.brattsti.dypas@npolar.no",
+    "id": "inger.brattsti.dypas",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -742,7 +742,7 @@
       }
     ],
     "email": "heidi.june.eklo@npolar.no",
-    "id": "heidi.june.eklo@npolar.no",
+    "id": "heidi.june.eklo",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -764,7 +764,7 @@
       }
     ],
     "email": "synnove.elvevold@npolar.no",
-    "id": "synnove.elvevold@npolar.no",
+    "id": "synnove.elvevold",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -786,7 +786,7 @@
       }
     ],
     "email": "stasjonsleder.troll@npolar.no",
-    "id": "stasjonsleder.troll@npolar.no",
+    "id": "stasjonsleder.troll",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -808,7 +808,7 @@
       }
     ],
     "email": "paul.inge.flakstad@npolar.no",
-    "id": "paul.inge.flakstad@npolar.no",
+    "id": "paul.inge.flakstad",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -830,7 +830,7 @@
       }
     ],
     "email": "geir.ove.floan@npolar.no",
-    "id": "geir.ove.floan@npolar.no",
+    "id": "geir.ove.floan",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -852,7 +852,7 @@
       }
     ],
     "email": "kristen.fossan@npolar.no",
-    "id": "kristen.fossan@npolar.no",
+    "id": "kristen.fossan",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -874,7 +874,7 @@
       }
     ],
     "email": "eva.fuglei@npolar.no",
-    "id": "eva.fuglei@npolar.no",
+    "id": "eva.fuglei",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -896,7 +896,7 @@
       }
     ],
     "email": "geir.wing.gabrielsen@npolar.no",
-    "id": "geir.wing.gabrielsen@npolar.no",
+    "id": "geir.wing.gabrielsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -918,7 +918,7 @@
       }
     ],
     "email": "jean.charles.gallet@npolar.no",
-    "id": "jean.charles.gallet@npolar.no",
+    "id": "jean.charles.gallet",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -940,7 +940,7 @@
       }
     ],
     "email": "sebastian.gerland@npolar.no",
-    "id": "sebastian.gerland@npolar.no",
+    "id": "sebastian.gerland",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -962,7 +962,7 @@
       }
     ],
     "email": "audun.gjerland@npolar.no",
-    "id": "audun.gjerland@npolar.no",
+    "id": "audun.gjerland",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -984,7 +984,7 @@
       }
     ],
     "email": "fred.godtliebsen@npolar.no",
-    "id": "fred.godtliebsen@npolar.no",
+    "id": "fred.godtliebsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1006,7 +1006,7 @@
       }
     ],
     "email": "helle.goldman@npolar.no",
-    "id": "helle.goldman@npolar.no",
+    "id": "helle.goldman",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1028,7 +1028,7 @@
       }
     ],
     "email": "harvey.goodwin@npolar.no",
-    "id": "harvey.goodwin@npolar.no",
+    "id": "harvey.goodwin",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1050,7 +1050,7 @@
       }
     ],
     "email": "mats.granskog@npolar.no",
-    "id": "mats.granskog@npolar.no",
+    "id": "mats.granskog",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1072,7 +1072,7 @@
       }
     ],
     "email": "john.guldahl@npolar.no",
-    "id": "john.guldahl@npolar.no",
+    "id": "john.guldahl",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1094,7 +1094,7 @@
       }
     ],
     "email": "roger.hagerup@npolar.no",
-    "id": "roger.hagerup@npolar.no",
+    "id": "roger.hagerup",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1116,7 +1116,7 @@
       }
     ],
     "email": "eva.cathrine.hansen@npolar.no",
-    "id": "eva.cathrine.hansen@npolar.no",
+    "id": "eva.cathrine.hansen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1138,7 +1138,7 @@
       }
     ],
     "email": "john.richard.hansen@npolar.no",
-    "id": "john.richard.hansen@npolar.no",
+    "id": "john.richard.hansen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1160,7 +1160,7 @@
       }
     ],
     "email": "kenth.hanssen@npolar.no",
-    "id": "kenth.hanssen@npolar.no",
+    "id": "kenth.hanssen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1182,7 +1182,7 @@
       }
     ],
     "email": "jan.erling.haugland@npolar.no",
-    "id": "jan.erling.haugland@npolar.no",
+    "id": "jan.erling.haugland",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1204,7 +1204,7 @@
       }
     ],
     "email": "conrad.helgeland@npolar.no",
-    "id": "conrad.helgeland@npolar.no",
+    "id": "conrad.helgeland",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1226,7 +1226,7 @@
       }
     ],
     "email": "helene.henriksen@npolar.no",
-    "id": "helene.henriksen@npolar.no",
+    "id": "helene.henriksen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1248,7 +1248,7 @@
       }
     ],
     "email": "svein.henriksen@npolar.no",
-    "id": "svein.henriksen@npolar.no",
+    "id": "svein.henriksen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1270,7 +1270,7 @@
       }
     ],
     "email": "tor.ytterstad.hindberg@npolar.no",
-    "id": "tor.ytterstad.hindberg@npolar.no",
+    "id": "tor.ytterstad.hindberg",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1292,7 +1292,7 @@
       }
     ],
     "email": "anne-britt.hinz@npolar.no",
-    "id": "anne-britt.hinz@npolar.no",
+    "id": "anne-britt.hinz",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1314,7 +1314,7 @@
       }
     ],
     "email": "lege.troll@npolar.no",
-    "id": "lege.troll@npolar.no",
+    "id": "lege.troll",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1336,7 +1336,7 @@
       }
     ],
     "email": "sissel.norum.hofsoy@npolar.no",
-    "id": "sissel.norum.hofsoy@npolar.no",
+    "id": "sissel.norum.hofsoy",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1358,7 +1358,7 @@
       }
     ],
     "email": "kim.holmen@npolar.no",
-    "id": "kim.holmen@npolar.no",
+    "id": "kim.holmen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1380,7 +1380,7 @@
       }
     ],
     "email": "haakon.hop@npolar.no",
-    "id": "haakon.hop@npolar.no",
+    "id": "haakon.hop",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1402,7 +1402,7 @@
       }
     ],
     "email": "oddvar.horn@npolar.no",
-    "id": "oddvar.horn@npolar.no",
+    "id": "oddvar.horn",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1424,7 +1424,7 @@
       }
     ],
     "email": "stephen.hudson@npolar.no",
-    "id": "stephen.hudson@npolar.no",
+    "id": "stephen.hudson",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1446,7 +1446,7 @@
       }
     ],
     "email": "stationmanager@npolar.no",
-    "id": "stationmanager@npolar.no",
+    "id": "stationmanager",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1468,7 +1468,7 @@
       }
     ],
     "email": "audun.igesund@npolar.no",
-    "id": "audun.igesund@npolar.no",
+    "id": "audun.igesund",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1490,7 +1490,7 @@
       }
     ],
     "email": "heidi.isaksen@npolar.no",
-    "id": "heidi.isaksen@npolar.no",
+    "id": "heidi.isaksen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1512,7 +1512,7 @@
       }
     ],
     "email": "elisabeth.isaksson@npolar.no",
-    "id": "elisabeth.isaksson@npolar.no",
+    "id": "elisabeth.isaksson",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1534,7 +1534,7 @@
       }
     ],
     "email": "gunn.sissel.jaklin@npolar.no",
-    "id": "gunn.sissel.jaklin@npolar.no",
+    "id": "gunn.sissel.jaklin",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1556,7 +1556,7 @@
       }
     ],
     "email": "marta.karoline.jansen@npolar.no",
-    "id": "marta.karoline.jansen@npolar.no",
+    "id": "marta.karoline.jansen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1578,7 +1578,7 @@
       }
     ],
     "email": "leif.helge.jensen@npolar.no",
-    "id": "leif.helge.jensen@npolar.no",
+    "id": "leif.helge.jensen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1600,7 +1600,7 @@
       }
     ],
     "email": "elin.vinje.jenssen@npolar.no",
-    "id": "elin.vinje.jenssen@npolar.no",
+    "id": "elin.vinje.jenssen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1622,7 +1622,7 @@
       }
     ],
     "email": "kai.bjarne.johannessen@npolar.no",
-    "id": "kai.bjarne.johannessen@npolar.no",
+    "id": "kai.bjarne.johannessen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1644,7 +1644,7 @@
       }
     ],
     "email": "bjorn.einar.johnsen@npolar.no",
-    "id": "bjorn.einar.johnsen@npolar.no",
+    "id": "bjorn.einar.johnsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1666,7 +1666,7 @@
       }
     ],
     "email": "marianne.josefsen@npolar.no",
-    "id": "marianne.josefsen@npolar.no",
+    "id": "marianne.josefsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1688,7 +1688,7 @@
       }
     ],
     "email": "harald.dag.jolle@npolar.no",
-    "id": "harald.dag.jolle@npolar.no",
+    "id": "harald.dag.jolle",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1710,7 +1710,7 @@
       }
     ],
     "email": "nina.mari.jorgensen@npolar.no",
-    "id": "nina.mari.jorgensen@npolar.no",
+    "id": "nina.mari.jorgensen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1732,7 +1732,7 @@
       }
     ],
     "email": "marzena.kaczmarska@npolar.no",
-    "id": "marzena.kaczmarska@npolar.no",
+    "id": "marzena.kaczmarska",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1754,7 +1754,7 @@
       }
     ],
     "email": "tor.ivan.karlsen@npolar.no",
-    "id": "tor.ivan.karlsen@npolar.no",
+    "id": "tor.ivan.karlsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1776,7 +1776,7 @@
       }
     ],
     "email": "yoshie.kasajima@npolar.no",
-    "id": "yoshie.kasajima@npolar.no",
+    "id": "yoshie.kasajima",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1798,7 +1798,7 @@
       }
     ],
     "email": "anne.kibsgaard@npolar.no",
-    "id": "anne.kibsgaard@npolar.no",
+    "id": "anne.kibsgaard",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1820,7 +1820,7 @@
       }
     ],
     "email": "bertran.kiil@npolar.no",
-    "id": "bertran.kiil@npolar.no",
+    "id": "bertran.kiil",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1842,7 +1842,7 @@
       }
     ],
     "email": "jack.kohler@npolar.no",
-    "id": "jack.kohler@npolar.no",
+    "id": "jack.kohler",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1864,7 +1864,7 @@
       }
     ],
     "email": "kit.kovacs@npolar.no",
-    "id": "kit.kovacs@npolar.no",
+    "id": "kit.kovacs",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1886,7 +1886,7 @@
       }
     ],
     "email": "nalan.koc@npolar.no",
-    "id": "nalan.koc@npolar.no",
+    "id": "nalan.koc",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1908,7 +1908,7 @@
       }
     ],
     "email": "rupert.krapp@npolar.no",
-    "id": "rupert.krapp@npolar.no",
+    "id": "rupert.krapp",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1930,7 +1930,7 @@
       }
     ],
     "email": "hallgeir.kvernberg@npolar.no",
-    "id": "hallgeir.kvernberg@npolar.no",
+    "id": "hallgeir.kvernberg",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1952,7 +1952,7 @@
       }
     ],
     "email": "max.koenig@npolar.no",
-    "id": "max.koenig@npolar.no",
+    "id": "max.koenig",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1974,7 +1974,7 @@
       }
     ],
     "email": "fred.endre.larsen@npolar.no",
-    "id": "fred.endre.larsen@npolar.no",
+    "id": "fred.endre.larsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -1996,7 +1996,7 @@
       }
     ],
     "email": "pal.yngve.lind@npolar.no",
-    "id": "pal.yngve.lind@npolar.no",
+    "id": "pal.yngve.lind",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2018,7 +2018,7 @@
       }
     ],
     "email": "ragnhild.lindberg@npolar.no",
-    "id": "ragnhild.lindberg@npolar.no",
+    "id": "ragnhild.lindberg",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2040,7 +2040,7 @@
       }
     ],
     "email": "erlend.lorentzen@npolar.no",
-    "id": "erlend.lorentzen@npolar.no",
+    "id": "erlend.lorentzen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2062,7 +2062,7 @@
       }
     ],
     "email": "trevor.lovett@npolar.no",
-    "id": "trevor.lovett@npolar.no",
+    "id": "trevor.lovett",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2084,7 +2084,7 @@
       }
     ],
     "email": "christian.lydersen@npolar.no",
-    "id": "christian.lydersen@npolar.no",
+    "id": "christian.lydersen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2106,7 +2106,7 @@
       }
     ],
     "email": "stig.mathisen@npolar.no",
-    "id": "stig.mathisen@npolar.no",
+    "id": "stig.mathisen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2128,7 +2128,7 @@
       }
     ],
     "email": "kenichi.matsuoka@npolar.no",
-    "id": "kenichi.matsuoka@npolar.no",
+    "id": "kenichi.matsuoka",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2150,7 +2150,7 @@
       }
     ],
     "email": "yngve.melvar@npolar.no",
-    "id": "yngve.melvar@npolar.no",
+    "id": "yngve.melvar",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2172,7 +2172,7 @@
       }
     ],
     "email": "inger.sofia.mercadal@npolar.no",
-    "id": "inger.sofia.mercadal@npolar.no",
+    "id": "inger.sofia.mercadal",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2194,7 +2194,7 @@
       }
     ],
     "email": "oystein.mikelborg@npolar.no",
-    "id": "oystein.mikelborg@npolar.no",
+    "id": "oystein.mikelborg",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2216,7 +2216,7 @@
       }
     ],
     "email": "elektriker.troll@npolar.no",
-    "id": "elektriker.troll@npolar.no",
+    "id": "elektriker.troll",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2238,7 +2238,7 @@
       }
     ],
     "email": "mekaniker.troll@npolar.no",
-    "id": "mekaniker.troll@npolar.no",
+    "id": "mekaniker.troll",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2260,7 +2260,7 @@
       }
     ],
     "email": "anne.cathrine.nilsen@npolar.no",
-    "id": "anne.cathrine.nilsen@npolar.no",
+    "id": "anne.cathrine.nilsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2282,7 +2282,7 @@
       }
     ],
     "email": "stein.orjan.nilsen@npolar.no",
-    "id": "stein.orjan.nilsen@npolar.no",
+    "id": "stein.orjan.nilsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2304,7 +2304,7 @@
       }
     ],
     "email": "birgit.njaastad@npolar.no",
-    "id": "birgit.njaastad@npolar.no",
+    "id": "birgit.njaastad",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2326,7 +2326,7 @@
       }
     ],
     "email": "sissel.olsen@npolar.no",
-    "id": "sissel.olsen@npolar.no",
+    "id": "sissel.olsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2348,7 +2348,7 @@
       }
     ],
     "email": "oystein.overrein@npolar.no",
-    "id": "oystein.overrein@npolar.no",
+    "id": "oystein.overrein",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2370,7 +2370,7 @@
       }
     ],
     "email": "alexey.pavlov@npolar.no",
-    "id": "alexey.pavlov@npolar.no",
+    "id": "alexey.pavlov",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2392,7 +2392,7 @@
       }
     ],
     "email": "vladimir.pavlov@npolar.no",
-    "id": "vladimir.pavlov@npolar.no",
+    "id": "vladimir.pavlov",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2414,7 +2414,7 @@
       }
     ],
     "email": "olga.pavlova@npolar.no",
-    "id": "olga.pavlova@npolar.no",
+    "id": "olga.pavlova",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2436,7 +2436,7 @@
       }
     ],
     "email": "christina.pedersen@npolar.no",
-    "id": "christina.pedersen@npolar.no",
+    "id": "christina.pedersen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2458,7 +2458,7 @@
       }
     ],
     "email": "jarl.pedersen@npolar.no",
-    "id": "jarl.pedersen@npolar.no",
+    "id": "jarl.pedersen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2480,7 +2480,7 @@
       }
     ],
     "email": "aashild.pedersen@npolar.no",
-    "id": "aashild.pedersen@npolar.no",
+    "id": "aashild.pedersen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2502,7 +2502,7 @@
       }
     ],
     "email": "marit.raak.pettersen@npolar.no",
-    "id": "marit.raak.pettersen@npolar.no",
+    "id": "marit.raak.pettersen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2524,7 +2524,7 @@
       }
     ],
     "email": "cecilie.von.quillfeldt@npolar.no",
-    "id": "cecilie.von.quillfeldt@npolar.no",
+    "id": "cecilie.von.quillfeldt",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2546,7 +2546,7 @@
       }
     ],
     "email": "angelika.renner@npolar.no",
-    "id": "angelika.renner@npolar.no",
+    "id": "angelika.renner",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2568,7 +2568,7 @@
       }
     ],
     "email": "jan.roald@npolar.no",
-    "id": "jan.roald@npolar.no",
+    "id": "jan.roald",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2590,7 +2590,7 @@
       }
     ],
     "email": "magnus.hovind.rognhaug@npolar.no",
-    "id": "magnus.hovind.rognhaug@npolar.no",
+    "id": "magnus.hovind.rognhaug",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2612,7 +2612,7 @@
       }
     ],
     "email": "heli.routti@npolar.no",
-    "id": "heli.routti@npolar.no",
+    "id": "heli.routti",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2634,7 +2634,7 @@
       }
     ],
     "email": "gunnar.sander@npolar.no",
-    "id": "gunnar.sander@npolar.no",
+    "id": "gunnar.sander",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2656,7 +2656,7 @@
       }
     ],
     "email": "ingrid.schjelderup@npolar.no",
-    "id": "ingrid.schjelderup@npolar.no",
+    "id": "ingrid.schjelderup",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2678,7 +2678,7 @@
       }
     ],
     "email": "janne.schreuder@npolar.no",
-    "id": "janne.schreuder@npolar.no",
+    "id": "janne.schreuder",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2700,7 +2700,7 @@
       }
     ],
     "email": "anders.skoglund@npolar.no",
-    "id": "anders.skoglund@npolar.no",
+    "id": "anders.skoglund",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2722,7 +2722,7 @@
       }
     ],
     "email": "inger.solheim@npolar.no",
-    "id": "inger.solheim@npolar.no",
+    "id": "inger.solheim",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2744,7 +2744,7 @@
       }
     ],
     "email": "gunnar.spreen@npolar.no",
-    "id": "gunnar.spreen@npolar.no",
+    "id": "gunnar.spreen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2766,7 +2766,7 @@
       }
     ],
     "email": "harald.steen@npolar.no",
-    "id": "harald.steen@npolar.no",
+    "id": "harald.steen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2788,7 +2788,7 @@
       }
     ],
     "email": "ann.elin.steinsund@npolar.no",
-    "id": "ann.elin.steinsund@npolar.no",
+    "id": "ann.elin.steinsund",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2810,7 +2810,7 @@
       }
     ],
     "email": "ivar.stokkeland@npolar.no",
-    "id": "ivar.stokkeland@npolar.no",
+    "id": "ivar.stokkeland",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2832,7 +2832,7 @@
       }
     ],
     "email": "ingrid.storhaug@npolar.no",
-    "id": "ingrid.storhaug@npolar.no",
+    "id": "ingrid.storhaug",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2854,7 +2854,7 @@
       }
     ],
     "email": "hallvard.strom@npolar.no",
-    "id": "hallvard.strom@npolar.no",
+    "id": "hallvard.strom",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2876,7 +2876,7 @@
       }
     ],
     "email": "jon.hugo.stromseng@npolar.no",
-    "id": "jon.hugo.stromseng@npolar.no",
+    "id": "jon.hugo.stromseng",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2898,7 +2898,7 @@
       }
     ],
     "email": "arild.sundfjord@npolar.no",
-    "id": "arild.sundfjord@npolar.no",
+    "id": "arild.sundfjord",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2920,7 +2920,7 @@
       }
     ],
     "email": "rune.svendsen@npolar.no",
-    "id": "rune.svendsen@npolar.no",
+    "id": "rune.svendsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2942,7 +2942,7 @@
       }
     ],
     "email": "elsa.syrstad@npolar.no",
-    "id": "elsa.syrstad@npolar.no",
+    "id": "elsa.syrstad",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2964,7 +2964,7 @@
       }
     ],
     "email": "eystein.saether@npolar.no",
-    "id": "eystein.saether@npolar.no",
+    "id": "eystein.saether",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -2986,7 +2986,7 @@
       }
     ],
     "email": "arnaud.tarroux@npolar.no",
-    "id": "arnaud.tarroux@npolar.no",
+    "id": "arnaud.tarroux",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3008,7 +3008,7 @@
       }
     ],
     "email": "julia.tchernova@npolar.no",
-    "id": "julia.tchernova@npolar.no",
+    "id": "julia.tchernova",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3030,7 +3030,7 @@
       }
     ],
     "email": "ermias.beyene.tesfamariam@npolar.no",
-    "id": "ermias.beyene.tesfamariam@npolar.no",
+    "id": "ermias.beyene.tesfamariam",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3052,7 +3052,7 @@
       }
     ],
     "email": "peter.thor@npolar.no",
-    "id": "peter.thor@npolar.no",
+    "id": "peter.thor",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3074,7 +3074,7 @@
       }
     ],
     "email": "stein.tronstad@npolar.no",
-    "id": "stein.tronstad@npolar.no",
+    "id": "stein.tronstad",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3096,7 +3096,7 @@
       }
     ],
     "email": "siri.birgitte.uldal@npolar.no",
-    "id": "siri.birgitte.uldal@npolar.no",
+    "id": "siri.birgitte.uldal",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3118,7 +3118,7 @@
       }
     ],
     "email": "nanette.verboven@npolar.no",
-    "id": "nanette.verboven@npolar.no",
+    "id": "nanette.verboven",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3140,7 +3140,7 @@
       }
     ],
     "email": "dag.vongraven@npolar.no",
-    "id": "dag.vongraven@npolar.no",
+    "id": "dag.vongraven",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3162,7 +3162,7 @@
       }
     ],
     "email": "caixin.wang@npolar.no",
-    "id": "caixin.wang@npolar.no",
+    "id": "caixin.wang",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3184,7 +3184,7 @@
       }
     ],
     "email": "jan.gunnar.winther@npolar.no",
-    "id": "jan.gunnar.winther@npolar.no",
+    "id": "jan.gunnar.winther",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3206,7 +3206,7 @@
       }
     ],
     "email": "anette.wold@npolar.no",
-    "id": "anette.wold@npolar.no",
+    "id": "anette.wold",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3228,7 +3228,7 @@
       }
     ],
     "email": "reidun.ingebrigtsen@npolar.no",
-    "id": "reidun.ingebrigtsen@npolar.no",
+    "id": "reidun.ingebrigtsen",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3250,7 +3250,7 @@
       }
     ],
     "email": "oddveig.oien.orvoll@npolar.no",
-    "id": "oddveig.oien.orvoll@npolar.no",
+    "id": "oddveig.oien.orvoll",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
@@ -3272,7 +3272,7 @@
       }
     ],
     "email": "ellen.oseth@npolar.no",
-    "id": "ellen.oseth@npolar.no",
+    "id": "ellen.oseth",
     "collection": "person",
     "schema": "http://api.npolar.no/schema/person.json",
     "organisation": "npolar.no"
