@@ -38,6 +38,7 @@ module Metadata
   # * Use "author" and set pI to author by default (allowing for other authors?)
   # * Validating gcmd block (need concept version - where to store)
   # * GCMD concepts uuid
+  #   # @todo map isotopics to topics
   class DifHashifier < Hashie::Mash
     
     # Map npolar topics to DIF Parameters (Science Keywords)
@@ -498,13 +499,14 @@ module Metadata
           "VIEW PROJECT HOME PAGE"
         when "edit", "service", "parent", "via"
           "GET SERVICE"
-        # when related DIF is hard to identify without a media type for DIF...
+        # related DIF is hard to identify without a media type for DIF...
         #  "GET RELATED METADATA RECORD (DIF)"
         when "internal", "parent", "datacentre" # parent => Parent_DIF, datacentre = Data_Center
           nil
-        when "related", "alternate", "", nil    
+        else # e.g. "related", "alternate", "", nil    
           "VIEW RELATED INFORMATION" 
         end
+
       }
 
       # GET SERVICE subtypes
@@ -517,10 +519,14 @@ module Metadata
       # wms!
       subtyper = lambda {|link, dif_type="GET DATA"|
         if dif_type == "GET DATA"
-          if link.type == "application/x-netcdf"
+          if link.type =~ /application\/(x-)?netcdf/
             "THREDDS DATA"
-          elsif link.href =~ /thredds\/catalog/
-            "THREDDS CATALOG"
+          elsif link.href =~ /\.(cdl|nc)$/i
+            "THREDDS DATA"
+          elsif link.href =~ /request=GetCapabilities&service=WMS/
+            "GET WEB MAP SERVICE (WMS)"
+          elsif link.type == "application/atom+xml"
+
           end
         end
       }
