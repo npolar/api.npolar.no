@@ -1,14 +1,29 @@
 require "logger"
 
 module Metadata
+
+# Migrates 12 datasets in production before dataset schema 1.0 was finalised
+# $ ./bin/npolar_api_migrator http://api:9393/dataset ::Metadata::Dataset ::Metadata::DatasetMigration0 --really=false > /dev/null
+
   class DatasetMigration0
 
     attr_writer :log
    
     def migrations
-      [set_schema, contributors_with_roles, just_one_email,
-        multiple_roles,locations_to_coverage_and_placenames, groups_to_topics,
-        isoTopics, method_desc_to_comment, sensors_to_comment]
+      [ set_schema,
+        fix_licence_uris,
+        investigators_are_primaryInvestigators,
+        contributors_are_processors,
+        owners_are_organisations,
+        remove_point_of_contact,
+        just_one_email,
+        locations_to_coverage_and_placenames,
+        groups_to_topics,
+        isoTopics,
+        method_desc_to_comment,
+        sensors_to_comment,
+        gcmd_block,
+        edits_and_timestamps]
     end
 
     def log
@@ -19,41 +34,84 @@ module Metadata
       lambda {|d| not d.schema? }
     end
 
+    def fix_licence_uris
+      [lambda {|d|
+        d.licences? },
+      lambda {|d|
+        d.licences = d.licences.map {|l|
+          case l
+            when "http://creativecommons.org/licences/by/3.0/no/"
+              "http://creativecommons.org/licenses/by/3.0/no/"
+            else l
+          end
+        }
+        d
+      }]
+    end
+
     def set_schema
       [lambda {|d|
-        !d.schema? },
+        not d.schema? },
       lambda {|d|
         d.schema = Service.factory("dataset-api.json").schema
         d
       }]
     end
 
-    def multiple_roles
+    def investigators_are_primaryInvestigators
       [lambda {|d|
-        d.contributors? },
+        d.investigators? },
       lambda {|d|
-        names = d.contributors.map {|c| c.name }.uniq
-        
-        d.contributors = names.map {|name|
-          entity = d.contributors.select {|c| c.name == name }.first
-
-          uri = nil
-          if name =~ /Norwegian Polar (Institute|Data)/
-            uri = "http://npolar.no"
-          end
-
-          { "name" => name,
-            "roles" => d.contributors.select {|c| c.name == name }.map {|c| c.role }.uniq,
-            "email" => entity.email,
-            "person" => entity.person == false ? false : true,
-            "surname" => entity.surname,
-            "uri" => uri
-          }
+        d.people = d.investigators.map {|i|
+          { first_name: i.first_name,
+            last_name: i.last_name,
+            roles: ["principalInvestigator"],
+            email: i.email
+          }          
         }
+        d.delete :investigators
         d
       }]
     end
 
+    def contributors_are_processors
+      [lambda {|d|
+        d.contributors? },
+      lambda {|d|
+        d.people = d.contributors.map {|c|
+          { first_name: c.first_name,
+            last_name: c.last_name,
+            roles: ["processor"],
+            email: c.email
+          }          
+        }
+        d.delete :contributors
+        d
+      }]
+    end
+
+    def owners_are_organisations
+      [lambda {|d|
+        d.owners?},
+      lambda {|d|
+        d.organisations = d.owners.map {|o|
+          { name: o,
+            roles: ["owner"]
+          }          
+        }
+        d.delete :owners
+        d
+      }]
+    end
+
+    def remove_point_of_contact
+      [lambda {|d|
+        d.point_of_contact?},
+      lambda {|d|
+        d.delete :point_of_contact
+        d
+      }]
+    end
 
     def method_desc_to_comment
       [lambda {|d|
@@ -83,17 +141,16 @@ module Metadata
       }]
     end
 
-    # We don't want multiple emails
     def just_one_email
       [lambda {|d|
-        d.contributors? and d.contributors.size > 0 },
+        d.people? },
       lambda {|d|
-        d.contributors += d.contributors.select {|i|
-          i.email? and i.email.is_a? Array
+        d.people += d.people.select {|p|
+          p.email? and p.email.is_a? Array
         }.map {
-          |i|
-            i.email = i.email.first
-            i
+          |p|
+            p.email = p.email.first
+            p
           }
         d
       }]
@@ -125,7 +182,7 @@ module Metadata
       lambda {|d|
         d.topics = d.groups
         d.delete :groups
-        d.topics = d.topics.map {|t|
+        d.topics = d.topics.reject {|t|t == "geophysics"}.map {|t|
           case t
             when "sea_ice"
               "seaice"
@@ -136,7 +193,6 @@ module Metadata
         d
       }]
     end
-
 
     # Broken area names to real placenames, separated from spatial coverage
     #locations=[#<Metadata::Dataset area="dronning_maud_land" country_code="AQ" east=56.0 north=-70.0 south=-90.0 west=0.0>
@@ -164,72 +220,30 @@ module Metadata
       }]
     end
 
-    # roles from http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode
-    def contributors_with_roles
+    def gcmd_block
       [lambda {|d|
-        d.point_of_contact? or d.investigators? or d.contributors? or d.owners? },
+        d.science_keywords? },
       lambda {|d|
-        
-        if !d.contributors? or d.contributors.nil?
-          d.contributors = []
-        else
-          d.contributors.map {|c|
-            if false == c.role?
-              c["role"]="originator"
-            end
-
-            c["name"] = c.first_name+" "+c.last_name
-            c["surname"] = c.last_name
-            c.delete :first_name
-            c.delete :last_name
-
-            c
-          }
-        end
-
-        if d.investigators?
-          d.contributors += d.investigators.map {|i|
-            i["name"] = i.first_name+" "+i.last_name
-            i["surname"] = i.last_name
-            i.delete :first_name
-            i.delete :last_name
-            i["role"] = "principalInvestigator"
-            i
-          }
-          d.delete :investigators
-        end
-
-        if d.point_of_contact?
-            d.contributors += d.point_of_contact.map {|p|
-              p.role = "pointOfContact"
-              p.delete :org
-              p
-            }
-            
-            d.delete :point_of_contact
-        end
-
-
-        if d.owners?
-          d.contributors += d.owners.map {|o|
-            {
-              "role" => "owner",
-              "name" => o,
-              "person" => false
-            }
-          }
-          d.delete :owners
-        end
-
+        d.gcmd = { "sciencekeywords" => d.science_keywords }
+        d.delete :science_keywords
         d
       }]
     end
 
-    # groups=["glaciology", "topography"]
-    # point_of_contact=[#<Metadata::Dataset email="jack.kohler@npolar.no" name="Geology and geophysics section" org="Norwegian Polar Institute">]
-    # owners=["Norwegian Polar Institute"]
-#"name":"Norwegian Polar Institute" / DATA centre => 
+    def edits_and_timestamps
+      [lambda {|d|
+        true },
+      lambda {|d|
 
+        edits = d.editors? ? d.editors : []
+        d.edits = edits 
+        d.delete :editors
+
+        d.created = d.published
+        d.delete :published
+        d
+      }]
+    end
 
   end
 end
