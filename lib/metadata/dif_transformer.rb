@@ -374,7 +374,7 @@ module Metadata
         if link.URL_Content_Type? and link.URL_Content_Type.Type?
           dif_type = link.URL_Content_Type.Type
         else
-          dif_type = "related"
+          dif_type = nil
         end
  
         rel = case dif_type
@@ -382,7 +382,7 @@ module Metadata
           when "VIEW PROJECT HOME PAGE" then "project"
           when "VIEW EXTENDED METADATA" then "metadata"
           when "GET SERVICE" then "service"
-          when "VIEW RELATED INFORMATION" then "related"
+          when "VIEW RELATED INFORMATION", "", nil then "related"
           else dif_type
         end
          
