@@ -94,6 +94,8 @@ module Npolar
                 }
               elsif /Elasticsearch/i =~ api.search.engine
 
+                #use Npolar::Rack::JsonCleaner
+
                 use Npolar::Rack::Icelastic, {
                   :uri => api.search.uri,
                   :index => api.search["index"],
@@ -137,39 +139,46 @@ module Npolar
         @app.call(env)
       end
 
-      # Adds "published" "updated" "author" "editor" before POST/PUT
+      # Adds "published", "updated", "created_by", "updated_by" before POST/PUT
       def self.before_lambda
         lambda {|request|
-
           if ["POST", "PUT"].include? request.request_method and "application/json" == request.media_type
-              body = request.body.read
-              request.body.rewind
-              if body !~ /^\s*\{.*\}\s*$/                
-                return request
-              end
-               
-              begin
+            begin            
+              
+              documents = JSON.parse(request.body.read)
+              documents = documents.is_a?(Hash) ? [documents] : documents
+              documents = documents.map {|d|
+                document = Hashie::Mash.new(d)
 
-                d = Hashie::Mash.new(JSON.parse body)                
-                d.updated = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
-                
-                unless d.published?
-                  d.published = d.updated
-                end
-                unless d.author?
-                  d.publisher = request.username
-                end
-                unless d.editor?
-                  d.editor = request.username
-                end
-                
-                request.env["rack.input"] = StringIO.new(d.to_json)
+                document.updated = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
+                document.updated_by = request.username
 
-              rescue JSON::ParserError
-                # Crap JSON, don't do anyting
+                unless document.created? 
+                  document.created = document.updated
+                end
+
+                unless document.created_by?
+                  document.created _by = document.updated_by
+                end
+                document
+
+              }  
+              body = case documents.size
+                when 1
+                  documents[0].to_json
+                else
+                  documents.to_json
               end
+              request.body = body
+              request
+
+            rescue JSON::ParserError
+              # Crap JSON, don't do anyting
+              request
+            end
+          else
+            request
           end
-          request
         }  
       end
 
