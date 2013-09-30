@@ -21,12 +21,7 @@
   "lifecycle": "production",
   "run": "Npolar::Api::Json",
   "middleware" : [
-    [
-      "Npolar::Rack::ZeppelinTsvParser",
-      {
-        "database": "radiation-zeppelin"
-      }
-    ]
+    ["Npolar::Rack::ZeppelinTsvParser", {}]
   ],
   "open": true,
   "auth": {
