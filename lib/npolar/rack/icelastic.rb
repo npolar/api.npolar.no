@@ -64,7 +64,11 @@ module Npolar
                 docs[i]["id"] ||= id
               end
             elsif body.has_key?("id")
-              docs["id"] = body["id"]
+              unless docs.is_a?( Array )
+                docs["id"] ||= body["id"]
+              else
+                docs[0]['id'] ||= body["id"]
+              end
             end
 
             client.index(docs)
