@@ -1,79 +1,72 @@
 {
   "project":{
     "properties":{
-      "id":{"type":"string"},
-      "collection":{"type":"string"},
-      "schema":{"type":"string"},
-      "title":{
-        "type":"multi_field",
-        "fields":{
-          "title": {"type":"string","index":"analyzed"},
-          "untouched": {"type":"string","index":"not_analyzed"}
-        }
-      },
-      "acronym":{"type":"string"},
-      "summary":{"type":"string"},
-      "area_contribution":{"type":"string"},
-      "knowledge_gap_addressed":{"type":"string"},
-      "np_project_number":{"type":"string"},
-      "state":{"type":"string"},
-      "draft":{"type":"string"},
-      "start_date":{"type":"date"},
-      "end_date":{"type":"date"},
-      "results_summary":{"type":"string"},
-      "ris_id":{"type":"string"},
-      "type":{"type":"string"},
-      "website":{"type":"boolean"},
-      "topics":{"type":"string"},
-      "tags":{"type":"string"},
+      "id":{"type":"string", "index":"not_analyzed"},
+      "collection":{"type":"string", "index":"not_analyzed"},
+      "schema":{"type":"string", "index":"analyzed"},
+      "title": {"type":"string", "index":"not_analyzed"},
+      "acronym":{"type":"string", "index":"not_analyzed"},
+      "summary":{"type":"string", "index":"not_analyzed"},
+      "area_contribution":{"type":"string", "index":"not_analyzed"},
+      "knowledge_gap_addressed":{"type":"string", "index":"not_analyzed"},
+      "np_project_number":{"type":"string", "index":"not_analyzed"},
+      "state":{"type":"string", "index":"not_analyzed"},
+      "draft":{"type":"string", "index":"not_analyzed"},
+      "start_date":{"type":"date", "index":"not_analyzed"},
+      "end_date":{"type":"date", "index":"not_analyzed"},
+      "results_summary":{"type":"string", "index":"not_analyzed"},
+      "ris_id":{"type":"string", "index":"not_analyzed"},
+      "type":{"type":"string", "index":"not_analyzed"},
+      "topics":{"type":"string", "index":"not_analyzed"},
+      "tags":{"type":"string", "index":"not_analyzed"},
       "people":{
         "properties":{
-          "first_name":{"type":"string"},
-          "last_name":{"type":"string"},
-          "email":{"type":"string"},
-          "role":{"type":"string"},
-          "profile_href":{"type":"string"},
-          "employee_no":{"type":"string"},
+          "first_name":{"type":"string", "index":"not_analyzed"},
+          "last_name":{"type":"string", "index":"not_analyzed"},
+          "email":{"type":"string", "index":"not_analyzed"},
+          "role":{"type":"string", "index":"not_analyzed"},
+          "profile_href":{"type":"string", "index":"not_analyzed"},
+          "employee_no":{"type":"string", "index":"not_analyzed"},
           "affiliation":{
             "properties":{
-              "org":{"type":"string"}
+              "org":{"type":"string", "index":"not_analyzed"}
             }
           }
         }
       },
       "organisations":{
         "properties":{
-          "name":{"type":"string"},
-          "name_nb":{"type":"string"},
-          "href":{"type":"string"},
-          "role":{"type":"string"}
+          "name":{"type":"string", "index":"not_analyzed"},
+          "name_nb":{"type":"string", "index":"not_analyzed"},
+          "href":{"type":"string", "index":"not_analyzed"},
+          "role":{"type":"string", "index":"not_analyzed"}
         }
       },
       "coverage":{
         "properties":{
-          "north":{"type":"string"},
-          "east":{"type":"string"},
-          "south":{"type":"string"},
-          "west":{"type":"string"}
+          "north":{"type":"string", "index":"not_analyzed"},
+          "east":{"type":"string", "index":"not_analyzed"},
+          "south":{"type":"string", "index":"not_analyzed"},
+          "west":{"type":"string", "index":"not_analyzed"}
         }
       },
       "placenames":{
         "properties":{
-          "placename":{"type":"string"},
-          "area":{"type":"string"},
-          "country":{"type":"string"}
+          "placename":{"type":"string", "index":"not_analyzed"},
+          "area":{"type":"string", "index":"not_analyzed"},
+          "country":{"type":"string", "index":"not_analyzed"}
         }
       },
       "links":{
         "properties":{
-          "rel":{"type":"string"},
-          "href":{"type":"string"},
-          "title":{"type":"string"},
-          "hreflang":{"type":"string"},
-          "type":{"type":"string"}
+          "rel":{"type":"string", "index":"not_analyzed"},
+          "href":{"type":"string", "index":"not_analyzed"},
+          "title":{"type":"string", "index":"not_analyzed"},
+          "hreflang":{"type":"string", "index":"not_analyzed"},
+          "type":{"type":"string", "index":"not_analyzed"}
         }
       },
-      "translations":{"type":"string"}
+      "translations":{"type":"object", "index":"not_analyzed"}
     }
   }
 }
