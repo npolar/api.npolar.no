@@ -13,12 +13,12 @@ module Npolar
       end
       
       def handle(request)
-        log.info "@TsvParser: parsing input"
+        log.info "@ZeppelinTsvParser: parsing input"
         t0 = Time.now
         data = request.body.read
        
-        doc = parse(data) 
-        request.env["rack.input"] = StringIO.new(doc.to_json)
+        docs = parse(data) 
+        request.env["rack.input"] = StringIO.new(docs.to_json)
         
         log.info "@TsvParser: Input parsed in #{Time.now - t0}"
         app.call(request.env)     
@@ -28,19 +28,20 @@ module Npolar
         ["PUT", "POST"].include?(request.request_method)
       end
      
-      # parse text data 
+      # parse text data, returns array of docs
       def parse(data)
-        doc = {}
 
         # convert to utf-8
         ic = Iconv.new('UTF-8', 'WINDOWS-1252') # TODO: make 'encoding' a query parameter
         data_utf8 = ic.iconv(data + ' ')[0..-2]
 
-        data_clean = data_utf8.gsub(/\r\n?/, "\n")
-        rows = data_clean.split(/\n/)
+        File.open('/tmp/wtf.txt', 'w') { |f| f.write(data_utf8) }
+
+        # split into nice rows
+        rows = data_utf8.split(/\r\n?|\n/)
 
         # to store units info
-        doc['units'] = {}
+        units = {}
 
         # reformat header
         header = []
@@ -55,15 +56,17 @@ module Npolar
           name = name.gsub(/ /, "_")
 
           if unit_name
-            doc['units'][name] = unit_name
+            units[name] = unit_name
           end
 
           header << name
-          doc[name] = []
         end
  
-        # read values, store as arrays
+        # read values, store each doc in array
+        docs = []
+
         rows.drop(1).each do |row|
+          doc = {}
           row.split(/\t/).each_with_index do |value, index|
             name = header[index]
             if !value.nil? and !value.empty?
@@ -73,34 +76,14 @@ module Npolar
               rescue ArgumentError
               end
 
-              doc[name] << value
+              doc[name] = value
             end
           end
+          doc['units'] = units
+          docs << doc
         end
 
-        # if some keys map to 1-element arrays,
-        # transform those values into single values
-        doc.each do |k, v|
-          if v.length == 0
-            doc[k] = nil
-          elsif v.length == 1
-            doc[k] = v[0]
-          end
-        end
-       
-        # create a filename for original document 
-        source_fname = doc.fetch('Filename', 'source')
-        tsv_fname = File.basename(source_fname, File.extname(source_fname)) + '.tsv'
-
-        # store a copy of the file as an attachment
-        doc["_attachments"] = {
-          "#{tsv_fname}" => { 
-            "content_type" => "text/tab-separated-values",
-            "data" => Base64.encode64(data_utf8)
-          }
-        }
-
-        doc
+        docs
       end
       
     end
