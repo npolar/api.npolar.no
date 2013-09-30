@@ -32,10 +32,8 @@ module Npolar
       def parse(data)
 
         # convert to utf-8
-        ic = Iconv.new('UTF-8', 'WINDOWS-1252') # TODO: make 'encoding' a query parameter
+        ic = Iconv.new('UTF-8', 'WINDOWS-1252')
         data_utf8 = ic.iconv(data + ' ')[0..-2]
-
-        File.open('/tmp/wtf.txt', 'w') { |f| f.write(data_utf8) }
 
         # split into nice rows
         rows = data_utf8.split(/\r\n?|\n/)
