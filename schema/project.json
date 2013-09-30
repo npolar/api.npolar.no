@@ -114,6 +114,26 @@
         "required": ["rel", "href"]
       }
     },
+    "edits": {
+      "description": "List of edits",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "edited": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "email": { "type": "string" },
+          "name": { "type": "string" },
+          "comment": { "type": "string" },
+          "rev": { "type": "string" }
+        },
+        "required": ["edited", "name"]
+      }
+    },
     "translations" : {
       "type" : "object"
     },
