@@ -87,7 +87,8 @@ module Views
       # List of facet filters with link to remove
       def filters
         # For each filter we need a remove link, equal to current URI minus this filter
-        request.multi("fq").map {|fq|
+        # 1. Solr-style filters (multi fq)
+        filters = request.multi("fq").map {|fq|
           # FIXME breaks on space, remove gsub with proper parameter shuffling
           # FIXE &fq= (empty => breaks)
           k,v = fq.split(":")
@@ -98,6 +99,13 @@ module Views
             nil
           end
         }.uniq
+
+        # filter-*
+        filters += request.params.select {|k,v| k =~ /^filter\-/ }.map {|k,v|
+            remove_href = base
+            {:filter => k.gsub(/^filter\-/, ""), :value => CGI.unescape(v), :remove_href => remove_href }
+          }
+        filters
       end
 
       def filtered?(field, value)
@@ -105,6 +113,10 @@ module Views
       end
 
       def formats
+      end
+
+      def search?
+        request.path != "/"
       end
 
       def head_title
@@ -181,17 +193,36 @@ module Views
       end
 
       def facets
-        unless feed.respond_to?(:facets)
+        if not feed.respond_to?(:facets)
           return []
-        end 
-        facets = (feed.facets ||=[]).map {|field,v|
-          if v.respond_to?(:map)
-            {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => link_facet(field, c[0], c[1]) } } }
-          else
-            return []
-          end
-        }
-        facets = facets.select {|f| f[:counts].uniq.size > 0 }
+        end
+        
+        if feed.facets.none?
+          return []
+        end
+        
+        # Solrizer?
+        if feed.facets.first.is_a? Array          
+          facets = (feed.facets||[]).map {|field,v|
+            if v.respond_to?(:map)
+              # v = Solrize style facet values [["Svalbard", 987], ["Dronning Maud Land", 123]]
+              {:title => field, :counts => v.map {|c| { :facet => c[0], :count => c[1], :a_facet => link_facet(field, c[0], c[1]) } } }
+            else
+              return []
+            end
+          }
+        else
+          # Icelastic style [{"topics":[{"term":"glaciology","count":1,"uri":"..."},{"term":"ecology","count":1,"uri":"..."}]}]
+          facets = feed.facets.map {|facet|
+            field = facet.keys.first
+            { title: field, counts: facet[field].map {|f|
+              c = f.select {|k,v| k == "count" }.map {|c| c[1]}.first
+              { facet: f.term, count: c, a_facet: "<a href=\"#{f.uri}\">#{f.term}</a>"}
+              }
+            }
+          }
+        end
+        facets.select {|f| f[:counts].uniq.size > 0 }
       end
 
       def facet_href(facet, value)
@@ -315,7 +346,7 @@ module Views
             # FIXME 
             # Should remove start here to make sure that after paging you start from page one, but the following destroys base because fq is multi-paramter
             #base = facet_remove_href("start")
-            "<a href=\"#{base}&amp;fq=#{CGI.escape(field.to_s)}:#{value.to_s == "" ? "∅" : CGI.escape(value.to_s)}\">#{value.to_s == "" ? "<code>∅</code>" : CGI.escapeHTML(value) }</a>"
+            "<a href=\"#{base}&amp;filter-#{CGI.escape(field.to_s)}=#{value.to_s == "" ? "∅" : CGI.escape(value.to_s)}\">#{value.to_s == "" ? "<code>∅</code>" : CGI.escapeHTML(value) }</a>"
           else
             # No clickable facet links for 0 counts
             "#{value}"
