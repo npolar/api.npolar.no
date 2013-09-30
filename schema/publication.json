@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/publication",
+  "id": "http://api.npolar.no/schema/publication-1.0-rc1",
   "title": "Publication",
   "description": "Metadata describing a publication",
   "type": "object",
@@ -8,7 +8,7 @@
   "required": ["title", "schema", "collection", "publication_year", "people",   "scientific_abstract", "norw_summary", "review_progress", "state", "category"],
   "properties": {
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
-    "schema": { "enum": ["http://api.npolar.no/schema/publication.json"] },
+    "schema": { "type": "string" },
     "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
     "lang": { "type": "string"},
     "original_title": { "type" : ["string", "null"] },
