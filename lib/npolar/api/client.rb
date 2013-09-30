@@ -13,7 +13,9 @@ module Npolar
           "Accept-Charset" => "UTF-8",
           "Accept-Encoding" => "gzip,deflate",
           "Connection" => "keep-alive"
-        }
+        },
+        "timeout" => 600,           # open/read timeout in seconds
+        "open_timeout" => 60      # connection open timeout in seconds
       }
       # Before post, grab schema (get current revision)
 
