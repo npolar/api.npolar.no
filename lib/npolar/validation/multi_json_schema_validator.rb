@@ -46,7 +46,7 @@ module Npolar
         @schemas
       end
 
-      # Returns true on the first successful valbeforeidation (does not require validation against all schemas)
+      # Returns true on the first successful validation (does not require validation against all schemas)
       # Sets @error to Array of error reports
       # @return true|false
       # @raises Exception on blank or invalid schemas
