@@ -94,7 +94,7 @@ module Metadata
       # api
       :id, :schema, :collection, :topics, :iso_topics, :tags, :rights, :restricted, :restrictions, :licences,
       # atom
-      :title, :links, :summary, :published, :updated, :draft,
+      :title, :links, :summary, :created, :updated, :draft,
       # metadata 
       :coverage, :progress, :people, :organisations, :activity, :placenames,
       :quality, :gcmd, :edits, :sets, :comment
@@ -190,7 +190,7 @@ module Metadata
       dif.Quality
     end
     
-    def published
+    def created
       date = dif.DIF_Creation_Date ||= Date.new(-1).xmlschema
       date += "T12:00:00Z" unless date == "" or date =~ ISO8601_DATETIME_REGEX
       date
@@ -515,7 +515,7 @@ module Metadata
     end
     
     def creation_date
-      object.published.split("T")[0]
+      object.created.split("T")[0]
     end
     
     def revision_date

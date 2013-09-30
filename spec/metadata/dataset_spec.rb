@@ -73,7 +73,7 @@ describe Metadata::Dataset do
           end
         end
 
-        context "progrress" do
+        context "progress" do
           it do
             before_save.progress.should == "planned"
           end
@@ -137,10 +137,10 @@ describe Metadata::Dataset do
         end
         context "open data" do
           context "released is missing" do
-            it "released datestamp from published" do
+            it "released (datestamp) from created (datestamp)" do
               dataset = Metadata::Dataset.new.before_save
               dataset.links << {rel: "data"}
-              dataset.published = "1999-12-31T23:59:59Z"
+              dataset.created = "1999-12-31T23:59:59Z"
               @request.body = dataset.to_json
               before_save.released.should == "1999-12-31T23:59:59Z"
             end
@@ -213,7 +213,19 @@ describe Metadata::Dataset do
           end
         end
       end
+
+
+
+# links no duplicates
+# no links to in org except for defined roles
+      #context "XXX" do
+      #  npi = {rel: "owner", href: "http://npolar.no", title: "Norwegian Polar Institute" }
+      #  dataset = Metadata::Dataset.new({"links" => [o, o, o]}
+      #
+      #end
+
     end
 
   end
 end
+# rel == nil or "" => related
