@@ -252,7 +252,7 @@ module Metadata
 
         if data? #and restricted? and not (true == restricted)
           if not released? and open?
-            self[:released] = published
+            self[:released] = created
           end
         end
 
@@ -490,7 +490,7 @@ module Metadata
 
     # A href can only exist once for the same rel
     def deduplicate_links
-      self[:links] = links.uniq
+      self[:links] = (links||[]).uniq
     end
 
     # Uniqify people (see #before_save)
