@@ -158,7 +158,7 @@ module Npolar
                 end
 
                 unless document.created_by?
-                  document.created _by = document.updated_by
+                  document.created_by = document.updated_by
                 end
                 document
 
