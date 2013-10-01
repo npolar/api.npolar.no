@@ -6,14 +6,16 @@
   "required": ["title"],
   "properties": {
     "id": { "type" :"string" },
+    "rev": { "type": "string" },
+    "np_project_no" : { "type": "string"},
     "collection" : { "type": "string", "default": "project" },
     "schema": { "type": "string" },
     "title": { "type": "string" },
     "acronym": { "type": "string" },
     "summary": { "type": "string" },
+    "abstract": { "type": "string" },
     "area_contribution": { "text": "string" },
     "knowledge_gap_addressed": { "type": "string" },
-    "np_project_number": { "type": "string" },
     "state": { "type": "string", "enum": ["planned", "ongoing", "completed", "cancelled"] },
     "draft": { "type": "string", "enum": ["yes", "no"] },
     "start_date": { "type": "string", "format" : "date-time" },
@@ -21,6 +23,66 @@
     "results_summary": { "type": "string" },
     "ris_id": { "type": ["string", "null"] },
     "type": { "type": "string", "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"] },
+    "funding_sources" : { 
+      "type": "array",
+      "additionalItems": false,
+      "items": { 
+        "type": "object", 
+        "additionalProperties": false,
+        "properties": {
+          "organization_name": { "type": "string" },
+          "aggresso_code": { "type": "string" }
+        } 
+      }
+    },
+    "related_projects": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "href": { "type": "string", "format": "uri" },
+          "title": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "research_programs": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "href": { "type": "string", "format": "uri" },
+          "title": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "research_programs": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "href": { "type": "string", "format": "uri" },
+          "title": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "results_datasets": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "href": { "type": "string", "format": "uri" },
+          "title": { "type": ["string", "null"] }
+        }
+      }
+    },
     "website" : { "type": "boolean" },
     "topics": {
       "type": "array",
