@@ -1,11 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/person.json",
+  "id": "http://api.npolar.no/schema/person-1.0-rc1",
   "type": "object",
   "additionalProperties": false,
   "properties": {
     "id": {"type": "string"},
-    "schema": {"enum":["http://api.npolar.no/schema/person.json"]},
+    "schema": {"type": "string"},
     "collection": {"enum":["person"]},
     "first_name": { "type": "string" },
     "last_name": { "type": "string" },
