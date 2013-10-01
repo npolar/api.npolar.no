@@ -1,7 +1,7 @@
 # encoding: utf-8
 require "logger"
 require "csv"
-
+require "uri"
 
 module Metadata
 
@@ -55,7 +55,7 @@ module Metadata
         d.people? or d.organisations? },
       lambda {|d|
 
-        d.people.select {|p| (not p.organisation.nil? and p.organisation !~ /\w+[.]\w+/)}.map {|p|
+        d.people.select {|p| (not p.organisation.nil? and p.organisation !~ URI::regexp)}.map {|p|
           organisation = domain_name_from_name(p.organisation)
           log.debug organisation+" <== "+p.organisation
           p.organisation = organisation
@@ -95,9 +95,6 @@ module Metadata
         d
       }]
     end
-    
-    # Fix bad org id
-    #"id": "www2.uit.no"
 
     protected
 

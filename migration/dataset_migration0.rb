@@ -53,7 +53,7 @@ module Metadata
       [lambda {|d|
         not d.schema? },
       lambda {|d|
-        d.schema = Service.factory("dataset-api.json").schema
+        d.schema = Metadata::Dataset::JSON_SCHEMA:URI
         d
       }]
     end

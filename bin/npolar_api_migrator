@@ -8,11 +8,15 @@ require "logger"
 require_relative "./../lib/npolar/http"
 require_relative "./../lib/npolar/api/client"
 require_relative "./../lib/npolar/validation/multi_json_schema_validator"
-require_relative "./../lib/metadata/dataset"
 
-# @todo Smart autoload of migration
-require_relative "./../lib/metadata/dataset_migration0"
-require_relative "./../lib/metadata/dataset_migration1"
+
+# @todo Smart autoload of migration and model classes
+require_relative "./../lib/metadata/dataset"
+require_relative "./../lib/project"
+
+require_relative "./../migration/dataset_migration0"
+require_relative "./../migration/dataset_migration1"
+require_relative "./../migration/project_migration0"
 
 require_relative "./../lib/service"
 require_relative "./../lib/npolar/factory"
