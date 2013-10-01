@@ -30,10 +30,10 @@
     "run": { "type": ["string", "null"] },
     "open": { "type": "boolean" },
     "auth": { "type": "object" },
+    "created": { "type": "string", "format": "datetime"},
     "created_by": { "type": ["string", "object"] },
-    "updated_by": { "type": ["string", "object"] },
     "updated": { "type": "string", "format": "datetime"},
-    "published": { "type": "string", "format": "datetime"},
+    "updated_by": { "type": ["string", "object"] },
     "_id": { "type": "string" },
     "_rev": { "type": "string" }
   }
