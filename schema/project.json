@@ -59,18 +59,6 @@
         }
       }
     },
-    "research_programs": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "href": { "type": "string", "format": "uri" },
-          "title": { "type": ["string", "null"] }
-        }
-      }
-    },
     "results_datasets": {
       "type": "array",
       "additionalItems": false,
