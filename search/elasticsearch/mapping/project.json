@@ -19,6 +19,30 @@
       "type":{"type":"string", "index":"not_analyzed"},
       "topics":{"type":"string", "index":"not_analyzed"},
       "tags":{"type":"string", "index":"not_analyzed"},
+      "funding_sources":{
+        "properties":{
+          "organisation_name":{"type":"string", "index":"not_analyzed"},
+          "agresso_code":{"type":"string", "index":"not_analyzed"}
+        }
+      },
+      "related_projects":{
+        "properties":{
+          "href":{"type":"string", "index":"not_analyzed"},
+          "title":{"type":"string", "index":"not_analyzed"}
+        }
+      },
+      "research_programs":{
+        "properties":{
+          "href":{"type":"string", "index":"not_analyzed"},
+          "title":{"type":"string", "index":"not_analyzed"}
+        }
+      },
+      "results_datasets":{
+        "properties":{
+          "href":{"type":"string", "index":"not_analyzed"},
+          "title":{"type":"string", "index":"not_analyzed"}
+        }
+      },
       "people":{
         "properties":{
           "first_name":{"type":"string", "index":"not_analyzed"},
