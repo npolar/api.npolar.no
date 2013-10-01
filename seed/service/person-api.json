@@ -12,8 +12,8 @@
    "facets": [
       "organisation"
    ],
-   "type": "person",
-   "index": "person"
+   "index": "global",
+   "type": "person"
  },
  "verbs": [
    "DELETE",
