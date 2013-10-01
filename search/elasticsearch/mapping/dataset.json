@@ -1,7 +1,6 @@
 {
   "dataset":{
-    "properties":
-    {
+    "properties": {
       "id":{"type":"string","index":"not_analyzed"},
       "collection":{"type":"string","index":"not_analyzed"},
       "schema":{"type":"string","index":"not_analyzed"},
