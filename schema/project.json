@@ -49,7 +49,6 @@
           "role": { "type": "string", "enum": ["projectLeader", "projectParticipant"] },
           "employee_no": { "type": "string" },
           "organisation": { "type": "string" }
-          }
         }
       }
     },
@@ -151,4 +150,5 @@
     "updated_by" : {  "type": "string" },
     "_id": { "description": "Internal id", "type": "string" },
     "_rev" : { "description": "Internal revision", "type": "string" }
+  }
 }
