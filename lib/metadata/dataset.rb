@@ -142,7 +142,7 @@ module Metadata
         roles: roles,
         links: [ {rel: "owner", href: "http://npolar.no", title: "Norwegian Polar Institute" },
           {rel: "publisher", href: "http://data.npolar.no", title: "Norwegian Polar Institute" },
-          {rel: "pointOfContact", href: "http://data.npolar.no/contact", title: "Norwegian Polar Data", email: "data[*]npolar.no" }
+          {rel: "pointOfContact", href: "http://data.npolar.no", title: "Norwegian Polar Data", email: "data[*]npolar.no" }
         ]
       })
     end
