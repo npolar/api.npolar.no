@@ -98,7 +98,7 @@
           "profile_href" : { "type": "string", "format": "uri" },
           "role": { "type": "string", "enum": ["projectLeader", "projectParticipant"] },
           "employee_no": { "type": "string" },
-          "organisation": { "type": "string" }
+          "organisation": { "type": ["string", "null"] }
         }
       }
     },

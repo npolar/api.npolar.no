@@ -5,7 +5,7 @@
     "email": "jon.aars@npolar.no",
     "id": "jon.aars",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -13,11 +13,6 @@
         "href": "http://www.npolar.no/en/people/jon.aars/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -27,7 +22,7 @@
     "email": "harald.faste.aas@npolar.no",
     "id": "harald.faste.aas",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -35,11 +30,6 @@
         "href": "http://www.npolar.no/en/people/harald.faste.aas/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -49,7 +39,7 @@
     "email": "atle.aasen@npolar.no",
     "id": "atle.aasen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -57,11 +47,6 @@
         "href": "http://www.npolar.no/en/people/atle.aasen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -71,7 +56,7 @@
     "email": "jens.abild@npolar.no",
     "id": "jens.abild",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -79,11 +64,6 @@
         "href": "http://www.npolar.no/en/people/jens.abild/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -93,7 +73,7 @@
     "email": "steinar.aksnes@npolar.no",
     "id": "steinar.aksnes",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -101,11 +81,6 @@
         "href": "http://www.npolar.no/en/people/steinar.aksnes/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -115,7 +90,7 @@
     "email": "geir.andersen@npolar.no",
     "id": "geir.andersen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -123,11 +98,6 @@
         "href": "http://www.npolar.no/en/people/geir.andersen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -137,7 +107,7 @@
     "email": "magnus.andersen2@npolar.no",
     "id": "magnus.andersen2",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -145,11 +115,6 @@
         "href": "http://www.npolar.no/en/people/magnus.andersen.troll/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -159,7 +124,7 @@
     "email": "magnus.andersen@npolar.no",
     "id": "magnus.andersen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -167,11 +132,6 @@
         "href": "http://www.npolar.no/en/people/magnus.andersen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -181,7 +141,7 @@
     "email": "kristin.arntzen@npolar.no",
     "id": "kristin.arntzen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -189,11 +149,6 @@
         "href": "http://www.npolar.no/en/people/kristin.arntzen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -203,7 +158,7 @@
     "email": "philipp.assmy@npolar.no",
     "id": "philipp.assmy",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -211,11 +166,6 @@
         "href": "http://www.npolar.no/en/people/philipp.assmy/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -225,7 +175,7 @@
     "email": "jenny.baeseman@npolar.no",
     "id": "jenny.baeseman",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -233,11 +183,6 @@
         "href": "http://www.npolar.no/en/people/jenny.baeseman/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -247,7 +192,7 @@
     "email": "ann.kristin.balto@npolar.no",
     "id": "ann.kristin.balto",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -255,11 +200,6 @@
         "href": "http://www.npolar.no/en/people/ann.kristin.balto/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -269,7 +209,7 @@
     "email": "ingrid.berthinussen@npolar.no",
     "id": "ingrid.berthinussen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -277,11 +217,6 @@
         "href": "http://www.npolar.no/en/people/ingrid.berthinussen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -291,7 +226,7 @@
     "email": "are.bjordal@npolar.no",
     "id": "are.bjordal",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -299,11 +234,6 @@
         "href": "http://www.npolar.no/en/people/are.bjordal/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -313,7 +243,7 @@
     "email": "marie.anne.blanchet@npolar.no",
     "id": "marie.anne.blanchet",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -321,11 +251,6 @@
         "href": "http://www.npolar.no/en/people/marie.anne.blanchet/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -335,7 +260,7 @@
     "email": "dierk.blomeier@npolar.no",
     "id": "dierk.blomeier",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -343,11 +268,6 @@
         "href": "http://www.npolar.no/en/people/dierk.blomeier/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -357,7 +277,7 @@
     "email": "kent-ove.bolli@npolar.no",
     "id": "kent-ove.bolli",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -365,11 +285,6 @@
         "href": "http://www.npolar.no/en/people/kent.ove.bolli/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -379,7 +294,7 @@
     "email": "sophie.bourgeon@npolar.no",
     "id": "sophie.bourgeon",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -387,11 +302,6 @@
         "href": "http://www.npolar.no/en/people/sophie.bourgeon/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -401,7 +311,7 @@
     "email": "rita.brannfjell@npolar.no",
     "id": "rita.brannfjell",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -409,11 +319,6 @@
         "href": "http://www.npolar.no/en/people/rita.brannfjell/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -423,7 +328,7 @@
     "email": "marius.bratrein@npolar.no",
     "id": "marius.bratrein",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -431,11 +336,6 @@
         "href": "http://www.npolar.no/en/people/marius.bratrein/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -445,7 +345,7 @@
     "email": "joel.brown@npolar.no",
     "id": "joel.brown",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -453,11 +353,6 @@
         "href": "http://www.npolar.no/en/people/joel.brown/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -467,7 +362,7 @@
     "email": "roy.bruun@npolar.no",
     "id": "roy.bruun",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -475,11 +370,6 @@
         "href": "http://www.npolar.no/en/people/roy.bruun/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -489,7 +379,7 @@
     "email": "bernt.bye@npolar.no",
     "id": "bernt.bye",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -497,11 +387,6 @@
         "href": "http://www.npolar.no/en/people/bernt.bye/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -511,7 +396,7 @@
     "email": "malin.daase@npolar.no",
     "id": "malin.daase",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -519,11 +404,6 @@
         "href": "http://www.npolar.no/en/people/malin.daase/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -533,7 +413,7 @@
     "email": "lars.dahle@npolar.no",
     "id": "lars.dahle",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -541,11 +421,6 @@
         "href": "http://www.npolar.no/en/people/lars.dahle/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -555,7 +430,7 @@
     "email": "winfried.dallmann@npolar.no",
     "id": "winfried.dallmann",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -563,11 +438,6 @@
         "href": "http://www.npolar.no/en/people/winfried.dallmann/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -577,7 +447,7 @@
     "email": "fiona.danks@npolar.no",
     "id": "fiona.danks",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -585,11 +455,6 @@
         "href": "http://www.npolar.no/en/people/fiona.danks/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -599,7 +464,7 @@
     "email": "ruben.dens@npolar.no",
     "id": "ruben.dens",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -607,11 +472,6 @@
         "href": "http://www.npolar.no/en/people/ruben.dens/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -621,7 +481,7 @@
     "email": "sebastien.descamps@npolar.no",
     "id": "sebastien.descamps",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -629,11 +489,6 @@
         "href": "http://www.npolar.no/en/people/sebastien.descamps/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -643,7 +498,7 @@
     "email": "dmitry.divine@npolar.no",
     "id": "dmitry.divine",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -651,11 +506,6 @@
         "href": "http://www.npolar.no/en/people/dmitry.divine/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -665,7 +515,7 @@
     "email": "paul.dodd@npolar.no",
     "id": "paul.dodd",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -673,11 +523,6 @@
         "href": "http://www.npolar.no/en/people/paul.dodd/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -687,7 +532,7 @@
     "email": "jorn.dybdahl@npolar.no",
     "id": "jorn.dybdahl",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -695,11 +540,6 @@
         "href": "http://www.npolar.no/en/people/jorn.dybdahl/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -709,7 +549,7 @@
     "email": "inger.brattsti.dypas@npolar.no",
     "id": "inger.brattsti.dypas",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -717,11 +557,6 @@
         "href": "http://www.npolar.no/en/people/inger.brattsti.dypas/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -731,7 +566,7 @@
     "email": "heidi.june.eklo@npolar.no",
     "id": "heidi.june.eklo",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -739,11 +574,6 @@
         "href": "http://www.npolar.no/en/people/heidi.june.eklo/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -753,7 +583,7 @@
     "email": "synnove.elvevold@npolar.no",
     "id": "synnove.elvevold",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -761,11 +591,6 @@
         "href": "http://www.npolar.no/en/people/synnove.elvevold/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -775,7 +600,7 @@
     "email": "stasjonsleder.troll@npolar.no",
     "id": "stasjonsleder.troll",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -783,11 +608,6 @@
         "href": "http://www.npolar.no/en/people/mats.ola.finn/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -797,7 +617,7 @@
     "email": "paul.inge.flakstad@npolar.no",
     "id": "paul.inge.flakstad",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -805,11 +625,6 @@
         "href": "http://www.npolar.no/en/people/paul.inge.flakstad/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -819,7 +634,7 @@
     "email": "geir.ove.floan@npolar.no",
     "id": "geir.ove.floan",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -827,11 +642,6 @@
         "href": "http://www.npolar.no/en/people/geir.ove.floan/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -841,7 +651,7 @@
     "email": "kristen.fossan@npolar.no",
     "id": "kristen.fossan",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -849,11 +659,6 @@
         "href": "http://www.npolar.no/en/people/kristen.fossan/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -863,7 +668,7 @@
     "email": "eva.fuglei@npolar.no",
     "id": "eva.fuglei",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -871,11 +676,6 @@
         "href": "http://www.npolar.no/en/people/eva.fuglei/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -885,7 +685,7 @@
     "email": "geir.wing.gabrielsen@npolar.no",
     "id": "geir.wing.gabrielsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -893,11 +693,6 @@
         "href": "http://www.npolar.no/en/people/geir.wing.gabrielsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -907,7 +702,7 @@
     "email": "jean.charles.gallet@npolar.no",
     "id": "jean.charles.gallet",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -915,11 +710,6 @@
         "href": "http://www.npolar.no/en/people/jean.charles.gallet/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -929,7 +719,7 @@
     "email": "sebastian.gerland@npolar.no",
     "id": "sebastian.gerland",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -937,11 +727,6 @@
         "href": "http://www.npolar.no/en/people/sebastian.gerland/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -951,7 +736,7 @@
     "email": "audun.gjerland@npolar.no",
     "id": "audun.gjerland",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -959,11 +744,6 @@
         "href": "http://www.npolar.no/en/people/audun.gjerland/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -973,7 +753,7 @@
     "email": "fred.godtliebsen@npolar.no",
     "id": "fred.godtliebsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -981,11 +761,6 @@
         "href": "http://www.npolar.no/en/people/fred.godtliebsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -995,7 +770,7 @@
     "email": "helle.goldman@npolar.no",
     "id": "helle.goldman",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1003,11 +778,6 @@
         "href": "http://www.npolar.no/en/people/helle.goldman/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1017,7 +787,7 @@
     "email": "harvey.goodwin@npolar.no",
     "id": "harvey.goodwin",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1025,11 +795,6 @@
         "href": "http://www.npolar.no/en/people/harvey.goodwin/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1039,7 +804,7 @@
     "email": "mats.granskog@npolar.no",
     "id": "mats.granskog",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1047,11 +812,6 @@
         "href": "http://www.npolar.no/en/people/mats.granskog/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1061,7 +821,7 @@
     "email": "john.guldahl@npolar.no",
     "id": "john.guldahl",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1069,11 +829,6 @@
         "href": "http://www.npolar.no/en/people/john.guldahl/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1083,7 +838,7 @@
     "email": "roger.hagerup@npolar.no",
     "id": "roger.hagerup",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1091,11 +846,6 @@
         "href": "http://www.npolar.no/en/people/roger.olaussen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1105,7 +855,7 @@
     "email": "eva.cathrine.hansen@npolar.no",
     "id": "eva.cathrine.hansen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1113,11 +863,6 @@
         "href": "http://www.npolar.no/en/people/eva.cathrine.hansen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1127,7 +872,7 @@
     "email": "john.richard.hansen@npolar.no",
     "id": "john.richard.hansen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1135,11 +880,6 @@
         "href": "http://www.npolar.no/en/people/john.richard.hansen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1149,7 +889,7 @@
     "email": "kenth.hanssen@npolar.no",
     "id": "kenth.hanssen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1157,11 +897,6 @@
         "href": "http://www.npolar.no/en/people/kenth.hanssen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1171,7 +906,7 @@
     "email": "jan.erling.haugland@npolar.no",
     "id": "jan.erling.haugland",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1179,11 +914,6 @@
         "href": "http://www.npolar.no/en/people/jan.erling.haugland/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1193,7 +923,7 @@
     "email": "conrad.helgeland@npolar.no",
     "id": "conrad.helgeland",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1201,11 +931,6 @@
         "href": "http://www.npolar.no/en/people/conrad.helgeland/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1215,7 +940,7 @@
     "email": "helene.henriksen@npolar.no",
     "id": "helene.henriksen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1223,11 +948,6 @@
         "href": "http://www.npolar.no/en/people/helene.henriksen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1237,7 +957,7 @@
     "email": "svein.henriksen@npolar.no",
     "id": "svein.henriksen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1245,11 +965,6 @@
         "href": "http://www.npolar.no/en/people/svein.henriksen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1259,7 +974,7 @@
     "email": "tor.ytterstad.hindberg@npolar.no",
     "id": "tor.ytterstad.hindberg",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1267,11 +982,6 @@
         "href": "http://www.npolar.no/en/people/tor.ytterstad.hindberg/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1281,7 +991,7 @@
     "email": "anne-britt.hinz@npolar.no",
     "id": "anne-britt.hinz",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1289,11 +999,6 @@
         "href": "http://www.npolar.no/en/people/anne.britt.hinz/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1303,7 +1008,7 @@
     "email": "lege.troll@npolar.no",
     "id": "lege.troll",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1311,11 +1016,6 @@
         "href": "http://www.npolar.no/en/people/arne.hjemmen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1325,7 +1025,7 @@
     "email": "sissel.norum.hofsoy@npolar.no",
     "id": "sissel.norum.hofsoy",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1333,11 +1033,6 @@
         "href": "http://www.npolar.no/en/people/sissel.norum.hofsoy/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1347,7 +1042,7 @@
     "email": "kim.holmen@npolar.no",
     "id": "kim.holmen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1355,11 +1050,6 @@
         "href": "http://www.npolar.no/en/people/kim.holmen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1369,7 +1059,7 @@
     "email": "haakon.hop@npolar.no",
     "id": "haakon.hop",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1377,11 +1067,6 @@
         "href": "http://www.npolar.no/en/people/haakon.hop/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1391,7 +1076,7 @@
     "email": "oddvar.horn@npolar.no",
     "id": "oddvar.horn",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1399,11 +1084,6 @@
         "href": "http://www.npolar.no/en/people/oddvar.syver.horn/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1413,7 +1093,7 @@
     "email": "stephen.hudson@npolar.no",
     "id": "stephen.hudson",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1421,11 +1101,6 @@
         "href": "http://www.npolar.no/en/people/stephen.hudson/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1435,7 +1110,7 @@
     "email": "stationmanager@npolar.no",
     "id": "stationmanager",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1443,11 +1118,6 @@
         "href": "http://www.npolar.no/en/people/christiane.hubner/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1457,7 +1127,7 @@
     "email": "audun.igesund@npolar.no",
     "id": "audun.igesund",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1465,11 +1135,6 @@
         "href": "http://www.npolar.no/en/people/audun.igesund/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1479,7 +1144,7 @@
     "email": "heidi.isaksen@npolar.no",
     "id": "heidi.isaksen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1487,11 +1152,6 @@
         "href": "http://www.npolar.no/en/people/heidi.isaksen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1501,7 +1161,7 @@
     "email": "elisabeth.isaksson@npolar.no",
     "id": "elisabeth.isaksson",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1509,11 +1169,6 @@
         "href": "http://www.npolar.no/en/people/elisabeth.isaksson/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1523,7 +1178,7 @@
     "email": "gunn.sissel.jaklin@npolar.no",
     "id": "gunn.sissel.jaklin",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1531,11 +1186,6 @@
         "href": "http://www.npolar.no/en/people/gunn.sissel.jaklin/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1545,7 +1195,7 @@
     "email": "marta.karoline.jansen@npolar.no",
     "id": "marta.karoline.jansen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1553,11 +1203,6 @@
         "href": "http://www.npolar.no/en/people/marta.karoline.jansen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1567,7 +1212,7 @@
     "email": "leif.helge.jensen@npolar.no",
     "id": "leif.helge.jensen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1575,11 +1220,6 @@
         "href": "http://www.npolar.no/en/people/leif.helge.jensen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1589,7 +1229,7 @@
     "email": "elin.vinje.jenssen@npolar.no",
     "id": "elin.vinje.jenssen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1597,11 +1237,6 @@
         "href": "http://www.npolar.no/en/people/elin.vinje.jenssen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1611,7 +1246,7 @@
     "email": "kai.bjarne.johannessen@npolar.no",
     "id": "kai.bjarne.johannessen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1619,11 +1254,6 @@
         "href": "http://www.npolar.no/en/people/kai.bjarne.johannessen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1633,7 +1263,7 @@
     "email": "bjorn.einar.johnsen@npolar.no",
     "id": "bjorn.einar.johnsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1641,11 +1271,6 @@
         "href": "http://www.npolar.no/en/people/bjorn.einar.johnsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1655,7 +1280,7 @@
     "email": "marianne.josefsen@npolar.no",
     "id": "marianne.josefsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1663,11 +1288,6 @@
         "href": "http://www.npolar.no/en/people/marianne.josefsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1677,7 +1297,7 @@
     "email": "harald.dag.jolle@npolar.no",
     "id": "harald.dag.jolle",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1685,11 +1305,6 @@
         "href": "http://www.npolar.no/en/people/harald.dag.jolle/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1699,7 +1314,7 @@
     "email": "nina.mari.jorgensen@npolar.no",
     "id": "nina.mari.jorgensen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1707,11 +1322,6 @@
         "href": "http://www.npolar.no/en/people/nina.mari.jorgensen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1721,7 +1331,7 @@
     "email": "marzena.kaczmarska@npolar.no",
     "id": "marzena.kaczmarska",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1729,11 +1339,6 @@
         "href": "http://www.npolar.no/en/people/marzena.kaczmarska/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1743,7 +1348,7 @@
     "email": "tor.ivan.karlsen@npolar.no",
     "id": "tor.ivan.karlsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1751,11 +1356,6 @@
         "href": "http://www.npolar.no/en/people/tor.ivan.karlsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1765,7 +1365,7 @@
     "email": "yoshie.kasajima@npolar.no",
     "id": "yoshie.kasajima",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1773,11 +1373,6 @@
         "href": "http://www.npolar.no/en/people/yoshie.kasajima/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1787,7 +1382,7 @@
     "email": "anne.kibsgaard@npolar.no",
     "id": "anne.kibsgaard",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1795,11 +1390,6 @@
         "href": "http://www.npolar.no/en/people/anne.kibsgaard/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1809,7 +1399,7 @@
     "email": "bertran.kiil@npolar.no",
     "id": "bertran.kiil",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1817,11 +1407,6 @@
         "href": "http://www.npolar.no/en/people/bertran.kiil/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1831,7 +1416,7 @@
     "email": "jack.kohler@npolar.no",
     "id": "jack.kohler",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1839,11 +1424,6 @@
         "href": "http://www.npolar.no/en/people/jack.kohler/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1853,7 +1433,7 @@
     "email": "kit.kovacs@npolar.no",
     "id": "kit.kovacs",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1861,11 +1441,6 @@
         "href": "http://www.npolar.no/en/people/kit.kovacs/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1875,7 +1450,7 @@
     "email": "nalan.koc@npolar.no",
     "id": "nalan.koc",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1883,11 +1458,6 @@
         "href": "http://www.npolar.no/en/people/nalan.koc/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1897,7 +1467,7 @@
     "email": "rupert.krapp@npolar.no",
     "id": "rupert.krapp",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1905,11 +1475,6 @@
         "href": "http://www.npolar.no/en/people/rupert.krapp/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1919,7 +1484,7 @@
     "email": "hallgeir.kvernberg@npolar.no",
     "id": "hallgeir.kvernberg",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1927,11 +1492,6 @@
         "href": "http://www.npolar.no/en/people/hallgeir.kvernberg/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1941,7 +1501,7 @@
     "email": "max.koenig@npolar.no",
     "id": "max.koenig",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1949,11 +1509,6 @@
         "href": "http://www.npolar.no/en/people/max.konig/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1963,7 +1518,7 @@
     "email": "fred.endre.larsen@npolar.no",
     "id": "fred.endre.larsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1971,11 +1526,6 @@
         "href": "http://www.npolar.no/en/people/fred.endre.larsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -1985,7 +1535,7 @@
     "email": "pal.yngve.lind@npolar.no",
     "id": "pal.yngve.lind",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -1993,11 +1543,6 @@
         "href": "http://www.npolar.no/en/people/pal.yngve.lind/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2007,7 +1552,7 @@
     "email": "ragnhild.lindberg@npolar.no",
     "id": "ragnhild.lindberg",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2015,11 +1560,6 @@
         "href": "http://www.npolar.no/en/people/ragnhild.lindberg/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2029,7 +1569,7 @@
     "email": "erlend.lorentzen@npolar.no",
     "id": "erlend.lorentzen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2037,11 +1577,6 @@
         "href": "http://www.npolar.no/en/people/erlend.lorentzen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2051,7 +1586,7 @@
     "email": "trevor.lovett@npolar.no",
     "id": "trevor.lovett",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2059,11 +1594,6 @@
         "href": "http://www.npolar.no/en/people/trevor.lovett/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2073,7 +1603,7 @@
     "email": "christian.lydersen@npolar.no",
     "id": "christian.lydersen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2081,11 +1611,6 @@
         "href": "http://www.npolar.no/en/people/christian.lydersen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2095,7 +1620,7 @@
     "email": "stig.mathisen@npolar.no",
     "id": "stig.mathisen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2103,11 +1628,6 @@
         "href": "http://www.npolar.no/en/people/stig.mathisen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2117,7 +1637,7 @@
     "email": "kenichi.matsuoka@npolar.no",
     "id": "kenichi.matsuoka",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2125,11 +1645,6 @@
         "href": "http://www.npolar.no/en/people/kenichi.matsuoka/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2139,7 +1654,7 @@
     "email": "yngve.melvar@npolar.no",
     "id": "yngve.melvar",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2147,11 +1662,6 @@
         "href": "http://www.npolar.no/en/people/yngve.melvaer/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2161,7 +1671,7 @@
     "email": "inger.sofia.mercadal@npolar.no",
     "id": "inger.sofia.mercadal",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2169,11 +1679,6 @@
         "href": "http://www.npolar.no/en/people/inger.sofia.mercadal/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2183,7 +1688,7 @@
     "email": "oystein.mikelborg@npolar.no",
     "id": "oystein.mikelborg",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2191,11 +1696,6 @@
         "href": "http://www.npolar.no/en/people/oystein.mikelborg/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2205,7 +1705,7 @@
     "email": "elektriker.troll@npolar.no",
     "id": "elektriker.troll",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2213,11 +1713,6 @@
         "href": "http://www.npolar.no/en/people/sven.erik.mollberg/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2227,7 +1722,7 @@
     "email": "mekaniker.troll@npolar.no",
     "id": "mekaniker.troll",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2235,11 +1730,6 @@
         "href": "http://www.npolar.no/en/people/jostein.navelsaker/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2249,7 +1739,7 @@
     "email": "anne.cathrine.nilsen@npolar.no",
     "id": "anne.cathrine.nilsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2257,11 +1747,6 @@
         "href": "http://www.npolar.no/en/people/anne.cathrine.nilsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2271,7 +1756,7 @@
     "email": "stein.orjan.nilsen@npolar.no",
     "id": "stein.orjan.nilsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2279,11 +1764,6 @@
         "href": "http://www.npolar.no/en/people/stein.orjan.nilsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2293,7 +1773,7 @@
     "email": "birgit.njaastad@npolar.no",
     "id": "birgit.njaastad",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2301,11 +1781,6 @@
         "href": "http://www.npolar.no/en/people/birgit.njastad/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2315,7 +1790,7 @@
     "email": "sissel.olsen@npolar.no",
     "id": "sissel.olsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2323,11 +1798,6 @@
         "href": "http://www.npolar.no/en/people/sissel.olsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2337,7 +1807,7 @@
     "email": "oystein.overrein@npolar.no",
     "id": "oystein.overrein",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2345,11 +1815,6 @@
         "href": "http://www.npolar.no/en/people/oystein.overrein/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2359,7 +1824,7 @@
     "email": "alexey.pavlov@npolar.no",
     "id": "alexey.pavlov",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2367,11 +1832,6 @@
         "href": "http://www.npolar.no/en/people/alexey.pavlov/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2381,7 +1841,7 @@
     "email": "vladimir.pavlov@npolar.no",
     "id": "vladimir.pavlov",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2389,11 +1849,6 @@
         "href": "http://www.npolar.no/en/people/vladimir.pavlov/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2403,7 +1858,7 @@
     "email": "olga.pavlova@npolar.no",
     "id": "olga.pavlova",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2411,11 +1866,6 @@
         "href": "http://www.npolar.no/en/people/olga.pavlova/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2425,7 +1875,7 @@
     "email": "christina.pedersen@npolar.no",
     "id": "christina.pedersen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2433,11 +1883,6 @@
         "href": "http://www.npolar.no/en/people/christina.pedersen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2447,7 +1892,7 @@
     "email": "jarl.pedersen@npolar.no",
     "id": "jarl.pedersen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2455,11 +1900,6 @@
         "href": "http://www.npolar.no/en/people/jarl.pedersen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2469,7 +1909,7 @@
     "email": "aashild.pedersen@npolar.no",
     "id": "aashild.pedersen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2477,11 +1917,6 @@
         "href": "http://www.npolar.no/en/people/ashild.pedersen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2491,7 +1926,7 @@
     "email": "marit.raak.pettersen@npolar.no",
     "id": "marit.raak.pettersen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2499,11 +1934,6 @@
         "href": "http://www.npolar.no/en/people/marit.raak.pettersen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2513,7 +1943,7 @@
     "email": "cecilie.von.quillfeldt@npolar.no",
     "id": "cecilie.von.quillfeldt",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2521,11 +1951,6 @@
         "href": "http://www.npolar.no/en/people/cecilie.von.quillfeldt/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2535,7 +1960,7 @@
     "email": "angelika.renner@npolar.no",
     "id": "angelika.renner",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2543,11 +1968,6 @@
         "href": "http://www.npolar.no/en/people/angelika.renner/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2557,7 +1977,7 @@
     "email": "jan.roald@npolar.no",
     "id": "jan.roald",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2565,11 +1985,6 @@
         "href": "http://www.npolar.no/en/people/jan.roald/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2579,7 +1994,7 @@
     "email": "magnus.hovind.rognhaug@npolar.no",
     "id": "magnus.hovind.rognhaug",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2587,11 +2002,6 @@
         "href": "http://www.npolar.no/en/people/magnus.hovind.rognhaug/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2601,7 +2011,7 @@
     "email": "heli.routti@npolar.no",
     "id": "heli.routti",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2609,11 +2019,6 @@
         "href": "http://www.npolar.no/en/people/heli.routti/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2623,7 +2028,7 @@
     "email": "gunnar.sander@npolar.no",
     "id": "gunnar.sander",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2631,11 +2036,6 @@
         "href": "http://www.npolar.no/en/people/gunnar.sander/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2645,7 +2045,7 @@
     "email": "ingrid.schjelderup@npolar.no",
     "id": "ingrid.schjelderup",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2653,11 +2053,6 @@
         "href": "http://www.npolar.no/en/people/ingrid.schjelderup/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2667,7 +2062,7 @@
     "email": "janne.schreuder@npolar.no",
     "id": "janne.schreuder",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2675,11 +2070,6 @@
         "href": "http://www.npolar.no/en/people/janne.schreuder/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2689,7 +2079,7 @@
     "email": "anders.skoglund@npolar.no",
     "id": "anders.skoglund",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2697,11 +2087,6 @@
         "href": "http://www.npolar.no/en/people/anders.skoglund/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2711,7 +2096,7 @@
     "email": "inger.solheim@npolar.no",
     "id": "inger.solheim",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2719,11 +2104,6 @@
         "href": "http://www.npolar.no/en/people/inger.solheim/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2733,7 +2113,7 @@
     "email": "gunnar.spreen@npolar.no",
     "id": "gunnar.spreen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2741,11 +2121,6 @@
         "href": "http://www.npolar.no/en/people/gunnar.spreen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2755,7 +2130,7 @@
     "email": "harald.steen@npolar.no",
     "id": "harald.steen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2763,11 +2138,6 @@
         "href": "http://www.npolar.no/en/people/harald.steen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2777,7 +2147,7 @@
     "email": "ann.elin.steinsund@npolar.no",
     "id": "ann.elin.steinsund",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2785,11 +2155,6 @@
         "href": "http://www.npolar.no/en/people/ann.elin.steinsund/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2799,7 +2164,7 @@
     "email": "ivar.stokkeland@npolar.no",
     "id": "ivar.stokkeland",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2807,11 +2172,6 @@
         "href": "http://www.npolar.no/en/people/ivar.stokkeland/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2821,7 +2181,7 @@
     "email": "ingrid.storhaug@npolar.no",
     "id": "ingrid.storhaug",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2829,11 +2189,6 @@
         "href": "http://www.npolar.no/en/people/ingrid.storhaug/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2843,7 +2198,7 @@
     "email": "hallvard.strom@npolar.no",
     "id": "hallvard.strom",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2851,11 +2206,6 @@
         "href": "http://www.npolar.no/en/people/hallvard.strom/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2865,7 +2215,7 @@
     "email": "jon.hugo.stromseng@npolar.no",
     "id": "jon.hugo.stromseng",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2873,11 +2223,6 @@
         "href": "http://www.npolar.no/en/people/jon.hugo.stromseng/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2887,7 +2232,7 @@
     "email": "arild.sundfjord@npolar.no",
     "id": "arild.sundfjord",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2895,11 +2240,6 @@
         "href": "http://www.npolar.no/en/people/arild.sundfjord/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2909,7 +2249,7 @@
     "email": "rune.svendsen@npolar.no",
     "id": "rune.svendsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2917,11 +2257,6 @@
         "href": "http://www.npolar.no/en/people/rune.svendsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2931,7 +2266,7 @@
     "email": "elsa.syrstad@npolar.no",
     "id": "elsa.syrstad",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2939,11 +2274,6 @@
         "href": "http://www.npolar.no/en/people/elsa.syrstad/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2953,7 +2283,7 @@
     "email": "eystein.saether@npolar.no",
     "id": "eystein.saether",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2961,11 +2291,6 @@
         "href": "http://www.npolar.no/en/people/eystein.saether/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2975,7 +2300,7 @@
     "email": "arnaud.tarroux@npolar.no",
     "id": "arnaud.tarroux",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -2983,11 +2308,6 @@
         "href": "http://www.npolar.no/en/people/arnaud.tarroux/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -2997,7 +2317,7 @@
     "email": "julia.tchernova@npolar.no",
     "id": "julia.tchernova",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3005,11 +2325,6 @@
         "href": "http://www.npolar.no/en/people/julia.tchernova/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3019,7 +2334,7 @@
     "email": "ermias.beyene.tesfamariam@npolar.no",
     "id": "ermias.beyene.tesfamariam",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3027,11 +2342,6 @@
         "href": "http://www.npolar.no/en/people/ermias.beyene.tesfamariam/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3041,7 +2351,7 @@
     "email": "peter.thor@npolar.no",
     "id": "peter.thor",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3049,11 +2359,6 @@
         "href": "http://www.npolar.no/en/people/peter.thor/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3063,7 +2368,7 @@
     "email": "stein.tronstad@npolar.no",
     "id": "stein.tronstad",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3071,11 +2376,6 @@
         "href": "http://www.npolar.no/en/people/stein.tronstad/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3085,7 +2385,7 @@
     "email": "siri.birgitte.uldal@npolar.no",
     "id": "siri.birgitte.uldal",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3093,11 +2393,6 @@
         "href": "http://www.npolar.no/en/people/siri.birgitte.uldal/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3107,7 +2402,7 @@
     "email": "nanette.verboven@npolar.no",
     "id": "nanette.verboven",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3115,11 +2410,6 @@
         "href": "http://www.npolar.no/en/people/nanette.verboven/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3129,7 +2419,7 @@
     "email": "dag.vongraven@npolar.no",
     "id": "dag.vongraven",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3137,11 +2427,6 @@
         "href": "http://www.npolar.no/en/people/dag.vongraven/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3151,7 +2436,7 @@
     "email": "caixin.wang@npolar.no",
     "id": "caixin.wang",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3159,11 +2444,6 @@
         "href": "http://www.npolar.no/en/people/caixin.wang/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3173,7 +2453,7 @@
     "email": "jan.gunnar.winther@npolar.no",
     "id": "jan.gunnar.winther",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3181,11 +2461,6 @@
         "href": "http://www.npolar.no/en/people/jan.gunnar.winther/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3195,7 +2470,7 @@
     "email": "anette.wold@npolar.no",
     "id": "anette.wold",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3203,11 +2478,6 @@
         "href": "http://www.npolar.no/en/people/anette.wold/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3217,7 +2487,7 @@
     "email": "reidun.ingebrigtsen@npolar.no",
     "id": "reidun.ingebrigtsen",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3225,11 +2495,6 @@
         "href": "http://www.npolar.no/en/people/reidun.yttergard.ingebrigtsen/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3239,7 +2504,7 @@
     "email": "oddveig.oien.orvoll@npolar.no",
     "id": "oddveig.oien.orvoll",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3247,11 +2512,6 @@
         "href": "http://www.npolar.no/en/people/oddveig.oien.orvoll/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   },
@@ -3261,7 +2521,7 @@
     "email": "ellen.oseth@npolar.no",
     "id": "ellen.oseth",
     "collection": "person",
-    "schema": "http://api.npolar.no/schema/person.json",
+    "schema": "http://api.npolar.no/schema/person",
     "organisation": "npolar.no",
     "links": [
       {
@@ -3269,11 +2529,6 @@
         "href": "http://www.npolar.no/en/people/ellen.oseth/index.html",
         "hreflang": "en",
         "type": "text/html"
-      },
-      {
-        "rel": "related",
-        "href": "http://api.npolar.no/org/npolar.no?format=json",
-        "type": "application/json"
       }
     ]
   }
