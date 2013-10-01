@@ -27,11 +27,7 @@
           "role":{"type":"string", "index":"not_analyzed"},
           "profile_href":{"type":"string", "index":"not_analyzed"},
           "employee_no":{"type":"string", "index":"not_analyzed"},
-          "affiliation":{
-            "properties":{
-              "org":{"type":"string", "index":"not_analyzed"}
-            }
-          }
+          "organisation":{"type":"string", "index":"not_analyzed"}
         }
       },
       "organisations":{
@@ -66,7 +62,18 @@
           "type":{"type":"string", "index":"not_analyzed"}
         }
       },
-      "translations":{"type":"object", "index":"not_analyzed"}
+      "translations":{"type":"object", "index":"not_analyzed"},
+      "edits":{
+        "properties":{
+          "edited":{"type":"date","index":"not_analyzed"},
+          "email":{"type":"string","index":"not_analyzed"},
+          "name":{"type":"string","index":"not_analyzed"}
+        }
+      },
+      "created": {"type": "date", "index": "not_analyzed"},
+      "updated": {"type": "date", "index": "not_analyzed"},
+      "created_by": {"type": "string", "index": "not_analyzed"},
+      "updated_by": {"type": "string", "index": "not_analyzed"}
     }
   }
 }
