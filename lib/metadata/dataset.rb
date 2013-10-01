@@ -216,8 +216,16 @@ module Metadata
           self[:lang] = "en"
         end
         
-        if not title? or not topics? or not licences?
+        if draft?
           self[:draft] = "yes"
+        end
+      
+        if draft == true
+          self[:draft] = "yes"
+        end
+        
+        if draft == false
+          self[:draft] = "no"
         end
 
         if not title?
@@ -261,8 +269,8 @@ module Metadata
         end
 
         if not schema?
-          self[:schema] = JSON_SCHEMA_URI
-        end
+          self[:schema] = self.class.schema_uri
+        end        
 
         before_valid
 
@@ -277,7 +285,6 @@ module Metadata
         self
     end
     alias :empty :before_save
-
 
     # Manipulates dataset before validation
     # @override MultiJsonSchemaValidator
@@ -319,7 +326,15 @@ module Metadata
     def data?
       (links||[]).select {|link| link.rel == "data" }.size > 0
     end
-    
+
+    def draft?
+      if self[:draft] == "yes" or self[:draft] == true
+        return true
+      else      
+        not title? or not topics? or not licences?
+      end
+    end
+
     # Free data?
     def free?
       open? or publicdomain?
