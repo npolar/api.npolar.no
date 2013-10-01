@@ -45,5 +45,5 @@
    "system": "api",
    "authorizer": "Npolar::Auth::Ldap"
  },
- "open": true,
+ "open": true
 }
