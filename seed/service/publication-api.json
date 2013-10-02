@@ -1,24 +1,57 @@
-{ "schema": "http://api.npolar.no/schema/api",
+{
+  "_id": "publication-api",
+  "_rev": "1-ab01a33ec9ebc33dc33e06efcd9e858c",
+  "schema": "http://api.npolar.no/schema/api",
   "id": "publication-api",
   "path": "/publication",
-  "title": "Publications",
-  "summary": "Publications",
+  "title": "Publication API",
   "storage": "Couch",
   "database": "publication",
   "model": "Publication",
-  "verbs": ["DELETE","GET","HEAD","POST","PUT"],
-  "formats": {"json":"application/json","html":"text/html"},
-  "accepts": {"application/json":""},
-  "category": ["CouchDB","Elasticsearch","Lucene","REST","Search","JSON","JSON Schema","HTTP"],
+  "search": {
+    "engine": "Elasticsearch",
+    "uri": "http://dbmaster.data.npolar.no:9200",
+    "index": "global",
+    "type": "publication",
+    "facets": [
+      "topics",
+      "publication_year"
+    ]
+  },
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT"
+  ],
+  "formats": {
+    "json": "application/json; charset=utf8"
+  },
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/publication"
+  },
+  "category": [
+    "CouchDB",
+    "Solr",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "XML",
+    "XML Schema",
+    "DIF",
+    "HTTP",
+    "Atom",
+    "ISO19139"
+  ],
   "lifecycle": "production",
   "run": "Npolar::Api::Json",
-  "open":true,
-  "search": { "engine": "Elasticsearch",
-    "uri": "http://localhost:9200",
-    "facets": [],
-    "type": "publication",
-    "index": "publication"
-  },
-  "auth": {"authorize":"sysadmin","system":"api", "authorizer":"Npolar::Auth::Ldap"},
-  "base": "http://api.npolar.no"
+  "open": true,
+  "auth": {
+    "authorize": "editor",
+    "system": "publication",
+    "authorizer": "Npolar::Auth::Ldap"
+  }
 }

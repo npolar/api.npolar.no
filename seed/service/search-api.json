@@ -1,4 +1,6 @@
 {
+  "_id": "search-api",
+  "_rev": "1-9bdbd1378ed9f0a1fc7e2b980b3c8e29",
   "schema": "http://api.npolar.no/schema/api",
   "id": "search-api",
   "path": "/",
@@ -7,19 +9,45 @@
   "storage": null,
   "database": null,
   "model": "",
-  "search": { "engine": "Solr",
-    "core": "api",
-    "facets": ["collection", "workspace", "accept_mimetypes", "accept_schemas", "formats", "relations", "topics", "sets", "category", "country",
-      "draft", "editors", "hemisphere", "investigators", "licences", "link", "methods", "parameter", "person", "placename", "project",
-      "source", "iso_topics", "tags"],
-    "force": {}
+  "search": {
+    "engine": "elasticsearch",
+    "uri": "http://dbmaster.data.npolar.no:9200",
+    "index": "global",
+    "type": "project,dataset,publication",
+    "facets": [
+      "collection",
+      "topics",
+      "tags"
+    ]
   },
-  "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
-  "formats": {"json":"application/json", "html": "text/html"},
-  "accepts": {},
-  "category": ["CouchDB", "REST", "JSON", "HTTP"],
+  "before": "Npolar::Api::Json.before_lambda",
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT"
+  ],
+  "formats": {
+    "json": "application/json",
+    "html": "text/html"
+  },
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/api"
+  },
+  "category": [
+    "CouchDB",
+    "REST",
+    "JSON",
+    "HTTP"
+  ],
   "lifecycle": "production",
   "run": "Npolar::Api::Search",
   "open": true,
-  "auth": { "authorize": "sysadmin", "system": "api" }
+  "auth": {
+     "authorize": "sysadmin",
+     "system": "api",
+     "authorizer": "Npolar::Auth::Ldap"
+  },
+  "base": "http://api.npolar.no"
 }
