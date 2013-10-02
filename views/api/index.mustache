@@ -47,12 +47,8 @@
           <strong>{{{title}}}</strong>
         {{/link_edit?}}
         {{#link_edit?}}<a href="{{link_edit}}" title="Edit URI">{{{title}}}</a>{{/link_edit?}} | {{collection}} <br/>
-            <!--{{#formats}} <a href="{{href}}">{{label}}</a>{{/formats}}<br/>-->
-            <!--{{#link_relations}} <a href="{{href}}">{{rel}}</a>{{/link_relations}}-->
-            
         {{/title?}}
-        {{^title?}}{{/title?}}
-        <pre>{{json}}</pre>
+        {{^title?}}<pre>{{json}}</pre>{{/title?}}
         </p>
         {{/entries}}
   

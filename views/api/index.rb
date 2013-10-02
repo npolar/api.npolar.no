@@ -156,21 +156,18 @@ module Views
         feed(:entries).map {|e|
         
           formats = false
-          link_relations = e.select {|k,v| k =~ /^link_/}.map {|k,v|
-            { :rel => k.to_s.gsub(/^link_/, ""), :href => v }
-          }
+          
           if e.key? :title and e[:title].respond_to? :first
             e[:title] = e[:title].first
           end
 
-          if e.key? :formats
-            formats = e[:formats].map {|f| { :format => f, :label => f,
-              :href => e.key?(:link_edit) ? "#{e[:link_edit]}.#{f}" : "" }
-            }
-          end
+          edit_links = e.links.select {|link| link.rel == "edit" }
 
-          e.merge(:"title?" => title?(e), :json => e.to_json, :link_edit? => e.key?(:link_edit),
-            :formats => formats, :link_relations => link_relations )
+          if edit_links.any?
+            ext = "json" #e.link.type.split("/")[1]
+            e.link_edit =  (edit_links[0].href+".#{ext}").gsub(/^https/, "http")
+          end
+          e.merge(:"title?" => title?(e), :json => e.to_json, :link_edit? => edit_links.any?)
         }
       end
 
