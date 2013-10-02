@@ -65,7 +65,7 @@ module Metadata
     end
 
     def add_past_edits
-      filename = File.dirname(__FILE__)+"/../../seed/dataset/dataset-editors.csv"
+      filename = File.dirname(__FILE__)+"/../seed/dataset/dataset-editors.csv"
       log.debug filename
       edits = {}
       ::CSV.foreach(filename, {:col_sep => "\t", :return_headers => false}) {|row|
