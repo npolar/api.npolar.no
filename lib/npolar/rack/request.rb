@@ -26,7 +26,7 @@ module Npolar
   
       # Extract format from path info
       def format_from_path
-  
+
         return "" if path_info.nil? or path_info !~ /[.]/
   
         format = path_info.split(".").last
@@ -92,7 +92,9 @@ module Npolar
         id = path_info.split("/")[1]
   
         if id =~ /[.]/
-          id = id.split(".")[0]
+          id = id.split(".")
+          id.pop
+          id = id.join(".")
         end
       
         if id == [] or id.nil?
