@@ -195,8 +195,8 @@ module Metadata
         o.roles.include?("owner") or o.roles.include?("resourceProvider") }.map {|o|
 
         if o.links? and o.links.any?
-          resourceProviders = o.links.select {|link| link.rel == "resourceProvider" }
-          owners = o.links.select {|link| link.rel == "owner" }
+          resourceProviders = (o.links||[]).select {|link| link.rel == "resourceProvider" }
+          owners = (o.links||[]).select {|link| link.rel == "owner" }
         else
           resourceProviders = owners = []
         end
@@ -483,7 +483,13 @@ module Metadata
 
     # References = links[rel="reference"] + gcmd.references
     def references
-      gcmd.references? ? gcmd.references : []
+      references = gcmd.references? ? gcmd.references : []
+      references += links.select {|link| link.rel == "publication" }.map {|link|
+        Hashie::Mash.new({
+          Publication_Date: "Unknown", Title: link.title, Online_Resource: link.href,        
+        })
+      }
+      
     end
     alias :reference :references
 
@@ -518,7 +524,7 @@ module Metadata
       #http://www.unidata.ucar.edu/software/thredds/current/tds/interfaceSpec/NetcdfSubsetService.html#REST
       # wms!
       subtyper = lambda {|link, dif_type="GET DATA"|
-        if dif_type == "GET DATA"
+        if dif_type =~ /GET (DATA|SERVICE)/
           if link.type =~ /application\/(x-)?netcdf/
             "THREDDS DATA"
           elsif link.href =~ /\.(cdl|nc)$/i
@@ -526,13 +532,17 @@ module Metadata
           elsif link.href =~ /request=GetCapabilities&service=WMS/
             "GET WEB MAP SERVICE (WMS)"
           elsif link.type == "application/atom+xml"
-
+            nil
+          elsif link.type == "application/json"
+            nil
           end
         end
       }
 
       related_url = []
-      links.reject {|link| link.rel =~ /internal|datacentre/ }.each {|link|
+      # All links except internal (hidden), datacentre (in Online_Resource) and
+      # publication (in References)
+      links.reject {|link| link.rel =~ /internal|datacentre|publication/ }.each {|link|
 
         dif_type = typer.call(link.rel)
         dif_subtype = subtyper.call(link)
@@ -540,10 +550,10 @@ module Metadata
         r = Hashie::Mash.new({ "URL_Content_Type" => {"Type" => dif_type},
           "URL" => link.href, "Description" => link.title||link.rel.capitalize })
 
-        if (link.type? and !link.type.nil?)
+        if (link.type? and not link.type.nil?)
           r.Description += " (#{link.type})"
         end
-        if !dif_subtype.nil?
+        if not dif_subtype.nil?
           r.URL_Content_Type.Subtype = dif_subtype
         end
     
