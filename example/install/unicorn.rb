@@ -2,7 +2,7 @@ worker_processes 4
 user 'api'
 
 preload_app true
-timeout 30
+timeout 180
 
 working_directory '/home/api/api.npolar.no' # git clone git@github.com:npolar/api.npolar.no.git
 listen "0.0.0.0:9000", :backlog => 1024
