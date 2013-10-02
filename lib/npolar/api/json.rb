@@ -84,7 +84,6 @@ module Npolar
               use Views::Api::Index, {:svc => search}
               if /Solr/i =~ api.search.engine
                 
-
                 use Npolar::Rack::Solrizer, {
                   :core => api.search.core,
                   :force => api.search.force,
@@ -94,7 +93,7 @@ module Npolar
                 }
               elsif /Elasticsearch/i =~ api.search.engine
 
-                #use Npolar::Rack::JsonCleaner
+                use Npolar::Rack::HashCleaner
 
                 use Npolar::Rack::Icelastic, {
                   :uri => api.search.uri,
