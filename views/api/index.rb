@@ -164,7 +164,7 @@ module Views
           edit_links = e.links.select {|link| link.rel == "edit" }
 
           if edit_links.any?
-            ext = "json" #e.link.type.split("/")[1]
+            ext = "json" # @todo
             e.link_edit =  (edit_links[0].href+".#{ext}").gsub(/^https/, "http")
           end
           e.merge(:"title?" => title?(e), :json => e.to_json, :link_edit? => edit_links.any?)
