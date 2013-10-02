@@ -18,7 +18,7 @@ module Views
               {:format=>"json", :label => "JSON", :active => ""},
             ]
           },
-          :limit => 10,
+          :limit => 25,
           :svc => { :search => [
             #{:title => "Biology", :href => "/biology/?q="},
             #{:title => "Ecotox", :href => "/ecotox/?q="},
@@ -161,7 +161,7 @@ module Views
             e[:title] = e[:title].first
           end
 
-          edit_links = e.links.select {|link| link.rel == "edit" }
+          edit_links = (e.links||[]).select {|link| link.rel == "edit" }
 
           if edit_links.any?
             ext = "json" # @todo
