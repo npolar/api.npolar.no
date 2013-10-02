@@ -1,19 +1,24 @@
 # encoding: utf-8
 require "logger"
 require "uri"
+require "csv"
 # Migrates projects to schema version 1.0 
 # $ ./bin/npolar_api_migrator http://localhost:9393/project ::Project ::ProjectMigration0 --really=false > /dev/null
 
 class ProjectMigration0
 
   attr_writer :log
+
+  def initialize
+    @organisation = data_centers_from_ris
+  end
  
   def migrations
     [fix_schema, force_domain_name_in_people_organisations, fix_people_linking_to_wrong_organisations]
   end
 
   def select
-    lambda {|d| d.schema == "http://api.npolar.no/schema/project.json" }
+    lambda {|d| not d.schema or d.schema == "http://api.npolar.no/schema/project.json" }
   end
 
   def log
@@ -82,6 +87,15 @@ class ProjectMigration0
         "akvaplan.niva.no"
       else ""
     end
-    
   end
+
+  def data_centers_from_ris
+    filename = File.dirname(__FILE__)+"/../seed/organisation/md_data_center.tsv"
+    dc = {}
+    ::CSV.foreach(filename, {:col_sep => "\t", :return_headers => false}) {|row|
+      log.debug row
+    }
+    dc
+  end
+
 end
