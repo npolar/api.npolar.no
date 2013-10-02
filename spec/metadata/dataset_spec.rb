@@ -98,6 +98,13 @@ describe Metadata::Dataset do
           end
         end
 
+        context "#draft?" do
+          it do
+            @request.body='{"draft":"no"}' 
+            before_save.draft?.should == true
+          end
+        end
+
         context "organisations" do
           context "id" do
             it do
@@ -177,8 +184,7 @@ describe Metadata::Dataset do
         end
       end
     end
-
-    end
+  end
 
 
 
