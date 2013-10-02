@@ -14,7 +14,7 @@ class ProjectMigration0
   end
  
   def migrations
-    [fix_schema, force_domain_name_in_people_organisations, fix_people_linking_to_wrong_organisations]
+    [fix_schema, force_domain_name_in_people_organisations,fix_organisations, fix_people_linking_to_wrong_organisations]
   end
 
   def select
@@ -59,10 +59,10 @@ class ProjectMigration0
   end
 
   def force_domain_name_in_people_organisations
+      orgs = []
       [lambda {|d|
         d.people? and d.people.any? },
       lambda {|d|
-
         d.people.select {|p| (not p.organisation.nil? and p.organisation !~ URI::regexp)}.map {|p|
 
           if p.email =~ /@/ 
@@ -70,11 +70,32 @@ class ProjectMigration0
           else
             organisation = domain_name_from_name(p.organisation)
           end
-          log.debug organisation+" <== "+p.organisation
+
+          if organisation.to_s.empty? 
+            orgs << p.organisation
+            #log.debug p.organisation #organisation+" <== "+p.organisation
+          end
           p.organisation = organisation
         }
+        log.debug orgs.uniq
         d
       }]
+
+  end
+
+  def fix_organisations
+      orgs = []
+      [
+        lambda {|d|
+          d.organisations? and d.organisations.any? 
+        },
+        lambda {|d|
+          #log.debug d.organisations
+          orgs += d.organisations
+          log.debug orgs.uniq
+          d
+        }
+      ]
   end
 
   protected
@@ -97,5 +118,4 @@ class ProjectMigration0
     }
     dc
   end
-
 end
