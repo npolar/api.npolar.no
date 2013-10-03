@@ -79,8 +79,7 @@ module Npolar
       if ["GET", "HEAD", "DELETE"].include? request.request_method
         # 404 / 410 Gone?
         # 412 Precondition Failed?
-        # 414 Request-URI Too Long?
-
+        
         # 406 Not Acceptable ?
         # Only run the check if the endpoint supports multiple formats and
         # the user supplied .format extension
