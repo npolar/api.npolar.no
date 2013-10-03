@@ -14,9 +14,15 @@
     "index": "global",
     "type": "publication",
     "facets": [
+      "organisation",
+      "publication_year",
       "topics",
-      "publication_year"
-    ]
+      "category",
+      "publisher",
+      "links.rel",
+      "people.email",
+      "draft"
+      ]
   },
   "verbs": [
     "DELETE",
@@ -26,7 +32,7 @@
     "PUT"
   ],
   "formats": {
-    "json": "application/json; charset=utf8"
+    "json": "application/json"
   },
   "accepts": {
     "application/json": "http://api.npolar.no/schema/publication"
