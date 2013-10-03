@@ -1,4 +1,6 @@
 # encoding: utf-8
+require "uri"
+
 module Metadata
 
   # Converts a npolar dataset (http://api.npolar.no/schema/dataset) to a
@@ -163,8 +165,8 @@ module Metadata
           "Summary" => {"Abstract" => summary},
           "Related_URL" => related_url,
           "Parent_DIF" => parent_dif,
-          #"Distribution" => distribution,
-          #"Multimedia_Sample" => multimedia_sample,
+          "Distribution" => distribution,
+          "Multimedia_Sample" => multimedia_sample,
           "IDN_Node" => idn_node,
           "Originating_Metadata_Node" => originating_metadata_node,
           "Metadata_Name" => "CEOS IDN DIF",
@@ -192,45 +194,45 @@ module Metadata
     # Organisation with roles "owner" and "resourceProvider" are mapped to data centres
     def data_center
       (organisations||[]).select {|o|
-        o.roles.include?("owner") or o.roles.include?("resourceProvider") }.map {|o|
+        o.roles.include?("owner") or o.roles.include?("resourceProvider") or o.roles.include?("publisher")
+        }.map {|o|
 
-        if o.links? and o.links.any?
-          resourceProviders = (o.links||[]).select {|link| link.rel == "resourceProvider" }
-          owners = (o.links||[]).select {|link| link.rel == "owner" }
-        else
-          resourceProviders = owners = []
-        end
-        
-        if resourceProviders.any? and resourceProviders[0].href?
-          data_center_url = resourceProviders[0].href
-        #elsif publishers.any? and resourceProviders[0].href?
-        #  data_center_url = publishers[0].href
-        
-        elsif owners.any? and owners[0].href?
-          data_center_url = owners[0].href
-        end
-        
-        data_center_contacts = personnel(/pointOfContact/, o.id)
-        if data_center_url =~ /npolar.no/ or o.id == "npolar.no"
-          data_set_id = id
-          if o.roles.include? "pointOfContact"
-            data_center_contacts << { Role: "Data Center Contact",
-              Last_Name: "Norwegian Polar Data",
-              Email: "data[*]npolar.no" }
+          resourceProviders = owners = publishers = []
+          if o.links? and o.links.any?
+            resourceProviders = (o.links||[]).select {|link| link.rel == "resourceProvider" }
+            owners = (o.links||[]).select {|link| link.rel == "owner"}
+            publishers = (o.links||[]).select {|link| link.rel == "publisher" }
           end
-        else
-          data_set_id = nil
-        end
-        {
-          "Data_Center_Name" => {
-            "Short_Name" => o.gcmd_short_name,
-            "Long_Name" => o.name
-          },
-          "Data_Center_URL" => data_center_url,
-          "Data_Set_ID" => data_set_id,
-          "Personnel" => data_center_contacts
-        }
-      } 
+          
+          if resourceProviders.any? and resourceProviders[0].href?
+            data_center_url = resourceProviders[0].href
+          elsif publishers.any? and publishers[0].href?
+            data_center_url = publishers[0].href
+          elsif owners.any? and owners[0].href?
+            data_center_url = owners[0].href
+          end
+          
+          data_center_contacts = personnel(/pointOfContact/, o.id)
+          if data_center_url =~ /npolar.no/ or o.id == "npolar.no"
+            data_set_id = id
+            if o.roles.include? "pointOfContact"
+              data_center_contacts << { Role: "Data Center Contact",
+                Last_Name: "Norwegian Polar Data",
+                Email: "data[*]npolar.no" }
+            end
+          else
+            data_set_id = nil
+          end
+          {
+            "Data_Center_Name" => {
+              "Short_Name" => o.gcmd_short_name,
+              "Long_Name" => o.name
+            },
+            "Data_Center_URL" => data_center_url,
+            "Data_Set_ID" => data_set_id,
+            "Personnel" => data_center_contacts
+          }
+        } 
     end
 
     # Data_Set_Language = inferred from link[rel=data].hreflang
@@ -285,6 +287,16 @@ module Metadata
       end
     end
 
+    # Distribution
+    def distribution
+      #gcmd.distribution? ? gcmd.distribution : []
+      links.select {|link| link.rel =~ /data/ and link.href =~ /^http(s)?[:]/ }.map {|link|
+        Hashie::Mash.new({
+          Distribution_Media: "Online Internet (HTTP)", Distribution_Size: link[:length], Distribution_Format: link.type
+        })
+      } 
+    end
+
     # Data_Set_Citation = "gcmd.citation" (if present) OR generated
     # using other metadata.
     #
@@ -307,14 +319,14 @@ module Metadata
       release_date = (0 < links.select {|link| link.rel == "data"}.size) ? (released||"T").split("T")[0] : nil
       release_place = publisher =~ /^Norwegian Polar/ ? "Tromsø, Norway" : nil
 
-      { "Dataset_Creator" => authors.join(", "),
+      Hashie::Mash.new({ "Dataset_Creator" => authors.join(", "),
         "Dataset_Title" => title,
         "Dataset_Release_Date" => release_date,
         "Dataset_Release_Place" => release_place,
         "Dataset_Publisher" => publisher,
         "Dataset_DOI" =>  doi,
         "Online_Resource" => online_resource 
-      }
+      })
     end
 
     # Entry_ID
@@ -364,6 +376,11 @@ module Metadata
       gcmd.instruments? ? gcmd.instruments : []
     end
     alias :sensor_name :instruments
+
+    # Paleo_Temporal_Coverage
+    def paleo_temporal_coverage
+       gcmd.paleo_temporal_coverage? ? gcmd.paleo_temporal_coverage : []
+    end
 
     # Parameters = gcmd.sciencekeywords + dif_Parameter(topic)
     def parameters
@@ -476,6 +493,25 @@ module Metadata
       location.uniq
     end
 
+    # Multimedia_Sample
+    def multimedia_sample
+      #  multimedia_samples = gcmd.multimedia_samples? ? gcmd.multimedia_samples : [] @todo 
+      links.select {|link| multimedia?(link) }.map {|link|
+        Hashie::Mash.new({
+          URL: link.href, Format: link.type, Caption: link.title
+        })
+      } 
+    end
+
+    def multimedia?(link)
+      if link.type =~ /^(image|video|audio)\// or link.href =~ /[.](jp(e)?g|png|svg|tif(f)?)$/
+        true
+      else
+        false
+      end
+    end
+
+
     def platforms
       gcmd.platforms? ? gcmd.platforms : []
     end
@@ -505,9 +541,9 @@ module Metadata
           "VIEW PROJECT HOME PAGE"
         when "edit", "service", "parent", "via"
           "GET SERVICE"
-        # related DIF is hard to identify without a media type for DIF...
+        # related DIF is hard/impossible to identify without a media type for DIF
         #  "GET RELATED METADATA RECORD (DIF)"
-        when "internal", "parent", "datacentre" # parent => Parent_DIF, datacentre = Data_Center
+        when "internal", "parent", "datacentre" # parent => Parent_DIF, datacentre => Data_Center
           nil
         else # e.g. "related", "alternate", "", nil    
           "VIEW RELATED INFORMATION" 
@@ -599,13 +635,20 @@ module Metadata
           })
         end
       end
-      #dif_author = edits.last
-      #personnel << Hashie::Mash.new({
-      #      "Role" => "DIF Author",
-      #      "First_Name" => dif_author.name,
-      #      "Last_Name" =>dif_author.name,
-      #      "Email" => dif_author.email
-      #})   
+      
+      if edits.any?
+        dif_author = edits.last
+      else
+        dif_author = Hashie::Mash.new({ first_name: updated_by, last_name: "", email: "" })
+      end
+      
+      personnel << Hashie::Mash.new({
+        "Role" => "DIF Author",
+        "First_Name" => dif_author.first_name,
+        "Last_Name" =>dif_author.last_name,
+        "Email" => dif_author.email
+      })
+      
       personnel
     end
   
