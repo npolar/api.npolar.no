@@ -5,7 +5,7 @@
   "description": "Metadata describing a publication",
   "type": "object",
   "additionalProperties": false,
-  "required": ["title", "schema", "collection", "publication_year", "people",   "scientific_abstract", "norw_summary", "review_progress", "state", "category"],
+  "required": ["title", "schema", "collection", "publication_year", "people", "topics",  "scientific_abstract", "norw_summary", "review_progress", "state", "category"],
   "properties": {
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
     "schema": { "type": "string" },
@@ -64,7 +64,7 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["atmosphere", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
+        "enum": ["atmosphere", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation", "other"]
       }
     },
     "tags": {
