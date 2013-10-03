@@ -31,12 +31,12 @@
     "progress": {"enum": ["ongoing","complete", "planned"]},
     "topics": {
       "title": "Npolar topics",
-      "description": "Based on http://www.npolar.no/en/research/topics/ (Missing?: Management? Conservation? Human dimensions?)",
+      "description": "Includes http://www.npolar.no/en/research/topics/",
       "type": "array",
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["atmosphere", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
+        "enum": ["atmosphere", "biology", "chemistry", "climate", "conservation", "ecology", "ecotoxicology", "environment", "geology", "glaciology", "management", "marine", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
       }
     },
     "iso_topics": {
