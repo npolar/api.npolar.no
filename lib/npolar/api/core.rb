@@ -31,8 +31,9 @@ module Npolar
       begin
 
         @request = Rack::Request.new(env) # <Npolar::Rack::Request>
+
         # Delegete everything except "html" to #handle
-        if request.read? and request.format == "html" and @app.respond_to? :call
+        if request.read? and formats.include?("html") and request.format == "html" and @app.respond_to? :call
           @app.call(env)
         else
           handle(request)
@@ -60,7 +61,7 @@ module Npolar
 
       request = before(request)
 
-      # 405 Method not allowed
+      # 405 Method not allowed ?
       unless method_allowed? request.request_method
         return http_error(405, "The following HTTP methods are allowed: #{methods.join(", ")}")
       end
@@ -80,9 +81,13 @@ module Npolar
         # 412 Precondition Failed?
         # 414 Request-URI Too Long?
 
-        # 406 Not Acceptable
-        unless acceptable? request.format
-          return http_error(406, "Unacceptable format '#{format}', this API endpoint supports the following #{request.request_method} formats: #{formats.join(",")}")
+        # 406 Not Acceptable ?
+        # Only run the check if the endpoint supports multiple formats and
+        # the user supplied .format extension
+        if formats.size > 1 and request.path_info =~ /\.\w+/
+          unless acceptable? request.format
+            return http_error(406, "Unacceptable format '#{format}', this API endpoint supports the following #{request.request_method} formats: #{formats.join(",")}")
+          end
         end
         
       elsif ["PUT", "POST"].include? request.request_method
