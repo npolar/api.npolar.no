@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/dataset-1.0-rc4",
+  "id": "http://api.npolar.no/schema/dataset-1.0.0",
   "title": "Dataset",
   "description": "Metadata describing a dataset",
   "type": "object",   
@@ -121,7 +121,7 @@
           "roles": {
             "type": "array",
             "items": {
-              "enum": ["originator", "owner",  "publisher", "resourceProvider", "pointOfContact"]
+              "enum": ["author", "originator", "owner", "pointOfContact", "principalInvestigator", "publisher", "resourceProvider"] 
             }
           },
           "email": {
