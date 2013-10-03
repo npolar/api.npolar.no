@@ -5,7 +5,7 @@
   "description": "Metadata describing a publication",
   "type": "object",
   "additionalProperties": false,
-  "required": ["title", "schema", "collection", "publication_year", "people",   "scientific_abstract", "norw_summary", "review_progress", "state", "category"],
+  "required": ["title", "schema", "collection", "publication_year", "people", "topics",  "scientific_abstract", "norw_summary", "review_progress", "state", "category"],
   "properties": {
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
     "schema": { "type": "string" },
