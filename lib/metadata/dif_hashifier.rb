@@ -171,7 +171,7 @@ module Metadata
           "Originating_Metadata_Node" => originating_metadata_node,
           "Metadata_Name" => "CEOS IDN DIF",
           "Metadata_Version" => ::Gcmd::Schema::VERSION,
-          "DIF_Creation_Date" => (published||"T").split("T")[0],
+          "DIF_Creation_Date" => (created||"T").split("T")[0],
           "Last_DIF_Revision_Date" => (updated||"T").split("T")[0],
           "DIF_Revision_History" => dif_revision_history,
           "Future_DIF_Review_Date" => (released||"T").split("T")[0],
