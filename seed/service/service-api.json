@@ -1,5 +1,6 @@
 {"_id":"service-api",
 "schema":"http://api.npolar.no/schema/api",
+"_rev": "1-a8761c1b3f52ce11e64990054121ebe4",
 "id":"service-api",
 "after": "Service.after_lambda",
 "path":"/service",
@@ -15,6 +16,6 @@
 "lifecycle":"production",
 "run":"Npolar::Api::Json",
 "open":true,
-"auth":{"authorize":"sysadmin","system":"api"},
+"auth":{"authorize":"sysadmin","system":"api", "authorizer":"Npolar::Auth::Ldap"},
 "base":"http://api.npolar.no"
 }
