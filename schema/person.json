@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://api.npolar.no/schema/person-1.0-rc1",
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "id": {"type": "string"},
     "schema": {"type": "string"},
@@ -18,7 +18,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "rel": { "enum": ["related", "affiliation"] },
+          "rel": { "type": "string" },
           "href": { "type": "string", "format": "uri" },
           "hreflang": { "type": "string" },
           "type": { "type": "string", "default": "text/html" }
@@ -30,5 +30,5 @@
     "created_by": { "type": "string" },
     "updated_by": { "type": "string" }
   },
-  "required": ["first_name", "last_name", "email"]
+  "required": ["email"]
 }
