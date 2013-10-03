@@ -1,4 +1,6 @@
 # encoding: utf-8
+
+# JSON feed => Mustache object
 class Npolar::Mustache::JsonView < ::Mustache
 
   self.template_path = File.expand_path(File.dirname(__FILE__)+"/../../../views")
@@ -10,13 +12,18 @@ class Npolar::Mustache::JsonView < ::Mustache
   def call(env)
     request = Npolar::Rack::Request.new(env)
         
-    if "json" === request.format
-      if request["q"].nil?
+    if "json" == request.format
+      if request["q"].nil? 
         json = respond_to?(:data) ? data.to_json : get(id).to_json
         [200, {"Content-Type" => "application/json"},[json]]
       else
         @app.call(env)
       end
+    
+    elsif "html" == request.format and request["q"].nil? and request.path_info != "/"
+      @app.call(env)
+
+    # Feed only HTML middleware, ie. path info needs to be /
     else
       unless (request["q"].nil?) or @app.nil?
         status, headers, body = @app.call(env)
