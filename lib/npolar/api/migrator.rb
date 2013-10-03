@@ -1,8 +1,5 @@
 module Npolar
   module Api
-# 184
-#/home/ch/.rvm/rubies/ruby-1.9.3-p429/lib/ruby/1.9.1/net/protocol.rb:146:in `rescue in rbuf_fill': Timeout::Error (Faraday::Error::TimeoutError)
-#	from /home/ch/github.com/api.npolar.no/lib/npolar/api/migrator.rb:64:in `run'
 
     class Migrator
       attr_accessor :client, :migrations, :log, :batch, :uri
@@ -17,10 +14,10 @@ module Npolar
       end
       
       def run(really=false)
-        log.info "#{self.class.name}#run against #{uri} --really=#{really}"      
+        log.info "#{self.class.name}#run #{uri} [Migrations: #{migrations.size}] --really=#{really}"      
         log.debug "Migrations: #{migrations}"
 
-        # 1. Get all documents
+        # 1. Get (all) documents
         selected = documents.select(&select)
         log.info "#{selected.size} documents selected of #{client.ids.size} at #{uri}"
         
@@ -39,6 +36,12 @@ module Npolar
           # 2. Get all migrations
           i = 0
           migrations.each do |condition, fixer|
+
+            if fixer.nil? 
+              fixer = condition
+              condition = lambda {|d| true }
+            end
+            
             i += 1
             if condition.call(d)
       
