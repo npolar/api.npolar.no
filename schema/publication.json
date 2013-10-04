@@ -10,7 +10,7 @@
     "id": { "description": "Identifier (UUID | URI)", "type": "string" },
     "schema": { "type": "string" },
     "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
-    "lang": { "type": "string"},
+    "original_lang": { "type": "string"},
     "original_title": { "type" : ["string", "null"] },
     "collection": { "enum": ["publication"] },
     "base": { "enum": ["http://api.npolar.no"] },
