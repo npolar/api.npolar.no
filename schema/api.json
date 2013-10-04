@@ -10,6 +10,7 @@
     "id": { "type": "string" },
     "rev": { "type": "string" },
     "schema": { "type": "string", "format": "uri", "default":"http://api.npolar.no/schema/api"},
+    "collection": { "type": "string" },
     "base": { "type": "string", "format": "uri", "default":"http://api.npolar.no"},
     "version": { "type": "string" },
     "before": { "type": "string" },
