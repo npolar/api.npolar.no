@@ -244,7 +244,21 @@ module Npolar
 
         if params['sort']
           sort_items = params['sort'].split(',').map{|item|
-            item.match(/^\-(.*)/) ? {item[1..-1] => :desc} : {item => :asc}
+            if item.match(/^\-(.*)/)
+              {
+                item[1..-1] => {
+                  :order => :desc,
+                  :ignore_unmapped => true
+                }
+              }
+            else
+              {
+                item => {
+                  :order => :asc,
+                  :ignore_unmapped => true
+                }
+              }
+            end
           }
         end
 
