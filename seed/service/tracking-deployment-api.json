@@ -1,0 +1,29 @@
+{ "id":"tracking-deployment-api",
+  "schema":"http://api.npolar.no/schema/api",
+  "path":"/tracking/deployment",
+  "storage":"Couch",
+  "database":"tracking_deployment",
+  "verbs":["DELETE","GET","HEAD","POST","PUT"],
+  "formats":{"json":"application/json","html":"text/html"},
+  "accepts":{"application/json":""},
+  "lifecycle":"experimental",
+  "run":"Npolar::Api::Json",
+  "open":true,
+  "search": {
+       "engine": "Elasticsearch",
+       "uri": "http://localhost:9200",
+       "facets": [
+           "species",
+           "object",
+           "program",
+           "technology",
+           "device",
+           "individual",
+           "terminated"
+       ],
+       "index": "global",
+       "type": "tracking-deployment"
+   },
+  "auth":{"authorize":"sysadmin","system":"api","authorizer":"Npolar::Auth::Couch"},
+  "base":"http://api.npolar.no"
+}
