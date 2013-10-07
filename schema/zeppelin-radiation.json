@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/project-1.0-rc1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title"],
+  "properties": {
+    "id": { "type" :"string" },
+    "rev": { "type": "string" },
+    "_id": { "description": "Internal id", "type": "string" },
+    "_rev" : { "description": "Internal revision", "type": "string" },
+    "t2_last_sampling": {
+      "type": "number",
+      "description": "Number of seconds elapsed since 12:00 a.m., Friday, January 1, 1904"
+    },
+    "t1_first_sampling": {
+      "type": "number",
+      "description": "Number of seconds elapsed since 12:00 a.m., Friday, January 1, 1904"
+    },
+    "mean_dif_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "max_dif_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "min_dif_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "s_dif_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "mean_dir_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "max_dir_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "min_dir_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "s_dir_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "mean_glob_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "min_glob_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "s_glob_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "mean_ir_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "max_ir_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "min_ir_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "s_ir_temp": {
+      "type": "number",
+      "description": "°C"
+    },
+    "mean_dif_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "max_dif_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "min_dif_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "s_dif_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "mean_dir_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "max_dir_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "min_dir_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "s_dir_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "mean_glob_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "max_glob_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "min_glob_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "s_glob_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "mean_ir_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "max_ir_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "min_ir_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "s_ir_solar": {
+      "type": "number",
+      "description": "W·m-2"
+    },
+    "mean_tacho_dif": {
+      "type": "number",
+      "description": "rpm"
+    },
+    "max_tacho_dif": {
+      "type": "number",
+      "description": "rpm"
+    },
+    "min_tacho_dif": {
+      "type": "number",
+      "description": "rpm"
+    },
+    "s_tacho_dif": {
+      "type": "number",
+      "description": "rpm"
+    },
+    "mean_tacho_glob": {
+      "type": "number",
+      "description": "rpm"
+    },
+    "max_tacho_glob": {
+      "type": "number",
+      "description": "rpm"
+    },
+    "min_tacho_glob": {
+      "type": "number",
+      "description": "rpm"
+    },
+    "s_tacho_glob": {
+      "type": "number",
+      "description": "rpm"
+    }
+}
+
