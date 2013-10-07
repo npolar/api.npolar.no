@@ -3,7 +3,6 @@
   "id": "http://api.npolar.no/schema/project-1.0-rc1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["title"],
   "properties": {
     "id": { "type" :"string" },
     "rev": { "type": "string" },
