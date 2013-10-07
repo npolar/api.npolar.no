@@ -7,7 +7,52 @@ module Npolar
   module Rack
    
     class ZeppelinTsvParser < Npolar::Rack::Middleware
-      
+
+      # fields, in the order they appear posted by Tor Ivan
+      @fields = [
+        "t2_last_sampling",
+        "t1_first_sampling",
+        "mean_dif_temp",
+        "max_dif_temp",
+        "min_dif_temp",
+        "s_dif_temp",
+        "mean_dir_temp",
+        "max_dir_temp",
+        "min_dir_temp",
+        "s_dir_temp",
+        "mean_glob_temp",
+        "min_glob_temp",
+        "s_glob_temp",
+        "mean_ir_temp",
+        "max_ir_temp",
+        "min_ir_temp",
+        "s_ir_temp",
+        "mean_dif_solar",
+        "max_dif_solar",
+        "min_dif_solar",
+        "s_dif_solar",
+        "mean_dir_solar",
+        "max_dir_solar",
+        "min_dir_solar",
+        "s_dir_solar",
+        "mean_glob_solar",
+        "max_glob_solar",
+        "min_glob_solar",
+        "s_glob_solar",
+        "mean_ir_solar",
+        "max_ir_solar",
+        "min_ir_solar",
+        "s_ir_solar",
+        "mean_tacho_dif",
+        "max_tacho_dif",
+        "min_tacho_dif",
+        "s_tacho_dif",
+        "mean_tacho_glob",
+        "max_tacho_glob",
+        "min_tacho_glob",
+        "s_tacho_glob"
+      ]      
+
       def condition?(request)
         create?(request)
       end
@@ -42,6 +87,7 @@ module Npolar
         units = {}
 
         # reformat header
+=begin
         header = []
         rows[0].split(/\t/).each do |name|
           # extract unit information
@@ -59,6 +105,7 @@ module Npolar
 
           header << name
         end
+=end
  
         # read values, store each doc in array
         docs = []
