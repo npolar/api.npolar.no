@@ -77,7 +77,7 @@ module Npolar
               doc[name] = value
             end
           end
-          doc['units'] = units
+
           docs << doc
         end
 
