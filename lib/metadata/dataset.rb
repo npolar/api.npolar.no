@@ -135,14 +135,15 @@ module Metadata
     end
 
     # Organisation template for npolar.no
-    def self.npolar(roles=["originator", "owner", "publisher", "pointOfContact"])
+    def self.npolar(roles=["author", "originator", "owner", "publisher", "pointOfContact"])
       Hashie::Mash.new({ id: "npolar.no",
         name: "Norwegian Polar Institute",
+        email: "data[*]npolar.no",
         gcmd_short_name: "NO/NPI",
         roles: roles,
         links: [ {rel: "owner", href: "http://npolar.no", title: "Norwegian Polar Institute" },
           {rel: "publisher", href: "http://data.npolar.no", title: "Norwegian Polar Institute" },
-          {rel: "pointOfContact", href: "http://data.npolar.no", title: "Norwegian Polar Data", email: "data[*]npolar.no" }
+          {rel: "pointOfContact", href: "http://data.npolar.no", title: "Norwegian Polar Data" }
         ]
       })
     end
@@ -251,11 +252,11 @@ module Metadata
         end
 
         if data? and not resourceProvider?
-          self[:organisations] << self.class.npolar(["resourceProvider"])
+          #self[:organisations] << self.class.npolar(["resourceProvider"])
         end
 
         if not publisher?
-          self[:organisations] << self.class.npolar(["publisher"])
+          #self[:organisations] << self.class.npolar(["publisher"])
         end
 
         if data? #and restricted? and not (true == restricted)
@@ -278,7 +279,7 @@ module Metadata
 
         deduplicate_people
         
-        deduplicate_organisations
+        #deduplicate_organisations
         
         add_edit_and_alternate_links
 
