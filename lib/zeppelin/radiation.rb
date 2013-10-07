@@ -16,11 +16,6 @@ module Zeppelin
       solr[:id] = id
       solr[:rev] = rev
 
-      # flatten units hash
-      if doc.has_key? "units"
-        solr[:units] = doc["units"].flatten
-      end
-
       # everything
       text = ""
       solr.to_hash.each do |k,v|
