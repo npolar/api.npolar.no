@@ -168,7 +168,7 @@ module Npolar
         {
           :and => filter_params.map{ |k,v|
             # Remove any spaces from the filters
-            v.gsub!(/\s+/, ',') unless v =~ /\"(.*)\"/
+            #v.gsub!(/\s+/, ',') unless v =~ /\"(.*)\"/
 
             # Split and map to proper query
             v.split(',').map{|value|
