@@ -187,12 +187,12 @@
       "type" : "object"
     },
     "created": {
-      "description": "Metadata was published",
+      "description": "Project was published",
       "type": "string",
       "format": "date-time"
     },
     "updated": {
-      "description": "Metadata was updated",
+      "description": "Project was updated",
       "type": "string",
       "format": "date-time"
     },
