@@ -9,7 +9,7 @@ module Npolar
     class ZeppelinTsvParser < Npolar::Rack::Middleware
 
       # fields, in the order they appear posted by Tor Ivan
-      @fields = [
+      @@header = [
         "t2_last_sampling",
         "t1_first_sampling",
         "mean_dif_temp",
@@ -110,10 +110,10 @@ module Npolar
         # read values, store each doc in array
         docs = []
 
-        rows.drop(1).each do |row|
+        rows.each do |row|
           doc = {}
-          row.split(/\t/).each_with_index do |value, index|
-            name = header[index]
+          row.split(/\s+/).each_with_index do |value, index|
+            name = @@header[index]
             if !value.nil? and !value.empty?
               # try to see if this can be a float
               begin
@@ -127,7 +127,7 @@ module Npolar
 
           docs << doc
         end
-
+        puts docs
         docs
       end
       
