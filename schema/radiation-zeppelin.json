@@ -1,8 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/project-1.0-rc1",
+  "id": "http://api.npolar.no/schema/radiation-zeppelin-1.0-rc1",
   "type": "object",
   "additionalProperties": false,
+  "required": [],
   "properties": {
     "id": { "type" :"string" },
     "rev": { "type": "string" },
@@ -172,5 +173,6 @@
       "type": "number",
       "description": "rpm"
     }
+  }
 }
 
