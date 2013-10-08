@@ -6,6 +6,7 @@
    "summary": "",
    "storage": "Couch",
    "database": "radiation-zeppelin",
+   "model" : "RadiationZeppelin",
    "search": {
        "engine": "Elasticsearch",
        "uri": "http://localhost:9200",
