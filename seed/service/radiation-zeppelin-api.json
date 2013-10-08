@@ -50,7 +50,7 @@
    "open": true,
    "auth": {
        "authorize": "editor",
-       "system": "project",
+       "system": "zeppelin",
        "authorizer": "Npolar::Auth::Ldap"
    }
 }
