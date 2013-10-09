@@ -64,6 +64,7 @@ module Npolar
        
         docs = parse(data) 
         request.env["rack.input"] = StringIO.new(docs.to_json)
+        request.env['CONTENT_TYPE'] = "application/json"
         
         log.info "@TsvParser: Input parsed in #{Time.now - t0}"
         app.call(request.env)     
@@ -127,7 +128,7 @@ module Npolar
 
           docs << doc
         end
-        puts docs
+
         docs
       end
       
