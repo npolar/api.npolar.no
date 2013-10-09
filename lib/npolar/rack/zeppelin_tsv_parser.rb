@@ -126,6 +126,9 @@ module Npolar
             end
           end
 
+          # point to our schema
+          doc["schema"] = "http://api.npolar.no/schema/radiation-zeppelin-1.0-rc1"
+
           docs << doc
         end
 
