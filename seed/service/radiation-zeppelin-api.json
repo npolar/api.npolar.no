@@ -10,6 +10,7 @@
        "engine": "Elasticsearch",
        "uri": "http://localhost:9200",
        "facets": [
+         "t2_last_sampling"
        ],
        "type": "radiation-zeppelin",
        "index": "radiation-zeppelin"
