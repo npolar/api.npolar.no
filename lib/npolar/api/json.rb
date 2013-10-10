@@ -25,10 +25,7 @@ module Npolar
             if api.model?
               model = Npolar::Factory.constantize(api.model).new
               # This will trigger NameError if model is undefined
-              to_solr = lambda {|hash|
-                m = model.class.new(hash)
-                m.to_solr # respond to ?        
-            }
+              
             else
               model = nil
             end
@@ -82,6 +79,7 @@ module Npolar
                 }
               }
               use Views::Api::Index, {:svc => search}
+
               if /Solr/i =~ api.search.engine
                 
                 use Npolar::Rack::Solrizer, {
@@ -89,7 +87,15 @@ module Npolar
                   :force => api.search.force,
                   :path => api.path,
                   :facets => api.search.facets,
-                  :to_solr => to_solr
+                  :fl => "*",
+                  :to_solr => lambda {|hash|
+                    if model.nil?
+                      hash
+                    else
+                      m = model.class.new(hash)
+                      m.to_solr
+                    end
+                  }
                 }
               elsif /Elasticsearch/i =~ api.search.engine
 
@@ -106,10 +112,15 @@ module Npolar
               end
             end
 
-            before = [Npolar::Api::Json.before_lambda]
+            if api.before? and api.before !~ /[.]/
+              before = []  
+            else
+              before = [Npolar::Api::Json.before_lambda]
+            end
+           
             after = [Npolar::Api::Json.after_lambda]
             
-            if api.before?
+            if api.before? and api.before =~ /[.]/
               name, met = api.before.split(".")
               bef = Npolar::Factory.constantize(name)
               before << bef.send(met.to_sym)

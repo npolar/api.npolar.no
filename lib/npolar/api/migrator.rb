@@ -46,7 +46,7 @@ module Npolar
             if condition.call(d)
       
               # 3. Apply fix directly to document (for the next fixer)
-              d = fixer.call(d)
+              d = Hashie::Mash.new(fixer.call(d))
               log.debug "#{" "*2}Migration #{i}/#{migrations.size} for #{d.id}"
                       
             else
@@ -56,8 +56,10 @@ module Npolar
         
 
           # 4. Validate document
-          if before.to_json != d.to_json 
+          if before.to_json != d.to_json
+
             if valid?(d)
+              log.debug "Fixed: #{d}"
               fixed << d
             else
               log.error "Failed migrating #{d.id}, errors: #{client.errors(d).to_json}\n#{d.to_json}"
@@ -77,11 +79,11 @@ module Npolar
             if "" == client.username or "" == client.password
               log.warn "Missing HTTP username or password for #{uri}, set these in ENV[\"NPOLAR_API_USERNAME\"] and ENV[\"NPOLAR_API_PASSWORD\"]"
             end
-            
+            log.info "About to POST fixed documents back to #{uri}"
             response = client.post("", fixed.to_json)
             
-            if 201 == response.status
-              log.info "Successful POST of fixed documents to #{uri} :)"
+            if [200..299].include? response.status
+              log.info "Successful re-POST of fixed documents to #{uri} :)"
             else
               log.fatal "HTTP error #{response.status} when attempting to POST back fixed documents to #{uri}\n#{response.body}"
             end
@@ -98,7 +100,7 @@ module Npolar
       end
 
       def valid?(document)
-        client.valid? document
+        client.valid?(document)
       end
 
 
