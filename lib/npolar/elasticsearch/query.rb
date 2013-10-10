@@ -105,10 +105,10 @@ module Npolar
 
         if config[:date_facets]
           config[:date_facets].each do |facet|
-            df["#{facet[:interval]}-#{facet[:field]}"] = {
+            df["#{facet['interval']}-#{facet['field']}"] = {
               :date_histogram => {
-                :field => facet[:field],
-                :interval => facet[:interval]
+                :field => facet['field'],
+                :interval => facet['interval']
               }
             }
           end
