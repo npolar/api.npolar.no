@@ -75,13 +75,26 @@ module Npolar
       end
 
       def valid?(document_or_id)
-        unless model?
-          raise "Cannot validate without model"
+        # FIXME Hashie::Mash will always respond to #valid? 
+        if not model? or not model.respond_to?(:valid?)
+          return true
         end
-        m = model.class.new(document_or_id)
-        v = m.valid?
-        @errors = m.errors # store to avoid revalidating
-        v
+
+        validator = model.class.new(document_or_id)
+        valid = validator.valid?
+        
+        if validator.errors.nil?
+          return true
+        end
+
+        @errors = validator.errors # store to avoid revalidating
+        valid = case valid
+          when true, nil
+            true
+          when false
+            false
+        end
+        valid
       end
 
     def username
