@@ -160,14 +160,14 @@ module Views
           end
 
           edit_links = (e.links||[]).select {|link| link.rel == "edit" }
-p e.links
+
           if edit_links.any?
-            e.link_edit = edit_links[0].href
+            link_edit = edit_links[0].href
           else
-            e.link_edit = e.id
+            link_edit = e.id
           end
 
-          e.merge(:"title?" => title?(e), :json => e.to_json, :link_edit? => true )
+          e.merge(:"title?" => title?(e), :link_edit => link_edit, :json => e.to_json, :link_edit? => true )
         }
       end
 
@@ -194,7 +194,7 @@ p e.links
           return []
         end
         
-        if feed.facets.none?
+        if feed.facets.nil? or feed.facets.none?
           return []
         end
         
