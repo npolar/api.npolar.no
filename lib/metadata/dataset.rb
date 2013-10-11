@@ -217,9 +217,10 @@ module Metadata
           self[:lang] = "en"
         end
         
-        if draft?
-          self[:draft] = "yes"
-        end
+        # FIXME
+        #if draft?
+        #  self[:draft] = "yes"
+        #end
       
         if draft == true
           self[:draft] = "yes"
