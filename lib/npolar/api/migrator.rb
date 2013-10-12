@@ -82,7 +82,7 @@ module Npolar
             log.info "About to POST fixed documents back to #{uri}"
             response = client.post("", fixed.to_json)
             
-            if [200..299].include? response.status
+            if (200..299).include? response.status
               log.info "Successful re-POST of fixed documents to #{uri} :)"
             else
               log.fatal "HTTP error #{response.status} when attempting to POST back fixed documents to #{uri}\n#{response.body}"
