@@ -2,36 +2,63 @@
 require "logger"
 require "csv"
 require "uri"
+require_relative "../../lib/metadata/dataset"
 
 module Metadata
 
   # Fix for 184 datasets coming out of the RIS API
   # http://risapi.data.npolar.no/oai?verb=ListIdentifiers&metadataPrefix=dif
   #
-  # $ ./bin/npolar_api_migrator http://api:9393/dataset ::Metadata::Dataset ::Metadata::DatasetMigration1 --really=false > /dev/null
+  # Identifier for datasets from RiS are constructed using SHA-1 UUIDs, like 
+  # UUID-SHA1("http://api.npolar.no/dataset/org.polarresearch-489")
+  # => 205ed670-775c-5e47-9def-a58bd3bd2dc7
+  #
+  # $ ./bin/npolar_api_migrator http://api:9393/dataset ::Metadata::DatasetMigration1 --really=false > /dev/null
   class DatasetMigration1
     include ::Npolar::Api
 
-    attr_writer :log
-   
+    attr_accessor :log
+
+    def initialize
+      @edits = read_edits
+    end
+
+    def read_edits
+      filename = File.dirname(__FILE__)+"/../../seed/dataset/dataset-editors.csv"
+      edits = {}
+      ::CSV.foreach(filename, {:col_sep => "\t", :return_headers => false}) {|row|
+
+        database_id, email, comment = row[0], row[1], row[3]
+        uri = "http://api.npolar.no/dataset/org.polarresearch-#{database_id}"
+        uuid = UUIDTools::UUID.sha1_create( UUIDTools::UUID_DNS_NAMESPACE, uri).to_s
+        edits[uuid.to_sym] = { :email => email, :comment => "\nStorage: #{comment}", :name => email}
+
+      }
+      edits
+    end
+
     def migrations
       [fix_people_linking_to_invalid_organisations, force_domain_name_as_organisation, add_past_edits]
     end
 
-    def log
-      @log ||= Logger.new(STDERR)
+    def model
+      Metadata::Dataset.new
     end
 
     def select
-      lambda {|d| d.to_s =~ /org[.|-]polarresearch\-/ }
+      lambda {|d| d.to_s =~ /org[.-]polarresearch\-/ }
     end
 
     def fix_people_linking_to_invalid_organisations
       [lambda {|d|
         d.people? },
       lambda {|d|
-        d.people.select {|p|p.organisation? and not p.organisation.nil?}.map {|p|
+        d.people.select {|p| p.organisation? and not p.organisation.nil?}.map {|p|
+
+          before = p.organisation
+
           p.organisation = p.organisation.strip
+
           p.organisation = case p.organisation
             when "gmail.com"
               nil
@@ -45,6 +72,10 @@ module Metadata
               "ntnu.no"
             else p.organisation
           end
+
+          if before != p.organisation
+            log.info "#{d.id} #{p.organisation} <= \"#{before}\" for #{p}"
+          end
         }
         d
       }]
@@ -52,48 +83,53 @@ module Metadata
     
     def force_domain_name_as_organisation
       [lambda {|d|
-        d.people? or d.organisations? },
+        d.people? },
       lambda {|d|
 
-        d.people.select {|p| (not p.organisation.nil? and p.organisation !~ URI::regexp)}.map {|p|
+        d.people.reject {|p| p.organisation.nil? or p.organisation =~ /\w+[.]\w+/}.map {|p|
           organisation = domain_name_from_name(p.organisation)
-          log.debug organisation+" <== "+p.organisation
+          
+          log.info "#{d.id} #{organisation} <== #{p.organisation}"
           p.organisation = organisation
         }
         d
       }]
     end
 
+
+
     def add_past_edits
-      filename = File.dirname(__FILE__)+"/../seed/dataset/dataset-editors.csv"
-      log.debug filename
-      edits = {}
-      ::CSV.foreach(filename, {:col_sep => "\t", :return_headers => false}) {|row|
-        database_id, email, comment = row[0], row[1], row[3]
-        uri = "http://api.npolar.no/dataset/org.polarresearch-#{database_id}"
-        uuid = UUIDTools::UUID.sha1_create( UUIDTools::UUID_DNS_NAMESPACE, uri).to_s
-        now = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
-        edits[uuid.to_sym] = { :email => email, :comment => "\nStorage: #{comment}", :edited => now }
-      }
 
-      [lambda {|d|
-        d.edits? and d.edits.none? },
-      lambda {|d|
-        if edits.key? d.id.to_sym
+    lambda {|d|
 
+
+      if @edits.key?(d.id.to_sym)
+
+        edit = @edits[d.id.to_sym].merge(:edited => d.created)
         
-          edit = edits[d.id.to_sym]
-         
-          names = (d.people||[]).select {|p|p.email == edit[:email].nil? ? nil : edit[:email] }
-          edit[:name] = names.any? ? names[0].first_name+" "+names[0].last_name : ""
-  
-          d.edits << edit
-          d.edits = d.edits.uniq
-    
+        comment = edit[:comment]
+        edit.delete :comment
+
+        names = (d.people||[]).select {|p| p.email == edit[:email] }
+        edit[:name] = names.any? ? names[0].first_name+" "+names[0].last_name : edit[:email]
+
+        if not d.edits?
+          d.edits = []
+        end
+        if d.comment?
+          d.comment += comment
+        else
+          d.comment = comment
         end
 
-        d
-      }]
+        d.edits << edit 
+        d.edits = d.edits.uniq
+        d.created_by = edit[:name]
+        log.info "#{d.id}.edits = #{d.edits.to_json}"
+  
+      end
+      d
+      }
     end
 
     protected

@@ -3,23 +3,24 @@ require "logger"
 module Metadata
 
 # Migrates 12 datasets in production before dataset schema 1.0 was finalised
-# $ ./bin/npolar_api_migrator http://api:9393/dataset ::Metadata::Dataset ::Metadata::DatasetMigration0 --really=false > /dev/null
-# { "ids": [
-    #"59102277-1e3d-42af-97de-fc2f49e2f203",
-    #"5a845750-e924-11e2-b06b-005056ad0004",
-    #"67eede8a-fe8f-11e2-ba11-005056ad0004",
-    #"89f430f8-862f-11e2-8036-005056ad0004",
-    #"8c1d466e-8aec-11e2-bc03-005056ad0004",
-    #"9fd6dae0-863b-11e2-8036-005056ad0004",
-    #"ad6c4c5a-e926-11e2-b06b-005056ad0004",
-    #"bc460306-87e7-11e2-8c07-005056ad0004",
-    #"d756f766-de33-11e2-8993-005056ad0004",
-    #"f1fc782a-fa7b-11e2-bd10-005056ad0004",
-    #"fc83ae54-8658-11e2-8f45-005056ad0004",
-    #"fff1ccc2-fa7c-11e2-bd10-005056ad0004"]}
+# $ ./bin/npolar_api_migrator http://api:9393/dataset ::Metadata::DatasetMigration0 --really=false > /dev/null
+
   class DatasetMigration0
 
-    attr_writer :log
+    IDS = ["59102277-1e3d-42af-97de-fc2f49e2f203",
+    "5a845750-e924-11e2-b06b-005056ad0004",
+    "67eede8a-fe8f-11e2-ba11-005056ad0004",
+    "89f430f8-862f-11e2-8036-005056ad0004",
+    "8c1d466e-8aec-11e2-bc03-005056ad0004",
+    "9fd6dae0-863b-11e2-8036-005056ad0004",
+    "ad6c4c5a-e926-11e2-b06b-005056ad0004",
+    "bc460306-87e7-11e2-8c07-005056ad0004",
+    "d756f766-de33-11e2-8993-005056ad0004",
+    "f1fc782a-fa7b-11e2-bd10-005056ad0004",
+    "fc83ae54-8658-11e2-8f45-005056ad0004",
+    "fff1ccc2-fa7c-11e2-bd10-005056ad0004"]
+
+    attr_accessor :log
    
     def migrations
       [ set_schema,
@@ -39,12 +40,12 @@ module Metadata
         owners_are_ksat_and_nsc]
     end
 
-    def log
-      @log ||= Logger.new(STDERR)
+    def model
+      Metadata::Dataset.new
     end
 
     def select
-      lambda {|d| not d.schema? or d.id == "59102277-1e3d-42af-97de-fc2f49e2f203" }
+      lambda {|d| not d.schema? and IDS.include? d.id }
     end
 
     def fix_licence_uris
