@@ -330,7 +330,12 @@ module Views
       end
 
       def next_href
-        facet_href("start", self.send(:next))
+        nxt = self.send(:next)
+        if nxt =~ /^\d+$  /
+          facet_href("start", nxt)
+        else
+          nxt
+        end
       end
 
       # Link to facet (if not already in a filtered)
@@ -366,7 +371,11 @@ module Views
       end
 
       def previous_href
-        facet_href("start", previous)
+        if previous =~ /^\d+$/
+          facet_href("start", previous)
+        else
+          previous
+        end
       end
 
 
