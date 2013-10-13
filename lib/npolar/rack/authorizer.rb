@@ -91,14 +91,14 @@ module Npolar
         end
 
         unless authenticated?
-          log.info "#{request.request_method} #{request.path} [#{self.class.name}]: 401"
+          log.info "#{request.request_method} #{request.path} [#{self.class.name} using #{auth.class.name}]: 401"
           return http_error(401, "Failed authentication, invalid username or password")
         end
 
         if authorized?
           app.call(env)
         else
-          log.info "#{request.request_method} #{request.path} [#{self.class.name}]: 403"
+          log.info "#{request.request_method} #{request.path} [#{self.class.name} using #{auth.class.name}]: 403"
           error = { "error" => { "status" => 403, "reason" => "Forbidden", "explanation" => "Failed authorization" } }
           [403, {"Content-Type" => "application/json"}, [error.to_json]]
         end
