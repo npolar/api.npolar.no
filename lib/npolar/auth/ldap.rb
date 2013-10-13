@@ -10,11 +10,6 @@ module Npolar
 
       DEFAULT_DOMAIN = "npolar.no"
 
-      # TODO: move this to config
-      ROLES_CN = "cn=roles"
-      API_DN = "cn=systems,dc=polarresearch,dc=org"
-      USERS_DN = "cn=users,dc=polarresearch,dc=org"
-
       attr_accessor :log
 
       def self.ssha(password, salt)
@@ -52,45 +47,63 @@ module Npolar
       end
   
       def match? username, password
-        # make sure it's in LDAP form: user@domain.no
-        mail = massage_username(username)
-        result = bind_as(:base => USERS_DN, :filter => "(mail=#{mail})", :password => password)
 
-        if result and result[0].mail[0] == mail
-            true
+        mail = force_domain(username)
+        result = bind_as(:base => "cn=users,#{base}", :filter => "(mail=#{mail})", :password => password)
+
+        if result.any? and result[0].mail[0] == mail
+          true
         else
-            false
+          false
         end
+
       end
 
       def roles(system, username)
-        discovered_roles = [] 
+        if system.nil? or username.nil? or system == "" or username == ""
+          raise ArgumentError, "Cannot find roles with blank username and/or system"
+        end
+        
+        username = force_domain(username)
 
-        # make sure it's in LDAP form: user@domain.no
-        username = massage_username(username)
+        uid = cn = dn = nil
 
-        # try to get uid of username
-        uid = nil
-        search(:base => USERS_DN, :filter=> Net::LDAP::Filter.eq("mail", username), :attributes => ["uid"]) do |entry|
+        search(:filter=> Net::LDAP::Filter.eq("mail", username)) do |entry|
+          dn = entry[:dn][0]
+          cn = entry[:cn][0]
           uid = entry[:uid][0]
         end
 
-        if uid == nil
-          log.debug "Could not find uid for username=#{username}"
-        else
-          log.debug "Discovered LDAP uid=#{uid} for username=#{username}"
-
-          # see which roles for this system have a roleOccupant with this uid
-          filter = Net::LDAP::Filter.eq("roleOccupant", "uid=#{uid}," + USERS_DN)
-          dn = ROLES_CN + ",cn=#{system}," + API_DN
-          search(:base => dn, :filter => filter, :return_result => false)  do |entry|
-            discovered_roles << entry[:cn][0]
-          end
+        ldap_result = get_operation_result
+        if ldap_result.code > 0
+          message = "LDAP search failed with status #{ldap_result.code}: #{ldap_result.message}"
+          log.fatal message
+          raise message
         end
 
-          log.debug("Discovered LDAP roles: #{discovered_roles} for username=#{username} in system=#{system}") 
+        if uid.nil?
+          message =  "LDAP #{host} does not contain username=#{username}"
+          log.fatal message
+          raise message
+        end
+          
+        roles = roles_for_dn(dn, system)
+        log.debug("LDAP roles = #{roles} directly assigned #{cn} (#{username}) in system #{system}")
 
-        discovered_roles
+        gdn = groups_for_dn(dn, system)
+        log.debug "#{cn} (#{username}) has groups: #{gdn}"
+        
+        gdn.each do |group_dn|  
+          group_roles = roles_for_dn(group_dn, system)
+          if group_roles.any?
+            log.debug("#{group_roles} assigned #{cn} (#{username}) in system #{system} via group membership in #{gdn}")
+            roles += group_roles
+          end       
+        end
+   
+        roles = roles.uniq
+        log.info("LDAP roles = #{roles} for #{cn} (#{username}) in system #{system}")
+        roles
       end
 
       def domain
@@ -101,8 +114,34 @@ module Npolar
         @domain = domain
       end
 
+      def roles_for_dn(dn, system)
+        roles = []
+        filter_roles_for_dn = Net::LDAP::Filter.eq("roleOccupant", dn)
+        search(:filter => filter_roles_for_dn, :base => "cn=#{system},cn=systems,#{base}") do |entry|
+          roles << entry[:cn][0]
+        end
+        roles
+      end
+
+      def groups_for_dn(dn, system)
+        gdn = []
+        filter_groups_for_dn = Net::LDAP::Filter.eq("uniqueMember", dn)         
+        search(:filter => filter_groups_for_dn, :base => "cn=groups,#{base}").each do |entry|
+          gdn << entry[:dn][0]
+        end
+        gdn
+      end
+
+      def base
+        @@config[:base]
+      end
+
+      def host
+         @@config[:host]
+      end
+
       # append @npolar.no stub if username doesn't have it
-      def massage_username(username)
+      def force_domain(username)
         if username !~ /[@]/
           username += "@" + domain
         end
@@ -110,7 +149,7 @@ module Npolar
       end
 
       def log
-        @log ||= Npolar::Api.log
+        @log ||= Logger.new(STDERR)
       end
 
     end
