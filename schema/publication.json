@@ -1,126 +1,329 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/publication-1.0-rc1",
-  "title": "Publication",
-  "description": "Metadata describing a publication",
-  "type": "object",
-  "additionalProperties": false,
-  "required": ["title", "schema", "collection", "publication_year", "people", "topics",  "scientific_abstract", "norw_summary", "review_progress", "state", "category"],
-  "properties": {
-    "id": { "description": "Identifier (UUID | URI)", "type": "string" },
-    "schema": { "type": "string" },
-    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
-    "original_lang": { "type": "string"},
-    "collection": { "enum": ["publication"] },
-    "base": { "enum": ["http://api.npolar.no"] },
-    "draft": { "enum": ["yes", "no"]},
-    "scientific_abstract": { "type" : "string" },
-    "norw_summary": { "type" : "string" },
-    "review_progress": { "enum": ["none", "started", "reviewed"] },
-    "category": { "enum":["reviewed", "book", "poster", "map", "report", "brief", "abstract", "phd", "master", "proceedings", "popular"] },
-    "state": {"enum": ["submitted", "in-press", "published"]},
-    "publication_name": { "type": "string"},
-    "publisher": {"type": "string"},
-    "publication_year": {"type" : "number"},
-    "publication_date":{"type":"string", "format": "date-time"},
-    "volume":{ "type" : ["string", "null"] },
-    "issue":{ "type" : ["string", "null"] },
-    "suppl": { "type" : ["string", "null"] },
-    "from_page": {"type": ["number", "null"] },
-    "to_page": {"type": ["number", "null"] },
-    "tot_no_pages": {"type": ["number", "null"] },
-    "article_no": { "type" : ["string", "null"] },
-    "people": {
-      "description": "People involved in creating the publication",
-      "type": "array",
-      "additionalItems": false,
-      "required": ["first_name", "last_name", "roles", "organisation"],
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": { "type": "string" },
-          "first_name": { "type": "string" },
-          "last_name": { "type": "string" },
-          "roles": {
-            "type": "array",
-            "items": {
-              "enum": ["author"]
-            }
-          },
-          "email": {
-            "type": ["string","null"]
-          },
-          "links": { "type": "array" },
-          "organisation": { "type": ["string", "null"] }
-        }
-      }
-    },
-    "topics": {
-      "title": "NPI topics",
-      "description": "Based on http://www.npolar.no/en/research/topics/ supplemented with 'maps', 'service', 'other' and 'topography'. Management? Conservation? Atmosphere/met?",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string",
-        "enum": ["atmosphere", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
-      }
-    },
-    "tags": {
-      "additionalItems": false,
-      "type": "array",
-      "items": { "type": "string" }
-    },
-    "links": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "rel": { "type": "string" },
-          "href": { "type": "string", "format": "uri" },
-          "hreflang": { "type": ["string", "null"] },
-          "title": { "type": ["string", "null"] },
-          "type": { "type": ["string", "null"] }
-        }
-      }
-    },
-    "edits": {
-      "description": "List of edits",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "edited": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://api.npolar.no/schema/publication-1.0-rc2",
+    "title": "Publication",
+    "description": "A publication reference",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "title",
+        "schema",
+        "collection",
+        "published-year",
+        "people",
+        "topics",
+        "scientific_abstract",
+        "norw_summary",
+        "review_progress",
+        "state",
+        "type",
+        "journal"
+    ],
+    "properties": {
+        "id": {
+            "description": "Identifier (UUID | URI)",
+            "type": "string"
+        },
+        "schema": {
+            "type": "string"
+        },
+        "collection": {
+            "enum": [
+                "publication"
+            ]
+        },
+        "base": {
+            "enum": [
+                "http://api.npolar.no"
+            ]
+        },
+        "draft": {
+            "enum": [
+                "yes",
+                "no"
+            ]
+        },
+        "title": {
+            "description": "Exact title of the publication",
+            "type": "string"
+        },
+        "original_lang": {
+            "type": "string"
+        },
+        "scientific_abstract": {
+            "type": "string"
+        },
+        "norw_summary": {
+            "type": "string"
+        },
+        "review_progress": {
+            "enum": [
+                "none",
+                "started",
+                "reviewed"
+            ]
+        },
+        "publication_type": {
+            "enum": [
+                "peer-reviewed",
+                "book",
+                "poster",
+                "map",
+                "report",
+                "brief",
+                "abstract",
+                "phd",
+                "master",
+                "proceedings",
+                "popular"
+            ]
+        },
+        "state": {
+            "enum": [
+                "submitted",
+                "accepted",
+                "published"
+            ]
+        },
+        "published-year": {
+            "type": "number"
+        },
+        "published-date": {
             "type": "string",
             "format": "date-time"
-          },
-          "email": { "type": "string" },
-          "name": { "type": "string" },
-          "comment": { "type": "string" }
         },
-        "required": ["edited", "name"]
-      }
-    },
-    "comment": {"type": "string"},
-    "created": {
-      "description": "Metadata was published",
-      "type": "string",
-      "format": "date-time"
-    },
-    "updated": {
-      "description": "Metadata was updated",
-      "type": "string",
-      "format": "date-time"
-    },
-    "created_by" : {  "type": "string" },
-    "updated_by" : {  "type": "string" },
-    "_id": {"type": "string"},
-    "_rev": {"type": "string"},
-    "_attachment": {"type": "object"}
-  }
+        "volume": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "issue": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "suppl": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "journal": {
+            "title": "Journal",
+            "description": "Peer-reviewed journal",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "issn": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "pages": {
+            "additionalItems": false,
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "article_no": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "people": {
+            "description": "People involved in creating the publication",
+            "type": "array",
+            "additionalItems": false,
+            "required": [
+                "first_name",
+                "last_name",
+                "roles",
+                "organisation"
+            ],
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "author"
+                            ]
+                        }
+                    },
+                    "email": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "links": {
+                        "type": "array"
+                    },
+                    "organisation": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "topics": {
+            "title": "NPI topics",
+            "description": "See https://github.com/npolar/api.npolar.no/blob/master/schema/dataset.json",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "type": "string",
+                "enum": [
+                    "atmosphere",
+                    "biology",
+                    "chemistry",
+                    "climate",
+                    "conservation",
+                    "ecology",
+                    "ecotoxicology",
+                    "environment",
+                    "geology",
+                    "glaciology",
+                    "management",
+                    "marine",
+                    "maps",
+                    "oceanography",
+                    "other",
+                    "remote-sensing",
+                    "seaice",
+                    "terrestrial",
+                    "topography",
+                    "vegetation"
+                ]
+            }
+        },
+        "organisations": {
+            "description": "Organisations involved",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "publisher",
+                                "originator",
+                                "owner",
+                                "resourceProvider"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "roles"
+                ]
+            }
+        },
+        "tags": {
+            "additionalItems": false,
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "links": {
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "rel": {
+                        "type": "string"
+                    },
+                    "href": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "hreflang": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "title": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "volume": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "comment": {
+            "type": "string"
+        },
+        "created": {
+            "description": "Document was published",
+            "type": "string",
+            "format": "date-time"
+        },
+        "updated": {
+            "description": "Document was updated",
+            "type": "string",
+            "format": "date-time"
+        },
+        "created_by": {
+            "type": "string"
+        },
+        "updated_by": {
+            "type": "string"
+        },
+        "_id": {
+            "type": "string"
+        },
+        "_rev": {
+            "type": "string"
+        },
+        "_attachment": {
+            "type": "object"
+        }
+    }
 }
-
