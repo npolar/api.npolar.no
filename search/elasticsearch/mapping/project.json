@@ -1,92 +1,98 @@
 {
-  "project":{
-    "properties":{
-      "id":{"type":"string", "index":"not_analyzed"},
-      "collection":{"type":"string", "index":"not_analyzed"},
-      "schema":{"type":"string", "index":"analyzed"},
-      "title": {"type":"string", "index":"not_analyzed"},
-      "acronym":{"type":"string", "index":"not_analyzed"},
-      "summary":{"type":"string", "index":"not_analyzed"},
-      "area_contribution":{"type":"string", "index":"not_analyzed"},
-      "knowledge_gap_addressed":{"type":"string", "index":"not_analyzed"},
-      "np_project_number":{"type":"string", "index":"not_analyzed"},
-      "state":{"type":"string", "index":"not_analyzed"},
-      "draft":{"type":"string", "index":"not_analyzed"},
-      "start_date":{"type":"date", "index":"not_analyzed"},
-      "end_date":{"type":"date", "index":"not_analyzed"},
-      "results_summary":{"type":"string", "index":"not_analyzed"},
-      "ris_id":{"type":"string", "index":"not_analyzed"},
-      "type":{"type":"string", "index":"not_analyzed"},
-      "topics":{"type":"string", "index":"not_analyzed"},
-      "tags":{"type":"string", "index":"not_analyzed"},
-      "funding_sources":{
-        "properties":{
-          "organisation_name":{"type":"string", "index":"not_analyzed"},
-          "agresso_code":{"type":"string", "index":"not_analyzed"}
-        }
+  "project": {
+    "properties": {
+      "id": { "type" :"string", "index": "not_analyzed" },
+      "_id": { "type" :"string", "index": "not_analyzed" },
+      "rev": { "type": "string", "index": "not_analyzed" },
+      "_rev": { "type": "string", "index": "not_analyzed" },
+      "schema":{"type":"string", "index":"no"},
+      "np_project_no" : { "type": "string", "index": "not_analyzed" },
+      "collection" : { "type": "string", "index": "not_analyzed" },
+      "schema": { "type": "string", "index": "not_analyzed" },
+      "title": { "type": "string", "index": "not_analyzed" },
+      "acronym": { "type": "string", "index": "not_analyzed" },
+      "summary": { "type": "string", "index": "not_analyzed" },
+      "abstract": { "type": "string", "index": "not_analyzed" },
+      "area_contribution": { "text": "string", "index": "not_analyzed" },
+      "knowledge_gap_addressed": { "type": "string", "index": "not_analyzed" },
+      "state": { "type": "string", "index": "not_analyzed" },
+      "draft": { "type": "string", "index": "not_analyzed" },
+      "start_date": { "type": "string", "index": "not_analyzed" },
+      "end_date": { "type": "string", "index": "not_analyzed" },
+      "results_summary": { "type": "string", "index": "not_analyzed" },
+      "ris_id": { "type": "string", "index": "not_analyzed" },
+      "type": { "type": "string", "index": "not_analyzed" },
+      "funding_sources" : { 
+          "properties": {
+            "organization_name": { "type": "string", "index": "not_analyzed" },
+            "aggresso_code": { "type": "string", "index": "not_analyzed" }
+          } 
       },
-      "related_projects":{
-        "properties":{
-          "href":{"type":"string", "index":"not_analyzed"},
-          "title":{"type":"string", "index":"not_analyzed"}
-        }
+      "related_projects": {
+          "properties": {
+            "href": { "type": "string", "index": "not_analyzed" },
+            "title": { "type": "string", "index": "not_analyzed" }
+          }
       },
-      "research_programs":{
-        "properties":{
-          "href":{"type":"string", "index":"not_analyzed"},
-          "title":{"type":"string", "index":"not_analyzed"}
-        }
+      "research_programs": {
+          "properties": {
+            "href": { "type": "string", "index": "not_analyzed" },
+            "title": { "type": "string", "index": "not_analyzed" }
+          }
       },
-      "results_datasets":{
-        "properties":{
-          "href":{"type":"string", "index":"not_analyzed"},
-          "title":{"type":"string", "index":"not_analyzed"}
-        }
+      "results_datasets": {
+          "properties": {
+            "href": { "type": "string", "index": "not_analyzed" },
+            "title": { "type": "string", "index": "not_analyzed" }
+          }
       },
-      "people":{
-        "properties":{
-          "first_name":{"type":"string", "index":"not_analyzed"},
-          "last_name":{"type":"string", "index":"not_analyzed"},
-          "email":{"type":"string", "index":"not_analyzed"},
-          "role":{"type":"string", "index":"not_analyzed"},
-          "profile_href":{"type":"string", "index":"not_analyzed"},
-          "employee_no":{"type":"string", "index":"not_analyzed"},
-          "organisation":{"type":"string", "index":"not_analyzed"}
-        }
+      "website" : { "type": "boolean", "index": "not_analyzed" },
+      "topics": { "type": "string", "index": "not_analyzed" },
+      "tags": { "type": "string", "index": "not_analyzed" },
+      "people": {
+          "properties": {
+            "id": { "type": "string", "index": "not_analyzed" },
+            "first_name": { "type": "string", "index": "not_analyzed" },
+            "last_name": { "type": "string", "index": "not_analyzed" },
+            "email": { "type": "string", "index": "not_analyzed"},
+            "profile_href" : { "type": "string", "index": "not_analyzed"},
+            "role": { "type": "string", "index": "not_analyzed"},
+            "employee_no": { "type": "string", "index": "not_analyzed" },
+            "organisation": { "type": "string", "index": "not_analyzed"}
+          }
       },
-      "organisations":{
-        "properties":{
-          "name":{"type":"string", "index":"not_analyzed"},
-          "name_nb":{"type":"string", "index":"not_analyzed"},
-          "href":{"type":"string", "index":"not_analyzed"},
-          "role":{"type":"string", "index":"not_analyzed"}
-        }
+      "organisations": {
+          "properties": {
+            "name": { "type": "string", "index": "not_analyzed" },
+            "name_nb" : { "type": "string", "index": "not_analyzed" },
+            "href": { "type": "string", "index": "not_analyzed" },
+            "role": { "type": "string", "index": "not_analyzed" }
+          }
       },
-      "coverage":{
-        "properties":{
-          "north":{"type":"string", "index":"not_analyzed"},
-          "east":{"type":"string", "index":"not_analyzed"},
-          "south":{"type":"string", "index":"not_analyzed"},
-          "west":{"type":"string", "index":"not_analyzed"}
-        }
+      "coverage": {
+          "properties": {
+            "north": { "type": "number", "index": "not_analyzed" },
+            "east": { "type": "number", "index": "not_analyzed" },
+            "south": { "type": "number", "index": "not_analyzed" },
+            "west": { "type": "number", "index": "not_analyzed" }
+          }
       },
-      "placenames":{
-        "properties":{
-          "placename":{"type":"string", "index":"not_analyzed"},
-          "area":{"type":"string", "index":"not_analyzed"},
-          "country":{"type":"string", "index":"not_analyzed"}
-        }
+      "placenames": {
+          "properties": {
+            "placename": { "type": "string", "index": "not_analyzed" },
+            "area": { "type": "string", "index": "not_analyzed" },
+            "country": { "type": "string", "index": "not_analyzed" } 
+          }
       },
-      "links":{
-        "properties":{
-          "rel":{"type":"string", "index":"not_analyzed"},
-          "href":{"type":"string", "index":"not_analyzed"},
-          "title":{"type":"string", "index":"not_analyzed"},
-          "hreflang":{"type":"string", "index":"not_analyzed"},
-          "type":{"type":"string", "index":"not_analyzed"}
-        }
+      "links": {
+          "properties": {
+            "rel": { "type": "string", "index": "not_analyzed" },
+            "href": { "type": "string", "index": "not_analyzed" },
+            "title": { "type": "string", "index": "not_analyzed"},
+            "hreflang": { "type": "string", "index": "not_analyzed"},
+            "type": { "type": "string", "index": "not_analyzed" }
+          }
       },
-      "translations":{"type":"object", "index":"not_analyzed"},
       "edits":{
         "properties":{
           "edited":{"type":"date","index":"not_analyzed"},
@@ -94,10 +100,18 @@
           "name":{"type":"string","index":"not_analyzed"}
         }
       },
-      "created": {"type": "date", "index": "not_analyzed"},
-      "updated": {"type": "date", "index": "not_analyzed"},
-      "created_by": {"type": "string", "index": "not_analyzed"},
-      "updated_by": {"type": "string", "index": "not_analyzed"}
+      "translations" : {
+        "properties": {
+          "title": { "type": "string", "index": "not_analyzed" },
+          "summary": { "type": "string", "index": "not_analyzed" },
+          "abstract": { "type": "string", "index": "not_analyzed" },
+          "area_contribution": { "text": "string", "index": "not_analyzed" },
+          "knowledge_gap_addressed": { "type": "string", "index": "not_analyzed" }
+        }
+      },
+      "created": { "type": "string", "index": "not_analyzed" },
+      "updated": { "type": "string", "index": "not_analyzed" },
+      "created_by": { "type": "string", "index": "not_analyzed" },
+      "updated_by" : { "type": "string", "index": "not_analyzed" }
     }
-  }
 }
