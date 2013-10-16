@@ -49,9 +49,21 @@ module Npolar
       def match? username, password
 
         mail = force_domain(username)
-        result = bind_as(:base => "cn=users,#{base}", :filter => "(mail=#{mail})", :password => password)
 
-        if result.any? and result[0].mail[0] == mail
+        result = bind_as(:base => base, :filter => Net::LDAP::Filter.eq("mail", mail), :password => password)
+
+        ldap_result = get_operation_result
+        if ldap_result.code > 0
+          message = "LDAP search failed with status #{ldap_result.code}: #{ldap_result.message}"
+          log.fatal message
+          raise message
+        end
+
+        if false == result
+          return false
+        end
+    
+        if result[0].mail[0] == mail
           true
         else
           false
