@@ -132,6 +132,14 @@
         },
         "pages": {
             "type": "array"
+        },   "pages": {
+            "title": "Publication pages",
+            "description": "Either to and from page or the total no of pages",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "type": "string"
+             }
         },
         "article_no": {
             "type": [
