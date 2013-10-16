@@ -217,18 +217,18 @@ module Metadata
           self[:lang] = "en"
         end
         
-        # FIXME
+        # FIXME 
         #if draft?
         #  self[:draft] = "yes"
         #end
       
-        if draft == true
-          self[:draft] = "yes"
-        end
-        
-        if draft == false
-          self[:draft] = "no"
-        end
+        #if draft == true
+        #  self[:draft] = "yes"
+        #end
+        #
+        #if draft == false
+        #  self[:draft] = "no"
+        #end
 
         if not title?
           self[:title] = "Dataset created by #{username} at #{Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")}"
@@ -329,13 +329,13 @@ module Metadata
       (links||[]).select {|link| link.rel == "data" }.size > 0
     end
 
-    def draft?
-      if self[:draft] == "yes" or self[:draft] == true
-        return true
-      else      
-        not title? or not topics? or not licences?
-      end
-    end
+    #def draft?
+    #  if self[:draft] == "yes" or self[:draft] == true
+    #    return true
+    #  else      
+    #    not title? or not topics? or not licences?
+    #  end
+    #end
 
     # Free data?
     def free?
@@ -550,7 +550,7 @@ module Metadata
 
       self[:links] = links||[] 
 
-      if id? # => These links are not added on POST (see #after_save for a fix)
+      if id? # => These links are not added on POST
       
         # edit  ("application/json")
         if links.select {|link| link.rel=="edit" and link.type == "application/json"}.size == 0
