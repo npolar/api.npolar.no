@@ -131,11 +131,7 @@
             }
         },
         "pages": {
-            "additionalItems": false,
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
+            "type": "array"
         },
         "article_no": {
             "type": [
