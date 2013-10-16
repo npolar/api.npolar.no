@@ -52,13 +52,8 @@ module Npolar
 
         result = bind_as(:base => base, :filter => Net::LDAP::Filter.eq("mail", mail), :password => password)
 
-        ldap_result = get_operation_result
-        if ldap_result.code > 0
-          message = "LDAP search failed with status #{ldap_result.code}: #{ldap_result.message}"
-          log.fatal message
-          raise message
-        end
-
+        check_ldap_operation
+        
         if false == result
           return false
         end
@@ -78,20 +73,13 @@ module Npolar
         
         username = force_domain(username)
 
-        uid = cn = dn = nil
+        user = find_user_by_mail(username)
 
-        search(:filter=> Net::LDAP::Filter.eq("mail", username)) do |entry|
-          dn = entry[:dn][0]
-          cn = entry[:cn][0]
-          uid = entry[:uid][0]
-        end
+        dn = user[:dn]
+        cn = user[:cn]
+        uid = user[:uid]
 
-        ldap_result = get_operation_result
-        if ldap_result.code > 0
-          message = "LDAP search failed with status #{ldap_result.code}: #{ldap_result.message}"
-          log.fatal message
-          raise message
-        end
+        check_ldap_operation
 
         if uid.nil?
           message =  "LDAP #{host} does not contain username=#{username}"
@@ -126,6 +114,7 @@ module Npolar
         @domain = domain
       end
 
+      # @return Array of roles (as list of common names)
       def roles_for_dn(dn, system)
         roles = []
         filter_roles_for_dn = Net::LDAP::Filter.eq("roleOccupant", dn)
@@ -135,6 +124,7 @@ module Npolar
         roles
       end
 
+      # @return Array of groups (as list of DNs)
       def groups_for_dn(dn, system)
         gdn = []
         filter_groups_for_dn = Net::LDAP::Filter.eq("uniqueMember", dn)         
@@ -162,6 +152,42 @@ module Npolar
 
       def log
         @log ||= Logger.new(STDERR)
+      end
+
+      # Search LDAP for username (mail)
+      # @return user Hash
+      def find_user_by_mail(mail)
+        user = {}
+        i = 0
+        search(:filter=> Net::LDAP::Filter.eq("mail", mail)) do |entry|
+          # entry -> Net::LDAP::Entry
+          i += 1
+          if i > 1
+            raise "Found #{i} users with email #{mail}"
+          end
+          
+          entry.each do |k,v|
+            if v.size == 1
+              user[k] = v[0]
+            else
+              user[k] = v
+            end
+          end
+        end
+        #log.debug user
+        user
+      end
+
+      protected
+  
+      def check_ldap_operation
+        ldap_result = get_operation_result
+        # http://www.openldap.org/doc/admin24/appendix-ldap-result-codes.html
+        if not [0,5,6,10,14].include? ldap_result.code
+          message = "LDAP operation against #{host} failed with status #{ldap_result.code}: #{ldap_result.message}"
+          log.fatal message
+          raise message
+        end
       end
 
     end
