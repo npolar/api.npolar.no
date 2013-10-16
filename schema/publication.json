@@ -290,12 +290,7 @@
                             "null"
                         ]
                     },
-                    "volume": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    }
+                    "type": {"type":"string"}
                 }
             }
         },
