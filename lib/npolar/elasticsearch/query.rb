@@ -242,7 +242,8 @@ module Npolar
       # If a q paramter is present it appends a wildcard to support fuzzy searches
       def q_param
         if params.has_key?('q') && params['q'] != '*'
-          params['q'].match(/(.*)(\*+|\s+)$/) ? "#{$1} #{$1}*" : "#{params['q']} #{params['q']}*"
+          q = CGI.escape(params['q'].strip)
+          q == "" ? "*" : "#{q} #{q}*"
         else
           params['q'] = '*'
         end
