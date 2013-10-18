@@ -42,7 +42,7 @@ module Npolar
         workers = 0
         pid = nil
 
-        if data.is_a?( Array )
+        if data.is_a?( Array ) && data.size > 1
           # Cut the document array into managable slices
           data.each_slice(config[:bulk_size]) do |slice|
 
@@ -65,7 +65,9 @@ module Npolar
 
         else
 
-          body = build_request_document([data])
+          data = [data] unless data.is_a?(Array)
+
+          body = build_request_document(data)
           response = bulk_post(body)
           log.info "Indexing: 1 item. Status ==> #{response.status} [#{self.class.to_s}]"
 
