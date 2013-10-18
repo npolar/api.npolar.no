@@ -65,7 +65,7 @@ module Npolar
 
         else
 
-          data = [data] unless data.is_a?(Array)
+          self.data = [data] unless data.is_a?(Array)
 
           body = build_request_document(data)
           response = bulk_post(body)
