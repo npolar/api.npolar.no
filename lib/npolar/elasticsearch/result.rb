@@ -165,7 +165,12 @@ module Npolar
 
       # Get the enries from the search results
       def entries
-        body['hits']['hits'].map{|hit| hit['_source'] ? hit['_source'] : hit['fields']}
+        body['hits']['hits'].map do |hit|
+          obj = {}
+          hit['_source'] ? obj = hit['_source'] : obj = hit['fields']
+          obj['highlight'] = hit['highlight'].values.flatten.join('... ').strip if hit['highlight']
+          obj
+        end
       end
 
       # The query term. If blank a wildcard is used

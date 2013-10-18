@@ -83,7 +83,7 @@ module Npolar
         end
       end
 
-      def exists?(id)
+      def exists?( id )
         response = http.get do |req|
           req.url "/#{config[:index]}/#{config[:type]}/#{id}"
           req.headers['Accept'] = 'application/json; charset=utf-8'

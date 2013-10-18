@@ -76,6 +76,7 @@ module Npolar
           body = { :query => filtered_query }
         end
 
+        body[:highlight] = highlight
         body[:from] = from
         body[:size] = size
         body[:sort] = sort
@@ -93,6 +94,14 @@ module Npolar
 
       def size
         params['limit'] ? params['limit'].to_i : config[:limit] ||= 25
+      end
+
+      def highlight
+        {
+          :fields => {
+            "_all" => {"fragment_size" => 40, "number_of_fragments" => 4, "pre_tags" => ["<em class='bolder'>"], "post_tags" => ["</em>"]}
+          }
+        }
       end
 
       # Date facets are only supported through configuration
