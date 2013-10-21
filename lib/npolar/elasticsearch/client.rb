@@ -34,11 +34,12 @@ module Npolar
 
           if request.params['format'] && request.params['format'] == 'csv'
             feed = result.to_csv
+            headers = {"Content-Type" => "text/plain; charset=utf-8","Content-Length" => feed.bytesize}
           else
             feed = result.to_feed
+            headers = {"Content-Type" => "application/json; charset=utf-8","Content-Length" => feed.bytesize}
           end
 
-          headers = {"Content-Type" => "application/json; charset=utf-8","Content-Length" => feed.bytesize}
           Rack::Response.new(feed, 200, headers)
         else
 
