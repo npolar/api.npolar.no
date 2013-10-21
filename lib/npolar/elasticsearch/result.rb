@@ -59,14 +59,15 @@ module Npolar
       # Create a csv representation of the search response
       def to_csv
         csv = CSV.generate("", {:col_sep => "\t"}) do |csv|
-
+          # Grab the keys from the first array element.
+          # and use them as the column headers
           entries = feed[:feed][:entries]
           fields = entries.first.keys
-
           csv << fields.map{|f| f.capitalize}
+
           entries.each do |entry|
             row = []
-            fields.each{|field| row << entry[field]}
+            fields.each{|field| entry.nil? ? row << "" : row << entry[field] }
             csv << row
           end
         end
