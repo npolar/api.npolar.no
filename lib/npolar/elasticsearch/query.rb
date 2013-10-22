@@ -70,7 +70,7 @@ module Npolar
 
       # Build an elasticsearch query body from the provided parameters and configuration
       def build
-        if params.select{|k,v| k.match(/^filter-(.*)/)}.empty? and !config.has_key?(:filters)
+        if params.select{|k,v| k.match(/^filter-(.*)|^not-(.*)/)}.empty? and !config.has_key?(:filters)
           body = { :query => query }
         else
           body = { :query => filtered_query }
