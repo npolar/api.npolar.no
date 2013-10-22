@@ -214,7 +214,7 @@ module Npolar
                     else
                       {
                         :term => {
-                          k.to_s.gsub(/^not-/, '') => value.downcase
+                          k.to_s.gsub(/^not-/, '') => value
                         }
                       }
                     end
@@ -254,7 +254,7 @@ module Npolar
                 else
                   {
                     :term => {
-                      k.to_s.gsub(/^filter-/, '') => value.downcase
+                      k.to_s.gsub(/^filter-/, '') => value
                     }
                   }
                 end
