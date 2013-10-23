@@ -134,6 +134,11 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="iq" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="messages" type="tint" indexed="true" stored="true" multiValued="false"/>
 <field name="messages_120dB" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="identical" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="best_level" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="pass_duration" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="nopc" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="frequency" type="tfloat" indexed="true" stored="true" multiValued="false"/>
 
 
 
@@ -241,7 +246,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="longitude" type="tfloat" indexed="true" stored="true" multiValued="false" />
 <field name="altitude" type="tfloat" indexed="true" stored="true" multiValued="false" />
 
-
+<field name="latitude2" type="tfloat" indexed="true" stored="true" multiValued="false" />
+<field name="longitude2" type="tfloat" indexed="true" stored="true" multiValued="false" />
 
 
 
