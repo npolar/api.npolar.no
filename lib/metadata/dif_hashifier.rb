@@ -623,7 +623,7 @@ module Metadata
             when "pointOfContact"
               "Data Center Contact"
             when "editor"
-              nil#"DIF Author"
+              "DIF Author"
             else nil
           end
         }
@@ -639,12 +639,12 @@ module Metadata
         end
       end
       
-      if edits.any?
-        # FIXME select max date
-        dif_author = edits.last
-      else
-        dif_author = Hashie::Mash.new({ first_name: updated_by, last_name: "", email: "" })
-      end
+      #if edits.any?
+      #  # FIXME select max date
+      #  dif_author = edits.last
+      #else
+      #  dif_author = Hashie::Mash.new({ first_name: updated_by, last_name: "", email: "" })
+      #end
       
       personnel << Hashie::Mash.new({
         "Role" => "DIF Author",
