@@ -41,6 +41,9 @@ module Metadata
   # * Validating gcmd block (need concept version - where to store)
   # * GCMD concepts uuid
   #   # @todo map isotopics to topics
+  # FIXME Dif author repeated http://api.npolar.no/dataset/f6feca82-8d8c-56e5-8db1-f68691e777ec.xml
+# FIXME OOps#<Role>author</Role>
+
   class DifHashifier < Hashie::Mash
     
     # Map npolar topics to DIF Parameters (Science Keywords)
@@ -621,7 +624,7 @@ module Metadata
               "Data Center Contact"
             when "editor"
               "DIF Author"
-            else role
+            else nil
           end
         }
 
@@ -637,6 +640,7 @@ module Metadata
       end
       
       if edits.any?
+        # FIXME select max date
         dif_author = edits.last
       else
         dif_author = Hashie::Mash.new({ first_name: updated_by, last_name: "", email: "" })
