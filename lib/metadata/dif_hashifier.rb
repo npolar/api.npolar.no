@@ -262,9 +262,11 @@ module Metadata
     end
 
     def dif_revision_history
-     (edits||[]).map {|edit|
-      "#{(edit.edited||"T").split("T")[0]}, #{edit.comment||"edited by"} #{edit.name} (#{edit.email})"
+      history = ""
+     (edits||[]).each {|edit|
+      history += "#{(edit.edited||"T").split("T")[0]}, #{edit.comment||"edited by"} #{edit.name} (#{edit.email})"
       }
+      history
     end
 
     # Discipline (experimental)
