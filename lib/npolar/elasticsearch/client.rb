@@ -34,11 +34,12 @@ module Npolar
 
           if request.params['format'] && request.params['format'] == 'csv'
             feed = result.to_csv
+            headers = {"Content-Type" => "text/plain; charset=utf-8","Content-Length" => feed.bytesize}
           else
             feed = result.to_feed
+            headers = {"Content-Type" => "application/json; charset=utf-8","Content-Length" => feed.bytesize}
           end
 
-          headers = {"Content-Type" => "application/json; charset=utf-8","Content-Length" => feed.bytesize}
           Rack::Response.new(feed, 200, headers)
         else
 
@@ -57,7 +58,7 @@ module Npolar
           store.execute
         else
           log.info "Search: Indexing 1 document. INDEX => #{config[:index]} | Npolar::Elasticsearch::Client"
-          store = Npolar::ElasticSearch::BulkRequest.new( [data], config )
+          store = Npolar::ElasticSearch::BulkRequest.new(data, config )
           store.execute
         end
       end
@@ -83,7 +84,7 @@ module Npolar
         end
       end
 
-      def exists?(id)
+      def exists?( id )
         response = http.get do |req|
           req.url "/#{config[:index]}/#{config[:type]}/#{id}"
           req.headers['Accept'] = 'application/json; charset=utf-8'

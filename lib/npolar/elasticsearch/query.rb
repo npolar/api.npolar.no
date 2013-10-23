@@ -70,12 +70,13 @@ module Npolar
 
       # Build an elasticsearch query body from the provided parameters and configuration
       def build
-        if params.select{|k,v| k.match(/^filter-(.*)/)}.empty? and !config.has_key?(:filters)
+        if params.select{|k,v| k.match(/^filter-(.*)|^not-(.*)/)}.empty? and !config.has_key?(:filters)
           body = { :query => query }
         else
           body = { :query => filtered_query }
         end
 
+        body[:highlight] = highlight
         body[:from] = from
         body[:size] = size
         body[:sort] = sort
@@ -93,6 +94,14 @@ module Npolar
 
       def size
         params['limit'] ? params['limit'].to_i : config[:limit] ||= 25
+      end
+
+      def highlight
+        {
+          :fields => {
+            "_all" => {"fragment_size" => 40, "number_of_fragments" => 4, "pre_tags" => ["<em class='bolder'>"], "post_tags" => ["</em>"]}
+          }
+        }
       end
 
       # Date facets are only supported through configuration
@@ -157,11 +166,12 @@ module Npolar
 
       # Gather all parameters and configuration items that define a filter
       def filter_params
-        fp = params.select{|k, v| k =~ /^filter-(.*)/} # Grab filters from the query parameters
+        fp = params.select{|k, v| k =~ /^filter-(.*)|^not-(.*)/} # Grab filters from the query parameters
         config[:filters].each{|filter| fp.merge!(filter)} if config.has_key?(:filters) # Merge in configured filters
         fp
       end
 
+      # @todo Refactor and do some DRYing
       # Build a filter from the filter parameters
       # @see #filter_params
       def filter
@@ -170,44 +180,86 @@ module Npolar
             # Remove any spaces from the filters
             #v.gsub!(/\s+/, ',') unless v =~ /\"(.*)\"/
 
-            # Split and map to proper query
-            v.split(',').map{|value|
-              if value.match(/\-?\d+Z?\.\.\-?\d+/)
-                vals = value.split('..')
+            if k =~ /^not-(.*)/
+              v.split(',').map{|value|
+                {
+                  :not =>
+                    if value.match(/\-?\d+Z?\.\.\-?\d+/)
+                      vals = value.split('..')
 
-                # Swap the values if the second one is bigger then the first
-                unless value.match(/^\d{4}\-(\d{2})?\-?(\d{2})?T?(\d{2}):?(\d{2})?:?(\d{2})?Z?/)
-                  unless vals[0].to_f < vals[1].to_f
-                    vals[0], vals[1] = vals[1], vals[0]
+                      # Swap the values if the second one is bigger then the first
+                      unless value.match(/^\d{4}\-(\d{2})?\-?(\d{2})?T?(\d{2}):?(\d{2})?:?(\d{2})?Z?/)
+                        unless vals[0].to_f < vals[1].to_f
+                          vals[0], vals[1] = vals[1], vals[0]
+                        end
+                      end
+
+                      {
+                        :range => {
+                          k.to_s.gsub(/^not-/, '') => {
+                            :from => vals.first,
+                            :to => vals.last
+                          }
+                        }
+                      }
+                    elsif value =~ /\"(.*)\"/
+                      {
+                        :query => {
+                          :query_string => {
+                            :default_field => k.to_s.gsub(/^not-/, ''),
+                            :query => value.gsub(/\"/,'').gsub(/\s+/, " AND ")
+                          }
+                        }
+                      }
+                    else
+                      {
+                        :term => {
+                          k.to_s.gsub(/^not-/, '') => value
+                        }
+                      }
+                    end
+
+                }
+              }
+            else
+              # Split and map to proper query
+              v.split(',').map{|value|
+                if value.match(/\-?\d+Z?\.\.\-?\d+/)
+                  vals = value.split('..')
+
+                  # Swap the values if the second one is bigger then the first
+                  unless value.match(/^\d{4}\-(\d{2})?\-?(\d{2})?T?(\d{2}):?(\d{2})?:?(\d{2})?Z?/)
+                    unless vals[0].to_f < vals[1].to_f
+                      vals[0], vals[1] = vals[1], vals[0]
+                    end
                   end
+
+                  {
+                    :range => {
+                      k.to_s.gsub(/^filter-/, '') => {
+                        :from => vals.first,
+                        :to => vals.last
+                      }
+                    }
+                  }
+                elsif value =~ /\"(.*)\"/
+                  {
+                    :query => {
+                      :query_string => {
+                        :default_field => k.to_s.gsub(/^filter-/, ''),
+                        :query => value.gsub(/\"/,'').gsub(/\s+/, " AND ")
+                      }
+                    }
+                  }
+                else
+                  {
+                    :term => {
+                      k.to_s.gsub(/^filter-/, '') => value
+                    }
+                  }
                 end
-
-                {
-                  :range => {
-                    k.to_s.gsub(/^filter-/, '') => {
-                      :from => vals.first,
-                      :to => vals.last
-                    }
-                  }
-                }
-              elsif value =~ /\"(.*)\"/
-                {
-                  :query => {
-                    :query_string => {
-                      :default_field => k.to_s.gsub(/^filter-/, ''),
-                      :query => value.gsub(/\"/,'').gsub(/\s+/, " AND ")
-                    }
-                  }
-                }
-              else
-                {
-                  :term => {
-                    k.to_s.gsub(/^filter-/, '') => value
-                  }
-                }
-              end
-
-            }
+              }
+            end
           }.flatten
         }
       end
@@ -233,7 +285,8 @@ module Npolar
       # If a q paramter is present it appends a wildcard to support fuzzy searches
       def q_param
         if params.has_key?('q') && params['q'] != '*'
-          params['q'].match(/(.*)(\*+|\s+)$/) ? "#{$1} #{$1}*" : "#{params['q']} #{params['q']}*"
+          q = params['q'].strip.gsub(/\!/, '')
+          q == "" ? "*" : "#{q} #{q}*"
         else
           params['q'] = '*'
         end

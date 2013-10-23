@@ -1,5 +1,6 @@
 {
   "project": {
+    "_all": {"enabled": true,"store": "yes"},
     "properties": {
       "id": { "type" :"string", "index": "not_analyzed" },
       "_id": { "type" :"string", "index": "not_analyzed" },

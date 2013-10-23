@@ -16,7 +16,7 @@
         "norw_summary",
         "review_progress",
         "state",
-        "type",
+        "publication_type",
         "journal"
     ],
     "properties": {
@@ -250,11 +250,7 @@
                             ]
                         }
                     }
-                },
-                "required": [
-                    "name",
-                    "roles"
-                ]
+                }
             }
         },
         "tags": {
@@ -290,12 +286,7 @@
                             "null"
                         ]
                     },
-                    "volume": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    }
+                    "type": {"type":"string"}
                 }
             }
         },
