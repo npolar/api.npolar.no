@@ -646,12 +646,12 @@ module Metadata
       #  dif_author = Hashie::Mash.new({ first_name: updated_by, last_name: "", email: "" })
       #end
       
-      personnel << Hashie::Mash.new({
-        "Role" => "DIF Author",
-        "First_Name" => dif_author.first_name,
-        "Last_Name" =>dif_author.last_name,
-        "Email" => dif_author.email
-      })
+      #personnel << Hashie::Mash.new({
+      #  "Role" => "DIF Author",
+      #  "First_Name" => dif_author.first_name,
+      #  "Last_Name" =>dif_author.last_name,
+      #  "Email" => dif_author.email
+      #})
       
       personnel
     end
