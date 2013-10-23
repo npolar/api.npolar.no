@@ -623,7 +623,7 @@ module Metadata
             when "pointOfContact"
               "Data Center Contact"
             when "editor"
-              "DIF Author"
+              nil#"DIF Author"
             else nil
           end
         }
