@@ -132,6 +132,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="created_by" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="parser" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="iq" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="messages" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="messages_120dB" type="tint" indexed="true" stored="true" multiValued="false"/>
 
 
 
