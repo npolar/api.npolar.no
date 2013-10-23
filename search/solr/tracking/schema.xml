@@ -238,6 +238,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="year" type="string" indexed="true" stored="true" />
 
 <field name="edited" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
+<field name="type" type="string" indexed="true" stored="true" />
 
 
 
