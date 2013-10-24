@@ -86,6 +86,7 @@ module Npolar
                   :core => api.search.core,
                   :force => api.search.force,
                   :path => api.path,
+                  :dates => api.search.dates,
                   :facets => api.search.facets,
                   :fl => "*",
                   :to_solr => lambda {|hash|
