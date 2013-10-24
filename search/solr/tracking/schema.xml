@@ -308,7 +308,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
 <!-- npolar.no stored true for debugging -->
-   <field name="text" type="text_en_splitting" indexed="true" stored="true" multiValued="true"/>
+   <field name="text" type="text_en_splitting" indexed="true" stored="false" multiValued="true"/>
 
    <!-- catchall text field that indexes tokens both normally and in reverse for efficient
         leading wildcard queries. -->
