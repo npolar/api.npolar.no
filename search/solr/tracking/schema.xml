@@ -412,7 +412,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
   <!-- npolar.no all copyFields are removed
     copy Field of * => text would be nice if text is empty (not supplied by the client)
   -->
-
+<copyField source="*" dest="text"/>
 <!--   <copyField source="cat" dest="text"/>
    <copyField source="name" dest="text"/>
    <copyField source="manu" dest="text"/>
