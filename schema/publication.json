@@ -184,10 +184,12 @@
                             ]
                         }
                     },
-                    "location": {
-                        "type":"string",
-                        "items": {
-                           "enum": [
+                    "location": {         
+                         "type": "array",
+                         "additionalItems": false,
+                         "items": {                 
+                         "type":"string",
+                         "enum": [
                                 "The Arctic - Arctic Ocean",
          			"The Arctic - Bjørnøya",
          			"The Arctic - Fram Strait", 
