@@ -188,7 +188,6 @@
                          "type": "array",
                          "additionalItems": false,
                          "items": {                 
-                         "type":"string",
                          "enum": [
                                 "The Arctic - Arctic Ocean",
          			"The Arctic - Bjørnøya",
