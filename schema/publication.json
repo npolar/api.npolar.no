@@ -63,6 +63,14 @@
                 "reviewed"
             ]
         },
+        "programme": {
+            "enum": [
+              "ICE Ecosystems",
+              "ICE Fluxes",
+              "ICE Antarctica",
+              "N-ICE"
+            ]
+        },
         "publication_type": {
             "enum": [
                 "peer-reviewed",
@@ -176,6 +184,32 @@
                             ]
                         }
                     },
+                    "location": {
+                        "type":"string",
+                        "items": {
+                           "enum": [
+                                "The Arctic - Arctic Ocean",
+         			"The Arctic - Bjornoya",
+         			"The Arctic - Fram Strait", 
+          			"The Arctic - Jan Mayen",
+          			"The Arctic - Eastern Barents Sea",
+          			"The Arctic - Northern Barents Sea", 
+          			"The Arctic - Svalbard - Barentsøya",
+          			"The Arctic - Svalbard - Edgeøya", 
+          			"The Arctic - Svalbard - Hopen",
+          			"The Arctic - Svalbard - Spitsbergen", 
+          			"The Arctic - Svalbard - Nordaustlandet",          
+          			"The Arctic - Svalbard - other islands", 
+          			"The Arctic - other areas", 
+          			"The Antarctic - Bouvetøya",
+          			"The Antarctic - Dronning Maud Land",
+         			"The Antarctic - Southern Ocean", 
+          			"The Antarctic - other areas", 
+          			"Russia",  
+          			"Elsewhere"
+                           ]
+                         }
+                    },
                     "email": {
                         "type": [
                             "string",
@@ -210,6 +244,7 @@
                     "ecology",
                     "ecotoxicology",
                     "environment",
+                    "geophysics",
                     "geology",
                     "glaciology",
                     "management",
