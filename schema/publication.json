@@ -184,7 +184,7 @@
                             ]
                         }
                     },
-                    "location": {         
+                    "locations": {         
                          "type": "array",
                          "additionalItems": false,
                          "items": {                 
