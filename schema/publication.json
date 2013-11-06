@@ -64,12 +64,19 @@
             ]
         },
         "programme": {
-            "enum": [
-              "ICE Ecosystems",
-              "ICE Fluxes",
-              "ICE Antarctica",
-              "N-ICE"
-            ]
+            "title": "ICE programmes",
+            "description": "Select none or several ICE programmes affiliated with the publication",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "type": "string",
+                "enum": [
+             		 "ICE Ecosystems",
+              		 "ICE Fluxes",
+             		 "ICE Antarctica",
+             		 "N-ICE"
+            	]
+             }
         },
         "publication_type": {
             "enum": [
@@ -185,7 +192,7 @@
                         }
                     },
                     "locations": { 
-"title": "locations",
+            "title": "locations",
             "description": "Selected locations",
             "type": "array",
             "additionalItems": false,
