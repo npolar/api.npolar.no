@@ -117,6 +117,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="lc" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="status" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="individual" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="individuals" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="deployment" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="tracking" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="system" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="sensors" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -139,6 +141,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="pass_duration" type="tint" indexed="true" stored="true" multiValued="false"/>
 <field name="nopc" type="tint" indexed="true" stored="true" multiValued="false"/>
 <field name="frequency" type="tfloat" indexed="true" stored="true" multiValued="false"/>
+<field name="li" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="dist_track" type="tint" indexed="true" stored="true" multiValued="false"/>
 
 
 
@@ -214,6 +218,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="relations" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="schema" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="errors" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="warn" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="valid" type="boolean" indexed="true" stored="true" multiValued="false" />
 
 <field name="set" type="string" indexed="true" stored="true" />
