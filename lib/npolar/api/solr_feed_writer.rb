@@ -10,7 +10,6 @@ class Npolar::Api::SolrFeedWriter
       response = JSON.parse response
     end
     
-    
     if response.key? "facet_counts" and response["facet_counts"].key? "facet_ranges"
       response["facet_counts"]["facet_ranges"].each do |ranges|
         range = ranges[0]
@@ -27,6 +26,9 @@ class Npolar::Api::SolrFeedWriter
         facets[field] = key_count.each_slice(2).map {|slice|[slice[0],slice[1]]}
       end
     end
+
+    # post-process facets, to get them into proper opensearch format.  TODO: add correct URLs
+    facets = facets.map { |name, info_list| { name => info_list.map { |info| { "term" => info[0], "count" => info[1], "uri" => "#" } } } }
     
     qtime = response["responseHeader"]["QTime"].to_i
     pagesize = response["responseHeader"]["params"]["rows"].to_i
@@ -41,7 +43,6 @@ class Npolar::Api::SolrFeedWriter
       previous = last
     end
     nxt = start+pagesize > totalResults ? false : start+pagesize
-    
     
     {"feed" => {
       "base" => base,
