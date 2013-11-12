@@ -54,6 +54,7 @@ module Npolar
         
 
         client = Npolar::Api::Client.new(uri+"/"+service.database)
+        #log.debug client.uri
         response = client.head 
         if 404 == response.status
           log.info "Creating #{service.storage} \"#{service.database}\" database"
@@ -72,8 +73,10 @@ module Npolar
             log.error "Failed creating database \"#{service.database}\" status #{response.status}: #{response.body}"
             raise "Failed creating database for #{service.path} API"
           end
+        elsif 200 == response.status
+          log.debug "#{service.storage} database #{uri} for #{service.path} exists: #{service.database}"
         else
-          log.debug "#{service.storage} database for #{service.path} exists: #{service.database}"
+          log.warn "Error on HEAD #{service.storage} database for #{service.path}, response status: #{response.status}"
         end
       end
 
