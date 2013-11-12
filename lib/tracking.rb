@@ -60,6 +60,7 @@ class Tracking < Hashie::Mash
         if objects.size == 1
           self[:object] = objects[0]
         else
+          self[:object] = "missing"
           self[:objects] = objects
         end
 
