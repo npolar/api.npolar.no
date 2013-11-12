@@ -192,7 +192,9 @@ module Npolar
                 if provide_id
                   doc['id'] = couch['response']['ids'][index]
                 end
-                solr << to_solr(doc)
+                solrized = to_solr(doc)
+                solrized = solrized.nil? ? doc :  solrized
+                solr << solrized
               end
               size = solr.size
             else
