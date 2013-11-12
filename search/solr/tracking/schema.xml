@@ -225,6 +225,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="sets" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="species" type="string" indexed="true" stored="true" multiValued="false" />
 <field name="object" type="string" indexed="true" stored="true" multiValued="false" />
+<field name="objects" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="species-list" type="string" indexed="true" stored="true" multiValued="true" />
 
 <field name="source" type="string" indexed="true" stored="true" />
 <field name="schemas" type="string" indexed="true" stored="true" multiValued="true" />
