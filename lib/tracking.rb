@@ -35,6 +35,7 @@ class Tracking < Hashie::Mash
   # Process document before saving
   # See self.before_save
   def before_save(request=nil)
+
     if not individual?
       if deployments.size == 1
     
@@ -44,6 +45,7 @@ class Tracking < Hashie::Mash
         self[:deployment] = deployments[0][:id]
 
       elsif deployments.size > 1
+
         individuals = deployments.map {|d| d.individual }.uniq
         objects = deployments.map {|d| d.object }.uniq
         specieslist = deployments.map {|d| d.species }.uniq
@@ -103,7 +105,9 @@ class Tracking < Hashie::Mash
 
       if d.terminated?
         terminated = DateTime.parse(d.terminated)
-        (deployed..terminated).include? measured
+
+        (measured >= deployed and measured <= terminated)
+
       else 
         measured >= deployed
       end
