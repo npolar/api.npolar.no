@@ -29,9 +29,6 @@ class Npolar::Api::SolrFeedWriter
       end
     end
 
-    # post-process facets, to get them into proper opensearch format.  TODO: add correct URLs
-    facets = facets.map { |name, info_list| { name => info_list.map { |info| { "term" => info[0], "count" => info[1], "uri" => "#" } } } }
-
     qtime = response["responseHeader"]["QTime"].to_i
     pagesize = response["responseHeader"]["params"]["rows"].to_i
     totalResults = response["response"]["numFound"].to_i
@@ -47,6 +44,9 @@ class Npolar::Api::SolrFeedWriter
 
     # parse everything in the url
     addr = Addressable::URI.parse(request.url)
+
+    # post-process facets, to get them into proper opensearch format.
+    facets = facets.map { |name, info_list| { name => info_list.map { |info| { "term" => info[0], "count" => info[1], "uri" => self.facet_url(addr, name, info[0]) } } } }
 
     # uri to self
     self_uri = addr.to_str
@@ -91,6 +91,12 @@ class Npolar::Api::SolrFeedWriter
       "facets" => facets,
       "entries" => response["response"]["docs"]}
     }
+  end
+
+  def self.facet_url(addr, name, val)
+    _addr = addr.clone
+    _addr.query_values = _addr.query_values.merge({ "filter-#{name}" => val })
+    return _addr.to_str
   end
 
 end
