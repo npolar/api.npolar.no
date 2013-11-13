@@ -86,7 +86,6 @@
                 "correction",
                 "book",
                 "poster",
-                "map",
                 "report",
                 "abstract",
                 "phd",
@@ -140,47 +139,11 @@
                     "name": {
                         "type": "string"
                     },
-                    "issn": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "book_series": {
-            "type": "string"
-        },
-        "brief_report_series": {
-            "type": "string"
-        },
-        "report_series": {
-            "type": "string"
-        },
-        "maps": {
-            "title": "Maps",
-            "description": "Add maps",
-            "type": "object",
-            "additionalItems": false,
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
+                    "series": {
+                        "type":"string"
                     },
-                    "maptype": {
-                        "type": "string",
-                        "enum": [
-                            "topographical",
-                            "geological"
-                        ]
-                    },
-                    "scale": {
-                        "type": "string"
-                    },
-                    "sheet": {
-                        "type": "string"
-                    },
-                    "temakart_no": {
-                        "type": "string"
+                    "series_no": {
+                        "type":"string"
                     }
                 }
             }
