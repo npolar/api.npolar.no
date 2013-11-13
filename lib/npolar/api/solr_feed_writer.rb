@@ -1,3 +1,5 @@
+require "addressable/uri"
+
 # JSON feed writer
 class Npolar::Api::SolrFeedWriter
 
@@ -29,7 +31,7 @@ class Npolar::Api::SolrFeedWriter
 
     # post-process facets, to get them into proper opensearch format.  TODO: add correct URLs
     facets = facets.map { |name, info_list| { name => info_list.map { |info| { "term" => info[0], "count" => info[1], "uri" => "#" } } } }
-    
+
     qtime = response["responseHeader"]["QTime"].to_i
     pagesize = response["responseHeader"]["params"]["rows"].to_i
     totalResults = response["response"]["numFound"].to_i
@@ -38,13 +40,35 @@ class Npolar::Api::SolrFeedWriter
     last = start < totalResults ? start : pagesize*(totalResults/pagesize).ceil.to_i
     
     previous = start >= pagesize ? start-pagesize : false
-    
     if previous.is_a? Fixnum and previous > last
       previous = last
     end
     nxt = start+pagesize > totalResults ? false : start+pagesize
+
+    # parse everything in the url
+    addr = Addressable::URI.parse(request.url)
+
+    # uri to self
+    self_uri = addr.to_str
+
+    # figure out next uri
+    if nxt == false
+      next_uri = false
+    else
+      addr.query_values = addr.query_values.merge({'start' => nxt})
+      next_uri = addr.to_str
+    end
+
+    # figure out prev uri
+    if previous == false
+      previous_uri = false
+    else
+      addr.query_values = addr.query_values.merge({'start' => previous})
+      previous_uri = addr.to_str
+    end
     
-    {"feed" => {
+    {
+      "feed" => {
       "base" => base,
       # http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements
       "opensearch" => {
@@ -53,9 +77,9 @@ class Npolar::Api::SolrFeedWriter
         "startIndex" => response["response"]["start"].to_i
       },
       "list" => {
-        "self" => request.url,
-        "next" => nxt,
-        "previous" => previous,
+        "self" => self_uri,
+        "next" => next_uri,
+        "previous" => previous_uri,
         "first" => 0,
         "last" => last
       },
@@ -68,4 +92,5 @@ class Npolar::Api::SolrFeedWriter
       "entries" => response["response"]["docs"]}
     }
   end
+
 end
