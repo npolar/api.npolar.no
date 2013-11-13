@@ -31,6 +31,7 @@ gem "rsolr", :git => "git://github.com/mootpointer/rsolr.git", :branch => "json_
 gem "oai"
 gem "ruby-netcdf"
 gem "hashdiff"
+gem "addressable"
 
 group :development, :test do
   gem "thin"
