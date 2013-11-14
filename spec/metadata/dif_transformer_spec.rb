@@ -963,7 +963,7 @@ describe Metadata::DifTransformer do
       end
 
       context "#guess_topics" do
-        it "CRYOSPHERE
+        it "CRYOSPHERE"
       end
       
     end
