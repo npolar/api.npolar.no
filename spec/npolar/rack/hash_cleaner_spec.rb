@@ -1,7 +1,7 @@
 require "spec_helper"
-require "npolar/rack/json_cleaner"
+require "npolar/rack/hash_cleaner"
 
-describe Npolar::Rack::JsonCleaner do
+describe Npolar::Rack::HashCleaner do
   
   before(:each) do
     @env = Rack::MockRequest.env_for(
@@ -11,10 +11,10 @@ describe Npolar::Rack::JsonCleaner do
   end
   
   subject do
-    app = mock( "json cleaner", :call => "" )
+    app = double( "json cleaner", :call => "" )
     app.stub(:call) {|env| [200, {}, [env['rack.input'].read]]}
     
-    Npolar::Rack::JsonCleaner.new(app)
+    Npolar::Rack::HashCleaner.new(app)
   end
   
   def request
