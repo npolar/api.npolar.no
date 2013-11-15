@@ -1,0 +1,27 @@
+{
+  "item": {
+    "properties" : {
+      "server":{"type":"string","index":"not_analyzed"},
+      "method":{"type":"string","index":"not_analyzed"},
+      "path":{"type":"string","index":"not_analyzed"},
+      "endpoint":{"type":"string","index":"not_analyzed"},
+      "request":{"type":"object", "dynamic": true,
+        "properties": {
+          "header": { "type":"object",
+            "properties": {
+              "Accept": {"type":"string","index":"not_analyzed"},
+              "Content-Type": {"type":"string","index":"not_analyzed"}
+            }
+          },
+          "authorization": {"type":"string","index":"not_analyzed"},
+          "mediatype": {"type":"string","index":"not_analyzed"},
+          "protocol": {"type":"string","index":"not_analyzed"}
+        }
+    
+    },
+      "response":{"type":"object", "dynamic": true, "enabled": true },
+      "severity":{"type":"integer" },
+      "open": {"type":"boolean" }
+    }
+  }
+}
