@@ -102,8 +102,10 @@ module Npolar
 
                 use Npolar::Rack::HashCleaner
 
+                uri = api.search.uri.nil? ? "http://#{ENV['NPOLAR_API_ELASTICSEARCH']}:9200" : api.search.uri
+
                 use Npolar::Rack::Icelastic, {
-                  :uri => api.search.uri,
+                  :uri => uri,
                   :index => api.search["index"],
                   :type => api.search.type,
                   :facets => api.search.facets,
@@ -173,7 +175,7 @@ module Npolar
                 end
                 document
 
-              }  
+              }
               body = case documents.size
                 when 1
                   documents[0].to_json
@@ -195,6 +197,40 @@ module Npolar
 
       def self.after_lambda
         lambda {|request, response|
+
+          # Location header on POST, PUT, DELETE
+          # @todo Absolute URI
+          if request.write? and (200..299).include? response.status and "application/json" == request.media_type
+            location = request.path.gsub(/\/+$/, "")
+            rev = nil
+            id = nil
+          
+            if not response.header["ETag"].nil?
+              rev = response.header["ETag"]
+              if rev =~ /["]/
+                rev = rev.gsub(/["]/, "")
+              end
+            end
+
+            begin
+              d = JSON.parse(response.body.join)
+              id = d["id"]
+            rescue
+              #
+            end
+            
+            if request.post?
+              if not id.nil?
+                location += "/#{id}"
+              end
+            end
+              
+            if not rev.nil?
+              location += "?rev=#{rev}"
+            end       
+            response.header["Location"]=location
+          end
+
           response
         }
       end
