@@ -167,7 +167,7 @@ module Views
             link_edit = e.id
           end
 
-          e.merge(:"title?" => title?(e), :link_edit => link_edit, :json => e.to_json, :link_edit? => true )
+          e.merge(:"title?" => title?(e), :link_edit => link_edit, :json => e.to_json[0..255], :link_edit? => true )
         }
       end
 
