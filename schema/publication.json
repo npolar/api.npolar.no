@@ -186,12 +186,6 @@
                 "type": "string"
             }
         },
-        "article_no": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
         "people": {
             "description": "People involved in creating the publication",
             "type": "array",
