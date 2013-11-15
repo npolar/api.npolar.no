@@ -16,14 +16,18 @@ module Npolar
       end
 
       def handle(request)
-        log.info "Cleaning input!!! [#{self.class.to_s}]"
-        t0 = Time.now
-        data = Yajl::Parser.parse(request.body.read)
-
-        cleaned = clean(data)
-        request.env["rack.input"] = StringIO.new(cleaned.to_json)
-
-        log.info "Input cleaned in #{Time.now - t0} [#{self.class.to_s}]"
+        begin
+          log.debug "Cleaning input [#{self.class.to_s}]"
+          t0 = Time.now
+          data = Yajl::Parser.parse(request.body.read)
+  
+          cleaned = clean(data)
+          request.env["rack.input"] = StringIO.new(cleaned.to_json)
+  
+          log.info "Input cleaned in #{Time.now - t0} [#{self.class.to_s}]"
+        rescue => e
+          log.warn "#{self.class.name} crashed: #{e}"
+        end
         app.call(request.env)
       end
 
