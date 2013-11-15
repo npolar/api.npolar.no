@@ -6,7 +6,7 @@ module Npolar
     end
 
     def self.base
-      @base||="http://api.npolar.no"
+      @base||="https://api.npolar.no"
     end
     
     def self.facets
