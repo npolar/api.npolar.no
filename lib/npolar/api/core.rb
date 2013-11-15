@@ -90,7 +90,7 @@ module Npolar
         end
         
       elsif ["PUT", "POST"].include? request.request_method
-        log.debug "Accepts(#{request.media_type})? #{accepts? request.media_type}"
+        #log.debug "Accepts(#{request.media_type})? #{accepts? request.media_type}"
         # 415 Unsupported Media Type
         unless accepts? request.media_type
           return http_error(415, "Unsupported: #{request.media_type}. Acceptable POST/PUT media types are: '#{accepts.join(", ")}'")
@@ -224,7 +224,6 @@ module Npolar
 
     # After request
     # @return response Npolar::Rack::Response
-    # @todo Location on POST/PUT
     def after(request, response)
       
       # Force response to Rack::Response   
@@ -242,8 +241,10 @@ module Npolar
         content_type = headers["Content-Type"].split(";")[0]
         content_type += "; charset=utf-8"
       end
+
       response.header["Content-Type"] = content_type
-      
+      #response.header["Server"] = self.class.name+" "+response.header["Server"]      
+    
       # Auto JSON from Hash
       if response.body.is_a? Hash
         response.body = body.to_json
