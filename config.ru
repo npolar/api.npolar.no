@@ -111,6 +111,3 @@ end
 map "/gcmd/concept/demo" do
   run Gcmd::Concept.new
 end
-
- 
-end
