@@ -19,6 +19,7 @@ require_relative "./lib/npolar/validation"
 require_relative "./lib/npolar/api/"
 require_relative "./lib/npolar/api/solr_query"
 
+
 require "mustache"
 require "./views/views"
 require "./lib/npolar/mustache"
@@ -42,6 +43,9 @@ end
 Dir.glob("./lib/*.rb").each do | file |
   require_relative file
 end
+
+require_relative "./lib/npolar/rack/middleware"
+require_relative "./lib/npolar/rack/edit_log"
 
 require_relative "./lib/metadata/dataset"
 require_relative "./lib/metadata/rack/dif_jsonizer"
