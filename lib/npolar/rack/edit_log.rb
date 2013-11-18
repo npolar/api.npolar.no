@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Npolar
   module Rack
 
@@ -37,7 +38,7 @@ module Npolar
           log.info "#{request.request_method} #{request.path} [#{self.class.name}]"
 
         rescue => e
-          log.error "#{request.request_method} #{request.path} [#{self.class.name}] failed: #{e}"
+          log.error "#{request.request_method} #{request.path} [#{self.class.name}] failed: #{e}\n#{e.backtrace.join("\n")}"
         end
 
         response
@@ -55,30 +56,42 @@ module Npolar
         server = url.host
         port = url.port
         scheme = url.scheme
+        path = request.path.gsub(/\.#{request.format}$/, "").gsub(/\/$/, "")
+        endpoint = request.env["SCRIPT_NAME"]
 
-        # Grab ETag
-        etag = nil
+        # Identifier
+        identifier = request.id
+        if identifier.nil? and endpoint != "" and path != endpoint
+          identifier = path.split(endpoint)[1]  
+        end
+        
+        # Revision - from ETag minus "
+        revision = nil
         if response.respond_to?(:header) and not response.header["ETag"].nil?
-          etag = response.header["ETag"]
+          revision = response.header["ETag"]
+          if revision =~ /^["](.*)["]/
+            revision = $1
+          end
+          
         end
 
-        # Grab Location, force to absolute if relative
+        # Location, force to absolute if relative
         location = nil
         if response.respond_to?(:header) and not response.header["Location"].nil?
           location = response.headers["Location"]
-          if location != /^http/ and location =~ /^\//
+          if location != /^http(s)?[:]\/\// and location =~ /^\//
             location = "#{scheme}://#{server}#{port != 80 ? ":#{port}" : ""}#{location}"
           end
         end
 
-        # Grab status
+        # Status
         if response.respond_to?(:status)
           status = response.status
         else
           status = response[0]
         end
 
-        # Grab response headers
+        # Response headers
         if response.respond_to?(:header)
           header = response.header
         else
@@ -87,16 +100,27 @@ module Npolar
 
         # Authorization type
         authorization = nil
-        if request.env.key? "HTTP_AUTHORIZATION"
+        if request.env.key? "HTTP_AUTHORIZATION" and request.env["HTTP_AUTHORIZATION"] =~ /\s/
           authorization = request.env["HTTP_AUTHORIZATION"].split(" ")[0]
         end
 
+        # Store incoming body on PUT (or if we have a revision)
+        body = body_hash = nil       
+        if request.put? or not revision.nil?
+          body = request.body.read
+          request.body.rewind
+          body_hash = "sha1 #{Digest::SHA1.hexdigest(body)}"
+        end
+        
         edit = {
           id: id,
           server: server,
           method: request.request_method,
-          endpoint: request.env["SCRIPT_NAME"],
-          path: request.path.gsub(/\.#{request.format}$/, "").gsub(/\/$/, ""),
+          endpoint: endpoint,
+          path: path,
+          identifier: identifier,
+          revision: revision,
+          location: location,
           request: {
  
             uri: request.url,
@@ -107,7 +131,8 @@ module Npolar
             username: request.username,
             time: Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
             ip: request.ip,
-            body: request.body.read,
+            body: body,
+            body_hash: body_hash,
             header: {
               Accept: request.env["HTTP_ACCEPT"]
             }
@@ -115,7 +140,7 @@ module Npolar
           response: {
             status: status,
             header: header,
-            body: body(response, status, open?)
+            body: response_body(response, status, open?)
 
           },   
           severity: severity(status),
@@ -128,7 +153,7 @@ module Npolar
         edit
       end
 
-      def body(response, status, open_data)
+      def response_body(response, status, open_data)
         
         if response.respond_to?(:body)
           body = response.body
