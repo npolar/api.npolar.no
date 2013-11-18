@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "rack/client"
 
 module Npolar
@@ -65,21 +66,31 @@ module Npolar
         end
 
       end
-  
+
+      # DELETE document
+      # @param id [String]
+      # @param params [Hash]
+      # @return [Rack::Response] Where body is the deleted document
       def delete(id, params={})
-        # if revision not provided, go and fetch latest rev number; store in params
-        if !params.has_key?('rev')
-          response = writer.get(id, params)
-          if response.status == 200
-            couch = JSON.parse(response.body)
-            params["rev"] = couch["_rev"]
-          end
+        if id.nil? or id.size < 1
+          raise ArgumentError, "Missing or blank id"
         end
+        
+        response = reader.get(id, params)
 
-        log.debug "About to delete id = #{id} with rev = #{params['rev']}"
+        if response.status == 200
 
-        response =  writer.delete(id, headers, params)
-        [response.status, response.headers, response.body]
+          deleted_document = response.body
+          # If user did not provide "rev" parameter, use the last revision
+          if not params.key?("rev")
+            params["rev"] = response.headers["Etag"].gsub(/["]/, "")
+          end
+        
+          log.debug "Before DELETE #{id} rev=#{params['rev']} [#{self.class.name}]"
+          response =  writer.delete(id, headers, params)
+          response.body = deleted_document
+        end
+        Rack::Response.new(response.body, response.status, response.headers)
       end
   
       def formats
@@ -159,9 +170,11 @@ module Npolar
         else
           unless data.is_a? Hash
             doc = Yajl::Parser.parse(data)
-            doc = self.class.force_ids(doc)
+            
+          else
+            doc = data
           end
-
+          doc = self.class.force_ids(doc)
           # Turn POST into PUT so that we get a real UUID id?
 
           #HTTP/1.1 201 Created
@@ -189,7 +202,7 @@ module Npolar
             couch = Yajl::Parser.parse(response.body)
             response = reader.get(couch["id"], {"rev" => couch["rev"] })
           end
-
+          response.headers["Content-Type"] = "application/json"
           [response.status, response.headers, response.body]
   
         end
@@ -423,7 +436,14 @@ module Npolar
       end
 
       def self.force_ids(doc)
+
         # if _id defined make sure id=_id
+        if doc.key? :id and not doc.key? "id"
+          doc["id"] = doc[:id]
+          doc.delete :id
+        end
+        
+
         if doc.key? "_id" and !doc["_id"].to_s.empty?
           doc["id"] = doc["_id"]
         # if _id not defined and id defined, _id=id
@@ -438,7 +458,7 @@ module Npolar
       end
 
       def self.uuid(doc)
-        UUIDTools::UUID.timestamp_create
+        UUIDTools::UUID.random_create
       end
 
       def limit
