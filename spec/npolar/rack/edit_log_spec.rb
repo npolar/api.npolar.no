@@ -53,7 +53,7 @@ describe Npolar::Rack::EditLog do
         request = request_factory("PUT")
         editlog = Npolar::Rack::EditLog.new(testapp)
         response = editlog.handle(request)
-        editlog.edit(request, response).keys.should ==  [:id, :server, :method, :endpoint, :path, :request, :response, :severity, :open]
+        editlog.edit(request, response).keys.should ==  [:id, :server, :method, :endpoint, :path, :identifier, :revision, :location, :request, :response, :severity, :open]
       end
     end
 
