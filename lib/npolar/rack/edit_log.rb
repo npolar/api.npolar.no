@@ -108,9 +108,11 @@ module Npolar
         body = body_hash = nil       
         if request.put? or not revision.nil?
           body = request.body.read
-          request.body.rewind
-          body_hash = "sha1 #{Digest::SHA1.hexdigest(body)}"
+          request.body.rewind          
         end
+      
+        # Store body hash for all requests
+        body_hash = "sha1 #{Digest::SHA1.hexdigest(body)}"
         
         edit = {
           id: id,
