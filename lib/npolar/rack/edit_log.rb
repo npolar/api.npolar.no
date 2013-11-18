@@ -5,12 +5,8 @@ module Npolar
     # Store and index DELETE, POST, and PUT request and response
     #
     # use Npolar::Rack::EditLog,
-    #     save: EditLog.save_lambda(
-    #       uri: ENV["NPOLAR_API_COUCHDB"]||"http://user:password@localhost:5984",
-    #       database: "api_editlog"
-    #     ),
-    #     index: EditLog.index_lambda,
-    #     open: true
+    #   save: lambda {|edit| # whatever },
+    #   open: true
     class EditLog < Npolar::Rack::Middleware
       
       CONFIG = {
@@ -44,7 +40,7 @@ module Npolar
         response
       end
 
-      # Create edit hash like
+      # Create edit hash
       def edit(request, response)
         if not config[:edit].nil?
           return config[:edit].call(edit)
@@ -72,7 +68,6 @@ module Npolar
           if revision =~ /^["](.*)["]/
             revision = $1
           end
-          
         end
 
         # Location, force to absolute if relative
@@ -104,15 +99,21 @@ module Npolar
           authorization = request.env["HTTP_AUTHORIZATION"].split(" ")[0]
         end
 
-        # Store incoming body on PUT (or if we have a revision)
-        body = body_hash = nil       
-        if request.put? or not revision.nil?
+        # Store incoming body for *open* data (when we have a revision)           
+        if request.delete?
+          body = body_hash = nil 
+        else
+
           body = request.body.read
-          request.body.rewind          
+          request.body.rewind
+          body_hash = "sha1 #{Digest::SHA1.hexdigest(body)}"
+
+          if not open? or revision.nil?
+            body = nil
+          end
         end
-      
-        # Store body hash for all requests
-        body_hash = "sha1 #{Digest::SHA1.hexdigest(body)}"
+        
+        
         
         edit = {
           id: id,
