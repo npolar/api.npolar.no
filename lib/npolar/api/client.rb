@@ -1,6 +1,7 @@
 require "faraday"
 require "faraday_middleware"
 
+
 module Npolar
   module Api 
   
@@ -31,8 +32,9 @@ module Npolar
       def all
         all = get_body("_all", {:fields=>"*"})
         if model?
-          all.map {|d| model.class.new(d)}
+          all = all.map {|d| model.class.new(d)}
         end
+        all
       end
       alias :feed :all
 
@@ -81,6 +83,13 @@ module Npolar
         end
 
         validator = model.class.new(document_or_id)
+
+        # Return true if validator is a Hash with errors key !
+        # FIXME Hashie::Mash will always respond to #valid? 
+        if validator.key? :valid? or validator.key? :errors
+          return true
+        end
+        
         valid = validator.valid?
         
         if validator.errors.nil?
@@ -97,15 +106,15 @@ module Npolar
         valid
       end
 
-    def username
-      # export NPOLAR_HTTP_USERNAME=http_username
-      @username ||= ENV["NPOLAR_API_USERNAME"]
-    end
-
-    def password
-      # export NPOLAR_HTTP_PASSWORD=http_password
-      @password ||= ENV["NPOLAR_API_PASSWORD"]
-    end
+      def username
+        # export NPOLAR_HTTP_USERNAME=http_username
+        @username ||= ENV["NPOLAR_API_USERNAME"]
+      end
+  
+      def password
+        # export NPOLAR_HTTP_PASSWORD=http_password
+        @password ||= ENV["NPOLAR_API_PASSWORD"]
+      end
 
     end
   end
