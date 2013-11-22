@@ -3,7 +3,7 @@ module Views
   module Api  
     class Index < Npolar::Mustache::JsonView
 
-# Coming APIs: Tracking, Monitoring, Placenames,Ecotox
+      # Coming APIs: Tracking, Monitoring, Placenames,Ecotox
 
       def initialize(app=nil, hash={})
         @app = app
@@ -18,30 +18,30 @@ module Views
               {:format=>"json", :label => "JSON", :active => ""},
             ]
           },
-          :limit => 25,
-          :svc => { :search => [
-            #{:title => "Biology", :href => "/biology/?q="},
-            #{:title => "Ecotox", :href => "/ecotox/?q="},
-            {:title => "Dataset", :href => "/dataset/?q=", :alt => "Norwegian Polar Institute's datasets (discovery level metadata"},
-            {:title => "GCMD Concept", :href => "/gcmd/concept/?q="},
-            #{:title => "Map", :href => "/map/archive?q="},
-            
-            #{:title => "Monitoring ", :href => "/monitoring/indicator?q="},
-            #{:title => "Org", :href => "/org/?q="},
-            #{:title => "Marine biology", :href => "/biology/marine/?q="},
-            {:title => "Oceanography", :href => "/oceanography/?q="},
-            #{:title => "Person", :href => "/person/?q="},
-            #{:title => "Placename", :href => "/placename/?q="},
-            #{:title => "Polar bear", :href => "/polar-bear/reference/?q="},
-            {:title => "Project", :href => "/project/?q="},
-            {:title => "Publication", :href => "/publication/?q="},
-            #{:title => "Rapportserie", :href => "/rapportserie/105/?q="},
-            #{:title => "Sighting", :href => "/sighting/fauna?q="}
-            {:title => "Service", :href => "/api/?q="}
-            #{:title => "Seaice"},
-            #{:title => "Tracking"}
-            ]},
-          #:welcome_article => '<p>This service provides machine readable access to The <a href="http://npolar.no/en">Norwegian Polar Institute</a>\'s data. Humans should head over to <a href="http://data.npolar.no">Norwegian Polar Data</a>.</p>',
+          :limit => 25
+          #:svc => { :search => [
+          #  #{:title => "Biology", :href => "/biology/?q="},
+          #  #{:title => "Ecotox", :href => "/ecotox/?q="},
+          #  {:title => "Dataset", :href => "/dataset/?q=", :alt => "Norwegian Polar Institute's datasets (discovery level metadata"},
+          #  {:title => "GCMD Concept", :href => "/gcmd/concept/?q="},
+          #  #{:title => "Map", :href => "/map/archive?q="},
+          #  
+          #  #{:title => "Monitoring ", :href => "/monitoring/indicator?q="},
+          #  #{:title => "Org", :href => "/org/?q="},
+          #  #{:title => "Marine biology", :href => "/biology/marine/?q="},
+          #  {:title => "Oceanography", :href => "/oceanography/?q="},
+          #  #{:title => "Person", :href => "/person/?q="},
+          #  #{:title => "Placename", :href => "/placename/?q="},
+          #  #{:title => "Polar bear", :href => "/polar-bear/reference/?q="},
+          #  {:title => "Project", :href => "/project/?q="},
+          #  {:title => "Publication", :href => "/publication/?q="},
+          #  #{:title => "Rapportserie", :href => "/rapportserie/105/?q="},
+          #  #{:title => "Sighting", :href => "/sighting/fauna?q="}
+          #  {:title => "Service", :href => "/api/?q="}
+          #  #{:title => "Seaice"},
+          #  #{:title => "Tracking"}
+          #  ]},
+          #:welcome_article => '<p>This service provides machine readable access to the <a href="http://npolar.no/en">Norwegian Polar Institute</a>\'s data.<br/> Humans should head over to <a href="http://data.npolar.no">Norwegian Polar Data</a>.</p>',
           #:data => { :workspaces => [] }
         }
 
@@ -113,6 +113,10 @@ module Views
       end
 
       def formats
+      end
+
+      def frontpage?
+        request.path == "/"
       end
 
       def search?

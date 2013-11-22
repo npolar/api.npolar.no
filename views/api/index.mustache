@@ -95,22 +95,51 @@
   
   </form>
   {{/ form }}
+
+
+
+
   </article>
-  
-  
-  
-  {{#svc}}
+
+
+
+{{#frontpage?}}
+<table class="table">
+<thead>
+<tr>
+<th>API</th><th>Title</th><th>Documents</th><th>Search index</th>
+</tr>
+</thead>
+{{#services}}
+
+<tr>
+
+      <td><a href="{{href}}" title="{{title}}">{{text}}</a></td>
+      <td>{{summary}}</td>
+      {{#error?}}<td class="error">{{/error?}}{{^error?}}<td>{{/error?}}{{size}}</td>
+<td>{{{difference}}}</td>
+<!--<td>{{updated}}</td>-->
+</tr>
+{{/services}}
+</table>
+  {{{welcome_article}}}
+{{/frontpage?}}
+
+{{^frontpage?}}
+<!-- Search navigation -->  
   <div class="pagination">
     <ul>
-    {{#search}}
+{{#services}}
+
+
       <li><a href="{{href}}" title="{{title}}">{{text}}</a></li>
-    {{/search}}
-    </ul>
-  {{/svc}}
-  </div>
-  
-  {{{welcome_article}}}
-  
+
+   
+  {{/services}}
+ </ul>
+  </div>  
+{{/frontpage?}}
+
   <hr/>
   <footer class="footer">
     <p><strong>api.npolar.no</strong> is <a href="https://github.com/npolar/api.npolar.no#readme">open source</a>.</p>
