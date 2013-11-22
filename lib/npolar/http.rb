@@ -31,8 +31,9 @@ module Npolar
         f = Faraday.new(base, options)
 
         if password != "" and username != ""
-          f.basic_auth username, password
+          #f.basic_auth username, password
         end
+        #f.response :logger # Log to STDOUT
 
         f.build do |b|
           builder.call(b)
