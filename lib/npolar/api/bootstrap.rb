@@ -74,7 +74,7 @@ module Npolar
             raise "Failed creating database for #{service.path} API"
           end
         elsif 200 == response.status
-          log.debug "#{service.storage} database #{uri} for #{service.path} exists: #{service.database}"
+          log.debug "#{service.storage} database for #{service.path} exists: #{service.database}"
         else
           log.warn "Error on HEAD #{service.storage} database for #{service.path}, response status: #{response.status}"
         end
