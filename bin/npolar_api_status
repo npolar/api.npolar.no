@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+# Status command for http://api.npolar.no APIs
+
+require "optparse"
+require "logger"
+
+require_relative "../lib/npolar/http"
+require_relative "../lib/npolar/api/client"
+require_relative "../lib/npolar/api/command"
+require_relative "../lib/npolar/api/status_command"
+
+module Npolar::Api
+  cmd = StatusCommand.new
+  puts cmd.run.to_json
+end
