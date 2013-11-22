@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "hashie/mash"
 require "rack/builder"
 
@@ -21,7 +22,6 @@ module Npolar
         @app = ::Rack::Builder.new do
           map "/" do
 
-            to_solr = lambda {|hash|hash}
             if api.model?
               model = Npolar::Factory.constantize(api.model).new
               # This will trigger NameError if model is undefined
@@ -72,13 +72,37 @@ module Npolar
             end
 
             if api.search? and api.search.engine?
+              
+              # Build list of APIs with status counts
               bootstrap = Bootstrap.new
-              search = { :search => bootstrap.apis.select {|svc| svc.path != api.path }.map {|svc|
-                  { :href => (svc.search? and svc.search.engine != "") ? svc.path+"/?q=" : svc.path+"/_ids.json",
-                    :text => svc.path, :title => (svc.search? and svc.search.engine != "") ? "#{svc.path} search" : "#{svc.path} identifiers" }
-                }
+              status = StatusCommand.new
+
+              services = bootstrap.apis.map {|svc|
+                  status.api = svc
+                  report = status.count
+                  difference = (svc.search? and svc.search.engine?) ? "OK" : "—"
+                  if svc.database.nil?
+                    difference = report[:search][:count]
+                  end
+                  
+                  if not report[:difference].nil? and report[:difference] > 0
+                    difference = "<b>#{(report[:difference]*(-1))}</b>"
+                  end
+  
+                    { :href => (svc.search? and svc.search.engine != "") ? svc.path+"/?q=" : svc.path+"/_ids.json",
+                      :text => svc.path,
+                      :title => (svc.search? and svc.search.engine != "") ? "#{svc.title} [search]" : "#{svc.title} [identifiers]",
+                      :status => report,
+                      :summary => svc.title,
+                      :size => report[:database][:count],
+                      :difference => difference,
+                      :error? => report[:error],
+                      :database => svc.storage,
+                      :updated => report[:updated]
+                    }
               }
-              use Views::Api::Index, {:svc => search}
+              
+              use Views::Api::Index, { :services => services}
 
               if /Solr/i =~ api.search.engine
                 
