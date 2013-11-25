@@ -108,6 +108,7 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="rev" type="string" indexed="true" stored="true" />
 <field name="collection" type="string" indexed="true" stored="true" />
 <field name="workspace" type="string" indexed="true" stored="true" />
+<field name="draft" type="string" indexed="true" stored="true" />
 
 <field name="animal_group" type="string" indexed="true" stored="true" />
 <field name="bottomdepth" type="string" indexed="true" stored="true" />
