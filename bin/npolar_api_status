@@ -5,6 +5,7 @@
 
 require "optparse"
 require "logger"
+require "hashie"
 
 require_relative "../lib/npolar/http"
 require_relative "../lib/npolar/api/client"
