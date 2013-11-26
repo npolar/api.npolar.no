@@ -139,11 +139,14 @@
                     "name": {
                         "type": "string"
                     },
+                    "np_series": {
+                        "type": "string"
+                    },
                     "series": {
-                        "type":"string"
+                        "type": "string"
                     },
                     "series_no": {
-                        "type":"string"
+                        "type": "string"
                     }
                 }
             }
