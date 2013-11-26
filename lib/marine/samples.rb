@@ -18,6 +18,7 @@ module Marine
       solr = {
         :id                => id,
         :rev               => rev,
+        :draft             => doc.fetch("draft", "no"),
         :animal_group      => doc.fetch("animal_group", ""),
         :bottomdepth       => doc.fetch("bottomdepth", ""),
         :conveyance        => doc.fetch("conveyance", ""),
