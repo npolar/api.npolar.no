@@ -1,7 +1,8 @@
 require "hashie"
 require "faraday"
-# Service (Service description document)
-# Handles service descriptions at /service and service configuration
+
+# Service
+# Model for /service API
 # Schema: http://api.npolar.no/schema/api
 class Service < Hashie::Mash
   
@@ -45,6 +46,9 @@ class Service < Hashie::Mash
   def self.factory(seedfile)
     seedfile = File.absolute_path(File.join(File.dirname(__FILE__), "..", "seed", "service", seedfile))
     unless File.exists?(seedfile)
+      seedfile += ".json"
+    end
+    unless File.exists?(seedfile)    
       raise "Seedfile #{seedfile} does not exist"
     end
     self.new(JSON.parse(File.read(seedfile)))
@@ -52,6 +56,20 @@ class Service < Hashie::Mash
 
   def schemas
     ["api.json"] 
+  end
+
+  # Get all services
+  # @todo Dynamic method depending on service database
+  def self.services(database=nil, select=nil)
+    if database.nil?
+      database = Service.factory("service-api").database
+    end
+    
+    client = Npolar::Api::Client.new(Npolar::Storage::Couch.uri+"/#{database}")
+    client.basic_auth nil,nil 
+    client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
+      Service.new(row.doc)
+    }
   end
 
   def to_s

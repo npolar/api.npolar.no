@@ -5,7 +5,7 @@ require "rack/builder"
 module Npolar
   module Api
     
-    # JSON lego: A complete kit for running JSON APIs
+    # JSON middleware lego: A complete kit for running JSON APIs
     class Json
 
       def middleware
@@ -25,7 +25,6 @@ module Npolar
             if api.model?
               model = Npolar::Factory.constantize(api.model).new
               # This will trigger NameError if model is undefined
-              
             else
               model = nil
             end
@@ -36,7 +35,6 @@ module Npolar
                 storage, database = api.storage, api.database
                 storage = Npolar::Storage::Couch.new(database)
                 storage.model = model
-
               else
                 raise "Unsupported database: #{api.storage}"
               end
@@ -73,35 +71,13 @@ module Npolar
 
             if api.search? and api.search.engine?
               
-              # Build list of APIs with status counts
-              bootstrap = Bootstrap.new
-              status = StatusCommand.new
-
-              services = bootstrap.apis.map {|svc|
-                  status.api = svc
-                  report = status.count
-                  difference = (svc.search? and svc.search.engine?) ? "OK" : "—"
-                  if svc.database.nil?
-                    difference = report[:search][:count]
-                  end
-                  
-                  if not report[:difference].nil? and report[:difference] > 0
-                    difference = "<b>#{(report[:difference]*(-1))}</b>"
-                  end
-  
-                    { :href => (svc.search? and svc.search.engine != "") ? svc.path+"/?q=" : svc.path+"/_ids.json",
-                      :text => svc.path,
-                      :title => (svc.search? and svc.search.engine != "") ? "#{svc.title} [search]" : "#{svc.title} [identifiers]",
-                      :status => report,
-                      :summary => svc.title,
-                      :size => report[:database][:count],
-                      :difference => difference,
-                      :error? => report[:error],
-                      :database => svc.storage,
-                      :updated => report[:updated]
-                    }
-              }
-              
+              # List of APIs
+              services = Service.services.map {|svc|
+                { :href => (svc.search? and svc.search.engine != "") ? svc.path+"/?q=" : svc.path+"/_ids.json",
+                  :text => svc.path,
+                  :title => (svc.search? and svc.search.engine != "") ? "#{svc.title} [search]" : "#{svc.title} [identifiers]",
+                }
+              }             
               use Views::Api::Index, { :services => services}
 
               if /Solr/i =~ api.search.engine
@@ -126,7 +102,17 @@ module Npolar
 
                 use Npolar::Rack::HashCleaner
 
-                uri = api.search.uri.nil? ? "http://#{ENV['NPOLAR_API_ELASTICSEARCH']}:9200" : api.search.uri
+                uri = URI.parse("http://localhost:9200")
+                if not api.search.uri.nil?
+                  begin 
+                    uri.host = URI.parse(api.search.uri).host
+                  rescue
+                    # Malformed URI => might be OK hostname
+                    uri.host = api.search.uri
+                  end
+                elsif ENV.key? "NPOLAR_API_ELASTICSEARCH"
+                  uri.host = ENV["NPOLAR_API_ELASTICSEARCH"]
+                end
 
                 use Npolar::Rack::Icelastic, {
                   :uri => uri,
