@@ -1,11 +1,17 @@
 require "faraday"
 require "faraday_middleware"
 
-
 module Npolar
   module Api 
-  
-    class Client < Npolar::Http
+    class Client
+    attr_accessor :model, :log
+    attr_reader :response, :options
+    attr_writer :username, :password
+
+    extend Forwardable # http://www.ruby-doc.org/stdlib-1.9.3/libdoc/forwardable/rdoc/Forwardable.html
+    
+    # Delegate HTTP verbs to Faraday
+    def_delegators :http, :delete, :get, :head, :patch, :post, :put, :basic_auth
 
       OPTIONS = { :headers =>
         { "User-Agent" => "#{self.name}",
@@ -14,13 +20,9 @@ module Npolar
           "Accept-Charset" => "UTF-8",
           "Accept-Encoding" => "gzip,deflate",
           "Connection" => "keep-alive"
-        },
-        "timeout" => 600,           # open/read timeout in seconds
-        "open_timeout" => 60      # connection open timeout in seconds
+        }
       }
       # Before post, grab schema (get current revision)
-
-      attr_accessor :model
 
       def initialize(base="http://api.npolar.no", options=OPTIONS, &builder)
         @base = base
@@ -38,20 +40,56 @@ module Npolar
       end
       alias :feed :all
 
+      def base
+        @base.gsub(/\/$/, "")
+      end
+
+      # The Faraday http object
+      def http(&builder)
+        @http ||= begin
+          f = Faraday.new(base, options)
+  
+          if password != "" and username != ""
+            #f.basic_auth username, password
+          end
+          f.response :logger # Log to STDOUT
+          # "request.timeout" => 600           # open/read timeout in seconds
+          # "open_timeout" => 60      # connection open timeout in seconds
+  
+          f.build do |b|
+            builder.call(b)
+          end if builder
+  
+          f
+        end
+      end
+
       def errors(document_or_id)
         @errors ||= model.merge(document_or_id).errors
       end
 
       def get_body(uri, params={})
         # edit URI and model => instantiate
-        result = JSON.parse(super)
-        if result.is_a? Hash
-          Hashie::Mash.new(result)
+        response = get(uri, params)
+        unless (200..399).include? response.status
+          raise Exception, "GET #{uri} failed with status: #{response.status}"
+        end
+        body = JSON.parse(response.body)
+        if body.is_a? Hash
+          Hashie::Mash.new(body)
         else
-          result
+          body
         end
         
       end
+
+      #def get_body(uri, params={})
+      #    response = get(uri, params)
+      #    unless (200..399).include? response.status
+      #      raise Exception, "GET #{uri} failed with status: #{response.status}"
+      #    end
+      #    response.body
+      #  end
 
       # All ids
       def ids
