@@ -216,7 +216,8 @@
                         "type": "array",
                         "items": {
                             "enum": [
-                                "author"
+                                "author",
+                                "editor"
                             ]
                         }
                     },
