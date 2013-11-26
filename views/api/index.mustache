@@ -104,10 +104,10 @@
 
 
 {{#frontpage?}}
-<table class="table">
+<table class="table table-condensed">
 <thead>
 <tr>
-<th>API</th><th>Title</th><th>Documents</th><th>Search index</th>
+<!--<th>Endpoint</th><th>Title</th><th>Documents</th><th>Search index</th>-->
 </tr>
 </thead>
 {{#services}}
@@ -116,6 +116,7 @@
 
       <td><a href="{{href}}" title="{{title}}">{{text}}</a></td>
       <td>{{summary}}</td>
+<!--<td>{{dsn}}</td>-->
       {{#error?}}<td class="error">{{/error?}}{{^error?}}<td>{{/error?}}{{size}}</td>
 <td>{{{difference}}}</td>
 <!--<td>{{updated}}</td>-->
@@ -157,7 +158,12 @@
         resultListLocator: 'feed.entries',
         resultTextLocator: function(result) {
           //Y.log(result);
-          return result.title;
+          if (result.title) {
+            return result.title;
+          } else {
+            return result;
+          }     
+
         },
         source: '{{{source}}}'
       });
