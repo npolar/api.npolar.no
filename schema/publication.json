@@ -154,7 +154,7 @@
         "conference": {
             "title": "Conference",
             "description": "For abstracts and proceedings",
-            "type": "array",
+            "type": "object",
             "additionalItems": false,
             "items": {
                 "type": "object",
