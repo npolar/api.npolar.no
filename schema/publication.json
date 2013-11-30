@@ -125,6 +125,12 @@
                 "null"
             ]
         },
+        "page_count": {
+            "type": [
+               "string",
+               "null"
+            ]
+        },
         "journal": {
             "title": "Journal",
             "description": "Peer-reviewed journal",
@@ -189,6 +195,7 @@
                 "type": "string"
             }
         },
+       
         "people": {
             "description": "People involved in creating the publication",
             "type": "array",
