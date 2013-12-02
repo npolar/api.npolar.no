@@ -3,30 +3,27 @@
     "_all": {"enabled": true,"store": "yes"},
     "properties": {
       "id":{"type":"string","index":"not_analyzed"},
-      "collection":{"type":"string","index":"not_analyzed"},
       "schema":{"type":"string","index":"not_analyzed"},
-      "title": {"type":"string","index":"not_analyzed"},
-      "topics":{"type":"string","index":"not_analyzed"},
-      "lang": {"type":"string","index":"not_analyzed"},
-      "original_title": {"type":"string","index":"not_analyzed"},
+      "collection":{"type":"string","index":"not_analyzed"},
       "base": {"type":"string","index":"not_analyzed"},
       "draft": {"type":"string","index":"not_analyzed"},
+      "topics":{"type":"string","index":"not_analyzed"},
+      "title": {"type":"string","index":"not_analyzed"},
+      "original_lang": {"type":"string","index":"not_analyzed"},
       "scientific_abstract": {"type":"string","index":"not_analyzed"},
       "norw_summary": {"type":"string","index":"not_analyzed"},
       "review_progress": {"type":"string","index":"not_analyzed"},
-      "category": {"type":"string","index":"not_analyzed"},
-      "state": {"type":"string","index":"not_analyzed"},
-      "publication_name": {"type":"string","index":"not_analyzed"},
-      "publisher": {"type":"string","index":"not_analyzed"},
-      "publication_year": {"type":"string","index":"not_analyzed"},
-      "publication_date": {"type":"date","index":"not_analyzed"},
-      "volume": {"type":"string","index":"not_analyzed"},
-      "issue": {"type":"string","index":"not_analyzed"},
-      "suppl": {"type":"string","index":"not_analyzed"},
-      "from_page": {"type":"string","index":"not_analyzed"},
-      "to_page": {"type":"string","index":"not_analyzed"},
-      "tot_no_pages": {"type":"string","index":"not_analyzed"},
-      "article_no": {"type":"string","index":"not_analyzed"},
+      "programme":{"type":"string","index":"not_analyzed"},
+      "publication_type":{"type":"string","index":"not_analyzed"},
+      "state":{"type":"string","index":"not_analyzed"},
+      "published-year":{"type":"string","index":"not_analyzed"},
+      "published-date":{"type":"string","index":"not_analyzed"},
+      "volume":{"type":"string","index":"not_analyzed"},
+      "issue":{"type":"string","index":"not_analyzed"},
+      "suppl":{"type":"string","index":"not_analyzed"},
+      "journal":{"type":"string","index":"not_analyzed"},
+      "conference":{"type":"string","index":"not_analyzed"},
+      "pages":{"type":"string","index":"not_analyzed"},
       "people":{
         "properties": {
           "id":{"type":"string","index":"not_analyzed"},
@@ -37,6 +34,14 @@
           "organisation":{"type":"string","index":"not_analyzed"}
         }
       },
+      "organisations":{
+        "properties": {
+          "id":{"type":"string","index":"not_analyzed"},
+          "name":{"type":"string","index":"not_analyzed"},
+          "roles":{"type":"string","index":"not_analyzed"}
+        }
+      },
+      "tags": {"type":"string","index":"not_analyzed"},
       "links":{
         "properties": {
           "rel":{"type":"string","index":"not_analyzed"},
@@ -50,17 +55,10 @@
           "accessed":{"type":"date","index":"not_analyzed"}
         }
       },
-      "edits":{
-        "properties":{
-          "edited":{"type":"date","index":"not_analyzed"},
-          "email":{"type":"string","index":"not_analyzed"},
-          "name":{"type":"string","index":"not_analyzed"}
-        }
-      },
-      "tags": {"type":"string","index":"not_analyzed"},
+      "locations":{"type":"string","index":"not_analyzed"},
+      "comment":{"type":"string","index":"not_analyzed"},
       "created":{"type":"date","index":"not_analyzed"},
       "updated":{"type":"date","index":"not_analyzed"},
-      "comment":{"type":"string","index":"not_analyzed"},
       "created_by":{"type":"string","index":"not_analyzed"},
       "updated_by":{"type":"string","index":"not_analyzed"},
       "_id":{"type":"string","index":"not_analyzed"},
