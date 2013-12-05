@@ -126,6 +126,12 @@
                 "null"
             ]
         },
+        "art_no": {
+            "type": [
+               "string",
+               "null"
+            ]
+        },
         "page_count": {
             "type": [
                "string",
