@@ -106,7 +106,7 @@
             "type": "number"
         },
         "published-date": {
-            "type": "string"
+            "type": ["string", "null"], "format": "date-time"
         },
         "volume": {
             "type": [
@@ -187,7 +187,7 @@
                     "dates": {
                         "type": "array",
                         "items": {
-                            "type": "string"
+                            "type": ["string", null], "format":"date-time" 
                         }
                     }
                 }
