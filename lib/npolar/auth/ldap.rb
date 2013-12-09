@@ -144,6 +144,7 @@ module Npolar
 
       # append @npolar.no stub if username doesn't have it
       def force_domain(username)
+        username = CGI.unescape(username)
         if username !~ /[@]/
           username += "@" + domain
         end
