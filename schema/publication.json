@@ -12,12 +12,9 @@
         "published-year",
         "people",
         "topics",
-        "scientific_abstract",
-        "norw_summary",
         "review_progress",
         "state",
-        "publication_type",
-        "journal"
+        "publication_type"
     ],
     "properties": {
         "id": {
