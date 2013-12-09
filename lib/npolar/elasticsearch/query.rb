@@ -83,7 +83,7 @@ module Npolar
         body[:facets] = facets unless facets.empty?
         body[:fields] = fields unless fields.nil?
 
-        log.debug "Npolar::ElasticSearch::Query:\n#{JSON.pretty_generate(body)}"
+        log.debug "Npolar::ElasticSearch::Query:\n#{body.to_json}"
 
         body.to_json
       end
