@@ -1,50 +1,75 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/person-1.0-rc1",
-  "type": "object",
-  "additionalProperties": true,
-  "properties": {
-    "id": {"type": "string"},
-    "schema": {"type": "string"},
-    "collection": {"enum":["person"]},
-    "first_name": {"type": "string"},
-    "last_name": {"type": "string"},
-    "title": {"type": "string"},
-    "email": {"type": "string", "format": "email"},
-    "phone": {"type": "string"},
-    "mobile": {"type": "string"},
-    "workplace": {"type": "string"},
-    "currenty_employed": {"type": "bool"},
-    "on_leave": {"type": "bool"},
-    "jobtitle": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "en":{"type": "string"},
-        "no":{"type": "string"}
+  "$schema":"http://json-schema.org/draft-04/schema#",
+  "id":"http://api.npolar.no/schema/person-1.0-rc1",
+  "type":"object",
+  "additionalProperties":false,
+  "properties":{
+    "id":{"type":"string"},
+    "schema":{"type":"string" },
+    "collection":{"enum":["person"]},
+    "first_name":{"type":"string"},
+    "last_name":{"type":"string"},
+    "title":{"type":"string"},
+    "email":{"type":"string", "format":"email"},
+    "phone":{"type":"string"},
+    "mobile":{"type":"string"},
+    "workplace":{"type":"string"},
+    "currenty_employed":{"type":"bool"},
+    "on_leave":{"type":"bool"},
+    "jobtitle":{
+      "type":"object",
+      "additionalProperties":false,
+      "properties":{
+        "en":{"type":"string"},
+        "no":{"type":"string"}
       }
     },
-    "organisation": {"type": "string"},
-    "links": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "rel": {"type": "string"},
-          "href": {"type": "string", "format": "uri"},
-          "hreflang": {"type": "string"},
-          "title": {"type": "string"},
-          "type": {"type": "string", "default": "text/html"}
+    "events":{
+      "type":"Array",
+      "additionalItems":false,
+      "items":{
+        "type":"object",
+        "additionalProperties":false,
+        "properties":{
+          "start":{"type":"string", "format":"date-time"},
+          "stop":{"type":"string", "format":"date-time"},
+          "comment":{"type":"string"}
         }
       },
-      "required": ["rel", "href"]
+      "required":["start"]
     },
-    "created": {"type": "string", "format": "date-time"},
-    "updated": {"type": "string", "format": "date-time"},
-    "created_by": {"type": "string"},
-    "updated_by": {"type": "string"}
+    "organisation":{"type":"string"},
+    "orgtree":{
+      "type":"array",
+      "additionalItems":false,
+      "items":{
+        "type":"string"
+      }
+    },
+    "links":{
+      "type":"array",
+      "additionalItems":false,
+      "items":{
+        "type":"object",
+        "additionalProperties":false,
+        "properties":{
+          "rel":{"type":"string"},
+          "href":{"type":"string", "format":"uri"},
+          "hreflang":{"type":"string"},
+          "title":{"type":"string"},
+          "type":{"type":"string", "default":"text/html"}
+        }
+      },
+      "required":["rel", "href"]
+    },
+    "comment":{"type":"string"},
+    "created":{"type":"string", "format":"date-time"},
+    "updated":{"type":"string", "format":"date-time"},
+    "created_by":{"type":"string"},
+    "updated_by":{"type":"string"},
+    "_id":{"type":"string"},
+    "_rev":{"type":"string"},
+    "_attachments":{"type":"object"},
   },
-  "required": ["first_name","last_name","email"]
+  "required":["first_name","last_name","email"]
 }
