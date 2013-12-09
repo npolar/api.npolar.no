@@ -14,7 +14,7 @@
     "phone":{"type":"string"},
     "mobile":{"type":"string"},
     "workplace":{"type":"string"},
-    "currenty_employed":{"type":"bool"},
+    "currently_employed":{"type":"bool"},
     "on_leave":{"type":"bool"},
     "jobtitle":{
       "type":"object",
@@ -69,7 +69,7 @@
     "updated_by":{"type":"string"},
     "_id":{"type":"string"},
     "_rev":{"type":"string"},
-    "_attachments":{"type":"object"},
+    "_attachments":{"type":"object"}
   },
   "required":["first_name","last_name","email"]
 }
