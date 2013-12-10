@@ -67,9 +67,10 @@
     "updated":{"type":"string", "format":"date-time"},
     "created_by":{"type":"string"},
     "updated_by":{"type":"string"},
+    "uuid":{"type":"string"},
     "_id":{"type":"string"},
     "_rev":{"type":"string"},
     "_attachments":{"type":"object"}
   },
-  "required":["first_name","last_name","email"]
+  "required":["first_name","last_name","id"]
 }
