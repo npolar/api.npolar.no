@@ -31,8 +31,8 @@
         "type":"object",
         "additionalProperties":false,
         "properties":{
-          "start":{"type":"string", "format":"date-time"},
-          "stop":{"type":"string", "format":"date-time"},
+          "type":{"type":"string"},
+          "date":{"type":"string", "format":"date-time"},
           "comment":{"type":"string"}
         }
       },
