@@ -349,6 +349,13 @@
                 }
             }
         },
+        "research_station": {
+            "enum": [
+                "ny-alesund",
+                "zeppelin",
+                "troll"
+             ]
+        },
         "locations": {
             "title": "locations",
             "description": "Selected locations",
