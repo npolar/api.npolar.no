@@ -388,11 +388,11 @@
             "items": {
                 "type": "string",
                 "enum": [
-                    "troll",
-                    "ny-alesund",
-                    "zeppelin",
-                    "bouvetoya",
-                    "svarthamaren"
+                    "Troll",
+                    "Ny-Ålesund",
+                    "Zeppelin",
+                    "Bouvetøya",
+                    "Svarthamaren"
                 ]
           }
         },
