@@ -349,13 +349,6 @@
                 }
             }
         },
-        "research_station": {
-            "enum": [
-                "ny-alesund",
-                "zeppelin",
-                "troll"
-             ]
-        },
         "locations": {
             "title": "locations",
             "description": "Selected locations",
@@ -385,6 +378,20 @@
                     "Elsewhere"
                 ]
             }
+        },
+         "research_station": {
+            "title": "NP research stations",
+            "description": "NPs research stations",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "type": "string",
+                "enum": [
+                    "troll",
+                    "ny-alesund",
+                    "zeppelin"
+                ]
+          }
         },
         "comment": {
             "type": "string"
