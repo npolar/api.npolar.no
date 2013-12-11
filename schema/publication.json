@@ -14,7 +14,9 @@
         "topics",
         "review_progress",
         "state",
-        "publication_type"
+        "publication_type",
+        "draft",
+        "locations"
     ],
     "properties": {
         "id": {
@@ -370,7 +372,6 @@
                     "The Arctic - Svalbard - Nordaustlandet",
                     "The Arctic - Svalbard - other islands",
                     "The Arctic - other areas",
-                    "The Antarctic - Bouvetøya",
                     "The Antarctic - Dronning Maud Land",
                     "The Antarctic - Southern Ocean",
                     "The Antarctic - other areas",
@@ -389,7 +390,9 @@
                 "enum": [
                     "troll",
                     "ny-alesund",
-                    "zeppelin"
+                    "zeppelin",
+                    "bouvetoya",
+                    "svarthamaren"
                 ]
           }
         },
