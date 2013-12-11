@@ -380,7 +380,7 @@
                 ]
             }
         },
-         "research_station": {
+         "research_stations": {
             "title": "NP research stations",
             "description": "NPs research stations",
             "type": "array",
