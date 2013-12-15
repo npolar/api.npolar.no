@@ -360,6 +360,8 @@
             "items": {
                 "type": "string",
                 "enum": [
+                    "The Arctic",
+                    "The Arctic - Svalbard",
                     "The Arctic - Arctic Ocean",
                     "The Arctic - Bjørnøya",
                     "The Arctic - Fram Strait",
@@ -373,6 +375,7 @@
                     "The Arctic - Svalbard - Nordaustlandet",
                     "The Arctic - Svalbard - other islands",
                     "The Arctic - other areas",
+                    "The Antarctic",
                     "The Antarctic - Dronning Maud Land",
                     "The Antarctic - Southern Ocean",
                     "The Antarctic - other areas",
