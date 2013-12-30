@@ -83,7 +83,6 @@ module Npolar
       # Get all services
       def services(select=nil)
         client = Npolar::Api::Client.new(Npolar::Storage::Couch.uri+"/#{service.database}")
-        client.http.basic_auth nil,nil 
         client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
           Service.new(row.doc)
         }

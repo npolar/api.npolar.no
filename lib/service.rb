@@ -66,7 +66,6 @@ class Service < Hashie::Mash
     end
     
     client = Npolar::Api::Client.new(Npolar::Storage::Couch.uri+"/#{database}")
-    client.basic_auth nil,nil 
     client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
       Service.new(row.doc)
     }
