@@ -516,7 +516,9 @@ module Metadata
       self[:people] = unique_people.map {|first_name, last_name |
         persons = people.select {|p| first_name == p.first_name and last_name == p.last_name }
         person = persons[0]
-        { "first_name" => first_name,
+        {
+          "id" => person.id,
+          "first_name" => first_name,
           "last_name" => last_name,
           "roles" => persons.map {|p| p.roles }.flatten.uniq,
           "email" => person.email,
