@@ -132,12 +132,12 @@ module Npolar
         params = params.map do |key, val|
           val = val.join('').split(',')
 
-          val << term unless val.include?(term) if /filter-#{facet}/ =~ key
+          val << term unless val.include?(term) if /^(filter|not)-#{facet}/ =~ key
 
           "#{key}=#{val.join(',')}"
         end
 
-        params.push( "filter-#{facet}=#{term}" ) unless params.any?{|e| e.match(/filter-#{facet}/)}
+        params.push( "filter-#{facet}=#{term}" ) unless params.any?{|e| e.match(/^filter-#{facet}/)}
 
         uri = host + "?#{params.join('&')}"
       end
