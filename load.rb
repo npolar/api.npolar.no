@@ -3,6 +3,7 @@ require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
 require "logger"
 require "gcmd"
 require "rsolr"
+require "icelastic"
 
 require "rack/throttle"
 require "rack/contrib/jsonp"
