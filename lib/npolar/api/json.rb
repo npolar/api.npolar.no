@@ -4,7 +4,7 @@ require "rack/builder"
 
 module Npolar
   module Api
-    
+
     # JSON middleware lego: A complete kit for running JSON APIs
     class Json
 
@@ -28,7 +28,7 @@ module Npolar
             else
               model = nil
             end
-            
+
             if api.storage?
 
               if api.storage =~ /Couch(DB)?/i
@@ -39,11 +39,11 @@ module Npolar
                 raise "Unsupported database: #{api.storage}"
               end
             end
-            
+
             if api.auth?
               auth = api.auth
-        
-              # Open => open data => GET, HEAD are excepted from Authorization 
+
+              # Open => open data => GET, HEAD are excepted from Authorization
               except = api.open? ? lambda {|request| ["GET", "HEAD"].include? request.request_method } : false
 
               authorizer = case api.auth.authorizer
@@ -70,18 +70,18 @@ module Npolar
             end
 
             if api.search? and api.search.engine?
-              
+
               # List of APIs
               services = Service.services.map {|svc|
                 { :href => (svc.search? and svc.search.engine != "") ? svc.path+"/?q=" : svc.path+"/_ids.json",
                   :text => svc.path,
                   :title => (svc.search? and svc.search.engine != "") ? "#{svc.title} [search]" : "#{svc.title} [identifiers]",
                 }
-              }             
+              }
               use Views::Api::Index, { :services => services}
 
               if /Solr/i =~ api.search.engine
-                
+
                 use Npolar::Rack::Solrizer, {
                   :core => api.search.core,
                   :force => api.search.force,
@@ -103,36 +103,35 @@ module Npolar
                 use Npolar::Rack::HashCleaner
 
                 uri = URI.parse("http://localhost:9200")
-                if not api.search.uri.nil?
-                  begin 
-                    uri.host = URI.parse(api.search.uri).host
+                if not api.search.url.nil?
+                  begin
+                    uri.host = URI.parse(api.search.url).host
                   rescue
                     # Malformed URI => might be OK hostname
-                    uri.host = api.search.uri
+                    uri.host = api.search.url
                   end
                 elsif ENV.key? "NPOLAR_API_ELASTICSEARCH"
                   uri.host = ENV["NPOLAR_API_ELASTICSEARCH"]
                 end
 
-                use Npolar::Rack::Icelastic, {
-                  :uri => uri,
+                use ::Rack::Icelastic, {
+                  :url => api.search.url,
                   :index => api.search["index"],
                   :type => api.search.type,
-                  :facets => api.search.facets,
-                  :date_facets => api.search.date_facets,
-                  :filters => api.search.filters
+                  :log => api.search.log,
+                  :params => api.search.params
                 }
               end
             end
 
             if api.before? and api.before !~ /[.]/
-              before = []  
+              before = []
             else
               before = [Npolar::Api::Json.before_lambda]
             end
-           
+
             after = [Npolar::Api::Json.after_lambda]
-            
+
             if api.before? and api.before =~ /[.]/
               name, met = api.before.split(".")
               bef = Npolar::Factory.constantize(name)
@@ -157,7 +156,7 @@ module Npolar
           end
         end
       end
-      
+
       def call(env)
         @app.call(env)
       end
@@ -166,8 +165,8 @@ module Npolar
       def self.before_lambda
         lambda {|request|
           if ["POST", "PUT"].include? request.request_method and "application/json" == request.media_type
-            begin            
-              
+            begin
+
               documents = JSON.parse(request.body.read)
               documents = documents.is_a?(Hash) ? [documents] : documents
               documents = documents.map {|d|
@@ -176,7 +175,7 @@ module Npolar
                 document.updated = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
                 document.updated_by = request.username
 
-                unless document.created? 
+                unless document.created?
                   document.created = document.updated
                 end
 
@@ -202,7 +201,7 @@ module Npolar
           else
             request
           end
-        }  
+        }
       end
 
       def self.after_lambda
@@ -214,7 +213,7 @@ module Npolar
             location = request.path.gsub(/\/+$/, "")
             rev = nil
             id = nil
-          
+
             if not response.header["ETag"].nil?
               rev = response.header["ETag"]
               if rev =~ /["]/
@@ -228,16 +227,16 @@ module Npolar
             rescue
               #
             end
-            
+
             if request.post?
               if not id.nil?
                 location += "/#{id}"
               end
             end
-              
+
             if not rev.nil?
               location += "?rev=#{rev}"
-            end       
+            end
             response.header["Location"]=location
           end
 
