@@ -28,14 +28,18 @@
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
+
+require "./load"
+configfile = File.dirname(__FILE__)+"/config/config.rb"
+if File.exists? configfile
+  require configfile
+end
+
 #require 'raindrops'
 #$stats ||= Raindrops::Middleware::Stats.new
 #use Raindrops::Middleware, :stats => $stats
 
-require "./load"
-if File.exists? "./config/config.rb"
-  require "./config/config.rb"
-end
+
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"] # http://user:password@localhost:5984
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"] # http://localhost:8983/solr/
 Npolar::Auth::Ldap.config = File.expand_path("./config/ldap.json")
@@ -56,8 +60,8 @@ bootstrap.bootstrap("service-api.json")
 bootstrap.bootstrap("user-api.json")
 
 # Middleware for *all* requests - use with caution
-use Rack::Throttle::Hourly,   :max => 1200000 # 1.2M requests per hour
-use Rack::Throttle::Interval, :min => 0.00166 # 1/600 seconds interval
+# use Rack::Throttle::Hourly,   :max => 3600000 # 3.6M requests per hour
+#use Rack::Throttle::Interval, :min => 0.001 # 1/1000 seconds interval
 # use Npolar::Rack::SecureEdits (force TLS/SSL ie. https)
 
 use Rack::Static, :urls => ["/css", "/img", "/xsl", "schema", "code", "/favicon.ico", "/robots.txt"], :root => "public"
