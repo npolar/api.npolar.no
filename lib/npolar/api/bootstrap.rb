@@ -34,7 +34,7 @@ module Npolar
         #(defined in "service-api.json")
         api = Service.factory("service-api.json")
         
-        client = Npolar::Api::Client.new(uri+"/"+api.database+"/"+service.id)
+        client = Npolar::Api::Client::JsonApiClient.new(uri+"/"+api.database+"/"+service.id)
         response = client.head
         if 404 == response.status 
           response = client.put("", service.to_json)
@@ -53,7 +53,7 @@ module Npolar
         end
         
 
-        client = Npolar::Api::Client.new(uri+"/"+service.database)
+        client = Npolar::Api::Client::JsonApiClient.new(uri+"/"+service.database)
         #log.debug client.uri
         response = client.head 
         if 404 == response.status
@@ -82,10 +82,7 @@ module Npolar
 
       # Get all services
       def services(select=nil)
-        client = Npolar::Api::Client.new(Npolar::Storage::Couch.uri+"/#{service.database}")
-        client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
-          Service.new(row.doc)
-        }
+        Service.services
       end
 
       def apis

@@ -65,10 +65,10 @@ class Service < Hashie::Mash
       database = Service.factory("service-api").database
     end
     
-    client = Npolar::Api::Client.new(Npolar::Storage::Couch.uri+"/#{database}")
+    client = Npolar::Api::Client::JsonApiClient.new(Npolar::Storage::Couch.uri+"/#{database}")
     client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
-      Service.new(row.doc)
-    }
+       Service.new(row.doc)
+     }
   end
 
   def to_s
