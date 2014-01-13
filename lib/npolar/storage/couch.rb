@@ -323,7 +323,7 @@ module Npolar
       
       def view(ddoc, map_fx, params={}, include_docs=true)
                       
-        uri = "#{read}/_design/#{ddoc}/_view/#{map_fx}?include_docs=true&key=#{params['key']}"
+        uri = "#{read}/_design/#{ddoc}/_view/#{map_fx}?include_docs=true&key=%22#{params['key']}%22"
         response = couch.get(uri) # params hash does not work!
         
         if 200 == response.status
