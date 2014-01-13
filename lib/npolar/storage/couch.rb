@@ -321,10 +321,10 @@ module Npolar
         view("parameter", "bundle", params)
       end
       
-      def view(ddoc, map_fx, params={})
+      def view(ddoc, map_fx, params={}, include_docs=true)
                       
-        uri = "#{read}/_design/#{ddoc}/_view/#{map_fx}?include_docs=true"
-        response = couch.get(uri, params)
+        uri = "#{read}/_design/#{ddoc}/_view/#{map_fx}?include_docs=true&key=#{params['key']}"
+        response = couch.get(uri) # params hash does not work!
         
         if 200 == response.status
           feed = Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row| row[:doc] }
