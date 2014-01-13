@@ -1,4 +1,5 @@
 # encoding: utf-8
+#require "npolar/api/client/json_api_client"
 module Npolar
 
   module Rack
@@ -63,7 +64,7 @@ module Npolar
       # Middleware config
       CONFIG = {
         :core => nil,
-        :condition => self.query_or_save_json,
+        :condition => self.searcher,
         :facets => nil,
         :model => nil,
         :ranges => nil,
@@ -213,9 +214,13 @@ module Npolar
           end
 
           t1 = Time.now
+          
 
+          #client = Npolar::Api::Client::JsonApiClient.new(uri+"/update")
+          #solr_response = client.post(solr, nil, { commit: true })
+          
           solr_response = rsolr.add(solr) # Hash
-
+          log.info solr_response
           elapsed = Time.now-t1
 
           log.debug "Solr response: #{solr_response[0.255]}"
@@ -326,7 +331,7 @@ module Npolar
       # Solr core URI
       def uri
         if core =~ /^http(s)?:\/\//
-          core
+          core = core.gsub(/[\/]$/, "")
         elsif self.class.uri.is_a? String and self.class.uri =~ /^http(s)?:\/\// 
           self.class.uri.gsub(/[\/]$/, "") + "/#{core}"
         end
