@@ -1,0 +1,27 @@
+#!/bin/sh
+ARCHIVE=/mnt/datasets/Tracking/ARGOS/archive
+DEST=/mnt/datasets/Tracking/ARGOS/json
+SEEDLOG=/mnt/datasets/Tracking/ARGOS/log
+STARTYEAR=$1
+ENDYEAR=$2
+
+if [ ! -d "$ARCHIVE/$STARTYEAR" ]; then
+  echo "Nonexisting start year: $ARCHIVE/$STARTYEAR"
+  exit
+fi
+if [ ! -d "$ARCHIVE/$ENDYEAR" ]; then
+  echo "Nonexisting end year: $ARCHIVE/$ENDYEAR"
+  exit
+fi
+echo "Creating Argos seeds for $STARTYEAR - $ENDYEAR"
+
+mkdir -p $SEEDLOG
+mkdir -p $DEST
+
+
+for year in `seq $STARTYEAR $ENDYEAR`;
+do
+  mkdir -p $DEST/$year
+  echo "Creating Argos seeds for http://api.npolar.no/source for $year in $DEST/$year"
+  argos-ruby $ARCHIVE/$year --dest=$DEST/$year --level=info 2>> $SEEDLOG/npolar_argos_create_seed-$year.log
+done
