@@ -119,6 +119,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="individual" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="individuals" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="deployment" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="deployments" type="string" indexed="true" stored="true" multiValued="true"/>
+
 <field name="tracking" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="system" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="sensors" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -127,6 +129,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="technology" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="filetype" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="filename" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="location" type="string" indexed="true" stored="true" multiValued="false"/>
+
 <field name="source_sha1" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="source_hash" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="headers" type="tint" indexed="true" stored="true" multiValued="false"/>
@@ -169,6 +173,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="editor" type="string" indexed="true" stored="true" />
 <field name="editors" type="string" indexed="true" stored="true" />
 <field name="formats" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="principalInvestigator" type="string" indexed="true" stored="true" multiValued="true"/>
+
 <field name="investigator_emails" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="contributor_emails" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="gcmd_keywords" type="string" indexed="true" stored="true" multiValued="true" />
@@ -216,7 +222,10 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="rights" type="string" indexed="true" stored="true" />
 <field name="label" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="relations" type="string" indexed="true" stored="true" multiValued="true" />
-<field name="schema" type="string" indexed="true" stored="true" multiValued="true" />
+<field name="edit" type="string" indexed="true" stored="true" multiValued="false" />
+<field name="bundle" type="string" indexed="true" stored="true" multiValued="false" />
+
+<field name="schema" type="string" indexed="true" stored="true" multiValued="false" />
 <field name="errors" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="warn" type="string" indexed="true" stored="true" multiValued="true" />
 <field name="valid" type="boolean" indexed="true" stored="true" multiValued="false" />
