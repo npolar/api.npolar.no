@@ -1,3 +1,5 @@
+require "npolar/api/client/json_api_client"
+
 class Tracking < Hashie::Mash
 
   # Before storage lambda
@@ -34,15 +36,28 @@ class Tracking < Hashie::Mash
 
   # Process document before saving
   # See self.before_save
+  # @return [Tracking]
   def before_save(request=nil)
-
-    if not individual?
-      if deployments.size == 1
+    self[:collection] = "tracking"
+    self[:base] = ENV["NPOLAR_API"]
     
+    if source? and source !~ URI.regexp
+      self[:source] = "#{self[:base]}/source/#{source}"
+    end
+
+    if not edit?
+      self[:edit] = "#{self[:base]}/tracking/#{id}"
+    end
+    if not deployment?
+      
+      if deployments.size == 1
+        
         self[:individual] = deployments[0].individual
         self[:object] = deployments[0].object
         self[:species] = deployments[0].species
-        self[:deployment] = deployments[0][:id]
+        self[:principalInvestigator] = [deployments[0].principalInvestigator]
+        
+        self[:deployment] = "#{self[:base]}/tracking/deployment/#{deployments[0][:id]}"
 
       elsif deployments.size > 1
 
@@ -50,6 +65,7 @@ class Tracking < Hashie::Mash
         objects = deployments.map {|d| d.object }.uniq
         specieslist = deployments.map {|d| d.species }.uniq
         
+        self[:deployments] = deployments.map {|d| "#{self[:base]}/tracking/deployment/#{d.id}" }.uniq     
         
         if individuals.size == 1
           self[:individual] = individuals[0]
@@ -70,6 +86,8 @@ class Tracking < Hashie::Mash
           self[:"species-list"] = specieslist
         end
 
+      else
+        self[:object] = "unknown-object"
       end
     end
     before_valid
@@ -88,28 +106,40 @@ class Tracking < Hashie::Mash
 
   def deployment
     @@deployment ||= begin
-      client = Npolar::Api::Client.new("http://api.npolar.no/tracking/deployment")
-      client.model = Hashie::Mash.new
-      client.all.reject {|d| d.individual.nil? or d.deployed.nil? }
+      uri = URI.parse(ENV["NPOLAR_API_COUCHDB"])
+      uri.path = "/#{Service.factory("tracking-deployment-api").database}"
+      client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)
+    
+      d = client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
+        Hashie::Mash.new(row.doc)
+      }
+      d = d.reject {|d| d.deployed.nil? }
+      d
     end
   end
 
+  # @return [Array] Deployments for this platform
   def deployments
+
     measured = DateTime.parse(self[:measured])
+    
+    # From the deployment database
     deployment.select {|d|
 
-      d.platform.to_s == platform.to_s
+      # Select deployment with the current platform and technology
+      d.platform.to_s == platform.to_s and d.technology == technology
 
     }.select {|d|
-
+  
       deployed = DateTime.parse(d.deployed)
 
       if d.terminated?
+        # Select deployments where measured is before terminated and after deployed
         terminated = DateTime.parse(d.terminated)
-
         (measured >= deployed and measured <= terminated)
 
-      else 
+      else
+        # No termination, select all deployments where measured is after deployed
         measured >= deployed
       end
     }
