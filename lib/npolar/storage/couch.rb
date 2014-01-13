@@ -318,7 +318,7 @@ module Npolar
       #end
       
       def bundle(params)
-        view("source", "bundle", params)
+        view("parameter", "bundle", params)
       end
       
       def view(ddoc, map_fx, params={})
