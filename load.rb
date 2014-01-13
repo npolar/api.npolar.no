@@ -6,7 +6,7 @@ require "rsolr"
 require "npolar/api/client"
 require "icelastic"
 
-require "rack/throttle"
+#require "rack/throttle"
 require "rack/contrib/jsonp"
 require "rack/contrib/accept_format"
 require "rack/ssl"
