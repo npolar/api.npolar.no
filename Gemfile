@@ -1,15 +1,20 @@
 source "https://rubygems.org"
 
-# NP Gems
+# Npolar gems
 gem "gcmd", git: "git://github.com/npolar/gcmd.git"
+#gem "gcmd", path:  "../gcmd"
 gem "icelastic", git: "git://github.com/npolar/icelastic.git"
-gem "npolar-rack-throttle", git: "git://github.com/npolar/rack-throttle.git" #, path:  "../rack-throttle"
+#gem "npolar-rack-throttle", git: "git://github.com/npolar/rack-throttle.git" #, path:  "../rack-throttle"
+gem "npolar-api-client-ruby", path:  "../npolar-api-client-ruby"
 
 # Network
 gem "unicorn"
 gem "net-ldap"
 gem "faraday"
-gem "faraday_middleware"
+#gem "faraday_middleware"
+#gem "faraday", git: "git://github.com/lostisland/faraday"
+gem "faraday_middleware", git: "git://github.com/lostisland/faraday_middleware"
+gem "typhoeus", git: "git://github.com/typhoeus/typhoeus.git"
 
 # Rack
 gem "rack", git: "git://github.com/rack/rack.git"
@@ -18,6 +23,7 @@ gem "rack-protection"
 gem "rack-client" #https://github.com/halorgium/rack-client
 gem "rack-ssl" #https://github.com/josh/rack-ssl
 gem "rack-cache"
+gem "rack-cors" #https://github.com/cyu/rack-cors
 
 # Helpers
 gem "yajl-ruby"
@@ -28,14 +34,16 @@ gem "hashie", git: "git://github.com/intridea/hashie.git"
 gem "json-schema", git: "git://github.com/hoxworth/json-schema.git"
 gem "jsonify"
 gem "oai"
-gem "ruby-netcdf"
+#gem "ruby-netcdf"
 gem "addressable"
 gem "mustache"
+#gem "libxml-ruby",git:  "git://github.com/xml4r/libxml-ruby.git"
 
 # Search
-#gem "rsolr", git:  "git://github.com/mwmitchell/rsolr.git"
+# gem "rsolr" branch json_update
 # Until branch "json_update" is merged...
 gem "rsolr", git: "git://github.com/mootpointer/rsolr.git", :branch => "json_update"
+# gem "rsolr", git:  "git://github.com/mwmitchell/rsolr.git"
 gem "elasticsearch", git: "git://github.com/elasticsearch/elasticsearch-ruby.git"
 
 # Dev/Test
@@ -47,3 +55,5 @@ group :development, :test do
   gem "simplecov"
   gem "ruby-prof"
 end
+ 
+
