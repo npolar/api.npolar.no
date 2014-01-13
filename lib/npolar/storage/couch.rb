@@ -110,6 +110,8 @@ module Npolar
           when "_invalid" then valid(false, params)
           when "_valid" then valid(true, params)
           when "_validate" then validate(params)
+          when "_bundle" then bundle(params)
+          #when "_parameter" then parameter(params)
 
         else
           response = reader.get(id, headers, params)
@@ -302,15 +304,36 @@ module Npolar
             }
           end
           feed = feed.select { |row| row[:_id] !~ /_design/ }
-          status = 200
+
 
         else
           feed = { "error" => { "status" => response.status, "explanation" => "Storage error #{response.status}" } }
-          status = response.status
         end
-        [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(feed)+"\n"]] # Couch returns text/plain here!?
+        [response.status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(feed)+"\n"]] # Couch returns text/plain here!?
       end
-
+      
+      #def parameter(params)
+      #  ddoc = params.key?("view") ? params["view"] : "parameter"
+      #  view(ddoc, params["parameter"], params)
+      #end
+      
+      def bundle(params)
+        view("source", "bundle", params)
+      end
+      
+      def view(ddoc, map_fx, params={})
+                      
+        uri = "#{read}/_design/#{ddoc}/_view/#{map_fx}?include_docs=true"
+        response = couch.get(uri, params)
+        
+        if 200 == response.status
+          feed = Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row| row[:doc] }
+        else
+          feed = { "error" => { "status" => response.status, "explanation" => "Storage error #{response.status}" } }
+        end
+        [response.status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(feed)+"\n"]] # Couch returns text/plain here!?
+      end
+      
       def all_docs_uri(include_docs=false)
         include_docs = (false == include_docs) ? "false" : "true" 
         # Use a view, if it exists
