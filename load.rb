@@ -3,6 +3,7 @@ require "yajl/json_gem" # https://github.com/brianmario/yajl-ruby
 require "logger"
 require "gcmd"
 require "rsolr"
+require "npolar/api/client"
 require "icelastic"
 
 require "rack/throttle"
@@ -18,8 +19,8 @@ require_relative "./lib/npolar"
 require_relative "./lib/npolar/exception"
 require_relative "./lib/npolar/validation"
 require_relative "./lib/npolar/api/"
+#require_relative "./lib/npolar/api/command"
 require_relative "./lib/npolar/api/solr_query"
-
 
 require "mustache"
 require "./views/views"
