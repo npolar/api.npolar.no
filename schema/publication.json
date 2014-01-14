@@ -272,6 +272,8 @@
                     "geophysics",
                     "geology",
                     "glaciology",
+                    "history",
+                    "human-dimension",
                     "management",
                     "marine",
                     "maps",
@@ -280,6 +282,7 @@
                     "palaeoclimate",
                     "remote-sensing",
                     "seaice",
+                    "snow",
                     "terrestrial",
                     "topography",
                     "vegetation"
