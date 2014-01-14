@@ -1,6 +1,7 @@
 #!/bin/sh
 ARCHIVE=/mnt/datasets/Tracking/ARGOS/archive
-DEST=/mnt/datasets/Tracking/ARGOS/json
+DEST=/mnt/datasets/api.npolar.no/tracking/argos/archive
+SOURCEDEST=/mnt/datasets/api.npolar.no/source/argos/archive
 SEEDLOG=/mnt/datasets/Tracking/ARGOS/log
 STARTYEAR=$1
 ENDYEAR=$2
@@ -17,11 +18,17 @@ echo "Creating Argos seeds for $STARTYEAR - $ENDYEAR"
 
 mkdir -p $SEEDLOG
 mkdir -p $DEST
-
+mkdir -p $SOURCEDEST
 
 for year in `seq $STARTYEAR $ENDYEAR`;
 do
   mkdir -p $DEST/$year
-  echo "Creating Argos seeds for http://api.npolar.no/source for $year in $DEST/$year"
-  argos-ruby $ARCHIVE/$year --dest=$DEST/$year --level=info 2>> $SEEDLOG/npolar_argos_create_seed-$year.log
+  
+  # --action=source => Sourcefile metadata 
+  echo "Creating Argos seeds for http://api.npolar.no/source for $year in $SOURCEDEST/$year"
+  argos-ruby $ARCHIVE/$year --action=source --level=debug --dest=$SOURCEDEST/$year
+
+  # --action=parse => JSON data
+  echo "Creating Argos JSON seeds for http://api.npolar.no/tracking in $DEST/$year"
+  argos-ruby $ARCHIVE/$year --dest=$DEST/$year --level=debug 2>> $SEEDLOG/npolar_argos_create_seed-$year.log  
 done
