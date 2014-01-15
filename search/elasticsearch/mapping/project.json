@@ -6,7 +6,6 @@
       "_id": { "type" :"string", "index": "not_analyzed" },
       "rev": { "type": "string", "index": "not_analyzed" },
       "_rev": { "type": "string", "index": "not_analyzed" },
-      "schema":{"type":"string", "index":"no"},
       "np_project_no" : { "type": "string", "index": "not_analyzed" },
       "collection" : { "type": "string", "index": "not_analyzed" },
       "schema": { "type": "string", "index": "not_analyzed" },
