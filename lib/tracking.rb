@@ -38,14 +38,20 @@ class Tracking < Hashie::Mash
   # See self.before_save
   # @return [Tracking]
   def before_save(request=nil)
+    
     self[:collection] = "tracking"
-    base = URI.parse(ENV["NPOLAR_API"])
-    self[:base] = base.to_s
+    
+    if not base?
+      baseuri = URI.parse(ENV["NPOLAR_API"])
+      self[:base] = baseuri.to_s
+    else
+      baseuri = URI.parse(base)
+    end
     
     if source? and source !~ URI::REGEXP and source =~ /\w{40}/
-      source = base.dup
-      source.path = "/source/#{source}"
-      self[:source] = source.to_s
+      sourceuri = baseuri.dup
+      sourceuri.path = "/source/#{source}"
+      self[:source] = sourceuri.to_s
     end
 
     if not edit?
@@ -53,7 +59,7 @@ class Tracking < Hashie::Mash
     end
     if not deployment?
       
-      deployment = base.dup
+      deploymenturi = baseuri.dup
       
       if deployments.size == 1
         
@@ -62,8 +68,8 @@ class Tracking < Hashie::Mash
         self[:species] = deployments[0].species
         self[:principalInvestigator] = [deployments[0].principalInvestigator]
         
-        deployment.path = "/tracking/deployment/#{deployments[0][:id]}"
-        self[:deployment] = deployment.to_s
+        deploymenturi.path = "/tracking/deployment/#{deployments[0][:id]}"
+        self[:deployment] = deploymenturi.to_s
 
       elsif deployments.size > 1
 
@@ -72,8 +78,8 @@ class Tracking < Hashie::Mash
         specieslist = deployments.map {|d| d.species }.uniq
         
         self[:deployments] = deployments.map {|d|
-          deployment.path = "/tracking/deployment/#{d.id}"
-          deployment.to_s }.uniq     
+          deploymenturi.path = "/tracking/deployment/#{d.id}"
+          deploymenturi.to_s }.uniq     
         
         if individuals.size == 1
           self[:individual] = individuals[0]
