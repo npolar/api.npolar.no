@@ -51,7 +51,11 @@ module Npolar
           
           keepalive = 0
           http.stream do |chunk|
+            begin 
             keepalive = chunk.match(/^r?\n$/) ? keepalive + 1 : 0
+            rescue
+              keepalive = 0
+            end
             parser << chunk
         
             if buffer.size == param[:slice] || keepalive >= 2
