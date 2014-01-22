@@ -71,10 +71,10 @@
       },
       "coverage": {
           "properties": {
-            "north": { "type": "number", "index": "not_analyzed" },
-            "east": { "type": "number", "index": "not_analyzed" },
-            "south": { "type": "number", "index": "not_analyzed" },
-            "west": { "type": "number", "index": "not_analyzed" }
+            "north": { "type": "float", "index": "not_analyzed" },
+            "east": { "type": "float", "index": "not_analyzed" },
+            "south": { "type": "float", "index": "not_analyzed" },
+            "west": { "type": "float", "index": "not_analyzed" }
           }
       },
       "placenames": {
