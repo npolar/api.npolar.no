@@ -105,7 +105,7 @@
           "title": { "type": "string", "index": "not_analyzed" },
           "summary": { "type": "string", "index": "not_analyzed" },
           "abstract": { "type": "string", "index": "not_analyzed" },
-          "area_contribution": { "text": "string", "index": "not_analyzed" },
+          "area_contribution": { "type": "string", "index": "not_analyzed" },
           "knowledge_gap_addressed": { "type": "string", "index": "not_analyzed" }
         }
       },
