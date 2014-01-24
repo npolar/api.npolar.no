@@ -230,6 +230,9 @@ Solr schema for Tracking API at http://api.npolar.no/tracking/
 
 <!--<field name="updated" type="string" indexed="true" stored="true" />-->
 <field name="updated" type="tdate" indexed="true" stored="true" />
+<field name="deployed" type="tdate" indexed="true" stored="true" />
+<field name="terminated" type="tdate" indexed="true" stored="true" />
+
 <field name="west" type="tfloat" indexed="true" stored="true" multiValued="true" />
 
 <field name="workspace" type="string" indexed="true" stored="true" />
