@@ -519,6 +519,10 @@ module Npolar
       end
       
       def range_facets
+        if config[:range_facets].nil?
+          return {}
+        end
+        
         facet_range = config[:range_facets].map {|rf|
           if rf.field =~ /^[{][!]}(.)$/
             rf.field.split("}")[1]
