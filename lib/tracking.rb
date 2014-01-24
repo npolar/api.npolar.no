@@ -1,8 +1,8 @@
 require "npolar/api/client/json_api_client"
-
+require "date"
 class Tracking < Hashie::Mash
 
-  # Before storage lambda
+  # Before lambda for processing a request prior to storage
   # @return [lambda]
   # See Core#handle and Core#before
   def self.before
@@ -15,13 +15,15 @@ class Tracking < Hashie::Mash
     }
   end
 
-  # Process request before saving
+  # Process body before saving, body may contain a JSON Array
+  # or 1 JSON object
   # @return request
   def self.before_save(request)
 
     body = request.body.respond_to?(:read) ? request.body.read : request.body.join("")
 
     tracks = JSON.parse(body)
+
     tracks = tracks.is_a?(Hash) ? [tracks] : tracks
 
     processed = tracks.map {|track|
@@ -34,13 +36,17 @@ class Tracking < Hashie::Mash
   end
 
 
-  # Process document before saving
+  # Process 1 tracking document before saving
   # See self.before_save
   # @return [Tracking]
   def before_save(request=nil)
     
     self[:collection] = "tracking"
-    
+    self[:"measured-isodate"] = Date.parse(measured).iso8601
+    if not warn?
+      self[:warn] = []
+    end
+
     if not base?
       baseuri = URI.parse(ENV["NPOLAR_API"])
       self[:base] = baseuri.to_s
@@ -57,19 +63,45 @@ class Tracking < Hashie::Mash
     if not edit?
       self[:edit] = "#{self[:base]}/tracking/#{id}"
     end
+    
+    if not program? and "argos" == "technology"
+      self[:program] = "missing"
+    end
+
     if not deployment?
       
       deploymenturi = baseuri.dup
       
       if deployments.size == 1
-        
+
+        # @todo only set if not present before (for all of these)  
         self[:individual] = deployments[0].individual
         self[:object] = deployments[0].object
         self[:species] = deployments[0].species
         self[:principalInvestigator] = [deployments[0].principalInvestigator]
-        
+        if principalInvestigator =~ /,/
+          self[:principalInvestigator] = principalInvestigator.split(",")
+        end
+
         deploymenturi.path = "/tracking/deployment/#{deployments[0][:id]}"
         self[:deployment] = deploymenturi.to_s
+        
+        begin
+          DateTime.parse(deployments[0].deployed)
+          self[:deployed] = deployments[0].deployed
+          
+        rescue
+          self[:warn] << "missing-or-invalid-deployed-date" 
+        end
+        
+        begin
+          DateTime.parse(deployments[0].terminated)
+          self[:terminated] = deployments[0].terminated
+          
+        rescue
+          self[:warn] << "missing-or-invalid-terminated-date" 
+        end
+        
 
       elsif deployments.size > 1
 
@@ -79,8 +111,10 @@ class Tracking < Hashie::Mash
         
         self[:deployments] = deployments.map {|d|
           deploymenturi.path = "/tracking/deployment/#{d.id}"
-          deploymenturi.to_s }.uniq     
-        
+          deploymenturi.to_s }.uniq
+
+        self[:warn] << "matches-multiple-deployments" 
+
         if individuals.size == 1
           self[:individual] = individuals[0]
         else
@@ -90,7 +124,6 @@ class Tracking < Hashie::Mash
         if objects.size == 1
           self[:object] = objects[0]
         else
-          self[:object] = "missing"
           self[:objects] = objects
         end
 
@@ -101,7 +134,7 @@ class Tracking < Hashie::Mash
         end
 
       else
-        self[:object] = "unknown-object"
+        self[:object] = "unknown"
       end
     end
     before_valid
@@ -118,6 +151,7 @@ class Tracking < Hashie::Mash
 
   protected
 
+  # Get all deployments from Tracking Deployment database
   def deployment
     @@deployment ||= begin
       uri = URI.parse(ENV["NPOLAR_API_COUCHDB"])
@@ -127,12 +161,13 @@ class Tracking < Hashie::Mash
       d = client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
         Hashie::Mash.new(row.doc)
       }
-      d = d.reject {|d| d.deployed.nil? }
+      #d = d.reject {|depl| depl.deployed.nil? }
       d
     end
   end
 
-  # @return [Array] Deployments for this platform
+  # @return [Array] Deployments for this platform, within range between
+  # deployed and terminated
   def deployments
 
     measured = DateTime.parse(self[:measured])
@@ -145,8 +180,12 @@ class Tracking < Hashie::Mash
 
     }.select {|d|
   
-      deployed = DateTime.parse(d.deployed)
-
+      begin
+        deployed = DateTime.parse(d.deployed)
+      rescue
+        deployed = DateTime.new(1000)
+      end
+      
       if d.terminated?
         # Select deployments where measured is before terminated and after deployed
         terminated = DateTime.parse(d.terminated)
