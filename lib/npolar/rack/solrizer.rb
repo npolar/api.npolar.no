@@ -1,24 +1,49 @@
 # encoding: utf-8
-#require "npolar/api/client/json_api_client"
+require "time"
 module Npolar
 
   module Rack
 
-    # Search and indexing middleware for Solr
+    # Solr search middleware
     #
-    # Search
-    # On GET Solrizer returns a JSON feed, if a "q" parameter is given.
-    # The JSON feed is created by a pluggable lambda function, so is the #q (Solr query) and #fq (Solr filter queries).
-
-    # Indexing
-    # On PUT, POST, and DELETE Solrizer can update the Solr search index, calling #to_solr on the incoming document
+    # Given a search (q=) Solrizer returns OpenSearch-like JSON feeds.
     #
-    # Use
-    #   use Npolar::Rack::Solrizer, { :core => "http://solr:8983/solr/collection1",
-    #     :facets => ["concept", "ancestors", "children"] }
-    # @todo
-    # Remodule SolrQuery => Npolar::Rack::Solrizer::SolrQuery?
-
+    # Solrizer's behavior is highly pluggable through lambda functions, see config parameters
+    # :feed, :q, and :fq below.
+    #
+    # Usage in Rack config.ru:
+    #
+    # use Npolar::Rack::Solrizer, { core: "http://localhost:8983/solr/tracking",
+    #   facets => ["list", "of", "field", "facets"],
+    #   "dates": ["positioned", "measured", "updated", "created", "edited"],
+    #   "range_facets": [
+    #    {
+    #        "field": "measured",
+    #        "gap": "+1YEAR",
+    #        "start": "NOW/YEAR-100YEARS",
+    #        "end": "NOW"
+    #    },
+    #    {
+    #        "field": "latitude",
+    #        "gap": 10,
+    #        "start": -90,
+    #        "end": 90
+    #    },
+    #    {
+    #        "field": "longitude",
+    #        "gap": 20,
+    #        "start": -180,
+    #        "end": 180
+    #    },
+    #    {
+    #        "field": "altitude",
+    #        "gap": 1000,
+    #        "start": -1000,
+    #        "end": 9000
+    #    }
+    #   ]
+    # }
+    #
     # https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/rack/solrizer.rb
 
     class Solrizer < Npolar::Rack::Middleware
@@ -28,6 +53,8 @@ module Npolar
       ISODATE_REGEX = /^#{DATE_REGEX}$/
       MONTH_REGEX = /^(-)?(\d{4,})\-(0[1-9]|1[0-2])$/
       DATETIME_REGEX = /T\d\d[:]\d\d[:]\d\dZ$/
+      INTEGER_REGEX = /^[-+]?[0-9]+$/
+      FLOAT_REGEX = /^[-+]?[0-9\.]+$/ # may hit x.y.z
 
       # Default condition lambda (see CONFIG)
       def self.query_or_save_json
@@ -45,7 +72,7 @@ module Npolar
 
       # Use this CONFIG condition lambda for a Search-only Solrizer
       def self.searcher
-        lambda {|request| ["GET", "HEAD"].include? request.request_method }
+        lambda {|request| ["GET", "HEAD", "DELETE"].include? request.request_method }
       end
 
       # Set default Solr URI
@@ -67,10 +94,10 @@ module Npolar
         :condition => self.searcher,
         :facets => nil,
         :model => nil,
-        :ranges => nil,
+        :range_facets => nil,
         :select => nil,
         :fl => Npolar::Api::SolrQuery.fields,
-        :q => lambda {|request| Npolar::Api::SolrQuery.q(request)},
+        :q => lambda {|request| Npolar::Api::SolrQuery.q(request)}, # # q=title:foo OR exact:foo OR text:foo*
         :dates => Npolar::Api::SolrQuery.dates,
         :force => nil,
         :fq => lambda {|request|
@@ -80,15 +107,14 @@ module Npolar
         },
         :feed => lambda { |response, request| Npolar::Api::SolrFeedWriter.feed(response, request)},
         :log => Npolar::Api.log,
+        :save => lambda {|request| raise "Not implemented" },
         :summary => lambda {|doc| doc["summary"]},
         :rows => Npolar::Api::SolrQuery.rows,
         :wt => :ruby,
         :path => "/",
         :to_solr => lambda {|doc|doc},
       }
-      # q=title:foo OR exact:foo OR text:foo*
-
-
+      
       def condition?(request)
         # Only trigger on the mapped path
         if config[:path].gsub(/\/$/, "") !~ Regexp.new(Regexp.quote(request.path.gsub(/\/$/, "")))
@@ -114,9 +140,9 @@ module Npolar
         @request = request
         log.info "#{request.request_method} #{request.path} [#{self.class.name}]"
         
-        #if request["q"] and "POST" == request.request_method
-          # search
-        #end
+        if request["q"] and "POST" == request.request_method
+          return handle_search(request)
+        end
         case request.request_method
           when "DELETE" then handle_delete(request)
           when "POST", "PUT" then handle_save(request)
@@ -125,7 +151,7 @@ module Npolar
       end
 
       def handle_delete(request)
-        log.debug self.class.name+"#delete"
+        log.debug self.class.name+" DELETE #{request.id}"
 
         rsolr.delete_by_id request.id
 
@@ -140,138 +166,38 @@ module Npolar
         @rsolr=rsolr
       end
 
-      # Save to Solr
-      # FIXME Upstream stuff to lambda or remove
+      # Save to Solr index
       def handle_save(request)
-
-        log.debug self.class.name+"#handle_save "+core
-        t0 = Time.now
-
+        
         begin
-
-          # Save using upstream middleware (@app, if set) and grab the response
-          if @app.nil?
-            response = nil
-          else
-
-            log.debug "About to call @app"
-
-            response = @app.call(request.env)
-            
-            # Return if upstream save fails
-            unless [200, 201].include?(response.status)
-              log.error "Upstream save failed with status #{response.status} before we could save to Solr"
-              return [response.status, headers("json"), response.body]
-            end
-          end
+          t0 = Time.now
           
-          # Parse incoming JSON
-          json = Yajl::Parser.parse(request.body.read, :symbolize_keys => true)
-          request.body.rewind
-
-          # Convert to Solr format and add (update index)
-          # NOT ANYMORE: Notice we update Solr no matter if the upstream storage middleware succeeds or not
-
-          # POST/no id => multiple documents
-          if request.id? == false and "POST" == request.request_method and json.respond_to? :each
-            solr = []
-            # FIXME support Refine json
-            # FIXME support Solr response JSON
-            # json[:response][:docs].
+          response = config[:save].call(request)
           
-            # parse reponse from couch, it might be useful to us...
-            couch = Yajl::Parser.parse(response.body[0])
+          elapsed = Time.now-t0
 
-            # if couch responds with a populated list of ids, it has generated these for us,
-            # so let's use them when we put records into solr 
-            if couch.has_key?('response') and couch['response'].has_key?('ids') and !couch['response']['ids'].empty?
-              provide_id = true
-            end
+          log.debug "Solr indexing time: #{elapsed} seconds"
 
-            if json.is_a? Array
-              json.each_with_index do |doc, index|
-                if provide_id
-                  doc['id'] = couch['response']['ids'][index]
-                end
-                solrized = to_solr(doc)
-                solrized = solrized.nil? ? doc :  solrized
-                solr << solrized
-              end
-              size = solr.size
-            else
-              #Grab response from Couch (single post the response body will be the document)
-              json = Yajl::Parser.parse(response.body.first, :symbolize_keys => true)
-              
-              solr = to_solr(json)
-              size = 1
-            end
-            
-            log.debug "About to POST #{size} Solr documents"
-          else
-            # PUT => single document
-            solr = to_solr(json)
-            size = 1
-          end
-
-          t1 = Time.now
+          response
           
+        rescue => e
 
-          #client = Npolar::Api::Client::JsonApiClient.new(uri+"/update")
-          #solr_response = client.post(solr, nil, { commit: true })
-          
-          solr_response = rsolr.add(solr) # Hash
-          log.info solr_response
-          elapsed = Time.now-t1
-
-          log.debug "Solr response: #{solr_response[0.255]}"
-
-          log.debug "Total time: #{Time.now-t0} seconds"
-
-          # Return upstream response if any, otherwise the Solr response
-          if response.nil?
-            status = case solr_response["responseHeader"]["status"]
-              when 0 then 201
-              else 503
-            end          
-          else
-            status = response.status
-          end
-
-          if [200, 201].include?(status)
-            log.info "#{request.request_method} #{request.url} #{status} saved #{size} Solr document(s) in #{elapsed} seconds (#{size/elapsed} qps)"
-          else
-            log.error "Failed saving to Solr (status #{status})"
-          end
-
-          if response.nil?
-            qtime = solr_response["responseHeader"]["QTime"]
-            [status, headers("json") , [{"response" => { "status" => status,
-              "summary" => "Updated #{size} Solr documents in #{elapsed} seconds"},
-              "method" => request.request_method, "qps" => size/elapsed, "qtime" => qtime
-          }.to_json+"\n"]]
-
-          else
-            response
-          end
-          
-        rescue RSolr::Error::Http => e
-          log.debug self.class.name+"#save raised RSolr::Error::Http"
           json_error_from_exception(e)
         end
       end
       
-      # Solr searchfl
+      # Solr search
       # Search request handler that returns a JSON feed (default) or CSV, Solr Ruby Hash, Solr XML
       # @return Rack-style HTTP triplet
       def handle_search(request)
         log.debug self.class.name+"#handle_search #{uri} #{solr_params}"
         begin
           
-          fq_bbox = []
-          if params["bbox"]
-            #w,s,e,n = bbox = params["bbox"].split(" ").map {|c|c.to_f}
-            #fq_bbox = ["north:[#{s} TO #{n}]", "east:[#{w} TO #{e}]"]
-          end
+          #fq_bbox = []
+          #if params["bbox"]
+          #  #w,s,e,n = bbox = params["bbox"].split(" ").map {|c|c.to_f}
+          #  #fq_bbox = ["north:[#{s} TO #{n}]", "east:[#{w} TO #{e}]"]
+          #end
           
           response = search
 
@@ -286,13 +212,13 @@ module Npolar
 
             log.debug("Bulk-query for ids: #{ids}")
 
-            # prepare to POST ids to couch to bulk-fetch the actual documents
+            # prepare to POST ids to upstream storage to bulk-fetch the actual documents
             post_env = request.env
             post_env["REQUEST_METHOD"] = "POST"
             post_env["rack.input"] = StringIO.new({ "keys" => ids }.to_json)
             post_env["CONTENT_TYPE"] = "application/json"
 
-            # POST to couch and return
+            # POST to upstream storage and return
             resp = @app.call(post_env)
             return [200, headers("json"), resp.body]
           end
@@ -324,8 +250,8 @@ module Npolar
       end
 
       # Converts incoming JSON (or other document) to Solr-style JSON Hash
-      def to_solr(json)
-        config[:to_solr].call(json)
+      def to_solr(body)
+        config[:to_solr].call(body)
       end
 
       # Solr core URI
@@ -353,8 +279,7 @@ module Npolar
           end
         end
         
-        # todo support facet.* `http://wiki.apache.org/solr/SimpleFacetParameters#facet.mincount
-        # todo factes vs. multifacets
+        # todo facets vs. multifacets
         if request_facets.respond_to? :"+="
           facets = request_facets += config[:facets]
         else
@@ -388,8 +313,7 @@ module Npolar
       end
 
       # @return Array fq (filter queries)
-      # FIXME draft=not(yes) is currently implemented like
-      #   filter--draft=yes
+      # @todo not(x)
       def fq
 
         # config[:fq] should contain a lambda that will extract fq from a request
@@ -433,13 +357,25 @@ module Npolar
               if to.nil? or "" == to
                 to = "*"
               end
-
-              # Switch from/to if from is greater than to
+              
+              # Lucene needs the smallest number/date first in a range, so we convert these from string
+              if from =~ INTEGER_REGEX and to =~ INTEGER_REGEX
+                from = from.to_i
+                to = to.to_i
+              end
+              if from =~ FLOAT_REGEX and to =~ FLOAT_REGEX
+                from = from.to_f
+                to = to.to_f
+              end
+              
               if (from != "*" and to != "*" and from.respond_to?(:<) and to.respond_to?(:>))
+               
                 if from > to
                   from,to = to,from
                 end
               end
+              from = from.to_s
+              to = to.to_s
               
               if config[:dates].include? k
 
@@ -451,7 +387,7 @@ module Npolar
                   # At least one year (from or to)
                 elsif from =~ MONTH_REGEX or to =~ MONTH_REGEX
                   from,to = solr_month_range(from,to)
-                elsif from =~ YEAR_REGEX or to =~ YEAR_REGEX 
+                elsif from =~ YEAR_REGEX or to =~ YEAR_REGEX
                   from,to = solr_year_range(from,to)
                 end
   
@@ -472,9 +408,9 @@ module Npolar
 
 
 
-#.map {|k,v| [k, v.)]}
-#qstar = CGI::unescape(qstar)
-        # todo factes vs. multifacets
+        #.map {|k,v| [k, v.)]}
+        #qstar = CGI::unescape(qstar)
+        # todo facets multifacets
         #unless fq.nil?
         #  fq = fq.map {|q|
         #    k,v = q.split(":")
@@ -504,11 +440,11 @@ module Npolar
 
       def solr_year_range(from,to)
         unless "*" == from
-          from = DateTime.new(from[0..3].to_i, 1, 1).xmlschema.gsub(/\+00\:00$/, "Z")
+          from = DateTime.new(from[0..3].to_i, 1, 1).to_time.utc.iso8601
         end
 
         unless "*" == to
-          to = DateTime.new(to[0..3].to_i, 12, 31, 23, 59, 59).xmlschema.gsub(/\+00\:00$/, "Z")
+          to = DateTime.new(to[0..3].to_i, 12, 31, 23, 59, 59.999999).to_time.utc.iso8601(6)
         end
     
         [from,to]
@@ -520,13 +456,13 @@ module Npolar
         if "*" == from_year
           from = "*"
         else
-          from = DateTime.new(from_year.to_i, from[5..6].to_i, from[8..9].to_i).xmlschema.gsub(/\+00\:00$/, "Z")
+          from = DateTime.new(from_year.to_i, from[5..6].to_i, from[8..9].to_i).to_time.utc.iso8601
         end
         if "*" == to_year
           to = "*"
         else
 
-          to = DateTime.new(to_year.to_i, to[5..6].to_i, to[8..9].to_i, 23, 59, 59.999).xmlschema.gsub(/\+00\:00$/, "Z")
+          to = DateTime.new(to_year.to_i, to[5..6].to_i, to[8..9].to_i, 23, 59, 59.999999).to_time.utc.iso8601(6)
         end
         [from,to]
       end
@@ -537,12 +473,12 @@ module Npolar
         if "*" == from_year
           from = "*"
         else
-          from = DateTime.new(from_year.to_i, from[5..6].to_i).xmlschema.gsub(/\+00\:00$/, "Z")
+          from = DateTime.new(from_year.to_i, from[5..6].to_i).to_time.utc.iso8601
         end
         if "*" == to_year
           to = "*"
         else
-          to = DateTime.new(to_year.to_i, to[5..6].to_i, -1, 23, 59, 59).xmlschema.gsub(/\+00\:00$/, "Z")
+          to = DateTime.new(to_year.to_i, to[5..6].to_i, -1, 23, 59, 59.999999).to_time.utc.iso8601(6)
         end
         [from,to]
       end
@@ -550,27 +486,11 @@ module Npolar
       def solr_params
         start = request["start"] ||= 0
         rows  = request["limit"]  ||= config[:rows]
-        
-        params = {
+        # Merge with user provided parameters, except some that shouldn't be repeated
+        params = request.params.reject {|k,v| k =~ /limit|fields|start|facet\.sort|facet\.mincount|filter-/ }.merge ({
             :q=>q, :start => start, :rows => rows,
             :fq => fq,
             :facet => facets.nil? ? false : true,
-            #:"facet.range" => ["north", "east", "south", "west"],
-            #:"f.north.facet.range.start" => -90,
-            #:"f.north.facet.range.end" => 90,
-            #:"f.north.facet.range.gap" => 10,
-            #:"f.east.facet.range.start" => -180,
-            #:"f.east.facet.range.end" => 180,
-            #:"f.east.facet.range.gap" => 20,
-            #:"f.south.facet.range.start" => -90,
-            #:"f.south.facet.range.end" => 90,
-            #:"f.south.facet.range.gap" => 10,
-            #:"f.west.facet.range.start" => -180,
-            #:"f.west.facet.range.end" => 180,
-            #:"f.west.facet.range.gap" => 20,
-            #:"f.updated.facet.range.start" => "/NOW-100 YEARS/",
-            #:"f.updated.facet.range.end" => "/NOW/",
-            #:"f.updated.facet.range.gap" => 10,
             :"facet.field" => facets,
             :"facet.mincount" => request["facet.mincount"] ||= 1,
             :"facet.limit" => request["facet.limit"] ||= 100, # -1 == all
@@ -580,9 +500,10 @@ module Npolar
             :sort => request["sort"] ||= nil,
             :"facet.sort" => request["facet.sort"] ||= "count",
             :qf => "text"
-
-          }
-
+          })
+        
+        params = params.merge(range_facets)
+        
         if request.format == "csv"
           params = params.merge({
             :"csv.separator" => "\t",
@@ -592,9 +513,30 @@ module Npolar
         end
         params
       end
-
+      
       def q
         config[:q].call(request)
+      end
+      
+      def range_facets
+        facet_range = config[:range_facets].map {|rf|
+          if rf.field =~ /^[{][!]}(.)$/
+            rf.field.split("}")[1]
+          else
+            rf.field
+          end
+        }
+        rp = {}
+        
+        config[:range_facets].each { |rf|
+          field = (rf.field =~ /^[{][!]}(.)$/) ? rf.field.split("}")[1] : rf.field
+  
+          rp.merge!({:"f.#{field}.facet.range.start" => rf.start,
+            :"f.#{field}.facet.range.end" => rf.end,
+            :"f.#{field}.facet.range.gap" => rf.gap })
+        }
+        rp[:"facet.range"] = facet_range        
+        rp
       end
 
       # Returns the Solr serch (select) handler (defeult is "select")
@@ -609,18 +551,6 @@ module Npolar
       def self.summary(doc)
         config[:summary].call(doc)
       end
-
-
-      def collection
-        request.path_info.split("/")[1]
-      end
-
-      def workspace
-        request.path_info.split("/")[0]
-      end
-
-
-      # stats http://wiki.apache.org/solr/StatsComponent
 
       def wt
         wt = case request.format
