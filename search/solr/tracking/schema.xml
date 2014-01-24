@@ -1,29 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- npolar.no
-
-Solar schema for Norwegian Polar Data API (global search/"api" core)
-
-To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are commented with "npolar.no"
-
--->
-
 <!--
- Licensed to the Apache Software Foundation (ASF) under one or more
- contributor license agreements.  See the NOTICE file distributed with
- this work for additional information regarding copyright ownership.
- The ASF licenses this file to You under the Apache License, Version 2.0
- (the "License"); you may not use this file except in compliance with
- the License.  You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+Solr schema for Tracking API at http://api.npolar.no/tracking/
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
 -->
-
 <!--  
  This is the Solr schema file. This file should be named "schema.xml" and
  should be in the conf directory under the solr home
@@ -105,7 +85,9 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="lon1" type="tfloat" indexed="true" stored="true" multiValued="false" />
 <field name="lat2" type="tfloat" indexed="true" stored="true" multiValued="false" />
 <field name="lon2" type="tfloat" indexed="true" stored="true" multiValued="false" />
-<field name="measured" type="string" indexed="true" stored="true" multiValued="false" />
+<field name="measured" type="tdate" indexed="true" stored="true" multiValued="false" />
+<field name="measured-isodate" type="string" indexed="true" stored="true" multiValued="false" />
+
 <field name="positioned" type="tdate" indexed="true" stored="true" multiValued="false" />
 <field name="transmitted" type="tdate" indexed="true" stored="true" multiValued="false" />
 <field name="created" type="tdate" indexed="true" stored="true" multiValued="false" />
@@ -123,8 +105,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 
 <field name="tracking" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="system" type="string" indexed="true" stored="true" multiValued="false"/>
-<field name="sensors" type="string" indexed="true" stored="true" multiValued="false"/>
-<field name="lines" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="sensors" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="lines" type="tint" indexed="true" stored="true" multiValued="false"/>
 <field name="satellite" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="technology" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="filetype" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -247,13 +229,13 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="title" type="text_general" indexed="true" stored="true" multiValued="false"/>
 
 <!--<field name="updated" type="string" indexed="true" stored="true" />-->
-<field name="updated" type="string" indexed="true" stored="true" />
+<field name="updated" type="tdate" indexed="true" stored="true" />
 <field name="west" type="tfloat" indexed="true" stored="true" multiValued="true" />
 
 <field name="workspace" type="string" indexed="true" stored="true" />
 <field name="year" type="string" indexed="true" stored="true" />
 
-<field name="edited" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
+<field name="edited" type="tdate" indexed="true" stored="true" default="NOW" multiValued="false"/>
 <field name="type" type="string" indexed="true" stored="true" />
 
 
