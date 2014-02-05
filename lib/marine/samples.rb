@@ -6,7 +6,7 @@ module Marine
 
     def self.facets
       [
-        "workspace", "collection", "animal_group", "conveyance", "gear", "institution", "preservation", "programs", "sample_types", "station", "substation", "status", "year", "latitude_start", "longitude_start"
+        "workspace", "collection", "animal_group", "conveyance", "gear", "institution", "preservation", "programs", "sample_types", "station", "substation", "status", "year"
       ]
     end
 
