@@ -263,7 +263,7 @@
                 "enum": [
                     "atmosphere",
                     "biology",
-                    "biogeochemistry"
+                    "biogeochemistry",
                     "chemistry",
                     "climate",
                     "conservation",
