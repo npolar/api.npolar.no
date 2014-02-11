@@ -73,7 +73,11 @@
                     "ICE Ecosystems",
                     "ICE Fluxes",
                     "ICE Antarctica",
-                    "N-ICE"
+                    "N-ICE",
+                    "Biodiversity",
+                    "Environmental Pollutants",
+                    "Geology and Geophysics",
+                    "Oceans and Sea Ice"
                 ]
             }
         },
@@ -302,6 +306,9 @@
                         "type": "string"
                     },
                     "name": {
+                        "type": "string"
+                    },
+                    "location": {
                         "type": "string"
                     },
                     "roles": {
