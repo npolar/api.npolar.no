@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/weather-bouvet-1.0-rc1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {
+    "id": { "type" :"string" },
+    "rev": { "type": "string" },
+    "_id": { "description": "Internal id", "type": "string" },
+    "_rev" : { "description": "Internal revision", "type": "string" },
+    "TIMESTAMP": {
+      "type" : "string",
+      "format" : "datetime"
+    },
+    "RECORD": {
+      "type" : "string"
+    },
+    "ID": {
+      "type" : "string"
+    },
+    "Batt_V_Min": {
+      "type" : "number"
+    },
+    "Batt_V_hoved_Min": {
+      "type" : "number"
+    },
+    "Strom_I_hoved_Avg": {
+      "type" : "number"
+    },
+    "Batt_kap_prosent": {
+      "type" : "number"
+    },
+    "Batt_kap_nu_At": {
+      "type" : "number"
+    },
+    "TA": {
+      "type" : "number"
+    },
+    "TA_Min": {
+      "type" : "number"
+    },
+    "TA_Max": {
+      "type" : "number"
+    },
+    "UU": {
+      "type" : "number"
+    },
+    "PA": {
+      "type" : "number"
+    },
+    "FF": {
+      "type" : "number"
+    },
+    "DD": {
+      "type" : "number"
+    },
+    "FF_Max": {
+      "type" : "number"
+    },
+    "DD_SMM": {
+      "type" : "number"
+    },
+    "F_Max": {
+      "type" : "number"
+    },
+    "OT": {
+      "type" : "number"
+    },
+    "QA": {
+      "type" : "number"
+    },
+    "R1_status": {
+      "type" : "number"
+    },
+    "R2_status": {
+      "type" : "number"
+    },
+    "R3_status": {
+      "type" : "number"
+    },
+    "R4_status": {
+      "type" : "number"
+    },
+    "T1": {
+      "type" : "number"
+    },
+    "F1": {
+      "type" : "number"
+    }
+  }
+}
+
