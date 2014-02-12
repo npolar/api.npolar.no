@@ -26,16 +26,16 @@ module Npolar
       def create?(request)
         ["PUT", "POST"].include?(request.request_method)
       end
-     
+
       # parse text data, returns array of docs
       def parse(data)
         docs = []
         rows = CSV::parse(content)
-        if rows.length > 5
+        if rows.length > 4
           # TODO/FIXME: get Tor Ivan to make a proper csv header 
-          header = rows[0] + rows[1] + rows[2] + rows[3] + rows[4]
+          header = rows[1]
 
-          rows[5, rows.length].each do |row|
+          rows[4, rows.length].each do |row|
             doc = Hash[header.zip(row)]
           end
         
