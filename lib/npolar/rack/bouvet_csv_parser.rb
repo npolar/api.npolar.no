@@ -38,7 +38,20 @@ module Npolar
 
           rows[4, rows.length].each do |row|
             doc = Hash[header.zip(row)]
-        
+
+            doc.each do |key, val|
+
+              # try for int, if that fils, go for float, else string
+              begin
+                doc[key] = Integer(val)
+              rescue ArgumentError
+                begin 
+                  doc[key] = Float(val)
+                rescue ArgumentError
+                end
+              end
+
+            end 
             # point to our schema
             doc["schema"] = "http://api.npolar.no/schema/weather-bouvet-1.0-rc1"
             docs << doc
