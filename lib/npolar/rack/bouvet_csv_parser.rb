@@ -20,6 +20,7 @@ module Npolar
         request.env['CONTENT_TYPE'] = "application/json"
         
         log.info "@BouvetCsvParser: Input parsed in #{Time.now - t0}"
+        pp docs
         app.call(request.env)     
       end
       
@@ -30,18 +31,18 @@ module Npolar
       # parse text data, returns array of docs
       def parse(data)
         docs = []
-        rows = CSV::parse(content)
+        rows = CSV::parse(data)
         if rows.length > 4
           # TODO/FIXME: get Tor Ivan to make a proper csv header 
           header = rows[1]
 
           rows[4, rows.length].each do |row|
             doc = Hash[header.zip(row)]
-          end
         
-          # point to our schema
-          doc["schema"] = "http://api.npolar.no/schema/weather-bouvet-1.0-rc1"
-          docs << doc
+            # point to our schema
+            doc["schema"] = "http://api.npolar.no/schema/weather-bouvet-1.0-rc1"
+            docs << doc
+          end
         end
 
         docs
