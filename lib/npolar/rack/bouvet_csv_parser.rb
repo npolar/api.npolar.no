@@ -41,7 +41,7 @@ module Npolar
 
             doc.each do |key, val|
 
-              # try for int, if that fils, go for float, else string
+              # try for int, if that fails, go for float, else string
               begin
                 doc[key] = Integer(val)
               rescue ArgumentError
