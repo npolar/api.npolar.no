@@ -1,19 +1,17 @@
 {
-   "id": "weather-bouvet-api",
    "schema": "http://api.npolar.no/schema/api",
    "path": "/weather-bouvet",
-   "title": "Weather Data from Bouvet Station",
+   "title": "Bouvet Weather Data",
    "summary": "",
    "storage": "Couch",
    "database": "weather-bouvet",
    "search": {
        "engine": "Elasticsearch",
-       "uri": "http://localhost:9200",
-       "facets": [
-         "T1"
-       ],
+       "url": "http://localhost:9200",
        "type": "weather-bouvet",
-       "index": "weather-bouvet"
+       "index": "weather-bouvet",
+       "params": {
+       }
    },
    "base": "http://api.npolar.no",
    "verbs": [
@@ -28,6 +26,7 @@
        "html": "text/html"
    },
    "accepts": {
+       "application/json": "",
        "text/csv": ""
    },
    "category": [
