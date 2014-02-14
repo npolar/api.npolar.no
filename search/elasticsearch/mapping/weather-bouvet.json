@@ -80,7 +80,7 @@
        },
        "ID":{
           "index":"not_analyzed",
-          "type":"string"
+          "type":"integer"
        },
        "F_Max":{
           "index":"not_analyzed",

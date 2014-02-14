@@ -14,10 +14,10 @@
       "format" : "datetime"
     },
     "RECORD": {
-      "type" : "string"
+      "type" : "number"
     },
     "ID": {
-      "type" : "string"
+      "type" : "number"
     },
     "Batt_V_Min": {
       "type" : "number"
