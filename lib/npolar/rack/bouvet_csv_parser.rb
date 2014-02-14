@@ -52,6 +52,11 @@ module Npolar
               end
 
             end 
+
+            # make the timestamp ours
+            toks = doc["TIMESTAMP"].split()
+            doc["TIMESTAMP"] = toks[0]+"T"+toks[1]+"Z"
+
             # point to our schema
             doc["schema"] = "http://api.npolar.no/schema/weather-bouvet-1.0-rc1"
             docs << doc
