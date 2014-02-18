@@ -50,6 +50,10 @@ require_relative "./lib/npolar/rack/middleware"
 require_relative "./lib/npolar/rack/edit_log"
 
 require_relative "./lib/metadata/dataset"
+require "oai"
+
+require_relative "./lib/metadata/oai_dumb_couchdb_model"
+require_relative "./lib/metadata/oai_directory_interchange_format"
 require_relative "./lib/metadata/rack/dif_jsonizer"
 Dir.glob("./lib/*/*.rb").each do | file |
   require_relative file

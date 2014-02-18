@@ -105,16 +105,24 @@ bootstrap.apis.select {|api| api.run? and api.run != "" }.each do |api|
   end
 end
 
-# /dataset/oai = OAI-PMH repository
-# https://github.com/code4lib/ruby-oai
-# Identify, ListIdentifiers, ListRecords, GetRecords, ListSets, ListMetadataFormat
-#   /dataset/oai?verb=ListSets
-#   /dataset/oai?verb=ListIdentifiers
-#   /dataset/oai?verb=GetRecord&metadataPrefix=dif&identifier=
-#map "/oai" do
-#  provider = Metadata::OaiRepository.new
-#  run Npolar::Rack::OaiSkeleton.new(Views::Api::Index.new, :provider => provider)
-#end
+# OAI-PMH repository for datasets (as DIF XML)
+#
+# Supports all 6 verbs from v2 spec http://www.openarchives.org/OAI/openarchivesprotocol.html#ProtocolMessages
+# * /dataset/oai?verb=Identify
+# * /dataset/oai?verb=ListIdentifiers
+# * /dataset/oai?verb=ListMetadataFormats
+# * /dataset/oai?verb=ListSets
+# * /dataset/oai?verb=GetRecord&metadataPrefix=dif&identifier=0323b588-5023-57d1-bf98-201cd8192730
+# * /dataset/oai?verb=ListRecords&metadataPrefix=dif
+#
+# Time range
+# * /dataset/oai?verb=ListIdentifiers&from=2013-11-01&until=2013-11-15&metadataPrefix=dif
+# Sets (and time range)
+# * /dataset/oai?verb=ListIdentifiers&from=2013-11-01&until=2014-01-01&metadataPrefix=dif&sets=cryoclim.net
+map "/dataset/oai" do
+  provider = Metadata::OaiDatasetProvider.new
+  run Npolar::Rack::OaiSkeleton.new(Views::Api::Index.new, :provider => provider)
+end
 
 map "/gcmd/concept/demo" do
   run Gcmd::Concept.new
