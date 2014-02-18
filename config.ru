@@ -29,12 +29,12 @@ Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
 
-require "./load"
+require "openssl"
 configfile = File.dirname(__FILE__)+"/config/config.rb"
 if File.exists? configfile
   require configfile
 end
-
+require "./load"
 #require 'raindrops'
 #$stats ||= Raindrops::Middleware::Stats.new
 #use Raindrops::Middleware, :stats => $stats
