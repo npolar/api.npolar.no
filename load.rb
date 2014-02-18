@@ -14,6 +14,7 @@ require "rack/commonlogger"
 #require "rack/cache"
 #require "rack/protection"
 
+require "typhoeus/adapters/faraday"
 
 require_relative "./lib/npolar"
 require_relative "./lib/npolar/exception"
