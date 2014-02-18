@@ -15,7 +15,10 @@ module Npolar
       def call(env)        
         request = Rack::Request.new(env)
         response =  provider.process_request(request.params)
-        [200, {"Content-Type" => "application/xml"}, [response]]
+        # 3.1.2.1 Content-Type
+        # The Content-Type returned for all OAI-PMH requests must be text/xml.
+        # http://www.openarchives.org/OAI/2.0/openarchivesprotocol.htm
+        [200, {"Content-Type" => "text/xml"}, [response]]
       end
     end
   end
