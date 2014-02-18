@@ -148,11 +148,6 @@ module Metadata
       })
     end
 
-    # Not used atm.
-    #def self.sets
-    #  oai_sets.map {|set| set[:spec] }
-    #end
-
     # Default rights (human readable usage requirements)
     def self.rights(dataset=nil)
       if dataset.publicdomain?
@@ -182,24 +177,6 @@ module Metadata
         raise ArgumentError, "Unknown schema format: \"#{format}\""
       end
     end
-
-    #def self.oai_sets
-    #  [ {:spec => "arctic", :name => "Arctic datasets"},
-    #    {:spec => "antarctic", :name => "Antarctic datasets"},
-    #    {:spec => "IPY", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008)"},
-    #    {:spec => "cryoclim.net", :name => "Cryoclim", :description => "Climate monitoring of the cryosphere, see http://cryoclim.net"},
-    #    {:spec => "NMDC", :name => "Norwegian Marine Data Centre", :description => "Marine datasets"},
-    #    {:spec => "GCMD", :name => "Global Change Master Directory" }
-    #  ]
-    #end
-
-    #def self.summary
-    #  "Dataset metadata in DIF XML, targeted at NASA's Global Change Master Directory."
-    #end
-    #
-    #def self.title
-    #  "Norwegian Polar Institute's datasets"
-    #end
 
 
     # Before save: Add information to dataset
@@ -468,6 +445,10 @@ module Metadata
     def owners
       (organisations||[]).select {|o| o.roles.include? "owner"}
     end
+    
+    def updated_time
+      DateTime.parse(updated).to_time
+    end
 
     def to_dif_hash
       DifHashifier.new(self).to_hash
@@ -479,9 +460,9 @@ module Metadata
 
     def to_dif
       dif = ::Gcmd::Dif.new( to_dif_hash )
-      dif.to_xml
+      dif.to_xml.gsub(/\<\?xml.*\?\>/, "")
     end
-
+    
     #def to_oai_dc
     #  xml = Builder::XmlMarkup.new
     #  xml.tag!("oai_dc:dc",
@@ -493,8 +474,8 @@ module Metadata
     #        http://www.openarchives.org/OAI/2.0/oai_dc.xsd}) do
     #      xml.tag!('oai_dc:title', title)
     #      xml.tag!('oai_dc:description', summary)
-    #      xml.tag!('oai_dc:creator', investigators.map {|i| i.first_name + " " + i.last_name}.join(", "))
-    #      tags.each do |tag|
+    #      xml.tag!('oai_dc:creator', people.select{|p|p.role=="principalInvestigator"}.map {|i| i.first_name + " " + i.last_name}.join(", "))
+    #      tags||[].each do |tag|
     #        xml.tag!('oai_dc:subject', tag)
     #      end
     #  end
