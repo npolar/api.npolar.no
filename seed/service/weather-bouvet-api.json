@@ -1,4 +1,5 @@
 {
+   "id" : "weather-bouvet-api",
    "schema": "http://api.npolar.no/schema/api",
    "path": "/weather-bouvet",
    "title": "Bouvet Weather Data",
