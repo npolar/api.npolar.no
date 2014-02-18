@@ -75,9 +75,9 @@
                     "ICE Antarctica",
                     "N-ICE",
                     "Biodiversity",
-                    "Environmental Pollutants",
-                    "Geology and Geophysics",
-                    "Oceans and Sea Ice"
+                    "Environmental pollutants",
+                    "Geology and geophysics",
+                    "Oceans and sea ice"
                 ]
             }
         },
@@ -236,7 +236,8 @@
                             "enum": [
                                 "author",
                                 "editor",
-                                "ghost_author"
+                                "ghost_author",
+                                "translator"
                             ]
                         }
                     },
