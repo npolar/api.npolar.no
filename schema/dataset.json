@@ -3,7 +3,7 @@
   "id": "http://api.npolar.no/schema/dataset-1.0.0",
   "title": "Dataset",
   "description": "Metadata describing a dataset",
-  "type": "object",   
+  "type": "object",
   "additionalProperties": false,
   "required": ["title"],
   "properties": {
@@ -46,7 +46,7 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["biota", "boundaries", "climatologyMeteorologyAtmosphere", "economy", "elevation", "environment", "farming", "geoscientificInformation", "health", "imageryBaseMapsEarthCover", "inlandWaters", "intelligenceMilitary", "location", "oceans", "planningCadastre", "society", "structure", "transportation", "utilitiesCommunication"] 
+        "enum": ["biota", "boundaries", "climatologyMeteorologyAtmosphere", "economy", "elevation", "environment", "farming", "geoscientificInformation", "health", "imageryBaseMapsEarthCover", "inlandWaters", "intelligenceMilitary", "location", "oceans", "planningCadastre", "society", "structure", "transportation", "utilitiesCommunication"]
       }
     },
     "tags": {
@@ -92,7 +92,7 @@
         "additionalProperties": false,
 
         "properties": {
-          "id": { "type": "string" },
+          "id": { "type": ["string", "null"] },
           "first_name": { "type": ["string", "null"] },
           "last_name": { "type": "string" },
           "roles": {
@@ -121,7 +121,7 @@
           "roles": {
             "type": "array",
             "items": {
-              "enum": ["author", "originator", "owner", "pointOfContact", "principalInvestigator", "publisher", "resourceProvider"] 
+              "enum": ["author", "originator", "owner", "pointOfContact", "principalInvestigator", "publisher", "resourceProvider"]
             }
           },
           "email": {
