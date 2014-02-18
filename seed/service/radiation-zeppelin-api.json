@@ -1,7 +1,7 @@
 {
    "id": "radiation-zeppelin-api",
    "schema": "http://api.npolar.no/schema/api",
-   "path": "/radiation-zeppelin",
+   "path": "/radiation/zeppelin",
    "title": "Incoming radiation at Zeppelin Station",
    "summary": "",
    "storage": "Couch",
