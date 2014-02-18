@@ -1,0 +1,53 @@
+{
+   "schema": "http://api.npolar.no/schema/api",
+   "path": "/weather-bouvet",
+   "title": "Bouvet Weather Data",
+   "summary": "",
+   "storage": "Couch",
+   "database": "weather-bouvet",
+   "search": {
+       "engine": "Elasticsearch",
+       "url": "http://localhost:9200",
+       "type": "weather-bouvet",
+       "index": "weather-bouvet",
+       "params": {
+       }
+   },
+   "base": "http://api.npolar.no",
+   "verbs": [
+       "DELETE",
+       "GET",
+       "HEAD",
+       "POST",
+       "PUT"
+   ],
+   "formats": {
+       "json": "application/json",
+       "html": "text/html"
+   },
+   "accepts": {
+       "application/json": "",
+       "text/csv": ""
+   },
+   "category": [
+       "CouchDB",
+       "REST",
+       "JSON",
+       "HTTP"
+   ],
+   "lifecycle": "production",
+   "run": "Npolar::Api::Json",
+   "middleware": [
+       [
+           "Npolar::Rack::BouvetCsvParser",
+           {
+           }
+       ]
+   ],
+   "open": true,
+   "auth": {
+       "authorize": "editor",
+       "system": "weather-bouvet",
+       "authorizer": "Npolar::Auth::Ldap"
+   }
+}
