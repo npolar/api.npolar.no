@@ -231,6 +231,8 @@ module Npolar
           log.debug "Solr hits=#{hits} status=#{status} qtime=#{qtime}"
 
             [200, headers("json"), [feed(response).to_json]]
+          elsif ["geojson"].include? request.format
+            [200, headers("json"), [geojson(response).to_json]]
           elsif ["solr"].include? request.format
             [200, headers("json"), [response.to_json]]
           elsif ["csv", "xml"].include? request.format
@@ -268,6 +270,10 @@ module Npolar
 
       def feed(response)
         config[:feed].call(response, request)
+      end
+      
+      def geojson(response)
+        Npolar::Api::SolrFeedWriter.geojson_feature_collection(response, request)
       end
 
       def facets

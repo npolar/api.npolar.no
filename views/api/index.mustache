@@ -1,4 +1,4 @@
-  {{{ head }}}
+{{{ head }}}
   
   <article class="row-fluid">
 
@@ -141,7 +141,6 @@
   </div>  
 {{/frontpage?}}
 
-  <hr/>
   <footer class="footer">
     <p><strong>api.npolar.no</strong> is <a href="https://github.com/npolar/api.npolar.no#readme">open source</a>.</p>
   </footer>
@@ -171,3 +170,9 @@
   {{/ form }}
   </script>
   {{{ foot }}}
+  {{#map?}}
+  {{< _leaflet_map }}
+  {{/map?}}
+        
+    </body>
+</html>
