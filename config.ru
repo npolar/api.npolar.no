@@ -64,7 +64,7 @@ bootstrap.bootstrap("user-api.json")
 #use Rack::Throttle::Interval, :min => 0.001 # 1/1000 seconds interval
 # use Npolar::Rack::SecureEdits (force TLS/SSL ie. https)
 
-use Rack::Static, :urls => ["/css", "js", "/img", "/xsl", "schema", "code", "/favicon.ico", "/robots.txt"], :root => "public"
+use Rack::Static, :urls => ["/css", "/js", "/img", "/xsl", "schema", "code", "/favicon.ico", "/robots.txt"], :root => "public"
 use ::Rack::JSONP
 # use Npolar::Rack::GeoJSON
 
