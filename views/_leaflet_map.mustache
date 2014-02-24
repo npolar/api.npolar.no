@@ -42,7 +42,7 @@ function popUp(f,l){
         
     }
 }
-var jsonTest = new L.GeoJSON.AJAX(["{{{ self }}}&format=geojson&fields=id,edit,measured,updated,object,species,deployed,individual,platform,deployment,location,type,technology,latitude,longitude&filter-latitude=-90..90&group=deployment"],
+var jsonTest = new L.GeoJSON.AJAX(["{{{ self }}}&format=geojson&fields=id,edit,measured,updated,object,species,deployed,individual,platform,deployment,location,type,technology,latitude,longitude&filter-latitude=-90..90"],
   {
     onEachFeature:popUp
     }).addTo(m);
