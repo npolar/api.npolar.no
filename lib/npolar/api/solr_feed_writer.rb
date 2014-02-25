@@ -116,6 +116,16 @@ class Npolar::Api::SolrFeedWriter
     _addr.query_values = _addr.query_values.merge({"filter-#{name}" => href })
     return _addr.to_str
   end
+  
+  def self.geojson_feature_collection(response,request, lat_field="latitude", long_field="longitude")
+    { type: "FeatureCollection",
+      features: response["response"]["docs"].map {|d|
+        { geometry: { type: "Point", coordinates: [d["longitude"],d["latitude"]]},
+          type: "Feature", id: d["id"], properties: d
+        }
+      }
+    }
+  end
 
   def self.range_facet_href(name, val, gap)
     

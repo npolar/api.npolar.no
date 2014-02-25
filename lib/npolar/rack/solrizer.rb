@@ -93,6 +93,7 @@ module Npolar
         :core => nil,
         :condition => self.searcher,
         :facets => nil,
+        :group => nil,
         :model => nil,
         :range_facets => nil,
         :select => nil,
@@ -198,7 +199,7 @@ module Npolar
           #  #w,s,e,n = bbox = params["bbox"].split(" ").map {|c|c.to_f}
           #  #fq_bbox = ["north:[#{s} TO #{n}]", "east:[#{w} TO #{e}]"]
           #end
-          
+
           response = search
 
           # if bulk=true in query, proceed
@@ -230,6 +231,8 @@ module Npolar
           log.debug "Solr hits=#{hits} status=#{status} qtime=#{qtime}"
 
             [200, headers("json"), [feed(response).to_json]]
+          elsif ["geojson"].include? request.format
+            [200, headers("json"), [geojson(response).to_json]]
           elsif ["solr"].include? request.format
             [200, headers("json"), [response.to_json]]
           elsif ["csv", "xml"].include? request.format
@@ -268,6 +271,10 @@ module Npolar
       def feed(response)
         config[:feed].call(response, request)
       end
+      
+      def geojson(response)
+        Npolar::Api::SolrFeedWriter.geojson_feature_collection(response, request)
+      end
 
       def facets
         unless request["facets"].nil?
@@ -295,6 +302,25 @@ module Npolar
         end
         facets
 
+      end
+      
+      # Group (by field)
+      def group_params
+        gp = { :group => true,
+          :"group.field" => request["group"],
+          :"group.facet" => true,
+          :"group.main" => true,
+          :"group.limit" => request["group.limit"]||1,
+          :"rows" => request["rows"]||-1,
+          :"group.sort" => request["group.sort"]
+        }
+        
+        if config.key? :group
+          if config[:group].key? :sort and request["group.sort"].nil?
+            gp[:"group.sort"] =  config[:group][:sort]
+          end
+        end
+        gp
       end
 
       def json_error_from_exception(e)
@@ -486,8 +512,8 @@ module Npolar
       def solr_params
         start = request["start"] ||= 0
         rows  = request["limit"]  ||= config[:rows]
-        # Merge with user provided parameters, except some that shouldn't be repeated
-        params = request.params.reject {|k,v| k =~ /limit|fields|start|facet\.sort|facet\.mincount|filter-/ }.merge ({
+        # Merge with user provided parameters, except some that shouldn't be repeated or has a different external meaning (group is a field in the API and bool in Solr)
+        params = request.params.reject {|k,v| k =~ /limit|fields|start|group|facet\.sort|facet\.mincount|filter-/ }.merge ({
             :q=>q, :start => start, :rows => rows,
             :fq => fq,
             :facet => facets.nil? ? false : true,
@@ -511,6 +537,12 @@ module Npolar
             :"csv.encapsulator" => '"'
           })
         end
+        
+        if request["group"] =~ /\w+/
+          params = params.merge(group_params)
+        end
+      
+        
         params
       end
       

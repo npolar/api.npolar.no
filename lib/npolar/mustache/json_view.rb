@@ -59,9 +59,27 @@ class Npolar::Mustache::JsonView < ::Mustache
 <head>
   <title>{{head_title}}</title>
   <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+    
   <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <!-- Boostrap 2 needed for wide right hand facet column -->
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+  <![endif]-->
+ 
+    <style>
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0;}
+      #map{ height: 100% }
+    </style>
+    
+    <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+<script type="text/javascript" src="/js/leaflet.ajax.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> <!-- or jQuery 2.x -->
   {{{ head_links }}}
 </head>
 <body class="container-fluid">
@@ -76,8 +94,8 @@ class Npolar::Mustache::JsonView < ::Mustache
     if get(id).include? :foot
       get(id)[:foot]
     else
-      "<!--<script src=\"http://code.jquery.com/jquery-latest.js\"></script>
-<script src=\"//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js\"></script>--> 
+      "<script src=\"//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js\"></script>
+
 </body></html>"
     end
   end

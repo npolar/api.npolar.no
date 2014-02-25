@@ -86,9 +86,11 @@ module Npolar
                   :core => api.search.core,
                   :force => api.search.force,
                   :path => api.path,
-                  :dates => api.search.dates,
-                  :facets => api.search.facets,
-                  :fl => "*",
+                  :dates => api.search.dates||[],
+                  :facets => api.search.facets||[],
+                  :range_facets => api.search.range_facets||[],
+                  :group =>  api.search.group||[],
+                  :fl => api.search.fields||"*",
                   :to_solr => lambda {|hash|
                     if model.nil?
                       hash

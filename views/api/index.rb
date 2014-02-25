@@ -265,7 +265,11 @@ module Views
           false
         end
       end
-
+      
+      def geojson_uri      
+        "#{ self }&format=geojson&fields=measured,object,species,deployed,individual,platform,deployment,location,type,technology,latitude,longitude&filter-latitude=-90..90&group=deployment"
+      end
+    
       def title?(entry)
         return false if request["title"] =~ /^(false|no)$/
         entry.key?(:title)
@@ -283,6 +287,10 @@ module Views
 
       def result_text
         "#{totalResults} result#{ totalResults > 1 ? "s": ""} in #{qtime/1000} seconds"
+      end
+
+      def map?
+        request.params.key? "map"
       end
 
       def opensearch(key=nil)
