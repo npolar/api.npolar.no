@@ -440,7 +440,20 @@
             "type": "string"
         },
         "_attachment": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "publication": {
+                    "type": "object"
+                },
+                "accessible": {
+                    "type": "string",
+                    "enum": [
+                        "yes",
+                        "no"
+                    ]
+                }
+            }
         }
     }
 }
