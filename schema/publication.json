@@ -874,15 +874,12 @@
         "updated_by": {
             "type": "string"
         },
+        "_attachments": { "type": "object" },
         "_id": {
             "type": "string"
         },
         "_rev": {
             "type": "string"
-        },
-        "_attachments": {
-            "type": "object",
-            
         }
     }
 }
