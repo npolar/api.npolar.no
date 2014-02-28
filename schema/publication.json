@@ -420,7 +420,7 @@
         "attachments_access": {
             "additionalItems": false,
             "type": "array",
-            "items":[ "Y", "N"]
+            "items":[ "yes", "no"]
         },
         "created": {
             "description": "Document was published",
