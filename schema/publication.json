@@ -417,6 +417,11 @@
         "comment": {
             "type": "string"
         },
+        "attachments_access": {
+            "additionalItems": false,
+            "type": "array",
+            "items":[ "Y", "N"]
+        },
         "created": {
             "description": "Document was published",
             "type": "string",
