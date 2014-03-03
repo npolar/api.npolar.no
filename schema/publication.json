@@ -414,13 +414,19 @@
                 ]
           }
         },
-        "comment": {
-            "type": "string"
-        },
-        "attachments_access": {
+       "attachments_access": {
+            "title": "Internet access to attachments",
+            "description": "Internet access to attachments",
             "additionalItems": false,
             "type": "array",
-            "items":[ "yes", "no"]
+            "items":{
+            "type": "string",
+            "enum": [ "yes", "no"]
+          }
+        },
+
+        "comment": {
+            "type": "string"
         },
         "created": {
             "description": "Document was published",
