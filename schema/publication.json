@@ -414,6 +414,17 @@
                 ]
           }
         },
+       "attachments_access": {
+            "title": "Internet access to attachments",
+            "description": "Internet access to attachments",
+            "additionalItems": false,
+            "type": "array",
+            "items":{
+            "type": "string",
+            "enum": [ "yes", "no"]
+          }
+        },
+
         "comment": {
             "type": "string"
         },
@@ -439,8 +450,6 @@
         "_rev": {
             "type": "string"
         },
-        "_attachment": {
-            "type": "object"
-        }
+        "_attachments": { "type": "object" }
     }
 }
