@@ -237,7 +237,7 @@
                             "enum": [
                                 "author",
                                 "editor",
-                                "ghost_author",
+                                "co_author",
                                 "translator"
                             ]
                         }
