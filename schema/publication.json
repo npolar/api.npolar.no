@@ -12,7 +12,6 @@
         "published-year",
         "people",
         "topics",
-        "review_progress",
         "state",
         "publication_type",
         "draft",
@@ -56,6 +55,7 @@
             "type": "string"
         },
         "review_progress": {
+            "description": "Deprecated - used to be a part of the Norwegian summary review process"
             "enum": [
                 "none",
                 "started",
