@@ -55,7 +55,7 @@
             "type": "string"
         },
         "review_progress": {
-            "description": "Deprecated - used to be a part of the Norwegian summary review process"
+            "description": "Deprecated - used to be a part of the Norwegian summary review process",
             "enum": [
                 "none",
                 "started",
