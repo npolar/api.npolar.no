@@ -1,4 +1,5 @@
 #!/bin/bash
 /usr/bin/curl http://dbmaster.data.npolar.no:5984/radiation-zeppelin/_all_docs?include_docs=true > /tmp/all.json
 nice -n 19 /home/api/api.npolar.no/bin/couch-archiver /tmp/all.json /tmp/all.csv
-/usr/bin/zip -or /var/npolar/zepp-all.zip /tmp/all.csv
+cd /tmp
+/usr/bin/zip -or /var/npolar/zepp-all.zip all.csv
