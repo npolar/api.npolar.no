@@ -26,6 +26,7 @@
     "middleware": { "type": "array" },
     "formats": { "type": "object" },
     "accepts": { "type": "object" },
+    "editlog": { "type": "object" },
     "category": { "type": "array" },
     "lifecycle": { "type": "string", "default": "production" },
     "run": { "type": ["string", "null"] },
