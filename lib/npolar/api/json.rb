@@ -91,12 +91,13 @@ module Npolar
                   :range_facets => api.search.range_facets||[],
                   :group =>  api.search.group||[],
                   :fl => api.search.fields||"*",
+                  :geojson => api.geojson||{},
                   :to_solr => lambda {|hash|
                     if model.nil?
                       hash
                     else
                       m = model.class.new(hash)
-                      m.to_solr
+                      m.to_solr.to_json
                     end
                   }
                 }

@@ -94,6 +94,7 @@ module Npolar
         :condition => self.searcher,
         :facets => nil,
         :group => nil,
+        :geojson => nil,
         :model => nil,
         :range_facets => nil,
         :select => nil,
@@ -223,16 +224,16 @@ module Npolar
             resp = @app.call(post_env)
             return [200, headers("json"), resp.body]
           end
-
-          if ["html", "json", "", nil].include? request.format
+          
+          if ("geojson" == request.format) or ("json" == request.format and request["variant"]=~ /^geo(json)?$/)
+            [200, headers("json"), [geojson(response).to_json]]
+          elsif ["html", "json", "", nil].include? request.format
           status = response["responseHeader"]["status"]
           qtime = response["responseHeader"]["QTime"]
           hits = response["response"]["numFound"]
           log.debug "Solr hits=#{hits} status=#{status} qtime=#{qtime}"
 
             [200, headers("json"), [feed(response).to_json]]
-          elsif ["geojson"].include? request.format
-            [200, headers("json"), [geojson(response).to_json]]
           elsif ["solr"].include? request.format
             [200, headers("json"), [response.to_json]]
           elsif ["csv", "xml"].include? request.format
@@ -273,7 +274,14 @@ module Npolar
       end
       
       def geojson(response)
-        Npolar::Api::SolrFeedWriter.geojson_feature_collection(response, request)
+        if request["geometry"]
+          geometry = request["geometry"]
+        else
+          geometry = config[:geojson][:geometry]||="Point"
+        end
+        latitude = config[:geojson][:latitude]||"latitude"
+        longitude = config[:geojson][:longitude]||"longitude"
+        Npolar::Api::SolrFeedWriter.geojson_feature_collection(response, request, latitude,longitude, geometry)
       end
 
       def facets
@@ -314,10 +322,9 @@ module Npolar
           :"rows" => request["rows"]||-1,
           :"group.sort" => request["group.sort"]
         }
-        
-        if config.key? :group
-          if config[:group].key? :sort and request["group.sort"].nil?
-            gp[:"group.sort"] =  config[:group][:sort]
+        if config[:group] != []
+          if not config[:group].nil? and not config[:group][:sort].nil?
+            gp[:"group.sort"] =  config[:search][:group][:sort]
           end
         end
         gp
