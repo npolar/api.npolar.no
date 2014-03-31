@@ -266,10 +266,6 @@ module Views
         end
       end
       
-      def geojson_uri      
-        "#{ self }&format=geojson&fields=measured,object,species,deployed,individual,platform,deployment,location,type,technology,latitude,longitude&filter-latitude=-90..90&group=deployment"
-      end
-    
       def title?(entry)
         return false if request["title"] =~ /^(false|no)$/
         entry.key?(:title)

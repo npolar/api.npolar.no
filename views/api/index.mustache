@@ -1,5 +1,5 @@
 {{{ head }}}
-  
+{{^map?}}
   <article class="row-fluid">
 
   {{#form}}
@@ -98,11 +98,14 @@
 
 
 
-
+   
   </article>
+ {{/map?}}
 
-
-
+  {{#map?}}
+  {{< _leaflet_map }}
+  {{/map?}}
+  
 {{#frontpage?}}
 <table class="table table-condensed">
 <thead>
@@ -169,10 +172,10 @@
     });
   {{/ form }}
   </script>
+
   {{{ foot }}}
-  {{#map?}}
-  {{< _leaflet_map }}
-  {{/map?}}
+
+
         
     </body>
 </html>

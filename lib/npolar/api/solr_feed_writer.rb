@@ -117,14 +117,37 @@ class Npolar::Api::SolrFeedWriter
     return _addr.to_str
   end
   
-  def self.geojson_feature_collection(response,request, lat_field="latitude", long_field="longitude")
-    { type: "FeatureCollection",
-      features: response["response"]["docs"].map {|d|
-        { geometry: { type: "Point", coordinates: [d["longitude"],d["latitude"]]},
-          type: "Feature", id: d["id"], properties: d
+  def self.geojson_feature_collection(response,request, lat_field="latitude", long_field="longitude", geometry="Point")
+    if not ["Point", "LineString"].include? geometry
+      raise ArgumentError, "Unsupported GeoJSON geometry type: #{geometry}"
+    end
+    
+    if "Point" == geometry
+      { type: "FeatureCollection",
+        features: response["response"]["docs"].map {|d|
+          latitude = d[lat_field].is_a?(Array) ? d[lat_field][0] : d[lat_field]
+          longitude = d[long_field].is_a?(Array) ? d[long_field][0] : d[long_field]
+          
+          { geometry: { type: geometry, coordinates: [longitude,latitude]},
+            type: "Feature", id: d["id"], properties: d #.select {|k,v| v.nil? or v.is_a?(String) or v.is_a? Float or v.is_a? Fixnum }
+          }
         }
       }
-    }
+    elsif
+      first = response["response"]["docs"].first
+      
+      { type: "Feature", geometry: { type: "LineString",
+          :coordinates => response["response"]["docs"].map { |d|
+            latitude = d[lat_field].is_a?(Array) ? d[lat_field][0] : d[lat_field]
+            longitude = d[long_field].is_a?(Array) ? d[long_field][0] : d[long_field]
+            [longitude, latitude]
+          }
+        },
+        # Note: The client needs to use fields and filters so that this makes sense,
+        # ie. only returning the fields/properties that are common to all documents in the response      
+        properties: first
+      }
+    end
   end
 
   def self.range_facet_href(name, val, gap)
