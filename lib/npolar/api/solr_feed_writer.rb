@@ -121,9 +121,9 @@ class Npolar::Api::SolrFeedWriter
     if not ["Point", "LineString"].include? geometry
       raise ArgumentError, "Unsupported GeoJSON geometry type: #{geometry}"
     end
-    
+    feed = feed(response, request)["feed"].reject {|k,v| k =~ /^entries/}
     if "Point" == geometry
-      { type: "FeatureCollection",
+      gj = { type: "FeatureCollection",
         features: response["response"]["docs"].map {|d|
           latitude = d[lat_field].is_a?(Array) ? d[lat_field][0] : d[lat_field]
           longitude = d[long_field].is_a?(Array) ? d[long_field][0] : d[long_field]
@@ -136,7 +136,7 @@ class Npolar::Api::SolrFeedWriter
     elsif
       first = response["response"]["docs"].first
       
-      { type: "Feature", geometry: { type: "LineString",
+      gj = { type: "Feature", geometry: { type: "LineString",
           :coordinates => response["response"]["docs"].map { |d|
             latitude = d[lat_field].is_a?(Array) ? d[lat_field][0] : d[lat_field]
             longitude = d[long_field].is_a?(Array) ? d[long_field][0] : d[long_field]
@@ -148,6 +148,9 @@ class Npolar::Api::SolrFeedWriter
         properties: first
       }
     end
+    gj["feed"] = feed
+    gj
+    
   end
 
   def self.range_facet_href(name, val, gap)

@@ -300,7 +300,11 @@ module Views
     def ranges?
       ranges.size > 0
     end
-
+    
+    def setView
+      "[0, 0], 2"
+    end
+    
     def ranges
       []
       #ranges = feed(:facets).map {|field,v|
