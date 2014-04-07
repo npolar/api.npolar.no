@@ -53,6 +53,10 @@
       "type": "number",
       "description": "°C"
     },
+    "max_glob_temp": {
+      "type": "number",
+      "description": "°C"
+    },
     "min_glob_temp": {
       "type": "number",
       "description": "°C"
