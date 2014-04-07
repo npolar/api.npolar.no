@@ -3,7 +3,7 @@ source "https://rubygems.org"
 # Npolar gems
 gem "gcmd", git: "git://github.com/npolar/gcmd.git"
 #gem "gcmd", path:  "../gcmd"
-gem "icelastic", git: "git://github.com/npolar/icelastic.git"
+gem "icelastic", git: "git://github.com/npolar/icelastic.git", branch: "v1.3.0"
 #gem "npolar-rack-throttle", git: "git://github.com/npolar/rack-throttle.git" #, path:  "../rack-throttle"
 
 gem "npolar-api-client-ruby", git: "git://github.com/npolar/npolar-api-client-ruby" #, path:  "../npolar-api-client-ruby"
