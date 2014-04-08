@@ -7,7 +7,11 @@ gem "icelastic", git: "git://github.com/npolar/icelastic.git", branch: "v1.3.0"
 #gem "npolar-rack-throttle", git: "git://github.com/npolar/rack-throttle.git" #, path:  "../rack-throttle"
 
 gem "npolar-api-client-ruby", git: "git://github.com/npolar/npolar-api-client-ruby" #, path:  "../npolar-api-client-ruby"
-#gem "npolar-api-client-ruby", git: "git://github.com/npolar/npolar-api-client-ruby", path:  "../npolar-api-client-ruby"
+# gem "npolar-api-client-ruby", path:  "../npolar-api-client-ruby"
+ 
+gem "argos-ruby"#, path:  "../argos-ruby"
+
+
 
 # HTTP/network
 
@@ -21,6 +25,11 @@ gem "faraday_middleware", git: "git://github.com/lostisland/faraday_middleware"
 gem "typhoeus", git: "git://github.com/typhoeus/typhoeus.git"
 gem "eventmachine"
 gem "em-http-request"
+
+gem "chronic" # for oai
+gem "oai"
+#gem "oai", path:  "../ruby-oai"
+
 
 # Rack
 gem "rack" #, git: "git://github.com/rack/rack.git"
@@ -39,7 +48,7 @@ gem "uuidtools"
 gem "hashie", git: "git://github.com/intridea/hashie.git"
 gem "json-schema", git: "git://github.com/hoxworth/json-schema.git"
 gem "jsonify"
-gem "oai"
+
 #gem "ruby-netcdf"
 gem "addressable"
 gem "mustache"
