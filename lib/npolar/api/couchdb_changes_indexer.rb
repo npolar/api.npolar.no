@@ -19,7 +19,7 @@ module Npolar
       
       CMD = "npolar-api-couchdb-changes-indexer"
       
-      PARAM = { :log => "/dev/stderr", :slice => 10000 }
+      PARAM = { :log => STDERR, :slice => 10000 }
       
       attr_accessor :param, :log, :service
       
