@@ -1,8 +1,10 @@
 #!/usr/bin/env ruby
+
+# npolar-api-couchdb-changes-indexer /endpoint
+
 require "bundler/setup"
 require_relative "./../lib/npolar/api/couchdb_changes_indexer"
 
 module Npolar::Api
   CouchdbChangesIndexer.run(ARGV)
 end
-
