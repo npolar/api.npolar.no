@@ -122,7 +122,8 @@ module Npolar
                   :index => api.search["index"],
                   :type => api.search.type,
                   :log => api.search.log,
-                  :params => api.search.params
+                  :params => api.search.params,
+                  :geojson => api.geojson
                 }
               end
             end
