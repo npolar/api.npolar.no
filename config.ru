@@ -83,6 +83,8 @@ bootstrap.apis.select {|api| api.run? and api.run != "" }.each do |api|
     # Middleware for all autorunning APIs can be defined here   
     # api.middleware = api.middleware? ? api.middleware : []
     # api.middleware << ["Npolar::Rack::RequireParam", { :params => "key", :except => lambda { |request| ["GET", "HEAD"].include? request.request_method }} ]
+
+=begin
     editlog = (api.key?("editlog") and api.editlog.disabled == true) ? false : true
     if true == editlog
         use Npolar::Rack::EditLog,
@@ -93,6 +95,7 @@ bootstrap.apis.select {|api| api.run? and api.run != "" }.each do |api|
       index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: false),
       open: api.open
     end
+=end
     
     if api.auth?
       log.info Npolar::Rack::Authorizer.authorize_text(api)
