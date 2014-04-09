@@ -19,7 +19,6 @@ module Marine
         :id                => id,
         :rev               => rev,
         :draft             => doc.fetch("draft", "no"),
-        :set               => doc.fetch("set", ""),
         :animal_group      => doc.fetch("animal_group", ""),
         :bottomdepth       => doc.fetch("bottomdepth", ""),
         :conveyance        => doc.fetch("conveyance", ""),
