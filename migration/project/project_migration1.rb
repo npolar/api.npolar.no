@@ -1,9 +1,8 @@
 # encoding: utf-8
 
 # $ ./bin/npolar-api-migrator https://api.npolar.no/project ::ProjectMigration1 --really=false > /dev/null
-# In production: "2014-04-10T09:09:35Z"
-# http://api.npolar.no/editlog/238f44ea-52c8-4b67-936e-e503a1ca4e8a
-"updated_by": "conrad",
+# In production: "2014-04-10T09:09:35Z" http://api.npolar.no/editlog/238f44ea-52c8-4b67-936e-e503a1ca4e8a
+
 class ProjectMigration1
 
   attr_accessor :log
