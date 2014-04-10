@@ -105,24 +105,25 @@ module Npolar
               
               # Index
               docs = updates.select {|u| u[:deleted].nil? or u[:deleted] != true }.map {|d| d[:doc]}
-              
-              if service.model?
-                log.debug "Mapping to Solr using #{service.model}#to_solr"
-                docs.map! {|d|
-                  m = Npolar::Factory.constantize(service.model).new(d)
-                  m.to_solr
-                  
-                  }
+             
+              if !docs.nil? and !docs.empty? 
+                if service.model?
+                  log.debug "Mapping to Solr using #{service.model}#to_solr"
+                  docs.map! {|d|
+                    m = Npolar::Factory.constantize(service.model).new(d)
+                    m.to_solr
+                    
+                    }
+                end
+                
+                
+                client = Npolar::Api::Client::JsonApiClient.new
+                responses = client.post(docs, "#{uri}/update")
+                
+                # @todo POST errors
+                # @todo DELETE, must match /get?id=id revision, see http://wiki.apache.org/solr/RealTimeGet
+                log.debug "Responses: #{responses.map {|r| r.code}}"
               end
-              
-              
-              client = Npolar::Api::Client::JsonApiClient.new
-              responses = client.post(docs, "#{uri}/update")
-              
-              # @todo POST errors
-              # @todo DELETE, must match /get?id=id revision, see http://wiki.apache.org/solr/RealTimeGet
-              log.debug "Responses: #{responses.map {|r| r.code}}"
-            
             
             }
 
