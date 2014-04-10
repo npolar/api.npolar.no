@@ -53,7 +53,6 @@ module Marine
       # we can't let in any blank dates or solr will scream
       utc_date = doc.fetch("utc_date", "")
       if !utc_date.empty?
-        solr[:year] = DateTime.parse(utc_date).year
         solr[:utc_date] = utc_date
       end
 
