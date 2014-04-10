@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://api.npolar.no/schema/publication-1.0-rc2",
+    "id": "http://api.npolar.no/schema/publication-1.0-rc3",
     "title": "Publication",
     "description": "A publication reference",
     "type": "object",
