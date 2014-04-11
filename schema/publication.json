@@ -1,435 +1,457 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://api.npolar.no/schema/publication-1.0-rc3",
-    "title": "Publication",
-    "description": "A publication reference",
-    "type": "object",
-    "additionalProperties": false,
-    "required": [
-        "title",
-        "schema",
-        "collection",
-        "published-year",
-        "people",
-        "topics",
-        "state",
-        "publication_type",
-        "draft",
-        "locations"
-    ],
-    "properties": {
-        "id": {
-            "description": "Identifier (UUID | URI)",
-            "type": "string"
-        },
-        "schema": {
-            "type": "string"
-        },
-        "collection": {
-            "enum": [
-                "publication"
-            ]
-        },
-        "base": {
-            "enum": [
-                "http://api.npolar.no"
-            ]
-        },
-        "draft": {
-            "enum": [
-                "yes",
-                "no"
-            ]
-        },
-        "title": {
-            "description": "Exact title of the publication",
-            "type": "string"
-        },
-        "publication_lang": {
-            "type": "string"
-        },
-        "scientific_abstract": {
-            "type": "string"
-        },
-        "norw_summary": {
-            "type": "string"
-        },
-        "programme": {
-            "title": "ICE programmes",
-            "description": "Select none or several ICE programmes affiliated with the publication",
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type": "string",
-                "enum": [
-                    "ICE Ecosystems",
-                    "ICE Fluxes",
-                    "ICE Antarctica",
-                    "N-ICE",
-                    "ICE",
-                    "Biodiversity",
-                    "Environmental pollutants",
-                    "Geology and geophysics",
-                    "Oceans and sea ice"
-                ]
-            }
-        },
-        "publication_type": {
-            "enum": [
-                "peer-reviewed",
-                "editorial",
-                "review",
-                "correction",
-                "book",
-                "poster",
-                "report",
-                "abstract",
-                "phd",
-                "master",
-                "map",
-                "proceedings",
-                "popular",
-                "other"
-            ]
-        },
-        "state": {
-            "enum": [
-                "submitted",
-                "accepted",
-                "published"
-            ]
-        },
-        "locations": {
-    	"type": "array",
-   	 "additionalItems": true,
-   	 "items": {
-     		 "type": "object",
-     	 "additionalProperties": true,
-      "properties": {
-      "placename": { "type": "string" },
-      "area": { "type": "string" },
-      "country": {
-        "description": "Country code (http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
-        "type": ["string", "null"],
-        "pattern": "^(([A-Z]|[a-z]){2})$"
-      }
-      },
-      "latitude": { "type": "number" },
-      "longitude": { "type": "number" }
-    }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/publication-1.0-rc3",
+  "title": "Publication",
+  "description": "A publication reference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "schema",
+    "collection",
+    "published-year",
+    "people",
+    "topics",
+    "state",
+    "publication_type",
+    "draft",
+    "locations"
+  ],
+  "properties": {
+    "id": {
+      "description": "Identifier (UUID | URI)",
+      "type": "string"
     },
-        "published-year": {
-            "type": "number"
-        },
-        "published-date": {
-            "type": ["string", "null"], "format": "date-time"
-        },
-        "volume": {
+    "schema": {
+      "type": "string"
+    },
+    "collection": {
+      "enum": [
+        "publication"
+      ]
+    },
+    "base": {
+      "enum": [
+        "http://api.npolar.no"
+      ]
+    },
+    "draft": {
+      "enum": [
+        "yes",
+        "no"
+      ]
+    },
+    "title": {
+      "description": "Exact title of the publication",
+      "type": "string"
+    },
+    "publication_lang": {
+      "type": "string"
+    },
+    "scientific_abstract": {
+      "type": "string"
+    },
+    "norw_summary": {
+      "type": "string"
+    },
+    "programme": {
+      "title": "ICE programmes",
+      "description": "Select none or several ICE programmes affiliated with the publication",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": [
+          "ICE Ecosystems",
+          "ICE Fluxes",
+          "ICE Antarctica",
+          "N-ICE",
+          "ICE",
+          "Biodiversity",
+          "Environmental pollutants",
+          "Geology and geophysics",
+          "Oceans and sea ice"
+        ]
+      }
+    },
+    "publication_type": {
+      "enum": [
+        "peer-reviewed",
+        "editorial",
+        "review",
+        "correction",
+        "book",
+        "poster",
+        "report",
+        "abstract",
+        "phd",
+        "master",
+        "map",
+        "proceedings",
+        "popular",
+        "other"
+      ]
+    },
+    "state": {
+      "enum": [
+        "submitted",
+        "accepted",
+        "published"
+      ]
+    },
+    "locations": {
+      "type": "array",
+      "additionalItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
+          "country": {
+            "description": "Country code (http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
             "type": [
-                "string",
-                "null"
-            ]
-        },
-        "issue": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "suppl": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "art_no": {
-            "type": [
-               "string",
-               "null"
-            ]
-        },
-        "page_count": {
-            "type": [
-               "string",
-               "null"
-            ]
-        },
-        "journal": {
-            "title": "Journal",
-            "description": "Peer-reviewed journal",
-            "type": "object",
-            "additionalItems": false,
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "np_series": {
-                        "type": "string"
-                    },
-                    "series": {
-                        "type": "string"
-                    },
-                    "series_no": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "conference": {
-            "title": "Conference",
-            "description": "For abstracts and proceedings",
-            "type": "object",
-            "additionalItems": false,
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "place": {
-                        "type": "string"
-                    },
-                    "country": {
-                        "type": "string"
-                    },
-                    "dates": {
-                        "type": "array",
-                        "items": {
-                            "type": ["string", null], "format":"date-time" 
-                        }
-                    }
-                }
-            }
-        },
-        "pages": {
-            "title": "Publication pages",
-            "description": "Either to and from page or the total no of pages",
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type": "string"
-            }
-        },
-       
-        "people": {
-            "description": "People involved in creating the publication",
-            "type": "array",
-            "additionalItems": false,
-            "required": [
-                "first_name",
-                "last_name",
-                "roles",
-                "organisation"
+              "string",
+              "null"
             ],
-            "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "first_name": {
-                        "type": "string"
-                    },
-                    "last_name": {
-                        "type": "string"
-                    },
-                    "roles": {
-                        "type": "array",
-                        "items": {
-                            "enum": [
-                                "author",
-                                "editor",
-                                "co-author",
-                                "translator"
-                            ]
-                        }
-                    },
-                    "email": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "links": {
-                        "type": "array"
-                    },
-                    "organisation": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    }
-                }
-            }
-        },
-        "topics": {
-            "title": "NPI topics",
-            "description": "See https://github.com/npolar/api.npolar.no/blob/master/schema/dataset.json",
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type": "string",
-                "enum": [
-                    "atmosphere",
-                    "biology",
-                    "biogeochemistry",
-                    "chemistry",
-                    "climate",
-                    "conservation",
-                    "ecology",
-                    "ecotoxicology",
-                    "environment",
-                    "geophysics",
-                    "geology",
-                    "glaciology",
-                    "history",
-                    "human-dimension",
-                    "management",
-                    "marine",
-                    "maps",
-                    "oceanography",
-                    "other",
-                    "paleoclimate",
-                    "remote-sensing",
-                    "seaice",
-                    "snow",
-                    "terrestrial",
-                    "topography",
-                    "vegetation"
-                ]
-            }
-        },
-        "organisations": {
-            "description": "Organisations involved",
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "location": {
-                        "type": "string"
-                    },
-                    "roles": {
-                        "type": "array",
-                        "items": {
-                            "enum": [
-                                "publisher",
-                                "originator",
-                                "owner",
-                                "resourceProvider"
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "tags": {
-            "additionalItems": false,
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "links": {
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                    "rel": {
-                        "type": "string"
-                    },
-                    "href": {
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "hreflang": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "title": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "type": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-         "research_stations": {
-            "title": "NP research stations",
-            "description": "NPs research stations",
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type": "string",
-                "enum": [
-                    "Troll",
-                    "Ny-Ålesund",
-                    "Zeppelin",
-                    "Bouvetøya",
-                    "Svarthamaren"
-                ]
+            "pattern": "^(([A-Z]|[a-z]){2})$"
           }
         },
-       "attachments_access": {
-            "title": "Internet access to attachments",
-            "description": "Internet access to attachments",
-            "additionalItems": false,
-            "type": "array",
-            "items":{
-            "type": "string",
-            "enum": [ "yes", "no"]
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
+        }
+      }
+    },
+    "published-year": {
+      "type": "number"
+    },
+    "published-date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "volume": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "issue": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "suppl": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "art_no": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_count": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "journal": {
+      "title": "Journal",
+      "description": "Peer-reviewed journal",
+      "type": "object",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "np_series": {
+            "type": "string"
+          },
+          "series": {
+            "type": "string"
+          },
+          "series_no": {
+            "type": "string"
           }
-        },
-
-        "comment": {
+        }
+      }
+    },
+    "conference": {
+      "title": "Conference",
+      "description": "For abstracts and proceedings",
+      "type": "object",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
             "type": "string"
-        },
-        "created": {
-            "description": "Document was published",
+          },
+          "name": {
+            "type": "string"
+          },
+          "place": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "dates": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                null
+              ],
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "pages": {
+      "title": "Publication pages",
+      "description": "Either to and from page or the total no of pages",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string"
+      }
+    },
+    "people": {
+      "description": "People involved in creating the publication",
+      "type": "array",
+      "additionalItems": false,
+      "required": [
+        "first_name",
+        "last_name",
+        "roles",
+        "organisation"
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "author",
+                "editor",
+                "co-author",
+                "translator"
+              ]
+            }
+          },
+          "email": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "links": {
+            "type": "array"
+          },
+          "organisation": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "topics": {
+      "title": "NPI topics",
+      "description": "See https://github.com/npolar/api.npolar.no/blob/master/schema/dataset.json",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": [
+          "atmosphere",
+          "biology",
+          "biogeochemistry",
+          "chemistry",
+          "climate",
+          "conservation",
+          "ecology",
+          "ecotoxicology",
+          "environment",
+          "geophysics",
+          "geology",
+          "glaciology",
+          "history",
+          "human-dimension",
+          "management",
+          "marine",
+          "maps",
+          "oceanography",
+          "other",
+          "paleoclimate",
+          "remote-sensing",
+          "seaice",
+          "snow",
+          "terrestrial",
+          "topography",
+          "vegetation"
+        ]
+      }
+    },
+    "organisations": {
+      "description": "Organisations involved",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "publisher",
+                "originator",
+                "owner",
+                "resourceProvider"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "tags": {
+      "additionalItems": false,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "links": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": {
+            "type": "string"
+          },
+          "href": {
             "type": "string",
-            "format": "date-time"
-        },
-        "updated": {
-            "description": "Document was updated",
-            "type": "string",
-            "format": "date-time"
-        },
-        "created_by": {
+            "format": "uri"
+          },
+          "hreflang": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "title": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "type": {
             "type": "string"
-        },
-        "updated_by": {
-            "type": "string"
-        },
-        "_id": {
-            "type": "string"
-        },
-        "_rev": {
-            "type": "string"
-        },
-        "_attachments": { "type": "object" }
+          }
+        }
+      }
+    },
+    "research_stations": {
+      "title": "NP research stations",
+      "description": "NPs research stations",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Troll",
+          "Ny-Ålesund",
+          "Zeppelin",
+          "Bouvetøya",
+          "Svarthamaren"
+        ]
+      }
+    },
+    "attachments_access": {
+      "title": "Internet access to attachments",
+      "description": "Internet access to attachments",
+      "additionalItems": false,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "yes",
+          "no"
+        ]
+      }
+    },
+    "comment": {
+      "type": "string"
+    },
+    "created": {
+      "description": "Document was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Document was updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    },
+    "_attachments": {
+      "type": "object"
     }
+  }
 }
