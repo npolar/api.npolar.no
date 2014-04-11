@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/publication-1.0-rc3",
+  "id": "http://api.npolar.no/schema/publication-1.0-rc4",
   "title": "Publication",
   "description": "A publication reference",
   "type": "object",
@@ -113,19 +113,24 @@
             "type": "string"
           },
           "country": {
-            "description": "Country code (http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
+            "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
             "type": [
               "string",
               "null"
             ],
             "pattern": "^(([A-Z]|[a-z]){2})$"
-          }
-        },
-        "latitude": {
-          "type": "number"
-        },
-        "longitude": {
-          "type": "number"
+          },
+          "hemisphere": {
+            "description": "Hemisphere: N or S",
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(([NS|[ns]){1})$"
+          },
+          "latitude": { "type": "number", "minimum": -90.0, "maximum": 90.0 },
+          "longitude": { "type": "number", "minimum": -180.0, "maximum": 180.0 },
+          "geometry": { "type": "object", "description": "[GeoJSON geometry object](http://geojson.org/geojson-spec.html#geometry-objects)"},
         }
       }
     },
