@@ -178,8 +178,8 @@
       "title": "Journal",
       "description": "Peer-reviewed journal",
       "type": "object",
-      "additionalItems": false,
-      "items": {
+      "additionalProperties": false,
+      "properties": {
         "type": "object",
         "properties": {
           "id": {
@@ -204,8 +204,8 @@
       "title": "Conference",
       "description": "For abstracts and proceedings",
       "type": "object",
-      "additionalItems": false,
-      "items": {
+      "additionalProperties": false,
+      "properties": {
         "type": "object",
         "properties": {
           "id": {
