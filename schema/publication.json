@@ -126,7 +126,7 @@
               "string",
               "null"
             ],
-            "pattern": "^(([NS|[ns]){1})$"
+            "pattern": "^[NSns]{1}$"
           },
           "latitude": { "type": "number", "minimum": -90.0, "maximum": 90.0 },
           "longitude": { "type": "number", "minimum": -180.0, "maximum": 180.0 },
