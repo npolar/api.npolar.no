@@ -180,8 +180,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "type": "object",
-        "properties": {
           "id": {
             "type": "string"
           },
@@ -197,7 +195,6 @@
           "series_no": {
             "type": "string"
           }
-        }
       }
     },
     "conference": {
@@ -206,8 +203,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "type": "object",
-        "properties": {
           "id": {
             "type": "string"
           },
@@ -229,7 +224,6 @@
               ],
               "format": "date-time"
             }
-          }
         }
       }
     },
