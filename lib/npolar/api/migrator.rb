@@ -1,3 +1,4 @@
+require "digest/sha1"
 module Npolar
   module Api
 
@@ -7,6 +8,10 @@ module Npolar
 
       def documents
         @documents ||= client.all
+        #begin
+        #  response = client.get
+        #  JSON.parse(response.body)
+        #end
       end
 
       def select
@@ -24,12 +29,13 @@ module Npolar
         fixed = []
         failed = []
         unaffected = []
+        
         selected.each_with_index do |d,j|
         
           if j == 0
             before = d.dup
           end
-
+          
           valid?(d)
           log.debug "Errors before: #{client.errors(d).to_json}\n#{d.to_json}"
 
@@ -53,13 +59,15 @@ module Npolar
               log.debug "#{" "*2}Document #{d.id} not selected by condition #{condition}: [migration #{i}/#{migrations.size}]"
             end
           end
-        
 
           # 4. Validate document
+          #Digest::SHA1.hexdigest(before.to_json)
+          #Digest::SHA1.hexdigest(d.to_json)
+          
           if before.to_json != d.to_json
 
             if valid?(d)
-              log.debug "Fixed: #{d}"
+              log.debug "Fixed: #{d.to_json}"
               fixed << d
             else
               log.error "Failed migrating #{d.id}, errors: #{client.errors(d).to_json}\n#{d.to_json}"
@@ -72,20 +80,30 @@ module Npolar
           
         end
         log.info "Finished processing #{batch}; failed: #{failed.size}, fixed: #{fixed.size}, unaffected: #{unaffected.size}"
-      
+        log.debug "Unaffacted: #{unaffected.to_json}"
         # 5. Save (if --really)
         if true == really
           if fixed.any?
             if "" == client.username or "" == client.password
               log.warn "Missing HTTP username or password for #{uri}, set these in ENV[\"NPOLAR_API_USERNAME\"] and ENV[\"NPOLAR_API_PASSWORD\"]"
             end
-            log.info "About to POST fixed documents back to #{uri}"
-            response = client.post("", fixed.to_json)
+            log.info "About to POST #{fixed.size} fixed documents back to #{uri}"
+            client.uri = URI.parse(uri)
+            response = client.post(fixed)
             
-            if (200..299).include? response.status
+            if response.is_a? Array
+              responses = response
+            else
+              responses = [response]
+            end
+            
+            statuses = responses.map {|r| r.status }
+            log.info "HTTP response status(es): #{statuses}"
+
+            if statuses.all? {|s| (200..299).include? s }
               log.info "Successful re-POST of fixed documents to #{uri} :)"
             else
-              log.fatal "HTTP error #{response.status} when attempting to POST back fixed documents to #{uri}\n#{response.body}"
+              log.error "Error responses: #{responses.reject {|r| (200..299).include? r.status }.map {|r|r.body} }"
             end
           end
         end
