@@ -2,23 +2,19 @@
 require_relative "../../lib/publication"
 
 # $ ./bin/npolar-api-migrator http://api:9393/publication PublicationMigration0 --really=false > /dev/null 2> /mnt/felles/Midlertidig/Conrad/publication-migration-0-ch.log
-# $ ./bin/npolar-api-migrator /publication PublicationMigration0 --really=false > /dev/null 2> /mnt/felles/Midlertidig/Conrad/publication-migration-0-production.log
-# In production: 2014-04-10
+# $ ./bin/npolar-api-migrator /publication PublicationMigration0 --really=false > /dev/null 2> /mnt/felles/Midlertidig/Conrad/publication-migration-0-production-take4.log
+# In production: 2014-04-10, rerun 2014-04-25 http://api.npolar.no/publication/?q=&filter-updated=2014-04-25T00:00:00Z..2014-04-26T00:00:00Z
 class PublicationMigration0
 
   attr_accessor :log
 
   def migrations
-    [simple_fixes, fix_invalid_links, locations_as_object]
+    [simple_fixes, fix_invalid_links, locations_as_object, set_draft_to_no_when_published, force_country, fix_conference_dates]
   end
 
   def model
     Publication.new
   end
-  
-  #def select
-  #  lambda {|d| d.locations? and d.locations.any?}
-  #end
   
   def fix_invalid_links
     @@broken=[]
@@ -26,10 +22,12 @@ class PublicationMigration0
 
       if d.links? and d.links.any? 
         d.links = d.links.map {|l|
-          
-          if l.href !~ /^http/ui
+          l.href = l.href.strip
+          l.href = URI.escape(l.href)
+          l.href = URI.escape(l.href, "[]")
+          if l.href !~ /^http(s)?[:]\/\/\w+/ui
             @@broken << [ "http://api.npolar.no/publication/#{d.id}", l, @@broken.size]
-            log.fatal l.href.to_json
+            log.info "Bad href: #{l.href.to_json} #{d.title} #{d.id}"
             
             l.title = "#{l.title} | #{l.href}"
             l.href = "http://api.npolar.no/bad-href"
@@ -48,7 +46,7 @@ class PublicationMigration0
   def simple_fixes
     lambda {|d|
       
-      d.schema = "http://api.npolar.no/schema/publication-1.0-rc3"
+      d.schema = "http://api.npolar.no/schema/publication-1.0-rc4"
       unless d.publication_lang?
         d.publication_lang = d.original_lang ||= ""
         d.delete :original_lang
@@ -56,6 +54,16 @@ class PublicationMigration0
       if d.review_progress?
         d.delete :review_progress
       end
+      if d.edits?
+        d.delete :edits
+      end
+      unless d.topics?
+        d.topics = ["other"]
+      end
+      unless d.locations?
+        d.locations = [{area: "Other"}]
+      end      
+      
       d
     }
   end
@@ -112,6 +120,73 @@ class PublicationMigration0
       d
     }
   end
+  
+  # http://api.npolar.no/publication/?facets=state,draft&q=&filter-draft=yes&filter-state=published
+  def set_draft_to_no_when_published
+    lambda {|d|
+      if d.state == "published" and d.draft != "no"
+        d.draft = "no"
+        #log.info d.select {|k,v| k =~ /draft|state/}.to_json
+      end
+      d
+    }
+  end
+  
+  def force_country
+    lambda {|d|
+     if d.locations? and d.locations.any?
+        d.locations.each do |l|
+          if l.country.nil? or l.country.to_s == ""
+            if l.area =~ /ocean/ui
+              l.country = "XZ"
+              log.info "[+country]: #{l.to_json} #{d.title }"
+            else
+              l.delete :country
+            end
+            
+           
+          end
+          
+        end
+      end
+      d
+    }
+  end
+  
+  def fix_conference_dates
+    lambda {|d|
+      if d.conference? and d.conference.dates? and d.conference.dates.any?
+         d.conference.dates.each_with_index do |dt,idx|
+
+          log.warn dt.to_json
+          
+          if dt =~ /^\d{4}$/
+            dt = dt+"-01-01"
+          end
+          if dt =~ /^\d{4}-\d{1,2}$/
+            dt = dt+"-01"
+          end
+          if dt =~ /^\d{4}-\d{1,2}-\d{1,2}$/
+            dt = dt+"T12:00:00Z"
+          end
+          
+          # Remove timezone, should have been Z or +00:00
+          # Without this, dates at midnight with +01:00 will spill into 23:00 of the day *before*
+          dt = dt.split("+")[0]
+          dt = DateTime.parse(dt)
+          
+          # Set time to 12
+          t = dt.to_time.utc.iso8601.to_s
+          t = t.gsub(/T\d\d/, "T12")
+          log.info t+" #{d.id}"
+          
+          d.conference.dates[idx]=t
+        end
+      end
+      d
+    }
+  end
+
 
   protected
   
