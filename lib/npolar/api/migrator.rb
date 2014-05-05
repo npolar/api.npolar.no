@@ -5,13 +5,13 @@ module Npolar
     class Migrator
       attr_accessor :client, :migrations, :log, :batch, :uri
       attr_writer :select, :documents
+      
+      def self.documents(client)
+        lambda {|client| client.all }
+      end
 
       def documents
-        @documents ||= client.all
-        #begin
-        #  response = client.get
-        #  JSON.parse(response.body)
-        #end
+        @documents ||= self.class.documents(client)
       end
 
       def select
@@ -23,18 +23,16 @@ module Npolar
         log.debug "Migrations: #{migrations}"
 
         # 1. Get (all) documents
-        selected = documents.select(&select)
+        selected = documents.call(client).select(&select)
         log.info "#{selected.size} documents selected of #{client.ids.size} at #{uri}"
-        
+
         fixed = []
         failed = []
         unaffected = []
         
         selected.each_with_index do |d,j|
         
-          if j == 0
-            before = d.dup
-          end
+
           
           valid?(d)
           log.debug "Errors before: #{client.errors(d).to_json}\n#{d.to_json}"
@@ -42,6 +40,11 @@ module Npolar
           # 2. Get all migrations
           i = 0
           migrations.each do |condition, fixer|
+            if i == 0
+              before = d.dup.to_hash
+              @before_sha1 = Digest::SHA1.hexdigest(before.to_json)
+            end
+            
 
             if fixer.nil? 
               fixer = condition
@@ -61,18 +64,28 @@ module Npolar
           end
 
           # 4. Validate document
-          #Digest::SHA1.hexdigest(before.to_json)
-          #Digest::SHA1.hexdigest(d.to_json)
-          
-          if before.to_json != d.to_json
-
+         
+          after_sha1 = Digest::SHA1.hexdigest(d.dup.to_hash.to_json)
+                    
+          if @before_sha1 != after_sha1
+            
             if valid?(d)
-              log.debug "Fixed: #{d.to_json}"
+              
               fixed << d
+              
+              log.info "[#{fixed.size}] fixed #{d.id} "
+              log.debug "Fixed: #{d.to_json}"
+             
             else
-              log.error "Failed migrating #{d.id}, errors: #{client.errors(d).to_json}\n#{d.to_json}"
+              
               failed << d
+              
+              log.info "[#{failed.size}] failed #{d.id} "
+              log.error "Failed migrating #{d.id}, errors: #{client.errors(d).to_json}\n#{d.to_json}"
+              
             end
+            log.info "="*80
+            
           else
             unaffected << d
           end
