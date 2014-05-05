@@ -111,7 +111,17 @@ module Npolar
           when "_valid" then valid(true, params)
           when "_validate" then validate(params)
           when "_bundle" then bundle(params)
-          #when "_parameter" then parameter(params)
+          when "_view" then begin
+            if params["name"] =~ /\//
+            
+              ddoc, map_fx = params["name"].split("/")
+              view(ddoc, map_fx, params)
+              
+            else
+              raise ArgumentError, "Please provide view name like _view?name={design_document/function}"  
+            end
+          end
+            
 
         else
           response = reader.get(id, headers, params)
@@ -150,8 +160,9 @@ module Npolar
         Rack::Response.new(body, 200, {"Content-Type" => HEADERS["Content-Type"]})
       end
 
-      def all
-        response = couch.get(all_docs_uri(true))
+      def all(uri=nil)
+        uri = uri.nil? ? all_docs_uri(true) : uri
+        response = couch.get(uri)
         if 200 == response.status
           Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row| row[:doc] }
         else
@@ -321,11 +332,17 @@ module Npolar
         view("parameter", "bundle", params)
       end
       
-      def view(ddoc, map_fx, params={}, include_docs=true)
-                      
-        uri = "#{read}/_design/#{ddoc}/_view/#{map_fx}?include_docs=true&key=%22#{params['key']}%22"
-        response = couch.get(uri) # params hash does not work!
+      def view(ddoc, map_fx, params={})
         
+        if not params.key? "include_docs"
+          params["include_docs"] = "true"
+        end
+        
+        uri = URI.parse"#{read}/_design/#{ddoc}/_view/#{map_fx}"
+        uri.query = URI.encode_www_form(params.to_a)
+        
+        response = couch.get(uri)
+
         if 200 == response.status
           feed = Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row| row[:doc] }
         else
