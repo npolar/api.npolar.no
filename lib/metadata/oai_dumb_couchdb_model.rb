@@ -52,11 +52,17 @@ module Metadata
       if :all == selector
 
         storage.param = {"include_docs" => true}
-        docs = JSON.parse(storage.get("_changes").body)["results"]
+        changes = JSON.parse(storage.get("_changes").body)["results"]
         
-        docs = docs.map {|change|
+        docs = changes.reject {|change|
+          change["id"] =~ /^_design\//
+          }.map {|change|
+         
           
           if change["deleted"] != true
+             if change["doc"]["updated"].nil?
+              raise change.to_json
+            end
             
             updated = DateTime.parse(change["doc"]["updated"]).to_time.utc.xmlschema
             dataset = Metadata::Dataset.new(change["doc"])
@@ -65,11 +71,11 @@ module Metadata
             unless dataset.sets?
               dataset.sets = []
             end
-            # Also @todo tags,...
-            dataset.topics.each do |topic|
+            dataset.topics||[].each do |topic|
                dataset[:sets] << topic
             end
-            # Only accept known sets
+            
+            # Only advertise known sets
             dataset[:sets] = (dataset.sets||[]).select {|set|
               OaiDatasetProvider.oai_sets.map {|o| 
                 o[:spec]}.include? set }.map {|set| { spec: set } }
