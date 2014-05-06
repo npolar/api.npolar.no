@@ -112,6 +112,7 @@ Solr schema for Tracking API at http://api.npolar.no/tracking/
 <field name="filetype" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="filename" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="location" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="file" type="string" indexed="true" stored="true" multiValued="false"/>
 
 <field name="source_sha1" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="source_hash" type="string" indexed="true" stored="true" multiValued="false"/>
