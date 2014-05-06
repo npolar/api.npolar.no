@@ -10,17 +10,6 @@ module Metadata
   class OaiDumbCouchDbModel < ::OAI::Provider::Model
 
     attr_accessor :storage
-    
-    def self.oai_sets
-      [ {:spec => "arctic", :name => "Arctic datasets"},
-        {:spec => "antarctic", :name => "Antarctic datasets"},
-        {:spec => "IPY", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008)"},
-        {:spec => "cryoclim.net", :name => "Cryoclim", :description => "Climate monitoring of the cryosphere, see http://cryoclim.net"},
-        {:spec => "NMDC", :name => "Norwegian Marine Data Centre", :description => "Marine datasets"},
-        {:spec => "GCMD", :name => "Global Change Master Directory" }
-      ]
-    end
-    #arctic (191) IPY (31) GCMD (31) DOKIPY (28) NMDC (16) antarctic (8) cryoclim.net (6) gcmd (1)
 
     def initialize(storage)
       @storage = storage
@@ -39,7 +28,7 @@ module Metadata
     end
 
     def sets
-      sets = self.class.oai_sets.map {|set|
+      sets = OaiDatasetProvider.oai_sets.map {|set|
         OAI::Set.new(set)
       }
       sets
@@ -71,8 +60,20 @@ module Metadata
             
             updated = DateTime.parse(change["doc"]["updated"]).to_time.utc.xmlschema
             dataset = Metadata::Dataset.new(change["doc"])
-            dataset.sets = (dataset.sets||[]).map {|set| { spec: set } }
-
+            
+            # Merge topics into sets
+            unless dataset.sets?
+              dataset.sets = []
+            end
+            # Also @todo tags,...
+            dataset.topics.each do |topic|
+               dataset[:sets] << topic
+            end
+            # Only accept known sets
+            dataset[:sets] = (dataset.sets||[]).select {|set|
+              OaiDatasetProvider.oai_sets.map {|o| 
+                o[:spec]}.include? set }.map {|set| { spec: set } }
+            
           else
             updated = Time.now.utc.xmlschema
             dataset = Metadata::Dataset.new({"id" => change["id"], "deleted" => true, "updated" => updated}) 
@@ -82,13 +83,20 @@ module Metadata
           
         }
        
+        # Exclude drafts
+        docs = docs.select {|d|
+          d.draft != "yes"
+        }
+       
         if options.key? :set
+          set = options[:set]
+          
           docs = docs.select {|d|
-            zets = (d.sets||[]).map {|s|s[:spec]}
-            zets.include? options[:set]
+            sets = d.sets||[]
+            zets = sets.map {|s|s[:spec]}
+            zets.include? set
           }
         end
-        
         
         if options.key? :from
           docs = docs.select {|d|        
