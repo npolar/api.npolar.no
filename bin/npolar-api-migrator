@@ -36,7 +36,7 @@ module Npolar
   begin
   
     unless ARGV.size >= 3
-      puts "Usage: \n #{__FILE__} {URI} {Migration} --really[=true|false]\n"
+      puts "Usage: \n #{__FILE__} {URI} {Migration} --really[=true|false] [--debug]\n"
       exit(1)
     end
     
@@ -60,6 +60,8 @@ module Npolar
       migration.log = log
     end
     
+    
+    
     client = Api::Client::JsonApiClient.new(uri)
     client.log = log
     
@@ -72,7 +74,13 @@ module Npolar
     migrator.log = log
     migrator.uri = uri
     migrator.client = client
-    migrator.migrations = migration.migrations
+    migrator.migrations = migration.migrations # Array of lambdas
+    
+    # Set migrator's documents to a lambda to a subset of documents, e.g. corresponding to a database view
+    if migration.respond_to? :documents
+      migrator.documents = migration.documents
+    end
+      
     migrator.select = migration.respond_to?(:select) ? migration.select : lambda {|d| true }
     migrator.batch = batch
     migrator.run(really)

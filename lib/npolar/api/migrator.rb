@@ -7,7 +7,10 @@ module Npolar
       attr_writer :select, :documents
       
       def self.documents(client)
-        lambda {|client| client.all }
+        lambda {|client|
+          client.param = { fields: "*"}
+          client.all
+          }
       end
 
       def documents
@@ -23,16 +26,15 @@ module Npolar
         log.debug "Migrations: #{migrations}"
 
         # 1. Get (all) documents
-        selected = documents.call(client).select(&select)
-        log.info "#{selected.size} documents selected of #{client.ids.size} at #{uri}"
+        all = documents.call(client)
+        selected = all.select(&select)
+        log.info "#{selected.size} documents selected of #{all.size} at #{uri}"
 
         fixed = []
         failed = []
         unaffected = []
         
         selected.each_with_index do |d,j|
-        
-
           
           valid?(d)
           log.debug "Errors before: #{client.errors(d).to_json}\n#{d.to_json}"
