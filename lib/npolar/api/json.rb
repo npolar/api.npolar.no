@@ -177,7 +177,7 @@ module Npolar
                 document = Hashie::Mash.new(d)
 
                 document.updated = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
-                document.updated_by = request.username
+                document.updated_by = URI.decode(request.username)
 
                 unless document.created?
                   document.created = document.updated

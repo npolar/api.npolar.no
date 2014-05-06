@@ -1,4 +1,6 @@
 # encoding: utf-8
+require "time"
+
 module Npolar
   module Rack
 
@@ -6,7 +8,6 @@ module Npolar
     #
     # use Npolar::Rack::EditLog,
     #   save: lambda {|edit| # whatever },
-    #   open: true
     class EditLog < Npolar::Rack::Middleware
       
       CONFIG = {
@@ -131,8 +132,8 @@ module Npolar
             mediatype: request.media_type,
             authorization: authorization,
             protocol: request.env["SERVER_PROTOCOL"],
-            username: request.username,
-            time: Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            username: URI.decode(request.username),
+            time: Time.now.utc.iso8601,
             ip: request.ip,
             body: body,
             body_hash: body_hash,
