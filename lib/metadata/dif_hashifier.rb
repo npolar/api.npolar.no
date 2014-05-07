@@ -3,7 +3,7 @@ require "uri"
 
 module Metadata
 
-  # Converts a npolar dataset (http://api.npolar.no/schema/dataset) to a
+  # Converts a Npolar Dataset (http://api.npolar.no/schema/dataset) to a
   # Gcmd::Dif Hash(ie) 
   #
   # Usage
@@ -41,7 +41,7 @@ module Metadata
   # * Validating gcmd block (need concept version - where to store)
   # * GCMD concepts uuid
   #   # @todo map isotopics to topics
-  # FIXME Dif author repeated http://api.npolar.no/dataset/f6feca82-8d8c-56e5-8db1-f68691e777ec.xml
+  # FIXME Dif author missing
 # FIXME OOps#<Role>author</Role>
 
   class DifHashifier < Hashie::Mash
@@ -171,13 +171,25 @@ module Metadata
           "Related_URL" => related_url,
           "Parent_DIF" => parent_dif,
           "IDN_Node" => idn_node,
+          
+
+          # Watch out, all of these have multiplicity 1  
+          #<xs:element ref="Originating_Metadata_Node" minOccurs="0" maxOccurs="1"/>
+          #<xs:element ref="Metadata_Name" minOccurs="1" maxOccurs="1"/>
+          #<xs:element ref="Metadata_Version" minOccurs="1" maxOccurs="1"/>
+          #<xs:element ref="DIF_Creation_Date" minOccurs="0" maxOccurs="1"/>
+          #<xs:element ref="Last_DIF_Revision_Date" minOccurs="0" maxOccurs="1"/>
+          #<xs:element ref="DIF_Revision_History" minOccurs="0" maxOccurs="1"/>
+          #<xs:element ref="Future_DIF_Review_Date" minOccurs="0" maxOccurs="1"/>
+          #<xs:element ref="Private" minOccurs="0" maxOccurs="1"/>
+          
           "Originating_Metadata_Node" => originating_metadata_node,
           "Metadata_Name" => "CEOS IDN DIF",
           "Metadata_Version" => ::Gcmd::Schema::VERSION,
           "DIF_Creation_Date" => (created||"T").split("T")[0],
           "Last_DIF_Revision_Date" => (updated||"T").split("T")[0],
           "DIF_Revision_History" => dif_revision_history,
-          "Future_DIF_Review_Date" => (released||"T").split("T")[0],
+          "Future_DIF_Review_Date" => (released||"T").split("T")[0]||nil,
           "Private" => draft == "yes" ? "True" : "False",
           "Extended_Metadata" => extended_metadata  
       })
@@ -216,6 +228,17 @@ module Metadata
           end
           
           data_center_contacts = personnel(/pointOfContact/, o.id)
+          
+          # Data Center Contact is required
+          if data_center_contacts.none?
+           data_center_contacts = [Hashie::Mash.new({
+            "Role" => "Data Center Contact",
+            "First_Name" => "",
+            "Last_Name" => "",
+            "Email" => [""]
+          })]
+          end
+          
           if data_center_url =~ /npolar.no/ or o.id == "npolar.no"
             data_set_id = id
             if o.roles.include? "pointOfContact"
@@ -228,7 +251,7 @@ module Metadata
           end
           {
             "Data_Center_Name" => {
-              "Short_Name" => o.gcmd_short_name,
+              "Short_Name" => o.gcmd_short_name||"MISSING-Short_Name",
               "Long_Name" => o.name
             },
             "Data_Center_URL" => data_center_url,
@@ -358,8 +381,8 @@ module Metadata
 
       nodes += (sets||[]).map {|set|
         case set
-          when "IPY", "DOKIPY"
-            set
+          when /IPY/ui
+            "IPY"
           when "arctic"
             "ARCTIC"
           when "antarctic"
@@ -393,11 +416,17 @@ module Metadata
       parameters += topics.map {|topic| self.class.dif_Parameter(topic) }
       parameters = parameters.uniq
 
-      if parameters.size == 1
-        parameters
-      else
-        parameters.reject {|p| p.Term.nil? }  
+      parameters.each_with_index do |p,i|
+        if p.Topic.nil?
+          # One of: http://api.npolar.no/gcmd/concept/?limit=250&q=&sort=&filter-concept=sciencekeywords&filter-cardinality=2&fields=title&format=csv
+          p.Topic = "MISSING-TOPIC"
+        end
+        if p.Term.nil?
+          # One of: http://api.npolar.no/gcmd/concept/?limit=250&q=&sort=&filter-concept=sciencekeywords&filter-cardinality=3&fields=title&format=csv
+          p.Term = "MISSING-TERM"
+        end
       end
+      parameters
 
     end
     alias :sciencekeywords :parameters
@@ -423,13 +452,14 @@ module Metadata
         end
       }
     end
-
+    
     def originating_center
-      (organisations||[]).select {|o| o.roles.include? "originator"}.map {|o| "#{o.name} (#{o.gcmd_short_name})" }
+      # or links[rel=datacenter]?
+      (organisations||[]).select {|o| o.roles.include? "originator"}.map {|o| "#{o.name} (#{o.gcmd_short_name})" }.first
     end
 
     def originating_metadata_node
-      (organisations||[]).select {|o| o.roles.include? "publisher"}.map {|o| "#{o.name} (#{o.gcmd_short_name})" }
+      (organisations||[]).select {|o| o.roles.include? "publisher"}.map {|o| "#{o.name} (#{o.gcmd_short_name})" }.first
     end
 
     # Location = placenames + gcmd.locations
