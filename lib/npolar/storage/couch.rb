@@ -160,11 +160,12 @@ module Npolar
         Rack::Response.new(body, 200, {"Content-Type" => HEADERS["Content-Type"]})
       end
 
+      # All documents
       def all(uri=nil)
         uri = uri.nil? ? all_docs_uri(true) : uri
         response = couch.get(uri)
         if 200 == response.status
-          Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row| row[:doc] }
+          Yajl::Parser.parse(response.body, :symbolize_keys => true)[:rows].map { |row| row[:doc] }.select {|d| d.key? :_id and d[:_id] !~ /^_design\// }
         else
           raise "HTTP error: #{response.status}"
         end
@@ -332,6 +333,7 @@ module Npolar
         view("parameter", "bundle", params)
       end
       
+      # http://docs.couchdb.org/en/latest/api/ddoc/views.html#api-ddoc-view
       def view(ddoc, map_fx, params={})
         
         if not params.key? "include_docs"
