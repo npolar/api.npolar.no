@@ -203,7 +203,6 @@
       }
     },
     "quality": { "type": ["string", "null"] },
-    "restricted": { "type": ["boolean", "null"] },
     "restrictions": { "type": ["string", "null"] },
     "sets": {
       "description": "Subsets",
