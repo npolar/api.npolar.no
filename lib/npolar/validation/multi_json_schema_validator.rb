@@ -4,13 +4,13 @@ module Npolar
   module Validation
 
     # JSON schema validator module for multiple schemas
-    # http://tools.ietf.org/html/draft-zyp-json-schema   
+    # http://tools.ietf.org/html/draft-zyp-json-schema
     #
     # Include this module in a Hashie::Mash, or other Ruby object,
     # to add the methods #valid? and #errors. The model needs to provide
     # a #schemas method that should return an Array of schema references,
     # either URIs or paths.
-    # 
+    #
     # Usage:
     # require "hashie"
     #
@@ -37,7 +37,7 @@ module Npolar
         end
         @errors
       end
-      
+
       # @override Implement in model
       def schemas(context=nil)
         if @schemas.nil? or [] == @schemas
@@ -62,13 +62,17 @@ module Npolar
         schemas.each do |schema|
 
           # Use schema from disk if it's not a Hash
+
+          if schema =~ URI::regexp
+          else
+
           unless schema.is_a? Hash
             # Prefix disk cache if path is relative
             unless schema[0] == "/"
               schema = JSON_SCHEMA_DISK.gsub(/\/$/, "")+"/"+schema
             end
           end
-
+end
           # FIXME validate schema and raise Exception
           result = JSON::Validator.fully_validate(schema, document,
             :errors_as_objects => true, :validate_schema => false,
@@ -82,7 +86,7 @@ module Npolar
           end
 
         end # schemas loop
-        
+
         false # if no schema returned true, it's false (invalid)
 
       end
