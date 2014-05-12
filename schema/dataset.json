@@ -59,27 +59,24 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://www.lovdata.no/all/hl-19610512-002.html", "http://creativecommons.org/publicdomain/zero/1.0/"]
+        "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://lovdata.no/dokument/NL/lov/1961-05-12-2", "http://creativecommons.org/publicdomain/zero/1.0/"]
       }
     },
-    "edits": {
-      "description": "List of edits",
+    "changes": {
+      "description": "List of changes made by users",
       "type": "array",
       "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "edited": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "email": { "type": "string" },
+          "datetime": {"type": "string", "format": "date-time"},
           "name": { "type": "string" },
+          "email": { "type": "string" },
           "comment": { "type": "string" },
           "rev": { "type": "string" }
         },
-        "required": ["edited", "name"]
+        "required": ["datetime", "name"]
       }
     },
     "people": {
