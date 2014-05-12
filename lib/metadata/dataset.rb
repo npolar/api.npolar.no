@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "hashie"
+require "date"
 
 module Metadata
 
@@ -153,9 +154,9 @@ module Metadata
       if dataset.publicdomain?
         "Public domain."
       elsif dataset.open?
-        "Open data. Free to reuse if attributed to the Norwegian Polar Institute.\nLicences: #{licences.join(" or ")}"
+        "Open data: Free to reuse if attributed to the Norwegian Polar Institute."
       elsif dataset.åvl?
-        "Protected by Norwegian copyright law:\nhttp://www.lovdata.no/all/hl-19610512-002.html"
+        "Protected by Norwegian copyright law: http://lovdata.no/dokument/NL/lov/1961-05-12-2"
       end
     end
 
@@ -194,19 +195,10 @@ module Metadata
           self[:lang] = "en"
         end
         
-        # FIXME 
-        #if draft?
-        #  self[:draft] = "yes"
+        # @todo !? Force to draft if missing title,\ and licences?
+        # self[:draft] = "yes"
         #end
       
-        #if draft == true
-        #  self[:draft] = "yes"
-        #end
-        #
-        #if draft == false
-        #  self[:draft] = "no"
-        #end
-
         if not title?
           self[:title] = "Dataset created by #{username} at #{Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")}"
         end
@@ -249,8 +241,13 @@ module Metadata
 
         if not schema?
           self[:schema] = self.class.schema_uri
-        end        
-
+        end
+        
+        #if placenames? and placenames.area etc Svalbard (150) Antarctica (3) Alaska (1) Southern Ocean (1)
+        #  # sets << arctic
+        #end
+        #    # @todo Set arctic/antarctic based on coverage.latitude !?
+        
         before_valid
 
         deduplicate_links
@@ -260,6 +257,9 @@ module Metadata
         #deduplicate_organisations
         
         add_edit_and_alternate_links
+        
+        # sets from topics
+        # @todo oceanography => force "marine"
 
         self
     end
@@ -305,14 +305,6 @@ module Metadata
     def data?
       (links||[]).select {|link| link.rel == "data" }.size > 0
     end
-
-    #def draft?
-    #  if self[:draft] == "yes" or self[:draft] == true
-    #    return true
-    #  else      
-    #    not title? or not topics? or not licences?
-    #  end
-    #end
 
     # Free data?
     def free?
@@ -529,7 +521,7 @@ module Metadata
 
     # Add links for "edit" (application/json) and alternate formats
     def add_edit_and_alternate_links
-      api = ENV["NPOLAR_API"] ||= "http://api.npolar.no"
+      api = ENV["NPOLAR_API"] ||= "https://api.npolar.no"
 
       self[:links] = links||[] 
 
