@@ -12,6 +12,7 @@
     "schema": { "type": "string", "description": "JSON schema URI"},
     "lang": { "type": "string"},
     "base": { "type": "string", "description": "Base URI (for relative links)" },
+    "citation": { "description": "Citation string (only use if the data publisher is not the Norwegian Polar Institue)", "type": "string" },
     "summary": { "description": "Abstract", "type": "string"},
     "draft": { "type": "string", "enum": ["yes", "no"]},
     "coverage": {
