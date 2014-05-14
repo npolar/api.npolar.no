@@ -3,9 +3,11 @@ require "uri"
 
 module Metadata
 
-  # Converts a Npolar Dataset (http://api.npolar.no/schema/dataset) to a
-  # Gcmd::Dif Hash(ie) 
+  # GCMD [DIF Hash](https://github.com/npolar/gcmd/blob/master/lib/gcmd/dif.rb) from [Npolar API dataset](http://api.npolar.no/schema/dataset)
   #
+  # The mapping is defined in #to_hash. Each DIF element is typically
+  # defined in a method named after the element (lowercased), like #dif_revision_history
+  # 
   # Usage
   #   dif_hash = Metadata::DifHashifier.new(npolar_dataset_hash).to_hash
   #   dif_xml = Gcmd::Dif.new(dif_hash).to_xml
@@ -37,19 +39,20 @@ module Metadata
   # * http://gcmd.nasa.gov/add/difguide/
   #
   # Open issues
-  # * Use "author" and set pI to author by default (allowing for other authors?)
+  # * "author" and set pI to author by default? (allowing for other authors?) organisations as authors
   # * Validating gcmd block (need concept version - where to store)
   # * GCMD concepts uuid
   #   # @todo map isotopics to topics
   # FIXME Dif author missing
-# FIXME OOps#<Role>author</Role>
+  # FIXME OOps#<Role>author</Role>
 
   class DifHashifier < Hashie::Mash
     
-    # Map npolar topics to DIF Parameters (Science Keywords)
-    # Npolar topics are defined in: https://github.com/npolar/api.npolar.no/blob/master/schema/dataset.json
+    # Map [topics](http://api.npolar.no/schema/npolar_topic)to DIF Parameters (Science Keywords)
     # DIF Parameters: http://api.npolar.no/gcmd/concept/?q=&filter-concept=sciencekeywords
     # The main trouble is that 3 levels (down to Topic) are required by DIF - impossible for just "biology"/"geology"/"atmosphere"
+    # @param [String] topic
+    # @return [Hashie::Mash]
     def self.dif_Parameter(topic)
 
       dif_Topic, dif_Term, dif_Variable_Level_1 = case topic
@@ -107,11 +110,12 @@ module Metadata
         "Variable_Level_1" => dif_Variable_Level_1})
     end
 
+    # @return [String]
     def access_constraints
       restrictions
     end
 
-    # @return Hashie::Mash with GCMD DIF element names as keys
+    # @return [Hashie::Mash] with GCMD DIF element names as keys
     def to_hash
       
         unless gcmd?
@@ -123,8 +127,8 @@ module Metadata
         unless activity?
           self[:activity]=[]
         end
-        unless edits?
-          self[:edits]=[]
+        unless changes?
+          self[:changes]=[]
         end
         unless topics?
           self[:topics]=[]
@@ -189,7 +193,7 @@ module Metadata
           "DIF_Creation_Date" => (created||"T").split("T")[0],
           "Last_DIF_Revision_Date" => (updated||"T").split("T")[0],
           "DIF_Revision_History" => dif_revision_history,
-          "Future_DIF_Review_Date" => (released||"T").split("T")[0]||nil,
+          "Future_DIF_Review_Date" => future_dif_review_date,
           "Private" => draft == "yes" ? "True" : "False",
           "Extended_Metadata" => extended_metadata  
       })
@@ -206,7 +210,7 @@ module Metadata
     end
 
     # In DIF, a data center is the organization or institution responsible for distributing the data
-    # Organisation with roles "owner" and "resourceProvider" are mapped to data centres
+    # Organisation with roles "owner","resourceProvider", "publisher" are mapped to data centres
     def data_center
       (organisations||[]).select {|o|
         o.roles.include?("owner") or o.roles.include?("resourceProvider") or o.roles.include?("publisher")
@@ -285,18 +289,16 @@ module Metadata
     end
 
     def dif_revision_history
-      history = ""
-     (edits||[]).each {|edit|
-      history += "#{(edit.edited||"T").split("T")[0]}, #{edit.comment||"edited by"} #{edit.name} (#{edit.email})"
+      history = []
+     (changes||[]).sort_by {|edit| edit.datetime }.each {|edit|
+      history << "#{(edit.datetime||"T").split("T")[0]}, #{edit.comment||"edited by"} #{edit.name} (#{edit.email})"
       }
-      history
+      history.join("\n")
     end
 
     # Discipline (experimental)
     def discipline
       #gcmd.discipline? ? gcmd.discipline : []
-
-
       discipline_name = lambda {|topic|
         case topic
           when "biology", "geology", "oceanography", "geophysics"
@@ -322,7 +324,7 @@ module Metadata
         Hashie::Mash.new({
           Distribution_Media: "Online Internet (HTTP)", Distribution_Size: link[:length], Distribution_Format: link.type
         })
-      } 
+      }.uniq 
     end
 
     # Data_Set_Citation = "gcmd.citation" (if present) OR generated
@@ -357,11 +359,24 @@ module Metadata
       })
     end
 
-    # Entry_ID
+    # Entry_ID - not NOT from gcmd.entry_id
     def entry_id
       id||_id
     end
-
+    
+    def future_dif_review_date
+      if released?
+        now = DateTime.now
+        rleased = DateTime.parse(released)
+        if rleased > now
+          rleased.to_date.to_s
+        else
+          nil
+        end
+      else
+        nil
+      end
+    end
     # IDN_Node <= sets and owner
     def idn_node
       nodes = []
