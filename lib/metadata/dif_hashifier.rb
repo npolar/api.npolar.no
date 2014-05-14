@@ -164,7 +164,7 @@ module Metadata
           "Project" => project,
           "Quality" => quality,
           "Access_Constraints" => access_constraints,
-          "Use_Constraints" => rights||""+"\nLicences: "+(licences||[]).join(" or ")+"\n",
+          "Use_Constraints" => use_constraints,
           "Data_Set_Language" => data_set_language,
           "Originating_Center" => originating_center,
           "Data_Center" => data_center,
@@ -725,9 +725,13 @@ module Metadata
       }        
     end
 
-    # Use_Constraints <= rights
+    # Use_Constraints <= rights (but only if npolar.no is publisher)
     def use_constraints
-      rights
+      if organisations? and organisations.any? {|o| o.id =~ /npolar\.no$/ and o.roles.include? "publisher" }
+        rights
+      else
+        nil
+      end
     end
 
     protected
