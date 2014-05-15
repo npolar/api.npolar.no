@@ -109,7 +109,7 @@ module Npolar
           request.body.rewind
           body_hash = "sha1 #{Digest::SHA1.hexdigest(body)}"
 
-          if not open? or revision.nil?
+          if not open? # or revision.nil? Hmm revision is nil on 422 https://github.com/npolar/api.npolar.no/issues/18
             body = nil
           end
         end
