@@ -217,21 +217,7 @@ module Metadata
         o.roles.include?("owner") or o.roles.include?("resourceProvider") or o.roles.include?("publisher")
       }.map {|o|
 
-        resourceProviders = owners = publishers = []
-        if o.links? and o.links.any?
-          resourceProviders = (o.links||[]).select {|link| link.rel == "resourceProvider" }
-          owners = (o.links||[]).select {|link| link.rel == "owner"}
-          publishers = (o.links||[]).select {|link| link.rel == "publisher" }
-        end
-        
-        if resourceProviders.any? and resourceProviders[0].href?
-          data_center_url = resourceProviders[0].href
-        elsif publishers.any? and publishers[0].href?
-          data_center_url = publishers[0].href
-        elsif owners.any? and owners[0].href?
-          data_center_url = owners[0].href
-        end
-        
+        data_center_url = o.homepage
         data_center_contacts = personnel(/pointOfContact/, o.id)
         
         # Data Center Contact is required
