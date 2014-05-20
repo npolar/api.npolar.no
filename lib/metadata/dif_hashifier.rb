@@ -1,4 +1,4 @@
-# encoding: utf-8
+# encoding  : utf-8
 require "uri"
 
 module Metadata
@@ -210,59 +210,75 @@ module Metadata
     end
 
     # In DIF, a data center is the organization or institution responsible for distributing the data
-    # Organisation with roles "owner","resourceProvider", "publisher" are mapped to data centres
+    # Organisation with roles "owner","resourceProvider", "publisher" are mapped to data centres,
+    # but only if they have a GCMD provider code ("short name").
     def data_center
-      (organisations||[]).select {|o|
+      data_center = (organisations||[]).reject {|o| not o.gcmd_short_name or o.gcmd_short_name.to_s == "" }.select {|o|
         o.roles.include?("owner") or o.roles.include?("resourceProvider") or o.roles.include?("publisher")
-        }.map {|o|
+      }.map {|o|
 
-          resourceProviders = owners = publishers = []
-          if o.links? and o.links.any?
-            resourceProviders = (o.links||[]).select {|link| link.rel == "resourceProvider" }
-            owners = (o.links||[]).select {|link| link.rel == "owner"}
-            publishers = (o.links||[]).select {|link| link.rel == "publisher" }
+        resourceProviders = owners = publishers = []
+        if o.links? and o.links.any?
+          resourceProviders = (o.links||[]).select {|link| link.rel == "resourceProvider" }
+          owners = (o.links||[]).select {|link| link.rel == "owner"}
+          publishers = (o.links||[]).select {|link| link.rel == "publisher" }
+        end
+        
+        if resourceProviders.any? and resourceProviders[0].href?
+          data_center_url = resourceProviders[0].href
+        elsif publishers.any? and publishers[0].href?
+          data_center_url = publishers[0].href
+        elsif owners.any? and owners[0].href?
+          data_center_url = owners[0].href
+        end
+        
+        data_center_contacts = personnel(/pointOfContact/, o.id)
+        
+        # Data Center Contact is required
+        if data_center_contacts.none?
+         data_center_contacts = [Hashie::Mash.new({
+          "Role" => "Data Center Contact",
+          "First_Name" => "",
+          "Last_Name" => "",
+          "Email" => [""]
+        })]
+        end
+        
+        if data_center_url =~ /npolar.no/ or o.id == "npolar.no"
+          data_set_id = id
+          if o.roles.include? "pointOfContact"
+            data_center_contacts << { Role: "Data Center Contact",
+              Last_Name: "Norwegian Polar Data",
+              Email: "data[*]npolar.no" }
           end
-          
-          if resourceProviders.any? and resourceProviders[0].href?
-            data_center_url = resourceProviders[0].href
-          elsif publishers.any? and publishers[0].href?
-            data_center_url = publishers[0].href
-          elsif owners.any? and owners[0].href?
-            data_center_url = owners[0].href
-          end
-          
-          data_center_contacts = personnel(/pointOfContact/, o.id)
-          
-          # Data Center Contact is required
-          if data_center_contacts.none?
-           data_center_contacts = [Hashie::Mash.new({
-            "Role" => "Data Center Contact",
-            "First_Name" => "",
-            "Last_Name" => "",
-            "Email" => [""]
-          })]
-          end
-          
-          if data_center_url =~ /npolar.no/ or o.id == "npolar.no"
-            data_set_id = id
-            if o.roles.include? "pointOfContact"
-              data_center_contacts << { Role: "Data Center Contact",
-                Last_Name: "Norwegian Polar Data",
-                Email: "data[*]npolar.no" }
-            end
-          else
-            data_set_id = nil
-          end
-          {
-            "Data_Center_Name" => {
-              "Short_Name" => o.gcmd_short_name||"MISSING-Short_Name",
-              "Long_Name" => o.name
-            },
-            "Data_Center_URL" => data_center_url,
-            "Data_Set_ID" => data_set_id,
-            "Personnel" => data_center_contacts
-          }
-        } 
+        else
+          data_set_id = nil
+        end
+        
+        { "Data_Center_Name" => {
+          "Short_Name" => o.gcmd_short_name,
+          "Long_Name" => o.name
+          },
+          "Data_Center_URL" => data_center_url,
+          "Data_Set_ID" => data_set_id,
+          "Personnel" => data_center_contacts
+        }
+      }
+      
+      if data_center.none?
+        npolar = Metadata::Dataset.npolar(["pointOfContact"])
+        data_center << { "Data_Center_Name" => {
+          "Short_Name" => npolar.gcmd_short_name,
+          "Long_Name" => npolar.name
+          },
+          "Data_Center_URL" => npolar.homepage,
+          "Personnel" => { Role: "Data Center Contact",
+              Last_Name: "Norwegian Polar Data",
+              Email: "data[*]npolar.no" }
+        }
+      end
+      data_center
+      
     end
 
     # Data_Set_Language = inferred from link[rel=data].hreflang
