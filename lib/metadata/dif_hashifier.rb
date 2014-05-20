@@ -145,7 +145,7 @@ module Metadata
         #   hash[element.to_sym]=self.send(element.downcase.to_sym)
         # end
 
-        hash = Hashie::Mash.new({ "Entry_ID" => id||_id,
+        hash = Hashie::Mash.new({ "Entry_ID" => id||_id||"MISSING",
           "Entry_Title" => title,
           "Data_Set_Citation" => data_set_citation,
           "Personnel" => personnel,
