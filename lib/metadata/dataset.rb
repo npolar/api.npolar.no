@@ -574,6 +574,9 @@ module Metadata
       v = dif.valid?
       #p dif.errors # really slow
       if v == false
+        if @errors.nil?
+          @errors = []
+        end
         @errors += dif.errors
       end
       v
