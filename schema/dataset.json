@@ -130,10 +130,6 @@
           "homepage": {
             "type": ["string","null"],
             "pattern": "^http(s)?:\/\/"
-          },
-          "links": {
-            "type": ["array","null"],
-            "additionalItems": true
           }
         },
         "required": ["name", "roles"]
