@@ -527,7 +527,7 @@ module Metadata
         # edit  ("application/json")
         if links.select {|link| link.rel=="edit" and link.type == "application/json"}.size == 0
           self[:links] << Hashie::Mash.new({ "href" => "#{api.gsub(/^http[:]/, "https:")}/dataset/#{id}",
-            "rel" => "edit", "title" => "JSON (Edit URI)", "type" => "application/json" })
+            "rel" => "edit", "title" => "JSON (edit URI)", "type" => "application/json" })
         end
   
         # DIF XML
@@ -572,7 +572,7 @@ module Metadata
     def valid_dif?
       dif = Gcmd::Dif.new(to_dif_hash)
       v = dif.valid?
-      p dif.errors # really slow
+      #p dif.errors # really slow
       if v == false
         @errors += dif.errors
       end
