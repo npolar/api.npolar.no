@@ -1,13 +1,16 @@
 source "https://rubygems.org"
 
 # Npolar gems
+
+gem "nori"
 gem "gcmd", git: "git://github.com/npolar/gcmd.git"
 #gem "gcmd", path:  "../gcmd"
-gem "icelastic", git: "git://github.com/npolar/icelastic.git", branch: "v1.3.0"
+
+gem "icelastic", git: "git://github.com/npolar/icelastic.git"
 #gem "npolar-rack-throttle", git: "git://github.com/npolar/rack-throttle.git" #, path:  "../rack-throttle"
 
 gem "npolar-api-client-ruby", git: "git://github.com/npolar/npolar-api-client-ruby" #, path:  "../npolar-api-client-ruby"
-# gem "npolar-api-client-ruby", path:  "../npolar-api-client-ruby"
+#gem "npolar-api-client-ruby", path:  "../npolar-api-client-ruby"
  
 gem "argos-ruby"#, path:  "../argos-ruby"
 
@@ -59,7 +62,7 @@ gem "libxml-ruby" #,git:  "git://github.com/xml4r/libxml-ruby.git"
 # gem "rsolr" branch json_update
 # Until branch "json_update" is merged...
 gem "rsolr", git: "git://github.com/mootpointer/rsolr.git", :branch => "json_update"
-# gem "rsolr", git:  "git://github.com/mwmitchell/rsolr.git"
+#gem "rsolr" #, git:  "git://github.com/rsolr/rsolr.git"
 gem "elasticsearch", git: "git://github.com/elasticsearch/elasticsearch-ruby.git"
 
 # Dev/Test
