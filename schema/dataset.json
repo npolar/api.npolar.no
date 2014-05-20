@@ -100,7 +100,7 @@
             }
           },
           "email": { "type": ["string","null"] },
-          "links": { "type": "array"},
+          "homepage": {  "type": ["string","null"], "pattern": "^http(s)?:\/\/" },
           "organisation": { "type": ["string", "null"]}
         }
       }
