@@ -142,10 +142,7 @@ module Metadata
         email: "data[*]npolar.no",
         gcmd_short_name: "NO/NPI",
         roles: roles,
-        links: [ {rel: "owner", href: "http://npolar.no", title: "Norwegian Polar Institute" },
-          {rel: "publisher", href: "http://data.npolar.no", title: "Norwegian Polar Institute" },
-          {rel: "pointOfContact", href: "http://data.npolar.no", title: "Norwegian Polar Data" }
-        ]
+        homepage: "http://npolar.no"
       })
     end
 
@@ -530,7 +527,7 @@ module Metadata
         # edit  ("application/json")
         if links.select {|link| link.rel=="edit" and link.type == "application/json"}.size == 0
           self[:links] << Hashie::Mash.new({ "href" => "#{api.gsub(/^http[:]/, "https:")}/dataset/#{id}",
-            "rel" => "edit", "title" => "Edit URI", "type" => "application/json" })
+            "rel" => "edit", "title" => "JSON (Edit URI)", "type" => "application/json" })
         end
   
         # DIF XML
@@ -567,6 +564,23 @@ module Metadata
       JSON_SCHEMAS
     end
     
-  end
+    # Validate using Dataset JSON schema *and* DIF XML schema
+    def valid?(d=nil)
+      [super,valid_dif?].all? {|v| v == true }
+    end
+    
+    def valid_dif?
+      dif = Gcmd::Dif.new(to_dif_hash)
+      v = dif.valid?
+      p dif.errors # really slow
+      if v == false
+        @errors += dif.errors
+      end
+      v
+    end
+    
+    
+    
+  end 
   
 end
