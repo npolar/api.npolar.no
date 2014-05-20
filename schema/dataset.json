@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/dataset-1.0.0",
+  "id": "http://api.npolar.no/schema/dataset-1.0.0.pre",
   "title": "Dataset",
-  "description": "Metadata describing a dataset",
+  "description": "Dataset metadata schema",
   "type": "object",
   "additionalProperties": false,
   "required": ["title"],
@@ -12,7 +12,7 @@
     "schema": { "type": "string", "description": "JSON schema URI"},
     "lang": { "type": "string"},
     "base": { "type": "string", "description": "Base URI (for relative links)" },
-    "citation": { "description": "Citation string (only use if the data publisher is not the Norwegian Polar Institue)", "type": "string" },
+    "citation": { "description": "Citation string (in use only if the data publisher is not the Norwegian Polar Institue)", "type": "string" },
     "summary": { "description": "Abstract", "type": "string"},
     "draft": { "type": "string", "enum": ["yes", "no"]},
     "coverage": {
@@ -126,6 +126,10 @@
             "type": ["string","null"],
             "additionalItems": false,
             "format": "email"
+          },
+          "homepage": {
+            "type": ["string","null"],
+            "pattern": "^http(s)?:\/\/"
           },
           "links": {
             "type": ["array","null"],
@@ -255,7 +259,7 @@
       "format": "date-time"
     },
     "released": {
-      "description": "Data was (or is to be) released to the general public",
+      "description": "Data released datetime (may be in the future)",
       "type": ["string", "null"],
       "format": "date-time"
     },
