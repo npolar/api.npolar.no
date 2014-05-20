@@ -32,7 +32,7 @@ module Metadata
 
     register_format ::Metadata::OaiDirectoryInterchangeFormat.instance
     repository_name  "Norwegian Polar Institute's OAI provider for dataset metadata"
-    repository_url  "#{ENV["NPOLAR_API"].gsub(/^https/, "http")}/dataset/oai"
+    repository_url  "#{ENV["NPOLAR_API"]||''.gsub(/^https/, "http")}/dataset/oai"
     record_prefix "oai:npolar.no:dataset"
     admin_email "data@npolar.no"
     source_model ::Metadata::OaiDumbCouchDbModel.new(@@client)
