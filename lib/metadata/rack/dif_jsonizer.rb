@@ -73,6 +73,9 @@ module Metadata
         app.call(request.env)
       end
 
+
+      # On GET
+      # Return DIF XML from Dataset JSON
       def xml_from_json(request)
 
         response = app.call(request.env)
@@ -98,9 +101,9 @@ module Metadata
               end
           end
 
-          if "validate" == request.path_info.split("/").last
+          if "validate" == request.path_info.split("/").last and xml =~ /DIF/
             schema = ::Gcmd::Schema.new
-            report = schema.validate_xml( xml )
+            report = schema.validate( xml )
             
             valid = report.any? ? false : true
             
