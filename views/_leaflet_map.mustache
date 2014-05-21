@@ -1,48 +1,31 @@
-    <div id="map"></div>
-      <script type="text/javascript">
-      
-      var m= L.map('map').setView([78, 15], 4);
+<div id="map"></div>
+<script type="text/javascript">
 
-var mapQuestAttr = 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ';
-var osmDataAttr = 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-var mopt = {
+var m = L.map('map').setView({{setView}});
+
+var mapquest_attribution = 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ';
+var npolar_attribution = 'Data from <a title="npolar.no &mdash; Norsk Polarinstitutt / The Norwegian Polar Institute" href="http://npolar.no">The Norwegian Polar Institute</a>, <a title="Creative Commons Attribution 4.0 International" href="http://creativecommons.org/licenses/by">CC BY 4.0</a> / <a href="http://data.norge.no/nlod/en/1.0" title="Norwegian Licence for Open Government Data">NLOD</a>';
+var attribution = mapquest_attribution + npolar_attribution;
+var opt = {
     url: 'http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpeg',
-    options: {attribution:mapQuestAttr + osmDataAttr, subdomains:'1234'}
+    options: {attribution: attribution, subdomains:'1234'}
   };
-var mq=L.tileLayer(mopt.url,mopt.options);
+var mq=L.tileLayer(opt.url,opt.options);
 
 mq.addTo(m);
-  /* var circleLocation = new L.LatLng(78.508, 14.11),
-             circleOptions = {
-                 color: 'blue', 
-                 fillColor: '#f03', 
-                 fillOpacity: 0.5
-             };
-             
-         var circle = new L.Circle(circleLocation, 500, circleOptions);
-         m.addLayer(circle);*/
 
 function popUp(f,l){
-
-
 
     var out = [];
     if (f.properties){
         for(key in f.properties){
-          if (key != "edit" && key != "deployment") {
-            out.push("<dt>"+key+"</dt><dd><a href=\"{{self}}"+"&group=measured-isodate&filter-"+key+"="+f.properties[key]+"\">"+f.properties[key]+"</a></dd>");
-          }
-            
+          // reject / select ?
+          out.push("<dt>"+key+"</dt><dd><a href=\"{{self}}"+"&filter-"+key+"="+f.properties[key]+"\">"+f.properties[key]+"</a></dd>");
         }
-        out.push("<dt>edit</dt><dd>"+f.properties["edit"]+"</dd>");
-        out.push("<dt>deployment</dt><dd>"+f.properties["deployment"]+"</dd>");
-        //out.push("<dt>group</dt><dd>{group}</dd>");
-        l.bindPopup("<dl class=\"dl-horizontal\">"+out.join("")+"</dl>");
-      
-        
+        l.bindPopup("<dl class=\"dl-horizontal\">"+out.join("")+"</dl>", { minWidth: "100%" });
     }
 }
-var jsonTest = new L.GeoJSON.AJAX(["{{{ self }}}&format=geojson&fields=id,edit,measured,updated,object,species,deployed,individual,platform,deployment,location,type,technology,latitude,longitude&filter-latitude=-90..90"],
+var jsonTest = new L.GeoJSON.AJAX(["{{{ self }}}&format=geojson"],
   {
     onEachFeature:popUp
     }).addTo(m);
