@@ -42,16 +42,18 @@
       ]
     },
     "title": {
-      "description": "Exact title of the publication",
+      "description": "Exact title of the publication. Markdown accepted.",
       "type": "string"
     },
     "publication_lang": {
       "type": "string"
     },
     "scientific_abstract": {
+      "description: Paper abstract. Markdown accepted." 
       "type": "string"
     },
     "norw_summary": {
+      "description: Norwegian summary, non-scientific. Markdown accepted"
       "type": "string"
     },
     "programme": {
@@ -425,6 +427,7 @@
       }
     },
     "comment": {
+      "description": "Markdown accepted",
       "type": "string"
     },
     "created": {
