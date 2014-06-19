@@ -156,8 +156,15 @@ class Tracking < Hashie::Mash
   end
   
   def to_solr
-    self[:format_name] = self[:format].map {|f| f.name }
-    self[:sensor_name] = sensor.map {|s| s.name }
+    
+    if not self[:format].nil?
+      self[:format_name] = self[:format].map {|f| f.name }
+    end
+    
+    if not self[:sensor].nil?
+      self[:sensor_name] = sensor.map {|s| s.name }
+    end
+    
     
     self.delete :collect
     self.delete :format
