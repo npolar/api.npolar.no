@@ -15,8 +15,8 @@ class Tracking < Hashie::Mash
     }
   end
 
-  # Process body before saving, body may contain a JSON Array
-  # or 1 JSON object
+  # Process body before saving
+  # Body may contain a JSON Array or 1 JSON object
   # @return request
   def self.before_save(request)
 
@@ -60,7 +60,7 @@ class Tracking < Hashie::Mash
       self[:source] = sourceuri.to_s
     end
 
-    if not edit?
+    if not edit? and not self[:id].nil?
       self[:edit] = "#{self[:base]}/tracking/#{id}"
     end
     
@@ -89,22 +89,26 @@ class Tracking < Hashie::Mash
         begin
           DateTime.parse(deployments[0].deployed)
           self[:deployed] = deployments[0].deployed
-          
+                
+
         rescue
+          
           self[:warn] << "missing-or-invalid-deployed-date" 
         end
+        
         
         begin
           DateTime.parse(deployments[0].terminated)
           self[:terminated] = deployments[0].terminated
           
         rescue
+          # !? self[:active] = true
           self[:warn] << "missing-or-invalid-terminated-date" 
         end
         
 
       elsif deployments.size > 1
-
+        
         individuals = deployments.map {|d| d.individual }.uniq
         objects = deployments.map {|d| d.object }.uniq
         specieslist = deployments.map {|d| d.species }.uniq
@@ -113,7 +117,9 @@ class Tracking < Hashie::Mash
           deploymenturi.path = "/tracking/deployment/#{d.id}"
           deploymenturi.to_s }.uniq
 
-        self[:warn] << "matches-multiple-deployments" 
+        self[:warn] << "matches-multiple-deployments"
+        # Given 2 matches, why not check if measured for individual-1(platform-A) is before deployed for individual-2(platform-A)?
+        # The period between the two individuals would then by mismarked as individual-1(platform-A)
 
         if individuals.size == 1
           self[:individual] = individuals[0]
@@ -146,6 +152,17 @@ class Tracking < Hashie::Mash
   def before_valid
     self.delete :errors
     self.delete :valid
+    self
+  end
+  
+  def to_solr
+    self[:format_name] = self[:format].map {|f| f.name }
+    self[:sensor_name] = sensor.map {|s| s.name }
+    
+    self.delete :collect
+    self.delete :format
+    self.delete :sensor
+    self.delete :_id
     self
   end
 
