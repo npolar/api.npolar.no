@@ -93,10 +93,21 @@ Solr schema for Tracking API at http://api.npolar.no/tracking/
 <field name="created" type="tdate" indexed="true" stored="true" multiValued="false" />
 
 <field name="sensor_data" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="sensor_name" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="format_name" type="string" indexed="true" stored="true" multiValued="true"/>
+
 <field name="hardware_id" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="platform" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="platform_type" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="platform_name" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="platform_model" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="platform_id" type="string" indexed="true" stored="true" multiValued="false"/>
+
 <field name="program" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="lc" type="string" indexed="true" stored="true" multiValued="false"/>
+<field name="lc_index" type="tint" indexed="true" stored="true" multiValued="false"/>
+<field name="duration" type="tfloat" indexed="true" stored="true" multiValued="false"/>
+
 <field name="status" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="individual" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="individuals" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -106,6 +117,7 @@ Solr schema for Tracking API at http://api.npolar.no/tracking/
 <field name="tracking" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="system" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="sensors" type="tint" indexed="true" stored="true" multiValued="false"/>
+
 <field name="lines" type="tint" indexed="true" stored="true" multiValued="false"/>
 <field name="satellite" type="string" indexed="true" stored="true" multiValued="false"/>
 <field name="technology" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -155,7 +167,7 @@ Solr schema for Tracking API at http://api.npolar.no/tracking/
 <field name="east" type="tfloat" indexed="true" stored="true" multiValued="false" />
 <field name="editor" type="string" indexed="true" stored="true" />
 <field name="editors" type="string" indexed="true" stored="true" />
-<field name="formats" type="string" indexed="true" stored="true" multiValued="true"/>
+<!--<field name="formats" type="string" indexed="true" stored="true" multiValued="true"/> -->
 <field name="principalInvestigator" type="string" indexed="true" stored="true" multiValued="true"/>
 
 <field name="investigator_emails" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -251,7 +263,20 @@ Solr schema for Tracking API at http://api.npolar.no/tracking/
 
 <field name="latitude2" type="tfloat" indexed="true" stored="true" multiValued="false" />
 <field name="longitude2" type="tfloat" indexed="true" stored="true" multiValued="false" />
+<field name="altitude2" type="tfloat" indexed="true" stored="true" multiValued="false" />
 
+<field name="doppler" type="tfloat" indexed="true" stored="true" multiValued="false" />
+<field name="level" type="tfloat" indexed="true" stored="true" multiValued="false" />
+
+<field name="error_radius" type="tfloat" indexed="true" stored="true" multiValued="false" />
+<field name="semi_minor" type="tfloat" indexed="true" stored="true" multiValued="false" />
+<field name="semi_major" type="tfloat" indexed="true" stored="true" multiValued="false" />
+<field name="orientation" type="tfloat" indexed="true" stored="true" multiValued="false" />
+<field name="hdop" type="tint" indexed="true" stored="true" multiValued="false" />
+<field name="row" type="tint" indexed="true" stored="true" multiValued="false" />
+<field name="total" type="tint" indexed="true" stored="true" multiValued="false" />
+<field name="collects" type="tint" indexed="true" stored="true" multiValued="false" />
+<field name="formats" type="tint" indexed="true" stored="true" multiValued="false" />
 
 
 
