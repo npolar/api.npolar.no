@@ -365,6 +365,20 @@
         "type": "string"
       }
     },
+     "isbn": {
+      "additionalItems": false,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+     "issn": {
+      "additionalItems": false,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "links": {
       "type": "array",
       "additionalItems": false,
