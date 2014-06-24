@@ -139,7 +139,7 @@
     "published-helper": {
             "type": "string"
     },
-    "published-date":{
+    "published-sort":{
       "type": [
         "string",
         "null"
