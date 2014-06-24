@@ -136,10 +136,10 @@
         }
       }
     },
-    "published-year": {
-      "type": "number"
+    "published-helper": {
+            "type": "string"
     },
-    "published-date": {
+    "published-date":{
       "type": [
         "string",
         "null"
