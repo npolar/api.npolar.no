@@ -136,6 +136,7 @@
       }
     },
     "published_helper": {
+            "description": "Ex: %Y-%m-%d",
             "type": "string"
     },
     "published_sort":{
