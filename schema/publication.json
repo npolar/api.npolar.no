@@ -135,10 +135,10 @@
         }
       }
     },
-    "published-helper": {
+    "published_helper": {
             "type": "string"
     },
-    "published-sort":{
+    "published_sort":{
       "type": [
         "string",
         "null"
