@@ -14,7 +14,6 @@
     "acronym": { "type": "string" },
     "summary": { "type": "string" },
     "abstract": { "type": "string" },
-    "area_contribution": { "text": "string" },
     "knowledge_gap_addressed": { "type": "string" },
     "state": { "type": "string", "enum": ["planned", "ongoing", "completed", "cancelled"] },
     "draft": { "type": "string", "enum": ["yes", "no"] },
@@ -23,16 +22,16 @@
     "results_summary": { "type": "string" },
     "ris_id": { "type": ["string", "null"] },
     "type": { "type": "string", "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"] },
-    "funding_sources" : { 
+    "funding_sources" : {
       "type": "array",
       "additionalItems": false,
-      "items": { 
-        "type": "object", 
+      "items": {
+        "type": "object",
         "additionalProperties": false,
         "properties": {
           "organization_name": { "type": "string" },
           "aggresso_code": { "type": "string" }
-        } 
+        }
       }
     },
     "related_projects": {
