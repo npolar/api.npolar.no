@@ -1,0 +1,219 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://api.npolar.no/schema/publication-1.0-rc4",
+    "title": "MMS",
+    "description": "MMS database schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "draft",
+        "base",
+        "id",
+        "schema",
+        "collection"
+    ],
+    "properties": {
+        "id": {
+            "description": "Identifier (UUID | URI). Also dwc:occurrenceID, dwc:catalogNumber",
+            "type": "string"
+        },
+        "schema": {
+            "type": "string"
+        },
+        "collection": {
+            "enum": [
+                "MMS"
+            ]
+        },
+        "base": {
+            "enum": [
+                "http://api.npolar.no"
+            ]
+        },
+        "draft": {
+            "enum": [
+                "yes",
+                "no"
+            ]
+        },
+        "type": {
+            "enum": [
+                "collection",
+                "event",
+                "image",
+                "physicalObject",
+                "dataset",
+                "model",
+                "sound",
+                "text"
+            ]
+        },
+        "language": {
+            "description": "mostly en",
+            "type": "string"
+        },
+        "rights": {
+            "description": "The licence web address",
+            "type": "string"
+        },
+        "rightsHolder": {
+            "description": "A person or organization owning or managing rights over the resource. ",
+            "type": "string"
+        },
+        "datasetID": {
+            "description": "Get the code from metadatabase",
+            "type": "string"
+        },
+        "institutionCode": {
+            "description": "npolar.no ",
+            "type": "string"
+        },
+        "datasetName": {
+            "description": "Observation database NPI",
+            "type": "string"
+        },
+        "ownerInstitutionCode": {
+            "description": "Institution name having ownership of the information referred to in the record.",
+            "type": "string"
+        },
+        "basisOfRecord": {
+            "enum": [
+                "HumanObservation",
+                "MachineObservation",
+                "StillImage",
+                "MovingImage",
+                "SoundRecording"
+            ]
+        },
+        "subAdult": {
+            "description": "Young adult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "polarBearCondition": {
+            "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "bearCubs": {
+            "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "unidentified": {
+            "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "deadAlive": {
+            "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "enum": [
+                "NA",
+                "alive",
+                "dead"
+            ]
+        },
+        "boatName": {
+            "description": "Name of vessel. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "tripStartDate": {
+            "description": "Trip start. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "tripEndDate": {
+            "description": "End of trip. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "occurrenceRemarks": {
+            "description": "Add comments here ",
+            "type": "string"
+        },
+        "recordedBy": {
+            "description": "Observer's name and email/contact address ",
+            "type": "string"
+        },
+        "individualCount": {
+            "description": "Total field in the form ",
+            "type": "integer"
+        },
+        "sex": {
+            "description": "= Adult M (male), Adult F (female), unidentified (undetermined)",
+            "type": "string"
+        },
+        "lifestage": {
+            "description": " juvenile - Cub,calf,pup,bear cubs",
+            "type": "string"
+        },
+        "eventDate": {
+            "description": "The date-time or interval during which the event occurred. Encoding scheme:  iso8601, UTC",
+            "type": "string"
+        },
+        "habitat": {
+            "enum": [
+                "land",
+                "water",
+                "ice"
+            ]
+        },
+        "continent": {
+            "description": " ex. Europe",
+            "type": "string"
+        },
+        "islandGroup": {
+            "description": "ex. Svalbard",
+            "type": "string"
+        },
+        "country": {
+            "description": "ex. Norway",
+            "type": "string"
+        },
+        "countryCode": {
+            "description": "NO for Norway ",
+            "type": "string"
+        },
+        "locality": {
+            "description": "Corresponds with the form's location ",
+            "type": "string"
+        },
+        "latitude": {
+            "type": "string"
+        },
+        "longitude": {
+            "type": "string"
+        },
+        "identifiedBy": {
+            "description": "Name of person who identified the species -Observer's name or name of person correcting ",
+            "type": "string"
+        },
+        "dateIdentified": {
+            "description": "Date of observation or species correction ",
+            "type": "string"
+        },
+        "vernacularName": {
+            "description": "A common or vernacular name - ex. polar bear",
+            "type": "string"
+        },
+        "created": {
+            "description": "Document was published",
+            "type": "string",
+            "format": "date-time"
+        },
+        "updated": {
+            "description": "Document was updated. Equal to dcterms:modified ",
+            "type": "string",
+            "format": "date-time"
+        },
+        "created_by": {
+            "type": "string"
+        },
+        "updated_by": {
+            "type": "string"
+        },
+        "_id": {
+            "type": "string"
+        },
+        "_rev": {
+            "type": "string"
+        },
+        "_attachments": {
+            "type": "object"
+        }
+    }
+}
