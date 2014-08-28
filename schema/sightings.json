@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "http://api.npolar.no/schema/publication-1.0-rc4",
-    "title": "MMS",
-    "description": "MMS database schema",
+    "title": "Norwegian Polar Institute sightings",
+    "description": "Observation database schema for Norwegian Polar Institute",
     "type": "object",
     "additionalProperties": false,
     "required": [
@@ -22,7 +22,7 @@
         },
         "collection": {
             "enum": [
-                "MMS"
+                "sightings"
             ]
         },
         "base": {
@@ -57,7 +57,7 @@
             "type": "string"
         },
         "rightsHolder": {
-            "description": "A person or organization owning or managing rights over the resource. ",
+            "description": "A person or organization owning or managing rights over the resource.",
             "type": "string"
         },
         "datasetID": {
@@ -65,7 +65,7 @@
             "type": "string"
         },
         "institutionCode": {
-            "description": "npolar.no ",
+            "description": "npolar.no",
             "type": "string"
         },
         "datasetName": {
