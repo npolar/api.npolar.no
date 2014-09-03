@@ -1,12 +1,12 @@
 {
 "schema": "http://api.npolar.no/schema/api",
-"id": "sightings-api",
-"path": "/sightings",
-"title": "Sightings",
+"id": "sighting-api",
+"path": "/sighting",
+"title": "Sighting",
 "summary": "Sightings administered by the Norwegian Polar Data Centre",
 "storage": "Couch",
-"database": "sightings",
-"model": "sightings",
+"database": "sighting",
+"model": "sighting",
 "verbs": [
 "DELETE",
 "GET",
@@ -33,8 +33,8 @@
 "search": { "engine": "Elasticsearch",
 "uri": "http://localhost:9200",
 "facets": ["basisOfRecord", "subAdult", "habitat", "vernacularName", "dateIdentified"],
-"type": "sightings",
-"index": "sightings"
+"type": "sighting",
+"index": "sighting"
 },
 "base": "http://api.npolar.no"
 }
