@@ -9,6 +9,6 @@ other[middleware for security, validation, search/indexing, logging, transformat
 * [Installation](https://github.com/npolar/api.npolar.no/wiki/Install)
 * How to publish a [new API](https://github.com/npolar/api.npolar.no/wiki/New-API)
 
-https://codeclimate.com/github/npolar/api.npolar.no [![Code Climate](https://codeclimate.com/github/npolar/api.npolar.no.png)](https://codeclimate.com/github/npolar/api.npolar.no)
+[![Code Climate](https://codeclimate.com/github/npolar/api.npolar.no.png)](https://codeclimate.com/github/npolar/api.npolar.no)
 
-http://rdoc.info/github/npolar/api.npolar.no
+[http://rdoc.info/github/npolar/api.npolar.no](rdoc)
