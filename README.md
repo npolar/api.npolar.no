@@ -6,6 +6,18 @@ over [HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616.html).
 API endpoints are constructed like [lego](http://lego.dk) blocks by connecting a minimalist [Core](https://github.com/npolar/api.npolar.no/wiki/Core) instance with a [Storage](https://github.com/npolar/api.npolar.no/wiki/Storage) object and assembling
 other[middleware for security, validation, search/indexing, logging, transformation, etc.
 
+
+## Features
+* Storage neutral, but currently built around CouchDB
+* Lucene-based search via Elasticsearch or Solr
+* Authorization
+* Edit log
+* JSON schema (validation)
+* GeoJSON
+* API browser, see e.g. http://api.npolar.no/dataset/?q=
+* Model hooks
+* Self-describing, see. http://api.npolar.no/service/dataset-api
+
 ## Getting started
 * [Installation](https://github.com/npolar/api.npolar.no/wiki/Install)
 * How to publish a [new API](https://github.com/npolar/api.npolar.no/wiki/New-API)
