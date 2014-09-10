@@ -1,5 +1,4 @@
 #encoding: utf-8
-require 'iconv'
 require 'csv'
 require 'pp'
 
@@ -71,8 +70,7 @@ module Npolar
       def parse(data)
 
         # convert to utf-8
-        ic = Iconv.new('UTF-8', 'WINDOWS-1252')
-        data_utf8 = ic.iconv(data + ' ')[0..-2]
+        data_utf8 = data.encode('UTF-8', :invalid => replace, :replace => "")
 
         # split into nice rows
         rows = data_utf8.split(/\r\n?|\n/)
