@@ -61,14 +61,15 @@ module Npolar
         if 404 == response.status
           log.info "Creating #{service.storage} \"#{service.database}\" database"
 
-          unless uri =~ /http(s)?:\/\/(\w+):(\w+)@(\w+)(:\d+)?/
+          unless uri =~ /^http(s)?:\/\/(\w+):(\w+)@(\w+)(:\d+)?/
             raise ArgumentError, "Cannot create database for #{service.path}, please set uri like https://username:password@localhost:6984"
           end
 
-          client.username = $1
-          client.password = $2
+          client.username = URI.parse(uri).user
+          client.password = URI.parse(uri).password
         
-          response = client.put
+          response = client.put("")
+          
           if 201 == response.status
             log.info "Database \"#{service.database}\" created: #{response.body}"
           else
