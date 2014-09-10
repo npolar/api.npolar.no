@@ -1,21 +1,39 @@
-{"_id":"service-api",
-"schema":"http://api.npolar.no/schema/api",
-"_rev": "1-a8761c1b3f52ce11e64990054121ebe4",
-"id":"service-api",
-"after": "Service.after_lambda",
-"path":"/service",
-"title":"Service configuration",
-"summary":"Service configuration for a HTTP API on http://api.npolar.no",
-"storage":"Couch",
-"database":"api_service",
-"model":"Service",
-"verbs":["DELETE","GET","HEAD","POST","PUT"],
-"formats":{"json":"application/json","html":"text/html"},
-"accepts":{"application/json":"http://api.npolar.no/schema/api.json"},
-"category":["CouchDB","REST","JSON","HTTP"],
-"lifecycle":"production",
-"run":"Npolar::Api::Json",
-"open":true,
-"auth":{"authorize":"sysadmin","system":"api", "authorizer":"Npolar::Auth::Ldap"},
-"base":"http://api.npolar.no"
+{
+  "schema": "http://api.npolar.no/schema/api",
+  "id": "service-api",
+  "after": "Service.after_lambda",
+  "path": "/service",
+  "title": "Service API",
+  "summary": "Each service document is used for running API; contains path, formats, accepted types, etc.",
+  "storage": "Couch",
+  "database": "api_service",
+  "model": "Service",
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/api"
+  },
+  "category": [
+    "CouchDB",
+    "REST",
+    "JSON",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "auth": {
+    "authorize": "sysadmin",
+    "system": "api",
+    "authorizer": "Npolar::Auth::Ldap"
+  },
+  "base": "http://api.npolar.no"
 }
