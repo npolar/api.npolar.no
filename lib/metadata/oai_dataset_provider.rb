@@ -22,7 +22,7 @@ module Metadata
     end
     
     class << self
-      client = Npolar::Api::Client::JsonApiClient.new(ENV["NPOLAR_API_COUCHDB"].gsub(/[\/]$/, "")+"/dataset")
+      client = Npolar::Api::Client::JsonApiClient.new(ENV["NPOLAR_API_COUCHDB"]||''.gsub(/[\/]$/, "")+"/dataset")
       client.model = ::Metadata::Dataset.new
       @@client=client
     end
