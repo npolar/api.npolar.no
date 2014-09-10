@@ -28,9 +28,9 @@ class Service < Hashie::Mash
         if service.search? and service.search.engine =~ /Elasticsearch/i
           elastic = service.search
           
-          status = Faraday.get("#{elastic.uri}/#{elastic["index"]}/_status").status
+          status = Faraday.get("#{elastic.url}/#{elastic["index"]}/_status").status
           if 404 == status # head does not work for status...            
-            index = Faraday.put("#{elastic.uri}/#{elastic["index"]}")
+            index = Faraday.put("#{elastic.url}/#{elastic["index"]}")
             log = Npolar::Api.log
             log.info "Created Elasticsearch index #{elastic["index"]} #{index.status}: #{index.body}"
           end
