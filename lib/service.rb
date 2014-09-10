@@ -14,7 +14,7 @@ class Service < Hashie::Mash
       if response.is_a? Array and response.size == 3
         status = response[0]
       else
-        response.status
+        status = response.status
       end
 
       if ["POST","PUT"].include? request.request_method and 201 == status
