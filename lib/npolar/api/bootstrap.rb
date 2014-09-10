@@ -1,7 +1,7 @@
 module Npolar
   module Api
 
-    # Bootstrap API databases (REST/CouchDB only)
+    # Bootstrap API service and user databases (atm. REST/CouchDB only)
     
     class Bootstrap
 
@@ -35,9 +35,12 @@ module Npolar
         api = Service.factory("service-api.json")
         
         client = Npolar::Api::Client::JsonApiClient.new(uri+"/"+api.database+"/"+service.id)
+        client.username = URI.parse(uri).user
+        client.password = URI.parse(uri).password
+          
         response = client.head
         if 404 == response.status 
-          response = client.put("", service.to_json)
+          response = client.put(service.to_json)
           if response.status == 201
             log.info "Stored service configuration '#{service.id}' in #{service.storage} database  #{api.database}: #{response.body} "
           else
@@ -52,7 +55,6 @@ module Npolar
           return
         end
         
-
         client = Npolar::Api::Client::JsonApiClient.new(uri+"/"+service.database)
         #log.debug client.uri
         response = client.head 
@@ -93,11 +95,10 @@ module Npolar
         Service.factory("service-api.json")
       end
 
-
       def uri
         @uri ||= ENV["NPOLAR_API_COUCHDB"].gsub(/\/$/, "")
       end
-
+ 
     end
   end
 end
