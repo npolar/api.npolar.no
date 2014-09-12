@@ -13,12 +13,10 @@ gem "npolar-api-client-ruby", git: "git://github.com/npolar/npolar-api-client-ru
 #gem "npolar-api-client-ruby", path:  "../npolar-api-client-ruby"
  
 gem "argos-ruby"#, path:  "../argos-ruby"
-
+gem "highline" # for ./bin/npolar-api-setup
 
 
 # HTTP/network
-
-
 gem "unicorn"
 gem "net-ldap"
 gem "faraday"

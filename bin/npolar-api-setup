@@ -1,0 +1,122 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "bundler/setup"
+require "highline/import"
+require "json"
+require "uri"
+require "securerandom"
+
+def dsn_config(displayname, uri, default, schemes=["http", "https"])
+  p = URI::Parser.new
+  begin 
+    uri = p.parse(uri)
+  rescue
+    uri = p.parse(default)
+  end
+  say("\n<%= color(\"#{displayname} DSN\", BOLD) %> (#{uri})")
+  
+  user = ask("username") { |q| q.default = uri.user }
+  password = ask("password") do |q|
+    q.default = uri.password
+    q.overwrite = true
+    q.echo = "*"
+  end
+  
+  scheme = ask("scheme") { |q| q.default = uri.scheme; q.in = schemes}
+  host = ask("hostname") { |q| q.default = uri.host }
+  port = ask("port", Integer) { |q| q.default = uri.port; q.in = 1..65535 }
+  path = ask("path") { |q| q.default = uri.path||"/" }
+  
+  uri.scheme=scheme
+  uri.host=host
+  uri.port=port
+  uri.path=path
+  if user != "" and password != ""
+    uri.user=user
+    uri.password=password
+  end 
+  uri
+  
+end
+
+
+begin
+  exportfile = File.absolute_path(__FILE__+"/../../config/env")
+  exports = ""
+  say("\nConfiguring api.npolar.no")
+  
+  exports << "export NPOLAR_API=https://api.npolar.no\n"
+  
+  say("\n<%= color(\"Sysadmin\", BOLD) %> (editing of services and users is limited to api sysadmins)")
+  sysadmin = ask("username") { |q| q.default = ENV["NPOLAR_API_USERNAME"]||"sysadmin" }
+  sysadmin_password = ask("password") { |q| q.echo = "*"; q.default = ENV["NPOLAR_API_PASSWORD"]||SecureRandom.hex(40) }
+  exports << "export NPOLAR_API_USERNAME=#{sysadmin}\n"
+  exports << "export NPOLAR_API_PASSWORD=#{sysadmin_password}\n"
+   
+  # CouchDB
+  couchdb_dsn = dsn_config("CouchDB", ENV["NPOLAR_API_COUCHDB"], "http://couchadmin:password@localhost:5984")
+  exports << "export NPOLAR_API_COUCHDB=#{couchdb_dsn}\n"
+
+  say("\n<%= color(\"Authorization backend\", BOLD) %>")
+  authorization = choose do |menu|
+    menu.choices(:CouchDB, :LDAP) 
+  end
+
+  if authorization == :LDAP
+    # LDAP
+    ldap_dsn = dsn_config("LDAP", ENV["NPOLAR_API_LDAP"], "https://ldapman:ldap@localhost:3269/dc=example,dc=com", ["ldap", "ldaps"])    
+    exports << "export NPOLAR_API_LDAP=#{ldap_dsn}\n"    
+  end
+  
+    # Elasticsearch
+  elasticsearch_dsn = dsn_config("Elasticsearch", ENV["NPOLAR_API_ELASTICSEARCH"], "http://localhost:9200")
+  exports << "export NPOLAR_API_ELASTICSEARCH=#{elasticsearch_dsn}\n"
+  
+  # Solr
+  solr_dsn = dsn_config("Solr", ENV["NPOLAR_API_SOLR"], "http://localhost:8983/solr")
+  exports << "export NPOLAR_API_SOLR=#{solr_dsn}\n"
+  
+  if File.exists? exportfile
+  mode = "Update"
+  else
+    mode = "Create"
+  end
+  say("\n<%= color(\"#{mode} ENV export\", BOLD) %>")
+  
+  save = choose do |menu|
+    menu.prompt = "#{mode} ENV export file #{exportfile} ?"
+    menu.choices(:yes, :no) 
+  end
+  
+  if save == :yes
+    File.open("#{exportfile}", "w") { |file| file.write exports }
+    say "\n<%= color(\"Important:\", BOLD) %> You need to 'source ~/.bashrc' to reload the environmental variables"
+  else
+    say "="*80
+    say exports
+    say "-"*80
+  end
+  
+  bashrcfile = File.expand_path("~/.bashrc")
+  if File.exists?(bashrcfile) and File.readlines(bashrcfile).grep(/added by npolar-api-setup/).none?
+    
+    say("\n<%= color(\".bashrc\", BOLD) %>")
+   
+    bashrc = choose do |menu|
+      menu.prompt = "Add 'source #{exportfile}' to ~./bashrc ?"
+      menu.choices(:yes, :no) 
+    end
+  
+    if bashrc == :yes
+      File.open("#{bashrcfile}", "a") { |file| file.write "\nsource #{exportfile} # added by npolar-api-setup\n" }
+    end
+  
+  end
+
+  say "\nInjecting sysadmin #{sysadmin} into #{authorization} authorization backend"
+  
+  say "\nSetup finished"
+  
+  say "\nThen do 'bundle exec shotgun' to startup in development mode"
+end
