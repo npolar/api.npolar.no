@@ -6,117 +6,213 @@ require "highline/import"
 require "json"
 require "uri"
 require "securerandom"
+require "logger"
+require "npolar/api/client"
+
+require_relative "./../lib/npolar/api/bootstrap"
+require_relative "./../lib/npolar/validation"
+require_relative "./../lib/npolar/auth/ldap"
+require_relative "./../lib/service"
+
 
 def dsn_config(displayname, uri, default, schemes=["http", "https"])
+  
+  
   p = URI::Parser.new
-  begin 
+  
+  
+  begin
     uri = p.parse(uri)
   rescue
     uri = p.parse(default)
   end
-  say("\n<%= color(\"#{displayname} DSN\", BOLD) %> (#{uri})")
-  
-  user = ask("username") { |q| q.default = uri.user }
-  password = ask("password") do |q|
-    q.default = uri.password
-    q.overwrite = true
-    q.echo = "*"
+
+  say("\n<%= color(\"#{displayname}\", BOLD) %>")
+
+  if not uri.user.nil? and not uri.password.nil?
+    user = ask("username") { |q| q.default = URI.decode(uri.user) }
+    password = ask("password") do |q|
+      q.default = URI.decode(uri.password)
+      q.overwrite = true
+      q.echo = "*"
+    end
   end
-  
+
   scheme = ask("scheme") { |q| q.default = uri.scheme; q.in = schemes}
   host = ask("hostname") { |q| q.default = uri.host }
   port = ask("port", Integer) { |q| q.default = uri.port; q.in = 1..65535 }
-  path = ask("path") { |q| q.default = uri.path||"/" }
-  
-  uri.scheme=scheme
-  uri.host=host
-  uri.port=port
-  uri.path=path
-  if user != "" and password != ""
-    uri.user=user
-    uri.password=password
-  end 
+  if not uri.path.nil?
+    path = ask("path") { |q| q.default = uri.path }
+  end
+
+  uri.scheme = scheme
+  uri.host = host
+  uri.port = port
+  uri.path = path
+
+  if not user.nil? and not password.nil?
+    uri.user = URI.encode(user)
+    uri.password = URI.encode(password)
+  end
   uri
-  
+
 end
 
 
 begin
+  # Define env exportfile (shell environmental variables)
   exportfile = File.absolute_path(__FILE__+"/../../config/env")
   exports = ""
-  say("\nConfiguring api.npolar.no")
-  
+  say "\nConfiguring api.npolar.no"
+  #say "\nThis utility creates the CouchDB databases for the Service and Editlog APIs and configures envioronmental variables"
+  #say "\nThese two APIs are defined in 'seed/service/service-api.json' and 'seed/service/editlog-api.json'"
   exports << "export NPOLAR_API=https://api.npolar.no\n"
+
+  # Logger
+  log = Logger.new(STDERR)
+  log.level = Logger::WARN
+
+  # CouchDB config
+  couchdb_dsn = dsn_config("CouchDB", ENV["NPOLAR_API_COUCHDB"], "http://couchadmin:password@localhost:5984")
+  exports << "export NPOLAR_API_COUCHDB=#{couchdb_dsn}\n"
+  ENV["NPOLAR_API_COUCHDB"] = couchdb_dsn.to_s
   
-  say("\n<%= color(\"Sysadmin\", BOLD) %> (editing of services and users is limited to api sysadmins)")
+  # Bootstrapper
+  bootstrap = Npolar::Api::Bootstrap.new
+  bootstrap.uri = ENV["NPOLAR_API_COUCHDB"]
+  bootstrap.log = log
+
+  say("\n<%= color(\"Sysadmin\", BOLD) %>")
   sysadmin = ask("username") { |q| q.default = ENV["NPOLAR_API_USERNAME"]||"sysadmin" }
   sysadmin_password = ask("password") { |q| q.echo = "*"; q.default = ENV["NPOLAR_API_PASSWORD"]||SecureRandom.hex(40) }
   exports << "export NPOLAR_API_USERNAME=#{sysadmin}\n"
   exports << "export NPOLAR_API_PASSWORD=#{sysadmin_password}\n"
-   
-  # CouchDB
-  couchdb_dsn = dsn_config("CouchDB", ENV["NPOLAR_API_COUCHDB"], "http://couchadmin:password@localhost:5984")
-  exports << "export NPOLAR_API_COUCHDB=#{couchdb_dsn}\n"
 
-  say("\n<%= color(\"Authorization backend\", BOLD) %>")
+  # Authorization
+  say("\n<%= color(\"Authorization\", BOLD) %>")
   authorization = choose do |menu|
-    menu.choices(:CouchDB, :LDAP) 
+    menu.prompt = "Choosing CouchDB will create a User API for authentication and authorization"
+    menu.prompt += "\nSee [here] for LDAP configuration instructions"
+    menu.choices(:CouchDB, :LDAP)
   end
+
+  # Service API
+  service_api = Service.factory("service-api")
+  service_api.auth.authorizer = (authorization == :LDAP) ? "Npolar::Auth::Ldap" : "Npolar::Auth::Couch"
+
+  say "Bootstrapping the <%= color(\"Service API\", BOLD) %> CouchDB database #{service_api.database} [Authorizer: #{service_api.auth.authorizer}]\n"
+  bootstrap.bootstrap(service_api)
+
+  # Editlog API
+  editlog_api = Service.factory("editlog-api")
+  say "\nBootstrapping the <%= color(\"Editlog API\", BOLD) %> CouchDB database #{editlog_api.database}\n"
+  bootstrap.bootstrap("editlog-api.json")
 
   if authorization == :LDAP
     # LDAP
-    ldap_dsn = dsn_config("LDAP", ENV["NPOLAR_API_LDAP"], "https://ldapman:ldap@localhost:3269/dc=example,dc=com", ["ldap", "ldaps"])    
-    exports << "export NPOLAR_API_LDAP=#{ldap_dsn}\n"    
-  end
+    ldap_dsn = dsn_config("LDAP", ENV["NPOLAR_API_LDAP"], "https://ldapman:ldap@localhost:3269/dc=example,dc=com", ["ldap", "ldaps"])
+    exports << "export NPOLAR_API_LDAP=#{ldap_dsn}\n"
+  elsif authorization == :CouchDB
+    user_api = Service.factory("user-api")
+    say "\nBootstrapping <%= color(\"User API\", BOLD) %> database in CouchDB #{user_api.database}\n"
+    bootstrap.bootstrap(user_api)
+    
+    #bootstrap.bootstrap_api_sysadmin(sysadmin, sysadmin_password)
+    user_api_dsn = couchdb_dsn
+    # Sysadmin *group* path
+    user_api_dsn.path = "/#{URI.encode(user_api.database)}/#{URI.encode('api-sysadmin')}"
+
+    u = user_api_dsn.user
+    p = user_api_dsn.password
+    user_api_dsn.user=nil
+    user_api_dsn.password=nil
+    client = Npolar::Api::Client::JsonApiClient.new(user_api_dsn.to_s)
+    client.log = log
+    client.username=u
+    client.password=p
+    
+    say "\nInjecting api-sysadmin group CouchDB database #{user_api_dsn}"
+
+    api_sysadmin_group = { id: "api-sysadmin", type: "group", systems: ["api"], roles: {
+        api: ["sysadmin"]
+      }
+    }
+    response = client.put(api_sysadmin_group.to_json)
+    
+    # Sysadmin *user* path
+    user_api_dsn.path = "/#{URI.encode(user_api.database)}/#{URI.encode(sysadmin)}"
+    
+    say "\nInjecting sysadmin user #{sysadmin} into CouchDB database #{user_api_dsn}"
+    salt = "salt" #Npolar::Auth::Ldap.salt
   
-    # Elasticsearch
+    sysadmin_user = {
+      id: sysadmin,
+      email: "",
+      name: "",
+      type: "person",
+      groups: ["api-sysadmin"],
+      roles: {},
+      ssha_password: Npolar::Auth::Ldap.base64_ssha(sysadmin_password, salt)
+    }
+    response = client.put(sysadmin_user.to_json)
+  end
+
+
+  # Elasticsearch
   elasticsearch_dsn = dsn_config("Elasticsearch", ENV["NPOLAR_API_ELASTICSEARCH"], "http://localhost:9200")
   exports << "export NPOLAR_API_ELASTICSEARCH=#{elasticsearch_dsn}\n"
-  
+
   # Solr
   solr_dsn = dsn_config("Solr", ENV["NPOLAR_API_SOLR"], "http://localhost:8983/solr")
   exports << "export NPOLAR_API_SOLR=#{solr_dsn}\n"
-  
+
+
+
   if File.exists? exportfile
   mode = "Update"
   else
     mode = "Create"
   end
   say("\n<%= color(\"#{mode} ENV export\", BOLD) %>")
-  
+
   save = choose do |menu|
-    menu.prompt = "#{mode} ENV export file #{exportfile} ?"
-    menu.choices(:yes, :no) 
+    menu.prompt = "#{mode} ENV export file d#{exportfile} ?"
+    menu.choices(:yes, :no)
   end
-  
+
   if save == :yes
     File.open("#{exportfile}", "w") { |file| file.write exports }
-    say "\n<%= color(\"Important:\", BOLD) %> You need to 'source ~/.bashrc' to reload the environmental variables"
   else
     say "="*80
     say exports
     say "-"*80
   end
-  
+
   bashrcfile = File.expand_path("~/.bashrc")
   if File.exists?(bashrcfile) and File.readlines(bashrcfile).grep(/added by npolar-api-setup/).none?
-    
+
     say("\n<%= color(\".bashrc\", BOLD) %>")
-   
+
     bashrc = choose do |menu|
       menu.prompt = "Add 'source #{exportfile}' to ~./bashrc ?"
-      menu.choices(:yes, :no) 
+      menu.choices(:yes, :no)
     end
-  
+
     if bashrc == :yes
       File.open("#{bashrcfile}", "a") { |file| file.write "\nsource #{exportfile} # added by npolar-api-setup\n" }
     end
-  
+
   end
 
-  say "\nInjecting sysadmin #{sysadmin} into #{authorization} authorization backend"
+  # Search API
+  bootstrap.bootstrap("search-api.json")
   
-  say "\nSetup finished"
+  say "You are now ready to setup a new API: https://github.com/npolar/api.npolar.no/wiki/New-API\n"
+
+  say "Do 'bundle exec shotgun' to startup in development mode\n"
+
+  say "Hint: npolar-api -XPUT http://localhost:9393/service/endpoint -d@seed/service/endpoint-api.json\n"
   
-  say "\nThen do 'bundle exec shotgun' to startup in development mode"
+  say "<%= color(\"Important:\", BOLD) %> You need to <%= color(\"source config/env\", BOLD) %> to redploy the environmental variables\n\n"
+
 end
