@@ -12,12 +12,21 @@ module Npolar
 
       attr_accessor :log
 
+      # Generate password hash using salted SHA1 (SSHA)
       def self.ssha(password, salt)
         "{SSHA}"+Base64.encode64(Digest::SHA1.digest(password+salt)+salt).chomp!
       end
     
       def self.salt
         Base64.encode64(Digest::SHA1.digest("#{rand(64)}/#{Time.now.to_f}/#{Process.pid}"))[0..7]
+      end
+        
+      def self.extract_salt(hash)
+        Base64.decode64(hash)[-4, 4]
+      end
+      
+      def self.base64_ssha(password,salt)
+        Base64.encode64(ssha(password, salt)).strip
       end
 
       def self.authenticator(domain=DEFAULT_DOMAIN)
