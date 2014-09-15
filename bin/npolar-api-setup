@@ -119,8 +119,6 @@ begin
     
     #bootstrap.bootstrap_api_sysadmin(sysadmin, sysadmin_password)
     user_api_dsn = couchdb_dsn
-    # Sysadmin *group* path
-    user_api_dsn.path = "/#{URI.encode(user_api.database)}/#{URI.encode('api-sysadmin')}"
 
     u = user_api_dsn.user
     p = user_api_dsn.password
@@ -131,18 +129,19 @@ begin
     client.username=u
     client.password=p
     
-    say "\nInjecting api-sysadmin group CouchDB database #{user_api_dsn}"
+    say "\nInjecting 'api-sysadmin' group into CouchDB database #{user_api_dsn}"
 
     api_sysadmin_group = { id: "api-sysadmin", type: "group", systems: ["api"], roles: {
         api: ["sysadmin"]
       }
     }
-    response = client.put(api_sysadmin_group.to_json)
+    response = client.put(api_sysadmin_group.to_json, "/#{URI.encode(user_api.database)}/#{URI.encode('api-sysadmin')}")
     
     # Sysadmin *user* path
     user_api_dsn.path = "/#{URI.encode(user_api.database)}/#{URI.encode(sysadmin)}"
     
-    say "\nInjecting sysadmin user #{sysadmin} into CouchDB database #{user_api_dsn}"
+    say "\nInjecting sysadmin user '#{sysadmin}' into CouchDB database #{user_api_dsn}"
+    
     salt = "salt" #Npolar::Auth::Ldap.salt
   
     sysadmin_user = {
@@ -154,9 +153,8 @@ begin
       roles: {},
       ssha_password: Npolar::Auth::Ldap.base64_ssha(sysadmin_password, salt)
     }
-    response = client.put(sysadmin_user.to_json)
+    response = client.put(sysadmin_user.to_json, "/#{URI.encode(user_api.database)}/#{URI.encode(sysadmin)}")
   end
-
 
   # Elasticsearch
   elasticsearch_dsn = dsn_config("Elasticsearch", ENV["NPOLAR_API_ELASTICSEARCH"], "http://localhost:9200")
@@ -165,8 +163,6 @@ begin
   # Solr
   solr_dsn = dsn_config("Solr", ENV["NPOLAR_API_SOLR"], "http://localhost:8983/solr")
   exports << "export NPOLAR_API_SOLR=#{solr_dsn}\n"
-
-
 
   if File.exists? exportfile
   mode = "Update"
