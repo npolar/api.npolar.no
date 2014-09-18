@@ -128,6 +128,8 @@ To allow easier Solr upgrades, all changes to Solr 4.0's default schema.xml are 
 <field name="longitude" type="tfloat" indexed="true" stored="true" />
 <field name="preservation" type="string" indexed="true" stored="true" />
 <field name="processed_date" type="date" indexed="true" stored="true" />
+<field name="expedition" type="string" indexed="true" stored="true" multiValued="false"/>
+
 <field name="programs" type="string" indexed="true" stored="true" multiValued="true"/>
 <field name="staff" type="string" indexed="true" stored="true" />
 <field name="sample_gear" type="string" indexed="true" stored="true" />
