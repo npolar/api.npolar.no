@@ -8,6 +8,7 @@ module Marine
       [
         "workspace", "collection", "animal_group", "conveyance", "gear", "institution", "preservation", "programs", "sample_types", "station", "substation", "status", "year"
       ]
+      
     end
 
     def to_solr
@@ -29,6 +30,7 @@ module Marine
         :flowmeter_stop    => doc.fetch("flowmeter_stop", ""),
         :gear              => doc.fetch("gear", ""),
         :institution       => doc.fetch("institution", ""),
+        :expedition       =>  doc.fetch("expedition", ""),
         :instref           => doc.fetch("instref", ""),
         :metadata_id       => doc.fetch("metadata_id", ""),
         :name              => doc.fetch("name", ""),
@@ -136,5 +138,3 @@ module Marine
     end
   end
 end
-
-
