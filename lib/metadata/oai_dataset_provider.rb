@@ -22,7 +22,11 @@ module Metadata
     end
     
     class << self
-      client = Npolar::Api::Client::JsonApiClient.new(ENV["NPOLAR_API_COUCHDB"]||''.gsub(/[\/]$/, "")+"/dataset")
+      
+      uri = URI.parse(ENV["NPOLAR_API_COUCHDB"])
+      uri.path = "/dataset"
+      
+      client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)
       client.model = ::Metadata::Dataset.new
       @@client=client
     end
@@ -49,13 +53,15 @@ module Metadata
         * http://api.npolar.no/dataset/oai?verb=Identify
         * http://api.npolar.no/dataset/oai?verb=ListIdentifiers
         * http://api.npolar.no/dataset/oai?verb=ListMetadataFormats
-        * http://api.npolar.no/dataset/oai?verb=ListSets (currently:#{self.sets.to_json})
+        * http://api.npolar.no/dataset/oai?verb=ListSets [currently:#{self.sets.to_json}]
         * http://api.npolar.no/dataset/oai?verb=GetRecord&amp;metadataPrefix=dif&amp;identifier=0323b588-5023-57d1-bf98-201cd8192730
         * http://api.npolar.no/dataset/oai?verb=ListRecords&amp;metadataPrefix=dif
-       
+      
+      Sets
+        * http://api.npolar.no/dataset/oai?verb=ListIdentifiers&amp;metadataPrefix=dif&amp;set=cryoclim.net
       Time range
         * http://api.npolar.no/dataset/oai?verb=ListIdentifiers&amp;from=2013-11-01&amp;until=2013-11-15&amp;metadataPrefix=dif
-      Sets (and time range)
+      Time range and sets
         * http://api.npolar.no/dataset/oai?verb=ListIdentifiers&amp;from=2013-11-01&amp;until=2099-01-01&amp;metadataPrefix=dif&amp;set=cryoclim.net
     "
     sample_id "3925805c-3ab1-44bd-99bb-a0b26321953f"
