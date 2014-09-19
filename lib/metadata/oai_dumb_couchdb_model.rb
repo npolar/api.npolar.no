@@ -14,7 +14,7 @@ module Metadata
     def initialize(storage)
       @storage = storage
     end
-    
+
     def earliest
       DateTime.parse("2008-01-01T00:00:00Z").to_time.utc.xmlschema
     end
@@ -44,73 +44,74 @@ module Metadata
     # * :from => earliest timestamp to be included in the results
     # * :until => latest timestamp to be included in the results
     # * :set => the set from which to retrieve the results
-    # * :metadata_prefix => type of metadata requested (this may be useful if 
+    # * :metadata_prefix => type of metadata requested (this may be useful if
     #                       not all records are available in all formats)
     # [:all, {:metadata_prefix=>"oai_dc", :from=>-4712-01-01 00:43:00 +0043, :until=>-4712-01-01 00:43:00 +0043}]
     def find(selector, options={})
-      
+
       if :all == selector
 
         storage.param = {"include_docs" => true}
         changes = JSON.parse(storage.get("_changes").body)["results"]
-        
+
         docs = changes.reject {|change|
           change["id"] =~ /^_design\//
           }.map {|change|
-         
-          
+
+
           if change["deleted"] != true
              if change["doc"]["updated"].nil?
               raise change.to_json
             end
-            
+
             updated = DateTime.parse(change["doc"]["updated"]).to_time.utc.xmlschema
             dataset = Metadata::Dataset.new(change["doc"])
-            
+
             # Merge topics into sets
             unless dataset.sets?
               dataset.sets = []
             end
-            dataset.topics||[].each do |topic|
-               dataset[:sets] << topic
-            end
             
+            if dataset.topics? and dataset.topics.any?
+              dataset[:sets] = (dataset.sets+dataset.topics).uniq
+            end
+
             # Only advertise known sets
             dataset[:sets] = (dataset.sets||[]).select {|set|
-              OaiDatasetProvider.oai_sets.map {|o| 
+              OaiDatasetProvider.oai_sets.map {|o|
                 o[:spec]}.include? set }.map {|set| { spec: set } }
-            
+
           else
             updated = Time.now.utc.xmlschema
-            dataset = Metadata::Dataset.new({"id" => change["id"], "deleted" => true, "updated" => updated}) 
+            dataset = Metadata::Dataset.new({"id" => change["id"], "deleted" => true, "updated" => updated})
           end
-          
+
           dataset
-          
+
         }
-       
+
         # Exclude drafts
         docs = docs.select {|d|
           d.draft != "yes"
         }
-       
+
         if options.key? :set
           set = options[:set]
-          
+
           docs = docs.select {|d|
             sets = d.sets||[]
             zets = sets.map {|s|s[:spec]}
             zets.include? set
           }
         end
-        
+
         if options.key? :from
-          docs = docs.select {|d|        
+          docs = docs.select {|d|
             updated = DateTime.parse(d["updated"]).to_time.utc
             updated >= options[:from].utc
           }
         end
-        
+
         if options.key? :until
           docs = docs.select {|d|
             updated = DateTime.parse(d["updated"]).to_time.utc
@@ -119,20 +120,20 @@ module Metadata
         end
 
         docs
-        
+
       else
-        
+
         response = storage.get(selector)
-        
+
         if 200 == response.code
-          
+
           hash = JSON.parse(response.body)
           dataset = ::Metadata::Dataset.new(hash)
           dataset.sets = (dataset.sets||[]).map {|set|
             OAI::Set.new( {:spec => set, :name => ""})
           }
           dataset
-          
+
         elsif 404 == response.code
           raise OAI::IdException
         else
