@@ -12,7 +12,6 @@
 
 # Document API
 # How to POST, PUT, DELETE, and GET documents
-# * https://github.com/npolar/api.npolar.no/wiki/Basics
 # * https://github.com/npolar/api.npolar.no/wiki/Example
 
 # Validation
@@ -35,10 +34,6 @@ if File.exists? configfile
   require configfile
 end
 require "./load"
-#require 'raindrops'
-#$stats ||= Raindrops::Middleware::Stats.new
-#use Raindrops::Middleware, :stats => $stats
-
 
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"] # http://user:password@localhost:5984
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"] # http://localhost:8983/solr/
@@ -56,18 +51,14 @@ log.info "Booting API #{Npolar::Api.base}
 \tNPOLAR_API_ELASTICSEARCH\t#{ENV['NPOLAR_API_ELASTICSEARCH']}
 \tNPOLAR_API_SOLR\t\t\t#{ENV['NPOLAR_API_SOLR']}"
 
-bootstrap.bootstrap("service-api.json")
-bootstrap.bootstrap("user-api.json")
 
 # Middleware for *all* requests - use with caution
 # use Rack::Throttle::Hourly,   :max => 3600000 # 3.6M requests per hour
-#use Rack::Throttle::Interval, :min => 0.001 # 1/1000 seconds interval
+# use Rack::Throttle::Interval, :min => 0.001 # 1/1000 seconds interval
 # use Npolar::Rack::SecureEdits (force TLS/SSL ie. https)
 
 use Rack::Static, :urls => ["/css", "/js", "/img", "/xsl", "schema", "code", "/favicon.ico", "/robots.txt"], :root => "public"
 use ::Rack::JSONP
-# use Npolar::Rack::GeoJSON
-
 
 # Autorun all APIs in the /service database
 # The service database is defined in /service/service-api.json
@@ -84,14 +75,16 @@ bootstrap.apis.select {|api| api.run? and api.run != "" }.each do |api|
     # api.middleware = api.middleware? ? api.middleware : []
     # api.middleware << ["Npolar::Rack::RequireParam", { :params => "key", :except => lambda { |request| ["GET", "HEAD"].include? request.request_method }} ]
     editlog = (api.key?("editlog") and api.editlog.disabled == true) ? false : true
+    
     if true == editlog
         use Npolar::Rack::EditLog,
       save: EditLog.save_lambda(
         uri: ENV["NPOLAR_API_COUCHDB"],
-        database: "api_editlog"
+        database: Service.factory("editlog-api").database
       ),
-      index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: false),
+      index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: true), 
       open: api.open
+      
     end
     
     if api.auth?
@@ -118,7 +111,7 @@ end
 # Time range
 # * /dataset/oai?verb=ListIdentifiers&from=2013-11-01&until=2013-11-15&metadataPrefix=dif
 # Sets (and time range)
-# * /dataset/oai?verb=ListIdentifiers&from=2013-11-01&until=2014-01-01&metadataPrefix=dif&sets=cryoclim.net
+# * /dataset/oai?verb=ListIdentifiers&from=2013-11-01&until=2014-01-01&metadataPrefix=dif&set=cryoclim.net
 map "/dataset/oai" do
   provider = Metadata::OaiDatasetProvider.new
   run Npolar::Rack::OaiSkeleton.new(Views::Api::Index.new, :provider => provider)
@@ -126,4 +119,13 @@ end
 
 map "/gcmd/concept/demo" do
   run Gcmd::Concept.new
+end
+
+# GeoJSON proxy ArcGIS REST server
+map "/geodata" do
+  run Npolar::Rack::ArcGISGeoJSON.new(nil, {base: "http://geodata.npolar.no/arcgis/rest/services"})
+end
+
+map "/" do
+  run Views::Api::Index.new
 end
