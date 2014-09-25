@@ -126,6 +126,6 @@ map "/geodata" do
   run Npolar::Rack::ArcGISGeoJSON.new(nil, {base: "http://geodata.npolar.no/arcgis/rest/services"})
 end
 
-map "/" do
-  run Views::Api::Index.new
-end
+#map "/" do
+#  run Views::Api::Index.new
+#end
