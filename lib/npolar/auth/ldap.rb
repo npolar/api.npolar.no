@@ -39,14 +39,18 @@ module Npolar
       end
 
       def self.config=(config)
-        unless config.is_a? Hash
-          if File.exists? config          
-            config = JSON.parse(File.read(config), :symbolize_names => true)
-            methods = ["simple", "simple_tls", "anonymous"]
-            config[:auth][:method] = methods.include?(config[:auth][:method]) ?
-              config[:auth][:method].to_sym
-              : :simple
-          end
+        if config.to_s =~ /^ldap/
+          p = URI::Parser.new
+          ldap_uri = p.parse(config)
+          ldap_uri.port = ldap_uri.scheme == "ldap" ? 389 : 636
+          config = { host: ldap_uri.host, port: ldap_uri.port, base: ldap_uri.dn,
+            auth: { username: ldap_uri.user, password: ldap_uri.password, method: :simple } 
+          }
+        elsif File.exists? config          
+          config = JSON.parse(File.read(config), :symbolize_names => true)
+          methods = ["simple", "simple_tls", "anonymous"]
+          config[:auth][:method] = methods.include?(config[:auth][:method]) ? config[:auth][:method].to_sym : :simple
+          
         end
         @@config=config
       end

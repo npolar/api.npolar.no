@@ -47,7 +47,10 @@ module Npolar
               except = api.open? ? lambda {|request| ["GET", "HEAD"].include? request.request_method } : false
 
               authorizer = case api.auth.authorizer
-                when /Ldap/i then Npolar::Auth::Ldap.new(Npolar::Auth::Ldap.config)
+                when /Ldap/i then begin
+                  #Npolar::Auth::Ldap.config = ENV["NPOLAR_API_LDAP"]
+                  Npolar::Auth::Ldap.new(Npolar::Auth::Ldap.config)
+                end
                 else Npolar::Auth::Couch.new(Service.factory("user-api.json").database)
               end
 
@@ -102,7 +105,7 @@ module Npolar
                   }
                 }
               elsif /Elasticsearch/i =~ api.search.engine
-
+                # Make relative URIs work => depend on NPOLAR_API_ELASTICSEARCH
                 use Npolar::Rack::HashCleaner
 
                 uri = URI.parse("http://localhost:9200")
@@ -114,7 +117,11 @@ module Npolar
                     uri.host = api.search.url
                   end
                 elsif ENV.key? "NPOLAR_API_ELASTICSEARCH"
-                  uri.host = ENV["NPOLAR_API_ELASTICSEARCH"]
+                  if ENV["NPOLAR_API_ELASTICSEARCH"] =~ /^http/
+                    uri.host = URI.parse(ENV["NPOLAR_API_ELASTICSEARCH"]).host
+                  else
+                    uri.host = ENV["NPOLAR_API_ELASTICSEARCH"]
+                  end
                 end
 
                 use ::Rack::Icelastic, {
@@ -165,7 +172,9 @@ module Npolar
         @app.call(env)
       end
 
-      # Adds "published", "updated", "created_by", "updated_by" before POST/PUT
+      # Adds "created", "edited", "created_by", "edited_by" before POST/PUT
+      # published?
+      # published_by published_username
       def self.before_lambda
         lambda {|request|
           if ["POST", "PUT"].include? request.request_method and "application/json" == request.media_type
@@ -176,15 +185,15 @@ module Npolar
               documents = documents.map {|d|
                 document = Hashie::Mash.new(d)
 
-                document.updated = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
+                document.updated = Time.now.utc.iso8601 #strftime("%Y-%m-%dT%H:%M:%SZ") #DateTime.now.xmlschema
                 document.updated_by = URI.decode(request.username)
 
                 unless document.created?
-                  document.created = document.updated
+                  document.created = document.updated || document.edited
                 end
 
                 unless document.created_by?
-                  document.created_by = document.updated_by
+                  document.created_by = document.updated_by || document.edited_by
                 end
                 document
 

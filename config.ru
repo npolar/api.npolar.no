@@ -40,9 +40,7 @@ Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"] # http://localhost:8983/solr
 Npolar::Auth::Ldap.config = File.expand_path("./config/ldap.json")
 Metadata::Dataset.formats = ["json", "atom", "dif", "iso", "xml"]
   
-# Bootstrap (create if needed) /service database and /user database
-# /service is the API catalog
-# /user is for authenticating and authorizing users
+
 bootstrap = Npolar::Api::Bootstrap.new
 bootstrap.log = log = Npolar::Api.log
 
@@ -65,7 +63,13 @@ use ::Rack::JSONP
 # APIs are started if they contain a "run" key holding the class name of a Rack
 # application (like "Npolar::Api::Json") and a "schema" key holding
 # "http://api.npolar.no/schema/api".
-bootstrap.apis.select {|api| api.run? and api.run != "" }.each do |api|
+begin
+  autorun_list = bootstrap.apis.select {|api| api.run? and api.run != "" }
+rescue
+  raise "Empty or nonexisting Service API database, please run ./bin/npolar-api-setup"
+end
+
+autorun_list.each do |api|
 
   map api.path do
   
@@ -125,7 +129,3 @@ end
 map "/geodata" do
   run Npolar::Rack::ArcGISGeoJSON.new(nil, {base: "http://geodata.npolar.no/arcgis/rest/services"})
 end
-
-#map "/" do
-#  run Views::Api::Index.new
-#end

@@ -45,6 +45,12 @@ module Npolar
           password: pbkdf2(password)
         }
       end
+      
+      def self.sysadmin_group
+        { id: "api-sysadmin", type: "group", systems: ["api"],
+            roles: { api: ["sysadmin"] }
+        }
+      end
 
       def initialize(couch)
         self.couch=couch
