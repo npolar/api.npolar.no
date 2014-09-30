@@ -27,17 +27,18 @@
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-
-require "openssl"
-configfile = File.dirname(__FILE__)+"/config/config.rb"
-if File.exists? configfile
-  require configfile
-end
+#require "openssl"
+#configfile = File.dirname(__FILE__)+"/config/config.rb"
+#if File.exists? configfile
+#  require configfile
+#end
 require "./load"
 
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"] # http://user:password@localhost:5984
 Npolar::Rack::Solrizer.uri = ENV["NPOLAR_API_SOLR"] # http://localhost:8983/solr/
-Npolar::Auth::Ldap.config = File.expand_path("./config/ldap.json")
+if ENV.key? "NPOLAR_API_LDAP"
+  Npolar::Auth::Ldap.config = ENV["NPOLAR_API_LDAP"] # ldap://cn=manager,dc=example,dc=com:password@ldap.example.com?dc=example,dc=com
+end
 Metadata::Dataset.formats = ["json", "atom", "dif", "iso", "xml"]
   
 
