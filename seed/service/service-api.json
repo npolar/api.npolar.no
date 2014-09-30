@@ -4,7 +4,7 @@
   "after": "Service.after_lambda",
   "path": "/service",
   "title": "Service API",
-  "summary": "Each service document is used for running API; contains path, formats, accepted types, etc.",
+  "summary": "Blueprint for a service",
   "storage": "Couch",
   "database": "api_service",
   "model": "Service",
@@ -30,6 +30,14 @@
   "lifecycle": "production",
   "run": "Npolar::Api::Json",
   "open": true,
+  
+"search": {
+"engine": "Elasticsearch",
+"facets": [
+],
+"index": "api",
+"type": "service"
+},
   "auth": {
     "authorize": "sysadmin",
     "system": "api",

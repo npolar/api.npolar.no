@@ -1,39 +1,25 @@
 {
-  "_id": "search-api",
-  "_rev": "1-9bdbd1378ed9f0a1fc7e2b980b3c8e29",
   "schema": "http://api.npolar.no/schema/api",
   "id": "search-api",
   "path": "/",
-  "title": "Search Norwegian Polar Data API",
-  "summary": "Service configuration for global search service at http://api.npolar.no/?q=",
+  "title": "Search services",
+  "summary": "",
   "storage": null,
   "database": null,
   "model": "",
   "search": {
-    "engine": "elasticsearch",
-    "uri": "http://dbmaster.data.npolar.no:9200",
-    "index": "global",
-    "type": "project,dataset,publication",
-    "facets": [
-      "collection",
-      "topics",
-      "tags"
-    ]
+    "engine": "Elasticsearch",
+    "index": "api",
+    "type": "service",
+    "facets": []
   },
-  "before": "Npolar::Api::Json.before_lambda",
   "verbs": [
-    "DELETE",
     "GET",
-    "HEAD",
-    "POST",
-    "PUT"
+    "HEAD"
   ],
   "formats": {
-    "json": "application/json",
-    "html": "text/html"
-  },
+    "json": "application/json"},
   "accepts": {
-    "application/json": "http://api.npolar.no/schema/api"
   },
   "category": [
     "CouchDB",
@@ -42,7 +28,7 @@
     "HTTP"
   ],
   "lifecycle": "production",
-  "run": "Npolar::Api::Search",
+  "run": "Npolar::Api::Json",
   "open": true,
   "auth": {
      "authorize": "sysadmin",
