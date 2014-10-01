@@ -25,9 +25,7 @@ def ask_uri(displayname, uri, default)
   end
 
   say("\n<%= color(\"#{displayname}\", BOLD) %>")
-
   ask("") { |q| q.default = uri.to_s }
-  uri
 end
 
 
@@ -40,7 +38,6 @@ begin
   say "* Bootstraps Service and Editlog APIs - creates CouchDB databases sets up Elasticsearch
 * Configures sysadmin user and authorisation backend
 * Configures environmental variables"
-  
   
   api_base_uri = ask_uri("Base URI", ENV["NPOLAR_API"], "http://localhost:9393")
   exports << "export NPOLAR_API=#{api_base_uri}\n"
@@ -157,7 +154,7 @@ begin
     user_api = Service.factory("user-api")
     say "\nBootstrapping <%= color(\"User API\", BOLD) %> database in CouchDB #{user_api.database}\n"
     bootstrap.bootstrap(user_api)
-    user_api_dsn = couchdb_dsn
+    user_api_dsn = couchdb_dsn.dup
 
     u = user_api_dsn.user
     p = user_api_dsn.password
