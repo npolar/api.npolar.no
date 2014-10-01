@@ -71,7 +71,6 @@ module Npolar
           return false
         end
         hashed_request_password = self.class.pbkdf2(request_password)
-        puts hashed_request_password
         self.class.equal?(hashed_request_password, user["password"])
       end
 
