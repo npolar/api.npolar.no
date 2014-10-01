@@ -54,10 +54,10 @@ begin
   exports << "export NPOLAR_API_COUCHDB=#{couchdb_dsn}\n"
   ENV["NPOLAR_API_COUCHDB"] = couchdb_dsn.to_s
   
-  
   # Elasticsearch
   elasticsearch_dsn = ask_uri("Elasticsearch", ENV["NPOLAR_API_ELASTICSEARCH"], "http://localhost:9200")
   exports << "export NPOLAR_API_ELASTICSEARCH=#{elasticsearch_dsn}\n"
+  ENV["NPOLAR_API_ELASTICSEARCH"] = elasticsearch_dsn.to_s
 
   # Solr
   solr_dsn = ask_uri("Solr", ENV["NPOLAR_API_SOLR"], "http://localhost:8983/solr")
@@ -102,6 +102,7 @@ begin
     ldap_dsn.password = ldap_password
     #ldap://host:port/dn?attributes?scope?filter?extensions
     exports << "export NPOLAR_API_LDAP=#{ldap_dsn}\n"
+    ENV["NPOLAR_API_LDAP"] = ldap_dsn.to_s
   end
   
   if File.exists? exportfile
@@ -140,11 +141,9 @@ begin
 
   end
   
-
   # Service API
   service_api = Service.factory("service-api")
   service_api.auth.authorizer = (authorization == :LDAP) ? "Npolar::Auth::Ldap" : "Npolar::Auth::Couch"
-
 
   say "Bootstrapping the <%= color(\"Service API\", BOLD) %> CouchDB database #{service_api.database} [Authorizer: #{service_api.auth.authorizer}]\n"
   bootstrap.bootstrap(service_api)
