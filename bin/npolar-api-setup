@@ -25,7 +25,8 @@ def ask_uri(displayname, uri, default)
   end
 
   say("\n<%= color(\"#{displayname}\", BOLD) %>")
-  ask("") { |q| q.default = uri.to_s }
+  uri = ask("") { |q| q.default = uri.to_s }
+  p.parse(uri)
 end
 
 
