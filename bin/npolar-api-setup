@@ -89,13 +89,13 @@ begin
       dc = ldap_server.split(".")
       dc.shift
     end
-    ldap_password = ask("scheme") { |q| q.default = "ldaps"; q.in = ["ldap", "ldaps"] }
+    ldap_scheme = "ldap" # ldaps is for old v2 ssh tunnel security
     ldap_base = ask("base") { |q| q.default = "dc=#{dc.join(",dc=")}" }
-    
+    ldap_port = ask("port", Integer) { |q| q.default = 636; q.in = 1..65535 }
     ldap_manager = ask("manager (dn)") { |q| q.default = "cn=manager,#{ldap_base}" }
     ldap_password = ask("password") { |q| q.echo = "*"; q.default = SecureRandom.hex(20) }
   
-    ldap_dsn = URI::LDAP.build({ host: ldap_server, dn: "/#{ldap_base}"})
+    ldap_dsn = URI::LDAP.build({ host: ldap_server, port: ldap_port, dn: "/#{ldap_base}"})
     ldap_dsn.user = ldap_manager
     ldap_dsn.password = ldap_password
     #ldap://host:port/dn?attributes?scope?filter?extensions

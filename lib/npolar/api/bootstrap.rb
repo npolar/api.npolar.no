@@ -118,7 +118,8 @@ module Npolar
         client = Npolar::Api::Client::JsonApiClient.new(elastic_uri.to_s)
 
         client.delete
-        response = client.put('{"index" : {
+        
+        idx = '{"index" : {
   "analysis" : {
       "analyzer" : {
           "default" : {
@@ -134,7 +135,9 @@ module Npolar
       }
     }
   }
-}')
+}'
+        # @todo merge(elastic["index"]||{})
+        response = client.put(idx)
       
       log.info "Elasticsearch index PUT #{elastic_uri}: #{response.status}"
       end
@@ -163,7 +166,7 @@ module Npolar
         river = { type: "couchdb",
           couchdb: { host: couchdb_uri.host, port: couchdb_uri.port, db: service.database, filter: nil },
           index: { index: elastic["index"], type: elastic["type"], bulk_size: "100", bulk_timeout: "50ms" }
-        }.merge(service.river||{})
+        }.merge(elastic.river||{})
         
         elastic_uri.path = "/_river/#{elastic["index"]}_#{elastic["type"]}_river"
         
