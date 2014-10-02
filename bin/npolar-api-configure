@@ -83,7 +83,7 @@ begin
     else
       dc=[]
     end
-    ldap_scheme = "ldaps" # ldaps is for old v2 ssh tunnel security
+    ldap_scheme = "ldap" # ldaps is for old v2 ssh tunnel security
     ldap_base = ask("base") { |q| q.default = "dc=#{dc.join(",dc=")}" }
     ldap_port = ask("port", Integer) { |q| q.default = 636; q.in = 1..65535 }
     ldap_manager = ask("manager (dn)") { |q| q.default = "cn=manager,#{ldap_base}" }
