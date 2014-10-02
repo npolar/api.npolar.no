@@ -9,7 +9,7 @@ require "securerandom"
 require "logger"
 
 def valid_uri?(uri)
-  [URI::HTTP, URI::HTTPS, URI::LDAP, URI::LDAPS].include? uri.class }
+  [URI::HTTP, URI::HTTPS, URI::LDAP, URI::LDAPS].include? uri.class
 end
 
 def ask_uri(displayname, uri, default)
