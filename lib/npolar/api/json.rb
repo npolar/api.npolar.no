@@ -105,27 +105,18 @@ module Npolar
                   }
                 }
               elsif /Elasticsearch/i =~ api.search.engine
-                # Make relative URIs work => depend on NPOLAR_API_ELASTICSEARCH
+                
                 use Npolar::Rack::HashCleaner
 
-                uri = URI.parse("http://localhost:9200")
-                if not api.search.url.nil?
-                  begin
-                    uri.host = URI.parse(api.search.url).host
-                  rescue
-                    # Malformed URI => might be OK hostname
-                    uri.host = api.search.url
-                  end
-                elsif ENV.key? "NPOLAR_API_ELASTICSEARCH"
-                  if ENV["NPOLAR_API_ELASTICSEARCH"] =~ /^http/
-                    uri.host = URI.parse(ENV["NPOLAR_API_ELASTICSEARCH"]).host
-                  else
-                    uri.host = ENV["NPOLAR_API_ELASTICSEARCH"]
-                  end
+                # Relative URIs => depend on NPOLAR_API_ELASTICSEARCH
+                if api.search.url.nil?
+                  uri = URI.parse(ENV["NPOLAR_API_ELASTICSEARCH"]||"http://localhost:9200")
+                else
+                 uri = URI.parse(api.search.url)
                 end
-
+      
                 use ::Rack::Icelastic, {
-                  :url => api.search.url,
+                  :url => uri,
                   :index => api.search["index"],
                   :type => api.search.type,
                   :log => api.search.log,
