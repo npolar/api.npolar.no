@@ -1,0 +1,109 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "bundler/setup"
+require "highline/import"
+require "json"
+require "uri"
+require "securerandom"
+require "logger"
+require "npolar/api/client"
+
+require_relative "./../lib/npolar/api/bootstrap"
+require_relative "./../lib/npolar/validation"
+require_relative "./../lib/npolar/auth/couch"
+require_relative "./../lib/service"
+
+begin
+  
+  log = Logger.new(STDERR)
+  log.level = Logger::INFO
+  
+  say "\nnpolar-api-bootstrap:\n"
+#say "Creates Service, Editlog, APIs - creates CouchDB databases sets up Elasticsearch
+#* Configures sysadmin user and authorisation backend"
+# reconfigure all apis => LDAP/couch?
+  say("\n<%= color(\"Sysadmin user\", BOLD) %> for #{ENV["NPOLAR_API"]+Service.factory("service-api").path}")
+  sysadmin = ask("username") { |q| q.default = ENV["NPOLAR_API_USERNAME"]||"sysadmin" }
+  sysadmin_password = ask("password") { |q| q.echo = "*"; q.default = SecureRandom.hex(20) }
+
+  
+  # Authorization
+  say("\n<%= color(\"Authorization\", BOLD) %>")
+  authorization = choose do |menu|
+    menu.prompt = "Choosing CouchDB will create a User API for authentication and authorization"
+    menu.prompt += "\nSee [here] for LDAP configuration instructions"
+    menu.choices(:CouchDB, :LDAP)
+  end
+    
+  # Bootstrapper
+  bootstrap = Npolar::Api::Bootstrap.new
+  bootstrap.uri = ENV["NPOLAR_API_COUCHDB"]
+  bootstrap.log = log
+  
+  # Service API
+  service_api = Service.factory("service-api")
+  service_api.auth.authorizer = (authorization == :LDAP) ? "Npolar::Auth::Ldap" : "Npolar::Auth::Couch"
+
+  say "Bootstrapping the <%= color(\"Service API\", BOLD) %> CouchDB database #{service_api.database} [Authorizer: #{service_api.auth.authorizer}]\n"
+  bootstrap.bootstrap(service_api)
+  
+  # Editlog API
+  editlog_api = Service.factory("editlog-api")
+  say "\nBootstrapping the <%= color(\"Editlog API\", BOLD) %> CouchDB database #{editlog_api.database}\n"
+  bootstrap.bootstrap("editlog-api.json")
+    
+  if authorization == :CouchDB
+    user_api = Service.factory("user-api")
+    say "\nBootstrapping <%= color(\"User API\", BOLD) %> database in CouchDB #{user_api.database}\n"
+    bootstrap.bootstrap(user_api)
+    user_api_dsn = URI.parse(ENV["NPOLAR_API_COUCHDB"])
+
+    u = user_api_dsn.user
+    p = user_api_dsn.password
+    user_api_dsn.user=nil
+    user_api_dsn.password=nil
+    client = Npolar::Api::Client::JsonApiClient.new(user_api_dsn.to_s)
+    client.log = log
+    client.username=u
+    client.password=p # Couch creaps out if passwords are in the URI and not in the Authorization header
+    
+    say "\nInjecting 'api-sysadmin' group into CouchDB database #{user_api_dsn}"
+
+    response = client.put(Npolar::Auth::Couch.sysadmin_group.to_json, "/#{URI.encode(user_api.database)}/#{URI.encode('api-sysadmin')}")
+    
+    # Sysadmin *user* path
+    user_api_dsn.path = "/#{URI.encode(user_api.database)}/#{URI.encode(sysadmin)}"
+    
+    say "\nInjecting sysadmin user '#{sysadmin}' into CouchDB database #{user_api_dsn}"
+    
+    sysadmin_user = Npolar::Auth::Couch.sysadmin_user(sysadmin, sysadmin_password)
+    sysadmin_user_uri=  "/#{URI.encode(user_api.database)}/#{URI.encode(sysadmin)}"
+    r = client.get(sysadmin_user_uri)
+    if r.status == 200
+      "say Updating credentials"
+      rev = r.headers["ETag"].gsub(/["]/,"")
+      client.param = {rev: rev}
+      client.delete(sysadmin_user_uri)
+    else
+
+    client.param = {}
+    
+    response = client.put(sysadmin_user.to_json, sysadmin_user_uri)
+  end
+  end
+
+  # Search API (reallay no need to bootstrap now that service and user APIs are in place, but they might not be running yet)
+  search_api = Service.factory("search-api")
+  say "\nBootstrapping <%= color(\"Search API at /\", BOLD) %> database in CouchDB #{search_api.database}\n"
+  bootstrap.bootstrap(search_api)
+ 
+  say "\nSetup completed"
+  
+  say "\nRun\n\n<%= color(\"bundle exec shotgun\", BOLD) %>\n\nto start in development mode\n"
+
+  say "\nSetup a new API: https://github.com/npolar/api.npolar.no/wiki/New-API\n"
+  
+  say "Hint:\n ./bin/npolar-api -XPUT http://localhost:9393/service/test-api -d@seed/service/test-api.json\n"
+  
+end
