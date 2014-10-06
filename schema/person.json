@@ -14,8 +14,8 @@
     "phone":{"type":"string"},
     "mobile":{"type":"string"},
     "workplace":{"type":"string"},
-    "currently_employed":{"type":"bool"},
-    "on_leave":{"type":"bool"},
+    "currently_employed":{"type":"boolean"},
+    "on_leave":{"type":"boolean"},
     "jobtitle":{
       "type":"object",
       "additionalProperties":false,
