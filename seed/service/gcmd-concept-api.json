@@ -10,7 +10,6 @@
   "database": "gcmd_concept",
   "search": {
     "engine": "Elasticsearch",
-    "uri": "http://dbmaster.data.npolar.no:9200",
     "index": "gcmd",
     "type": "concept",
     "facets": [

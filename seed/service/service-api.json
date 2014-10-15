@@ -10,7 +10,7 @@
   "model": "Service",
   "verbs": [
     "DELETE",
-    "GET",
+    "GET",  
     "HEAD",
     "POST",
     "PUT"

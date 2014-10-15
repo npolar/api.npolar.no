@@ -10,7 +10,6 @@
   "model": "Publication",
   "search": {
     "engine": "Elasticsearch",
-    "uri": "http://dbmaster.data.npolar.no:9200",
     "index": "global",
     "type": "publication",
     "facets": [

@@ -1,28 +1,20 @@
 {
    "_id": "person-api",
-"_rev":"1-f2db0598ee2f496742c20a5e66274605",
+   "_rev": "33-d53a56c9243f76f88c66a10d925b41b6",
    "schema": "http://api.npolar.no/schema/api",
    "id": "person-api",
    "path": "/person",
-   "title": "People API",
+   "title": "Person API",
    "storage": "Couch",
    "database": "person",
    "model": "Person",
    "search": {
        "engine": "Elasticsearch",
-       "uri": "http://dbmaster.data.npolar.no:9200",
-       "facets": [
-           "organisation",
-           "orgtree",
-           "currently_employed",
-           "employment",
-           "workplace",
-           "on_leave",
-           "position.en",
-           "position.no"
-       ],
-       "index": "global",
-       "type": "person"
+       "index": "person",
+       "type": "person",
+       "params": {
+           "facets": "organisation,orgtree,currently_employed,employment,workplace"
+       }
    },
    "verbs": [
        "DELETE",
@@ -49,9 +41,13 @@
    "lifecycle": "production",
    "run": "Npolar::Api::Json",
    "auth": {
-       "authorize": "sysadmin",
-       "system": "api",
+       "authorize": "editor",
+       "system": "person",
        "authorizer": "Npolar::Auth::Ldap"
    },
-   "open": true
+   "open": true,
+   "updated": "2013-10-03T22:17:09Z",
+   "updated_by": "conrad",
+   "created": "2013-10-03T22:17:09Z",
+   "created_by": "conrad"
 }
