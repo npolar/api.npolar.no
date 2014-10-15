@@ -1,13 +1,12 @@
 module Npolar
   module Api
-
-    # Bootstrap API service and user databases (atm. REST/CouchDB only)
-    # Bootstrap is primarily intended for creating /service and /user databases used to autorun APIs and authenticating and authorizing users
+    
     class Bootstrap
 
       attr_accessor :log, :service
       attr_writer :uri
 
+      # Bootstrap service by creating database and search index
       # @param service [Service] http://api.npolar.no/schema/api
       #  service.storage: Storage adapter ("CouchDB")
       #  service.database": Service database ("api")
@@ -36,21 +35,20 @@ module Npolar
         client.username = URI.parse(uri).user
         client.password = URI.parse(uri).password
 
-        response = client.head
-        if force == true or 404 == response.status
+        #response = client.head
+        #if 404 == response.status
           response = client.put(service.to_json)
           if response.status == 201
             log.info "Stored service configuration '#{service.id}' in #{service.storage} database  #{api.database}: #{response.body} "
           else
             log.warn "Failed storing service configuration \"#{service.id}\", status #{response.status}: #{response.body}"
           end
-        end
-        
+        #end
+
         if service.search?
           create_search(service)
         end
         
-
       end
 
       def create_database(service)
@@ -90,75 +88,64 @@ module Npolar
       end
       
       def create_search(service)
-        create_elasticsearch(service)
+        if service.search.engine =~ /Elasticsearch/i
+          create_elasticsearch(service)
+        end
       end
       
       # Create Elasticsearch index, mapping, and river
       def create_elasticsearch(service)
+        delete_elasticsearch_index(service)
         create_elasticsearch_index(service)
         create_elasticsearch_mapping(service)
         if service.storage =~ /Couch/
+          delete_elasticsearch_couchdb_river(service)
           create_elasticsearch_couchdb_river(service)
         end
       end
       
       def create_elasticsearch_index(service)
         elastic = service.search
+    
+        client = Npolar::Api::Client::JsonApiClient.new(elastic_uri(elastic).to_s)
         
-        elastic_uri = case elastic.url
-        when /^http/
-          elastic.url
+        index_document_file = File.absolute_path(File.join(File.dirname(__FILE__), "..", "..", "..", "search", "elasticsearch", "index.json"))
+        
+        if File.exists? index_document_file
+          index_document = JSON.parse(File.read(index_document_file))
         else
-          ENV["NPOLAR_API_ELASTICSEARCH"]
+          index_document = {}
         end
-        elastic_uri = URI.parse(elastic_uri)
-        
-        elastic_uri.path = "/#{elastic["index"]}"
-        
-        client = Npolar::Api::Client::JsonApiClient.new(elastic_uri.to_s)
+        index_document.merge!(elastic["index_document"]||{})
 
-        client.delete
-        
-        idx = '{"index" : {
-  "analysis" : {
-      "analyzer" : {
-          "default" : {
-              "tokenizer" : "standard",
-              "filter" : ["standard", "lowercase", "preserve_ascii"]
-          }
-      },
-      "filter" : {
-          "preserve_ascii" : {
-              "type" : "asciifolding",
-              "preserve_original" : true
-          }
-      }
-    }
-  }
-}'
-        # @todo merge(elastic["index"]||{})
-        response = client.put(idx)
+        response = client.put(index_document.to_json)
       
-      log.info "Elasticsearch index PUT #{elastic_uri}: #{response.status}"
+        log.info "Elasticsearch index PUT #{client.uri}: #{response.status}"
       end
       
+      def delete_elasticsearch_index(service)
+        client = Npolar::Api::Client::JsonApiClient.new(elastic_uri(service.search).to_s)
+        client.delete
+      end
       
+        
       def create_elasticsearch_mapping(service)
-        # £todo
-        #curl -XPUT http://elastic.example.com:9200/polarbear/_mapping/interaction -d@search/elasticsearch/mapping/polarbear/interaction.json
+        elastic = service.search
+        mappingfile = File.absolute_path(File.join(File.dirname(__FILE__), "..", "..", "..", "search", "elasticsearch", "mapping", elastic["index"], "#{elastic.type}.json"))
+        if File.exists? mappingfile
+
+          mapping = File.read(mappingfile)
+          uri = elastic_uri(elastic)
+          uri.path += "/_mapping/#{elastic.type}"
+
+          client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)
+          client.put(mapping)
+        end
       end
       
       def create_elasticsearch_couchdb_river(service)
         
         elastic = service.search
-        
-        elastic_uri = case elastic.url
-        when /^http/
-          elastic.url
-        else
-          ENV["NPOLAR_API_ELASTICSEARCH"]
-        end
-        elastic_uri = URI.parse(elastic_uri)
         
         couchdb_uri = ENV["NPOLAR_API_COUCHDB"]
         couchdb_uri = URI.parse(couchdb_uri)
@@ -167,18 +154,21 @@ module Npolar
           couchdb: { host: couchdb_uri.host, port: couchdb_uri.port, db: service.database, filter: nil },
           index: { index: elastic["index"], type: elastic["type"], bulk_size: "100", bulk_timeout: "50ms" }
         }.merge(elastic.river||{})
-        
-        elastic_uri.path = "/_river/#{elastic["index"]}_#{elastic["type"]}_river"
-        
-        client = Npolar::Api::Client::JsonApiClient.new(elastic_uri.to_s)
-        client.delete
-        
-        elastic_uri.path += "/_meta"
-        client = Npolar::Api::Client::JsonApiClient.new(elastic_uri.to_s)
-
+                
+        # PUT new river
+        uri = elastic_uri(elastic)
+        uri.path += "/_meta"
+        client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)
         client.put(river.to_json)
       end
-
+      
+      def delete_elasticsearch_couchdb_river(service)
+        elastic = service.search
+        uri = elastic_uri(elastic)
+        uri.path = "/_river/#{elastic["index"]}_#{elastic["type"]}_river"
+        client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)
+        client.delete
+      end
 
       # Get all services
       def services(select=nil)
@@ -196,10 +186,22 @@ module Npolar
       def uri
         @uri ||= ENV["NPOLAR_API_COUCHDB"].gsub(/\/$/, "")
       end
+      
+      def elastic_uri(elastic)
+        elastic_uri = case elastic.url
+        when /^http/
+          elastic.url
+        else
+          ENV["NPOLAR_API_ELASTICSEARCH"]
+        end
+        elastic_uri = URI.parse(elastic_uri)
+        
+        elastic_uri.path = "/#{elastic["index"]}"
+        
+        elastic_uri
+      end
 
     end
-
-    # user hash ldif
 
   end
 end
