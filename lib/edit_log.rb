@@ -39,16 +39,16 @@ class EditLog
   def self.index_lambda(config={})
     lambda {|edit|
 
-      require "elasticsearch"
-      id = edit[:id]
+      #require "elasticsearch"
+      #id = edit[:id]
     
       #if not edit[:request][:body].nil?
       #  edit[:request][:body].delete
       #end
 
-      edit_text = Yajl::Encoder.encode(edit)
-      client = Elasticsearch::Client.new(config)
-      client.index index: "editlog", type: "item", id: id, body: edit_text
+      #edit_text = Yajl::Encoder.encode(edit)
+      #client = Elasticsearch::Client.new(config)
+      #client.index index: "editlog", type: "item", id: id, body: edit_text
      }
   end
 
