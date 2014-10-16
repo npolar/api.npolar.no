@@ -122,19 +122,21 @@ module Npolar
 
       end
       
+     before_time = Time.now
+      
       response = case request.request_method
         when "DELETE"  then storage.delete(id, params)
-        when "GET"     then storage.get(id, params)
+        when "GET"     then storage.get(id, params) # FIXME Handle empty id
         when "HEAD"    then storage.head(id, params)
         when "POST"    then storage.post(document, params)
         when "PUT"     then storage.put(id, document, params)
       end
-
+      
       response = after(request, response)
 
       status, headers, body = response
 
-      log.info "#{request.request_method} #{request.path} [Core]: #{status} #{headers.to_s}"
+      log.info "#{request.request_method} #{request.path} [Core]: #{status} #{headers.to_s} took: #{Time.now - before_time}"
       Rack::Response.new(body, status, headers)
 
     end
