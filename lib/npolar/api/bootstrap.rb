@@ -100,6 +100,7 @@ module Npolar
         create_elasticsearch_mapping(service)
         if service.storage =~ /Couch/
           delete_elasticsearch_couchdb_river(service)
+          sleep(2) # Elastic needs a nap to perform the delete above
           create_elasticsearch_couchdb_river(service)
         end
       end
@@ -128,7 +129,7 @@ module Npolar
         client.delete
       end
       
-        
+      # http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-put-mapping.html#indices-put-mapping
       def create_elasticsearch_mapping(service)
         elastic = service.search
         mappingfile = File.absolute_path(File.join(File.dirname(__FILE__), "..", "..", "..", "search", "elasticsearch", "mapping", elastic["index"], "#{elastic.type}.json"))
@@ -136,9 +137,11 @@ module Npolar
 
           mapping = File.read(mappingfile)
           uri = elastic_uri(elastic)
+          
           uri.path += "/_mapping/#{elastic.type}"
 
           client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)
+          client.param = { ignore_conflicts: true }
           client.put(mapping)
         end
       end
