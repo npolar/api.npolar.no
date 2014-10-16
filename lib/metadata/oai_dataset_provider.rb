@@ -23,7 +23,7 @@ module Metadata
     
     class << self
       
-      uri = URI.parse(ENV["NPOLAR_API_COUCHDB"])
+      uri = URI.parse(ENV["NPOLAR_API_COUCHDB"]||"http://localhost:5984")
       uri.path = "/dataset"
       
       client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)

@@ -6,7 +6,7 @@ require "uri"
 require "gcmd"
 
 module Metadata
-  # DIF XML => http://api.npolar.no/schema/dataset.json
+  # DIF XML => http://api.npolar.no/schema/dataset
   #
   # [Licence]
   # {http://www.gnu.org/licenses/gpl.html GNU General Public Licence Version 3} (GPLv3)
