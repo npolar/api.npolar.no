@@ -157,7 +157,7 @@ module Npolar
                 
         # PUT new river
         uri = elastic_uri(elastic)
-        uri.path = "/_river/#{elastic["index"]}_#{elastic["type"]}_river/meta"
+        uri.path = "/_river/#{elastic["index"]}_#{elastic["type"]}_river/_meta"
         client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)
         client.put(river.to_json)
       end
