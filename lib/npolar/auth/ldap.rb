@@ -11,6 +11,8 @@ module Npolar
       DEFAULT_DOMAIN = "npolar.no"
 
       attr_accessor :log
+      
+      @@config = {}
 
       # Generate password hash using salted SHA1 (SSHA)
       def self.ssha(password, salt)
@@ -50,7 +52,6 @@ module Npolar
           config = JSON.parse(File.read(config), :symbolize_names => true)
           methods = ["simple", "simple_tls", "anonymous"]
           config[:auth][:method] = methods.include?(config[:auth][:method]) ? config[:auth][:method].to_sym : :simple
-          
         end
         @@config=config
       end
@@ -60,7 +61,6 @@ module Npolar
       end
   
       def match? username, password
-
         mail = force_domain(username)
 
         result = bind_as(:base => base, :filter => Net::LDAP::Filter.eq("mail", mail), :password => password)
