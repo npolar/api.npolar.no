@@ -14,7 +14,8 @@ module Npolar
         edit: nil,
         save: nil,
         index: nil,
-        open: nil
+        open: nil,
+        body_size: nil,
       }
       
       # See Npolar::Rack::Middleware
@@ -135,7 +136,7 @@ module Npolar
             username: URI.decode(request.username),
             time: Time.now.utc.iso8601,
             ip: request.ip,
-            body: body,
+            body: body[0..9999],
             body_hash: body_hash,
             header: {
               Accept: request.env["HTTP_ACCEPT"]
