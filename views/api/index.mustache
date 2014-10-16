@@ -6,7 +6,8 @@
   <form id="{{id}}-form" action="{{self}}" method="get" class="yui3-skin-sam form-search">
   
       <section class="span4">
-        <header><h1>{{{h1_title}}} <a href="/"><img title="api.npolar.no" alt="Logo (Norwegian Polar Institute)" src="/img/np_logo_s.png" /></a></h1></header>
+        <header><h1>{{{h1_title}}} <a href="/">
+        <img title="api.npolar.no" width="60" alt="Norwegian Polar Institute (logo)" src="http://www.npolar.no/system/modules/no.npolar.site.npweb/resources/style/np-logo.svg" /></a></h1></header>
         {{#search?}}
         <input id="q" name="q" value="{{q}}" type="search" autofocus placeholder="{{placeholder}}" class="yui3-aclist-input" />
         <input type="submit" class="btn" value="Search" />
@@ -105,6 +106,16 @@
   {{#map?}}
   {{< _leaflet_map }}
   {{/map?}}
+  
+  {{#graph?}}
+    {{#pie?}}
+      {{< _gchart_facet_pie }}
+    {{/pie?}}
+    {{#column?}}
+      {{< _gchart_column }}
+    {{/column?}}
+  {{/graph?}}
+  
   
 {{#frontpage?}}
 <table class="table table-condensed">

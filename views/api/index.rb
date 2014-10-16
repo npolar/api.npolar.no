@@ -49,7 +49,6 @@ module Views
       end
 
       def call(env)
-        
         @hash[:request] = @request = Npolar::Rack::Request.new(env)
         
         @hash[:self] = request.url
@@ -162,6 +161,10 @@ module Views
           if e.key? :title and e[:title].respond_to? :first
             e[:title] = e[:title].first
           end
+          if not e.key? :title and e.key? :name
+            e[:title] = e[:name]
+          end
+          
 
           edit_links = (e.links||[]).select {|link| link.rel == "edit" }
 
@@ -266,9 +269,21 @@ module Views
         end
       end
       
+      def field
+        if request.params.key? "field"
+          request["field"]
+        else
+          fields.first
+        end
+      end
+      
+      def fields
+        request["fields"]||"*".split(",").map {|f| { field: f } }
+      end
+      
       def title?(entry)
         return false if request["title"] =~ /^(false|no)$/
-        entry.key?(:title)
+        entry.key?(:title) or entry.key?(:name)
       end
 
       def first_href
@@ -287,6 +302,22 @@ module Views
 
       def map?
         request.params.key? "map"
+      end
+      
+      def graph?
+        request.params.key? "graph"
+      end
+      
+      def graph_type
+        request["graph"]
+      end
+      
+       def column?
+        graph_type == "column"
+      end
+      
+      def pie?
+        graph_type == "pie"
       end
 
       def opensearch(key=nil)
