@@ -4,7 +4,7 @@ require "json"
 module Historic
 class Vessel < Hashie::Mash
     
-  #include Npolar::Validation::MultiJsonSchemaValidator
+  include Npolar::Validation::MultiJsonSchemaValidator
   
   def schemas
     ["historic-vessel.json"] 
