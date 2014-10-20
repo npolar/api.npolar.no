@@ -10,7 +10,7 @@
 # Description:       Controls api.npolar.no
 ### END INIT INFO
 PATH=/home/api/.rvm/bin:/home/api/.rvm/bin/default_ruby:$PATH
-DAEMON=/home/api/api.npolar.no/bin/unicorn
+DAEMON=/home/api/.rvm/wrappers/api/unicorn
 DAEMON_OPTS="-c /home/api/api.npolar.no/example/install/unicorn.rb -E production -D"
 
 NAME=$0
