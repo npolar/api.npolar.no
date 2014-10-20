@@ -9,6 +9,9 @@
 # Short-Description: Controls http server (unicorn) for api.npolar.no
 # Description:       Controls api.npolar.no
 ### END INIT INFO
+
+source /home/api/api.npolar.no/config/env
+
 PATH=/home/api/.rvm/bin:/home/api/.rvm/bin/default_ruby:$PATH
 DAEMON=/home/api/.rvm/wrappers/default/unicorn
 DAEMON_OPTS="-c /home/api/api.npolar.no/example/install/unicorn.rb -E production -D"
