@@ -1,0 +1,335 @@
+{
+	"title": "PBHIMS Schema v2.0",
+	"description": "PBHIMS Document Schema version 2.0",
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"title": {
+			"type": "string",
+			"description": "Record title"
+		},
+		"author": {
+			"type": "string",
+			"description": "Name of the person who originally created the record"
+		},
+		"datetime": {
+			"type": "string",
+			"format": "date-time",
+			"description": "Date and time the record was originally created"
+		},
+		"update_author": {
+			"type": [ "string", "null" ],
+			"description": "Name of the person who last updated the record"
+		},
+		"update_datetime": {
+			"type": [ "string", "null" ],
+			"format": "date-time",
+			"description": "Date and time the record was last updated"
+		},
+		"status": {
+			"type": "string",
+			"enum": [ "complete", "incomplete" ],
+			"default": "incomplete",
+			"description": "Current status of the record"
+		},
+		"incident_datetime": {
+			"type": "string",
+			"format": "date-time",
+			"description": "Date and time of the incident"
+		},
+		"incident_datetime_accuracy": {
+			"type": "string",
+			"enum": [ "minute", "hour", "day", "month", "year" ],
+			"description": "Accuracy of the incident date and time"
+		},
+		"incident_timezone": {
+			"type": "string",
+			"enum": [ "UTC", "Arctic/Longyearbyen", "Europe/Oslo" ],
+			"description": "Timezone of the given incident date and time"
+		},
+		"incident_duration": {
+			"type": [ "integer", "null" ],
+			"default": null,
+			"description": "Approximate duration of the incident in minutes"
+		},
+		"location_country": {
+			"type": "string",
+			"pattern": "^[A-Za-z]{2}$",
+			"description": "Country code for the incident location"
+		},
+		"location_name": {
+			"type": "string",
+			"description": "Name of the incident location"
+		},
+		"location_description": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/translation"
+			},
+			"description": "Incident location description"
+		},
+		"latitude": {
+			"type": "number",
+			"minimum": -90.0,
+			"maximum":  90.0,
+			"description": "Incident location latitude in WGS-84"
+		},
+		"longitude": {
+			"type": "number",
+			"minimum": -180.0,
+			"maximum":  180.0,
+			"description": "Incident location longitude in WGS-84"
+		},
+		"coordinates_accuracy": {
+			"type": "integer",
+			"description": "Incident location coordinates accuracy in meters"
+		},
+		"location_use_frequency": {
+			"type": [ "string", "null" ],
+			"enum": [ null, "daily", "weekly", "monthly", "rarely" ],
+			"default": null,
+			"description": "Usage frequency by humans of the incident location"
+		},
+		"location_security": {
+			"type": "string",
+			"description": "Means of security used on the incident location"
+		},
+		"location_visibility": {
+			"type": [ "string", "null" ],
+			"enum": [ null, "poor", "medium", "excellent" ],
+			"default": null,
+			"description": "Estimated visibility during the incident"
+		},
+		"incident_cause": {
+			"type": "string",
+			"description": "Probable cause of the incident"
+		},
+		"narrative": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/translation"
+			},
+			"description": "Descriptive incident narrative"
+		},
+		"food_sources": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"category": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "none", "anthropogenic", "wildlife", "other" ],
+						"default": null,
+						"description": "Food source category"
+					},
+					"description": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Descriptive text of the food source"
+					}
+				}
+			},
+			"description": "Available food sources around the incident location"
+		},
+		"humans": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"category": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "resident", "tourist", "scientist", "hunter" ],
+						"default": null,
+						"description": "Category of the person"
+					},
+					"experience": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "none", "some", "experienced" ],
+						"default": null,
+						"description": "Polar bear experience of the person"
+					},
+					"nationality": {
+						"type": [ "string", "null" ],
+						"description": "Nationality of the person"
+					},
+					"activity": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Description of the person's activity prior to the incident"
+					},
+					"conveyance": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [ "dogsled", "snowmobile", "boat", "atv" ]
+						},
+						"description": "List of conveyance used by the person"
+					},
+					"firearms": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"description": {
+									"type": "string",
+									"description": "Description of the firearm"
+								},
+								"activated": {
+									"type": "boolean",
+									"default": false,
+									"description": "Whether the firearm was used during the incident"
+								}
+							}
+						},
+						"description": "List of firearms worn by the person"
+					},
+					"action": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "none", "stopped", "ran", "attacked" ],
+						"default": null,
+						"description": "Action taken by the person during the incident"
+					},
+					"injury": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "none", "minor", "major", "fatal" ],
+						"default": null,
+						"description": "Injury caused to the person due to the incident"
+					},
+					"noise_level": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "silent", "whispering", "talking", "yelling" ],
+						"default": null,
+						"description": "Probable noise level of the person prior to the incident"
+					}
+				}
+			},
+			"description": "List of humans involved in the incident"
+		},
+		"bears": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"gender": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "male", "female" ],
+						"default": null,
+						"description": "Gender of the bear"
+					},
+					"age": {
+						"type": [ "integer", "null" ],
+						"maximum": 60,
+						"default": null,
+						"description": "Estimated age of the bear"
+					},
+					"activity": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Description of the bears's activity prior to the incident"
+					},
+					"injury": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "none", "minor", "major", "fatal" ],
+						"default": null,
+						"description": "Injury caused to the bear due to the incident"
+					},
+					"attacked": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "true", "false" ],
+						"default": null,
+						"description": "Whether the bear attacked any humans during the incident"
+					},
+					"result": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "none", "relocated", "killed" ],
+						"default": null,
+						"description": "Resulting action concerning the bear due to the incident"
+					},
+					"structure_entry": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "none", "attempt", "success" ],
+						"default": null,
+						"description": "Whether the bear attempted to enter any human structures"
+					},
+					"property_damage": {
+						"type": [ "string", "null" ],
+						"enum": [ null, "true", "false" ],
+						"default": null,
+						"description": "Whether the bear damaged any human equipment"
+					},
+					"bear_data": {
+						"type": [ "object", "null" ],
+						"properties": {
+							"id": {
+								"type": "string",
+								"description": "Bear ID (and type of ID) if available"
+							},
+							"previous_incidents": {
+								"type": "array",
+								"items": {
+									"type": "string",
+									"format": "uri",
+									"description": "URI to incident the bear was previously involved in"
+								},
+								"description": "List of known incidents the bear has previously been involved with"
+							},
+							"length": {
+								"type": "integer",
+								"description": "Length of the bear in centimeters"
+							},
+							"weight": {
+								"type": "integer",
+								"description": "Weight of the bear in kilograms"
+							},
+							"description": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/translation"
+								},
+								"description": "Descriptive text about the bear"
+							}
+						},
+						"description": "Additional data about the bear"
+					}
+				}
+			},
+			"description": "List of polar bears involved in the incident"
+		}
+	},
+	"required": [
+		"title",
+		"author",
+		"datetime",
+		"incident_datetime",
+		"incident_datetime_accuracy",
+		"incident_timezone",
+		"location_country",
+		"location_name"
+	],
+	"definitions": {
+		"translation": {
+			"type": "object",
+			"properties": {
+				"language": {
+					"type": "string",
+					"enum": [ "da", "en", "esx", "fr", "kl", "nb", "nn", "ru" ],
+					"description": "Language code of the translation"
+				},
+				"text": {
+					"type": "string",
+					"description": "Translation text in the specified language"
+				}
+			},
+			"required": [
+				"language",
+				"text"
+			]
+		}
+	}
+}
