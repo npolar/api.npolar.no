@@ -1,6 +1,6 @@
 {
-	"title": "PBHIMS Schema v2.0",
-	"description": "Schema for PBHIMS Documents (version 2.0)",
+	"title": "PBHIMS Schema v2.1",
+	"description": "Schema for PBHIMS Documents (version 2.1)",
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
@@ -32,106 +32,124 @@
 			"default": "incomplete",
 			"description": "Current status of the record"
 		},
-		"incident_datetime": {
-			"type": "string",
-			"format": "date-time",
-			"description": "Date and time of the incident"
-		},
-		"incident_datetime_accuracy": {
-			"type": "string",
-			"enum": [ "minute", "hour", "day", "month", "year" ],
-			"description": "Accuracy of the incident date and time"
-		},
-		"incident_timezone": {
-			"type": "string",
-			"enum": [ "UTC", "Arctic/Longyearbyen", "Europe/Oslo" ],
-			"description": "Timezone of the given incident date and time"
-		},
-		"incident_duration": {
-			"type": [ "integer", "null" ],
-			"default": null,
-			"description": "Approximate duration of the incident in minutes"
-		},
-		"location_country": {
-			"type": "string",
-			"pattern": "^[A-Za-z]{2}$",
-			"description": "Country code for the incident location"
-		},
-		"location_name": {
-			"type": "string",
-			"description": "Name of the incident location"
-		},
-		"location_description": {
-			"type": "array",
-			"items": {
-				"$ref": "#/definitions/translation"
-			},
-			"description": "Incident location description"
-		},
-		"latitude": {
-			"type": "number",
-			"minimum": -90.0,
-			"maximum":  90.0,
-			"description": "Incident location latitude in WGS-84"
-		},
-		"longitude": {
-			"type": "number",
-			"minimum": -180.0,
-			"maximum":  180.0,
-			"description": "Incident location longitude in WGS-84"
-		},
-		"coordinates_accuracy": {
-			"type": "integer",
-			"description": "Incident location coordinates accuracy in meters"
-		},
-		"location_use_frequency": {
-			"type": [ "string", "null" ],
-			"enum": [ null, "daily", "weekly", "monthly", "rarely" ],
-			"default": null,
-			"description": "Usage frequency by humans of the incident location"
-		},
-		"location_security": {
-			"type": "string",
-			"description": "Means of security used on the incident location"
-		},
-		"location_visibility": {
-			"type": [ "string", "null" ],
-			"enum": [ null, "poor", "medium", "excellent" ],
-			"default": null,
-			"description": "Estimated visibility during the incident"
-		},
-		"incident_cause": {
-			"type": "string",
-			"description": "Probable cause of the incident"
-		},
-		"narrative": {
-			"type": "array",
-			"items": {
-				"$ref": "#/definitions/translation"
-			},
-			"description": "Descriptive incident narrative"
-		},
-		"food_sources": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"category": {
-						"type": [ "string", "null" ],
-						"enum": [ null, "none", "anthropogenic", "wildlife", "other" ],
-						"default": null,
-						"description": "Food source category"
+		"incident": {
+			"type": "object",
+			"properties": {
+				"datetime": {
+					"type": "string",
+					"format": "date-time",
+					"description": "Date and time of the incident"
+				},
+				"datetime_accuracy": {
+					"type": "string",
+					"enum": [ "minute", "hour", "day", "month", "year" ],
+					"description": "Accuracy of the incident date and time"
+				},
+				"timezone": {
+					"type": "string",
+					"enum": [ "UTC", "Arctic/Longyearbyen", "Europe/Oslo" ],
+					"description": "Timezone of the given incident date and time"
+				},
+				"duration": {
+					"type": [ "integer", "null" ],
+					"default": null,
+					"description": "Approximate duration of the incident in minutes"
+				},
+				"cause": {
+					"type": "string",
+					"description": "Probable cause of the incident"
+				},
+				"narrative": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/translation"
 					},
-					"description": {
-						"type": "array",
-						"items": {
-							"$ref": "#/definitions/translation"
-						},
-						"description": "Descriptive text of the food source"
-					}
+					"description": "Descriptive incident narrative"
 				}
 			},
-			"description": "Available food sources around the incident location"
+			"required": [
+				"datetime",
+				"datetime_accuracy",
+				"timezone"
+			]
+		},
+		"location": {
+			"type": "object",
+			"properties": {
+				"country": {
+					"type": "string",
+					"pattern": "^[A-Za-z]{2}$",
+					"description": "Country code for the incident location"
+				},
+				"name": {
+					"type": "string",
+					"description": "Name of the incident location"
+				},
+				"latitude": {
+					"type": "number",
+					"minimum": -90.0,
+					"maximum":  90.0,
+					"description": "Incident location latitude in WGS-84"
+				},
+				"longitude": {
+					"type": "number",
+					"minimum": -180.0,
+					"maximum":  180.0,
+					"description": "Incident location longitude in WGS-84"
+				},
+				"accuracy": {
+					"type": "integer",
+					"description": "Incident location coordinates accuracy in meters"
+				},
+				"use_frequency": {
+					"type": [ "string", "null" ],
+					"enum": [ null, "daily", "weekly", "monthly", "rarely" ],
+					"default": null,
+					"description": "Usage frequency by humans of the incident location"
+				},
+				"security": {
+					"type": "string",
+					"description": "Means of security used on the incident location"
+				},
+				"visibility": {
+					"type": [ "string", "null" ],
+					"enum": [ null, "poor", "medium", "excellent" ],
+					"default": null,
+					"description": "Estimated visibility during the incident"
+				},
+				"description": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/translation"
+					},
+					"description": "Incident location description"
+				},
+				"food_sources": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"category": {
+								"type": [ "string", "null" ],
+								"enum": [ null, "none", "anthropogenic", "wildlife", "other" ],
+								"default": null,
+								"description": "Food source category"
+							},
+							"description": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/translation"
+								},
+								"description": "Descriptive text of the food source"
+							}
+						}
+					},
+					"description": "Available food sources around the incident location"
+				}
+			},
+			"required": [
+				"country"
+			]
 		},
 		"humans": {
 			"type": "array",
@@ -154,13 +172,6 @@
 						"type": [ "string", "null" ],
 						"description": "Nationality of the person"
 					},
-					"activity": {
-						"type": "array",
-						"items": {
-							"$ref": "#/definitions/translation"
-						},
-						"description": "Description of the person's activity prior to the incident"
-					},
 					"conveyance": {
 						"type": "array",
 						"items": {
@@ -168,24 +179,6 @@
 							"enum": [ "dogsled", "snowmobile", "boat", "atv" ]
 						},
 						"description": "List of conveyance used by the person"
-					},
-					"firearms": {
-						"type": "array",
-						"items": {
-							"type": "object",
-							"properties": {
-								"description": {
-									"type": "string",
-									"description": "Description of the firearm"
-								},
-								"activated": {
-									"type": "boolean",
-									"default": false,
-									"description": "Whether the firearm was used during the incident"
-								}
-							}
-						},
-						"description": "List of firearms worn by the person"
 					},
 					"action": {
 						"type": [ "string", "null" ],
@@ -204,6 +197,31 @@
 						"enum": [ null, "silent", "whispering", "talking", "yelling" ],
 						"default": null,
 						"description": "Probable noise level of the person prior to the incident"
+					},
+					"activity": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Description of the person's activity prior to the incident"
+					},
+					"firearms": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"description": {
+									"type": "string",
+									"description": "Description of the firearm"
+								},
+								"activated": {
+									"type": "boolean",
+									"default": false,
+									"description": "Whether the firearm was used during the incident"
+								}
+							}
+						},
+						"description": "List of firearms worn by the person"
 					}
 				}
 			},
@@ -225,13 +243,6 @@
 						"maximum": 60,
 						"default": null,
 						"description": "Estimated age of the bear"
-					},
-					"activity": {
-						"type": "array",
-						"items": {
-							"$ref": "#/definitions/translation"
-						},
-						"description": "Description of the bears's activity prior to the incident"
 					},
 					"injury": {
 						"type": [ "string", "null" ],
@@ -263,21 +274,19 @@
 						"default": null,
 						"description": "Whether the bear damaged any human equipment"
 					},
+					"activity": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Description of the bears's activity prior to the incident"
+					},
 					"bear_data": {
 						"type": [ "object", "null" ],
 						"properties": {
 							"id": {
 								"type": "string",
 								"description": "Bear ID (and type of ID) if available"
-							},
-							"previous_incidents": {
-								"type": "array",
-								"items": {
-									"type": "string",
-									"format": "uri",
-									"description": "URI to incident the bear was previously involved in"
-								},
-								"description": "List of known incidents the bear has previously been involved with"
 							},
 							"length": {
 								"type": "integer",
@@ -286,6 +295,15 @@
 							"weight": {
 								"type": "integer",
 								"description": "Weight of the bear in kilograms"
+							},
+							"previous_incidents": {
+								"type": "array",
+								"items": {
+									"type": "string",
+									"format": "uri",
+									"description": "URL to incident record the bear was previously involved in"
+								},
+								"description": "List of known incidents the bear has previously been involved with"
 							},
 							"description": {
 								"type": "array",
@@ -306,11 +324,8 @@
 		"title",
 		"author",
 		"datetime",
-		"incident_datetime",
-		"incident_datetime_accuracy",
-		"incident_timezone",
-		"location_country",
-		"location_name"
+		"incident",
+		"location"
 	],
 	"definitions": {
 		"translation": {
