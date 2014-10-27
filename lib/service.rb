@@ -26,7 +26,7 @@ class Service < Hashie::Mash
 
         bootstrap = Npolar::Api::Bootstrap.new
         bootstrap.log = Npolar::Api.log
-        bootstrap.bootstrap(service)
+        bootstrap.bootstrap(service, false) # false => don't inject the service document we just created
       end
       response
     }

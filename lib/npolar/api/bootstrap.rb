@@ -1,6 +1,7 @@
 module Npolar
   module Api
     
+    # Utility class to inject a service beheind the scenes
     class Bootstrap
 
       attr_accessor :log, :service
@@ -10,7 +11,7 @@ module Npolar
       # @param service [Service] http://api.npolar.no/schema/api
       #  service.storage: Storage adapter ("CouchDB")
       #  service.database": Service database ("api")
-      def bootstrap(service, force=true)
+      def bootstrap(service, inject_service_document=true)
 
         unless service.is_a? Service
           service = Service.factory(service)
@@ -24,27 +25,27 @@ module Npolar
           create_database(service)
         end
 
-        # PUT service document (in the api database)
-        # (A service like /user points to it's own database, but not to the fact
+        # PUT service document (inject into the api service database)
+        # [A service like /user points to it's own database, but not to the fact
         # that the user service configuration needs to go in the "api" database
         #(defined in "service-api.json")
         api = Service.factory("service-api.json")
-
+        
         client = Npolar::Api::Client::JsonApiClient.new(uri+"/"+api.database+"/"+service.id)
         client.log = log
         client.username = URI.parse(uri).user
         client.password = URI.parse(uri).password
 
-        #response = client.head
-        #if 404 == response.status
+        # If this was run on create from Service.after_lambda [on POST/PUT] => we don't want to reinject the service document
+        if true == inject_service_document
           response = client.put(service.to_json)
           if response.status == 201
             log.info "Stored service configuration '#{service.id}' in #{service.storage} database  #{api.database}: #{response.body} "
           else
             log.warn "Failed storing service configuration \"#{service.id}\", status #{response.status}: #{response.body}"
           end
-        #end
-
+        end
+        
         if service.search?
           create_search(service)
         end
@@ -60,8 +61,9 @@ module Npolar
         client = Npolar::Api::Client::JsonApiClient.new(uri+"/"+service.database)
     
         client.log = log
-        #log.debug client.uri
+        log.fatal client.uri.to_s
         response = client.head
+        
         if 404 == response.status
           log.info "Creating #{service.storage} \"#{service.database}\" database"
 
@@ -94,23 +96,36 @@ module Npolar
       end
       
       # Create Elasticsearch index, mapping, and river
+      # Elastic needs a little napping, so there is 3 sleeps
       def create_elasticsearch(service)
-        delete_elasticsearch_index(service)
-        create_elasticsearch_index(service)
-        create_elasticsearch_mapping(service)
-        if service.storage =~ /Couch/
+        
+        if service.storage =~ /Couch/         
           delete_elasticsearch_couchdb_river(service)
-          sleep(2) # Elastic needs a nap to perform the delete above
+          sleep(1) 
+        end
+        
+        delete_elasticsearch_index(service)
+        
+        sleep(1)
+    
+        create_elasticsearch_index(service)
+        
+        create_elasticsearch_mapping(service)
+        
+        if service.storage =~ /Couch/
           create_elasticsearch_couchdb_river(service)
+          sleep(1)
         end
       end
       
+      # http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-create-index.html
       def create_elasticsearch_index(service)
+        
         elastic = service.search
     
         client = Npolar::Api::Client::JsonApiClient.new(elastic_uri(elastic).to_s)
         
-        index_document_file = File.absolute_path(File.join(File.dirname(__FILE__), "..", "..", "..", "search", "elasticsearch", "index.json"))
+        index_document_file = File.absolute_path(File.join(__dir__, "..", "..", "..", "search", "elasticsearch", "index.json"))
         
         if File.exists? index_document_file
           index_document = JSON.parse(File.read(index_document_file))
@@ -118,7 +133,6 @@ module Npolar
           index_document = {}
         end
         index_document.merge!(elastic["index_document"]||{})
-
         response = client.put(index_document.to_json)
       
         log.info "Elasticsearch index PUT #{client.uri}: #{response.status}"
