@@ -1,0 +1,34 @@
+{
+  "index": {
+    "analysis": {
+      "filter": {
+        "preserve_ascii": {
+          "type": "asciifolding",
+          "preserve_original": "true"
+        },
+        "norwegian_collator":{
+          "type": "icu_collation",
+          "language": "no"
+        }
+      },
+      "analyzer": {
+        "norwegian_sort": {
+          "filter": [
+            "norwegian_collator"
+          ],
+          "tokenizer": "keyword"
+        },
+        "default": {
+          "filter": [
+            "standard",
+            "lowercase",
+            "preserve_ascii"
+          ],
+          "tokenizer": "standard"
+        }
+      }
+    },
+    "number_of_shards": 6,
+    "number_of_replicas": 1
+  }
+}
