@@ -1,6 +1,4 @@
 {
-   "_id": "person-api",
-   "_rev": "33-d53a56c9243f76f88c66a10d925b41b6",
    "schema": "http://api.npolar.no/schema/api",
    "id": "person-api",
    "path": "/person",
@@ -9,45 +7,42 @@
    "database": "person",
    "model": "Person",
    "search": {
-       "engine": "Elasticsearch",
-       "index": "person",
-       "type": "person",
-       "params": {
-           "facets": "organisation,orgtree,currently_employed,employment,workplace"
-       }
+     "engine": "Elasticsearch",
+     "index": "person",
+     "type": "person",
+     "params": {
+       "facets": "organisation,orgtree,currently_employed,employment,workplace"
+     }
    },
    "verbs": [
-       "DELETE",
-       "GET",
-       "HEAD",
-       "POST",
-       "PUT"
+     "DELETE",
+     "GET",
+     "HEAD",
+     "POST",
+     "PUT"
    ],
    "formats": {
-       "json": "application/json"
+     "json": "application/json"
    },
    "accepts": {
-       "application/json": "http://api.npolar.no/schema/person"
+     "application/json": "http://api.npolar.no/schema/person"
    },
    "category": [
-       "CouchDB",
-       "REST",
-       "Search",
-       "JSON",
-       "HTTP",
-       "Lucene",
-       "Elasticsearch"
+     "CouchDB",
+     "REST",
+     "JSON",
+     "HTTP",
+     "Lucene",
+     "Elasticsearch"
    ],
    "lifecycle": "production",
    "run": "Npolar::Api::Json",
    "auth": {
-       "authorize": "editor",
-       "system": "person",
-       "authorizer": "Npolar::Auth::Ldap"
+     "authorize": "editor",
+     "system": "person",
+     "authorizer": "Npolar::Auth::Ldap"
    },
    "open": true,
-   "updated": "2013-10-03T22:17:09Z",
-   "updated_by": "conrad",
    "created": "2013-10-03T22:17:09Z",
-   "created_by": "conrad"
+   "created_by": "Conrad Helgeland"
 }
