@@ -6,10 +6,9 @@
 "type": "object",
 "additionalProperties": false,
 "required": [
-"properties",
+"title",
 "schema",
-"people",
-"instructor"
+"people"
 ],
 "properties": {
 "id": {
