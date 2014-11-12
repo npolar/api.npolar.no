@@ -1,6 +1,6 @@
 require "hashie"
 
-class Publication < Hashie::Mash
+class Course < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
   def schemas
