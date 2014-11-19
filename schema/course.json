@@ -110,9 +110,6 @@
 "null"
 ]
 },
-"links": {
-"type": "array"
-},
 "organisation": {
 "type": [
 "string",
@@ -146,5 +143,3 @@
 }
 }
 }
-
- 
