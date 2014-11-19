@@ -1,0 +1,105 @@
+{
+    "course": {
+        "_all": {
+            "store": true
+        },
+        "_id": {
+            "type": "string",
+            "index": "not_analyzed"
+        },
+        "_rev": {
+            "type": "string",
+            "index": "not_analyzed"
+        },
+        "collection": {
+            "type": "string",
+            "index": "not_analyzed"
+        },
+        "title": {
+            "type": "string",
+            "index":"not_analyzed"
+        },
+        "course_type": {
+            "type": "string",
+            "index": "not_analyzed"
+        },
+        "comment": {
+            "type": "string"
+        },
+        "start_date": {
+            "type": "date",
+            "format": "dateOptionalTime"
+        },
+        "end_date": {
+            "type": "date",
+            "format": "dateOptionalTime"
+        },
+        "expiry_date": {
+            "type": "date",
+             "format": "dateOptionalTime"
+        },
+        "people": {
+            "properties": {
+                "first_name": {
+                    "type": "string",
+                    "fields": {
+                        "sort": {
+                            "type": "string",
+                            "analyzer": "norwegian_sort"
+                        }
+                    }
+                },
+                "last_name": {
+                    "type": "string",
+                    "fields": {
+                        "sort": {
+                            "type": "string",
+                            "analyzer": "norwegian_sort"
+                        }
+                    }
+                },
+                "roles": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "phone": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "email": {
+                    "type": "string",
+                    "fields": {
+                        "sort": {
+                            "type": "string",
+                            "analyzer": "norwegian_sort"
+                        }
+                    }
+                },
+                "organisation": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                }
+            }
+        },
+        "updated": {
+            "type": "date",
+            "format": "dateOptionalTime"
+        },
+        "created": {
+            "type": "date",
+            "format": "dateOptionalTime"
+        },
+        "created_by": {
+            "type": "string",
+            "index": "not_analyzed"
+        },
+        "updated_by": {
+            "type": "string",
+            "index": "not_analyzed"
+        },
+        "id": {
+            "type": "string",
+            "index": "not_analyzed"
+        }
+    }
+}
