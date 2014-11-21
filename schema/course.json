@@ -32,12 +32,8 @@
 "type": "string"
 },
 "course_type": {
-"enum": [
-"Field safety course",
-"First aid course",
-"HSE course",
-"other"
-]
+"description":"Course category",
+"type": "string"
 },
 "comment": {
 "type": [

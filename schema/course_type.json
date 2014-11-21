@@ -1,0 +1,76 @@
+{
+"$schema": "http://json-schema.org/draft-04/schema#",
+"id": "http://api.npolar.no/schema/course_type-1.0-rc4",
+"title": "Course_type",
+"description": "Logistics Course database - course types",
+"type": "object",
+"additionalProperties": false,
+"required": [
+"title",
+"schema"
+],
+"properties": {
+"id": {
+"description": "Identifier (UUID | URI)",
+"type": "string"
+},
+"schema": {
+"type": "string"
+},
+"collection": {
+"enum": [
+"course"
+]
+},
+"base": {
+"enum": [
+"http://api.npolar.no"
+]
+},
+"title": {
+"description": "Type of course",
+"type": "string"
+},
+"area": {
+"type": [
+"string",
+"null"
+]
+},
+"expiry_date":{
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"comment": {
+"type": [
+"string",
+"null"
+]
+},
+"created": {
+"description": "Document was published",
+"type": "string",
+"format": "date-time"
+},
+"updated": {
+"description": "Document was updated",
+"type": "string",
+"format": "date-time"
+},
+"created_by": {
+"type": "string"
+},
+"updated_by": {
+"type": "string"
+},
+"_id": {
+"type": "string"
+},
+"_rev": {
+"type": "string"
+}
+}
+}
