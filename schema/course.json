@@ -1,0 +1,141 @@
+{
+"$schema": "http://json-schema.org/draft-04/schema#",
+"id": "http://api.npolar.no/schema/course-1.0-rc4",
+"title": "Course",
+"description": "Logistics Course database",
+"type": "object",
+"additionalProperties": false,
+"required": [
+"title",
+"schema"
+],
+"properties": {
+"id": {
+"description": "Identifier (UUID | URI)",
+"type": "string"
+},
+"schema": {
+"type": "string"
+},
+"collection": {
+"enum": [
+"course"
+]
+},
+"base": {
+"enum": [
+"http://api.npolar.no"
+]
+},
+"title": {
+"description": "Course title",
+"type": "string"
+},
+"course_type": {
+"description":"Course category",
+"type": "string"
+},
+"comment": {
+"type": [
+"string",
+"null"
+]
+},
+"start_date":{
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"end_date":{
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"expiry_date":{
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"people": {
+"description": "People involved in creating the publication",
+"type": "array",
+"additionalItems": false,
+"required": [
+"first_name",
+"last_name",
+"roles",
+"organisation"
+],
+"items": {
+"type": "object",
+"additionalProperties": false,
+"properties": {
+"id": {
+"type": "string"
+},
+"first_name": {
+"type": "string"
+},
+"last_name": {
+"type": "string"
+},
+"roles": {
+"type": "array",
+"items": {
+"enum": [
+"participant",
+"instructor"
+]
+}
+},
+"phone": {
+"type": [
+"string",
+"null"
+]
+},
+"email": {
+"type": [
+"string",
+"null"
+]
+},
+"organisation": {
+"type": [
+"string",
+"null"
+]
+}
+}
+}
+},
+"created": {
+"description": "Document was published",
+"type": "string",
+"format": "date-time"
+},
+"updated": {
+"description": "Document was updated",
+"type": "string",
+"format": "date-time"
+},
+"created_by": {
+"type": "string"
+},
+"updated_by": {
+"type": "string"
+},
+"_id": {
+"type": "string"
+},
+"_rev": {
+"type": "string"
+}
+}
+}
