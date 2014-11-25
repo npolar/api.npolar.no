@@ -91,6 +91,14 @@
         "type": "string",
         "index": "not_analyzed"
       },
+      "unit": {
+        "type": "string",
+        "index": "not_analyzed"
+      },
+      "variable": {
+        "type": "string",
+        "index": "not_analyzed"
+      },
       "titles": {
         "type": "object"
       },
