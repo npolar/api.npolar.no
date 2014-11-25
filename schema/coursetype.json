@@ -19,7 +19,7 @@
 },
 "collection": {
 "enum": [
-"course"
+"coursetype"
 ]
 },
 "base": {
