@@ -1,5 +1,5 @@
 {
-  "monitoring": {
+  "parameter": {
     "_all": {
       "store": true
     },

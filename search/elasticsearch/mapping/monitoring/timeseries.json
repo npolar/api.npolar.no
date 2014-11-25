@@ -1,5 +1,5 @@
 {
-  "monitoring": {
+  "timeseries": {
     "_all": {
       "store": true
     },
@@ -19,9 +19,9 @@
       "collection": {
         "type": "string",
         "index": "not_analyzed"
-      },
+      },  
       "label": {
-        "type": "string",
+        "type": "string", 
         "index": "not_analyzed"
       },
       "species": {
@@ -88,6 +88,14 @@
         }
       },
       "schema": {
+        "type": "string",
+        "index": "not_analyzed"
+      },
+      "unit": {
+        "type": "string",
+        "index": "not_analyzed"
+      },
+      "variable": {
         "type": "string",
         "index": "not_analyzed"
       },

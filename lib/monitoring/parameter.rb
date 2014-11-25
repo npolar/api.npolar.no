@@ -5,14 +5,14 @@ require "time"
 
 module Monitoring
 
-  # [Timeseries](http://api.npolar.no/schema/monitoring-timeseries) model
-  class Timeseries < Hashie::Mash
+  # [Parameter](http://api.npolar.no/schema/monitoring-parameter) model
+  class Parameter < Hashie::Mash
 
     #include Npolar::Validation::MultiJsonSchemaValidator
     
-    # JSON_SCHEMA_URI = "http://api.npolar.no/schema/monitoring-timeseries"
+    # JSON_SCHEMA_URI = "http://api.npolar.no/schema/monitoring-parameter"
 
-    # JSON_SCHEMAS = ["monitoring-timeseries.json"]
+    # JSON_SCHEMAS = ["monitoring-parameter.json"]
 
     # @override MultiJsonSchemaValidator
     #def schemas

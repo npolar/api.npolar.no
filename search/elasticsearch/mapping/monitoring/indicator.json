@@ -1,5 +1,5 @@
 {
-  "monitoring": {
+  "indicator": {
     "_all": {
       "store": true
     },
