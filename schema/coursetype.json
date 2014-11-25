@@ -27,7 +27,7 @@
 "http://api.npolar.no"
 ]
 },
-"course_type": {
+"coursetype": {
 "description": "Type of course",
 "type": "string"
 },
