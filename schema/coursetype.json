@@ -6,8 +6,9 @@
 "type": "object",
 "additionalProperties": false,
 "required": [
-"title",
-"schema"
+"coursetype",
+"schema",
+"area"
 ],
 "properties": {
 "id": {
