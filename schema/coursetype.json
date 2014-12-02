@@ -1,13 +1,14 @@
 {
 "$schema": "http://json-schema.org/draft-04/schema#",
-"id": "http://api.npolar.no/schema/course_type-1.0-rc4",
-"title": "Course_type",
-"description": "Logistics Course database - course types",
+"id": "http://api.npolar.no/schema/coursetype-1.0-rc4",
+"title": "Coursetype",
+"description": "Logistics Course database - coursetypes",
 "type": "object",
 "additionalProperties": false,
 "required": [
-"title",
-"schema"
+"coursetype",
+"schema",
+"area"
 ],
 "properties": {
 "id": {
@@ -27,7 +28,7 @@
 "http://api.npolar.no"
 ]
 },
-"course_type": {
+"coursetype": {
 "description": "Type of course",
 "type": "string"
 },
