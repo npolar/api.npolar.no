@@ -38,12 +38,11 @@
 "null"
 ]
 },
-"expiry_date":{
+"valid":{
 "type": [
 "string",
 "null"
-],
-"format": "date-time"
+]
 },
 "comment": {
 "type": [
