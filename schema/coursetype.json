@@ -6,7 +6,7 @@
 "type": "object",
 "additionalProperties": false,
 "required": [
-"coursetype",
+"title",
 "schema",
 "area"
 ],
@@ -28,7 +28,7 @@
 "http://api.npolar.no"
 ]
 },
-"coursetype": {
+"title": {
 "description": "Type of course",
 "type": "string"
 },
