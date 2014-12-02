@@ -1,0 +1,12 @@
+{
+  "oceanography_point":{
+    "properties":
+    {
+      "serial_number" : {"index" : "not_analyzed"},
+      "instrument_type" : {"index" : "not_analyzed"},
+      "id" : {"index" : "not_analyzed"},
+      "cruise" : {"index" : "not_analyzed"},
+      "collection" : {"index" : "not_analyzed"}
+    }
+  }
+}

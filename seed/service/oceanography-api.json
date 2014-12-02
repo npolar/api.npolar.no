@@ -1,0 +1,55 @@
+{
+  "schema": "http://api.npolar.no/schema/api",
+  "id": "oceanography-api",
+  "path": "/oceanography",
+  "title": "Physical oceanography API",
+  "summary": "Norwegian Polar Institutes physical oceanography API. Contains ctd mooring and cast data.",
+  "storage": "Couch",
+  "database": "oceanography",
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "oceanography",
+    "type": "ctd",
+    "log": false,
+    "bulk_size": 500,
+    "params": {
+      "facets": "station,cruise,ctd,collection,mooring,serialnumber",
+      "date-year": "measured"
+    }
+  },
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/oceanography_point"
+  },
+  "category": [
+    "CouchDB",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "middleware": [],
+  "auth": {
+    "authorize": "sysadmin",
+    "system": "api",
+    "authorizer": "Npolar::Auth::Ldap"
+  },
+  "updated": "2014-08-22T11:35:03Z",
+  "updated_by": "ruben",
+  "created": "2014-08-22T11:35:03Z",
+  "created_by": "ruben"
+}
