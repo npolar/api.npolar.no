@@ -32,10 +32,6 @@
 "description": "Course title",
 "type": "string"
 },
-"course_type": {
-"description":"Course category",
-"type": "string"
-},
 "coursetype_id":{
 "description":"id from chosen course type",
 "type":"string"
