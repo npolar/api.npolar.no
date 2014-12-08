@@ -1,6 +1,6 @@
 {
-	"title": "PBHIMS Schema v2.1",
-	"description": "Schema for PBHIMS Documents (version 2.1)",
+	"title": "PBHIMS Schema v0.3",
+	"description": "Schema for PBHIMS Documents (version 0.3)",
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
@@ -79,7 +79,11 @@
 				"country": {
 					"type": "string",
 					"pattern": "^[A-Za-z]{2}$",
-					"description": "Country code for the incident location"
+					"description": "Country code of the incident location"
+				},
+				"region": {
+					"type": "string",
+					"description": "Local region name of the incident location"
 				},
 				"name": {
 					"type": "string",
@@ -96,6 +100,12 @@
 					"minimum": -180.0,
 					"maximum":  180.0,
 					"description": "Incident location longitude in WGS-84"
+				},
+				"datum": {
+					"type": "string",
+					"enum": [ "WGS84", "UTM" ],
+					"default": "WGS84",
+					"description": "Datum of the location coordinates"
 				},
 				"accuracy": {
 					"type": "integer",
@@ -122,7 +132,7 @@
 					"items": {
 						"$ref": "#/definitions/translation"
 					},
-					"description": "Incident location description"
+					"description": "Incident location description (e.g. habitat, conditions etc.)"
 				},
 				"food_sources": {
 					"type": "array",
@@ -168,6 +178,13 @@
 						"default": null,
 						"description": "Polar bear experience of the person"
 					},
+					"experience_description": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Descriptive text about the person's polar bear experience"
+					},
 					"nationality": {
 						"type": [ "string", "null" ],
 						"description": "Nationality of the person"
@@ -182,7 +199,7 @@
 					},
 					"action": {
 						"type": [ "string", "null" ],
-						"enum": [ null, "none", "stopped", "ran", "attacked" ],
+						"enum": [ null, "none", "stopped", "ran", "neutralisation", "intimidation" ],
 						"default": null,
 						"description": "Action taken by the person during the incident"
 					},
@@ -192,11 +209,12 @@
 						"default": null,
 						"description": "Injury caused to the person due to the incident"
 					},
-					"noise_level": {
-						"type": [ "string", "null" ],
-						"enum": [ null, "silent", "whispering", "talking", "yelling" ],
-						"default": null,
-						"description": "Probable noise level of the person prior to the incident"
+					"injury_description": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Descriptive text about injury caused to the person"
 					},
 					"activity": {
 						"type": "array",
@@ -205,23 +223,24 @@
 						},
 						"description": "Description of the person's activity prior to the incident"
 					},
-					"firearms": {
+					"weapons": {
 						"type": "array",
 						"items": {
 							"type": "object",
 							"properties": {
 								"description": {
 									"type": "string",
-									"description": "Description of the firearm"
+									"description": "Description of the weapon"
 								},
-								"activated": {
-									"type": "boolean",
-									"default": false,
-									"description": "Whether the firearm was used during the incident"
+								"action": {
+									"type": "string",
+									"enum": [ null, "intimidation", "neutralisation" ],
+									"default": null,
+									"description": "How the weapon was used"
 								}
 							}
 						},
-						"description": "List of firearms worn by the person"
+						"description": "List of weapons worn by the person"
 					}
 				}
 			},
@@ -239,16 +258,23 @@
 						"description": "Gender of the bear"
 					},
 					"age": {
-						"type": [ "integer", "null" ],
-						"maximum": 60,
+						"type": "string",
+						"enum": [ null, "child", "subadult", "adult" ],
 						"default": null,
-						"description": "Estimated age of the bear"
+						"description": "Age category of the bear"
 					},
 					"injury": {
 						"type": [ "string", "null" ],
 						"enum": [ null, "none", "minor", "major", "fatal" ],
 						"default": null,
 						"description": "Injury caused to the bear due to the incident"
+					},
+					"injury_description": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Descriptive text about bear injuries"
 					},
 					"attacked": {
 						"type": [ "string", "null" ],
