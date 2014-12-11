@@ -34,7 +34,7 @@ gem "oai"
 
 # Rack
 gem "rack" #, git: "git://github.com/rack/rack.git"
-gem "rack-contrib", git: "https://github.com/rack/rack-contrib.git", tag: "1.1.0"
+gem "rack-contrib", git: "git://github.com/npolar/rack-contrib.git"
 gem "rack-protection"
 gem "rack-client" #https://github.com/halorgium/rack-client
 gem "rack-ssl" #https://github.com/josh/rack-ssl
