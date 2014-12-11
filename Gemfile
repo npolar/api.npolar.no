@@ -11,7 +11,7 @@ gem "icelastic", git: "git://github.com/npolar/icelastic.git"
 
 gem "npolar-api-client-ruby", git: "git://github.com/npolar/npolar-api-client-ruby" #, path:  "../npolar-api-client-ruby"
 #gem "npolar-api-client-ruby", path:  "../npolar-api-client-ruby"
- 
+
 gem "argos-ruby"#, path:  "../argos-ruby"
 gem "highline" # for ./bin/npolar-api-setup
 
@@ -72,5 +72,3 @@ group :development, :test do
   gem "simplecov"
   gem "ruby-prof"
 end
- 
-

@@ -1,0 +1,145 @@
+{
+	"title": "Oceanography measurement point Schema v0.1",
+	"description": "Schema for Oceanography measurement point documents (version 0.1)",
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"collection": {
+			"type": "string",
+			"enum": [ "cast", "mooring" ],
+			"description": "Collection type"
+		},
+		"comments": {
+			"type": "array",
+			"items": { "type": "string" },
+			"description": "Comments"
+		},
+		"cruise": {
+			"type": "string",
+			"description": "Cruise identifier"
+		},
+		"depth": {
+			"type": "number",
+			"description": "Measurement depth"
+		},
+		"direction_of_sea_water_velocity": {
+			"type": "number",
+			"minimum": 0,
+			"maximum": 360,
+			"description": "Degrees from north"
+		},
+		"eastward_sea_water_velocity": {
+			"type": "number",
+			"minimum": -10,
+			"maximum": 10,
+			"description": "Eastward sea water velocity in m/s"
+		},
+		"id": {
+			"type": "string",
+			"description": "UUID of this doc"
+		},
+		"instrument_type": {
+			"type": "string",
+			"description": "Instrument type"
+		},
+		"latitude": {
+			"type": "number",
+			"minimum": -90,
+			"maximum": 90,
+			"description": "Location latitude in WGS-84"
+		},
+		"longitude": {
+			"type": "number",
+			"minimum": -180,
+			"maximum": 180,
+			"description": "Location longitude in WGS-84"
+		},
+		"measured": {
+			"type": "string",
+			"format": "date-time",
+			"description": "Date and time of measurement serie"
+		},
+		"mooring": {
+			"type": "string",
+			"description": "Mooring id"
+		},
+		"northward_sea_water_velocity": {
+			"type": "number",
+			"minimum": -10,
+			"maximum": 10,
+			"description": "Northward sea water velocity in m/s"
+		},
+		"original_station": {
+			"type": "string",
+			"description": "Station identifier"
+		},
+		"platform": {
+			"type": "string",
+			"description": "Platform from which the instrument was deployed. Example: RV Lance, sea-ice"
+		},
+		"sea_floor_depth_below_sea_surface": {
+			"type": "number",
+			"description": "Sea depth"
+		},
+		"sea_water_electrical_conductivity": {
+			"type": "number",
+			"minimum": 0,
+			"maximum": 10,
+			"description": "Conductivity in Siemens per meter (S/m)"
+		},
+		"sea_water_pressure": {
+			"type": "number",
+			"minimum": 0,
+			"maximum": 5000,
+			"description": "Pressure in decibar"
+		},
+		"sea_water_salinity": {
+			"type": "number",
+			"minimum": 15,
+			"maximum": 45,
+			"description": "Salinity in particle salinity units (PSU) PPS-78"
+		},
+		"sea_water_temperature": {
+			"type": "number",
+			"minimum": -5,
+			"maximum": 50,
+			"description": "Temperature in degrees Celsius ITS-90"
+		},
+		"serial_number": {
+			"type": "string",
+			"description": "Instrument serial number"
+		},
+		"start_date": {
+			"type": "string",
+			"format": "date-time",
+			"description": "Start of measurement"
+		},
+		"station": {
+			"type": "string",
+			"description": "Station identifier"
+		},
+		"stop_date": {
+			"type": "string",
+			"format": "date-time",
+			"description": "Stop of measurement"
+		},
+		"tilt": {
+			"type": "number",
+			"minimum": 0,
+			"maximum": 360,
+			"description": "Instrument tilt in degrees"
+		},
+		"time": {
+			"type": "string",
+			"format": "date-time",
+			"description": "Time of measurement"
+		}
+	},
+	"required": [
+		"collection",
+		"longitude",
+		"latitude",
+		"id"
+	],
+	"additionalProperties": true
+}

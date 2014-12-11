@@ -1,7 +1,6 @@
 config.rb
 config.ru
 bin
-seed
 config/*
 coverage
 *.lock
@@ -20,3 +19,4 @@ example/*.txt
 *.txt
 .save
 exports.sh
+/.project
