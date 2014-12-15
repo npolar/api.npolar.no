@@ -50,6 +50,12 @@
 "null"
 ]
 },
+"instructor_list": {
+"type": [
+"string",
+"null"
+]
+},
 "created": {
 "description": "Document was published",
 "type": "string",
