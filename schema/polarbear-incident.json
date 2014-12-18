@@ -9,11 +9,7 @@
 			"description": "Record title"
 		},
 		"author": {
-			"type": "object",
-			"properties": {
-				"$ref": "#/definitions/person"
-			},
-			"description": "The person who originally created the record"
+			"$ref": "#/definitions/person"
 		},
 		"datetime": {
 			"type": "string",
@@ -21,11 +17,7 @@
 			"description": "Date and time the record was originally created"
 		},
 		"update_author": {
-			"type": [ "object", "null" ],
-			"properties": {
-				"$ref": "#/definitions/person"
-			},
-			"description": "The person who last modified the record"
+			"$ref": "#/definitions/person"
 		},
 		"update_datetime": {
 			"type": "string",
@@ -423,7 +415,7 @@
 							"description": "Name suffix"
 						}
 					},
-					"required": [ "given", "family", "full" ]
+					"required": [ "given", "family" ]
 				},
 				"employment": {
 					"type": "object",
