@@ -526,28 +526,28 @@
 						"properties": {
 							"rel": {
 								"type": "string",
-								"description": "Link relation"
+								"description": "Relationship of the linked document"
 							},
 							"href": {
 								"type": "string",
-								"description": "Hypertext reference (address)",
+								"description": "Hypertext reference location of the linked document",
 								"format": "uri"
 							},
 							"hreflang": {
 								"type": "string",
-								"description": "Language of href resource"
+								"description": "Language of the text in the linked document"
 							},
 							"title": {
 								"type": "string",
-								"description": "Link title"
+								"description": "Title of the linked document"
 							},
 							"type": {
 								"type": "string",
-								"description": "Link resource media type (MIME type)",
+								"description": "Media (MIME) type of the linked document",
 								"default": "text/html"
 							}
 						},
-						"required": [ "href" ]
+						"required": [ "rel", "href" ]
 					}
 				}
 			},
