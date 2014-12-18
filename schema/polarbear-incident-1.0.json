@@ -1,6 +1,6 @@
 {
-	"title": "PBHIMS Schema v0.4",
-	"description": "Schema for PBHIMS Documents (version 0.4)",
+	"title": "PBHIMS Schema v1.0",
+	"description": "Schema for PBHIMS Documents (v1.0-rc4)",
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
