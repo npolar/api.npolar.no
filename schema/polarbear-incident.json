@@ -1,0 +1,565 @@
+{
+	"title": "PBHIMS Schema v0.4",
+	"description": "Schema for PBHIMS Documents (version 0.4)",
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"title": {
+			"type": "string",
+			"description": "Record title"
+		},
+		"author": {
+			"type": "object",
+			"properties": {
+				"$ref": "#/definitions/person"
+			},
+			"description": "The person who originally created the record"
+		},
+		"datetime": {
+			"type": "string",
+			"format": "date-time",
+			"description": "Date and time the record was originally created"
+		},
+		"update_author": {
+			"type": [ "object", "null" ],
+			"properties": {
+				"$ref": "#/definitions/person"
+			},
+			"description": "The person who last modified the record"
+		},
+		"update_datetime": {
+			"type": "string",
+			"format": "date-time",
+			"description": "Date and time the record was last updated"
+		},
+		"status": {
+			"type": "string",
+			"enum": [ "complete", "incomplete" ],
+			"default": "incomplete",
+			"description": "Current status of the record"
+		},
+		"incident": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"enum": [ "conflict", "avoided" ],
+					"description": "Type of incident"
+				},
+				"datetime": {
+					"type": "string",
+					"format": "date-time",
+					"description": "Date and time of the incident"
+				},
+				"datetime_accuracy": {
+					"type": "string",
+					"enum": [ "minute", "hour", "day", "month", "year" ],
+					"description": "Accuracy of the incident date and time"
+				},
+				"timezone": {
+					"type": "string",
+					"enum": [ "UTC", "Arctic/Longyearbyen", "Europe/Oslo" ],
+					"description": "Timezone of the given incident date and time"
+				},
+				"duration": {
+					"type": "integer",
+					"description": "Approximate duration of the incident in minutes"
+				},
+				"narrative": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/translation"
+					},
+					"description": "Descriptive incident narrative"
+				}
+			},
+			"required": [
+				"type",
+				"datetime",
+				"datetime_accuracy",
+				"timezone"
+			]
+		},
+		"location": {
+			"type": "object",
+			"properties": {
+				"country": {
+					"type": "string",
+					"pattern": "^[A-Za-z]{2}$",
+					"description": "Country code of the incident location"
+				},
+				"region": {
+					"type": "string",
+					"description": "Local region name of the incident location"
+				},
+				"name": {
+					"type": "string",
+					"description": "Name of the incident location"
+				},
+				"latitude": {
+					"type": "number",
+					"minimum": -90.0,
+					"maximum":  90.0,
+					"description": "Incident location latitude in WGS-84"
+				},
+				"longitude": {
+					"type": "number",
+					"minimum": -180.0,
+					"maximum":  180.0,
+					"description": "Incident location longitude in WGS-84"
+				},
+				"accuracy": {
+					"type": "integer",
+					"description": "Incident location coordinates accuracy in meters"
+				},
+				"use_frequency": {
+					"type": "string",
+					"enum": [ "", "daily", "weekly", "monthly", "rarely" ],
+					"default": "",
+					"description": "Usage frequency by humans of the incident location"
+				},
+				"security": {
+					"type": "string",
+					"description": "Means of security used on the incident location"
+				},
+				"visibility": {
+					"type": "integer",
+					"description": "Estimated visibility during the incident in meters"
+				},
+				"description": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/translation"
+					},
+					"description": "Incident location description (e.g. habitat, conditions etc.)"
+				},
+				"food_sources": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"category": {
+								"type": [ "string", "null" ],
+								"enum": [ null, "none", "anthropogenic", "wildlife", "other" ],
+								"default": null,
+								"description": "Food source category"
+							},
+							"description": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/translation"
+								},
+								"description": "Descriptive text of the food source"
+							}
+						}
+					},
+					"description": "Available food sources around the incident location"
+				}
+			},
+			"required": [
+				"country"
+			]
+		},
+		"humans": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"source": {
+						"type": "boolean",
+						"default": false,
+						"description": "Whether the person was used as a source for the report"
+					},
+					"category": {
+						"type": "string",
+						"enum": [ "", "resident", "tourist", "scientist", "hunter" ],
+						"default": "",
+						"description": "Category of the person"
+					},
+					"experience": {
+						"type": "string",
+						"enum": [ "", "none", "some", "experienced" ],
+						"default": "",
+						"description": "Polar bear experience of the person"
+					},
+					"nationality": {
+						"type": "string",
+						"description": "Nationality of the person"
+					},
+					"gender": {
+						"type": "string",
+						"enum": [ "", "male", "female" ],
+						"description": "Gender of the person"
+					},
+					"age": {
+						"type": "integer",
+						"description": "Age of the person"
+					},
+					"conveyance": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [ "aircraft", "atv", "automobile", "boat", "dogsled", "snowmobile" ]
+						},
+						"description": "List of conveyance used by the person"
+					},
+					"action": {
+						"type": "string",
+						"enum": [ "", "none", "stopped", "ran", "neutralisation", "deterrencing" ],
+						"default": "",
+						"description": "Action taken by the person during the incident"
+					},
+					"injury": {
+						"type": "string",
+						"enum": [ "", "none", "minor", "major", "fatal" ],
+						"default": "",
+						"description": "Injury caused to the person due to the incident"
+					},
+					"injury_description": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Descriptive text about injury caused to the person"
+					},
+					"activity": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Description of the person's activity prior to the incident"
+					},
+					"weapons": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"description": {
+									"type": "string",
+									"description": "Description of the weapon"
+								},
+								"utilisation": {
+									"type": "string",
+									"enum": [ "", "unused", "deterrencing", "neutralisation" ],
+									"default": "",
+									"description": "How the weapon was utilised"
+								}
+							}
+						},
+						"description": "List of weapons worn by the person"
+					},
+					"comment": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "General comments about the person, including polar bear experience etc."
+					}
+				}
+			},
+			"description": "List of humans involved in the incident"
+		},
+		"bears": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"attacked": {
+						"type": "boolean",
+						"default": false,
+						"description": "Whether the bear attacked any humans during the incident"
+					},
+					"result": {
+						"type": "string",
+						"enum": [ "", "none", "relocated", "killed" ],
+						"default": "",
+						"description": "Resulting action concerning the bear due to the incident"
+					},
+					"structure_entry": {
+						"type": "string",
+						"enum": [ "", "none", "attempt", "success" ],
+						"default": "",
+						"description": "Whether the bear attempted to enter any human structures"
+					},
+					"property_damage": {
+						"type": "boolean",
+						"default": false,
+						"description": "Whether the bear damaged any human equipment or property"
+					},
+					"injury": {
+						"type": "string",
+						"enum": [ "", "none", "minor", "major", "fatal" ],
+						"default": "",
+						"description": "Injury caused to the bear due to the incident"
+					},
+					"injury_description": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Descriptive text about bear injuries"
+					},
+					"activity": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/translation"
+						},
+						"description": "Description of the bears's activity prior to the incident"
+					},
+					"bear_data": {
+						"type": [ "object", "null" ],
+						"properties": {
+							"id": {
+								"type": "string",
+								"description": "Bear tag type and ID if available"
+							},
+							"gender": {
+								"type": "string",
+								"enum": [ "", "male", "female" ],
+								"default": "",
+								"description": "Gender of the bear"
+							},
+							"age": {
+								"type": "integer",
+								"description": "Age of the bear at the time of incident"
+							},
+							"length": {
+								"type": "integer",
+								"description": "Length of the bear in centimeters at the time of incident"
+							},
+							"weight": {
+								"type": "integer",
+								"description": "Weight of the bear in kilograms at the time of incident"
+							},
+							"previous_incidents": {
+								"type": "array",
+								"items": {
+									"type": "string",
+									"format": "uri",
+									"description": "URL to incident record the bear was previously involved in"
+								},
+								"description": "List of known incidents the bear has previously been involved with"
+							},
+							"description": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/translation"
+								},
+								"description": "Descriptive text about the bear"
+							}
+						},
+						"description": "Additional data about the bear"
+					}
+				}
+			},
+			"description": "List of polar bears involved in the incident"
+		}
+	},
+	"required": [
+		"title",
+		"author",
+		"datetime",
+		"incident",
+		"location"
+	],
+	"definitions": {
+		"translation": {
+			"type": "object",
+			"description": "Schema decribing translation objects",
+			"properties": {
+				"language": {
+					"type": "string",
+					"enum": [ "da", "en", "esx", "fr", "kl", "nb", "nn", "ru" ],
+					"description": "Language code of the translation"
+				},
+				"text": {
+					"type": "string",
+					"description": "Translation text in the specified language"
+				}
+			},
+			"required": [
+				"language",
+				"text"
+			]
+		},
+		"person": {
+			"type": "object",
+			"description": "Schema describing person objects",
+			"properties": {
+			    "id": {
+			        "type": "string",
+			        "description": "Unique ID of the person"
+				},
+				"comment": {
+					"type": "string",
+					"description": "Comment about the person"
+				},
+				"name": {
+					"type": "object",
+					"description": "Information about the person's name",
+					"properties": {
+						"given": {
+							"type": "string",
+							"description": "Given (first) name of the person"
+						},
+						"middle": {
+							"type": "string",
+							"description": "Middle name of the person"
+						},
+						"family": {
+							"type": "string",
+							"description": "Family (last) name of the person"
+						},
+						"phonetic": {
+							"type": "string",
+							"description": "Phonetic variant of the person's full name"
+						},
+						"prefix": {
+							"type": "string",
+							"description": "Name prefix"
+						},
+						"suffix": {
+							"type": "string",
+							"description": "Name suffix"
+						}
+					},
+					"required": [ "given", "family", "full" ]
+				},
+				"employment": {
+					"type": "object",
+					"description": "Information about the person's employment",
+					"properties": {
+						"company": {
+							"type": "string",
+							"description": "Company name of the person's employer"
+						},
+						"title": {
+							"type": "string",
+							"description": "Work title of the person"
+						},
+						"status": {
+							"type": "string",
+							"description": "Current employment status of the person",
+							"enum": [ "employed", "unemployed", "pending" ]
+						}
+					},
+					"required": [ "company" ]
+				},
+				"contact": {
+					"type": "object",
+					"description": "Information of the person's contact details",
+					"properties": {
+						"email": {
+							"type": "array",
+							"description": "List of the person's e-mail addresses",
+							"items": {
+								"type": "object",
+								"properties": {
+									"address": {
+										"type": "string",
+										"description": "E-mail address",
+										"format": "email"
+									},
+									"type": {
+										"type": "string",
+										"description": "Type of e-mail address",
+										"enum": [ "private", "work" ]
+									},
+									"comment": {
+										"type": "string",
+										"description": "Comment about the e-mail address"
+									}
+								},
+								"required": [ "address" ]
+							}
+						},
+						"phone": {
+							"type": "array",
+							"description": "List of the person's phone numbers",
+							"items": {
+								"type": "object",
+								"properties": {
+									"number": {
+										"type": "string",
+										"description": "Phone number",
+										"format": "phone"
+									},
+									"type": {
+										"type": "string",
+										"description": "Type of phone number",
+										"enum": [ "home", "work", "mobile" ]
+									},
+									"comment": {
+										"type": "string",
+										"description": "Comment about the phone number"
+									}
+								},
+								"required": [ "number" ]
+							}
+						},
+						"address": {
+							"type": "array",
+							"description": "List of the person's postal addresses",
+							"items": {
+								"type": "object",
+								"properties": {
+									"country": {
+										"type": "string",
+										"description": "Country of the postal address"
+									},
+									"address": {
+										"type": "string",
+										"description": "Full postal address"
+									},
+									"type": {
+										"type": "string",
+										"description": "Type of postal address",
+										"enum": [ "private", "work" ]
+									},
+									"comment": {
+										"type": "string",
+										"description": "Comment about the postal address"
+									}
+								},
+								"required": [ "country", "address" ]
+							}
+						}
+					}
+				},
+				"links": {
+					"type": "array",
+					"description": "Links related to the person",
+					"items": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Link relation"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hypertext reference (address)",
+								"format": "uri"
+							},
+							"hreflang": {
+								"type": "string",
+								"description": "Language of href resource"
+							},
+							"title": {
+								"type": "string",
+								"description": "Link title"
+							},
+							"type": {
+								"type": "string",
+								"description": "Link resource media type (MIME type)",
+								"default": "text/html"
+							}
+						},
+						"required": [ "href" ]
+					}
+				}
+			},
+		    "required": [ "id", "name" ]
+		}
+	}
+}
