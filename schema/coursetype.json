@@ -44,6 +44,12 @@
 "null"
 ]
 },
+"location":{
+"type": [
+"string",
+"null"
+]
+},
 "comment": {
 "type": [
 "string",
