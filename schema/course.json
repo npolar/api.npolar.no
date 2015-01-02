@@ -42,12 +42,6 @@
 "null"
 ]
 },
-"location": {
-"type": [
-"string",
-"null"
-]
-},
 "start_date":{
 "type": [
 "string",
