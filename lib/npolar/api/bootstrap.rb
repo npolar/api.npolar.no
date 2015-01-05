@@ -101,12 +101,12 @@ module Npolar
         
         if service.storage =~ /Couch/         
           delete_elasticsearch_couchdb_river(service)
-          sleep(1) 
+          sleep(3) 
         end
         
         delete_elasticsearch_index(service)
         
-        sleep(1)
+        sleep(3)
     
         create_elasticsearch_index(service)
         
@@ -114,7 +114,7 @@ module Npolar
         
         if service.storage =~ /Couch/
           create_elasticsearch_couchdb_river(service)
-          sleep(1)
+          sleep(3)
         end
       end
       
@@ -168,7 +168,8 @@ module Npolar
         couchdb_uri = URI.parse(couchdb_uri)
 
         river = { type: "couchdb",
-          couchdb: { host: couchdb_uri.host, port: couchdb_uri.port, db: service.database, filter: nil },
+          couchdb: { host: couchdb_uri.host, port: couchdb_uri.port, db: service.database, filter: nil,
+          ignore_attachments: true },
           index: { index: elastic["index"], type: elastic["type"], bulk_size: "100", bulk_timeout: "50ms" }
         }.merge(elastic.river||{})
                 
