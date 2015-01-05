@@ -35,7 +35,8 @@
         "type": "boolean"
       },
       "email": {
-        "type": "string"
+        "type": "string",
+        "index": "not_analyzed"
       },
       "events": {
         "properties": {
