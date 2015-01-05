@@ -70,7 +70,22 @@
           "accessed":{"type":"date","index":"not_analyzed"}
         }
       },
-      "locations":{"type":"string","index":"not_analyzed"},
+      "locations":{
+        "properties": {
+          "area": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "hemisphere": {
+            "type": "string"
+          },
+          "placename": {
+            "type": "string"
+          }
+        }
+      },
       "comment":{"type":"string","index":"not_analyzed"},
       "created":{"type":"date","index":"not_analyzed"},
       "updated":{"type":"date","index":"not_analyzed"},
