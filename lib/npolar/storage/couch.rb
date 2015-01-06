@@ -104,8 +104,8 @@ module Npolar
         end
 
         case id
-          when "_meta" then meta
-          when nil, "", "_ids", "" then ids
+          when nil, "", "_meta" then meta
+          when "_ids", "" then ids
           when "_feed", "_all" then feed(params)
           when "_invalid" then valid(false, params)
           when "_valid" then valid(true, params)
@@ -255,18 +255,22 @@ module Npolar
         end
         [response.status, response.headers,response.body]
       end
-
+      
+      # Storage metadata (document count, data size, started, and (not) updated)
       def meta
         ids = []
+        
         response = couch.get(read)
-       
+        views = Yajl::Parser.parse(couch.get(read+"/_all_docs?startkey=%22_design%2F%22&endkey=%22_design0%22&include_docs=false").body)["rows"].size || 0
+              
         if 200 == response.status
           couch_desc = Yajl::Parser.parse(response.body)
           meta = {
-            "count" => couch_desc["doc_count"],
-            "data_size" => couch_desc["data_size"],
-            "updated" => nil
-          } 
+            count: couch_desc["doc_count"]-views,
+            size: couch_desc["data_size"],
+            started: Time.at(couch_desc["instance_start_time"].to_i/1e6).utc.iso8601,
+            updated: nil # Hard to know for CouchDB, especially if deleted
+          }
           status = 200
         else
           status = 501
@@ -274,14 +278,14 @@ module Npolar
         [status, {"Content-Type" => HEADERS["Content-Type"]}, [ Yajl::Encoder.encode(meta)+"\n"]] # Couch returns text/plain here!?
       end
   
-      #           feed = feed.select { |row| row[:_id] !~ /_design/ }
+      
       def ids
         ids = []
 
         response = couch.get(all_docs_uri(false))
         
         if 200 == response.status
-          ids = Yajl::Parser.parse(response.body)["rows"].map {|row| row["id"] }
+          ids = Yajl::Parser.parse(response.body)["rows"].reject {|row| row["id"] =~ /^_\w+\//}.map {|row| row["id"] }
           status = 200
         else
           status = 501
