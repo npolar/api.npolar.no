@@ -56,13 +56,6 @@
 ],
 "format": "date-time"
 },
-"expiry_date":{
-"type": [
-"string",
-"null"
-],
-"format": "date-time"
-},
 "people": {
 "description": "People involved in creating the publication",
 "type": "array",
