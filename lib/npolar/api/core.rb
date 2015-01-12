@@ -63,7 +63,9 @@ module Npolar
       # 405 Method not allowed
       # The response MUST include an Allow header containing a list of valid methods for the requested resource.
       unless method_allowed? request.request_method
-        return http_error(405, "The following HTTP methods are allowed: #{methods.join(", ")}")
+        e = http_error(405, "The following HTTP methods are allowed: #{methods.join(", ")}")
+        e.headers["Allow"] = methods.join(", ") 
+        return e
       end
 
       # GET, HEAD and POST are the only method where id can be blank
