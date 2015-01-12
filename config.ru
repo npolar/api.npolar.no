@@ -59,6 +59,16 @@ log.info "Booting API #{Npolar::Api.base}
 use Rack::Static, :urls => ["/css", "/js", "/img", "/xsl", "schema", "code", "/favicon.ico", "/robots.txt"], :root => "public"
 use ::Rack::JSONP
 
+# CORS
+# https://github.com/cyu/rack-cors
+use Rack::Cors do
+  allow do
+    # Allow access from npolar.no using https
+    origins ENV["NPOLAR_API"], /^https\:\/\/(.+)?npolar\.no/
+    resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
+  end
+end
+
 # Autorun all APIs in the /service database
 # The service database is defined in /service/service-api.json
 # APIs are started if they contain a "run" key holding the class name of a Rack
@@ -89,7 +99,6 @@ autorun_list.each do |api|
       ),
       index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: true), 
       open: api.open
-      
     end
     
     if api.auth?

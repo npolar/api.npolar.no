@@ -11,6 +11,7 @@ require "rack/contrib/jsonp"
 require "rack/contrib/accept_format"
 require "rack/ssl"
 require "rack/commonlogger"
+require "rack/cors"
 #require "rack/cache"
 #require "rack/protection"
 

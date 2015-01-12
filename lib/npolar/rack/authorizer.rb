@@ -10,7 +10,7 @@ module Npolar
 
       CONFIG = {
         :authorized? => lambda { | auth, system, request |
-          if ["GET", "HEAD"].include? request.request_method
+          if ["GET", "HEAD", "OPTIONS"].include? request.request_method
             auth.roles(system, request.username).include? READER_ROLE or auth.roles(system, request.username).include? EDITOR_ROLE or auth.roles(system, request.username).include? SYSADMIN_ROLE
           elsif ["POST", "PUT", "DELETE"].include? request.request_method
             auth.roles(system, request.username).include? EDITOR_ROLE or auth.roles(system, request.username).include? SYSADMIN_ROLE
@@ -33,7 +33,7 @@ module Npolar
       def self.authorize_text(api)
         writes = ["POST", "PUT", "DELETE"]
         authorize_text = case api.open
-          when true then "GET, HEAD to * and "+writes.join(", ")
+          when true then "GET, HEAD, OPTIONS to * and "+writes.join(", ")
           else api.verbs.join(", ")
         end
         "#{api.path} authorize #{authorize_text} to \"#{api.auth.authorize}\" in system \"#{api.auth.system}\" using #{api.auth.authorizer or "Npolar::Auth::Couch"}"

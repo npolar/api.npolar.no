@@ -43,8 +43,8 @@ module Npolar
             if api.auth?
               auth = api.auth
 
-              # Open => open data => GET, HEAD are excepted from Authorization
-              except = api.open? ? lambda {|request| ["GET", "HEAD"].include? request.request_method } : false
+              # Open => open data => GET, HEAD, OPTIONS are excepted from Authorization
+              except = api.open? ? lambda {|request| ["GET", "HEAD", "OPTIONS"].include? request.request_method } : false
 
               authorizer = case api.auth.authorizer
                 when /Ldap/i then begin
@@ -82,6 +82,8 @@ module Npolar
                 }
               }
               use Views::Api::Index, { :services => services}
+              
+              
 
               if /Solr/i =~ api.search.engine
 
@@ -114,7 +116,8 @@ module Npolar
                 else
                  uri = URI.parse(api.search.url)
                 end
-      
+                        
+                
                 use ::Rack::Icelastic, {
                   :url => uri,
                   :index => api.search["index"],
@@ -123,6 +126,7 @@ module Npolar
                   :params => api.search.params,
                   :geojson => api.geojson
                 }
+
               end
             end
 
@@ -145,7 +149,7 @@ module Npolar
               aft = Npolar::Factory.constantize(name)
               after << aft.send(met.to_sym)
             end
-
+            
             run Core.new(nil,
               {:storage => storage,
               :formats => api.formats.keys,
