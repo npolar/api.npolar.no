@@ -7,7 +7,7 @@ module Npolar
   #
   # @link https://github.com/npolar/api.npolar.no/wiki/Core
   # @link Rack http://rack.rubyforge.org/doc/SPEC.html
-  # @link HTTP/1.1 http://tools.ieetf.org/html/rfc2616 | http://www.w3.org/Protocols/rfc2616/rfc2616.html
+  # @link HTTP/1.1 http://tools.ieetf.org/html/rfc2616 | http://www.w3.org/Protocols/rfc2616/rfc2616.html  
   class Core < Rack::Middleware
 
     # Default configuration
@@ -52,16 +52,16 @@ module Npolar
     # Handle HTTP request and return HTTP response triplet (Rack-style)
     # @return Npolar::Rack::Response or [status, headers, body#each]
     def handle(request)
-
       log.debug self.class.name+"#handle #{request.request_method} #{request.url}"
 
-      if storage.nil? 
+      if storage.nil?
         return http_error(501, "No storage set for API endpoint, cannot handle request")
       end
 
       request = before(request)
 
-      # 405 Method not allowed ?
+      # 405 Method not allowed
+      # The response MUST include an Allow header containing a list of valid methods for the requested resource.
       unless method_allowed? request.request_method
         return http_error(405, "The following HTTP methods are allowed: #{methods.join(", ")}")
       end
@@ -74,8 +74,6 @@ module Npolar
       end
 
       #414 Request-URI Too Long?
-
-
       if ["GET", "HEAD", "DELETE"].include? request.request_method
         # 404 / 410 Gone?
         # 412 Precondition Failed?
@@ -124,10 +122,12 @@ module Npolar
       
      before_time = Time.now
       
+      # @todo move all methods into core#{verb}
       response = case request.request_method
         when "DELETE"  then storage.delete(id, params)
         when "GET"     then storage.get(id, params) # FIXME Handle empty id
         when "HEAD"    then storage.head(id, params)
+        when "OPTIONS" then options
         when "POST"    then storage.post(document, params)
         when "PUT"     then storage.put(id, document, params)
       end
@@ -146,7 +146,6 @@ module Npolar
     # * true  if endpoint can deliver requested format
     # * false if endpoint cannot deliver requested format
     def acceptable? format
-     
       if "*" == format
         true
       else
@@ -186,6 +185,31 @@ module Npolar
     def method_allowed? method
       methods.include? method
     end
+    
+    # OPTIONS
+    def options
+      # OK <- An Allow header field MUST be present in a 405 (Method Not Allowed) response.
+      # @todo <- If the Request-URI is an asterisk ("*"), the OPTIONS request is intended to apply to the server in general rather than to a specific resource.
+      # OK <- If no response body is included, the response MUST include a Content-Length field with a field-value of "0".
+      
+      # Force "Allow" header 
+      allow_header = lambda { |request, response|
+        if not response.headers.key? "Allow"
+          response.headers["Allow"] = methods.join(", ")
+        end
+        response
+      }
+      config[:after] = config[:after].nil? ? [] : config[:after] 
+      config[:after] << allow_header
+      
+      if storage.respond_to?(:options)
+        storage.options(id, params)
+      else
+        storage.head(id, params)
+      end
+      
+      
+    end
 
     # @return Storage
     def storage
@@ -217,7 +241,7 @@ module Npolar
       if [] == a and v.respond_to?(:call)
         a = v.call(with)
       end
-      a
+      a.uniq.sort
     end
 
     def log
@@ -248,10 +272,10 @@ module Npolar
       #response.header["Server"] = self.class.name+" "+response.header["Server"]      
     
       # Auto JSON from Hash
-      if response.body.is_a? Hash
+      if response.body.is_a? Hash 
         response.body = body.to_json
       end
-         
+  
       # After lambdas
       after = config[:after]||[]
       if storage.respond_to? :model and storage.model.class.respond_to? :after
@@ -268,8 +292,7 @@ module Npolar
         log.debug "After #{request.request_method} #{i+1}/#{after.size} (#{after_lambda})"
         response = after_lambda.call(request, response)
       end
-
-      # Note that after changes are not persisted!
+      
       response
     end
 
