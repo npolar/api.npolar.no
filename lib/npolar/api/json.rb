@@ -150,11 +150,14 @@ module Npolar
               after << aft.send(met.to_sym)
             end
             
+            accepts = api.accepts.nil? ? {} : api.accepts
+            formats = api.formats.nil? ? {} : api.formats
+            
             run Core.new(nil,
               {:storage => storage,
-              :formats => api.formats.keys,
+              :formats => formats.keys,
               :methods => api.verbs,
-              :accepts => api.accepts.keys,
+              :accepts => accepts.keys,
               :before => before,
               :after => after}
             )
