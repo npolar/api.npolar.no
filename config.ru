@@ -1,5 +1,5 @@
 # encoding: utf-8
-# config.ru for http://api.npolar.no
+# config.ru for api.npolar.no
 
 # Service API
 # Use /service to create new API endpoints.
@@ -44,7 +44,7 @@ Metadata::Dataset.formats = ["json", "atom", "dif", "iso", "xml"]
 
 bootstrap = Npolar::Api::Bootstrap.new
 bootstrap.log = log = Npolar::Api.log
-
+Npolar::Api.base = ENV["NPOLAR_API"]
 log.info "Booting API #{Npolar::Api.base}
 \tNPOLAR_API_COUCHDB\t\t#{URI.parse(ENV["NPOLAR_API_COUCHDB"]).host}
 \tNPOLAR_API_ELASTICSEARCH\t#{ENV['NPOLAR_API_ELASTICSEARCH']}
@@ -63,9 +63,19 @@ use ::Rack::JSONP
 # https://github.com/cyu/rack-cors
 use Rack::Cors do
   allow do
-    # Allow access from npolar.no using https, and any localhost
-    origins /http\:\/\/localhost(:\d+)?/, /^https\:\/\/(.+)?npolar\.no/
+    # Allow * to localhost
+    origins /http\:\/\/localhost(:\d+)?/
     resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
+  end
+  allow do
+    # Allow access from npolar.no using https, and any localhost
+    origins /^https\:\/\/(.+)?npolar\.no/
+    resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
+  end
+    allow do
+    # Allow access from npolar.no using https, and any localhost
+    origins /^http(s)?\:\/\/(.+)?npolar\.no/
+    resource "*", :headers => :any, :methods => [:get, :head, :options], credentials: true
   end
 end
 
