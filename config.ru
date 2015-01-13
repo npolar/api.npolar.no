@@ -63,8 +63,8 @@ use ::Rack::JSONP
 # https://github.com/cyu/rack-cors
 use Rack::Cors do
   allow do
-    # Allow access from npolar.no using https
-    origins ENV["NPOLAR_API"], /^https\:\/\/(.+)?npolar\.no/
+    # Allow access from npolar.no using https, and any localhost
+    origins /http\:\/\/localhost(:\d+)?/, /^https\:\/\/(.+)?npolar\.no/
     resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
   end
 end
