@@ -46,8 +46,7 @@ module Npolar
       # Stupid, but we only care about the first accept header format
       def accept_format
         return "" if env['HTTP_ACCEPT'].nil?
-        return "" unless /w+\/\w+/ =~ env['HTTP_ACCEPT']
-
+  
         format = env['HTTP_ACCEPT'].scan(/[^;,\s]*\/[^;,\s]*/)[0].split("/")[1]
   
         if format =~ /[+]/
