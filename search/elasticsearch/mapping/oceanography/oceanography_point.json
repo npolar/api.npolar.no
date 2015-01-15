@@ -1,0 +1,8 @@
+{
+  "oceanography_point": {
+    "_all" : {
+      "enabled" : true
+    },
+    "properties" : {}
+  }
+}

@@ -9,12 +9,23 @@
   "search": {
     "engine": "Elasticsearch",
     "index": "oceanography",
-    "type": "ctd",
+    "type": "oceanography_point",
     "log": false,
     "bulk_size": 500,
     "params": {
-      "facets": "station,cruise,ctd,collection,mooring,serialnumber",
+      "facets": "collection,mooring,cruise,station",
       "date-year": "measured"
+    },
+    "index_document": {
+      "index" : {
+        "analysis" : {
+          "analyzer": {
+            "default" : {
+                "type" : "keyword"
+              }
+          }
+        }
+      }
     }
   },
   "verbs": [
@@ -47,9 +58,5 @@
     "authorize": "sysadmin",
     "system": "api",
     "authorizer": "Npolar::Auth::Ldap"
-  },
-  "updated": "2014-08-22T11:35:03Z",
-  "updated_by": "ruben",
-  "created": "2014-08-22T11:35:03Z",
-  "created_by": "ruben"
+  }
 }
