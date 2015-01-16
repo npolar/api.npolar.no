@@ -3,7 +3,8 @@
     "properties" : {
       "start":{"type":"date","index":"not_analyzed"},
       "stop":{"type":"date","index":"not_analyzed"},
-      "filename":{"type":"string","index":"not_analyzed"}
+      "filename":{"type":"string","index":"not_analyzed"},
+      "file":{"type":"string","index":"not_analyzed"}
     }
   }
 }

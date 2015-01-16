@@ -70,7 +70,7 @@
 			"description": "Northward sea water velocity in m/s"
 		},
 		"original_station": {
-			"type": "number",
+			"type": "string",
 			"description": "Station identifier"
 		},
 		"platform": {
@@ -95,7 +95,7 @@
 		},
 		"sea_water_salinity": {
 			"type": [ "number", "null" ],
-			"minimum": 15,
+			"minimum": 0,
 			"maximum": 45,
 			"description": "Salinity in particle salinity units (PSU) PPS-78"
 		},
@@ -115,7 +115,7 @@
 			"description": "Start of measurement"
 		},
 		"station": {
-			"type": "number",
+			"type": "string",
 			"description": "Station identifier"
 		},
 		"stop_date": {
