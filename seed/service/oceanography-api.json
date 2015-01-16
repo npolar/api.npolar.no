@@ -1,5 +1,5 @@
 {
-  "_rev": "2-6f0ca2bbddde2c5d55592254f059c324",
+  "_rev": "3-a7b2950cd85e4dece438d7d06771916b",
   "schema": "http://api.npolar.no/schema/api",
   "id": "oceanography-api",
   "path": "/oceanography",
@@ -7,6 +7,9 @@
   "summary": "Norwegian Polar Institutes physical oceanography API. Contains ctd mooring and cast data.",
   "storage": "Couch",
   "database": "oceanography",
+  "editlog": {
+    "disabled": true
+  },
   "search": {
     "engine": "Elasticsearch",
     "index": "oceanography",
