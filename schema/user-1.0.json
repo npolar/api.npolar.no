@@ -55,11 +55,7 @@
 	],
 	"definitions": {
 		"group": {
-			"type": "string",
-			"enum": [
-				"pbhims",
-				"vessels"
-			]
+			"type": "string"
 		},
 		"access": {
 			"type": "string",
