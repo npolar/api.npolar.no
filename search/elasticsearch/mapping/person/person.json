@@ -16,10 +16,11 @@
         "type": "string",
         "index": "not_analyzed"
       },
-      "comment": {
-        "type": "string"
+      "tags": {
+        "type": "string",
+        "index": "not_analyzed"
       },
-      "comments": {
+      "comment": {
         "type": "string",
         "index": "not_analyzed"
       },
