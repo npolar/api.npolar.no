@@ -1,6 +1,6 @@
 {
 	"title": "PBHIMS Schema v1.0",
-	"description": "Schema for PBHIMS Documents (v1.0-rc4)",
+	"description": "Schema for PBHIMS Documents (v1.0-rc5)",
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
@@ -9,7 +9,7 @@
 			"description": "Record title"
 		},
 		"author": {
-			"$ref": "#/definitions/person"
+			"$ref": "http://api.npolar.no/schema/person-1.0"
 		},
 		"datetime": {
 			"type": "string",
@@ -17,7 +17,7 @@
 			"description": "Date and time the record was originally created"
 		},
 		"update_author": {
-			"$ref": "#/definitions/person"
+			"$ref": "http://api.npolar.no/schema/person-1.0"
 		},
 		"update_datetime": {
 			"type": "string",
@@ -373,185 +373,6 @@
 				"language",
 				"text"
 			]
-		},
-		"person": {
-			"type": "object",
-			"description": "Schema describing person objects",
-			"properties": {
-			    "id": {
-			        "type": "string",
-			        "description": "Unique ID of the person"
-				},
-				"comment": {
-					"type": "string",
-					"description": "Comment about the person"
-				},
-				"name": {
-					"type": "object",
-					"description": "Information about the person's name",
-					"properties": {
-						"given": {
-							"type": "string",
-							"description": "Given (first) name of the person"
-						},
-						"middle": {
-							"type": "string",
-							"description": "Middle name of the person"
-						},
-						"family": {
-							"type": "string",
-							"description": "Family (last) name of the person"
-						},
-						"phonetic": {
-							"type": "string",
-							"description": "Phonetic variant of the person's full name"
-						},
-						"prefix": {
-							"type": "string",
-							"description": "Name prefix"
-						},
-						"suffix": {
-							"type": "string",
-							"description": "Name suffix"
-						}
-					},
-					"required": [ "given", "family" ]
-				},
-				"employment": {
-					"type": "object",
-					"description": "Information about the person's employment",
-					"properties": {
-						"company": {
-							"type": "string",
-							"description": "Company name of the person's employer"
-						},
-						"title": {
-							"type": "string",
-							"description": "Work title of the person"
-						},
-						"status": {
-							"type": "string",
-							"description": "Current employment status of the person",
-							"enum": [ "employed", "unemployed", "pending" ]
-						}
-					},
-					"required": [ "company" ]
-				},
-				"contact": {
-					"type": "object",
-					"description": "Information of the person's contact details",
-					"properties": {
-						"email": {
-							"type": "array",
-							"description": "List of the person's e-mail addresses",
-							"items": {
-								"type": "object",
-								"properties": {
-									"address": {
-										"type": "string",
-										"description": "E-mail address",
-										"format": "email"
-									},
-									"type": {
-										"type": "string",
-										"description": "Type of e-mail address",
-										"enum": [ "private", "work" ]
-									},
-									"comment": {
-										"type": "string",
-										"description": "Comment about the e-mail address"
-									}
-								},
-								"required": [ "address" ]
-							}
-						},
-						"phone": {
-							"type": "array",
-							"description": "List of the person's phone numbers",
-							"items": {
-								"type": "object",
-								"properties": {
-									"number": {
-										"type": "string",
-										"description": "Phone number",
-										"format": "phone"
-									},
-									"type": {
-										"type": "string",
-										"description": "Type of phone number",
-										"enum": [ "home", "work", "mobile" ]
-									},
-									"comment": {
-										"type": "string",
-										"description": "Comment about the phone number"
-									}
-								},
-								"required": [ "number" ]
-							}
-						},
-						"address": {
-							"type": "array",
-							"description": "List of the person's postal addresses",
-							"items": {
-								"type": "object",
-								"properties": {
-									"country": {
-										"type": "string",
-										"description": "Country of the postal address"
-									},
-									"address": {
-										"type": "string",
-										"description": "Full postal address"
-									},
-									"type": {
-										"type": "string",
-										"description": "Type of postal address",
-										"enum": [ "private", "work" ]
-									},
-									"comment": {
-										"type": "string",
-										"description": "Comment about the postal address"
-									}
-								},
-								"required": [ "country", "address" ]
-							}
-						}
-					}
-				},
-				"links": {
-					"type": "array",
-					"description": "Links related to the person",
-					"items": {
-						"type": "object",
-						"properties": {
-							"rel": {
-								"type": "string",
-								"description": "Relationship of the linked document"
-							},
-							"href": {
-								"type": "string",
-								"description": "Hypertext reference location of the linked document",
-								"format": "uri"
-							},
-							"hreflang": {
-								"type": "string",
-								"description": "Language of the text in the linked document"
-							},
-							"title": {
-								"type": "string",
-								"description": "Title of the linked document"
-							},
-							"type": {
-								"type": "string",
-								"description": "Media (MIME) type of the linked document",
-								"default": "text/html"
-							}
-						},
-						"required": [ "rel", "href" ]
-					}
-				}
-			},
-		    "required": [ "id", "name" ]
 		}
 	}
 }
