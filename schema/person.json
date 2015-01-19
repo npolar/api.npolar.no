@@ -62,6 +62,13 @@
       },
       "required":["rel", "href"]
     },
+    "tags":{
+      "type": "array",
+      "items": {
+        "type":"string"
+      },
+      "additionalItems":false
+    },
     "comment":{"type":"string"},
     "created":{"type":"string", "format":"date-time"},
     "updated":{"type":"string", "format":"date-time"},
