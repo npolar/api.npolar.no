@@ -1,6 +1,6 @@
 {
     "title": "NPolar Person v1.0",
-    "description": "Norwegian Polar Institute: Person Schema (v1.0-rc2)",
+    "description": "Norwegian Polar Institute: Person schema (v1.0-rc3)",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
@@ -49,6 +49,10 @@
                 "company": {
                     "type": "string",
                     "description": "Company name of the person's employer"
+                },
+                "branch": {
+                    "type": "string",
+                    "description": "Local branch name of the person's employer"
                 },
                 "title": {
                     "type": "string",
@@ -147,32 +151,7 @@
             "type": "array",
             "description": "Links related to the person",
             "items": {
-                "type": "object",
-                "properties": {
-                    "rel": {
-                        "type": "string",
-                        "description": "Relationship of the linked document"
-                    },
-                    "href": {
-                        "type": "string",
-                        "description": "Hypertext reference location of the linked document",
-                        "format": "uri"
-                    },
-                    "hreflang": {
-                        "type": "string",
-                        "description": "Language of the text in the linked document"
-                    },
-                    "title": {
-                        "type": "string",
-                        "description": "Title of the linked document"
-                    },
-                    "type": {
-                        "type": "string",
-                        "description": "Media (MIME) type of the linked document",
-                        "default": "text/html"
-                    }
-                },
-                "required": [ "rel", "href" ]
+                "$ref": "http://api.npolar.no/schema/link-1.0"
             }
         }
     },
