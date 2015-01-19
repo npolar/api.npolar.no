@@ -1,10 +1,10 @@
 {
 	"title": "NPolar User v1.0",
-    "description": "Norwegian Polar Institute: User schema (v1.0-rc1)",
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "email": {
+	"description": "Norwegian Polar Institute: User schema (v1.0-rc1)",
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"email": {
 			"type": "string",
 			"format": "email",
 			"description": "Primary e-mail address of the user"
