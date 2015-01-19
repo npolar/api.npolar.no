@@ -1,0 +1,36 @@
+{
+    "title": "NPolar Link v1.0",
+    "description": "Norwegian Polar Institute: Link object schema (v1.0-rc1)",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "href": {
+            "type": "string",
+            "description": "Hypertext reference location of the linked document (RFC 3986 URI)",
+            "format": "uri"
+        },
+        "hreflang": {
+            "type": "string",
+            "description": "Language of the text in the linked document (ISO 639 code)",
+            "default": "en"
+        },
+        "length": {
+            "type": "integer",
+            "description": "Content length of the linked document (in bytes)"
+        },
+        "rel": {
+            "type": "string",
+            "description": "Relationship of the linked document"
+        },
+        "title": {
+            "type": "string",
+            "description": "Title of the linked document"
+        },
+        "type": {
+            "type": "string",
+            "description": "Media (MIME) type of the linked document (RCF 6838)",
+            "default": "text/html"
+        }
+    },
+    "required": [ "rel", "href" ]
+}
