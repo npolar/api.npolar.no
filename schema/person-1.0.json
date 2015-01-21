@@ -1,6 +1,6 @@
 {
     "title": "NPolar Person v1.0",
-    "description": "Norwegian Polar Institute: Person schema (v1.0-rc3)",
+    "description": "Norwegian Polar Institute: Person schema (v1.0-rc4)",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
@@ -61,10 +61,9 @@
                 "status": {
                     "type": "string",
                     "description": "Current employment status of the person",
-                    "enum": [ "employed", "unemployed", "pending" ]
+                    "enum": [ "", "employed", "unemployed", "pending" ]
                 }
-            },
-            "required": [ "company" ]
+            }
         },
         "contact": {
             "type": "object",
