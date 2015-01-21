@@ -63,18 +63,18 @@ use ::Rack::JSONP
 # https://github.com/cyu/rack-cors
 use Rack::Cors do
   allow do
-    # Allow * to localhost
-    origins /http\:\/\/localhost(:\d+)?/
+    # Allow read-write to localhost
+    origins /http(s)?\:\/\/localhost(:\d+)?/
     resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
   end
   allow do
-    # Allow access from npolar.no using https, and any localhost
+    # HTTPS: Allow read-write from any npolar.no host
     origins /^https\:\/\/(.+)?npolar\.no/
     resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
   end
     allow do
-    # Allow access from npolar.no using https, and any localhost
-    origins /^http(s)?\:\/\/(.+)?npolar\.no/
+    # HTTP: Allow read-only from any npolar.no host over http
+    origins /^http\:\/\/(.+)?npolar\.no/
     resource "*", :headers => :any, :methods => [:get, :head, :options], credentials: true
   end
 end
@@ -99,16 +99,24 @@ autorun_list.each do |api|
     # Middleware for all autorunning APIs can be defined here   
     # api.middleware = api.middleware? ? api.middleware : []
     # api.middleware << ["Npolar::Rack::RequireParam", { :params => "key", :except => lambda { |request| ["GET", "HEAD"].include? request.request_method }} ]
+    
+    # Editlog (enabled unless expliclitly disabled)
     editlog = (api.key?("editlog") and api.editlog.disabled == true) ? false : true
     
     if true == editlog
-        use Npolar::Rack::EditLog,
-      save: EditLog.save_lambda(
-        uri: ENV["NPOLAR_API_COUCHDB"],
-        database: Service.factory("editlog-api").database
-      ),
-      index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: true), 
-      open: api.open
+      
+      max_body_size = case api.open
+      when true
+        (api.key?("editlog") and api.editlog.key?("max_body_size")) ? api.editlog.max_body_size : 255 
+      else
+        0
+      end 
+      
+      use Npolar::Rack::EditLog,
+        save: EditLog.save_lambda(uri: ENV["NPOLAR_API_COUCHDB"], database: Service.factory("editlog-api").database),
+        index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: false), 
+        open: api.open,
+        max_body_size: max_body_size
     end
     
     if api.auth?
