@@ -173,8 +173,19 @@
           //Y.log(result);
           if (result.title) {
             return result.title;
+          } else if (result.name) {
+            return result.name;
+          } else if (result.titles) {
+            
+            var title = Y.Array.find(result.titles, function(t) {
+              return (t.lang == "{{lang}}");
+            });
+            
+            Y.log(title.title);
+            
+            return title.title;
           } else {
-            return result;
+            return result.id;
           }     
 
         },

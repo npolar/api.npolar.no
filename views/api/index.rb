@@ -380,6 +380,10 @@ module Views
           nxt
         end
       end
+      
+      def lang
+        request.params["lang"] ||= "en"
+      end
 
       # Link to facet (if not already in a filtered)
       def link_facet(field, value, count)
