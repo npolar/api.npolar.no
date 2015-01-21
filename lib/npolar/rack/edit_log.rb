@@ -15,7 +15,7 @@ module Npolar
         save: nil,
         index: nil,
         open: nil,
-        body_size: nil,
+        max_body_size: nil,
       }
       
       # See Npolar::Rack::Middleware
@@ -115,7 +115,7 @@ module Npolar
           end
         end
         
-        
+        max_body_size = config[:max_body_size].to_i
         
         edit = {
           id: id,
@@ -136,7 +136,7 @@ module Npolar
             username: URI.decode(request.username),
             time: Time.now.utc.iso8601,
             ip: request.ip,
-            body: body.nil? ? nil : body[0..9999],
+            body: body.nil? ? nil : body,
             body_hash: body_hash,
             header: {
               Accept: request.env["HTTP_ACCEPT"]
@@ -151,7 +151,16 @@ module Npolar
           severity: severity(status),
           open: open?
         }
-
+        
+        # Limit request and response body to max body size
+        if max_body_size <= 0
+          edit[:request][:body] = "[⋯]"
+          edit[:response][:body] = "[⋯]"
+        else
+          edit[:request][:body] = edit[:request][:body][0..max_body_size]+"[⋯]"
+          edit[:response][:body] = edit[:response][:body][0..max_body_size]+"[⋯]"
+        end
+                
         edit[:request][:header][:"Content-Type"] = request.env["CONTENT_TYPE"]
         edit[:request][:header][:"Content-Length"] = request.env["CONTENT_LENGTH"].to_i
         edit[:request][:header][:"User-Agent"] = request.user_agent
@@ -224,8 +233,6 @@ module Npolar
           config[:index].call(edit)
         end
       end
-
-
 
     end
   end
