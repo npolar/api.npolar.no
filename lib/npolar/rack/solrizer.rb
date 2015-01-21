@@ -261,7 +261,7 @@ module Npolar
       # Solr core URI
       def uri
         if core =~ /^http(s)?:\/\//
-          core.gsub!(/[\/]$/, "")
+          core.gsub(/[\/]$/, "")
         elsif self.class.uri.is_a? String and self.class.uri =~ /^http(s)?:\/\// 
           self.class.uri.gsub(/[\/]$/, "") + "/#{core}"
         end
