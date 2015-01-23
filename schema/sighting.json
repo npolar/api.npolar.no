@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://api.npolar.no/schema/publication-1.0-rc4",
+    "id": "http://api.npolar.no/schema/sighting-1.0-rc4",
     "title": "Norwegian Polar Institute sightings",
     "description": "Observation database schema for Norwegian Polar Institute",
     "type": "object",
@@ -57,16 +57,20 @@
             "type": "string"
         },
         "rightsHolder": {
-            "description": "A person or organization owning or managing rights over the resource.",
-            "type": "string"
+            "description": "A person or organization owning or managing rights over the resource",
+            "enum": [
+                "Norwegian Polar Institute"
+            ]
         },
         "datasetID": {
             "description": "Get the code from metadatabase",
             "type": "string"
         },
         "institutionCode": {
-            "description": "npolar.no",
-            "type": "string"
+            "description": "NPI",
+            "enum": [
+                "Norwegian Polar Institute"
+            ]
         },
         "datasetName": {
             "description": "Observation database NPI",
@@ -74,7 +78,9 @@
         },
         "ownerInstitutionCode": {
             "description": "Institution name having ownership of the information referred to in the record.",
-            "type": "string"
+            "enum": [
+                "Norwegian Polar Institute"
+            ]
         },
         "basisOfRecord": {
             "enum": [
@@ -85,20 +91,8 @@
                 "SoundRecording"
             ]
         },
-        "subAdult": {
-            "description": "Young adult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
         "polarBearCondition": {
             "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "bearCubs": {
-            "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "unidentified": {
-            "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
             "type": "string"
         },
         "deadAlive": {
@@ -109,24 +103,12 @@
                 "dead"
             ]
         },
-        "boatName": {
-            "description": "Name of vessel. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "tripStartDate": {
-            "description": "Trip start. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "tripEndDate": {
-            "description": "End of trip. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
         "occurrenceRemarks": {
             "description": "Add comments here ",
             "type": "string"
         },
         "recordedBy": {
-            "description": "Observer's name and email/contact address ",
+            "description": "Observer’s login or id ",
             "type": "string"
         },
         "individualCount": {
@@ -140,9 +122,21 @@
         "lifestage": {
             "description": " juvenile - Cub,calf,pup,bear cubs",
             "type": "string"
+       },
+        "subAdult": {
+            "description": "Young adult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "unidentified": {
+            "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "bearCubs": {
+            "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
         },
         "eventDate": {
-            "description": "The date-time or interval during which the event occurred. Encoding scheme:  iso8601, UTC",
+            "description": "The date-time or interval during which the event occurred. Encoding scheme: iso8601, UTC",
             "type": "string"
         },
         "habitat": {
@@ -172,6 +166,10 @@
             "description": "Corresponds with the form's location ",
             "type": "string"
         },
+        "locationComment": {
+            "description": "Corresponds with the form's location ",
+            "type": "string"
+        },
         "latitude": {
             "type": "string"
         },
@@ -190,30 +188,183 @@
             "description": "A common or vernacular name - ex. polar bear",
             "type": "string"
         },
-        "created": {
-            "description": "Document was published",
-            "type": "string",
-            "format": "date-time"
-        },
-        "updated": {
-            "description": "Document was updated. Equal to dcterms:modified ",
-            "type": "string",
-            "format": "date-time"
-        },
-        "created_by": {
+        "kingdom": {
+            "description": "Second highest taxonomic rank below domain",
             "type": "string"
         },
-        "updated_by": {
+        "phylum": {
+            "description": "Taxonomic rank below kingdom and above class",
             "type": "string"
         },
-        "_id": {
+        "class": {
+            "description": "Taxonomic rank between phylum and order",
             "type": "string"
         },
-        "_rev": {
+        "order": {
+            "description": "Taxonomic rank between class and familiy",
             "type": "string"
         },
-        "_attachments": {
-            "type": "object"
+        "family": {
+            "description": "Taxonomic rank between order and genus",
+            "type": "string"
+        },
+        "genus": {
+            "description": "Taxonomic rank between species and family. First part of species",
+            "type": "string"
+        },
+        "specificEpithet": {
+            "description": "Last part of species",
+            "type": "string"
+        },
+        "observationComment": {
+            "description": "comment about species observation",
+            "type": "string"
+        },
+        "excelFile": {
+            "title": "excelFile",
+            "description": "Uploaded excel file",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "filename": {
+                    "description": "name of excel file",
+                    "type": "string"
+                },
+                "contentType": {
+                    "description": "content description",
+                    "type": "string"
+                },
+                "contentSize": {
+                    "description": "file size",
+                    "type": "string"
+                },
+                "otherInfo": {
+                    "description": "other info f.ex from the old database",
+                    "type": "string"
+                }
+            }
+        },
+        "expedition": {
+            "title": "expedition",
+            "description": "expedition connected with the observation",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "description": "name of expedition",
+                    "type": "string"
+                },
+                "organisation": {
+                    "description": "organization arranging expedition",
+                    "type": "string"
+                },
+                "platform": {
+                    "description": "name of boat, plane or other craft",
+                    "type": "string"
+                },
+                "platformComment": {
+                    "description": "comment about platform",
+                    "type": "string"
+                },
+                "expeditionDb": {
+                    "description": "link to the data.npolar.no expedition database if NPI platform",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "rel": {
+                            "type": "string"
+                        },
+                        "href": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "hreflang": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "title": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "type": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "startDate": {
+                "description": "expedition start date",
+                "type": "string"
+            },
+            "endDate": {
+                "description": "expedition end date",
+                "type": "string"
+            },
+            "otherInfo": {
+                "description": "additional information f.ex from the old database",
+                "type": "string"
+            }
         }
+    },
+    "pictures": {
+        "title": "pictures",
+        "description": "Included pictures",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "filename": {
+                "description": "picture file name",
+                "type": "string"
+            },
+            "content_type": {
+                "type": "string"
+            },
+            "content_size": {
+                "type": "string"
+            },
+            "photographer": {
+                "description": "name of photographer",
+                "type": "string"
+            },
+            "comments": {
+                "description": "comments related to picture",
+                "type": "string"
+            },
+            "thumbnail": {
+                "description": "name of thumbnail",
+                "type": "string"
+            },
+            "otherInfo": {
+                "description": "other info f.ex from the old database",
+                "type": "string"
+            }
+        }
+    },
+    "created": {
+       "description": "Document was published",
+       "type": "string",
+       "format": "date-time"
+    },
+    "updated": {
+        "description": "Document was updated. Equal to dcterms:modified ",
+        "type": "string",
+        "format": "date-time"
+    },
+    "created_by": {
+        "type": "string"
+    },
+    "updated_by": {
+        "type": "string"
+    },
+    "_id": {
+        "type": "string"
+    },
+    "_rev": {
+        "type": "string"
     }
 }
+
