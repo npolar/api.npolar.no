@@ -53,7 +53,7 @@
             "type": "string"
         },
         "rights": {
-            "description": "The licence web address",
+            "description": "The licence web address, f.ex. licenced under Creative Commons",
             "type": "string"
         },
         "rightsHolder": {
@@ -104,11 +104,15 @@
             ]
         },
         "occurrenceRemarks": {
-            "description": "Add comments here ",
+            "description": "Comments about the observation - found dead f.ex.",
             "type": "string"
         },
         "recordedBy": {
             "description": "Observer’s login or id ",
+            "type": "string"
+        },
+        "recordedByName": {
+            "description": "Observer’s name ",
             "type": "string"
         },
         "individualCount": {
@@ -252,6 +256,10 @@
             "properties": {
                 "name": {
                     "description": "name of expedition",
+                    "type": "string"
+                },
+                "contactInfo": {
+                    "description": "address, additional email etc",
                     "type": "string"
                 },
                 "organisation": {
