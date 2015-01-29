@@ -32,8 +32,8 @@ class Npolar::Api::SolrFeedWriter
     totalResults = response["response"]["numFound"].to_i
     
     start = response["response"]["start"].to_i
-    last = start < totalResults ? start : pagesize*(totalResults/pagesize).ceil.to_i
-    
+    last = (start >= totalResults) ? start : pagesize*(totalResults/pagesize.ceil)
+        
     previous = start >= pagesize ? start-pagesize : false
     if previous.is_a? Fixnum and previous > last
       previous = last
@@ -79,6 +79,13 @@ class Npolar::Api::SolrFeedWriter
       previous_uri = addr.to_str
     end
     
+    
+    addr.query_values = addr.query_values.merge({'start' => last})
+    last_uri = addr.to_str
+    
+    addr.query_values = addr.query_values.merge({'start' => 0})
+    first_uri = addr.to_str
+    
     {
       "feed" => {
       "base" => base,
@@ -92,8 +99,8 @@ class Npolar::Api::SolrFeedWriter
         "self" => self_uri,
         "next" => next_uri,
         "previous" => previous_uri,
-        "first" => 0,
-        "last" => last
+        "first" => first_uri,
+        "last" => last_uri
       },
       "search" => {
         "qtime" => qtime,
