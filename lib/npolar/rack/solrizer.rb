@@ -225,20 +225,24 @@ module Npolar
             return [200, headers("json"), resp.body]
           end
           
-          if ("geojson" == request.format) or ("json" == request.format and request["variant"]=~ /^geo(json)?$/)
+          if ("geojson" == request.format) or ("json" == request.format and request["variant"]=~ /^geo(\+)?(json)?$/)
             [200, headers("json"), [geojson(response).to_json]]
-          elsif ["html", "json", "", nil].include? request.format
-          status = response["responseHeader"]["status"]
-          qtime = response["responseHeader"]["QTime"]
-          hits = response["response"]["numFound"]
-          log.debug "Solr hits=#{hits} status=#{status} qtime=#{qtime}"
-
-            [200, headers("json"), [feed(response).to_json]]
           elsif ["solr"].include? request.format
             [200, headers("json"), [response.to_json]]
           elsif ["csv", "xml"].include? request.format
             #http://wiki.apache.org/solr/CSVResponseWriter
             [200, headers(request.format), [response]]
+          elsif ("array" == request.format) or ("json" == request.format and request["variant"]== "array")
+            [200, headers("json"), [response["response"]["docs"].to_json]]
+          else
+            
+            #["html", "json", "", nil].include? request.format
+            status = response["responseHeader"]["status"]
+            qtime = response["responseHeader"]["QTime"]
+            hits = response["response"]["numFound"]
+            log.debug "Solr hits=#{hits} status=#{status} qtime=#{qtime}"
+
+            [200, headers("json"), [feed(response).to_json]]
           end
 
         rescue ::RSolr::Error::Http => e
