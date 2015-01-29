@@ -86,7 +86,7 @@ class Npolar::Api::SolrFeedWriter
     addr.query_values = addr.query_values.merge({'start' => 0})
     first_uri = addr.to_str
     
-    {
+    feed = {
       "feed" => {
       "base" => base,
       # http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements
@@ -95,23 +95,36 @@ class Npolar::Api::SolrFeedWriter
         "itemsPerPage" => pagesize,
         "startIndex" => response["response"]["start"].to_i
       },
-      "list" => {
+      "links" => [
+        { rel: "self", href: self_uri, type: "application/json" },
+        { rel: "next", href: next_uri, type: "application/json" },
+        { rel: "previous", href: previous_uri, type: "application/json" },
+        { rel: "first", href: first_uri, type: "application/json" },
+        { rel: "last", href: last_uri, type: "application/json" }
+      ],
+      "search" => {
+        "qtime" => qtime,
+        "q" => response["responseHeader"]["params"]["q"],
+      },
+      "entries" => response["response"]["docs"],
+      "facets" => facets
+      }
+    }
+    
+    if request["variant"] != "atom"
+      feed["feed"].delete "links"
+      feed["feed"]["list"] = {
         "self" => self_uri,
         "next" => next_uri,
         "previous" => previous_uri,
         "first" => first_uri,
         "last" => last_uri
-      },
-      "search" => {
-        "qtime" => qtime,
-        "q" => response["responseHeader"]["params"]["q"],
-      },
+      }
+    end
     
-      "facets" => facets,
-      "entries" => response["response"]["docs"]}
-    }
+    feed
   end
-
+  
   def self.facet_url(addr, name, val, gap=nil)
     _addr = addr.clone
     if gap.nil?
