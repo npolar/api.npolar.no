@@ -226,7 +226,7 @@ module Npolar
           end
           
           if ("geojson" == request.format) or ("json" == request.format and request["variant"]=~ /^geo(\+)?(json)?$/)
-            [200, headers("json"), [geojson(response).to_json]]
+            [200, headers("geojson"), [geojson(response).to_json]]
           elsif ["solr"].include? request.format
             [200, headers("json"), [response.to_json]]
           elsif ["csv", "xml"].include? request.format
