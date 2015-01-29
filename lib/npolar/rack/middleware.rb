@@ -65,13 +65,14 @@ module Npolar
       def headers(format, encoding="utf-8")
         content_type = case format
           when "json", "xml" then "application/#{format}"
+          when /^geo\+?json$/ then "application/vnd.geo+json"
           when "atom" then "application/atom+xml"
           when "html" then "text/html"
           when "csv", "text" then "text/plain"
           when "js", "javascript", "jsonp" then "application/javascript"
           else raise ArgumentError("Unknown format: #{format}")
         end
-        {"Content-Type" => "#{content_type}; charset=#{encoding}"}
+        {"Content-Type" => "#{content_type}; charset=#{encoding.downcase}"}
       end
   
       # @config [Array{String}]               :params     ([])
