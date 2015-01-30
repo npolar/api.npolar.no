@@ -417,22 +417,22 @@ module Npolar
       def gn_type_value(placename)
         case placename[:terrainid]
 
-        when 48, 141, 142
+       when 48, 141, 142
           "administrative unit"
-        when 97, 107, 117, 131, 133, 135, 146
+        when 76, 85, 97, 107, 117, 124, 128, 133, 135, 146, 157, 158
           "hydrography"
         when 105
           "protected site"
         when 80, 160
           "populated place"
-        when 74,1184326
+        when 74, 118
           "transport network"
         when 83, 93, 129, 159
           "building"
-        #when 77777
-        #  "landcover"
-        #when 88888
-        #  "landform"
+        when 89, 103, 123, 149, 150, 162   
+          "landcover"
+        when 77, 82, 87, 91, 94, 96, 104, 106, 108, 109, 110, 112, 119, 121, 125, 126, 131, 143, 148, 151, 153, 154, 156, 161    
+          "landform"
         else
          "other"
         end
