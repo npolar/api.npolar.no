@@ -11,7 +11,7 @@ module Npolar
 
     # [Atom feed RFC4287](http://tools.ietf.org/html/rfc4287) of placenames in Norwegian polar areas,
     # extended with
-    # * [INSPIRE Geographical Names](http://inspire.ec.europa.eu/tg/gn/3.1rc1) data specification
+    # * [INSPIRE Geographical Names](http://inspire.ec.europa.eu/documents/Data_Specifications/INSPIRE_DataSpecification_GN_v3.1.pdf) data specification
     # * [Atom publishing protocol RFC5023)(https://tools.ietf.org/html/rfc5023) - the "edit" and collection partial list ("first", "next", "previous", and "last") link relations
     # * [Atom License Extension RC4946](https://tools.ietf.org/html/rfc4946) - "license" link relation
     # * [OpenSearch 1.1](http://www.opensearch.org/index.php?title=Specifications/OpenSearch/1.1)
@@ -203,7 +203,7 @@ module Npolar
           e.links << Atom::Link.new(href: "https://api.npolar.no/placename/#{uuid(placename.ident)}", rel: "edit", type: "application/json")
           e.links << Atom::Link.new(href: "http://placenames.npolar.no/stadnamn/#{placename.title_link}?ident=#{placename.ident}", rel: "alternate", type: "text/html")
           if placename.title_replaced_by != ""
-            e.links << Atom::Link.new(href: "http://placenames.npolar.no/stadnamn/#{URI.encode(placename.title_replaced_by)}?ident=#{placename.ident_replaced_by}", rel: "alternate", type: "text/html")
+            e.links << Atom::Link.new(href: "http://placenames.npolar.no/stadnamn/#{URI.encode(placename.title_replaced_by)}?ident=#{placename.ident_replaced_by}", rel: "related", type: "text/html")
           end
           
           (placename.links||[]).each do |link|
@@ -218,7 +218,7 @@ module Npolar
           e.categories << ::Atom::Category.new(:term => placename[:approved] == true ? "official" : "historical", scheme: "http://inspire.ec.europa.eu/codelist/NameStatusValue/")
           e.categories << ::Atom::Category.new(:term => gn_type_value(placename), scheme: "http://inspire.ec.europa.eu/codelist/NamedPlaceTypeValue/")
           e.categories << ::Atom::Category.new(:term => country_code(placename.location), scheme: "http://psi.oasis-open.org/iso/3166/") # http://en.wikipedia.org/wiki/ISO_3166-2:NO
-          e.categories << ::Atom::Category.new(:term => placename[:location])
+          e.categories << ::Atom::Category.new(:term => placename[:location], scheme: "http://api.npolar.no/schema/placename#area")
           
           content = ::Atom::Content::Xhtml.new(atom_content(placename))
           content.xml_lang = "en"     
