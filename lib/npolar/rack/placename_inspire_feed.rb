@@ -419,7 +419,7 @@ module Npolar
 
        when 48, 141, 142
           "administrative unit"
-        when 76, 85, 97, 107, 117, 124, 128, 133, 135, 146, 157, 158
+        when 76, 85, 97, 107, 116, 117, 124, 128, 133, 135, 146, 157, 158
           "hydrography"
         when 105
           "protected site"
