@@ -11,10 +11,10 @@ module Npolar
 
     # [Atom feed RFC4287](http://tools.ietf.org/html/rfc4287) of placenames in Norwegian polar areas,
     # extended with
+    # * [INSPIRE Geographical Names](http://inspire.ec.europa.eu/tg/gn/3.1rc1) data specification
     # * [Atom publishing protocol RFC5023)(https://tools.ietf.org/html/rfc5023) - the "edit" and collection partial list ("first", "next", "previous", and "last") link relations
-    # * [Atom License Extension RC4946](https://tools.ietf.org/html/rfc4946)
+    # * [Atom License Extension RC4946](https://tools.ietf.org/html/rfc4946) - "license" link relation
     # * [OpenSearch 1.1](http://www.opensearch.org/index.php?title=Specifications/OpenSearch/1.1)
-    # * [INSPIRE Geographical Names](http://inspire.ec.europa.eu/documents/Data_Specifications/INSPIRE_DataSpecification_GN_v3.h0.pdf) data specification
     #
     # @todo Notice: This middleware is tailored against the deprecated Solr-style Placenames JSON
     # @todo All @todos below should be solved upstream
@@ -116,7 +116,6 @@ module Npolar
           end
           # @todo elsif feed links ...
           
-          #f.links << Atom::Link.new(href: atom_feed_uri, rel: "self", type: "application/atom+xml")
           f.links << Atom::Link.new(href: "http://placenames.npolar.no", rel: "related", type: "text/html", title: "Place names in Norwegian polar areas", hreflang: "en")
           
           f.links << Atom::Link.new(href: "https://data.npolar.no/dataset/#{PLACENAMES_METADATA_UUID}", rel: "related", type: "text/html", hreflang: "en")
@@ -128,7 +127,7 @@ module Npolar
           f.links << Atom::Link.new(href: "https://data.npolar.no/dataset/#{PLACENAMES_METADATA_UUID}", rel: "describedby", type: "text/html", hreflang: "en")
 
           f.title = "Norwegian polar place names"
-          f.subtitle = "This Atom feed is conformant to the INSPIRE data specification on geographical names"
+          f.subtitle = "This Atom feed is conformant to the INSPIRE data specification for the theme Geographical Names"
           
           f.rights = LICENCE_URI
           
@@ -155,10 +154,11 @@ module Npolar
         @ndoc.root.add_namespace_definition("xsi", "http://www.w3.org/2001/XMLSchema-instance")
         @ndoc.root.add_namespace_definition("gmd", "http://www.isotc211.org/2005/gmd")
         
-        @ndoc.root["xsi:schemaLocation"] = "#{INSPIRE_GN_NS} http://inspire.ec.europa.eu/schemas/gn/3.0/GeographicalNames.xsd
-#{OPENSEARCH_NS} http://inspire-geoportal.ec.europa.eu/schemas/inspire/atom/1.0/opensearch.xsd"
-# Not validating Atom {ATOM_NS} http://localhost:9393/xml/atom.xsd.xml
-# (Not validating HTML) http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd
+        @ndoc.root["xsi:schemaLocation"] = "#{INSPIRE_GN_NS} http://inspire.ec.europa.eu/schemas/gn/3.0/GeographicalNames.xsd"
+
+# {OPENSEARCH_NS} http://inspire-geoportal.ec.europa.eu/schemas/inspire/atom/1.0/opensearch.xsd"
+# {ATOM_NS} atom.xsd.xml
+# http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd
         
         # Insert atom:logo after links
         logo = node("logo")
@@ -202,7 +202,10 @@ module Npolar
          
           e.links << Atom::Link.new(href: "https://api.npolar.no/placename/#{uuid(placename.ident)}", rel: "edit", type: "application/json")
           e.links << Atom::Link.new(href: "http://placenames.npolar.no/stadnamn/#{placename.title_link}?ident=#{placename.ident}", rel: "alternate", type: "text/html")
-
+          if placename.title_replaced_by != ""
+            e.links << Atom::Link.new(href: "http://placenames.npolar.no/stadnamn/#{URI.encode(placename.title_replaced_by)}?ident=#{placename.ident_replaced_by}", rel: "alternate", type: "text/html")
+          end
+          
           (placename.links||[]).each do |link|
             e.links << ::Atom::Link.new(:href => link.href, :title => link.title, :rel => link.rel, :type => link.type, hreflang: link.hreflang)
           end
@@ -213,13 +216,13 @@ module Npolar
           e.links = e.links.uniq
           
           e.categories << ::Atom::Category.new(:term => placename[:approved] == true ? "official" : "historical", scheme: "http://inspire.ec.europa.eu/codelist/NameStatusValue/")
-          # @todo http://inspire.ec.europa.eu/codelist/NamedPlaceTypeValue/
+          e.categories << ::Atom::Category.new(:term => gn_type_value(placename), scheme: "http://inspire.ec.europa.eu/codelist/NamedPlaceTypeValue/")
+          e.categories << ::Atom::Category.new(:term => country_code(placename.location), scheme: "http://psi.oasis-open.org/iso/3166/") # http://en.wikipedia.org/wiki/ISO_3166-2:NO
           e.categories << ::Atom::Category.new(:term => placename[:location])
           
           content = ::Atom::Content::Xhtml.new(atom_content(placename))
-          content.xml_lang = "en"              
+          content.xml_lang = "en"     
           e.content = content
-          
           
           if placename.published.nil?
             e.published = Time.parse(placename[:created])
@@ -236,6 +239,9 @@ module Npolar
       # @todo See deprecated Placenames XML API for inspiration
       def atom_content(placename)
         @article = Nokogiri::XML('<div/>')
+        if placename.title_replaced_by != ""
+          @article.root.add_child(atom_content_section(:replaced_by, "Unofficial name, replaced by: #{placename[:title_replaced_by]}"))
+        end
         @article.root.add_child(atom_content_section(:definition, placename[:definition]))        
         @article.root.add_child(atom_content_section(:origin, placename[:origin]))
         @article.root.add_child(atom_content_section(:proposer, placename[:proposer]))
@@ -251,14 +257,25 @@ module Npolar
         node
       end
       
+      def country_code(location)
+        case location
+        when "Dronning Maud Land", "Peter I Øy"
+          "AQ"
+        when /^A(nta)?rktis$/
+          ""
+        else
+          "NO"
+        end
+      end
+      
       # A INSPIRE Named Place node with 1..* name variants for a given placename
       # @return [Nokogiri::XML::Node]
       def gn_named_place(placename)
         
         id = uuid(placename[:ident]) # @todo check if placename id is uuid or uri 
-        latitude = placename[:latitude] || placename[:north] || 0
-        longitude = placename[:longitude] || placename[:east] || 0
-        altitude = placename[:altitude] || placename[:height] || 0
+        latitude = placename[:latitude] || placename[:north] || 0.0
+        longitude = placename[:longitude] || placename[:east] || 0.0
+        altitude = placename[:altitude] || placename[:height] || 0.0
         published = placename.key?(:published) ? placename[:published] : placename[:created]
 
         # gn:NamedPlace        
@@ -275,11 +292,14 @@ module Npolar
     
         point = node "gml:Point"
         point["gml:id"] = "point-#{id}"
-        point["srsName"] = "http://www.opengis.net/def/crs/EPSG/0/4326"
+        
+        # EPSG:4936 = 3D; EPSG:4258 = 2D, both [ETRS89](http://en.wikipedia.org/wiki/European_Terrestrial_Reference_System_1989)
+        # EPSG:4326 = [WGS84](http://en.wikipedia.org/wiki/World_Geodetic_System#A_new_World_Geodetic_System:_WGS_84)
+        point["srsName"] = "http://www.opengis.net/def/crs/EPSG/0/4936"
             
         pos = node "gml:pos"
-        pos.content = "#{longitude} #{latitude}"
-        pos["srsDimension"] = "2" # @todo altitude
+        pos.content = "#{' '+altitude if altitude != 0.0 }#{longitude} #{latitude}"
+        pos["srsDimension"] =  altitude != 0.0 ? "3" : "2"
                 
         named_place.add_child(geometry)
         geometry.add_child(point)
@@ -328,10 +348,14 @@ module Npolar
         geographical_name = node "gn:GeographicalName"
         name.add_child(geographical_name)
         
+        
         # gn:language
         language = node("gn:language")
         if placename[:approved]     
           language.content = "nno"  
+        else
+          # Language and nativeness is only known for approved names, nilReason attribute: http://schemas.opengis.net/gml/3.2.1/basicTypes.xsd
+          language["nilReason"] = "unknown"
         end
         geographical_name.add_child(language)
         
@@ -339,6 +363,8 @@ module Npolar
         nativeness = node("gn:nativeness")
         if placename[:approved]
           nativeness.content = "endonym"
+        else
+          nativeness["nilReason"] = "unknown"
         end
         geographical_name.add_child(nativeness)
         
@@ -379,7 +405,7 @@ module Npolar
       end
       
       def gn_local_type(lang, content)
-        local_type = node("gn:LocalType")
+        local_type = node("gn:localType")
         lcs = node("gmd:LocalisedCharacterString")
         local_type.add_child(lcs)
         lcs["locale"] = lang
@@ -388,7 +414,6 @@ module Npolar
       end
 
       # Convert http://placenames.npolar.no/terreng => http://inspire.ec.europa.eu/codelist/NamedPlaceTypeValue/
-      # @todo QC
       def gn_type_value(placename)
         case placename[:terrainid]
 
@@ -396,13 +421,11 @@ module Npolar
           "administrative unit"
         when 97, 107, 117, 131, 133, 135, 146
           "hydrography"
-        when 74
-          "transport network"
         when 105
           "protected site"
         when 80, 160
           "populated place"
-        when 118
+        when 74,1184326
           "transport network"
         when 83, 93, 129, 159
           "building"
@@ -419,11 +442,7 @@ module Npolar
         document = document.nil? ? @ndoc : document
         Nokogiri::XML::Node.new(name, document)
       end
-      
-      # @todo handle title replaced by
-      # if placename.key?(:title_replaced_by) and placename[:title_replaced_by] != ""
-      #  "#{placename[:title_replaced_by]}\""
-      #end
+
       def placenames_from_variants(placename)
         i = -1
         placename = Hashie::Mash.new(placename)
@@ -446,7 +465,9 @@ module Npolar
       end
       
       def uuid(ident)
-        # @todo if ident is not numerical raise exception
+        if not ident.to_s =~ /\d+/
+          raise ArgumentError, "Legacy ident should be a positive integer"
+        end
         UUIDTools::UUID.sha1_create(UUIDTools::UUID_URL_NAMESPACE, "http://placenames.npolar.no/stadnamn/#{ident}")
       end
       
