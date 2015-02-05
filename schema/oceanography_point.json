@@ -139,7 +139,8 @@
 		"collection",
 		"longitude",
 		"latitude",
-		"id"
+		"id",
+		"measured"
 	],
 	"additionalProperties": true
 }
