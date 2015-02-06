@@ -110,30 +110,15 @@
 			"type": "string",
 			"description": "Instrument serial number"
 		},
-		"start_date": {
-			"type": "string",
-			"format": "date-time",
-			"description": "Start of measurement"
-		},
 		"station": {
 			"type": "string",
 			"description": "Station identifier"
-		},
-		"stop_date": {
-			"type": "string",
-			"format": "date-time",
-			"description": "Stop of measurement"
 		},
 		"tilt": {
 			"type": "number",
 			"minimum": 0,
 			"maximum": 360,
 			"description": "Instrument tilt in degrees"
-		},
-		"time": {
-			"type": "string",
-			"format": "date-time",
-			"description": "Time of measurement"
 		},
 		"schema": {
 			"type": "string",
