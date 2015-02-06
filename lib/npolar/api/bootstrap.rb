@@ -99,14 +99,9 @@ module Npolar
       # Elastic needs a little napping, so there is 3 sleeps
       def create_elasticsearch(service)
 
-        if service.storage =~ /Couch/
-          delete_elasticsearch_couchdb_river(service)
-          sleep(3)
-        end
-
-        delete_elasticsearch_index(service)
-
-        sleep(3)
+        #if delete_elasticsearch?
+        #  delete_elasticsearch(service)
+        #end
 
         create_elasticsearch_index(service)
 
@@ -117,7 +112,7 @@ module Npolar
           sleep(3)
         end
       end
-
+      
       # http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-create-index.html
       def create_elasticsearch_index(service)
 
@@ -138,6 +133,22 @@ module Npolar
         response = client.put(index_document.to_json)
         log.info "Index document #{index_document.to_json}"
         log.info "Elasticsearch index PUT #{client.uri}: #{response.status}"
+      end
+      
+      # Create Elasticsearch index, mapping, and river (river first)
+      # Elastic needs a little napping, so there is 3 sleeps
+      def delete_elasticsearch(service)
+
+        if service.storage =~ /Couch/
+          delete_elasticsearch_couchdb_river(service)
+          sleep(3)
+        end
+        
+        # delete es mapping or gone with index delete?
+
+        delete_elasticsearch_index(service)
+        sleep(3)
+
       end
 
       def delete_elasticsearch_index(service)
