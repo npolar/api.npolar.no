@@ -1,5 +1,5 @@
 {
-  "_rev": "5-2e07977a84622cc4987ba926a42d2a00",
+  "_rev": "5-32e23b489dd7f282210e11ee27a0c108",
   "schema": "http://api.npolar.no/schema/api",
   "id": "oceanography-api",
   "path": "/oceanography",
@@ -37,7 +37,8 @@
     "GET",
     "HEAD",
     "POST",
-    "PUT"
+    "PUT",
+    "OPTIONS"
   ],
   "formats": {
     "json": "application/json"

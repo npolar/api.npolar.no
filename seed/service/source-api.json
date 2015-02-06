@@ -1,5 +1,4 @@
 {
-  "_rev": "11-83ddbe884c695406bfbdeb9ea99340eb",
   "schema": "http://api.npolar.no/schema/api",
   "id": "source-api",
   "path": "/source",
@@ -12,7 +11,8 @@
     "GET",
     "HEAD",
     "POST",
-    "PUT"
+    "PUT",
+    "OPTIONS"
   ],
   "formats": {
     "json": "application/json"
