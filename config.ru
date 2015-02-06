@@ -5,11 +5,7 @@
 # Use /service to create new API endpoints.
 # Example: $ curl -niXPUT https://api.npolar.no/service/dataset-api -H "Content-Type: application/json" -d@seed/service/dataset-api.json
 # Details: https://github.com/npolar/api.npolar.no/wiki/New-API
-
-# Schema API
-# Use /schema to publish JSON or other schemas for your document APIs.
-# Example: $ curl -niXPUT https://api.npolar.no/schema/dataset -H "Content-Type: application/json" -d@schema/dataset.json
-
+#
 # Document API
 # How to POST, PUT, DELETE, and GET documents
 # * https://github.com/npolar/api.npolar.no/wiki/Example
@@ -56,7 +52,8 @@ log.info "Booting API #{Npolar::Api.base}
 # use Rack::Throttle::Interval, :min => 0.001 # 1/1000 seconds interval
 # use Npolar::Rack::SecureEdits (force TLS/SSL ie. https)
 
-use Rack::Static, :urls => ["/css", "/js", "/img", "/xsl", "schema", "code", "/favicon.ico", "/robots.txt"], :root => "public"
+use Rack::TryStatic, {urls: ["/css", "/js", "/img", "/xsl", "/schema", "code", "/favicon.ico", "/robots.txt"],
+  root: "public",  :try => ['.json', "/.json", 'index.html', '/index.html'] }
 use ::Rack::JSONP
 
 # CORS
