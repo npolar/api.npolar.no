@@ -55,14 +55,14 @@
         "rights": {
             "description": "The licence web address, f.ex. licenced under Creative Commons",
             "type": "string"
-        },
+        }, 
         "rights_holder": {
             "description": "A person or organization owning or managing rights over the resource",
             "enum": [
                 "Norwegian Polar Institute"
             ]
         },
-        "dataset_id": {
+/*        "dataset_id": {
             "description": "Get the code from metadatabase",
             "type": "string"
         },
@@ -71,7 +71,8 @@
             "enum": [
                 "Norwegian Polar Institute"
             ]
-        },
+        }, 
+
         "dataset_name": {
             "description": "Observation database NPI",
             "type": "string"
@@ -81,7 +82,8 @@
             "enum": [
                 "Norwegian Polar Institute"
             ]
-        },
+        }, 
+*/
         "basis_of_record": {
             "enum": [
                 "HumanObservation",
@@ -120,11 +122,11 @@
             "type": "integer"
         },
         "sex": {
-            "description": "= Adult M (male), Adult F (female), unidentified (undetermined)",
+            "description": "Adult M (male), Adult F (female), unidentified (undetermined)",
             "type": "string"
         },
         "lifestage": {
-            "description": " juvenile - Cub,calf,pup,bear cubs",
+            "description": "Juvenile - Cub,calf,pup,bear cubs",
             "type": "string"
        },
         "sub_adult": {
@@ -141,7 +143,8 @@
         },
         "event_date": {
             "description": "The date-time or interval during which the event occurred. Encoding scheme: iso8601, UTC",
-            "type": "string"
+            "type": "string",
+             "format": "date-time"
         },
         "habitat": {
             "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
@@ -151,7 +154,7 @@
                 "ice"
             ]
         },
-        "continent": {
+/*        "continent": {
             "description": " ex. Europe",
             "type": "string"
         },
@@ -166,9 +169,10 @@
         "country_code": {
             "description": "NO for Norway ",
             "type": "string"
-        },
+        }, 
+*/
         "locality": {
-            "description": "Corresponds with the form's location ",
+            "description": "Location description",
             "type": "string"
         },
         "location_comment": {
@@ -189,7 +193,7 @@
             "description": "Date of observation or species correction ",
             "type": "string"
         },
-        "vernacular_name": {
+ /*       "vernacular_name": {
             "description": "A common or vernacular name - ex. polar bear",
             "type": "string"
         },
@@ -212,7 +216,8 @@
         "family": {
             "description": "Taxonomic rank between order and genus",
             "type": "string"
-        },
+        },  
+*/
         "genus": {
             "description": "Taxonomic rank between species and family. First part of species",
             "type": "string"
@@ -374,6 +379,9 @@
     },
     "_rev": {
         "type": "string"
+    },
+    "_attchments": {
+        "type": "object"
     }
 }
 
