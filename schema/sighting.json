@@ -62,28 +62,6 @@
                 "Norwegian Polar Institute"
             ]
         },
-/*        "dataset_id": {
-            "description": "Get the code from metadatabase",
-            "type": "string"
-        },
-        "institution_code": {
-            "description": "NPI",
-            "enum": [
-                "Norwegian Polar Institute"
-            ]
-        }, 
-
-        "dataset_name": {
-            "description": "Observation database NPI",
-            "type": "string"
-        },
-        "owner_institution_code": {
-            "description": "Institution name having ownership of the information referred to in the record.",
-            "enum": [
-                "Norwegian Polar Institute"
-            ]
-        }, 
-*/
         "basis_of_record": {
             "enum": [
                 "HumanObservation",
@@ -154,23 +132,6 @@
                 "ice"
             ]
         },
-/*        "continent": {
-            "description": " ex. Europe",
-            "type": "string"
-        },
-        "island_group": {
-            "description": "ex. Svalbard",
-            "type": "string"
-        },
-        "country": {
-            "description": "ex. Norway",
-            "type": "string"
-        },
-        "country_code": {
-            "description": "NO for Norway ",
-            "type": "string"
-        }, 
-*/
         "locality": {
             "description": "Location description",
             "type": "string"
@@ -192,32 +153,7 @@
         "date_identified": {
             "description": "Date of observation or species correction ",
             "type": "string"
-        },
- /*       "vernacular_name": {
-            "description": "A common or vernacular name - ex. polar bear",
-            "type": "string"
-        },
-        "kingdom": {
-            "description": "Second highest taxonomic rank below domain",
-            "type": "string"
-        },
-        "phylum": {
-            "description": "Taxonomic rank below kingdom and above class",
-            "type": "string"
-        },
-        "class": {
-            "description": "Taxonomic rank between phylum and order",
-            "type": "string"
-        },
-        "order": {
-            "description": "Taxonomic rank between class and familiy",
-            "type": "string"
-        },
-        "family": {
-            "description": "Taxonomic rank between order and genus",
-            "type": "string"
-        },  
-*/
+        },     
         "genus": {
             "description": "Taxonomic rank between species and family. First part of species",
             "type": "string"
@@ -348,9 +284,9 @@
                 "description": "comments related to picture",
                 "type": "string"
             },
-            "thumbnail": {
-                "description": "name of thumbnail",
-                "type": "string"
+            "thumbnail_attchment": {
+                 "description": "includes thumbnail",
+                 "type": "object"
             },
             "other_info": {
                 "description": "other info f.ex from the old database",
@@ -379,9 +315,6 @@
     },
     "_rev": {
         "type": "string"
-    },
-    "_attchments": {
-        "type": "object"
     }
 }
 
