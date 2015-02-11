@@ -284,10 +284,6 @@
                 "description": "comments related to picture",
                 "type": "string"
             },
-            "thumbnail_attchment": {
-                 "description": "includes thumbnail",
-                 "type": "object"
-            },
             "other_info": {
                 "description": "other info f.ex from the old database",
                 "type": "string"
