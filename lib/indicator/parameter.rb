@@ -3,16 +3,16 @@ require "hashie"
 require "date"
 require "time"
 
-module Monitoring
+module Indicator
 
-  # [Parameter](http://api.npolar.no/schema/monitoring-parameter) model
+  # [Parameter](http://api.npolar.no/schema/indicator-parameter) model
   class Parameter < Hashie::Mash
 
     #include Npolar::Validation::MultiJsonSchemaValidator
     
-    # JSON_SCHEMA_URI = "http://api.npolar.no/schema/monitoring-parameter"
+    # JSON_SCHEMA_URI = "http://api.npolar.no/schema/indicator-parameter"
 
-    # JSON_SCHEMAS = ["monitoring-parameter.json"]
+    # JSON_SCHEMAS = ["indicator-parameter.json"]
 
     # @override MultiJsonSchemaValidator
     #def schemas
