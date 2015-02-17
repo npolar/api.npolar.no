@@ -20,6 +20,7 @@
         "type": "string",
         "index": "not_analyzed"
       },
+      "parameters":{"type":"string","index":"not_analyzed"},
       "label": {
         "type": "string",
         "index": "not_analyzed"

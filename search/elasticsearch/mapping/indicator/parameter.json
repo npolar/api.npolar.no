@@ -20,6 +20,7 @@
         "type": "string",
         "index": "not_analyzed"
       },
+      "timeseries":{"type":"string","index":"not_analyzed"},
       "label": {
         "type": "string",
         "index": "not_analyzed"
