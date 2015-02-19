@@ -165,7 +165,7 @@ module Npolar
         edit[:request][:header][:"Content-Type"] = request.env["CONTENT_TYPE"]
         edit[:request][:header][:"Content-Length"] = request.env["CONTENT_LENGTH"].to_i
         edit[:request][:header][:"User-Agent"] = request.user_agent
-        edit.force_encoding("utf-8")
+        edit
       end
 
       def response_body(response, status, open_data)
