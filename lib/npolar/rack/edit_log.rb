@@ -156,15 +156,16 @@ module Npolar
         if max_body_size <= 0
           edit[:request][:body] = "[⋯]"
           edit[:response][:body] = "[⋯]"
-        else
-          edit[:request][:body] = edit[:request][:body][0..max_body_size]+"[⋯]"
-          edit[:response][:body] = edit[:response][:body][0..max_body_size]+"[⋯]"
+        elsif edit[:request][:body].size > max_body_size 
+          edit[:request][:body] = edit[:request][:body][0..max_body_size].force_encoding("utf-8")+"[⋯]"
+        elsif edit[:response][:body] > max_body_size
+          edit[:response][:body] = edit[:response][:body][0..max_body_size].force_encoding("utf-8")+"[⋯]"
         end
-                
+    
         edit[:request][:header][:"Content-Type"] = request.env["CONTENT_TYPE"]
         edit[:request][:header][:"Content-Length"] = request.env["CONTENT_LENGTH"].to_i
         edit[:request][:header][:"User-Agent"] = request.user_agent
-        edit
+        edit.force_encoding("utf-8")
       end
 
       def response_body(response, status, open_data)
