@@ -158,7 +158,7 @@ module Npolar
           edit[:response][:body] = "[⋯]"
         elsif edit[:request][:body].size > max_body_size 
           edit[:request][:body] = edit[:request][:body][0..max_body_size].force_encoding("utf-8")+"[⋯]"
-        elsif edit[:response][:body] > max_body_size
+        elsif edit[:response][:body].size > max_body_size
           edit[:response][:body] = edit[:response][:body][0..max_body_size].force_encoding("utf-8")+"[⋯]"
         end
     
