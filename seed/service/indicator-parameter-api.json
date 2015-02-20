@@ -1,0 +1,64 @@
+{
+   "id": "indicator-parameter-api",
+   "schema": "http://api.npolar.no/schema/api",
+   "path": "/indicator/parameter",
+   "title": "Environmental parameter API",
+   "storage": "Couch",
+   "database": "indicator-parameter",
+   "model": "Indicator::Parameter",
+   "search": {
+       "engine": "Elasticsearch",
+       "index": "indicator",
+       "type": "parameter",
+       "params": {
+           "facets": "systems,species,themes,label,value,high,warn,low,parameter,locations.placename,size,links.rel,dataseries_count",
+           "date-year": "datetime",
+           "rangefacet-locations.latitude": 10,
+           "size-facet": 100,
+           "sort": "datetime",
+           "filter-collection": "parameter"
+       },
+           "index_document": {
+      "index" : {
+        "analysis" : {
+          "analyzer": {
+            "default" : {
+                "type" : "keyword"
+              }
+          }
+        }
+      }
+    },
+   },
+   "verbs": [
+     "DELETE",
+     "GET",
+     "HEAD",
+     "POST",
+     "PUT"
+   ],
+   "formats": {
+     "json": "application/json"
+   },
+   "accepts": {
+     "application/json": "http://api.npolar.no/schema/indicator-parameter"
+   },
+   "category": [
+     "CouchDB",
+     "REST",
+     "Search",
+     "JSON",
+     "HTTP",
+     "Lucene",
+     "Elasticsearch"
+   ],
+   "lifecycle": "experimental",
+   "run": "Npolar::Api::Json",
+   "auth": {
+     "authorize": "sysadmin",
+     "system": "api",
+     "authorizer": "Npolar::Auth::Couch"
+   },
+   "open": true,
+    "editlog": {"max_body_size": 10000}
+}
