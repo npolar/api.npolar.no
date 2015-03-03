@@ -14,21 +14,10 @@
            "facets": "systems,species,themes,label,value,high,warn,low,parameter,locations.placename,size,links.rel,dataseries_count",
            "date-year": "datetime",
            "rangefacet-locations.latitude": 10,
-           "size-facet": 100,
+           "size-facet": 1000,
            "sort": "datetime",
            "filter-collection": "parameter"
-       },
-           "index_document": {
-      "index" : {
-        "analysis" : {
-          "analyzer": {
-            "default" : {
-                "type" : "keyword"
-              }
-          }
-        }
-      }
-    }
+       }
    },
    "verbs": [
      "DELETE",
@@ -59,6 +48,6 @@
      "system": "api",
      "authorizer": "Npolar::Auth::Couch"
    },
-   "open": true,
-    "editlog": {"max_body_size": 10000}
+  "open": true,
+  "editlog": {"max_body_size": 10000}
 }
