@@ -19,17 +19,6 @@
     "params": {
       "facets": "collection,mooring,cruise,station",
       "date-year": "measured"
-    },
-    "index_document": {
-      "index" : {
-        "analysis": {
-          "tokenizer": {
-            "default": {
-              "type": "keyword"
-            }
-          }
-        }
-      }
     }
   },
   "verbs": [

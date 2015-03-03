@@ -1,8 +1,18 @@
 {
   "oceanography_point": {
-    "_all" : {
-      "enabled" : true
-    },
-    "properties" : {}
+    "dynamic_templates" : [
+      {
+        "strings_not_analyzed" : {
+          "match" : "*",
+          "match_mapping_type" : "string",
+          "mapping" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          }
+        }
+      }
+    ],
+    "properties" : {
+    }
   }
 }
