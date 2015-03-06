@@ -10,7 +10,7 @@
   "model": "Service",
   "verbs": [
     "DELETE",
-    "GET",  
+    "GET",
     "HEAD",
     "POST",
     "PUT"
@@ -30,14 +30,24 @@
   "lifecycle": "production",
   "run": "Npolar::Api::Json",
   "open": true,
-  
-"search": {
-"engine": "Elasticsearch",
-"facets": [
-],
-"index": "api",
-"type": "service"
-},
+  "search": {
+    "engine": "Elasticsearch",
+    "facets": [
+    ],
+    "index": "api_service",
+    "type": "service",
+    "index_document": {
+      "index" : {
+        "analysis" : {
+          "analyzer": {
+            "default" : {
+              "type" : "keyword"
+            }
+          }
+        }
+      }
+    }
+  },
   "auth": {
     "authorize": "sysadmin",
     "system": "api",

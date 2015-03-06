@@ -1,5 +1,5 @@
 {
-  "_rev": "5-32e23b489dd7f282210e11ee27a0c108",
+  "_rev": "5-2e07977a84622cc4987ba926a42d2a00",
   "schema": "http://api.npolar.no/schema/api",
   "id": "oceanography-api",
   "path": "/oceanography",
@@ -22,11 +22,11 @@
     },
     "index_document": {
       "index" : {
-        "analysis" : {
-          "analyzer": {
-            "default" : {
-                "type" : "keyword"
-              }
+        "analysis": {
+          "tokenizer": {
+            "default": {
+              "type": "keyword"
+            }
           }
         }
       }
@@ -37,8 +37,7 @@
     "GET",
     "HEAD",
     "POST",
-    "PUT",
-    "OPTIONS"
+    "PUT"
   ],
   "formats": {
     "json": "application/json"
