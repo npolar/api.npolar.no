@@ -157,37 +157,40 @@ class Tracking < Hashie::Mash
     # For Argos data data prior to 2014-03-01 (DS/DIAG data) the sensor data may either integer or hex
     # Argos data from 2014-03-01 and onwards (XML from SOAP web service) contain both integer and hex data,
     # as well as platform_model string
-    if self[:sensor_data].any?
+    if self[:sensor_data].any? and self[:decoder].nil?
     
       decoder = nil
-      sensor_data_format = nil
       
       if self[:platform_model] =~ /^KiwiSat303/i
         
-        require "argos/kiwisat303"
-        decoder = Argos::KiwiSat303.new
+        require "argos"
+        decoder = Argos::KiwiSat303Decoder.new
         
-        if self[:platform] =~ /^13/ and self[:technology] == "argos" and self[:type] =~ /^(ds|diag)$/
-          sensor_data_format = "hex"
+        # Arctic foxes
+        if self[:object] == "Arctic fox" and self[:platform] =~ /^13/ and self[:technology] == "argos" and self[:type] =~ /^(ds|diag)$/
+          decoder.sensor_data_format = "hex"
+          self[:sensor_data_format] = "hex" 
         end
+        
         
   
       elsif self[:platform_model] =~ /^NorthStar/i
         
-        require "argos/northstar_4bytes"
-        decoder = Argos::NorthStar4Bytes.new
+        require "argos"
+        decoder = Argos::NorthStar4BytesDecoder.new
         
       end
       
       # Merge in extracted sensor data
       if not decoder.nil?
+        self[:decoder] = decoder.class.name
         
         decoder.sensor_data = self[:sensor_data]
         
         decoder.data.each do |k,v|
           self[k]=v
         end
-        
+
       end
     
     end
