@@ -42,6 +42,7 @@ class Tracking < Hashie::Mash
   def before_save(request=nil)
     
     self[:collection] = "tracking"
+    
     self[:"measured-isodate"] = Date.parse(measured).iso8601
     if not warn?
       self[:warn] = []
@@ -73,6 +74,8 @@ class Tracking < Hashie::Mash
       deploymenturi = baseuri.dup
       
       if deployments.size == 1
+        
+        
 
         # @todo only set if not present before (for all of these)  
         self[:individual] = deployments[0].individual
@@ -82,6 +85,12 @@ class Tracking < Hashie::Mash
         if principalInvestigator =~ /,/
           self[:principalInvestigator] = principalInvestigator.split(",")
         end
+        
+        # Set platform model
+        if not platform_model? and deployments[0].platform_model != ""
+          self[:platform_model] = deployments[0].platform_model
+        end
+        
 
         deploymenturi.path = "/tracking/deployment/#{deployments[0][:id]}"
         self[:deployment] = deploymenturi.to_s
@@ -90,7 +99,6 @@ class Tracking < Hashie::Mash
           DateTime.parse(deployments[0].deployed)
           self[:deployed] = deployments[0].deployed
                 
-
         rescue
           
           self[:warn] << "missing-or-invalid-deployed-date" 
@@ -143,6 +151,48 @@ class Tracking < Hashie::Mash
         self[:object] = "unknown"
       end
     end
+    
+    # Decode sensor data
+    #
+    # For Argos data data prior to 2014-03-01 (DS/DIAG data) the sensor data may either integer or hex
+    # Argos data from 2014-03-01 and onwards (XML from SOAP web service) contain both integer and hex data,
+    # as well as platform_model string
+    if self[:sensor_data].any?
+    
+      decoder = nil
+      sensor_data_format = nil
+      
+      if self[:platform_model] =~ /^KiwiSat303/i
+        
+        require "argos/kiwisat303"
+        decoder = Argos::KiwiSat303.new
+        
+        if self[:platform] =~ /^13/ and self[:technology] == "argos" and self[:type] =~ /^(ds|diag)$/
+          sensor_data_format = "hex"
+        end
+        
+  
+      elsif self[:platform_model] =~ /^NorthStar/i
+        
+        require "argos/northstar_4bytes"
+        decoder = Argos::NorthStar4Bytes.new
+        
+      end
+      
+      # Merge in extracted sensor data
+      if not decoder.nil?
+        
+        decoder.sensor_data = self[:sensor_data]
+        
+        decoder.data.each do |k,v|
+          self[k]=v
+        end
+        
+      end
+    
+    end
+    
+    
     before_valid
     
     self
