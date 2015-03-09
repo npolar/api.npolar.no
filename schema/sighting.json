@@ -36,18 +36,6 @@
                 "no"
             ]
         },
-        "type": {
-            "enum": [
-                "collection",
-                "event",
-                "image",
-                "physicalObject",
-                "dataset",
-                "model",
-                "sound",
-                "text"
-            ]
-        },
         "language": {
             "description": "mostly en",
             "type": "string"
@@ -62,75 +50,10 @@
                 "Norwegian Polar Institute"
             ]
         },
-        "basis_of_record": {
-            "enum": [
-                "HumanObservation",
-                "MachineObservation",
-                "StillImage",
-                "MovingImage",
-                "SoundRecording"
-            ]
-        },
-        "polar_bear_condition": {
-            "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "dead_alive": {
-            "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "enum": [
-                "NA",
-                "alive",
-                "dead"
-            ]
-        },
-        "occurrence_remarks": {
-            "description": "Comments about the observation - found dead f.ex.",
-            "type": "string"
-        },
-        "recorded_by": {
-            "description": "Observer’s login or id ",
-            "type": "string"
-        },
-        "recorded_by_name": {
-            "description": "Observer’s name ",
-            "type": "string"
-        },
-        "individual_count": {
-            "description": "Total field in the form ",
-            "type": "integer"
-        },
-        "sex": {
-            "description": "Adult M (male), Adult F (female), unidentified (undetermined)",
-            "type": "string"
-        },
-        "lifestage": {
-            "description": "Juvenile - Cub,calf,pup,bear cubs",
-            "type": "string"
-       },
-        "sub_adult": {
-            "description": "Young adult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "unidentified": {
-            "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "bear_cubs": {
-            "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
         "event_date": {
             "description": "The date-time or interval during which the event occurred. Encoding scheme: iso8601, UTC",
             "type": "string",
              "format": "date-time"
-        },
-        "habitat": {
-            "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
-            "enum": [
-                "land",
-                "water",
-                "ice"
-            ]
         },
         "locality": {
             "description": "Location description",
@@ -146,6 +69,62 @@
         "longitude": {
             "type": "string"
         },
+        "adult_m": {
+            "description": "Number of male adults",
+            "type": "string"
+        },
+        "adult_f": {
+            "description": "Number of female adults",
+            "type": "string"
+        },
+        "adult": {
+            "description": "Number of adults, sex unspecified",
+            "type": "string"
+        },
+        "sub_adult": {
+            "description": "Young adult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "polar_bear_condition": {
+            "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "lifestage": {
+            "description": "Juvenile - Cub,calf,pup,bear cubs",
+            "type": "string"
+       },
+       "bear_cubs": {
+            "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "unidentified": {
+            "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "type": "string"
+        },
+        "dead_alive": {
+            "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+            "enum": [
+                "NA",
+                "alive",
+                "dead"
+            ]
+        },
+        "habitat": {
+            "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
+            "enum": [
+                "land",
+                "water",
+                "ice"
+            ]
+        },
+        "occurrence_remarks": {
+            "description": "Comments about the observation - found dead f.ex.",
+            "type": "string"
+        },
+        "recorded_by": {
+            "description": "Observer’s login or id ",
+            "type": "string"
+        },
         "identified_by": {
             "description": "Name of person who identified the species -Observer's name or name of person correcting ",
             "type": "string"
@@ -154,15 +133,7 @@
             "description": "Date of observation or species correction ",
             "type": "string"
         },     
-        "genus": {
-            "description": "Taxonomic rank between species and family. First part of species",
-            "type": "string"
-        },
-        "specific_epithet": {
-            "description": "Last part of species",
-            "type": "string"
-        },
-        "observation_comment": {
+        "editor_comment": {
             "description": "comment about species observation",
             "type": "string"
         },
