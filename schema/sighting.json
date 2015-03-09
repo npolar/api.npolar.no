@@ -134,11 +134,15 @@
             "type": "string"
         },
         "identified_by": {
-            "description": "Name of person who identified the species -Observer's name or name of person correcting ",
+            "description": "Name of person who identified the species -Observer's id ",
             "type": "string"
         },
         "date_identified": {
             "description": "Date of observation or species correction ",
+            "type": "string"
+        },
+        "editor_assessment": {
+            "description": "red-yellow-green",
             "type": "string"
         },     
         "editor_comment": {
