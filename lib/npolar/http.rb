@@ -1,5 +1,4 @@
 require "faraday"
-require "faraday_middleware"
 
 module Npolar
   class Http
@@ -9,10 +8,10 @@ module Npolar
     attr_writer :username, :password
 
     extend Forwardable # http://www.ruby-doc.org/stdlib-1.9.3/libdoc/forwardable/rdoc/Forwardable.html
-    
+
     # Delegate HTTP verbs to Faraday
     def_delegators :http, :delete, :get, :head, :patch, :post, :put
-   
+
     def initialize(base="http://api.npolar.no", options={}, &builder)
       @base = base
       @options = options
@@ -42,7 +41,7 @@ module Npolar
         f
       end
     end
-  
+
     def get_body(uri, params={})
       response = get(uri, params)
       unless (200..399).include? response.status
