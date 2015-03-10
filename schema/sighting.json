@@ -93,7 +93,7 @@
             "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
             "type": "string"
         },
-        "lifestage": {
+        "cub_calf_pup": {
             "description": "Juvenile - Cub,calf,pup,bear cubs",
             "type": "string"
        },
@@ -123,6 +123,10 @@
         },
         "occurrence_remarks": {
             "description": "Comments about the observation - found dead f.ex.",
+            "type": "string"
+        },
+        "info_comment": {
+            "description": "Info about the record- f.ex from old database",
             "type": "string"
         },
         "recorded_by": {
