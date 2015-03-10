@@ -34,7 +34,7 @@ module Metadata
         j = []
         builder = ::Gcmd::Dif.new( xml )
         difs = builder.document_to_array
-       
+
         difs.each do | dif_hash |
           transformer = ::Metadata::DifTransformer.new( dif_hash )
           dataset = transformer.to_dataset
@@ -52,7 +52,7 @@ module Metadata
 
       first_name = p.First_Name
       if p.Middle_Name? and p.Middle_Name.size >= 1
-        first_name += " " + p.Middle_Name 
+        first_name += " " + p.Middle_Name
       end
 
       email = p.Email.nil? ? "" : p.Email[0]
@@ -65,7 +65,7 @@ module Metadata
             organisation = p.Contact_Address.Address[0]
           end
         end
-        
+
       end
 
       Hashie::Mash.new({
@@ -80,7 +80,7 @@ module Metadata
     def self.roles_from_dif_role( role )
       role.map {|r|
         ROLE_MAP.key?(r.upcase) ? ROLE_MAP[r.upcase] : role
-      } 
+      }
     end
 
     # base = base URI, see #href
@@ -95,15 +95,15 @@ module Metadata
       :id, :schema, :collection, :topics, :iso_topics, :tags, :rights, :restricted, :restrictions, :licences,
       # atom
       :title, :links, :summary, :created, :updated, :draft,
-      # metadata 
+      # metadata
       :coverage, :progress, :people, :organisations, :activity, :placenames,
       :quality, :gcmd, :edits, :sets
     ]
 
-   
+
     #!? Originating_Metadata_Node
     # extra metadata => topics
-    
+
     def initialize( object = {} )
       @base = BASE
       if object.is_a? Hash
@@ -112,7 +112,7 @@ module Metadata
         raise ArgumentError, "Expecting a Hash object!"
       end
     end
-    
+
     # DIF => dataset (http://data.npolar.no/schema/dataset)
     def to_dataset
 
@@ -121,7 +121,7 @@ module Metadata
       DATASET.each do |method|
         dataset.send( method.to_s + '=', self.send( method ) )
       end
-      
+
       dataset
     end
 
@@ -161,7 +161,7 @@ module Metadata
         dif.ISO_Topic_Category.map {|i| normalize_iso_topics(i) }
       end
     end
-    
+
     def tags
       tags = []
       if dif.Keyword?
@@ -176,11 +176,11 @@ module Metadata
     def topics
       guess_topics
     end
-    
+
     def quality
       dif.Quality
     end
-    
+
     def created
       date = dif.DIF_Creation_Date ||= Date.new(-1).xmlschema
       date += "T12:00:00Z" unless date == "" or date =~ ISO8601_DATETIME_REGEX
@@ -190,7 +190,7 @@ module Metadata
     def schema
       ::Metadata::Dataset::JSON_SCHEMA_URI
     end
-    
+
     def collection
       "dataset"
     end
@@ -200,7 +200,7 @@ module Metadata
       date += "T12:00:00Z" unless date == "" or date =~ ISO8601_DATETIME_REGEX
       date
     end
-    
+
     def progress
       case object.Data_Set_Progress
         when nil, "", "Complete" then "complete"
@@ -208,19 +208,19 @@ module Metadata
         when "Planned" then "planned"
       end
     end
-    
+
     def activity
       periods = []
       object.Temporal_Coverage.each do | period |
-        
+
         start = ""
         start = period.Start_Date unless period.Start_Date.nil?
         start += "T12:00:00Z" unless start == "" or start =~ ISO8601_DATETIME_REGEX
-        
+
         stop = ""
         stop = period.Stop_Date unless period.Stop_Date.nil?
         stop += "T12:00:00Z" unless stop == "" or stop =~ ISO8601_DATETIME_REGEX
-        
+
         periods << Hashie::Mash.new({"start" => start, "stop" => stop})
       end unless object.Temporal_Coverage.nil?
       periods
@@ -233,7 +233,7 @@ module Metadata
       end
       draft
     end
-    
+
     def summary
       summary = ""
 
@@ -246,15 +246,15 @@ module Metadata
       end
       summary
     end
-    
+
     def investigators
       people.select {|c| c.roles.include? "principalInvestigator" }
     end
-    
+
     def edits
       []
     end
-    
+
     # people <= Personnel
     def people
       people = []
@@ -274,7 +274,7 @@ module Metadata
         end
       end
 
-      people  
+      people
     end
 
     # organisations <= Data_Center
@@ -285,7 +285,7 @@ module Metadata
       orgs = []
 
       if dif.Data_Center? and dif.Data_Center.any?
-        dif.Data_Center.select {|dc| dc.Data_Center_Name? }.each {|dc|          
+        dif.Data_Center.select {|dc| dc.Data_Center_Name? }.each {|dc|
 
           roles = ["owner"]
           name = dc.Data_Center_Name.Long_Name
@@ -297,7 +297,7 @@ module Metadata
             roles += ["originator", "publisher", "pointOfContact", "resourceProvider"]
             links << { "rel" => "publisher", "href" => "http://data.npolar.no", "title" => "Norwegian Polar Institute" }
           end
-          
+
           id = URI.parse(url).host
 
           orgs << Hashie::Mash.new({
@@ -306,10 +306,10 @@ module Metadata
             "gcmd_short_name" => dc.Data_Center_Name.Short_Name,
             "roles" => roles,
             "links" => links
-          })      
+          })
         }
       end
-      
+
       if orgs.none?
         if self.dif.to_json =~ /(NPI|Norwegian Polar Institute)/
           orgs << Hashie::Mash.new(Metadata::Dataset.npolar)
@@ -320,10 +320,10 @@ module Metadata
 
       orgs
     end
-    
-    # Placenames <= Location    
+
+    # Placenames <= Location
     def placenames
-      
+
       (dif.Location||[]).select {|location| location.Detailed_Location?}.map {
         |location|
           Hashie::Mash.new({
@@ -332,7 +332,7 @@ module Metadata
             "country" => guess_country_code_from_location(location),
         })
       }
-    end 
+    end
 
 
     # coverage <= Spatial_Coverage
@@ -348,7 +348,7 @@ module Metadata
         })
       }
     end
-    
+
     # Links from
     #  1. Related_URL
     #  2. Parent_DIF
@@ -359,7 +359,7 @@ module Metadata
 
       # 1. Related_URL
       if dif.Related_URL?
-      
+
       dif.Related_URL.each do | link |
 
         if link.URL_Content_Type? and link.URL_Content_Type.Type?
@@ -367,7 +367,7 @@ module Metadata
         else
           dif_type = nil
         end
- 
+
         rel = case dif_type
           when "GET DATA" then "data"
           when "VIEW PROJECT HOME PAGE" then "project"
@@ -376,7 +376,7 @@ module Metadata
           when "VIEW RELATED INFORMATION", "", nil then "related"
           else dif_type
         end
-         
+
         link.URL.each do | url |
 
           links << {
@@ -384,24 +384,24 @@ module Metadata
             "href" => url,
             "title" => link.Description,
             "type" => "text/html",
-          }  
-        end  
+          }
+        end
       end
       end
 
       # 2. Link to parent metadata
-      unless object.Parent_DIF.nil? 
+      unless object.Parent_DIF.nil?
         dif.Parent_DIF.each do | parent |
-          
+
             links << {
               "rel" => "parent",
               "href" => base+uuid(self.class.uri(parent))+".json",
               "type" => "application/json"
             }
-           
+
         end
       end
-      
+
       # 3. Links to DOI and "Online Resource" (metadata)
       # @todo
 
@@ -412,7 +412,7 @@ module Metadata
         "type" => "application/json"
       }
       end
-     
+
       # Links to GCMD project on api.npolar.no
       #unless dif.Project.nil?
       #  projects = Gcmd::Concepts.new.tuples("projects")
@@ -424,7 +424,7 @@ module Metadata
       #    else
       #      [] #link("/gcmd/concept/?q=#{label}&title=false&fields=*&format=json", "project", label, "application/json")
       #    end
-      #    
+      #
       #  }
       #end
 
@@ -442,19 +442,19 @@ module Metadata
     def restrictions
       return dif.Access_Constraints
     end
-    
+
     def sets
       sets = []
-      
+
       (dif.IDN_Node||[]).each do | node |
-        
+
         case( node["Short_Name"] )
           when "IPY" then sets += ["IPY", "GCMD"]
           when "DOKIPY" then sets << "DOKIPY"
           when /^ARCTIC\/?.*/ then sets << "arctic"
           when /^AMD\/?.*/ then sets << "antarctic"
         end
-        
+
       end
       if (topics||[]).include? "oceanography" or (topics||[]).include? "seaice" or (iso_topics||[]).include? "oceans"
         sets << "NMDC"
@@ -462,10 +462,9 @@ module Metadata
 
       sets.uniq
     end
-    
-    def gcmd      
+
+    def gcmd
       { "sciencekeywords" => dif.Parameters||[],
-        "instruments" => dif.Sensor_Name||[],
         "locations" => dif.Location||[],
         "projects" => dif.Project||[],
         "resolutions" => dif.Data_Resolution||[], # unbounded
@@ -480,17 +479,17 @@ module Metadata
         "entry_id" => dif.Entry_ID
       }
     end
-       
+
     def parameters
       return [] if object.Parameters.nil?
       object.Parameters
     end
-    
-    
+
+
     def data_quality
       object.quality unless object.quality.nil?
     end
-    
+
     def dataset_progress
       prog = ""
       unless object.progress.nil?
@@ -500,33 +499,33 @@ module Metadata
           prog = object.progress.capitalize
         end
       end
-      
+
       prog
     end
-    
+
     def creation_date
       object.created.split("T")[0]
     end
-    
+
     def revision_date
       object.updated.split("T")[0]
     end
-    
+
     def metadata_name
       "CEOS IDN DIF"
     end
-    
+
     def metadata_version
       Gcmd::Schema::VERSION
     end
-    
+
     def private
       dataset.draft == "yes" ? "True" : "False"
     end
-    
+
     protected
 
-  
+
     def doi?
       dif.Data_Set_Citation? and dif.Data_Set_Citation.any? and dif.Data_Set_Citation[0].Dataset_DOI?
     end
@@ -576,7 +575,7 @@ module Metadata
       if summary =~ /russia/i
         "RU"
       end
-      
+
     end
 
     # Guess country code from sc
@@ -601,7 +600,7 @@ module Metadata
       if topics.none?
         topics << guess_topic_from_summary(summary)
       end
-      
+
       topics.flatten.uniq.select {|t| t != nil and t != "" }
     end
 
@@ -705,5 +704,5 @@ module Metadata
     end
 
   end
-  
+
 end
