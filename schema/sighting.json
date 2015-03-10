@@ -63,10 +63,6 @@
             "description": "Corresponds with the form's location ",
             "type": "string"
         },
-        "location_comment": {
-            "description": "Corresponds with the form's location ",
-            "type": "string"
-        },
         "latitude": {
             "type": "string"
         },
