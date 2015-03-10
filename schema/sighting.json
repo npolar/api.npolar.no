@@ -113,6 +113,10 @@
                 "dead"
             ]
         },
+        "total": {
+            "description": "Total number of individuals",
+            "type": "string"
+        },
         "habitat": {
             "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
             "enum": [
