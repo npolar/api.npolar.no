@@ -1,7 +1,12 @@
 require "npolar/api/client/json_api_client"
+require "argos"
+
 require "date"
+
 class Tracking < Hashie::Mash
 
+  include Argos::SensorData
+  
   # Before lambda for processing a request prior to storage
   # @return [lambda]
   # See Core#handle and Core#before
@@ -163,13 +168,11 @@ class Tracking < Hashie::Mash
       
       if self[:platform_model] =~ /^KiwiSat303/i
         
-        require "argos"
         decoder = Argos::KiwiSat303Decoder.new
         
 
       elsif self[:platform_model] =~ /^NorthStar/i
         
-        require "argos"
         decoder = Argos::NorthStar4BytesDecoder.new
         
       end
@@ -181,20 +184,26 @@ class Tracking < Hashie::Mash
           
           begin
 
-            # Genetic hex detection, but this should be set in the platform deployment metadata if needed
-            if self[:sensor_data].all? {|sd| sd.to_s =~ /^[0-9a-f]{2}$/i }
-              self[:sensor_data_format] = "hex" 
-            end
-  
+            # @todo HEX from platform deployment metadata
+            
              # Arctic fox legacy DS/DIAG data hack: force hex format for platform series 13xxxx
-            if self[:object] == "Arctic fox" and self[:platform].to_s =~ /^13/ and self[:technology] == "argos" and self[:type] =~ /^(ds|diag)$/
-              decoder.sensor_data_format = "hex"
-              self[:sensor_data_format] = "hex" 
+            if self[:object] == "Arctic fox" and self[:platform].to_s =~ /^13/ and self[:technology] == "argos"
+              if self[:type] =~ /^(ds|diag)$/
+                decoder.sensor_data_format = "hex"
+                self[:sensor_data_format] = "hex"
+              end
+            end
+            
+            # If we have sensor_hex => use that (then we at least know the base)
+            if self[:sensor_hex].size >= 2
+              decoder.sensor_data = self[:sensor_hex].scan(/[0-9a-f]{2}/i).map {|h| h.to_i(16) }
+            else
+              decoder.sensor_data = self[:sensor_data]
             end
             
             self[:decoder] = decoder.class.name
             
-            decoder.sensor_data = self[:sensor_data]
+            
             
             decoder.data.each do |k,v|
               self[k]=v
