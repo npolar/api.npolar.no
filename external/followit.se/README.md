@@ -14,18 +14,19 @@
 Original XML data stored under
 * /mnt/datasets/Tracking/Followit
 
-The archive is updated nightly with XML from the [GetUnitReportPositions](http://total.followit.se/DataAccess/TrackerService.asmx?op=GetUnitReportPositions) SOAP call.
-
-SOAP ([WSDL](http://total.followit.se/DataAccess/TrackerService.asmx?WSDL))
+The archive is updated nightly with XML from the [GetUnitReportPositions](http://total.followit.se/DataAccess/TrackerService.asmx?op=GetUnitReportPositions) SOAP ([WSDL](http://total.followit.se/DataAccess/TrackerService.asmx?WSDL))
+call.
 
 ### Login (cookie)
-$ curl --cookie-jar /tmp/followit-jar -XPOST -d@Login.xml http://total.followit.se/DataAccess/AuthenticationService.asmx -H "Content-Type: text/xml; charset=utf-8"        
+```curl --cookie-jar /tmp/followit-jar -XPOST -d@Login.xml http://total.followit.se/DataAccess/AuthenticationService.asmx -H "Content-Type: text/xml; charset=utf-8"```        
 
 ### Get (tracker units)
-curl -XPOST -d@Get.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar > trackers.xml
-
-### GetUnitReportPositions
-curl -XPOST -d@GetUnitReportPositions.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar > positions.xml
+```curl -XPOST -d@Get.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar > trackers.xml```
 
 ### GetTrafficDates
-curl -XPOST -d@GetTrafficDates.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar
+```curl -XPOST -d@GetTrafficDates.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar```
+
+### GetUnitReportPositions
+```curl -XPOST -d@GetUnitReportPositions.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar > positions.xml```
+
+
