@@ -273,7 +273,7 @@ class Tracking < Hashie::Mash
   # deployed and terminated
   def deployments
 
-    measured = DateTime.parse(self[:measured])
+    measured = DateTime.parse(self[:measured]||self[:positioned])
     
     # From the deployment database
     deployment.select {|d|
