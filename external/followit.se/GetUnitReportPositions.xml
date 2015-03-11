@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+    <soap:Body>
+    <GetUnitReportPositions xmlns="http://tempuri.org/">
+      <trackerId>11563</trackerId>
+      <fromDate>2000-01-01T00:00:00Z</fromDate>
+      <toDate>2100-01-01T00:00:00Z</toDate>
+    </GetUnitReportPositions>
+  </soap:Body>
+</soap:Envelope>
