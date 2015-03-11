@@ -111,7 +111,7 @@ class Tracking < Hashie::Mash
           
         rescue
           # !? self[:active] = true
-          self[:warn] << "missing-or-invalid-terminated-date" 
+          #self[:warn] << "missing-or-invalid-terminated-date" 
         end
         
 
@@ -177,23 +177,34 @@ class Tracking < Hashie::Mash
       # Merge in extracted sensor data
       if not decoder.nil?
         
-        
         if self[:sensor_data].is_a? Array and self[:sensor_data].any?
+          
+          begin
 
-          # Arctic foxes hack: set hex format for platform series 13xxxx
-          if self[:object] == "Arctic fox" and self[:platform] =~ /^13/ and self[:technology] == "argos" and self[:type] =~ /^(ds|diag)$/
-            decoder.sensor_data_format = "hex"
-            self[:sensor_data_format] = "hex" 
+            # Genetic hex detection, but this should be set in the platform deployment metadata if needed
+            if self[:sensor_data].all? {|sd| sd.to_s =~ /^[0-9a-f]{2}$/i }
+              self[:sensor_data_format] = "hex" 
+            end
+  
+             # Arctic fox legacy DS/DIAG data hack: force hex format for platform series 13xxxx
+            if self[:object] == "Arctic fox" and self[:platform].to_s =~ /^13/ and self[:technology] == "argos" and self[:type] =~ /^(ds|diag)$/
+              decoder.sensor_data_format = "hex"
+              self[:sensor_data_format] = "hex" 
+            end
+            
+            self[:decoder] = decoder.class.name
+            
+            decoder.sensor_data = self[:sensor_data]
+            
+            decoder.data.each do |k,v|
+              self[k]=v
+            end
+            
+            self[:sensor_variables] = decoder.data.keys
+          
+          rescue
+            self[:warn] << "sensor-decoding-failed"
           end
-          
-          self[:decoder] = decoder.class.name
-          decoder.sensor_data = self[:sensor_data]
-          
-          decoder.data.each do |k,v|
-            self[k]=v
-          end
-          
-          self[:sensor_variables] = decoder.data.keys
           
         end
         
