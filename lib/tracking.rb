@@ -43,7 +43,7 @@ class Tracking < Hashie::Mash
     
     self[:collection] = "tracking"
     
-    self[:"measured-isodate"] = Date.parse(measured).iso8601
+    # self[:"measured-isodate"] = Date.parse(measured).iso8601
     if not warn?
       self[:warn] = []
     end
@@ -111,7 +111,7 @@ class Tracking < Hashie::Mash
           
         rescue
           # !? self[:active] = true
-          self[:warn] << "missing-or-invalid-terminated-date" 
+          #self[:warn] << "missing-or-invalid-terminated-date" 
         end
         
 
@@ -166,14 +166,7 @@ class Tracking < Hashie::Mash
         require "argos"
         decoder = Argos::KiwiSat303Decoder.new
         
-        # Arctic foxes
-        if self[:object] == "Arctic fox" and self[:platform] =~ /^13/ and self[:technology] == "argos" and self[:type] =~ /^(ds|diag)$/
-          decoder.sensor_data_format = "hex"
-          self[:sensor_data_format] = "hex" 
-        end
-        
-        
-  
+
       elsif self[:platform_model] =~ /^NorthStar/i
         
         require "argos"
@@ -183,14 +176,38 @@ class Tracking < Hashie::Mash
       
       # Merge in extracted sensor data
       if not decoder.nil?
-        self[:decoder] = decoder.class.name
         
-        decoder.sensor_data = self[:sensor_data]
-        
-        decoder.data.each do |k,v|
-          self[k]=v
-        end
+        if self[:sensor_data].is_a? Array and self[:sensor_data].any?
+          
+          begin
 
+            # Genetic hex detection, but this should be set in the platform deployment metadata if needed
+            if self[:sensor_data].all? {|sd| sd.to_s =~ /^[0-9a-f]{2}$/i }
+              self[:sensor_data_format] = "hex" 
+            end
+  
+             # Arctic fox legacy DS/DIAG data hack: force hex format for platform series 13xxxx
+            if self[:object] == "Arctic fox" and self[:platform].to_s =~ /^13/ and self[:technology] == "argos" and self[:type] =~ /^(ds|diag)$/
+              decoder.sensor_data_format = "hex"
+              self[:sensor_data_format] = "hex" 
+            end
+            
+            self[:decoder] = decoder.class.name
+            
+            decoder.sensor_data = self[:sensor_data]
+            
+            decoder.data.each do |k,v|
+              self[k]=v
+            end
+            
+            self[:sensor_variables] = decoder.data.keys
+          
+          rescue
+            self[:warn] << "sensor-decoding-failed"
+          end
+          
+        end
+        
       end
     
     end
