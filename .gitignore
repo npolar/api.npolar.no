@@ -1,7 +1,6 @@
 config.rb
 config.ru
 bin
-config/*
 coverage
 *.lock
 *.log
