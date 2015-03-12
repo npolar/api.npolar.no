@@ -55,7 +55,7 @@ class Tracking < Hashie::Mash
 
     if not base?
       baseuri = URI.parse(ENV["NPOLAR_API"])
-      self[:base] = baseuri.to_s
+      #self[:base] = baseuri.to_s
     else
       baseuri = URI.parse(base)
     end
@@ -66,11 +66,11 @@ class Tracking < Hashie::Mash
       self[:source] = sourceuri.to_s
     end
 
-    if not edit? and not self[:id].nil?
-      self[:edit] = "#{self[:base]}/tracking/#{id}"
-    end
-    
-    if not program? and "argos" == "technology"
+    #if not edit? and not self[:id].nil?
+    #  self[:edit] = "#{self[:base]}/tracking/#{id}"
+    #end
+    #
+    if not program? and "argos" == self[:technology]
       self[:program] = "missing"
     end
 
@@ -81,28 +81,41 @@ class Tracking < Hashie::Mash
       if deployments.size == 1
         
         
-
-        # @todo only set if not present before (for all of these)  
-        self[:individual] = deployments[0].individual
-        self[:object] = deployments[0].object
-        self[:species] = deployments[0].species
+        
+        
         self[:principalInvestigator] = [deployments[0].principalInvestigator]
         if principalInvestigator =~ /,/
           self[:principalInvestigator] = principalInvestigator.split(",")
         end
         
         # Set platform model
-        if not platform_model? and deployments[0].platform_model != ""
+        if not platform_model?
           self[:platform_model] = deployments[0].platform_model
         end
         
-
         deploymenturi.path = "/tracking/deployment/#{deployments[0][:id]}"
         self[:deployment] = deploymenturi.to_s
         
         begin
-          DateTime.parse(deployments[0].deployed)
-          self[:deployed] = deployments[0].deployed
+          deployed = DateTime.parse(deployments[0].deployed)
+          
+          self[:deployed] = deployed.to_time.utc.iso8601
+        
+          if DateTime.parse(self[:measured]||self[:positioned]) >= deployed
+            
+            if deployments[0].terminated.nil? or DateTime.parse(self[:measured]||self[:positioned]) <= DateTime.parse(deployments[0].terminated||"9999-12-31")
+              
+              self[:individual] = deployments[0].individual
+              self[:object] = deployments[0].object
+              self[:species] = deployments[0].species
+              
+            end
+            
+
+            
+          else
+            self[:object] = "pre-#{deployments[0].object}" 
+          end
                 
         rescue
           
@@ -125,6 +138,7 @@ class Tracking < Hashie::Mash
         individuals = deployments.map {|d| d.individual }.uniq
         objects = deployments.map {|d| d.object }.uniq
         specieslist = deployments.map {|d| d.species }.uniq
+        platform_models = deployments.map {|d| d.platform_model }.uniq
         
         self[:deployments] = deployments.map {|d|
           deploymenturi.path = "/tracking/deployment/#{d.id}"
@@ -133,6 +147,12 @@ class Tracking < Hashie::Mash
         self[:warn] << "matches-multiple-deployments"
         # Given 2 matches, why not check if measured for individual-1(platform-A) is before deployed for individual-2(platform-A)?
         # The period between the two individuals would then by mismarked as individual-1(platform-A)
+
+        if platform_models.size == 1
+          self[:platform_models] = platform_models[0]
+        else
+          self[:platform_models] = platform_models
+        end
 
         if individuals.size == 1
           self[:individual] = individuals[0]
@@ -186,7 +206,7 @@ class Tracking < Hashie::Mash
 
             # @todo HEX from platform deployment metadata
             
-             # Arctic fox legacy DS/DIAG data hack: force hex format for platform series 13xxxx
+            # Arctic fox legacy DS/DIAG data hack: force hex format for platform series 13xxxx
             if self[:object] == "Arctic fox" and self[:platform].to_s =~ /^13/ and self[:technology] == "argos"
               if self[:type] =~ /^(ds|diag)$/
                 decoder.sensor_data_format = "hex"
@@ -274,28 +294,36 @@ class Tracking < Hashie::Mash
     measured = DateTime.parse(self[:measured]||self[:positioned])
     
     # From the deployment database
-    deployment.select {|d|
+    deps = deployment.select {|d|
 
       # Select deployment with the current platform and technology
       d.platform.to_s == platform.to_s and d.technology == technology
 
-    }.select {|d|
-  
-      begin
-        deployed = DateTime.parse(d.deployed)
-      rescue
-        deployed = DateTime.new(1000)
-      end
-      
-      if d.terminated?
-        # Select deployments where measured is before terminated and after deployed
-        terminated = DateTime.parse(d.terminated)
-        (measured >= deployed and measured <= terminated)
-
-      else
-        # No termination, select all deployments where measured is after deployed
-        measured >= deployed
-      end
     }
+    
+    if deps.size == 1
+      deps # single deployment for this platform
+    else
+    
+      deps.select {|d|
+  
+        begin
+          deployed = DateTime.parse(d.deployed)
+        rescue
+          deployed = DateTime.new(1000)
+        end
+        
+        if d.terminated?
+          # Select deployments where measured is before terminated
+          # We don't require "measured after deployed" because we would then not be able to inject platform metadata in the messages prior to tagging
+          terminated = DateTime.parse(d.terminated)
+          (measured <= terminated)
+  
+        else
+          true # Select all deployments matchinf platfornm abd technolgy
+          
+        end
+      }
+    end
   end
 end
