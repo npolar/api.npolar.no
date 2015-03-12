@@ -1,28 +1,22 @@
 # Arctic fox tracking data management
 
-## Data
-* https://api.npolar.no/tracking/arctic-fox/?q= [restricted]
+Data is available at https://api.npolar.no/tracking/arctic-fox/?q= [restricted]
 
-## Metadata
-* [Dataset](https://data.npolar.no/dataset/e62ec1a4-9aac-4a2f-9973-76d772c87f94)
-* Project (URI)?
+This file contains behind-the-scenes documentation of the data flow: harvesting, archiving, processing, publishing.
+
+For information on how to access the data, see [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki for 
+
 * Data provider: [CLS](http://cls.fr)
+* Platform model: KiwiSat303
 * Platform vendor: Sirtrack
-* [Data viewer]()
-* [Platform deployments](http://api.npolar.no/tracking/deployment/?q=&filter-vendor=Followit&object=Arctic+fox)
 
-## Archive
-Original Argos DS/DIAG files
-* /mnt/datasets/Tracking/ARGOS/archive
+### Archive
+Original Argos DS/DIAG files: /mnt/datasets/Tracking/ARGOS/archive
 
-Original Argos XML files
-* /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml
+Original Argos XML files: /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml
 
-## JSON
-
-### DS/DIAG
-Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https://github.com/npolar/argos-ruby)
-* /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json
+#### JSON <- DS/DIAG
+Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https://github.com/npolar/argos-ruby) and stored at /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json
 
 For each of the years 2012, 2013, and 2014:
 ```sh
@@ -38,13 +32,14 @@ I, [2015-03-12T10:15:41.722159 #31481]  INFO -- : Documents: 36640, ds: 27840, d
 http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2014-01-01..2014-03-01&not-type=xml
 I, [2015-03-12T10:04:00.034353 #31301]  INFO -- : Documents: 14469, ds: 11030, diag: 3439, bundle: 968100dfc199eae7632d721206866597d85f8c53, glob: /mnt/datasets/Tracking/ARGOS/archive/2014/**/*
 
-### Argos XML
+#### JSON <- Argos XML
 Converted on-the-fly by the [publishing script](https://github.com/npolar/api.npolar.no/blob/master/external/cls.fr/arctic-fox/bin/---)
 
-## Harvesting
-Nighly cron job
+### Harvesting
+Nighly cron job using [argos-soap](https://github.com/npolar/argos-ruby) --download
 
-## Publishing
+### Publishing
+
 
 ```sh
 [external@gustav ~]$ /home/external/api.npolar.no/bin/npolar-api-post-glob https://api.npolar.no/tracking/arctic-fox /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json
