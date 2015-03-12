@@ -1,0 +1,80 @@
+{
+  "schema": "http://api.npolar.no/schema/api",
+  "id": "biology-marine-api",
+  "path": "/biology/marine/sample",
+  "title": "Marine Biology Samples",
+  "storage": "Couch",
+  "database": "marine_samples_dataset",
+  "model": "Marine::Samples",
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS"
+  ],
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/oceanography_point"
+  },
+  "formats": {
+    "json": "application/json"
+  },
+  "category": [
+    "CouchDB",
+    "Lucene",
+    "Solr",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "auth": {
+    "authorize": "administrator",
+    "system": "marine_database",
+    "authorizer": "Npolar::Auth::Ldap"
+  },
+  "search": {
+    "engine": "Solr",
+    "core": "marine_samples",
+    "facets": [
+      "expedition",
+      "animal_group",
+      "conveyance",
+      "gear",
+      "programs",
+      "sample_types",
+      "station"
+    ],
+    "dates": [
+      "updated",
+      "utc_date",
+      "created"
+    ],
+    "range_facets": [
+      {
+        "field": "utc_date",
+        "gap": "+1YEAR",
+        "start": "NOW/YEAR-200YEARS",
+        "end": "NOW"
+      },
+      {
+        "field": "latitude",
+        "gap": 10,
+        "start": -90,
+        "end": 90
+      },
+      {
+        "field": "longitude",
+        "gap": 20,
+        "start": -180,
+        "end": 180
+      }
+    ]
+  },
+  "base": "http://api.npolar.no"
+}
