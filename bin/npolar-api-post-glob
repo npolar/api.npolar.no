@@ -1,0 +1,25 @@
+#!/bin/sh
+if [ "$#" -lt 2 ]; then
+  echo "Usage:
+
+$0 [https://api.npolar.no]/path \"/path/with/*/glob/*/*\"
+
+You can use relative /path if NPOLAR_API is set, for production use NPOLAR_API=https://api.npolar.no
+
+You can avoid supplying passwords if you set NPOLAR_API_USERNAME and NPOLAR_API_PASSWORD  
+  " >&2
+  exit 1
+fi
+
+URI=$1
+FILES=$2
+
+echo "Start POST glob $FILES to $URI"
+
+for f in $FILES
+do
+ 
+  echo "About to POST $f to $URI"
+  npolar-api -s500 -c2 -i -X POST $URI -d@$f
+done
+echo "End POST glob $FILES to $URI"
