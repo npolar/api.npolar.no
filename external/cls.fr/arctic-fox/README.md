@@ -1,10 +1,10 @@
 # Arctic fox tracking data management
 
-Data is available at https://api.npolar.no/tracking/arctic-fox/?q= [restricted]
+Data is available in the [Arctic fox tracking](https://api.npolar.no/tracking/arctic-fox/?q=) API [restricted].
 
 This file contains behind-the-scenes documentation of the data flow: harvesting, archiving, processing, publishing.
 
-For information on how to access the data, see [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki for 
+For information on how to access the data, visit the [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki.
 
 * Data provider: [CLS](http://cls.fr)
 * Platform model: KiwiSat303
