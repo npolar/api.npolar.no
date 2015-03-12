@@ -195,15 +195,13 @@ class Tracking < Hashie::Mash
             end
             
             # If we have sensor_hex => use that (then we at least know the base)
-            if self[:sensor_hex].size >= 2
+            if self.key?(:sensor_hex) and self[:sensor_hex].size >= 2
               decoder.sensor_data = self[:sensor_hex].scan(/[0-9a-f]{2}/i).map {|h| h.to_i(16) }
             else
               decoder.sensor_data = self[:sensor_data]
             end
             
             self[:decoder] = decoder.class.name
-            
-            
             
             decoder.data.each do |k,v|
               self[k]=v
