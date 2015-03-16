@@ -4,7 +4,7 @@ This file contains behind-the-scenes documentation of the data flow of Arctic fo
 For information on how to access the data, visit the [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki.
 
 ### Data flow
-Data management involves harvesting, archiving, processing, publishing and documenting the data.
+Data management involves harvesting, archiving, processing, publishing and documenting the data and the data flow.
 
 Data is published in the [Arctic fox tracking](https://api.npolar.no/tracking/arctic-fox/?q=) API (**restricted**),
 a [JSON](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb) API.
@@ -15,7 +15,7 @@ Notice that the API has a separate CouchDB database, but share the Elasticsearch
 * Positioning technology: [Argos](http://en.wikipedia.org/wiki/Argos_system) system
 * Platform vendor: [Sirtrack](http://sirtrack.com)
 * Platform model: [KiwiSat303](http://www.sirtrack.com/images/pdfs/303_K3HVHF.pdf)
-* Sensor data [decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb))
+* Sensor data [decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb)
 * Platform [deployments](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox&filter-technology=argos)
 * [Service](http://api.npolar.no/service/tracking-arctic-fox-api) metadata
 * Dataset [metadata](https://data.npolar.no/dataset/e62ec1a4-9aac-4a2f-9973-76d772c87f94)
@@ -23,11 +23,12 @@ Notice that the API has a separate CouchDB database, but share the Elasticsearch
 Legacy Argos [DS]/[DIAG] files are converted to [Tracking JSON] using [argos-ascii](https://github.com/npolar/argos-ruby/wiki/argos-ascii) and published in a one time-operation (detailed below).
 
 From 1 March 2014 all Argos data XML is downloaded nightly before being converted to JSON and published.
+
 The processing chain involves:
 
 1. Harvesting. Argos data XMl for the last 20 days is [downloaded](https://github.com/npolar/argos-ruby/blob/master/lib/argos/download.rb) each night from CLS from their SOAP web service accesses via the [argos-soap](https://github.com/npolar/argos-ruby/wiki/argos-soap) commmand
 2. Archiving. Data is archived on disk untouched in one file per platform per day
-3. Integrity check. All files in the disk archive are fingerprinted and the number of messages is compared with ethe number of documents in the tracking API
+3. Integrity check. All files in the disk archive are fingerprinted and the number of messages is compared with the number of documents in the tracking API
 5. Preprocessing. Any files not already in the API are converted to JSON using [XSLT](https://github.com/npolar/argos-ruby/blob/master/lib/argos/_xslt/argos-json.xslt)
 6. Publishing. HTTP POST containing Array of JSON per platform per day
 7. Postprocessing. The harvested data from CLS is merged with [platform metadata](https://github.com/npolar/api.npolar.no/wiki/Tracking-Deployment-API).
@@ -47,13 +48,15 @@ If the tracking deployment information changes, tracking data for the affected p
 
 A planned improvement to the publishing process is to trigger publishing when tracking platform deployment dates change.
 
+Another planned improvment is data integrity checking via checksums and statistics beyond comparing document numbers.
+
 ### Disk archive
 
 Original Argos DS/DIAG files: /mnt/datasets/Tracking/ARGOS/archive
 
 Original Argos XML files: /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml
 
-#### JSON <- DS/DIAG
+#### JSON <- DS/DIAGKiwiSat303
 Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https://github.com/npolar/argos-ruby) and stored at /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json
 
 For each of the years 2012, 2013, and 2014:
@@ -87,7 +90,7 @@ A. One-off publishing of the two disk archives
 [external@gustav ~]$ /home/external/api.npolar.no/external/cls.fr/arctic-fox/bin/npolar-argos-publish-arctic-fox-xml https://api.npolar.no/tracking/arctic-fox "/mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml"
 ```
 
-B. Missing data publishing
+B. Data publishing
 Nightly cron job
 
 ### Security and authorization
