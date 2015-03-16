@@ -33,20 +33,27 @@ The processing chain involves:
 3. Integrity check. All files in the disk archive are fingerprinted and the number of messages is compared with the number of documents in the tracking API
 5. Preprocessing. Any files not already in the API are converted to JSON using [XSLT](https://github.com/npolar/argos-ruby/blob/master/lib/argos/_xslt/argos-json.xslt)
 6. Publishing. HTTP POST containing Array of JSON per platform per day
-7. Postprocessing. The harvested data from CLS is merged with [platform metadata](https://github.com/npolar/api.npolar.no/wiki/Tracking-Deployment-API).
-8. Validation. JSON schema.
+7. Processing (before persisting)
+8. Validation (using the Tracking JSON schema)
 9. Storage in CouchDB
 10. Search engine indexing via Elasticsearch's river plugin (listens to CouchDB changes stream)  
 
-Steps 1-6 occurs client side, steps 7-9 occurs in the Ruby model [Tracking](https://github.com/npolar/api.npolar.no/blob/master/lib/tracking.rb)#before_save.
+Steps 1-6 occur client side, steps 7-9 occur in the Ruby model [Tracking](https://github.com/npolar/api.npolar.no/blob/master/lib/tracking.rb)#before_save, and step 10 occurs in Elasticsearch.
 
-A word about merging of platform deployment metadata (step 6).
+Step 7. Platform deployment metadata
+The harvested data from CLS is merged with [platform metadata](https://github.com/npolar/api.npolar.no/wiki/Tracking-Deployment-API).
 
 Pay special attention to the ```deployed``` time: Only messages with timestamp after deployed are marked with ```individual```, ```species```, and ```object``` information from the deployment API.
 
 For reused platforms, the ```terminated``` time is critical to set for the first deployment, even if it's not known precisely. If there is no terminated time for the reused platform, it's impossible to know wether a given message is from the first or second deployment.
 
 If the tracking deployment information changes, tracking data for the affected platforns needs to be republished to propogate the changes to each individual tracking document.
+
+Step 7. Sensor data decoding
+I sensor data is not already decoded, the [Kiwisat303Decoder]() from [argos-ruby](https://github.com/npolar/argos-ruby) is used to extract sensor data.
+
+
+
 
 A planned improvement to the publishing process is to trigger publishing when tracking platform deployment dates change.
 
