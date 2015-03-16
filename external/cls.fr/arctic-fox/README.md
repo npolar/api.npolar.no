@@ -1,16 +1,54 @@
-# Arctic fox tracking data management
+# Arctic fox GPS tracking data management
 
-Data is available in the [Arctic fox tracking](https://api.npolar.no/tracking/arctic-fox/?q=) API [restricted].
-
-This file contains behind-the-scenes documentation of the data flow: harvesting, archiving, processing, publishing.
-
+This file contains behind-the-scenes documentation of the data flow of Arctic fox position data.
 For information on how to access the data, visit the [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki.
 
-* Data provider: [CLS](http://cls.fr)
-* Platform model: KiwiSat303
-* Platform vendor: Sirtrack
+### Data flow
+Data management involves harvesting, archiving, processing, publishing and documenting the data.
 
-### Archive
+Data is published in the [Arctic fox tracking](https://api.npolar.no/tracking/arctic-fox/?q=) API (**restricted**),
+a [JSON](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb) API.
+
+Notice that the API has a separate CouchDB database, but share the Elasticsearch index ```tracking``` with other biological tracking data.
+
+* Data provider: [CLS](http://cls.fr)
+* Positioning technology: [Argos](http://en.wikipedia.org/wiki/Argos_system) system
+* Platform vendor: [Sirtrack](http://sirtrack.com)
+* Platform model: [KiwiSat303](http://www.sirtrack.com/images/pdfs/303_K3HVHF.pdf)
+* Sensor data [decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb))
+* Platform [deployments](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox&filter-technology=argos)
+* [Service](http://api.npolar.no/service/tracking-arctic-fox-api) metadata
+* Dataset [metadata](https://data.npolar.no/dataset/e62ec1a4-9aac-4a2f-9973-76d772c87f94)
+
+Legacy Argos [DS]/[DIAG] files are converted to [Tracking JSON] using [argos-ascii](https://github.com/npolar/argos-ruby/wiki/argos-ascii) and published in a one time-operation (detailed below).
+
+From 1 March 2014 all Argos data XML is downloaded nightly before being converted to JSON and published.
+The processing chain involves:
+
+1. Harvesting. Argos data XMl for the last 20 days is [downloaded](https://github.com/npolar/argos-ruby/blob/master/lib/argos/download.rb) each night from CLS from their SOAP web service accesses via the [argos-soap](https://github.com/npolar/argos-ruby/wiki/argos-soap) commmand
+2. Archiving. Data is archived on disk untouched in one file per platform per day
+3. Integrity check. All files in the disk archive are fingerprinted and the number of messages is compared with ethe number of documents in the tracking API
+5. Preprocessing. Any files not already in the API are converted to JSON using [XSLT](https://github.com/npolar/argos-ruby/blob/master/lib/argos/_xslt/argos-json.xslt)
+6. Publishing. HTTP POST containing Array of JSON per platform per day
+7. Postprocessing. The harvested data from CLS is merged with [platform metadata](https://github.com/npolar/api.npolar.no/wiki/Tracking-Deployment-API).
+8. Validation. JSON schema.
+9. Storage in CouchDB
+10. Search engine indexing via Elasticsearch's river plugin (listens to CouchDB changes stream)  
+
+Steps 1-6 occurs client side, steps 7-9 occurs in the Ruby model [Tracking](https://github.com/npolar/api.npolar.no/blob/master/lib/tracking.rb)#before_save.
+
+A word about merging of platform deployment metadata (step 6).
+
+Pay special attention to the ```deployed``` time: Only messages with timestamp after deployed are marked with ```individual```, ```species```, and ```object``` information from the deployment API.
+
+For reused platforms, the ```terminated``` time is critical to set for the first deployment, even if it's not known precisely. If there is no terminated time for the reused platform, it's impossible to know wether a given message is from the first or second deployment.
+
+If the tracking deployment information changes, tracking data for the affected platforns needs to be republished to propogate the changes to each individual tracking document.
+
+A planned improvement to the publishing process is to trigger publishing when tracking platform deployment dates change.
+
+### Disk archive
+
 Original Argos DS/DIAG files: /mnt/datasets/Tracking/ARGOS/archive
 
 Original Argos XML files: /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml
@@ -38,12 +76,20 @@ Converted on-the-fly by the [publishing script](https://github.com/npolar/api.np
 ### Harvesting
 Nighly cron job using [argos-soap](https://github.com/npolar/argos-ruby) --download
 
+### Integrity check
+[@todo]
+
 ### Publishing
 
-
+A. One-off publishing of the two disk archives
 ```sh
 [external@gustav ~]$ /home/external/api.npolar.no/bin/npolar-api-post-glob https://api.npolar.no/tracking/arctic-fox /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json
 [external@gustav ~]$ /home/external/api.npolar.no/external/cls.fr/arctic-fox/bin/npolar-argos-publish-arctic-fox-xml https://api.npolar.no/tracking/arctic-fox "/mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml"
 ```
 
+B. Missing data publishing
 Nightly cron job
+
+### Security and authorization
+Disk archive writes are reserved to staff at the Norwegian Polar Data Centre.
+Arctic fox tracking data is restricted, only the external user can create, update or delete data, while only the principal investigators and data centre staff may at the moment access the data.
