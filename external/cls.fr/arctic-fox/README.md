@@ -4,7 +4,9 @@ This file contains behind-the-scenes documentation of the data flow of Arctic fo
 For information on how to access the data, visit the [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki.
 
 ### Data flow
-Data management involves harvesting, archiving, processing, publishing, securing and documenting the data and the data flow.
+Data management involves
+* harvesting, archiving, processing, publishing, and securing the data
+* monitoring and documenting the data flow
 
 Data is published in the [Arctic fox tracking](https://api.npolar.no/tracking/arctic-fox/?q=) API (**restricted**),
 a [JSON](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb) API.
