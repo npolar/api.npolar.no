@@ -1,11 +1,14 @@
 # Arctic fox tracking data management
 
-This file contains behind-the-scenes documentation of the data management of Arctic fox position data.
-For information on how to access the data, visit the [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki.
+This file contains behind-the-scenes documentation of the data management of Arctic fox telemetry data.
 
 Data management involves
 * harvesting, archiving, processing, publishing, validating, and securing data
 * monitoring and documenting the data flow, as well as systems, software, people and organisations involved
+
+For metadata, including information on accessing and citing the dataset, as well as people and organisations involved, visit [data.npolor.no](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82).
+
+For detailed documentation of how to access the data, visit the [Tracking Arctic fox API wiki](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API).
 
 ## System overview
 
@@ -14,15 +17,15 @@ Data is published in the [Arctic fox tracking API](https://api.npolar.no/trackin
 Several key data management aspects are defined in the [Service definition](http://api.npolar.no/service/tracking-arctic-fox-api): database, search engine, authorization rules. 
 Notice that the API has a separate CouchDB database, but share the Elasticsearch index ```tracking``` with other biological tracking data.
 
-**Links**
+The platform metadata for Arctic foxes is maintained in the [Tracking Deployment API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox)
+
+Currently all transmitter platforms use the Argos system and all units are the same model: 
 * Data provider: [CLS](http://cls.fr)
 * Positioning technology: [Argos](http://en.wikipedia.org/wiki/Argos_system) system
 * Platform vendor: [Sirtrack](http://sirtrack.com)
 * Platform model: [KiwiSat303](http://www.sirtrack.com/images/pdfs/303_K3HVHF.pdf)
 * Sensor data [decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb)
-* Platform [deployments](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox&filter-technology=argos)
-* Dataset [metadata](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82)
-
+* 
 ## Data formats
 
 Legacy Argos [DS]/[DIAG] files are converted to [Tracking JSON] using [argos-ascii](https://github.com/npolar/argos-ruby/wiki/argos-ascii) and published in a one time-operation (detailed below).
