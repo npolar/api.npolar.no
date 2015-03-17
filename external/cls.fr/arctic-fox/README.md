@@ -1,15 +1,15 @@
 # Arctic fox tracking data management
 
-This file contains behind-the-scenes documentation of the data flow of Arctic fox position data.
+This file contains behind-the-scenes documentation of the data management of Arctic fox position data.
 For information on how to access the data, visit the [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki.
 
-### Data flow
 Data management involves
-* harvesting, archiving, processing, publishing, and securing the data
-* monitoring and documenting the data flow
+* harvesting, archiving, processing, publishing, validating, and securing data
+* monitoring and documenting the data flow, as well as systems, software, people and organisations involved
 
-Data is published in the [Arctic fox tracking](https://api.npolar.no/tracking/arctic-fox/?q=) API (**restricted**),
-a [JSON](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb) API.
+## System overview
+
+Data is published in the [Arctic fox tracking](https://api.npolar.no/tracking/arctic-fox/?q=) API (**restricted**), a REST-style [JSON](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb) API.
 
 Notice that the API has a separate CouchDB database, but share the Elasticsearch index ```tracking``` with other biological tracking data.
 
@@ -22,23 +22,26 @@ Notice that the API has a separate CouchDB database, but share the Elasticsearch
 * [Service](http://api.npolar.no/service/tracking-arctic-fox-api) metadata
 * Dataset [metadata](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82)
 
+## Data formats
+
 Legacy Argos [DS]/[DIAG] files are converted to [Tracking JSON] using [argos-ascii](https://github.com/npolar/argos-ruby/wiki/argos-ascii) and published in a one time-operation (detailed below).
 
 From 1 March 2014 all Argos data XML is downloaded nightly before being converted to JSON and published.
 
-The processing chain involves:
+## Detailed data flow
+The data pipeline consists of several steps:
 
-1. Harvesting. Argos data XMl for the last 20 days is [downloaded](https://github.com/npolar/argos-ruby/blob/master/lib/argos/download.rb) each night from CLS from their SOAP web service accesses via the [argos-soap](https://github.com/npolar/argos-ruby/wiki/argos-soap) commmand
-2. Archiving. Data is archived on disk untouched in one file per platform per day
-3. Integrity check. All files in the disk archive are fingerprinted and the number of messages is compared with the number of documents in the tracking API
-5. Preprocessing. Any files not already in the API are converted to JSON using [XSLT](https://github.com/npolar/argos-ruby/blob/master/lib/argos/_xslt/argos-json.xslt)
-6. Publishing. HTTP POST containing Array of JSON per platform per day
-7. Processing (before persisting)
-8. Validation (using the Tracking JSON schema)
-9. Storage in CouchDB
-10. Search engine indexing via Elasticsearch's river plugin (listens to CouchDB changes stream)  
+**- Harvesting.** Argos data XML for the last 20 days is [downloaded](https://github.com/npolar/argos-ruby/blob/master/lib/argos/download.rb) each night from CLS from their SOAP web service accesses via the [argos-soap](https://github.com/npolar/argos-ruby/wiki/argos-soap) commmand
+**- Archiving.** Data is archived on disk untouched in one file per platform per day
+**- Integrity check.** All files in the disk archive are fingerprinted and the number of messages is compared with the number of documents in the tracking API
+**- Preprocessing. Any files not already in the API are converted to JSON using [XSLT](https://github.com/npolar/argos-ruby/blob/master/lib/argos/_xslt/argos-json.xslt)
+**- Publishing.** HTTP POST containing Array of JSON per platform per day
+**- Processing** (before persisting)
+**- Validation** (using the Tracking JSON schema)
+**- Storage** in CouchDB
+**- Search engine indexing** via Elasticsearch's river plugin (listens to CouchDB changes stream)  
 
-Steps 1-6 occur client side, steps 7-9 occur in the Ruby model [Tracking](https://github.com/npolar/api.npolar.no/blob/master/lib/tracking.rb)#before_save, and step 10 occurs in Elasticsearch.
+Steps 1-5 occur client side, steps 6-8 occur in the Ruby model [Tracking](https://github.com/npolar/api.npolar.no/blob/master/lib/tracking.rb)#before_save, and step 9 occurs in Elasticsearch.
 
 Step 7. A. Platform deployment metadata
 The harvested data from CLS is merged with [platform metadata](https://github.com/npolar/api.npolar.no/wiki/Tracking-Deployment-API).
@@ -52,7 +55,7 @@ If the tracking deployment information changes, tracking data for the affected p
 Step 7. B. Sensor data decoding
 If sensor data is not already decoded, the [Kiwisat303Decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb) from [argos-ruby](https://github.com/npolar/argos-ruby) is used to extract four types of sensor messages.
 
-Future plans
+### Future plans
 
 A planned improvement to the publishing process is to trigger publishing when tracking platform deployment dates change.
 
