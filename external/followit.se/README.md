@@ -1,4 +1,4 @@
-# Svalbard reindeer tracking
+# Svalbard reindeer tracking data management
 
 ## Metadata
 * [Dataset](https://data.npolar.no/dataset/e62ec1a4-9aac-4a2f-9973-76d772c87f94)
