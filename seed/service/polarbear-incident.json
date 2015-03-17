@@ -1,0 +1,57 @@
+{
+   "_id": "polarbear-incident-api",
+   "_rev": "1-6faef91d6bffdedd81e464b3d6646d1e",
+   "schema": "http://api.npolar.no/schema/api",
+   "path": "/polarbear-incident",
+   "title": "Polarbear Incident API",
+   "storage": "Couch",
+   "database": "polarbear-incident",
+   "model": "PolarbearIncident",
+   "search": {
+       "engine": "Elasticsearch",
+       "url": "http://localhost:9200",
+       "index": "pbhims",
+       "type": "incident",
+       "params": {
+           "facets": "title,status,incident.type,incident.timezone,location.country,location.region,location.name,location.latitude,location.longitude",
+           "date-year": "incident.datetime",
+           "sort": "-incident.datetime"
+       }
+   },
+   "verbs": [
+       "DELETE",
+       "GET",
+       "HEAD",
+       "POST",
+       "PUT",
+       "OPTIONS"
+   ],
+   "formats": {
+       "json": "application/json"
+   },
+   "accepts": {
+       "application/json": "http://api.npolar.no/schema/polarbear/incident.json"
+   },
+   "middleware": [
+       [
+           "::Rack::Gouncer",
+           {
+               "url": "https://apptest.data.npolar.no:8950",
+               "open": false,
+               "system": "http://api.npolar.no/person"
+           }
+       ]
+   ],
+   "category": [
+       "PBSG",
+       "PBHIMS",
+       "CouchDB",
+       "REST",
+       "JSON",
+       "HTTP",
+       "Elasticsearch"
+   ],
+   "lifecycle": "test",
+   "run": "Npolar::Api::Json",
+   "open": true
+}

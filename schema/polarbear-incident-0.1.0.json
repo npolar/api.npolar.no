@@ -1,6 +1,6 @@
 {
-	"title": "PBHIMS Schema v1.0",
-	"description": "Schema for PBHIMS Documents (v1.0-rc5)",
+	"title": "Polarbear Incident Schema",
+	"description": "Schema for PBHIMS Documents (v0.1.0)",
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
@@ -9,7 +9,9 @@
 			"description": "Record title"
 		},
 		"author": {
-			"$ref": "http://api.npolar.no/schema/person-1.0"
+			"type": "string",
+			"format": "uri",
+			"description": "URI to a document describing the person who originally created the record"
 		},
 		"datetime": {
 			"type": "string",
@@ -17,7 +19,9 @@
 			"description": "Date and time the record was originally created"
 		},
 		"update_author": {
-			"$ref": "http://api.npolar.no/schema/person-1.0"
+			"type": "string",
+			"format": "uri",
+			"description": "URI to a document describing the person who last updated the record"
 		},
 		"update_datetime": {
 			"type": "string",
@@ -33,10 +37,10 @@
 		"incident": {
 			"type": "object",
 			"properties": {
-				"type": {
+				"category": {
 					"type": "string",
 					"enum": [ "conflict", "avoided" ],
-					"description": "Type of incident"
+					"description": "Category of incident"
 				},
 				"datetime": {
 					"type": "string",
@@ -66,7 +70,7 @@
 				}
 			},
 			"required": [
-				"type",
+				"category",
 				"datetime",
 				"datetime_accuracy",
 				"timezone"
@@ -118,34 +122,31 @@
 					"type": "integer",
 					"description": "Estimated visibility during the incident in meters"
 				},
-				"description": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/translation"
-					},
-					"description": "Incident location description (e.g. habitat, conditions etc.)"
-				},
 				"food_sources": {
 					"type": "array",
 					"items": {
 						"type": "object",
 						"properties": {
 							"category": {
-								"type": [ "string", "null" ],
-								"enum": [ null, "none", "anthropogenic", "wildlife", "other" ],
-								"default": null,
+								"type": "string",
+								"enum": [ "", "anthropogenic", "wildlife", "other" ],
+								"default": "",
 								"description": "Food source category"
 							},
 							"description": {
-								"type": "array",
-								"items": {
-									"$ref": "#/definitions/translation"
-								},
+								"type": "string",
 								"description": "Descriptive text of the food source"
 							}
 						}
 					},
 					"description": "Available food sources around the incident location"
+				},
+				"description": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/translation"
+					},
+					"description": "Incident location description (e.g. habitat, conditions etc.)"
 				}
 			},
 			"required": [
@@ -157,11 +158,6 @@
 			"items": {
 				"type": "object",
 				"properties": {
-					"source": {
-						"type": "boolean",
-						"default": false,
-						"description": "Whether the person was used as a source for the report"
-					},
 					"category": {
 						"type": "string",
 						"enum": [ "", "resident", "tourist", "scientist", "hunter" ],
@@ -361,7 +357,7 @@
 			"properties": {
 				"language": {
 					"type": "string",
-					"enum": [ "da", "en", "esx", "fr", "kl", "nb", "nn", "ru" ],
+					"enum": [ "da", "en", "iu", "fr", "kl", "nb", "nn", "ru" ],
 					"description": "Language code of the translation"
 				},
 				"text": {
