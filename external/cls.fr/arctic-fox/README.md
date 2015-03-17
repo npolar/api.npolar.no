@@ -1,4 +1,4 @@
-# Arctic fox GPS tracking data management
+# Arctic fox tracking data management
 
 This file contains behind-the-scenes documentation of the data flow of Arctic fox position data.
 For information on how to access the data, visit the [Tracking Arctic fox API](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API) wiki.
@@ -20,7 +20,7 @@ Notice that the API has a separate CouchDB database, but share the Elasticsearch
 * Sensor data [decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb)
 * Platform [deployments](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox&filter-technology=argos)
 * [Service](http://api.npolar.no/service/tracking-arctic-fox-api) metadata
-* Dataset [metadata](https://data.npolar.no/dataset/e62ec1a4-9aac-4a2f-9973-76d772c87f94)
+* Dataset [metadata](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82)
 
 Legacy Argos [DS]/[DIAG] files are converted to [Tracking JSON] using [argos-ascii](https://github.com/npolar/argos-ruby/wiki/argos-ascii) and published in a one time-operation (detailed below).
 
@@ -40,7 +40,7 @@ The processing chain involves:
 
 Steps 1-6 occur client side, steps 7-9 occur in the Ruby model [Tracking](https://github.com/npolar/api.npolar.no/blob/master/lib/tracking.rb)#before_save, and step 10 occurs in Elasticsearch.
 
-Step 7. Platform deployment metadata
+Step 7. A. Platform deployment metadata
 The harvested data from CLS is merged with [platform metadata](https://github.com/npolar/api.npolar.no/wiki/Tracking-Deployment-API).
 
 Pay special attention to the ```deployed``` time: Only messages with timestamp after deployed are marked with ```individual```, ```species```, and ```object``` information from the deployment API.
@@ -49,11 +49,10 @@ For reused platforms, the ```terminated``` time is critical to set for the first
 
 If the tracking deployment information changes, tracking data for the affected platforns needs to be republished to propogate the changes to each individual tracking document.
 
-Step 7. Sensor data decoding
-I sensor data is not already decoded, the [Kiwisat303Decoder]() from [argos-ruby](https://github.com/npolar/argos-ruby) is used to extract sensor data.
+Step 7. B. Sensor data decoding
+If sensor data is not already decoded, the [Kiwisat303Decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb) from [argos-ruby](https://github.com/npolar/argos-ruby) is used to extract four types of sensor messages.
 
-
-
+Future plans
 
 A planned improvement to the publishing process is to trigger publishing when tracking platform deployment dates change.
 
@@ -66,24 +65,31 @@ Original Argos DS/DIAG files: /mnt/datasets/Tracking/ARGOS/archive
 Original Argos XML files: /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml
 
 #### JSON <- DS/DIAGKiwiSat303
-Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https://github.com/npolar/argos-ruby) and stored at /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json
+Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https://github.com/npolar/argos-ruby) and stored at /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json 
 
 For each of the years 2012, 2013, and 2014:
 ```sh
-[external@gustav ~]$ YEAR=2012 && argos-ascii --debug --filter='lambda {|d| ["113907","113908","113908","113909","113909","113910","113911","113912","113913","113913","113914","113915","131424","131425","131426","131427","131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR --dest=/mnt/datasets/Tracking/ARGOS/arctic-fox/$YEAR
-```
+[external@gustav ~]$ YEAR=2012 && ~/argos-ruby/bin/argos-ascii --debug --filter='lambda {|d| ["113907","113908",
+"113908","113909","113909","113910","113911","113912","113913","113913",
+"113914","113915","131424","131425","131426","131427","131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR```
 
 http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2012-01-01..2013-01-01
-I, [2015-03-12T10:11:48.169590 #31396]  INFO -- : Documents: 16445, ds: 12965, diag: 3480, bundle: 43248db3bd893c3c2d1701cd0d407b5d132b842e, glob: /mnt/datasets/Tracking/ARGOS/archive/2012/**/*
+I, [2015-03-12T10:11:48.169590 #31396]  INFO -- : Documents: 16445, ds: 12965, diag: 3480, glob: /mnt/datasets/Tracking/ARGOS/archive/2012/**/*
 
 http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2013-01-01..2014-01-01
-I, [2015-03-12T10:15:41.722159 #31481]  INFO -- : Documents: 36640, ds: 27840, diag: 8800, bundle: 28b04e0410b124e5893ed378b4f38a56d8bf77b7, glob: /mnt/datasets/Tracking/ARGOS/archive/2013/**/*
+I, [2015-03-12T10:15:41.722159 #31481]  INFO -- : Documents: 36640, ds: 27840, diag: 8800, glob: /mnt/datasets/Tracking/ARGOS/archive/2013/**/*
 
 http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2014-01-01..2014-03-01&not-type=xml
-I, [2015-03-12T10:04:00.034353 #31301]  INFO -- : Documents: 14469, ds: 11030, diag: 3439, bundle: 968100dfc199eae7632d721206866597d85f8c53, glob: /mnt/datasets/Tracking/ARGOS/archive/2014/**/*
+I, [2015-03-12T10:04:00.034353 #31301]  INFO -- : Documents: 14469, ds: 11030, diag: 3439, glob: /mnt/datasets/Tracking/ARGOS/archive/2014/**/*
+
+The output of these three commands are piped to the npolar-api command.
+
+```
+./bin/argos-ascii /mnt/datasets/Tracking/ARGOS/archive/2012/2012-09 --filter='lambda {|d| ["113909"].include? d[:platform].to_s }' | npolar-api -XPOST http://localhost:9393/tracking/arctic-fox\?overwrite\=true -d@-
+```
 
 #### JSON <- Argos XML
-Converted on-the-fly by the [publishing script](https://github.com/npolar/api.npolar.no/blob/master/external/cls.fr/arctic-fox/bin/---)
+Argos XML is converted to JSON using [XSLT] (), just prior to [publishing] (https://github.com/npolar/api.npolar.no/blob/master/external/cls.fr/arctic-fox/bin/---).
 
 ### Harvesting
 Nighly cron job using [argos-soap](https://github.com/npolar/argos-ruby) --download
