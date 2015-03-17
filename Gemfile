@@ -6,7 +6,7 @@ gem "gcmd", git: "git://github.com/npolar/gcmd.git"
 gem "icelastic", git: "git://github.com/npolar/icelastic.git"
 gem "npolar-api-client-ruby", git: "git://github.com/npolar/npolar-api-client-ruby"
 gem "argos-ruby", git: "git://github.com/npolar/argos-ruby"
-gem "rack-gouncer", path: "~/Code/Ruby/rack-gouncer"
+gem "rack-gouncer", git: "git://github.com/npolar/rack-gouncer.git"
 gem "highline"
 
 # HTTP/network
