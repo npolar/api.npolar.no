@@ -37,13 +37,21 @@ From 1 March 2014 all Argos data XML is downloaded nightly before being converte
 The data pipeline consists of several steps:
 
 **1. Harvesting.** Argos data XML for the last 20 days is [downloaded](https://github.com/npolar/argos-ruby/blob/master/lib/argos/download.rb) each night from CLS from their SOAP web service accesses via the [argos-soap](https://github.com/npolar/argos-ruby/wiki/argos-soap) commmand
+
 **2. Archiving.** Data is archived on disk untouched in one file per platform per day
+
 **3. Integrity check.** All files in the disk archive are fingerprinted and the number of messages is compared with the number of documents in the tracking API
+
 **4. Preprocessing. Any files not already in the API are converted to JSON using [XSLT](https://github.com/npolar/argos-ruby/blob/master/lib/argos/_xslt/argos-json.xslt)
+
 **5. Publishing.** HTTP POST containing Array of JSON per platform per day
+
 **6. Processing** (before persisting)
+
 **7. Validation** (using the Tracking JSON schema)
+
 **8. Storage** in CouchDB
+
 **9. Search engine indexing** via Elasticsearch's river plugin (listens to CouchDB changes stream)  
 
 Steps 1-5 occur client side, steps 6-8 occur in the Ruby model [Tracking](https://github.com/npolar/api.npolar.no/blob/master/lib/tracking.rb)#before_save, and step 9 occurs in Elasticsearch.
