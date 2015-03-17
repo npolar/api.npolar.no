@@ -9,17 +9,18 @@ Data management involves
 
 ## System overview
 
-Data is published in the [Arctic fox tracking](https://api.npolar.no/tracking/arctic-fox/?q=) API (**restricted**), a REST-style [JSON](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb) API.
+Data is published in the [Arctic fox tracking API](https://api.npolar.no/tracking/arctic-fox/?q=) (**restricted**), a REST-style data service, powered by [Npolar::Api::Json](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb).
 
+Several key data management aspects are defined in the [Service definition](http://api.npolar.no/service/tracking-arctic-fox-api): database, search engine, authorization rules. 
 Notice that the API has a separate CouchDB database, but share the Elasticsearch index ```tracking``` with other biological tracking data.
 
+**Links**
 * Data provider: [CLS](http://cls.fr)
 * Positioning technology: [Argos](http://en.wikipedia.org/wiki/Argos_system) system
 * Platform vendor: [Sirtrack](http://sirtrack.com)
 * Platform model: [KiwiSat303](http://www.sirtrack.com/images/pdfs/303_K3HVHF.pdf)
 * Sensor data [decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb)
 * Platform [deployments](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox&filter-technology=argos)
-* [Service](http://api.npolar.no/service/tracking-arctic-fox-api) metadata
 * Dataset [metadata](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82)
 
 ## Data formats
