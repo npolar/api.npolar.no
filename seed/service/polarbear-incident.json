@@ -30,7 +30,7 @@
        "json": "application/json"
    },
    "accepts": {
-       "application/json": "http://api.npolar.no/schema/polarbear/incident.json"
+       "application/json": "http://api.npolar.no/schema/polarbear-incident-0.1.0.json"
    },
    "middleware": [
        [
