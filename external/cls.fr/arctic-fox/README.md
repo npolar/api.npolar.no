@@ -6,7 +6,7 @@ Data management involves
 * harvesting, archiving, processing, publishing, validating, and securing data
 * monitoring and documenting the data flow, as well as systems, software, people and organisations involved
 
-For metadata, including information on accessing and citing the dataset, as well as people and organisations involved, see [data.npolar.no](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82).
+For metadata, including principal investigators and information on accessing and citing the dataset, see [data.npolar.no](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82).
 
 For detailed documentation of how to access the data, visit the [Tracking Arctic fox API wiki](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API).
 
