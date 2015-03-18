@@ -29,6 +29,7 @@ class Tracking < Hashie::Mash
 
     tracks = JSON.parse(body)
 
+    # FIXME Hmm this breaks on PUT 1 document 
     tracks = tracks.is_a?(Hash) ? [tracks] : tracks
 
     processed = tracks.map {|track|
@@ -36,152 +37,66 @@ class Tracking < Hashie::Mash
     }
 
     body = processed.to_json
+    
     request.body = body
     request
   end
 
-
-  # Process 1 tracking document before saving
-  # See self.before_save
+  # Add platform/deployment metadata and decode sensor data befor saving
   # @return [Tracking]
   def before_save(request=nil)
     
     self[:collection] = "tracking"
+    # @todo self schema ==> current schema
     
-    # self[:"measured-isodate"] = Date.parse(measured).iso8601
     if not warn?
       self[:warn] = []
     end
 
+    # Base URI, used to set source and deployment URIs
     if not base?
-      baseuri = URI.parse(ENV["NPOLAR_API"])
-      #self[:base] = baseuri.to_s
-    else
-      baseuri = URI.parse(base)
+      self[:base] = base_uri
     end
     
+    # Set source to URI if it's a SHA1 hash
     if source? and source !~ URI::REGEXP and source =~ /\w{40}/
-      sourceuri = baseuri.dup
-      sourceuri.path = "/source/#{source}"
-      self[:source] = sourceuri.to_s
+      source_uri = base_uri
+      source_uri.path = "/source/#{source}"
+      self[:source] = source_uri.to_s
     end
 
-    #if not edit? and not self[:id].nil?
-    #  self[:edit] = "#{self[:base]}/tracking/#{id}"
-    #end
-    #
-    if not program? and "argos" == self[:technology]
-      self[:program] = "missing"
-    end
-
-    if not deployment?
-      
-      deploymenturi = baseuri.dup
-      
-      if deployments.size == 1
-        
-        
-        
-        
-        self[:principalInvestigator] = [deployments[0].principalInvestigator]
-        if principalInvestigator =~ /,/
-          self[:principalInvestigator] = principalInvestigator.split(",")
-        end
-        
-        # Set platform model
-        if not platform_model?
-          self[:platform_model] = deployments[0].platform_model
-        end
-        
-        deploymenturi.path = "/tracking/deployment/#{deployments[0][:id]}"
-        self[:deployment] = deploymenturi.to_s
-        
-        begin
-          deployed = DateTime.parse(deployments[0].deployed)
-          
-          self[:deployed] = deployed.to_time.utc.iso8601
-        
-          if DateTime.parse(self[:measured]||self[:positioned]) >= deployed
-            
-            if deployments[0].terminated.nil? or DateTime.parse(self[:measured]||self[:positioned]) <= DateTime.parse(deployments[0].terminated||"9999-12-31")
-              
-              self[:individual] = deployments[0].individual
-              self[:object] = deployments[0].object
-              self[:species] = deployments[0].species
-              
-            end
-            
-
-            
-          else
-            self[:object] = "pre-#{deployments[0].object}" 
-          end
-                
-        rescue
-          
-          self[:warn] << "missing-or-invalid-deployed-date" 
-        end
-        
-        
-        begin
-          DateTime.parse(deployments[0].terminated)
-          self[:terminated] = deployments[0].terminated
-          
-        rescue
-          # !? self[:active] = true
-          #self[:warn] << "missing-or-invalid-terminated-date" 
-        end
-        
-
-      elsif deployments.size > 1
-        
-        individuals = deployments.map {|d| d.individual }.uniq
-        objects = deployments.map {|d| d.object }.uniq
-        specieslist = deployments.map {|d| d.species }.uniq
-        platform_models = deployments.map {|d| d.platform_model }.uniq
-        
-        self[:deployments] = deployments.map {|d|
-          deploymenturi.path = "/tracking/deployment/#{d.id}"
-          deploymenturi.to_s }.uniq
-
-        self[:warn] << "matches-multiple-deployments"
-        # Given 2 matches, why not check if measured for individual-1(platform-A) is before deployed for individual-2(platform-A)?
-        # The period between the two individuals would then by mismarked as individual-1(platform-A)
-
-        if platform_models.size == 1
-          self[:platform_models] = platform_models[0]
-        else
-          self[:platform_models] = platform_models
-        end
-
-        if individuals.size == 1
-          self[:individual] = individuals[0]
-        else
-          self[:individuals] = individuals
-        end
-
-        if objects.size == 1
-          self[:object] = objects[0]
-        else
-          self[:objects] = objects
-        end
-
-        if specieslist.size == 1
-          self[:species] = specieslist[0]
-        else
-          self[:"species-list"] = specieslist
-        end
-
-      else
-        self[:object] = "unknown"
-      end
+    # Merge in object, species, platform_model, platform_type
+    inject_platform_deployment_metadata
+    
+    self[:deployment_hash] = deployment_hash
+    
+    # Merge in individual if the platform is known to be attached to one, 
+    # ie. only if measured >= deployed (and if terminated is set: measured <= terminated)
+    inject_indvidual
+    
+    # Merge in sensor data
+    decode_sensor_data
+    
+    if self[:warn].none?
+      self.delete :warn
     end
     
-    # Decode sensor data
-    #
+    self
+  end
+  alias :empty :before_save
+  
+  protected
+  
+  def base_uri
+    baseuri = URI.parse(ENV["NPOLAR_API"]||"http://localhost")
+  end
+
+  def decode_sensor_data
+
     # For Argos data data prior to 2014-03-01 (DS/DIAG data) the sensor data may either integer or hex
     # Argos data from 2014-03-01 and onwards (XML from SOAP web service) contain both integer and hex data,
     # as well as platform_model string
+    
     if self[:sensor_data].any? and self[:decoder].nil?
     
       decoder = nil
@@ -239,41 +154,10 @@ class Tracking < Hashie::Mash
     
     end
     
-    
-    before_valid
-    
-    self
-  end
-  alias :empty :before_save
-
-  def before_valid
-    self.delete :errors
-    self.delete :valid
-    self
-  end
-  
-  def to_solr
-    
-    if not self[:format].nil?
-      self[:format_name] = self[:format].map {|f| f.name }
-    end
-    
-    if not self[:sensor].nil?
-      self[:sensor_name] = sensor.map {|s| s.name }
-    end
-    
-    
-    self.delete :collect
-    self.delete :format
-    self.delete :sensor
-    self.delete :_id
-    self
   end
 
-  protected
-
-  # Get all deployments from Tracking Deployment database
-  def deployment
+  # Get all deployments from Tracking Deployment API database
+  def tracking_deployments
     @@deployment ||= begin
       uri = URI.parse(ENV["NPOLAR_API_COUCHDB"])
       uri.path = "/#{Service.factory("tracking-deployment-api").database}"
@@ -282,48 +166,118 @@ class Tracking < Hashie::Mash
       d = client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
         Hashie::Mash.new(row.doc)
       }
-      #d = d.reject {|depl| depl.deployed.nil? }
       d
     end
   end
-
-  # @return [Array] Deployments for this platform, within range between
-  # deployed and terminated
+    
+  # @return [Array] All platforms 
+  # We reject all platforms that (reject messages after terminated time)
+  # We dont' require the message measured to be after deployed, because the we want platform metadata also 
   def deployments
 
     measured = DateTime.parse(self[:measured]||self[:positioned])
+
+    begin
+      terminated = DateTime.parse(d.deployed)
+    rescue
+      terminated = DateTime.new(9999)
+    end
     
     # From the deployment database
-    deps = deployment.select {|d|
-
-      # Select deployment with the current platform and technology
-      d.platform.to_s == platform.to_s and d.technology == technology
-
-    }
-    
-    if deps.size == 1
-      deps # single deployment for this platform
+    tracking_deployments.select {|d|
+      # Select deployment with the current platform and technology (before terminated time)
+      (d.platform.to_s == platform.to_s) and (d.technology == technology) and (measured <= terminated)
+    }  
+  end
+  
+  # Get the matching deployment document
+  def deployment_hash
+    deployment = deployments
+    if deployment.size == 1
+      deployment
+    elsif deployment.size > 1
+      next_deployment_after_measured
     else
-    
-      deps.select {|d|
-  
-        begin
-          deployed = DateTime.parse(d.deployed)
-        rescue
-          deployed = DateTime.new(1000)
-        end
-        
-        if d.terminated?
-          # Select deployments where measured is before terminated
-          # We don't require "measured after deployed" because we would then not be able to inject platform metadata in the messages prior to tagging
-          terminated = DateTime.parse(d.terminated)
-          (measured <= terminated)
-  
-        else
-          true # Select all deployments matchinf platfornm abd technolgy
-          
-        end
-      }
+      {}
     end
   end
+  
+
+  def next_deployment_after_measured
+    measured = Time.parse(self[:measured]||self[:positioned])
+    
+    # Simple case first: measured is after deployed and before terminated
+    if idx = deployments.find_index { |d| measured >= Time.parse(d.deployed) and measured <= Time.parse(d.terminated) }
+      deployments[idx]
+    else
+    
+      # But for redeployed platforms the problem is that the measured time may be before 2 or more deployed times,
+      # we should use deployment neareast in time after measured time
+      times = deployments.map { |d| measured.to_i - Time.parse(d.deployed).to_i }
+      idx = times.find_index {|t| t == times.min }
+      deployments[idx]
+    end
+  end
+  
+  def inject_indvidual
+    deployment = deployment_hash
+    
+    begin
+      deployed = DateTime.parse(deployment.deployed)
+    rescue
+      deployed = DateTime.new(1000)
+    end
+    
+    begin
+      terminated = DateTime.parse(deployment.terminated)
+    rescue
+      terminated = DateTime.new(9999)
+    end
+    
+    measured = DateTime.parse(self[:measured]||self[:positioned])
+    
+    if measured >= deployed and measured <= terminated
+      self[:individual] = deployment_hash.individual
+    end
+
+  end
+  
+  def inject_platform_deployment_metadata
+    
+    deployment = deployment_hash
+    
+    if not deployment.nil? and deployment.key? :id
+      deployment_uri = base_uri
+      deployment_uri.path = "/tracking/deployment/#{deployment[:id]}"
+      self[:deployment] = deployment_uri.to_s
+    end
+    
+    # We add object like "Arctic fox" also for messages before/after deployment (!)
+    if not object?
+      self[:object] = deployment.object || "unknown"
+    end
+    
+    # We add species like "Vulpes sp." also for messages before/after deployment (!)
+    if not species? and deployment.species?
+      self[:species] = deployment.species
+    end
+    
+    # Set platform model
+    if not platform_model?
+      self[:platform_model] = deployment.platform_model
+    end
+    
+    # Set platform type
+    if not platform_type?
+      self[:platform_type] = deployment.platform_type
+    end
+        
+    # Add deployed and terminated so that we can later compare these with the Tracking Deployment API
+    # and and detect if republishing of data for certain platform is needed.
+    # This is useful (1) When tagging the deployed date is not yet Tracking Deployment API, but data flow is real time (ie. needs to be fixed after setting the individual)
+    # (2) When deployed / terminated / individual data is corrected
+    self[:deployed] = deployment.deployed
+    self[:terminated] = deployment.terminated
+  end
+
 end
