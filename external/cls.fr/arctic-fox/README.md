@@ -105,17 +105,21 @@ The output of these three commands are piped to the npolar-api command.
 ```
 
 #### JSON <- Argos XML
+
 Argos XML is converted to JSON using [XSLT] (), just prior to [publishing] (https://github.com/npolar/api.npolar.no/blob/master/external/cls.fr/arctic-fox/bin/---).
 
 ### Harvesting
+
 Nighly cron job using [argos-soap](https://github.com/npolar/argos-ruby) --download
 
 ### Integrity check
+
 [@todo]
 
 ### Publishing
 
 A. One-off publishing of the two disk archives
+
 ```sh
 [external@gustav ~]$ /home/external/api.npolar.no/bin/npolar-api-post-glob https://api.npolar.no/tracking/arctic-fox /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json
 [external@gustav ~]$ /home/external/api.npolar.no/external/cls.fr/arctic-fox/bin/npolar-argos-publish-arctic-fox-xml https://api.npolar.no/tracking/arctic-fox "/mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml"
@@ -125,5 +129,6 @@ B. Data publishing
 Nightly cron job
 
 ### Security and authorization
+
 Disk archive writes are reserved to staff at the Norwegian Polar Data Centre.
 Arctic fox tracking data is restricted, only the external user can create, update or delete data, while only the principal investigators and data centre staff may at the moment access the data.
