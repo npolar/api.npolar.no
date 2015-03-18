@@ -26,7 +26,7 @@ Currently all transmitter platforms use the Argos system and all units are the s
 * Platform vendor: [Sirtrack](http://sirtrack.com)
 * Platform model: [KiwiSat303](http://www.sirtrack.com/images/pdfs/303_K3HVHF.pdf)
 * Sensor data [decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb)
-* 
+
 ## Data formats
 
 Legacy Argos [DS]/[DIAG] files are converted to [Tracking JSON] using [argos-ascii](https://github.com/npolar/argos-ruby/wiki/argos-ascii) and published in a one time-operation (detailed below).
@@ -42,7 +42,7 @@ The data pipeline consists of several steps:
 
 **3. Integrity check.** All files in the disk archive are fingerprinted and the number of messages is compared with the number of documents in the tracking API
 
-**4. Preprocessing. Any files not already in the API are converted to JSON using [XSLT](https://github.com/npolar/argos-ruby/blob/master/lib/argos/_xslt/argos-json.xslt)
+**4. Preprocessing.** Any files not already in the API are converted to JSON using [XSLT](https://github.com/npolar/argos-ruby/blob/master/lib/argos/_xslt/argos-json.xslt)
 
 **5. Publishing.** HTTP POST containing Array of JSON per platform per day
 
