@@ -68,8 +68,6 @@ class Tracking < Hashie::Mash
     # Merge in object, species, platform_model, platform_type
     inject_platform_deployment_metadata
     
-    self[:deployment_hash] = deployment_hash
-    
     # Merge in individual if the platform is known to be attached to one, 
     # ie. only if measured >= deployed (and if terminated is set: measured <= terminated)
     inject_indvidual
