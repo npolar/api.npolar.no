@@ -192,7 +192,7 @@ class Tracking < Hashie::Mash
   def deployment_hash
     deployment = deployments
     if deployment.size == 1
-      deployment
+      deployment[0]
     elsif deployment.size > 1
       next_deployment_after_measured
     else
