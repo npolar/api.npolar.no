@@ -204,8 +204,14 @@ class Tracking < Hashie::Mash
   def next_deployment_after_measured
     measured = Time.parse(self[:measured]||self[:positioned])
     
-    # Simple case first: measured is after deployed and before terminated
-    if idx = deployments.find_index { |d| measured >= Time.parse(d.deployed) and measured <= Time.parse(d.terminated) }
+    # Simple case first: measured is after deployed and before terminated    
+    if idx = deployments.find_index { |d|
+      begin
+        measured >= Time.parse(d.deployed) and measured <= Time.parse(d.terminated)
+      rescue
+        # noop
+      end
+      }
       deployments[idx]
     else
     
