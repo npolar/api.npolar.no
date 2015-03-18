@@ -85,11 +85,14 @@ Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https:/
 
 For each of the years 2012, 2013, and 2014:
 ```sh
-[external@gustav ~]$ YEAR=2012 && ~/argos-ruby/bin/argos-ascii --debug --filter='lambda {|d| ["113907","113908",
-"113908","113909","113909","113910","113911","113912","113913","113913",
-"113914","113915","131424","131425","131426","131427","131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR```
 
-http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2012-01-01..2013-01-01
+YEAR=2012 && ~/argos-ruby/bin/argos-ascii --debug --filter='lambda {|d| ["113907","113908","113908","113909","113909","113910","113911","113912","113913","113913","113914","113915","131424","131425","131426","131427","131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR npolar-api -XPOST /tracking/arctic-fox -d@-
+
+YEAR=2013 && ~/argos-ruby/bin/argos-ascii --debug --filter='lambda {|d| ["113907","113908","113908","113909","113909","113910","113911","113912","113913","113913","113914","113915","131424","131425","131426","131427","131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR npolar-api -XPOST /tracking/arctic-fox -d@-
+
+YEAR=2014 && ~/argos-ruby/bin/argos-ascii --debug --filter='lambda {|d| ["113907","113908","113908","113909","113909","113910","113911","113912","113913","113913","113914","113915","131424","131425","131426","131427","131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR npolar-api -XPOST /tracking/arctic-fox -d@-
+```
+
 I, [2015-03-12T10:11:48.169590 #31396]  INFO -- : Documents: 16445, ds: 12965, diag: 3480, glob: /mnt/datasets/Tracking/ARGOS/archive/2012/**/*
 
 http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2013-01-01..2014-01-01
@@ -98,15 +101,9 @@ I, [2015-03-12T10:15:41.722159 #31481]  INFO -- : Documents: 36640, ds: 27840, d
 http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2014-01-01..2014-03-01&not-type=xml
 I, [2015-03-12T10:04:00.034353 #31301]  INFO -- : Documents: 14469, ds: 11030, diag: 3439, glob: /mnt/datasets/Tracking/ARGOS/archive/2014/**/*
 
-The output of these three commands are piped to the npolar-api command.
-
-```
-./bin/argos-ascii /mnt/datasets/Tracking/ARGOS/archive/2012/2012-09 --filter='lambda {|d| ["113909"].include? d[:platform].to_s }' | npolar-api -XPOST http://localhost:9393/tracking/arctic-fox\?overwrite\=true -d@-
-```
-
 #### JSON <- Argos XML
 
-Argos XML is converted to JSON using [XSLT] (), just prior to [publishing] (https://github.com/npolar/api.npolar.no/blob/master/external/cls.fr/arctic-fox/bin/---).
+Argos XML is converted to JSON using [XSLT] (), just prior to [publishing]
 
 ### Harvesting
 
