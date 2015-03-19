@@ -13,9 +13,13 @@
        "index": "pbhims",
        "type": "incident",
        "params": {
-           "facets": "title,status,incident.type,incident.timezone,location.country,location.region,location.name,location.latitude,location.longitude",
+           "facets": "status,incident.category,incident.datetime,incident.timezone,location.country,location.region,location.name",
            "date-year": "incident.datetime",
            "sort": "-incident.datetime"
+       },
+       "geojson": {
+           "latitude": "location.latitude",
+           "longitude": "location.longitude"
        }
    },
    "verbs": [
