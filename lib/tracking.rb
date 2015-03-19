@@ -225,22 +225,26 @@ class Tracking < Hashie::Mash
   def inject_indvidual
     deployment = deployment_hash
     
-    begin
-      deployed = DateTime.parse(deployment.deployed)
-    rescue
-      deployed = DateTime.new(1000)
-    end
+    if deployment.key? :individual
     
-    begin
-      terminated = DateTime.parse(deployment.terminated)
-    rescue
-      terminated = DateTime.new(9999)
-    end
+      begin
+        deployed = DateTime.parse(deployment.deployed)
+      rescue
+        deployed = DateTime.new(1000)
+      end
+      
+      begin
+        terminated = DateTime.parse(deployment.terminated)
+      rescue
+        terminated = DateTime.new(9999)
+      end
+      
+      measured = DateTime.parse(self[:measured]||self[:positioned])
+      
+      if measured >= deployed and measured <= terminated
+        self[:individual] = deployment_hash.individual
+      end
     
-    measured = DateTime.parse(self[:measured]||self[:positioned])
-    
-    if measured >= deployed and measured <= terminated
-      self[:individual] = deployment_hash.individual
     end
 
   end
