@@ -1,6 +1,5 @@
 require "npolar/api/client/json_api_client"
 require "argos"
-
 require "date"
 
 class Tracking < Hashie::Mash
@@ -200,7 +199,6 @@ class Tracking < Hashie::Mash
     end
   end
   
-
   def next_deployment_after_measured
     measured = Time.parse(self[:measured]||self[:positioned])
     
@@ -223,6 +221,7 @@ class Tracking < Hashie::Mash
     end
   end
   
+  # Merge in individual for periods after deployed and before terminated
   def inject_indvidual
     deployment = deployment_hash
     
@@ -246,6 +245,7 @@ class Tracking < Hashie::Mash
 
   end
   
+  # Merge in platform deployment information like object, species, platform model
   def inject_platform_deployment_metadata
     
     deployment = deployment_hash
@@ -255,24 +255,24 @@ class Tracking < Hashie::Mash
       deployment_uri.path = "/tracking/deployment/#{deployment[:id]}"
       self[:deployment] = deployment_uri.to_s
     end
-    
-    # We add object like "Arctic fox" also for messages before/after deployment (!)
-    if not object?
-      self[:object] = deployment.object || "unknown"
+      
+    # We add object like "Arctic fox" - also for messages before/after deployment
+    if not object? and deployment.key? :object
+      self[:object] = deployment.object
     end
     
-    # We add species like "Vulpes sp." also for messages before/after deployment (!)
-    if not species? and deployment.species?
+    # We add species like "Vulpes lagopus" - also for messages before/after deployment
+    if not species? and deployment.key? :species
       self[:species] = deployment.species
     end
     
     # Set platform model
-    if not platform_model?
+    if not platform_model? and deployment.key? :platform_model
       self[:platform_model] = deployment.platform_model
     end
     
     # Set platform type
-    if not platform_type?
+    if not platform_type? and deployment.key? :platform_type
       self[:platform_type] = deployment.platform_type
     end
         
@@ -280,8 +280,12 @@ class Tracking < Hashie::Mash
     # and and detect if republishing of data for certain platform is needed.
     # This is useful (1) When tagging the deployed date is not yet Tracking Deployment API, but data flow is real time (ie. needs to be fixed after setting the individual)
     # (2) When deployed / terminated / individual data is corrected
-    self[:deployed] = deployment.deployed
-    self[:terminated] = deployment.terminated
+    if not deployed? and deployment.key? :deployed
+      self[:deployed] = deployment.deployed
+    end
+    if not terminated? and deployment.key? :terminated
+      self[:terminated] = deployment.terminated
+    end
   end
 
 end
