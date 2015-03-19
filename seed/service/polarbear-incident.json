@@ -10,7 +10,7 @@
    "search": {
        "engine": "Elasticsearch",
        "url": "http://localhost:9200",
-       "index": "pbhims",
+       "index": "polarbear",
        "type": "incident",
        "params": {
            "facets": "status,incident.category,incident.datetime,incident.timezone,location.country,location.region,location.name",
