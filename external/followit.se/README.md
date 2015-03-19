@@ -1,4 +1,4 @@
-#  GPS tracking data management
+# Svalbard reindeer GPS-tracking data management
 
 This file contains behind-the-scenes documentation of the data management of Svalbard reindeer telemetry data.
 
@@ -25,13 +25,17 @@ curl --cookie-jar /tmp/followit-jar -XPOST -d@Login.xml http://total.followit.se
 ```        
 
 ### Get (tracker units)
-```curl -XPOST -d@Get.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar > trackers.xml```
+```
+curl -XPOST -d@Get.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar > trackers.xml```
 
 ### GetTrafficDates
-```curl -XPOST -d@GetTrafficDates.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar```
+```
+curl -XPOST -d@GetTrafficDates.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar```
 
 ### GetUnitReportPositions
-```curl -XPOST -d@GetUnitReportPositions.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar > positions.xml```
+```
+curl -XPOST -d@GetUnitReportPositions.xml http://total.followit.se/DataAccess/TrackerService.asmx -H "Content-Type: application/soap+xml; charset=utf-8" --cookie /tmp/followit-jar > positions.xml
+```
 
 ### Logout
 ```sh
