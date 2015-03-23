@@ -3,23 +3,18 @@
    "_rev": "1-6faef91d6bffdedd81e464b3d6646d1e",
    "schema": "http://api.npolar.no/schema/api",
    "path": "/polarbear-incident",
-   "title": "Polarbear Incident API",
+   "title": "Polar bear incident API",
    "storage": "Couch",
    "database": "polarbear-incident",
    "model": "PolarbearIncident",
    "search": {
        "engine": "Elasticsearch",
-       "url": "http://localhost:9200",
-       "index": "polarbear",
+       "index": "polarbear-incident",
        "type": "incident",
        "params": {
            "facets": "status,incident.category,incident.datetime,incident.timezone,location.country,location.region,location.name",
            "date-year": "incident.datetime",
            "sort": "-incident.datetime"
-       },
-       "geojson": {
-           "latitude": "location.latitude",
-           "longitude": "location.longitude"
        }
    },
    "verbs": [
@@ -34,7 +29,7 @@
        "json": "application/json"
    },
    "accepts": {
-       "application/json": "http://api.npolar.no/schema/polarbear-incident-0.1.0.json"
+       "application/json": "http://api.npolar.no/schema/polarbear-incident-0.1.0"
    },
    "middleware": [
        [
@@ -55,7 +50,7 @@
        "HTTP",
        "Elasticsearch"
    ],
-   "lifecycle": "test",
+   "lifecycle": "production",
    "run": "Npolar::Api::Json",
    "open": true
 }
