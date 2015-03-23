@@ -1,8 +1,8 @@
 {
-   "_id": "polarbear-incident-api",
-   "_rev": "1-6faef91d6bffdedd81e464b3d6646d1e",
+   "id": "polarbear-incident-api",
+   "_rev": "2-f3c75fc6a137c9400ea16690310a1eff",
    "schema": "http://api.npolar.no/schema/api",
-   "path": "/polarbear-incident",
+   "path": "/polar-bear/incident",
    "title": "Polar bear incident API",
    "storage": "Couch",
    "database": "polarbear-incident",
@@ -35,9 +35,9 @@
        [
            "::Rack::Gouncer",
            {
-               "url": "https://apptest.data.npolar.no:8950",
-               "open": false,
-               "system": "http://api.npolar.no/person"
+               "url": "https://api.npolar.no/user",
+               "open": true,
+               "system": "http://api.npolar.no/polar-bear/incident"
            }
        ]
    ],
