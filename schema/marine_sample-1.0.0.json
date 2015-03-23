@@ -1,0 +1,167 @@
+{
+	"title": "Marine biology sample schema",
+	"description": "Schema for Marine biology sample documents",
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"id": "http://api.npolar.no/schema/marine_sample-1.0.0",
+	"type": "object",
+	"properties": {
+		"abundances": {
+      "type": "array",
+			"item": "string",
+			"description": ""
+    },
+    "animal_group": {
+      "type": "string",
+			"description": ""
+    },
+    "bottomdepth": {
+      "type": "string",
+			"description": ""
+    },
+    "collection": {
+      "type": "string",
+			"description": ""
+    },
+		"comment": {
+      "type": "string",
+			"description": ""
+    },
+    "conveyance": {
+      "type": "string",
+			"description": ""
+    },
+		"ctd_staff": {
+      "type": "object",
+			"description": ""
+    },
+    "ctdnr": {
+      "type": "string",
+			"description": ""
+    },
+    "draft": {
+      "type": "string",
+			"description": ""
+    },
+    "expedition": {
+      "type": "string",
+			"description": ""
+    },
+    "gear": {
+      "type": "string",
+			"description": ""
+    },
+    "id": {
+      "type": "string",
+			"description": "UUID of this doc"
+    },
+    "institution": {
+      "type": "string",
+			"description": ""
+    },
+    "instref": {
+      "type": "string",
+			"description": ""
+    },
+		"latitude": {
+			"type": "number",
+			"minimum": -90,
+			"maximum": 90,
+			"description": "Location latitude in WGS-84"
+		},
+		"longitude": {
+			"type": "number",
+			"minimum": -180,
+			"maximum": 180,
+			"description": "Location longitude in WGS-84"
+		},
+		"lipids": {
+      "type": "array",
+			"item": "object",
+			"description": ""
+    },
+    "local_date": {
+			"type": "string",
+			"format": "date-time",
+			"description": ""
+    },
+    "metadata_id": {
+      "type": "string",
+			"description": ""
+    },
+    "name": {
+      "type": "string",
+			"description": ""
+    },
+		"nutrients": {
+      "type": "array",
+			"item": "object",
+			"description": ""
+    },
+		"pigments": {
+      "type": "array",
+			"item": "object",
+			"description": ""
+    },
+    "preservation": {
+      "type": "string",
+			"description": ""
+    },
+    "processed_date": {
+			"type": "string",
+			"format": "date-time",
+			"description": ""
+    },
+    "programs": {
+      "type": "string",
+			"description": ""
+    },
+    "sample_depth_from": {
+      "type": "string",
+			"description": ""
+    },
+    "sample_depth_to": {
+      "type": "string",
+			"description": ""
+    },
+    "sample_gear": {
+      "type": "string",
+			"description": ""
+    },
+    "sample_name": {
+      "type": "string",
+			"description": ""
+    },
+		"sample_staff": {
+      "type": "string",
+			"description": ""
+    },
+    "sample_types": {
+      "type": "string",
+			"description": ""
+    },
+    "set": {
+      "type": "string",
+			"description": ""
+    },
+    "station": {
+      "type": "string",
+			"description": ""
+    },
+    "title": {
+      "type": "string",
+			"description": ""
+    },
+    "utc_date": {
+			"type": "string",
+			"format": "date-time",
+			"description": ""
+    }
+	},
+	"required": [
+		"sample_name",
+		"expedition",
+		"id",
+		"schema"
+	],
+	"additionalProperties": true
+}

@@ -10,7 +10,7 @@ class EditLog
       username = config[:username]
       password = config[:password]
       database = config[:database].gsub(/^\//, "")
-     
+
       if username.nil? and password.nil? and uri =~ /\:\/\/(.+)[:](.+)\@/
         username, password = $1, $2
       end
@@ -20,8 +20,10 @@ class EditLog
 
 
       faraday = Faraday.new(uri)
-      
-      faraday.basic_auth username, password
+
+      if not (username.nil? or password.nil?)
+        faraday.basic_auth username, password
+      end
       faraday.response :logger # Log to STDOUT
       response = faraday.put do |request|
         request.url "/#{database}/#{id}"
@@ -32,7 +34,7 @@ class EditLog
         raise "Failed insering editlog, response status: #{response.status}"
       end
       response
-      
+
     }
   end
 
@@ -41,7 +43,7 @@ class EditLog
 
       #require "elasticsearch"
       #id = edit[:id]
-    
+
       #if not edit[:request][:body].nil?
       #  edit[:request][:body].delete
       #end
