@@ -1,0 +1,53 @@
+{
+  "id": "marine-biology-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "path": "/marine/biology/sample",
+  "title": "Marine Biology Samples",
+  "storage": "Couch",
+  "database": "marine_samples_dataset",
+  "model": "Marine::Samples",
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS"
+  ],
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/marine_sample"
+  },
+  "formats": {
+    "json": "application/json"
+  },
+  "category": [
+    "CouchDB",
+    "Lucene",
+    "Elasticsearch",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "auth": {
+    "authorize": "administrator",
+    "system": "marine_database",
+    "authorizer": "Npolar::Auth::Ldap"
+  },
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "marine_biology",
+    "type": "marine_sample",
+    "log": true,
+    "bulk_size": 500,
+    "params": {
+      "facets": "expedition,animal_group,conveyance,gear,programs,sample_types,station",
+      "date-year": "utc_date"
+    }
+  },
+  "base": "http://api.npolar.no"
+}
