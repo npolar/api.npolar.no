@@ -6,7 +6,7 @@ See [Argos data management] for details on Argos data formats, and how data is h
 
 For metadata, including principal investigators and information on accessing and citing the dataset, see [data.npolar.no](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82).
 
-For detailed documentation of how to access the data, visit the [Tracking Arctic fox API wiki](https://github.com/npolar/api.npolar.no/wiki/Tracking-Arctic-fox-API).
+For detailed documentation of how to access the data, visit the [Tracking Arctic fox API wiki](https://github.com/npolar/api.npolar.no/wiki/Arctic-fox-tracking-API).
 
 ## System overview
 

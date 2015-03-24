@@ -94,7 +94,7 @@ class Tracking < Hashie::Mash
     # Argos data from 2014-03-01 and onwards (XML from SOAP web service) contain both integer and hex data,
     # as well as platform_model string
     
-    if self[:sensor_data].any? and self[:decoder].nil?
+    if sensor_data?
     
       decoder = nil
       
