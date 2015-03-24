@@ -1,6 +1,6 @@
 # Argos system data management
 
-The [Argos](http://en.wikipedia.org/wiki/Argos_system) system has been used at the Norwegian Polar Institute almost since 1979.
+The [Argos](http://en.wikipedia.org/wiki/Argos_system) system has been used at the Norwegian Polar Institute since 1979.
 
 This document outlines how Argos data is managed internally. Data management involves
 * harvesting, archiving, processing, publishing, validating, and securing data
@@ -11,7 +11,6 @@ This document outlines how Argos data is managed internally. Data management inv
 Argos data is published in two main APIs
 * [Tracking API](https://api.npolar.no/tracking/restricted/?q=) (**restricted**)
 * [Buoy API](https://api.npolar.no/oceanography/buoy/?q=) (**open**)
-
 
 Both are REST-style data services powered by [Npolar::Api::Json](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb).
 
