@@ -1,0 +1,37 @@
+{
+   "schema": "http://api.npolar.no/schema/api",
+   "id": "marine-biology-valids-api",
+   "path": "/marine/biology/valid",
+   "title": "Marine Biology Valids",
+   "storage": "Couch",
+   "database": "marine_valids_dataset",
+   "verbs": [
+       "DELETE",
+       "GET",
+       "HEAD",
+       "POST",
+       "PUT",
+       "OPTIONS"
+   ],
+   "accepts": {
+     "application/json": "json"
+   },
+   "formats": {
+     "json": "application/json"
+   },
+   "category": [
+       "CouchDB",
+       "REST",
+       "JSON",
+       "HTTP"
+   ],
+   "lifecycle": "production",
+   "run": "Npolar::Api::Json",
+   "open": true,
+   "auth": {
+       "authorize": "sysadmin",
+       "system": "api",
+       "authorizer": "Npolar::Auth::Ldap"
+   },
+   "base": "https://api.npolar.no"
+}
