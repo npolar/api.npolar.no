@@ -6,6 +6,7 @@
   "title": "Marine Biology Samples",
   "storage": "Couch",
   "database": "marine_samples_dataset",
+  "model": "MarineSample",
   "verbs": [
     "DELETE",
     "GET",
