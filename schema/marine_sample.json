@@ -7,61 +7,81 @@
 	"properties": {
 		"abundances": {
       "type": "array",
-			"item": "string",
-			"description": ""
+			"items": {
+				"type": "object",
+				"properties": {
+		      "type": {
+						"type": "string",
+						"enum": ["Phytoplankton","Zooplankton"]
+					},
+		      "animal": {
+						"type": "object",
+						"properties": {
+							"class": {"type": "string"},
+							"comment": {"type": "string"},
+							"family": {"type": "string"},
+							"genus": {"type": "string"},
+							"name_en": {"type": "string"},
+							"name_nb": {"type": "string"},
+							"name_sci": {"type": "string"},
+							"order": {"type": "string"},
+							"phylum": {"type": "string"},
+							"subphylum": {"type": "string"}
+						}
+		      },
+          "length": {"type": "string"},
+          "operation": {"type": "string"},
+		      "precision": {"type": "string"},
+					"sample_type": {"type": "string"},
+					"stage_name": {"type": "string"},
+					"type": {"type": "string"},
+		      "unit": {"type": "string"},
+		      "value": {"type": "number"}
+		    }
+			}
     },
-    "animal_group": {
-      "type": "string",
-			"description": ""
-    },
-    "bottomdepth": {
-      "type": "string",
-			"description": ""
-    },
-    "collection": {
-      "type": "string",
-			"description": ""
-    },
-		"comment": {
-      "type": "string",
-			"description": ""
-    },
-    "conveyance": {
-      "type": "string",
-			"description": ""
-    },
+    "animal_group": {"type": "string"},
+    "bottomdepth": {"type": "number"},
+    "collection": {"type": "string"},
+		"comments": {"type": "string"},
+		"comment": {"type": "string"},
+    "conveyance": {"type": "string"},
 		"ctd_staff": {
-      "type": "object",
-			"description": ""
-    },
-    "ctdnr": {
-      "type": "string",
-			"description": ""
-    },
-    "draft": {
-      "type": "string",
-			"description": ""
-    },
-    "expedition": {
-      "type": "string",
-			"description": ""
-    },
-    "gear": {
-      "type": "string",
-			"description": ""
-    },
+			"type": "object",
+			"properties": {
+				"email": {"type": "string"},
+				"fax": {"type": "string"},
+				"firstname": {"type": "string"},
+				"id": {"type": "string"},
+				"institution": {
+					"type": "object",
+					"properties": {
+						"address": {"type": "string"},
+						"city": {"type": "string"},
+						"country": {"type": "string"},
+						"name": {"type": "string"},
+						"postalcode": {"type": "string"},
+						"shortname": {"type": "string"}
+					}
+				},
+				"lastname": {"type": "string"},
+				"phone": {"type": "string"},
+				"title": {"type": "string"}
+			}
+		},
+    "ctdnr": {"type": "string"},
+    "draft": {"type": "string"},
+    "expedition": {"type": "string"},
+		"filteredwater": {"type": "number"},
+		"flowmeter_start": {"type": "number"},
+		"flowmeter_stop": {"type": "number"},
+    "gear": {"type": "string"},
     "id": {
       "type": "string",
 			"description": "UUID of this doc"
     },
-    "institution": {
-      "type": "string",
-			"description": ""
-    },
-    "instref": {
-      "type": "string",
-			"description": ""
-    },
+    "institution": {"type": "string"},
+    "instref": {"type": "string"},
 		"latitude": {
 			"type": "number",
 			"minimum": -90,
@@ -76,81 +96,136 @@
 		},
 		"lipids": {
       "type": "array",
-			"item": "object",
-			"description": ""
+			"items": {
+				"type": "object",
+				"properties": {
+					"analyses": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"analysis": {"type": "string"},
+								"individuals": {"type": "number"},
+								"lipid_class": {"type": "string"},
+								"lipid_fat": {"type": "string"},
+								"replication": {"type": "number"},
+								"type": {"type": "string"},
+								"unit": {"type": "string"},
+								"value": {"type": "number"}
+							}
+						}
+					},
+					"specimen": {
+						"type": "object",
+						"properties": {
+							"comments": {"type": "string"},
+							"institution": {"type": "string"},
+							"length": {"type": "string"},
+							"name": {"type": "string"},
+							"species": {"type": "string"},
+							"stage": {"type": "string"},
+							"tissue": {"type": "string"},
+							"weight": {"type": "string"}
+						}
+					}
+				}
+			}
     },
     "local_date": {
 			"type": "string",
-			"format": "date-time",
-			"description": ""
+			"format": "date-time"
     },
-    "metadata_id": {
-      "type": "string",
-			"description": ""
-    },
-    "name": {
-      "type": "string",
-			"description": ""
-    },
+    "metadata_id": {"type": "string"},
+    "name": {"type": "string"},
 		"nutrients": {
       "type": "array",
-			"item": "object",
-			"description": ""
+			"items": {
+				"type": "object",
+				"properties": {
+					"analyses": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"average": {"type": "number"},
+								"nutrient": {"type": "string"},
+								"stdev": {"type": "number"},
+								"unit": {"type": "string"}
+							}
+						}
+					},
+					"sample_type": {"type": "string"}
+				}
+			}
     },
 		"pigments": {
       "type": "array",
-			"item": "object",
-			"description": ""
+			"items": {
+				"type": "object",
+				"properties": {
+					"analyses": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"replication": {"type": "number"},
+								"phaeopigment": {"type": "number"},
+								"chlorophyll": {"type": "number"}
+							}
+						}
+					},
+					"sample_type": {"type": "string"}
+				}
+			}
     },
-    "preservation": {
-      "type": "string",
-			"description": ""
-    },
+    "preservation": {"type": "string"},
     "processed_date": {
 			"type": "string",
-			"format": "date-time",
-			"description": ""
+			"format": "date-time"
     },
-    "programs": {
-      "type": "string",
-			"description": ""
-    },
-    "sample_depth_from": {
-      "type": "string",
-			"description": ""
-    },
-    "sample_depth_to": {
-      "type": "string",
-			"description": ""
-    },
+    "programs": {"type" :"string"},
+    "sample_depth_from": {"type": "number"},
+    "sample_depth_to": {"type": "number"},
     "sample_gear": {
-      "type": "string",
-			"description": ""
-    },
-    "sample_name": {
-      "type": "string",
-			"description": ""
-    },
+			"type": "object",
+			"properties": {
+				"comment": {"type" :"string"},
+				"description": {"type" :"string"},
+				"id": {"type" :"string"},
+				"mesh_size": {"type" :"string"},
+				"name": {"type" :"string"},
+				"opening": {"type" :"string"}
+			}
+		},
+    "sample_name": {"type": "string"},
 		"sample_staff": {
-      "type": "string",
-			"description": ""
-    },
-    "sample_types": {
-      "type": "string",
-			"description": ""
-    },
-    "set": {
-      "type": "string",
-			"description": ""
-    },
-    "station": {
-      "type": "string",
-			"description": ""
-    },
-    "title": {
-      "type": "string",
-			"description": ""
-    },
+			"type": "object",
+			"properties": {
+				"email": {"type": "string"},
+				"fax": {"type": "string"},
+				"firstname": {"type": "string"},
+				"id": {"type": "string"},
+				"institution": {
+					"type": "object",
+					"properties": {
+						"address": {"type": "string"},
+						"city": {"type": "string"},
+						"country": {"type": "string"},
+						"name": {"type": "string"},
+						"postalcode": {"type": "string"},
+						"shortname": {"type": "string"}
+					}
+				},
+				"lastname": {"type": "string"},
+				"phone": {"type": "string"},
+				"title": {"type": "string"}
+			}
+		},
+    "sample_types": {"type": "array", "items": { "type" :"string"}},
+    "set": {"type": "string"},
+    "station": {"type": "string"},
+		"substation": {"type": "string"},
+    "title": {"type": "string"},
     "utc_date": {
 			"type": "string",
 			"format": "date-time",
