@@ -7,6 +7,7 @@
   "summary": "Norwegian Polar Institutes physical oceanography API. Contains ctd mooring and cast data.",
   "storage": "Couch",
   "database": "oceanography",
+  "model": "OceanographyPoint",
   "editlog": {
     "disabled": true
   },
