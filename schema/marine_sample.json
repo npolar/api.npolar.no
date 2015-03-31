@@ -183,7 +183,10 @@
 			"type": "string",
 			"format": "date-time"
     },
-    "programs": {"type" :"string"},
+    "programs": {
+			"type": "array",
+			"items": {"type" :"string"}
+		},
     "sample_depth_from": {"type": "number"},
     "sample_depth_to": {"type": "number"},
     "sample_gear": {
@@ -199,26 +202,29 @@
 		},
     "sample_name": {"type": "string"},
 		"sample_staff": {
-			"type": "object",
-			"properties": {
-				"email": {"type": "string"},
-				"fax": {"type": "string"},
-				"firstname": {"type": "string"},
-				"id": {"type": "string"},
-				"institution": {
-					"type": "object",
-					"properties": {
-						"address": {"type": "string"},
-						"city": {"type": "string"},
-						"country": {"type": "string"},
-						"name": {"type": "string"},
-						"postalcode": {"type": "string"},
-						"shortname": {"type": "string"}
-					}
-				},
-				"lastname": {"type": "string"},
-				"phone": {"type": "string"},
-				"title": {"type": "string"}
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"email": {"type": "string"},
+					"fax": {"type": "string"},
+					"firstname": {"type": "string"},
+					"id": {"type": "string"},
+					"institution": {
+						"type": "object",
+						"properties": {
+							"address": {"type": "string"},
+							"city": {"type": "string"},
+							"country": {"type": "string"},
+							"name": {"type": "string"},
+							"postalcode": {"type": "string"},
+							"shortname": {"type": "string"}
+						}
+					},
+					"lastname": {"type": "string"},
+					"phone": {"type": "string"},
+					"title": {"type": "string"}
+				}
 			}
 		},
     "sample_types": {"type": "array", "items": { "type" :"string"}},
