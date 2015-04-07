@@ -7,7 +7,6 @@
   "required": [
     "draft",
     "base",
-    "id",
     "schema",
     "collection"
   ],
