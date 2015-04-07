@@ -19,7 +19,7 @@
       "type": "string"
     },
     "type": {
-      "type": "object" 
+      "type": "string" 
     },
     "collection": {
         "enum": [
