@@ -14,7 +14,7 @@ end
 
 def ask_uri(displayname, uri, default)
   p = URI::Parser.new
-  
+
   begin
     uri = p.parse(uri)
   rescue # on uri nil
@@ -23,7 +23,7 @@ def ask_uri(displayname, uri, default)
 
   say("\n<%= color(\"#{displayname}\", BOLD) %>")
   newuri = ask("") { |q| q.default = uri.to_s }
-  
+
   newuri = p.parse(newuri)
   unless valid_uri?(newuri)
     say "Invalid URI: #{newuri}, keeping #{uri}"
@@ -34,10 +34,10 @@ def ask_uri(displayname, uri, default)
 end
 
 begin
-  
+
   log = Logger.new(STDERR)
   log.level = Logger::INFO
-  
+
   # Read config/env into Hash
   exportfile = File.absolute_path(__FILE__+"/../../config/env")
   env = {}
@@ -46,17 +46,17 @@ begin
       env[k] = v
     }
   end
-  
+
   say "\nEdit environmental variables in \"config/env\"\n"
 
-  # API base URI  
+  # API base URI
   api_base_uri = ask_uri("Base URI", ENV["NPOLAR_API"], "http://localhost:9393")
   env["NPOLAR_API"] = api_base_uri
 
   # CouchDB config
   couchdb_dsn = ask_uri("CouchDB", ENV["NPOLAR_API_COUCHDB"], "http://admin:password@localhost:5984")
   env["NPOLAR_API_COUCHDB"] = couchdb_dsn
-  
+
   # Elasticsearch
   elasticsearch_dsn = ask_uri("Elasticsearch", ENV["NPOLAR_API_ELASTICSEARCH"], "http://localhost:9200")
   env["NPOLAR_API_ELASTICSEARCH"] = elasticsearch_dsn
@@ -64,14 +64,18 @@ begin
   # Solr
   solr_dsn = ask_uri("Solr", ENV["NPOLAR_API_SOLR"], "http://localhost:8983/solr")
   env["NPOLAR_API_SOLR"] = solr_dsn
-  
+
+  # Memcache
+  elasticsearch_dsn = ask_uri("Memcache", ENV["NPOLAR_MEMCACHE"], 'apptest.data.npolar.no:11211')
+  env["NPOLAR_MEMCACHE"] = elasticsearch_dsn
+
   # LDAP
   say("\n<%= color(\"LDAP\", BOLD) %>")
   configure_ldap = choose do |menu|
     menu.prompt = "Configure LDAP?"
     menu.choices(:yes, :no)
   end
-  
+
   if configure_ldap == :yes
     # LDAP
     say("\n<%= color(\"LDAP\", BOLD) %>")
@@ -88,17 +92,17 @@ begin
     ldap_port = ask("port", Integer) { |q| q.default = 636; q.in = 1..65535 }
     ldap_manager = ask("manager (dn)") { |q| q.default = "cn=manager,#{ldap_base}" }
     ldap_password = ask("password") { |q| q.echo = "*"; q.default = SecureRandom.hex(20) }
-  
+
     ldap_dsn = URI::LDAP.build({ scheme: ldap_scheme, host: ldap_server, port: ldap_port, dn: "/#{ldap_base}"})
     ldap_dsn.user = ldap_manager
     ldap_dsn.password = ldap_password
     #ldap://host:port/dn?attributes?scope?filter?extensions
-    env["NPOLAR_API_LDAP"] = ldap_dsn 
+    env["NPOLAR_API_LDAP"] = ldap_dsn
   end
-  
+
   # Export string
   export = env.map {|k,v| "export #{k}=#{v}\n"}.join
-  
+
   if File.exists? exportfile
   mode = "Update"
   else
@@ -110,7 +114,7 @@ begin
     menu.prompt = "#{mode} #{exportfile} ?"
     menu.choices(:yes, :no)
   end
-  
+
   if save == :yes
     File.open("#{exportfile}", "w") { |file| file.write(export) }
   else
@@ -118,7 +122,7 @@ begin
     say export
     say "-"*80
   end
-  
+
   bashrcfile = File.expand_path("~/.bashrc")
   if File.exists?(bashrcfile) and File.readlines(bashrcfile).grep(/added by npolar-api-configure/).none?
 
@@ -134,7 +138,7 @@ begin
     end
 
   end
-  
+
   say "Completed configuration, run <%= color(\"source config/env\", BOLD) %> to reload environmental variables\n"
 
 end

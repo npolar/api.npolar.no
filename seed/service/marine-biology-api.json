@@ -1,6 +1,5 @@
 {
   "id": "marine-biology-api",
-  "_rev": "9-ac7f5c76b194c8451c777eadb786258a",
   "schema": "http://api.npolar.no/schema/api",
   "path": "/marine/biology/sample",
   "title": "Marine Biology Samples",
