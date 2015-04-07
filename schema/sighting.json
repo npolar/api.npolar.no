@@ -250,7 +250,7 @@
 "pictures": {
 "title": "pictures",
 "description": "Included pictures",
-"type": "object",
+"type": "array",
 "additionalProperties": false,
 "properties": {
 "filename": {
