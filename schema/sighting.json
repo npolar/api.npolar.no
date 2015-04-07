@@ -1,303 +1,302 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://api.npolar.no/schema/sighting-1.0-rc4",
-    "title": "Norwegian Polar Institute sightings",
-    "description": "Observation database schema for Norwegian Polar Institute",
-    "additionalProperties": false,
-    "required": [
-        "draft",
-        "base",
-        "id",
-        "schema",
-        "collection"
-    ],
-    "properties": {
-        "id": {
-            "description": "Identifier (UUID | URI). Also dwc:occurrenceID, dwc:catalogNumber",
-            "type": "string"
-        },
-        "schema": {
-            "type": "string"
-        },
-        "type": "object",
-        "collection": {
-            "enum": [
-                "sighting"
-            ]
-        },
-        "base": {
-            "enum": [
-                "http://api.npolar.no"
-            ]
-        },
-        "draft": {
-            "enum": [
-                "yes",
-                "no"
-            ]
-        },
-        "language": {
-            "description": "mostly en",
-            "type": "string"
-        },
-        "rights": {
-            "description": "The licence web address, f.ex. licenced under Creative Commons",
-            "type": "string"
-        }, 
-        "rights_holder": {
-            "description": "A person or organization owning or managing rights over the resource",
-            "enum": [
-                "Norwegian Polar Institute"
-            ]
-        },
-        "event_date": {
-            "description": "The date-time or interval during which the event occurred. Encoding scheme: iso8601, UTC",
-            "type": "string",
-             "format": "date-time"
-        },
-        "locality": {
-            "description": "Location description",
-            "type": "string"
-        },
-        "location_comment": {
-            "description": "Corresponds with the form's location ",
-            "type": "string"
-        },
-        "latitude": {
-            "type": "string"
-        },
-        "longitude": {
-            "type": "string"
-        },
-        "species": {
-          "description": "Species name in latin - small letters",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/sighting-1.0-rc4",
+  "title": "Norwegian Polar Institute sightings",
+  "description": "Observation database schema for Norwegian Polar Institute",
+  "additionalProperties": false,
+  "required": [
+    "draft",
+    "base",
+    "id",
+    "schema",
+    "collection"
+  ],
+  "properties": {
+    "id": {
+      "description": "Identifier (UUID | URI). Also dwc:occurrenceID, dwc:catalogNumber",
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "type": "object",
+    "collection": {
+      "enum": [
+        "sighting"
+      ]
+    },
+    "base": {
+      "enum": [
+        "http://api.npolar.no"
+      ]
+    },
+    "draft": {
+      "enum": [
+        "yes",
+        "no"
+      ]
+    },
+    "language": {
+      "description": "mostly en",
+      "type": "string"
+    },
+    "rights": {
+      "description": "The licence web address, f.ex. licenced under Creative Commons",
+      "type": "string"
+    },
+    "rights_holder": {
+      "description": "A person or organization owning or managing rights over the resource",
+      "enum": [
+        "Norwegian Polar Institute"
+      ]
+    },
+    "event_date": {
+      "description": "The date-time or interval during which the event occurred. Encoding scheme: iso8601, UTC",
+      "type": "string",
+      "format": "date-time"
+    },
+    "locality": {
+      "description": "Location description",
+      "type": "string"
+    },
+    "location_comment": {
+      "description": "Corresponds with the form's location ",
+      "type": "string"
+    },
+    "latitude": {
+      "type": "string"
+    },
+    "longitude": {
+      "type": "string"
+    },
+    "species": {
+      "description": "Species name in latin - small letters",
+      "type": "string"
+    },
+    "adult_m": {
+      "description": "Number of male adults",
+      "type": "string"
+    },
+    "adult_f": {
+      "description": "Number of female adults",
+      "type": "string"
+    },
+    "adult": {
+      "description": "Number of adults, sex unspecified",
+      "type": "string"
+    },
+    "sub_adult": {
+      "description": "Young adult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+      "type": "string"
+    },
+    "polar_bear_condition": {
+      "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+      "type": "string"
+    },
+    "cub_calf_pup": {
+      "description": "Juvenile - Cub,calf,pup,bear cubs",
+      "type": "string"
+    },
+    "bear_cubs": {
+      "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+      "type": "string"
+    },
+    "unidentified": {
+      "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+      "type": "string"
+    },
+    "dead_alive": {
+      "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+      "enum": [
+        "NA",
+        "alive",
+        "dead"
+      ]
+    },
+    "total": {
+      "description": "Total number of individuals",
+      "type": "string"
+    },
+    "habitat": {
+      "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
+      "enum": [
+        "land",
+        "water",
+        "ice"
+      ]
+    },
+    "occurrence_remarks": {
+      "description": "Comments about the observation - found dead f.ex.",
+      "type": "string"
+    },
+    "info_comment": {
+      "description": "Info about the record- f.ex from old database",
+      "type": "string"
+    },
+    "recorded_by": {
+      "description": "Observer’s login or id ",
+      "type": "string"
+    },
+    "identified_by": {
+      "description": "Name of person who identified the species -Observer's id ",
+      "type": "string"
+    },
+    "date_identified": {
+      "description": "Date of observation or species correction ",
+      "type": "string"
+    },
+    "editor_assessment": {
+      "description": "red-yellow-green",
+      "type": "string"
+    },
+    "editor_comment": {
+      "description": "comment about species observation",
+      "type": "string"
+    },
+    "excelfile": {
+      "title": "excelFile",
+      "description": "Uploaded excel file",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "description": "name of excel file",
           "type": "string"
         },
-        "adult_m": {
-            "description": "Number of male adults",
-            "type": "string"
+        "content_type": {
+          "description": "content description",
+          "type": "string"
         },
-        "adult_f": {
-            "description": "Number of female adults",
-            "type": "string"
+        "content_size": {
+          "description": "file size",
+          "type": "string"
         },
-        "adult": {
-            "description": "Number of adults, sex unspecified",
-            "type": "string"
-        },
-        "sub_adult": {
-            "description": "Young adult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "polar_bear_condition": {
-            "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "cub_calf_pup": {
-            "description": "Juvenile - Cub,calf,pup,bear cubs",
-            "type": "string"
-       },
-       "bear_cubs": {
-            "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "unidentified": {
-            "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "type": "string"
-        },
-        "dead_alive": {
-            "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-            "enum": [
-                "NA",
-                "alive",
-                "dead"
-            ]
-        },
-        "total": {
-            "description": "Total number of individuals",
-            "type": "string"
-        },
-        "habitat": {
-            "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
-            "enum": [
-                "land",
-                "water",
-                "ice"
-            ]
-        },
-        "occurrence_remarks": {
-            "description": "Comments about the observation - found dead f.ex.",
-            "type": "string"
-        },
-        "info_comment": {
-            "description": "Info about the record- f.ex from old database",
-            "type": "string"
-        },
-        "recorded_by": {
-            "description": "Observer’s login or id ",
-            "type": "string"
-        },
-        "identified_by": {
-            "description": "Name of person who identified the species -Observer's id ",
-            "type": "string"
-        },
-        "date_identified": {
-            "description": "Date of observation or species correction ",
-            "type": "string"
-        },
-        "editor_assessment": {
-            "description": "red-yellow-green",
-            "type": "string"
-        },     
-        "editor_comment": {
-            "description": "comment about species observation",
-            "type": "string"
-        },
-        "excelfile": {
-            "title": "excelFile",
-            "description": "Uploaded excel file",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "filename": {
-                    "description": "name of excel file",
-                    "type": "string"
-                },
-                "content_type": {
-                    "description": "content description",
-                    "type": "string"
-                },
-                "content_size": {
-                    "description": "file size",
-                    "type": "string"
-                },
-                "other_info": {
-                    "description": "other info f.ex from the old database",
-                    "type": "string"
-                }
-            }
-        },
-        "expedition": {
-            "title": "expedition",
-            "description": "expedition connected with the observation",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "name": {
-                    "description": "name of expedition",
-                    "type": "string"
-                },
-                "contact_info": {
-                    "description": "address, additional email etc",
-                    "type": "string"
-                },
-                "organisation": {
-                    "description": "organization arranging expedition",
-                    "type": "string"
-                },
-                "platform": {
-                    "description": "name of boat, plane or other craft",
-                    "type": "string"
-                },
-                "platform_comment": {
-                    "description": "comment about platform",
-                    "type": "string"
-                },
-                "expedition_db": {
-                    "description": "link to the data.npolar.no expedition database if NPI platform",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                        "rel": {
-                            "type": "string"
-                        },
-                        "href": {
-                            "type": "string",
-                            "format": "uri"
-                        },
-                        "hreflang": {
-                            "type": [
-                                "string",
-                                "null"
-                            ]
-                        },
-                        "title": {
-                            "type": [
-                                "string",
-                                "null"
-                            ]
-                        },
-                        "type": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "start_date": {
-                "description": "expedition start date",
-                "type": "string"
-            },
-            "end_date": {
-                "description": "expedition end date",
-                "type": "string"
-            },
-            "other_info": {
-                "description": "additional information f.ex from the old database",
-                "type": "string"
-            }
+        "other_info": {
+          "description": "other info f.ex from the old database",
+          "type": "string"
         }
+      }
+    },
+    "expedition": {
+      "title": "expedition",
+      "description": "expedition connected with the observation",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "name of expedition",
+          "type": "string"
+        },
+        "contact_info": {
+          "description": "address, additional email etc",
+          "type": "string"
+        },
+        "organisation": {
+          "description": "organization arranging expedition",
+          "type": "string"
+        },
+        "platform": {
+          "description": "name of boat, plane or other craft",
+          "type": "string"
+        },
+        "platform_comment": {
+          "description": "comment about platform",
+          "type": "string"
+        },
+        "expedition_db": {
+          "description": "link to the data.npolar.no expedition database if NPI platform",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "rel": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string",
+              "format": "uri"
+            },
+            "hreflang": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "title": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "start_date": {
+        "description": "expedition start date",
+        "type": "string"
+      },
+      "end_date": {
+        "description": "expedition end date",
+        "type": "string"
+      },
+      "other_info": {
+        "description": "additional information f.ex from the old database",
+        "type": "string"
+      }
     },
     "pictures": {
-        "title": "pictures",
-        "description": "Included pictures",
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-            "filename": {
-                "description": "picture file name",
-                "type": "string"
-            },
-            "content_type": {
-                "type": "string"
-            },
-            "content_size": {
-                "type": "string"
-            },
-            "photographer": {
-                "description": "name of photographer",
-                "type": "string"
-            },
-            "comments": {
-                "description": "comments related to picture",
-                "type": "string"
-            },
-            "other_info": {
-                "description": "other info f.ex from the old database",
-                "type": "string"
-            }
+      "title": "pictures",
+      "description": "Included pictures",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "description": "picture file name",
+          "type": "string"
         },
+        "content_type": {
+          "type": "string"
+        },
+        "content_size": {
+          "type": "string"
+        },
+        "photographer": {
+          "description": "name of photographer",
+          "type": "string"
+        },
+        "comments": {
+          "description": "comments related to picture",
+          "type": "string"
+        },
+        "other_info": {
+          "description": "other info f.ex from the old database",
+          "type": "string"
+        }
+      }
+    },
     "created": {
-       "description": "Document was published",
-       "type": "string",
-       "format": "date-time"
+      "description": "Document was published",
+      "type": "string",
+      "format": "date-time"
     },
     "updated": {
-        "description": "Document was updated. Equal to dcterms:modified ",
-        "type": "string",
-        "format": "date-time"
+      "description": "Document was updated. Equal to dcterms:modified ",
+      "type": "string",
+      "format": "date-time"
     },
     "created_by": {
-        "type": "string"
+      "type": "string"
     },
     "updated_by": {
-        "type": "string"
+      "type": "string"
     },
     "_id": {
-        "type": "string"
+      "type": "string"
     },
     "_rev": {
-        "type": "string"
+      "type": "string"
     }
   }
 }
-
