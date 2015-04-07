@@ -19,11 +19,13 @@
     "schema": {
       "type": "string"
     },
-    "type": "object",
-    "collection": {
-      "enum": [
-        "sighting"
-      ]
+    "type": {
+      "type": "object",
+      "collection": {
+        "enum": [
+          "sighting"
+        ]
+      }
     },
     "base": {
       "enum": [
