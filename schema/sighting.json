@@ -3,7 +3,6 @@
     "id": "http://api.npolar.no/schema/sighting-1.0-rc4",
     "title": "Norwegian Polar Institute sightings",
     "description": "Observation database schema for Norwegian Polar Institute",
-    "type": "object",
     "additionalProperties": false,
     "required": [
         "draft",
@@ -20,6 +19,7 @@
         "schema": {
             "type": "string"
         },
+        "type": "object",
         "collection": {
             "enum": [
                 "sighting"
@@ -275,8 +275,7 @@
                 "description": "other info f.ex from the old database",
                 "type": "string"
             }
-        }
-    },
+        },
     "created": {
        "description": "Document was published",
        "type": "string",
@@ -299,5 +298,6 @@
     "_rev": {
         "type": "string"
     }
+  }
 }
 
