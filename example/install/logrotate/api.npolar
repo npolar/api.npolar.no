@@ -1,0 +1,9 @@
+/home/api/log/*.log {
+  daily
+  rotate 3
+  copytruncate
+  delaycompress
+  compress
+  notifempty
+  missingok
+}
