@@ -283,7 +283,8 @@
                 "pointOfContact",
                 "principalInvestigator",
                 "publisher",
-                "resourceProvider"
+                "resourceProvider",
+                "participant"
               ]
             },
             "additionalItems": false
