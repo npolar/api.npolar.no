@@ -5,7 +5,6 @@
 "description": "Observation database schema for Norwegian Polar Institute",
 "additionalProperties": false,
 "required": [
-"draft",
 "base",
 "schema",
 "collection"
@@ -29,12 +28,6 @@
 "base": {
 "enum": [
 "http://api.npolar.no"
-]
-},
-"draft": {
-"enum": [
-"yes",
-"no"
 ]
 },
 "language": {
