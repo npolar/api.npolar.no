@@ -36,7 +36,11 @@
       "type": "string"
     },
     "parameter":{
-      "type":"string"
+      "type":"array",
+      "additionalItems": false,
+      "items": {
+        "type": "string"
+      }
     },
     "research_station":{
       "description":"Research station the dataset is related to",
