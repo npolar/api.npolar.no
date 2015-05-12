@@ -137,7 +137,8 @@
 },
 "date_identified": {
 "description": "Date of observation or species correction ",
-"type": "string"
+"type": "string",
+"format": "date-time"
 },
 "editor_assessment": {
 "description": "red-yellow-green",
@@ -199,11 +200,13 @@
 },
 "start_date": {
 "description": "expedition start date",
-"type": "string"
+"type": "string",
+"format": "date-time"
 },
 "end_date": {
 "description": "expedition end date",
-"type": "string"
+"type": "string",
+"format": "date-time"
 },
 "other_info": {
 "description": "additional information f.ex from the old database",
