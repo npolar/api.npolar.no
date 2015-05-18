@@ -17,9 +17,6 @@
 "schema": {
 "type": "string"
 },
-"type": {
-"type": "string"
-},
 "collection": {
 "enum": [
 "sighting"
@@ -235,9 +232,6 @@
 "string",
 "null"
 ]
-},
-"type": {
-"type": "string"
 }
 }
 }
