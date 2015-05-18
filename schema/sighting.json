@@ -60,6 +60,9 @@
 "longitude": {
 "type": "string"
 },
+"darwin_type": {
+  "type":"string"
+},
 "species": {
 "description": "Species name in latin - small letters",
 "type": "string"
