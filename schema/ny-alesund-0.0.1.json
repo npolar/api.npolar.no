@@ -1,6 +1,6 @@
 {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id":"http://api.npolar.no/schema/dataset-draft-0.0.1",
+  "id":"http://api.npolar.no/schema/ny-alesund-0.0.1",
   "title":"",
   "description":"Metadata related to the Ny-Ålesund research stations",
   "type":"object",
@@ -17,26 +17,46 @@
     },
     "topic":{
       "description":"Topic of the dataset",
-      "type":"string",
-      "enum":[
-        "atmosphere",
-        "marine-biology",
-        "terrestrial-biology",
-        "cryosphere",
-        "geology",
-        "oceanography",
-        "social sciences",
-        "space sciences",
-        "technology and engineering",
-        "other"
-      ]
+      "type":"array",
+      "additionalItems":false,
+      "items":{
+        "type":"string",
+        "enum":[
+          "atmosphere",
+          "biology",
+          "chemistry",
+          "climate",
+          "conservation",
+          "ecology",
+          "ecotoxicology",
+          "environment",
+          "geology",
+          "glaciology",
+          "management",
+          "marine",
+          "maps",
+          "oceanography",
+          "other",
+          "remote-sensing",
+          "seaice",
+          "social sciences",
+          "terrestrial",
+          "technology and engineering",
+          "topography",
+          "vegetation"
+        ]
+      }
     },
     "summary": {
       "description": "free text description of the dataset. Instrument, System, Method, frequency and time resolution should be mentioned here.",
       "type": "string"
     },
     "parameter":{
-      "type":"string"
+      "type":"array",
+      "additionalItems": false,
+      "items": {
+        "type": "string"
+      }
     },
     "research_station":{
       "description":"Research station the dataset is related to",
