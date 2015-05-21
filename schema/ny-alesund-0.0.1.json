@@ -48,7 +48,7 @@
       }
     },
     "summary": {
-      "description": "free text description of the dataset. Instrument, System, Method, frequency and time resolution should be mentioned here.",
+      "description":"Free text description of the dataset. Instrument, System, Method, frequency and time resolution should be mentioned here.",
       "type": "string"
     },
     "parameter":{
@@ -112,9 +112,7 @@
         "type":"object",
         "additionalProperties":false,
         "properties":{
-          "id":{"type":"string"},
           "name":{"type":"string"},
-          "gcmd_short_name":{"type":["string", "null"]},
           "roles":{
             "type":"array",
             "items":{
@@ -177,14 +175,7 @@
         "properties":{
           "rel":{"type":"string","enum":["dataset","metadata","RiS"]},
           "href":{"type":"string", "format":"uri"},
-          "title":{"type":["string", "null"]},
-          "hreflang":{"type":["string", "null"]},
-          "length":{"type":["number", "null"]},
-          "type":{"type":"string"},
-          "hash":{"type":"array"},
-          "etag":{"type":"string"},
-          "modified":{"type":"string"},
-          "acccessed":{"type":"string"}
+          "title":{"type":["string", "null"]}
         },
         "required":["href"]
       }
