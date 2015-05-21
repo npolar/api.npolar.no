@@ -74,34 +74,16 @@
         "UIG - Arctic Centre of the University of Groningen (Netherlands)"
       ]
     },
-    "people":{
-      "description":"People involved in creating the dataset, roles from http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml with 'editor' (meaning metadata editor) added",
-      "type":"array",
-      "additionalItems":false,
+    "contact":{
+      "description":"Point of contact for this dataset",
+      "type":"object",
+      "additionalProperties":false,
       "required":["first_name", "last_name"],
-      "items":{
-        "type":"object",
-        "additionalProperties":false,
-        "properties":{
-          "id":{"type":["string", "null"]},
-          "first_name":{"type":["string", "null"]},
-          "last_name":{"type":"string"},
-          "roles":{
-            "type":"array",
-            "items":{
-              "enum":[
-                "author",
-                "principalInvestigator",
-                "processor",
-                "pointOfContact",
-                "editor"
-              ]
-            }
-          },
-          "email":{"type":["string","null"]},
-          "homepage":{"type":["string","null"], "pattern":"^http(s)?:\/\/"},
-          "organisation":{"type":["string", "null"]}
-        }
+      "properties":{
+        "first_name":{"type":["string", "null"]},
+        "last_name":{"type":"string"},
+        "email":{"type":["string","null"]},
+        "organisation":{"type":["string", "null"]}
       }
     },
     "organisations":{
@@ -166,14 +148,14 @@
       }
     },
     "links":{
-      "description":"Links to data, references, project, parent, doi, related, self, alternate, etc. See IANA's registry:http://www.iana.org/assignments/link-relations/link-relations.xhtml and the Atom Format RFC:http://tools.ietf.org/html/rfc4287 and ",
+      "description":"Links to related resources like: data, metadata, references, project, doi, related.",
       "type":"array",
       "additionalItems":false,
       "items":{
         "type":"object",
         "additionalProperties":false,
         "properties":{
-          "rel":{"type":"string","enum":["dataset","metadata","RiS"]},
+          "rel":{"type":"string","enum":["data","metadata","RiS","project","parent","doi","related","references"]},
           "href":{"type":"string", "format":"uri"},
           "title":{"type":["string", "null"]}
         },
