@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+# Ruby-based command line client for Followit.se SOAP webservice
+# export FOLLOWIT_ARCHIVE=/tmp/f && export FOLLOWIT_CREDENTIALS='username:password' && ./bin/followit-tracker
+
+# For more information: 
+# https://github.com/npolar/api.npolar.no/tree/master/external/followit.se/README.md
+
+require "bundler/setup"
+require "logger"
+Dir.chdir(__dir__) do
+  require_relative "../ruby/lib/followit"
+end
+
+log = Logger.new(STDERR)
+log.level = Logger::DEBUG
+
+begin
+
+  unless ENV.key? "FOLLOWIT_ARCHIVE"
+    raise "Please set FOLLOWIT_ARCHIVE"
+  end
+  unless ENV.key? "FOLLOWIT_CREDENTIALS" or ENV["FOLLOWIT_CREDENTIALS"] =~ /^\w+:\w+$/
+    raise "Please set FOLLOWIT_CREDENTIALS"
+  end
+
+  archive = ENV["FOLLOWIT_ARCHIVE"]
+  username, password = ENV["FOLLOWIT_CREDENTIALS"].split(":")
+  
+  auth = Followit::AuthService.new(username, password)
+  auth.log = log
+  
+  ts = Followit::TrackerService.new
+  ts.auth = auth
+  ts.log = log
+  ts.download(archive, 1)
+  
+rescue => e
+  log.fatal e
+end
