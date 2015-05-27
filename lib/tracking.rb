@@ -28,13 +28,15 @@ class Tracking < Hashie::Mash
 
     tracks = JSON.parse(body)
 
-    # FIXME Hmm this breaks on PUT 1 document 
+    
     tracks = tracks.is_a?(Hash) ? [tracks] : tracks
 
     processed = tracks.map {|track|
       new(track).before_save(request)
     }
-
+    if request.request_method == "PUT"
+      processed = processed.first
+    end
     body = processed.to_json
     
     request.body = body
