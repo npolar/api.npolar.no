@@ -1,6 +1,6 @@
 {
   "_id": "publication-api",
-  "_rev": "1-ab01a33ec9ebc33dc33e06efcd9e858c",
+  "_rev": "7-80a6c49cfd1cb77da087902e424ba90b",
   "schema": "http://api.npolar.no/schema/api",
   "id": "publication-api",
   "path": "/publication",
@@ -8,30 +8,35 @@
   "storage": "Couch",
   "database": "publication",
   "model": "Publication",
+  "middleware": [
+    [
+      "Npolar::Rack::AttachmentDownloader",
+      {
+        "database": "publication"
+      }
+    ]
+  ],
   "search": {
     "engine": "Elasticsearch",
-    "index": "global",
+    "index": "publication",
     "type": "publication",
-    "facets": [
-      "organisation",
-      "publication_year",
-      "topics",
-      "category",
-      "publisher",
-      "links.rel",
-      "people.email",
-      "draft"
-      ]
+    "params": {
+      "size-facet": 99,
+      "date-year": "published_sort",
+      "facets": "publication_type,publication_lang,topics,category,publisher,people.email,draft,state"
+    }
   },
   "verbs": [
     "DELETE",
     "GET",
     "HEAD",
     "POST",
-    "PUT"
+    "PUT",
+    "OPTIONS",
+    "OPTIONS"
   ],
   "formats": {
-    "json": "application/json"
+    "json": "application/json; charset=utf8"
   },
   "accepts": {
     "application/json": "http://api.npolar.no/schema/publication"
@@ -58,5 +63,9 @@
     "authorize": "editor",
     "system": "publication",
     "authorizer": "Npolar::Auth::Ldap"
-  }
+  },
+  "updated": "2015-01-13T09:36:32Z",
+  "updated_by": "conrad",
+  "created": "2013-10-02T11:35:26Z",
+  "created_by": "ruben"
 }
