@@ -5,7 +5,6 @@
 "description": "Observation database schema for Norwegian Polar Institute",
 "additionalProperties": false,
 "required": [
-"draft",
 "base",
 "schema",
 "collection"
@@ -18,9 +17,6 @@
 "schema": {
 "type": "string"
 },
-"type": {
-"type": "string"
-},
 "collection": {
 "enum": [
 "sighting"
@@ -29,12 +25,6 @@
 "base": {
 "enum": [
 "http://api.npolar.no"
-]
-},
-"draft": {
-"enum": [
-"yes",
-"no"
 ]
 },
 "language": {
@@ -69,6 +59,9 @@
 },
 "longitude": {
 "type": "string"
+},
+"darwin_type": {
+  "type":"string"
 },
 "species": {
 "description": "Species name in latin - small letters",
@@ -144,7 +137,8 @@
 },
 "date_identified": {
 "description": "Date of observation or species correction ",
-"type": "string"
+"type": "string",
+"format": "date-time"
 },
 "editor_assessment": {
 "description": "red-yellow-green",
@@ -206,11 +200,13 @@
 },
 "start_date": {
 "description": "expedition start date",
-"type": "string"
+"type": "string",
+"format": "date-time"
 },
 "end_date": {
 "description": "expedition end date",
-"type": "string"
+"type": "string",
+"format": "date-time"
 },
 "other_info": {
 "description": "additional information f.ex from the old database",
@@ -239,9 +235,6 @@
 "string",
 "null"
 ]
-},
-"type": {
-"type": "string"
 }
 }
 }

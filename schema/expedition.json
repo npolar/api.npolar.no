@@ -1,0 +1,614 @@
+{
+  "id": "http://api.npolar.no/schema/expedition",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Expedition",
+  "description": "Norwegian Polar Data expedition description.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Resource identifier (UUID).",
+      "type": "string"
+    },
+    "schema": {
+      "description": "Schema defining this object (this schema).",
+      "type": "string",
+      "enum": [
+        "http://api.npolar.no/schema/expedition"
+      ]
+    },
+    "lang": {
+      "description": "The language of the document.",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
+    "code": {
+      "description": "Should be a descriptive code that the expedition can be identified by. Example Framstrait2014.",
+      "type": "string"
+    },
+    "type": {
+      "description": "Defines what the nature of the expedition is. Options are cruise, field work, traverse, etc...",
+      "type": "string"
+    },
+    "summary": {
+      "description": "A free text explaining the area of operation and any specifics about the expedition.",
+      "type": "string"
+    },
+    "topics": {
+      "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "atmosphere",
+          "biology",
+          "biochemistry",
+          "biodiversity",
+          "chemistry",
+          "climate",
+          "conservation",
+          "ecology",
+          "ecotoxicology",
+          "environment",
+          "geology",
+          "geophysics",
+          "glaciology",
+          "history",
+          "human-dimension",
+          "management",
+          "marine",
+          "marineecosystems",
+          "maps",
+          "oceanography",
+          "other",
+          "paleoclimate",
+          "remote-sensing",
+          "seaice",
+          "snow",
+          "terrestrial",
+          "topography",
+          "vegetation"
+        ]
+      },
+      "additionalItems": false
+    },
+    "platforms": {
+      "description": "A list containing the vehicles/vessels used for the expedition.",
+      "type": "array",
+      "items": {
+        "description": "A vehicle or vessel.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of platform being used.",
+            "type": "string",
+            "enum": [
+              "ship",
+              "boat",
+              "helicopter",
+              "snowmobile",
+              "snow tractor"
+            ]
+          },
+          "name": {
+            "description": "The name of the vessel or vehicle. Example 'RV Lance.'",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalItems": false
+    },
+    "activity": {
+      "description": "list of activite periods for the platform",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "departed": {
+            "description": "The date and time the expedition departed.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "returned": {
+            "description": "The date and time the expedition returned.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "departure_placename": {
+            "description": "The placename of the departure location.",
+            "type": "string"
+          },
+          "return_placename": {
+            "description": "The placename of the return location.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalItems": false
+    },
+    "people": {
+      "description": "List of people participating on the cruise.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Norwegian Polar Data personal ID",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "first_name": {
+            "description": "First and middle name",
+            "type": "string"
+          },
+          "last_name": {
+            "description": "Last name",
+            "type": "string"
+          },
+          "organisation": {
+            "description": "Affiliation",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "email": {
+            "description": "Email address",
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "email"
+          },
+          "roles": {
+            "description": "List of roles performed by this person",
+            "type": "array",
+            "items": {
+              "description": "role",
+              "type": "string",
+              "enum": [
+                "expeditionLeader",
+                "fieldAssistant",
+                "principalInvestigator",
+                "processor",
+                "pointOfContact"
+              ]
+            },
+            "additionalItems": false
+          },
+          "links": {
+            "description": "List of relevant links related to this person",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "href": {
+                  "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "hreflang": {
+                  "description": "Language of the linked resousce",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "rel": {
+                  "description": "Resource relation to the current document",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Title of linked resource",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "type": {
+                  "description": "Mime-type of linked resource",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "length": {
+                  "description": "Content Length of the linked resource",
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "additionalItems": false
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "first_name",
+          "last_name",
+          "roles",
+          "organisation"
+        ]
+      },
+      "additionalItems": false
+    },
+    "organisations": {
+      "description": "List of organisations that are connected to the expedition.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Norwegian Polar Data organisation id.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "description": "Organisation name",
+            "type": "string"
+          },
+          "gcmd_short_name": {
+            "description": "Short name from the GCMD controlled keyword list for providers http://gcmdservices.gsfc.nasa.gov/static/kms/providers/.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "email": {
+            "description": "Email address",
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "email"
+          },
+          "roles": {
+            "description": "List of roles performed by this organisation.",
+            "type": "array",
+            "items": {
+              "description": "role",
+              "type": "string",
+              "enum": [
+                "author",
+                "originator",
+                "owner",
+                "pointOfContact",
+                "principalInvestigator",
+                "publisher",
+                "resourceProvider",
+                "participant"
+              ]
+            },
+            "additionalItems": false
+          },
+          "links": {
+            "description": "List of relevant links for this organisation.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "href": {
+                  "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "hreflang": {
+                  "description": "Language of the linked resousce",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "rel": {
+                  "description": "Resource relation to the current document",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Title of linked resource",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "type": {
+                  "description": "Mime-type of linked resource",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "length": {
+                  "description": "Content Length of the linked resource",
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "additionalItems": false
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "roles"
+        ]
+      },
+      "additionalItems": false
+    },
+    "links": {
+      "description": "A list of links relevant to this perticular expedition. This should include links to the project(s) and expedition track(s). After completion it can also include links to datasets collected or updated during this expedition.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+            "type": "string",
+            "format": "uri"
+          },
+          "hreflang": {
+            "description": "Language of the linked resousce",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rel": {
+            "description": "Resource relation to the current document",
+            "type": "string"
+          },
+          "title": {
+            "description": "Title of linked resource",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "type": {
+            "description": "Mime-type of linked resource",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "length": {
+            "description": "Content Length of the linked resource",
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      },
+      "additionalItems": false
+    },
+    "locations": {
+      "description": "A list of one or more Geographic locations relevant to the expedition.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hemisphere": {
+            "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
+            "type": "string",
+            "pattern": "^[nsNS]{1}$"
+          },
+          "area": {
+            "description": "Name identifiying the general area of the location.",
+            "type": "string"
+          },
+          "country": {
+            "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
+            "type": "string",
+            "pattern": "^(([A-Z]|[a-z]){2})$"
+          },
+          "placename": {
+            "description": "The official placename of the location.",
+            "type": "string"
+          },
+          "geometry": {
+            "description": "Geojson object outlining the specified location.",
+            "type": "object"
+          },
+          "latitude": {
+            "description": "Latitude of the location.",
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "description": "Longitude of the location.",
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
+          }
+        }
+      },
+      "additionalItems": false
+    },
+    "events": {
+      "description": "A list of events that occured during the expedition. This can include landfall, measurement stations etc...",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of event.",
+            "type": "string",
+            "enum": [
+              "departure",
+              "arrival"
+            ]
+          },
+          "datetime": {
+            "description": "The date and time the event took place (iso8601)",
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "hemisphere": {
+                "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
+                "type": "string",
+                "pattern": "^[nsNS]{1}$"
+              },
+              "area": {
+                "description": "Name identifiying the general area of the location.",
+                "type": "string"
+              },
+              "country": {
+                "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
+                "type": "string",
+                "pattern": "^(([A-Z]|[a-z]){2})$"
+              },
+              "placename": {
+                "description": "The official placename of the location.",
+                "type": "string"
+              },
+              "geometry": {
+                "description": "Geojson object outlining the specified location.",
+                "type": "object"
+              },
+              "latitude": {
+                "description": "Latitude of the location.",
+                "type": "number",
+                "minimum": -90,
+                "maximum": 90
+              },
+              "longitude": {
+                "description": "Longitude of the location.",
+                "type": "number",
+                "minimum": -180,
+                "maximum": 180
+              }
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "datetime"
+        ]
+      },
+      "additionalItems": false
+    },
+    "tags": {
+      "description": "A list of one or more free text keywords describing the cruise.",
+      "type": "array",
+      "items": {
+        "description": "A free text keyword",
+        "type": "string"
+      },
+      "additionalItems": false
+    },
+    "progress": {
+      "description": "The progression state of the expedition.",
+      "type": "string",
+      "enum": [
+        "planned",
+        "ongoing",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "draft": {
+      "description": "The publication state of the document.",
+      "type": "string",
+      "enum": [
+        "yes",
+        "no"
+      ]
+    },
+    "collection": {
+      "description": "The storage collection the document belongs to.",
+      "type": "string",
+      "enum": [
+        "expedition"
+      ]
+    },
+    "comment": {
+      "description": "A free text comment for anything of importance to the expedition description.",
+      "type": "string"
+    },
+    "changes": {
+      "description": "List the author can use to describe changes made to this description document",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "description": "Date and time (iso8601) of the change.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "description": "Full name of the editor.",
+            "type": "string"
+          },
+          "email": {
+            "description": "Email address of the editor.",
+            "type": "string",
+            "format": "email"
+          },
+          "comment": {
+            "description": "A free text used to document the changes that where made.",
+            "type": "string"
+          },
+          "rev": {
+            "description": "The identifier of the revision that is described by this change log.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "datetime",
+          "name",
+          "rev"
+        ]
+      },
+      "additionalItems": false
+    },
+    "created": {
+      "description": "The date the document was created.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "The date the document was last updated.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "The username of the person who first created the document in the system.",
+      "type": "string"
+    },
+    "updated_by": {
+      "description": "The username of the person who last updated the document in the system.",
+      "type": "string"
+    },
+    "_id": {
+      "description": "Internal resource identifier.",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision number.",
+      "type": "string"
+    },
+    "_attachments": {
+      "description": "Internal object used to store and track attachments.",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

@@ -146,7 +146,15 @@ module Npolar
       end
   
       def username
-        if false == basic.provided? or basic.username.empty?
+        if headers["HTTP_AUTHORIZATION"] =~ /^Bearer\s[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/
+          payload = JSON.parse(Base64.decode64(headers["HTTP_AUTHORIZATION"].split("Bearer ")[1].split(".")[1]))
+          if payload.key? "user"
+            payload["user"]
+          else
+            ""
+          end
+          
+        elsif false == basic.provided? or basic.username.empty?
           ""
         else
           basic.username
