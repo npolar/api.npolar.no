@@ -115,7 +115,8 @@
             "default":["owner"]
           }
         },
-        "required":["name", "roles"]
+        "required":["name", "roles"],
+        "maxItems":1
       }
     },
     "activity":{
