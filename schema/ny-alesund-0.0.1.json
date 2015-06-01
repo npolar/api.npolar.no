@@ -131,13 +131,17 @@
         }
       }
     },
-    "coverage":{
+    "location":{
       "type":"array",
       "additionalItems":false,
       "description":"Geographical area or location of the dataset. Coordinates as WGS-84 decimal degrees",
       "items":{
         "type":"object",
         "properties":{
+          "placename":{
+            "description":"Placename that helps identify the geographic location of the data",
+            "type":"string"
+          },
           "north":{
             "type":"number",
             "minimum":-90,
