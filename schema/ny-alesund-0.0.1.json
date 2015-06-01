@@ -99,6 +99,7 @@
       "description":"Organisations connected to the dataset",
       "type":"array",
       "additionalItems":false,
+      "maxItems": 1,
       "items":{
         "type":"object",
         "additionalProperties":false,
@@ -115,8 +116,7 @@
             "default":["owner"]
           }
         },
-        "required":["name", "roles"],
-        "maxItems":1
+        "required":["name", "roles"]
       }
     },
     "activity":{
