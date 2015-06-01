@@ -112,7 +112,7 @@
                 "owner"
               ]
             },
-            "default":"owner"
+            "default":["owner"]
           }
         },
         "required":["name", "roles"]
