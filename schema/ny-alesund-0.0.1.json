@@ -107,6 +107,7 @@
           "roles":{
             "type":"array",
             "items":{
+              "type":"string",
               "enum":[
                 "owner"
               ]
