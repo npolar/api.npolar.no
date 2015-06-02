@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-# Ruby-based command line client for Followit.se SOAP webservice
-# export FOLLOWIT_ARCHIVE=/tmp/f && export FOLLOWIT_CREDENTIALS='username:password' && ./bin/followit-tracker
+# Ruby-based command to download Followit tracking data
+# export FOLLOWIT_CREDENTIALS='username:password' && ./bin/followit-tracker /path/to/followit/archive 2014-05-01
 
 # For more information: 
 # https://github.com/npolar/api.npolar.no/tree/master/external/followit.se/README.md
@@ -12,18 +12,26 @@ Dir.chdir(__dir__) do
 end
 
 log = Logger.new(STDERR)
+#log.level = Logger::WARN
 log.level = Logger::DEBUG
-
 begin
 
-  unless ENV.key? "FOLLOWIT_ARCHIVE"
-    raise "Please set FOLLOWIT_ARCHIVE"
-  end
   unless ENV.key? "FOLLOWIT_CREDENTIALS" or ENV["FOLLOWIT_CREDENTIALS"] =~ /^\w+:\w+$/
     raise "Please set FOLLOWIT_CREDENTIALS"
   end
 
-  archive = ENV["FOLLOWIT_ARCHIVE"]
+  if ARGV.size < 1 or ARGV.size > 2
+    raise "Usage: #{__dir__} /path/to/followit/archive [days of data]"
+  end
+
+  archive = ARGV[0]
+  
+  if ARGV[1] =~ /\d{4}-\d{2}-\d{2}/
+    earliest = Date.parse(ARGV[1])
+  else
+    earliest = nil
+  end
+  
   username, password = ENV["FOLLOWIT_CREDENTIALS"].split(":")
   
   auth = Followit::AuthService.new(username, password)
@@ -32,8 +40,11 @@ begin
   ts = Followit::TrackerService.new
   ts.auth = auth
   ts.log = log
-  ts.download(archive, 1)
+  ts.download(archive, earliest)
+  
+  exit(true)
   
 rescue => e
   log.fatal e
+  exit(false)
 end
