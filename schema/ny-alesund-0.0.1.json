@@ -145,23 +145,23 @@
           },
           "north":{
             "type":"number",
-            "minimum":-90,
-            "maximum":90
+            "minimum":78.55,
+            "maximum":79.3333
           },
           "east":{
             "type":"number",
-            "minimum":-180,
-            "maximum":180
-          },
-          "west":{
-            "type":"number",
-            "minimum":-90,
-            "maximum":90
+            "minimum":10.4,
+            "maximum":14.0
           },
           "south":{
             "type":"number",
-            "minimum":-180,
-            "maximum":180
+            "minimum":78.55,
+            "maximum":79.3333
+          },
+          "west":{
+            "type":"number",
+            "minimum":10.4,
+            "maximum":14.0
           }
         }
       }
