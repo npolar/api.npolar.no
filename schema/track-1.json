@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/track-1",
+  "type": "object",
+  "properties": {
+    "technology": {
+      "id": "http://api.npolar.no/schema/track-1/technology",
+      "type": "string"
+    },
+    "individual": {
+      "id": "http://api.npolar.no/schema/track-1/individual",
+      "type": "string"
+    },
+    "altitude": {
+      "id": "http://api.npolar.no/schema/track-1/altitude",
+      "type": "integer"
+    },
+    "deployed": {
+      "id": "http://api.npolar.no/schema/track-1/deployed",
+      "type": "string"
+    },
+    "object": {
+      "id": "http://api.npolar.no/schema/track-1/object",
+      "type": "string"
+    },
+    "id": {
+      "id": "http://api.npolar.no/schema/track-1/id",
+      "type": "string"
+    },
+    "schema": {
+      "id": "http://api.npolar.no/schema/track-1/schema",
+      "type": "string"
+    },
+    "_id": {
+      "id": "http://api.npolar.no/schema/track-1/_id",
+      "type": "string"
+    },
+    "updated": {
+      "id": "http://api.npolar.no/schema/track-1/updated",
+      "type": "string"
+    },
+    "created": {
+      "id": "http://api.npolar.no/schema/track-1/created",
+      "type": "string"
+    },
+    "updated_by": {
+      "id": "http://api.npolar.no/schema/track-1/updated_by",
+      "type": "string"
+    },
+    "longitude": {
+      "id": "http://api.npolar.no/schema/track-1/longitude",
+      "type": "integer"
+    },
+    "satellites": {
+      "id": "http://api.npolar.no/schema/track-1/satellites",
+      "type": "integer"
+    },
+    "created_by": {
+      "id": "http://api.npolar.no/schema/track-1/created_by",
+      "type": "string"
+    },
+    "platform": {
+      "id": "http://api.npolar.no/schema/track-1/platform",
+      "type": "string"
+    },
+    "species": {
+      "id": "http://api.npolar.no/schema/track-1/species",
+      "type": "string"
+    },
+    "measured": {
+      "id": "http://api.npolar.no/schema/track-1/measured",
+      "type": "string",
+      "format": "date-time"
+    },
+    "provider": {
+      "id": "http://api.npolar.no/schema/track-1/provider",
+      "type": "string"
+    },
+    "_rev": {
+      "id": "http://api.npolar.no/schema/track-1/_rev",
+      "type": "string"
+    },
+    "latitude": {
+      "id": "http://api.npolar.no/schema/track-1/latitude",
+      "type": "number"
+    }
+  },
+  "required": [
+    "technology",
+    "schema",
+    "longitude",
+    "latitude",
+    "platform",
+    "measured",
+    "provider"
+  ]
+}
