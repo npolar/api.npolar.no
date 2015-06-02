@@ -53,6 +53,7 @@
           "vegetation"
         ]
       },
+      "default":["other"],
       "minItems":1,
       "uniqueItems":true
     },
