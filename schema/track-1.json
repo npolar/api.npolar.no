@@ -13,7 +13,7 @@
     },
     "altitude": {
       "id": "http://api.npolar.no/schema/track-1/altitude",
-      "type": "integer"
+      "type": "number"
     },
     "deployed": {
       "id": "http://api.npolar.no/schema/track-1/deployed",
@@ -49,7 +49,7 @@
     },
     "longitude": {
       "id": "http://api.npolar.no/schema/track-1/longitude",
-      "type": "integer"
+      "type": "number"
     },
     "satellites": {
       "id": "http://api.npolar.no/schema/track-1/satellites",
