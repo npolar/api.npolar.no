@@ -44,16 +44,7 @@ module Followit
       @doc = Nokogiri::XML(response.body)
       @doc.xpath(xpath, { followit: NAMESPACE }.merge(@doc.document.namespaces))
     end
-    
-    def date_from_to(date=nil)
-      if not date.is_a? Date
-        date = date.nil? ? Date.today-1 : Date.parse(date)
-      end
-      from = Time.new(date.year, date.month, date.day, 0,0,0,"+00:00").utc.iso8601
-      to = Time.new(date.year, date.month, date.day, 23,59,59.999,"+00:00").utc.iso8601(3) # never mind leap seconds
-      [from,to]
-    end
-    
+        
     def envelope(&block)
       Nokogiri::XML::Builder.new do |xml|
         xml.Envelope("xmlns:soap" => "http://www.w3.org/2003/05/soap-envelope",
@@ -65,7 +56,7 @@ module Followit
       end
     end
     
-    def request(envelope) 
+    def request(envelope)
       Typhoeus::Request.new(uri,
         method: :post,
         body: envelope.to_xml,
