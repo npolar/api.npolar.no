@@ -16,22 +16,21 @@ module Followit
     
     URI = "http://total.followit.se/DataAccess/TrackerService.asmx"
     
+    # Download tracks for a user to disk (organised by year and month)
+    #
     # Login
     # Get (tracker ids)
     # For each tracker id
     #   GetTrafficDates
-    #     For each traffic date
+    #     Reduce to unique months
     #       GetUnitReportPositions
-    #         For each unit report
-    #            Valid?
-    #              Yes: Save if updated
-    #              No: Log error 
+    #         Save if valid
     #            
-    def download(destination, days=nil)
+    def download(destination, earliest=nil)
       if auth.nil?
         raise ArgumentError, "Please set auth -> Followit::AuthService"
       end
-      log.debug "Starting #{auth.username} download of Followit XML to #{destination} [#{ days.nil? ? '': "last #{days} day(s)"}]"
+      log.debug "Starting #{auth.username} download of Followit XML to #{destination} [#{ earliest.nil? ? '': "earliest date: #{earliest.to_date}"}]"
       auth.login
       
       tracker_ids = get_tracker_ids
@@ -45,18 +44,26 @@ module Followit
         end
         log.debug "Tracker: #{id}"
      
-        
-        get_traffic_dates(id, days).each {| dt |
+        get_traffic_dates(id, earliest).map {|dt|
+          d = dt.to_date
+          DateTime.new(d.year, d.month)
+          }.uniq.each {| dt |
           begin
+          
             year = dt.year
-            from,to = date_from_to(dt)
-            date = dt.to_date.to_s
+            date_from = Date.new(dt.year, dt.month)
+            date_to = date_from >> 1
+            month_text = date_from.month.to_s.gsub(/-01$/, "").rjust(2, "0")
             
-            folder = "#{destination}/#{year}/#{id}"
+            folder = "#{destination}/#{year}/#{month_text}"
             FileUtils.mkdir_p(folder)
-            filename = "#{folder}/followit-tracker-#{id}-#{date}.xml"
-
-            positions = get_unit_report_positions(id, from, to)            
+            filename = "#{folder}/followit-#{year}-#{month_text}-tracker-#{id}.xml"
+            
+            from = dt.to_time.utc.iso8601
+            to = DateTime.parse(date_to.to_s).to_time.utc.iso8601
+          
+            positions = get_unit_report_positions(id, from, to)
+            
             new_sha1 = Digest::SHA1.hexdigest(positions.to_xml)
             
             if valid_positions? positions
@@ -78,7 +85,7 @@ module Followit
               log.error "Invalid unit positions: #{positions}"
             end
           rescue => e
-            log.fatal "Failed downloading followit.se #{dt.to_date} data for tracker #{id}: #{e}"
+            log.fatal "Failed downloading followit.se #{year}-#{month_text} data for tracker #{id}: #{e}"
           end
         }
       }
@@ -93,22 +100,27 @@ module Followit
     end
     
     def get_trackers(xpath="//followit:GetResult/followit:Tracker")
-      extract(execute(request(get_tracker_ids_envelope)), xpath).sort
+      extract(get, xpath).sort      
     end
     
-    def get_traffic_dates(tracker_id, days=nil)
+    def get_trackers_array
+      document = Nokogiri::XML(get.body)
+      template = Nokogiri::XSLT(File.read(File.join(__dir__, "..", "..", "..", "xslt", "followit-trackers.xslt")))
+      JSON.parse(template.apply_to(document)) # https://github.com/sparklemotion/nokogiri/issues/247
+    end
+    
+    def get
+      execute(request(get_tracker_ids_envelope))
+    end
+    
+    def get_traffic_dates(tracker_id, earliest=nil)
       traffic_dates = extract(execute(request(get_traffic_dates_envelope(tracker_id))), "//followit:GetTrafficDatesResult/followit:dateTime").map {|dt|
         DateTime.parse(dt) 
       }.sort.reverse
-      if days.nil?
+      if earliest.nil?
         traffic_dates
       else
-        days = days.to_i.abs-1
-        if days < 0
-          raise ArgumentError, "Please provide a positive integer >= 1 for the number of days to download"
-        end
-        min_date = ((traffic_dates[0].to_date) - days )
-        traffic_dates.reject {|dt| dt < min_date }
+        traffic_dates.reject {|dt| dt < earliest }
       end
       
     end
@@ -136,8 +148,21 @@ module Followit
       extract(execute(request(get_unit_report_positions_envelope(tracker_id, from, to))), "/soap:Envelope")
     end
     
+    def positions_from_xml(xml)
+      if File.exists? xml
+        log.debug "Creating JSON from XML file #{xml}"
+        xml = File.read(xml)
+      end
+      document = Nokogiri::XML(xml)
+      template = Nokogiri::XSLT(File.read(File.join(__dir__, "..", "..", "..", "xslt", "followit-json.xslt")))
+      JSON.parse(template.apply_to(document)) # https://github.com/sparklemotion/nokogiri/issues/247
+    end
+    
     def valid_positions? positions
-      xpath("//followit:UnitReportPosition").size > 0
+      count = xpath("//followit:UnitReportPosition")
+      log.fatal count.size
+      log.debug "#{count.size} positions"
+      count.size > 0
     end
     
     protected
