@@ -1,23 +1,23 @@
 {
   "schema": "http://api.npolar.no/schema/api",
-  "id": "oceanography-api",
-  "path": "/oceanography",
-  "title": "Physical oceanography API",
-  "summary": "Norwegian Polar Institutes physical oceanography API. Contains ctd mooring and cast data.",
+  "id": "oceanography-buoy-api",
+  "path": "/oceanography/buoy",
+  "title": "Physical oceanography buoy API",
+  "summary": "Norwegian Polar Institutes physical oceanography API. Contains buoy data.",
   "storage": "Couch",
-  "database": "oceanography",
+  "database": "oceanography_buoy",
   "model": "OceanographyPoint",
   "editlog": {
     "disabled": true
   },
   "search": {
     "engine": "Elasticsearch",
-    "index": "oceanography",
+    "index": "oceanography_buoy",
     "type": "oceanography_point",
     "log": false,
     "bulk_size": 500,
     "params": {
-      "facets": "collection,mooring,cruise,station",
+      "facets": "collection,title,IMEI",
       "date-year": "measured"
     }
   },
@@ -26,7 +26,8 @@
     "GET",
     "HEAD",
     "POST",
-    "PUT"
+    "PUT",
+    "OPTIONS"
   ],
   "formats": {
     "json": "application/json"
