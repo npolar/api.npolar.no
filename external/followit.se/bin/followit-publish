@@ -52,7 +52,7 @@ begin
     dt = DateTime.parse(d["measured"])
   end
   earliest = dates.min.to_time.utc.iso8601
-  latest = dates.max.to_time.utc.iso8601(1)
+  latest = dates.max.to_time.utc.iso8601
 
   client.param = { q: "",
     format: "json",
@@ -62,9 +62,12 @@ begin
     fields: "measured,updated",
     sort: "-measured"
   }
+
+  client.authorization = true
   response = client.get
+  
   existing = JSON.parse(response.body)
-  if existing.nil? or not existing.key "feed"
+  if existing.nil? or not existing.key? "feed"
     raise "Failed: #{response.status}"
   end
   
