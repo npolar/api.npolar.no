@@ -64,6 +64,10 @@ begin
   }
   response = client.get
   existing = JSON.parse(response.body)
+  if existing.nil?
+    raise "Failed: #{response.status}"
+  end
+  
   
   if not existing["feed"]["entries"].any?
     log.debug "About to POST #{docs.size} to #{uri} [0 existing documents between #{earliest} and #{latest}]"
