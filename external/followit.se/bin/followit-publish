@@ -1,0 +1,98 @@
+#!/usr/bin/env ruby
+
+# Ruby-based command to publish Followit tracking data
+#
+# ./bin/followit-publish /mnt/datasets/Tracking/followit.se https://api.npolar.no/tracking/svalbard-reindeer
+# ./bin/followit-publish /mnt/datasets/Tracking/followit.se https://apptest.data.npolar.no/tracking/svalbard-reindeer
+#
+# For more information: 
+# https://github.com/npolar/api.npolar.no/tree/master/external/followit.se/README.md
+
+require "bundler/setup"
+require "logger"
+require "nokogiri"
+require "npolar/api/client"
+require "uri"
+
+Dir.chdir(__dir__) do
+  require_relative "../ruby/lib/followit"
+end
+
+log = Logger.new(STDERR)
+
+begin
+  
+  if not ENV.key?("NPOLAR_API_USERNAME") or not ENV.key?("NPOLAR_API_PASSWORD")
+    raise "Please set NPOLAR_API_USERNAME and NPOLAR_API_PASSWORD"
+  end
+  if ARGV.size < 1
+    raise "Usage: #{__dir__} /path/to/followit/archive"
+  end
+  if not File.exist? ARGV[0]
+    raise "Source does not exist: #{ARGV[0]}"
+  end  
+  
+  source = ARGV[0]
+  uri = ARGV[1] ||= "https://api.npolar.no/tracking/svalbard-reindeer"
+  
+  glob = File.join(source, "**/*.xml")
+  fields = ["platform,latitude,longitude,measured"]
+  
+  ts = Followit::TrackerService.new
+  client = Npolar::Api::Client::JsonApiClient.new(uri)
+  
+  docs = []
+  Dir[glob].reject {|f| File.directory? f or File.size(f) == 0 }.map do |f|
+    add = ts.positions_from_xml(f)
+    docs += add
+    log.debug "+ #{add.size} converted: #{docs.size}"
+  end
+  
+  dates = docs.uniq.map do |d|
+    dt = DateTime.parse(d["measured"])
+  end
+  earliest = dates.min.to_time.utc.iso8601
+  latest = dates.max.to_time.utc.iso8601
+
+  client.param = { q: "",
+    format: "json",
+    limit: 1,
+    "filter-provider" => "followit.se",
+    "filter-measured" => "#{earliest}..#{latest}|#{latest}",
+    fields: "measured,updated",
+    sort: "-measured"
+  }
+
+  client.authorization = true
+  response = client.get
+  
+  existing = JSON.parse(response.body)
+  if existing.nil? or not existing.key? "feed"
+    raise "Failed: #{response.status}"
+  end
+  
+  
+  if not existing["feed"]["entries"].any?
+    log.debug "About to POST #{docs.size} to #{uri} [0 existing documents between #{earliest} and #{latest}]"
+    client.param = {}
+    response = client.post(docs.to_json)
+  else
+  
+    measured = DateTime.parse(existing["feed"]["entries"][0]["measured"])
+    updated = DateTime.parse(existing["feed"]["entries"][0]["updated"])
+    totalResults = existing["feed"]["opensearch"]["totalResults"].to_i
+    
+    newer = docs.select {|d| DateTime.parse(d["measured"]) > measured }
+    log.debug "Source: #{docs.size} / Destination: #{totalResults} / Newer: #{newer.size}"
+        
+    if (totalResults + newer.size) != docs.size
+      raise "Source contains #{docs.size} documents; destination + newer (#{totalResults} + #{newer.size}) != #{totalResults+newer.size}"
+    end
+    
+  end
+  exit(true)
+
+rescue => e
+  log.fatal e
+  exit(false)
+end
