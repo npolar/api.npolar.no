@@ -42,7 +42,7 @@ module Followit
           # login again (to avoid session to expires)
           auth.login
         end
-        log.debug "Tracker: #{id}"
+        # log.debug "Tracker: #{id}"
      
         get_traffic_dates(id, earliest).map {|dt|
           d = dt.to_date
@@ -55,7 +55,7 @@ module Followit
             date_to = date_from >> 1
             month_text = date_from.month.to_s.gsub(/-01$/, "").rjust(2, "0")
             
-            folder = "#{destination}/#{year}/#{month_text}"
+            folder = "#{destination}/#{year}/#{year}-#{month_text}"
             FileUtils.mkdir_p(folder)
             filename = "#{folder}/followit-#{year}-#{month_text}-tracker-#{id}.xml"
             
@@ -66,14 +66,23 @@ module Followit
             
             new_sha1 = Digest::SHA1.hexdigest(positions.to_xml)
             
-            if valid_positions? positions
+            if valid_positions? positions, filename
               if File.exists? filename
                 existing_sha1 = Digest::SHA1.file(filename).hexdigest
+                
+    
+                
                 if new_sha1 != existing_sha1
-                  File.open(filename, "wb") { |file| file.write(positions.to_xml)}
-                  log.debug "Updated: #{filename}"
+                  
+                  existing_count = Nokogiri::XML(positions.to_xml).xpath("count(//followit:UnitReportPosition)", { followit: Followit::Soap::NAMESPACE })
+                                    
+                  if existing_count.to_i != @count
+  
+                    File.open(filename, "wb") { |file| file.write(positions.to_xml)}
+                    log.warn "Updated: #{filename}"
+                  end
                 else
-                  log.debug "Keeping existing #{filename}"
+                  # log.debug "Keeping existing #{filename}"
                 end
                 
               else
@@ -158,11 +167,10 @@ module Followit
       JSON.parse(template.apply_to(document)) # https://github.com/sparklemotion/nokogiri/issues/247
     end
     
-    def valid_positions? positions
-      count = xpath("//followit:UnitReportPosition")
-      log.fatal count.size
-      log.debug "#{count.size} positions"
-      count.size > 0
+    def valid_positions? (positions, f=nil)
+      @count = xpath("count(//followit:UnitReportPosition)").to_i
+      log.debug "#{@count} positions [#{File.basename(f)}]"
+      @count > 0
     end
     
     protected

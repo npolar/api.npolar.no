@@ -25,7 +25,7 @@ module Followit
       #log.debug request.url
       response = request.run
       
-      log.debug "#{response.code} <- #{request.url} #{request}"
+      # log.debug "#{response.code} <- #{request.url} #{request}"
       
       faults = Nokogiri::XML(response.body).xpath("//soap:Fault")
       if faults.any?
