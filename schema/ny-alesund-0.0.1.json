@@ -90,7 +90,7 @@
             "items":{
               "enum":["pointOfContact"]
             },
-            "default":"pointOfContact"
+            "default":["pointOfContact"]
           },
           "email":{"type":["string","null"]}
         }
