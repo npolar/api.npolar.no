@@ -10,7 +10,8 @@
             "type": "string"
         },
         "workspace": {
-            "type": "string"
+            "type": "string",
+            "default": "indicator"
         },
         "systems": {
             "type": "array",
@@ -19,7 +20,8 @@
                 "minLength": 4
             },
             "minItems": 1,
-            "additionalItems": false
+            "additionalItems": false,
+            "default": ["mosj.no"]
         },
         "created": {
             "id": "created",
@@ -76,11 +78,13 @@
         },
         "schema": {
             "id": "schema",
-            "type": "string"
+            "type": "string",
+            "default": "http://api.npolar.no/schema/indicator-parameter-1"
         },
         "collection": {
             "id": "collection",
-            "type": "string"
+            "type": "string",
+            "default": "parameter"
         },
         "locations": {
             "type": "array",
