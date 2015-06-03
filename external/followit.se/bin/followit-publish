@@ -64,7 +64,7 @@ begin
   }
   response = client.get
   existing = JSON.parse(response.body)
-  if existing.nil?
+  if existing.nil? or not existing.key "feed"
     raise "Failed: #{response.status}"
   end
   
