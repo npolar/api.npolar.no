@@ -82,7 +82,6 @@
         "type":"object",
         "additionalProperties":false,
         "properties":{
-          "id":{"type":["string", "null"]},
           "first_name":{"type":["string", "null"]},
           "last_name":{"type":"string"},
           "roles":{
