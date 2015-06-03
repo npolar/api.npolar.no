@@ -144,25 +144,37 @@
             "description":"Placename that helps identify the geographic location of the data",
             "type":"string"
           },
-          "north":{
-            "type":"number",
-            "minimum":78.55,
-            "maximum":79.3333
+          "northeast":{
+            "type":"object",
+            "additionalProperties":false,
+            "properties":{
+              "latitude":{
+                "type":"number",
+                "minimum":78.55,
+                "maximum":79.3333
+              },
+              "longitude":{
+                "type":"number",
+                "minimum":10.4,
+                "maximum":14.0
+              }
+            }
           },
-          "east":{
-            "type":"number",
-            "minimum":10.4,
-            "maximum":14.0
-          },
-          "south":{
-            "type":"number",
-            "minimum":78.55,
-            "maximum":79.3333
-          },
-          "west":{
-            "type":"number",
-            "minimum":10.4,
-            "maximum":14.0
+          "southwest":{
+            "type":"object",
+            "additionalProperties":false,
+            "properties":{
+              "latitude":{
+                "type":"number",
+                "minimum":78.55,
+                "maximum":79.3333
+              },
+              "longitude":{
+                "type":"number",
+                "minimum":10.4,
+                "maximum":14.0
+              }
+            }
           }
         }
       }
