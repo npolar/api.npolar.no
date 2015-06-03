@@ -116,7 +116,7 @@
             }
         }
     },
-    "additionalProperties": false,
+    "additionalProperties": true,
     "required": [
 
         "titles",
