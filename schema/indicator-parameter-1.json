@@ -119,7 +119,6 @@
     },
     "additionalProperties": true,
     "required": [
-        "id",
         "titles",
         "schema",
         "systems",
