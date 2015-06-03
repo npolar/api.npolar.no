@@ -5,19 +5,14 @@ require "time"
 
 module Indicator
 
-  # [Timeseries](http://api.npolar.no/schema/indicator-timeseries) model
+  # Indicator timeseries model
   class Timeseries < Hashie::Mash
 
-    #include Npolar::Validation::MultiJsonSchemaValidator
-    
-    # JSON_SCHEMA_URI = "http://api.npolar.no/schema/indicator-timeseries"
-
-    # JSON_SCHEMAS = ["indicator-timeseries.json"]
-
+    include Npolar::Validation::MultiJsonSchemaValidator
     # @override MultiJsonSchemaValidator
-    #def schemas
-    #  JSON_SCHEMAS
-    #end
+    def schemas
+      ["indicator-timeseries-1.json"]
+    end
     
   end
   
