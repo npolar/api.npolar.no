@@ -169,6 +169,10 @@
 "other_info": {
 "description": "other info f.ex from the old database",
 "type": "string"
+},
+"timestamp": {
+"description": "excel file gets a timestamp to ensure uniqueness on disk",
+"type":"string"
 }
 }
 },
