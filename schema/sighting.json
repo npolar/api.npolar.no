@@ -41,6 +41,10 @@
 "Norwegian Polar Institute"
 ]
 },
+"basis_of_record": {
+  "description": "Darwin core description, usually HumanObservation",
+  "type":"string"
+},
 "event_date": {
 "description": "The date-time or interval during which the event occurred. Encoding scheme: iso8601, UTC",
 "type": "string",
@@ -59,9 +63,6 @@
 },
 "longitude": {
 "type": "string"
-},
-"darwin_type": {
-  "type":"string"
 },
 "species": {
 "description": "Species name in latin - small letters",
@@ -129,6 +130,10 @@
 },
 "recorded_by": {
 "description": "Observer’s login or id ",
+"type": "string"
+},
+"recorded_by_name": {
+"description": "Name of observer",
 "type": "string"
 },
 "identified_by": {
