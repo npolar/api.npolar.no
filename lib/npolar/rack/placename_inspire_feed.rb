@@ -298,8 +298,8 @@ module Npolar
         point["srsName"] = "http://www.opengis.net/def/crs/EPSG/0/4936"
             
         pos = node "gml:pos"
-        pos.content = "#{' '+altitude if altitude != 0.0 }#{longitude} #{latitude}"
-        pos["srsDimension"] =  altitude != 0.0 ? "3" : "2"
+        pos.content = "#{latitude} #{longitude}"
+        pos["srsDimension"] = 2 #altitude != 0.0 ? "3" : "2"
                 
         named_place.add_child(geometry)
         geometry.add_child(point)
