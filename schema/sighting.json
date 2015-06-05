@@ -76,14 +76,6 @@
 "description": "Number of female adults",
 "type": "string"
 },
-"sex":{
-"description": "field old database",
-"type":"string"
-},
-"lifestage":{
-"description":"field old database",
-"type":"string"
-},
 "adult": {
 "description": "Number of adults, sex unspecified",
 "type": "string"
