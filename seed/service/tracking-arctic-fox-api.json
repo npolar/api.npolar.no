@@ -1,0 +1,60 @@
+{
+  "_id": "tracking-arctic-fox-api",
+  "_rev": "4-421bf8b2268a3eab424890b0c7f7cc23",
+    "id": "tracking-arctic-fox-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/tracking/arctic-fox",
+    "title": "Tracking Arctic fox API",
+    "storage": "Couch",
+    "database": "tracking-arctic-fox",
+    "model": "Tracking",
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/tracking"
+    },
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "tracking-arctic-fox",
+        "type": "message",
+        "params": {
+            "facets": "object,species,platform,individual,sensor_variables,lc,warn,errors,individuals,objects,species-list,parser,technology,type",
+            "rangefacet-latitude": 10,
+            "rangefacet-longitude": 10,
+            "size-facet": 100,
+            "date-year": "measured",
+            "rangefacet-temperature":10,
+            "rangefacet-voltage":1,
+            "filter-object": "Arctic fox",
+            "sort": "measured,positioned,updated"
+        }
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "auth": {
+        "authorize": "editor",
+        "system": "tracking",
+        "authorizer": "Npolar::Auth::Ldap"
+    },
+    "base": "http://api.npolar.no",
+    "created": "2015-03-06T09:07:40Z",
+    "created_by": "conrad@npolar.no"
+}
