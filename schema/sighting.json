@@ -59,10 +59,16 @@
 "type": "string"
 },
 "latitude": {
-"type": "string"
+   "type": "number",
+	 "minimum": -90,
+	 "maximum": 90,
+	 "description": "Location longitude in WGS-84"
 },
 "longitude": {
-"type": "string"
+	"type": "number",
+	 "minimum": -180,
+	 "maximum": 180,
+	 "description": "Location longitude in WGS-84"
 },
 "species": {
 "description": "Species name in latin - small letters",
@@ -117,7 +123,8 @@
 "enum": [
 "land",
 "water",
-"ice"
+"ice",
+"unknown"
 ]
 },
 "occurrence_remarks": {
