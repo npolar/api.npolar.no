@@ -139,10 +139,6 @@
       "items":{
         "type":"object",
         "properties":{
-          "placename":{
-            "description":"Placename that helps identify the geographic location of the data",
-            "type":"string"
-          },
           "northeast":{
             "type":"object",
             "additionalProperties":false,
@@ -187,6 +183,16 @@
         "properties":{
           "placename":{
             "type":"string"
+          },
+          "latitude":{
+            "type":"number",
+            "minimum":78.55,
+            "maximum":79.3333
+          },
+          "longitude":{
+            "type":"number",
+            "minimum":10.4,
+            "maximum":14.0
           }
         }
       }
