@@ -158,7 +158,7 @@
 "format": "date-time"
 },
 "editor_assessment": {
-"description": "red-yellow-green",
+"description": "red-yellow-green-NA. NA is set for new observations.",
 "type": "string"
 },
 "editor_comment": {
