@@ -95,6 +95,10 @@
 "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
 "type": "string"
 },
+"polar_bear_den": {
+"descrition": "Observations of a polar bear den",
+"type":"string"
+},
 "cub_calf_pup": {
 "description": "Juvenile - Cub,calf,pup,bear cubs",
 "type": "string"
