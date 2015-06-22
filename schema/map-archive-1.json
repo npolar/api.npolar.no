@@ -1,0 +1,225 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://api.npolar.no/schema/map-archive-1",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "_id": {
+            "type": "string"
+        },
+        "_rev": {
+            "type": "string"
+        },
+        "location": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "country": {
+                    "type": "string"
+                },
+                "bbox": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "hemisphere": {
+                    "type": "string"
+                },
+                "area": {
+                    "type": "string"
+                }
+            }
+        },
+        "title": {
+            "type": "string"
+        },
+        "created": {
+            "type": "string"
+        },
+        "rights": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "lang": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "rightsHolder": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "summaries": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "summary": {
+                        "type": "string"
+                    },
+                    "lang": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "processor": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "updated": {
+            "type": "string"
+        },
+        "cartography": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "h_datum": {
+                    "type": "string"
+                },
+                "scale": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "publication": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "country": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "publisher": {
+                    "type": "string"
+                },
+                "series": {
+                    "type": "string"
+                }
+            }
+        },
+        "id": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "collection": {
+            "type": "string"
+        },
+        "comments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "comment": {
+                        "type": "string"
+                    },
+                    "lang": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "archives": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "organisation": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "links": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "rel": {
+                        "type": "string"
+                    },
+                    "href": {
+                        "type": "string"
+                    },
+                    "length": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "modified": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "updated_by": {
+            "type": "string"
+        },
+        "created_by": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "_rev",
+        "location",
+        "title",
+        "created",
+        "rights",
+        "rightsHolder",
+        "summaries",
+        "processor",
+        "updated",
+        "cartography",
+        "publication",
+        "id",
+        "tags",
+        "collection",
+        "comments",
+        "archives",
+        "links",
+        "updated_by",
+        "created_by"
+    ]
+}
