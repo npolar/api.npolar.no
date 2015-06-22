@@ -37,6 +37,7 @@
     "created": {
       "type": "string"
     },
+    "restricted": { "type": "boolean", "default": false },
     "rights": {
       "type": "array",
       "items": {
