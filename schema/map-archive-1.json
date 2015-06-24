@@ -124,7 +124,7 @@
           "type": "string"
         },
         "vertical": {
-          "type": "string",
+          "type": "string"
         }
       }
     },
