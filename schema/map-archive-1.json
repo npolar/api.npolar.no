@@ -112,8 +112,21 @@
     "updated": {
       "type": "string", "format":"date-time"
     },
+    "media": {
+      "type": "string"
+    },
     "cartography": {
-      "type": "string", "description": "Cartography description (datum projection, etc.)"
+      "type": "object",
+      "description": "Cartography (datum, projection, etc.)",
+      "additionalProperties": false,
+      "properties": {
+        "horizontal": {
+          "type": "string"
+        },
+        "vertical": {
+          "type": "string",
+        }
+      }
     },
      "scale": {
           "type": ["integer", "null"], "description": "Scale denominator N (1:N)"
