@@ -15,29 +15,37 @@
       "additionalProperties": false,
       "properties": {
         "country": {
-          "type": "string"
+          "description": "Map country, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
         },
         "bbox": {
+          "description": "Map coverage (W,S,E,N)",
           "type": "array",
           "items": {
-            "type": "number"
-          }
+            "type": "number", "minimum": -180, "maximum": 180
+          },
+          "minItems": 0,
+          "maxItems": 4  
         },
         "hemisphere": {
-          "type": "string"
+          "type": "string", "enum": ["", "N", "S"]
         },
         "area": {
+          "type": "string"
+        },
+        "placename": {
           "type": "string"
         }
       }
     },
     "title": {
-      "type": "string"
+      "type": "string", "minLength": 5
     },
     "created": {
-      "type": "string"
+      "type": "string", "format":"date-time"
     },
-    "restricted": { "type": "boolean", "default": false },
+    "restricted": { "type": "boolean", "default": false, "description": "Restrict public access to all but preview of the map scan" },
     "rights": {
       "type": "array",
       "items": {
@@ -55,76 +63,73 @@
       "additionalProperties": false,
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string", "description": "Name of copyright holder"
         }
       }
     },
     "summaries": {
+      "uniqueItems": true,
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
+            "lang": {
+            "type": "string", "enum": ["nn", "nb", "no", "en"]
+          },
           "summary": {
             "type": "string"
-          },
-          "lang": {
-            "type": "string"
           }
+
         }
-      }
+      } 
     },
     "processor": {
       "type": "object",
+      "description": "Person who scanned the map",
       "additionalProperties": false,
       "properties": {
         "email": {
           "type": "string"
         },
         "name": {
-          "type": "string"
+          "type": "string", "description": "Map scanner"
         }
       }
     },
     "updated": {
-      "type": "string"
+      "type": "string", "format":"date-time"
     },
     "cartography": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "h_datum": {
-          "type": "string"
-        },
-        "v_datum": {
-          "type": "string"
-        },
-        "scale": {
-          "type": "integer"
-        },
-        "type": {
-          "type": "string"
-        }
-      }
+      "type": "string", "description": "Cartography description (datum projection, etc.)"
     },
+     "scale": {
+          "type": ["integer", "null"], "description": "Scale denominator N (1:N)"
+        },
+    "type": {
+        "type": "string",
+        "enum":  ["aeronautical", "geologic", "manuscript", "nautical", "overview", "satellite-image", "sketch", "thematic", "topographic", "unknown"],
+        "default": "topographic"
+    },    
     "publication": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "country": {
-          "type": "string"
+        "publisher": {
+          "type": "string", "description": "Name of publisher"
         },
         "year": {
-          "type": "integer"
+          "type": "integer", "description": "Year of publication"
+        },
+        "country": {
+          "type": "string", "description": "Country of publication, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+          "pattern": "^[A-Z]{2}$"
         },
         "code": {
-          "type": "string"
-        },
-        "publisher": {
-          "type": "string"
+          "type": "string", "description": "Map code, if any"
         },
         "series": {
-          "type": "string"
+          "type": "string", "description": "Map series, if any"
         }
       }
     },
@@ -132,24 +137,26 @@
       "type": "string"
     },
     "tags": {
+      "uniqueItems": true,
       "type": "array",
       "items": {
         "type": "string"
       }
     },
     "collection": {
-      "type": "string"
+      "type": "string", "default": "map-archive"
     },
     "comments": {
       "type": "array",
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "comment": {
-            "type": "string"
-          },
           "lang": {
+            "type": "string", "enum": ["nn", "nb", "no", "en"], "default": "nn"
+          },
+          "comment": {
             "type": "string"
           }
         }
@@ -157,42 +164,47 @@
     },
     "archives": {
       "type": "array",
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
             "where": {
-            "type": "string"
+            "type": "string", "description": "Location of the physical copies of the map (building, room, cabinet, drawer, etc.)"
           },
           "count": {
-            "type": "integer"
+            "type": "integer", "description": "Number of copies kept in this archive",  "default": 1
           },
           "organisation": {
-            "type": "string"
+            "type": "string", "description": "Organisation hosting the archive",
+            "default": "Norsk Polarinstitutt"
           },
           "country": {
-            "type": "string"
+            "type": "string", "description": "Country of archive",
+            "pattern": "^[A-Z]{2}$",
+            "default": "NO"
           },
-          "placename": {
-            "type": "string"
+          "placename": { 
+            "type": "string", "description": "City of the archive", "default": "Tromsø"
           }
         }
       }
     },
     "links": {
       "type": "array",
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "rel": {
-            "type": "string"
+            "type": "string", "description": "Use relation \"edit-media\" for links to original map scan"
           },
           "href": {
-            "type": "string"
+            "type": "string", "description": "URI"
           },
           "length": {
-            "type": "integer"
+            "type": "integer", "description": "Size of the resource in bytes"
           },
           "title": {
             "type": "string"
