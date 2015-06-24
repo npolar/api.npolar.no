@@ -40,10 +40,22 @@
       }
     },
     "title": {
-      "type": "string", "minLength": 5
+      "type": "string", "minLength": 1
     },
     "created": {
       "type": "string", "format":"date-time"
+    },
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "resolution": {
+          "type": "number", "description": "Resolution of scanned map"
+        },
+        "unit": {
+          "type": "string"
+        }
+      }
     },
     "restricted": { "type": "boolean", "default": false, "description": "Restrict public access to all but preview of the map scan" },
     "rights": {
