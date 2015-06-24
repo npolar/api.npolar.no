@@ -58,17 +58,21 @@ begin
   source = ARGV[0]
   uri = ARGV[1] ||= "https://api.npolar.no/tracking/svalbard-reindeer"  
   glob = File.join(source, "**/*.xml")
+  #if ARGV[2].to_s =~ /\d{4}/
+  #  last = DateTime.parse(ARGV[2])
+  #end
+  #
   
   ts = Followit::TrackerService.new
   client = Npolar::Api::Client::JsonApiClient.new(uri)
   #client.log = Logger.new(nil)
   #client.log.level = Logger::WARN
   
-    # get latest date and filter away all messages prior to that...
+  # get latest date and filter away all messages prior to that...
   feed = latest(client)
   if not feed["entries"].any?
     log.debug "0 existing documents"
-    last = DateTime.new(0)
+    last = DateTime.new(1000)
   else
     last = DateTime.parse feed["entries"][0]["measured"]
     log.debug "#{last} last measured in #{uri} [#{feed["opensearch"]["totalResults"]}]"
@@ -95,10 +99,6 @@ begin
     log.debug "About to POST #{docs.size} new messages to #{uri}"
     client.param = {}
     response = client.post(docs)
-  
-    if not (200..299).include? response[0]
-      raise "POST failed with status: #{response[0]}"
-    end
   end
   exit(true)
 
