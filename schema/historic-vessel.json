@@ -5,27 +5,27 @@
   "additionalProperties": false,
   "properties": {
     "_id": {
-      "id": "http://api.npolar.no/schema/historic-vessel/_id#",
+     
       "type": "string",
       "additionalProperties": false
     },
     "_rev": {
-      "id": "http://api.npolar.no/schema/historic-vessel/_rev#",
+
       "type": "string",
       "additionalProperties": false
     },
     "id": {
-      "id": "http://api.npolar.no/schema/historic-vessel/id#",
+
       "type": "string",
       "additionalProperties": false
     },
     "collection": {
-      "id": "http://api.npolar.no/schema/historic-vessel/id#",
+
       "type": "string",
       "additionalProperties": false
     },
     "workspace": {
-      "id": "http://api.npolar.no/schema/historic-vessel/id#",
+
       "type": "string",
       "additionalProperties": false
     },
@@ -121,7 +121,6 @@
     }
   },
   "required": [
-    "id",
     "name"
   ]
 }
