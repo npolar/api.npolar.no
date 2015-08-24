@@ -31,7 +31,7 @@
            {
                "url": "https://api.npolar.no/user",
                "open": true,
-               "system": "http://api.npolar.no/marine/biology/seaice"
+               "system": "https://api.npolar.no/marine/biology/seaice"
            }
        ]
    ],
