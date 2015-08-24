@@ -9,11 +9,7 @@
    "search": {
        "engine": "Elasticsearch",
        "index": "marine-biology-seaice",
-       "type": "document",
-       "params": {
-           "facets": "",
-           "date-year": "date.from"
-       }
+       "type": "document"
    },
    "verbs": [
        "DELETE",
