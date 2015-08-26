@@ -265,7 +265,10 @@
 "title": "pictures",
 "description": "Included pictures",
 "type": "array",
-"additionalProperties": false,
+"additionalItems": false,
+"items": {
+"type":"object",
+"additionalProperties":false,
 "properties": {
 "filename": {
 "description": "picture file name",
@@ -288,6 +291,7 @@
 "other_info": {
 "description": "other info f.ex from the old database",
 "type": "string"
+}
 }
 }
 },
