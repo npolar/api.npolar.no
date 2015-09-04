@@ -9,7 +9,7 @@ module Metadata
   # Production: "2014-05-20T08:26:53Z"
   # http://api.npolar.no/editlog/961457c6-b582-4c93-925a-0b69d67c51fb
   
-  # $ ./bin/npolar-api-migrator /dataset ::Metadata::DatasetMigration7 --really=false > /dev/nil
+  # $ ./bin/npolar-api-migrator /dataset ::Metadata::DatasetMigration7 --really=false > /dev/null
   class DatasetMigration7
      
     # dataset id, org id, gcmd provider, homepage, name
@@ -123,7 +123,7 @@ module Metadata
         "7398aeb0-1e50-5ef4-a059-c906ae76bf6b",
         "kartverket.no",
         "NO/NMA",#"STATKART",
-        "htp://kartverket.no",
+        "http://kartverket.no",
         "Norwegian Mapping Authority (Statens Kartverk), Norwegian Hydrographic Service (Sjøkartverket)"
     ],
     [
@@ -264,7 +264,7 @@ module Metadata
     attr_accessor :log
        
     def migrations
-      [schema_100_pre, org_homepage, gcmd_short_name]
+      [schema_100_pre, set_org_homepage_and_delete_links, gcmd_short_name_and_homepage]
     end
     
     def model
@@ -278,7 +278,11 @@ module Metadata
       }
     end
     
-    def gcmd_short_name
+    def select
+      lambda {|d| d.id == "7398aeb0-1e50-5ef4-a059-c906ae76bf6b"}
+    end
+    
+    def gcmd_short_name_and_homepage
       lambda {|d|
         @@fixes.select {|f|f[0] == d.id}.each do |fix|
           
@@ -293,7 +297,7 @@ module Metadata
       }
     end
     
-    def org_homepage
+    def set_org_homepage_and_delete_links
       lambda {|d|
         
         if d.organisations? and d.organisations.any?

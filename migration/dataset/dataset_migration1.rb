@@ -13,7 +13,7 @@ module Metadata
   # UUID-SHA1("http://api.npolar.no/dataset/org.polarresearch-489")
   # => 205ed670-775c-5e47-9def-a58bd3bd2dc7
   #
-  # $ ./bin/npolar_api_migrator http://api:9393/dataset ::Metadata::DatasetMigration1 --really=false > /dev/null
+  # $ ./bin/npolar-api-migrator /dataset ::Metadata::DatasetMigration1 --really=false > /dev/null
   class DatasetMigration1
     include ::Npolar::Api
 
