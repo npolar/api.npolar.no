@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "-1.pre",
+  "id": "http://api.npolar.no/schema/vessel-1",
   "type": "object",
   "additionalProperties": false,
   "properties": {
@@ -17,7 +17,6 @@
       "type": "string"
     },
     "type": {
-   
       "type": "string"
     },
     "owners": {
@@ -36,7 +35,7 @@
           },
           "from": {
             "type": ["string", "null"],
-            "format": "date-time"
+            "pattern": "^[0-9]{4}"
           }
         }
       }
@@ -44,7 +43,6 @@
     "registrations": {
       "type": "array",
       "items": {
-
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -54,13 +52,12 @@
           },
           "registered": {
             "type": ["string", "null"],
-            "format": "date-time"
+            "pattern": "^[0-9]{4}"
           }
         }
       }
     },
     "built_year": {
-
       "type": "integer"
     },
     "built_where": {
@@ -81,15 +78,12 @@
       "type": "string"
     },
     "caption": {
-      "id": "/caption#",
       "type": "string"
     },
     "sources": {
-      "id": "/sources#",
       "type": "string"
     },
     "description": {
-      "id": "/description#",
       "type": "string"
     },
     "schema": {
@@ -101,7 +95,6 @@
       "default": "vessel"
     },
     "history": {
-      "id": "/history#",
       "type": "string"
     },
     "created_by": {
@@ -118,6 +111,8 @@
     }
   },
   "required": [
+    "schema",
+    "collection",
     "name"
   ]
 }
