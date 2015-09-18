@@ -28,16 +28,8 @@
 "http://api.npolar.no"
 ]
 },
-"language": {
-"description": "mostly en",
-"type": "string"
-},
 "recorded_by": {
 "description": "Observer’s login or id ",
-"type": "string"
-},
-"recorded_by_name": {
-"description": "Name of observer",
 "type": "string"
 },
 "_id": {
