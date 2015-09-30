@@ -5,11 +5,6 @@
 "description": "Observation database schema for Norwegian Polar Institute",
 "type":"object",
 "additionalProperties": false,
-"required": [
-"base",
-"schema",
-"collection"
-],
 "properties": {
 "id": {
 "description": "Identifier (UUID | URI). Also dwc:occurrenceID, dwc:catalogNumber",
