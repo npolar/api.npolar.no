@@ -136,8 +136,7 @@
         },
     "type": {
         "type": "string",
-        "enum":  ["aeronautical", "geologic", "manuscript", "nautical", "overview", "satellite-image", "sketch", "thematic", "topographic", "unknown"],
-        "default": "topographic"
+        "enum":  ["aeronautical", "geologic", "manuscript", "nautical", "overview", "satellite-image", "sketch", "thematic", "topographic", "unknown"]
     },    
     "publication": {
       "type": "object",
@@ -152,6 +151,9 @@
         "country": {
           "type": "string", "description": "Country of publication, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
           "pattern": "^[A-Z]{2}$"
+        },
+        "where": {
+          "type": ["string","null"], "description": "Place of publication"
         },
         "code": {
           "type": "string", "description": "Map code, if any"
@@ -226,7 +228,7 @@
         "additionalProperties": false,
         "properties": {
           "rel": {
-            "type": "string", "description": "Use relation \"edit-media\" for links to original map scan"
+            "type": "string", "description": "Relation \"edit-media\" are links to original map scan"
           },
           "href": {
             "type": "string", "description": "URI"
