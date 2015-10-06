@@ -39,6 +39,9 @@
         }
       }
     },
+    "schema": {
+      "type": "string", "minLength": 1,  "maxLength": 999, "format": "uri",  "default": "http://api.npolar.no/schema/map-archive-1" 
+    },
     "title": {
       "type": "string", "minLength": 1,  "maxLength": 999
     },
