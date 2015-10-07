@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/user-1",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "_id": {
+      "id": "http://api.npolar.no/schema/user-1/_id",
+      "type": "string",
+      "description": "Login email",
+      "format": "email" 
+    },
+    "_rev": {
+      "id": "http://api.npolar.no/schema/user-1/_rev",
+      "type": "string"
+    },
+    "created": { "type": "string", "format": "datetime" },
+    "updated": { "type": "string", "format": "datetime" },
+    "created_by": { "type": "string", "format": "email" },
+    "updated_by": { "type": "string", "format": "email" },
+    "password": {
+      "id": "http://api.npolar.no/schema/user-1/password",
+      "type": "string",
+      "description": "Salted and hashed password"
+    },
+    "salt": {
+      "id": "http://api.npolar.no/schema/user-1/salt",
+      "type": "string",
+      "description": "Password hash (random string)"
+    },
+    "name": {
+      "id": "http://api.npolar.no/schema/user-1/name",
+      "type": "string",
+      "description": "Name"
+    },
+    "groups": {
+      "id": "http://api.npolar.no/schema/user-1/groups",
+      "type": "array",
+      "items": {
+        "id": "http://api.npolar.no/schema/user-1/groups/0",
+        "type": "string"
+      }
+    },
+    "uri": {
+      "id": "http://api.npolar.no/schema/user-1/uri",
+      "type": "string",
+      "description": "URI to the user's public profile"
+    },
+    "active": {
+      "id": "http://api.npolar.no/schema/user-1/active",
+      "type": "boolean"
+    },
+    "hash": {
+      "id": "http://api.npolar.no/schema/user-1/hash",
+      "type": "string",
+      "description": "Hash algorithm"
+    },
+    "systems": {
+      "id": "http://api.npolar.no/schema/user-1/systems",
+      "type": "array",
+      "items": {
+        "id": "http://api.npolar.no/schema/user-1/systems/0",
+        "type": "object",
+        "properties": {
+          "uri": {
+            "id": "http://api.npolar.no/schema/user-1/systems/0/uri",
+            "type": "string"
+          },
+          "rights": {
+            "id": "http://api.npolar.no/schema/user-1/systems/0/rights",
+            "type": "array",
+            "items": {
+              "id": "http://api.npolar.no/schema/user-1/systems/0/rights/3",
+              "type": "string",
+              "enum": [
+                "create",
+                "read",
+                "update",
+                "delete"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "_id",
+    "password",
+    "salt",
+    "name",
+    "active",
+    "hash",
+    "systems"
+  ]
+}
