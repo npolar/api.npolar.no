@@ -35,7 +35,8 @@
           },
           "from": {
             "type": ["string", "null"],
-            "pattern": "^[0-9]{4}"
+            "description": "Year or date aquired",
+            "pattern": "^[0-9]{4}(\-[0-9]{2}\-[0-9]{2}|\-[0-9]{2})?$"
           }
         }
       }
@@ -96,6 +97,24 @@
     },
     "history": {
       "type": "string"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+            "href": {
+                "type": "string",
+                "description": "URI (web location)",
+                "format": "uri"
+            },
+            "title": {
+                "type": "string",
+                "description": "Title of the linked document"
+            }
+        },
+        "required": [ "href" ]
+      }
     },
     "created_by": {
       "type": "string"
