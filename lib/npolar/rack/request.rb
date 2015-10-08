@@ -106,10 +106,13 @@ module Npolar
 
         # Fix for /path/id.with.dot like /person/full.name - where format is "json" (derived from either Accept or Content-Type)
         if ["html", "json", "xml"].include? format
-          id = id.gsub(/\.(html|json|xml)$/, "")        
+          if not id.nil? # for POST id is null
+            id = id.gsub(/\.(html|json|xml)$/, "")
+          end
+          
         else
           
-          # Otherwise, remove trailing .format
+          # Otherwise, remove trailing .json or .xml
           if id =~ /[.]/
             id = id.split(".")
             id.pop
