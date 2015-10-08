@@ -8,18 +8,30 @@ module Npolar
 
       # Extract format from request
       def format
-        format = format_from_path
-  
-        if format.empty?
-          format = params["format"] ||= ""
+   
+        # If &format= is present we let that win
+        if params.size > 0 and params.key?("format")
+          format = params["format"]
+        else
+          # No &format, let Accept header win for GET, DELETE and
+
+          if ["PUT", "POST"].include? request_method
+            # Use Content-Type for POST, PUT
+            format = media_format
+          else
+            # GET and DELETE, use Accept header
+            format = accept_format
+          end
         end
   
         if format.empty?
-          if ["PUT", "POST"].include? request_method
-            format = media_format
-          else  
-            format = accept_format
-          end
+          # Still no format, go for .format
+          format = format_from_path
+        end
+        
+        # Still empty, set to ""
+        if format.empty?
+          format = ""
         end
         format
       end
@@ -30,6 +42,7 @@ module Npolar
         return "" if path_info.nil? or path_info !~ /[.]/
   
         format = path_info.split(".").last
+        
         if format =~ /[\w+\/]/
           format = format.split("/")[0]
         end
@@ -86,21 +99,29 @@ module Npolar
         multi
       end
   
-      # Extract id
+      # Extract id (remove trailing .format)
       def id
   
         id = path_info.split("/")[1]
-  
-        if id =~ /[.]/
-          id = id.split(".")
-          id.pop
-          id = id.join(".")
+
+        # Fix for /path/id.with.dot like /person/full.name - where format is "json" (derived from either Accept or Content-Type)
+        if ["html", "json", "xml"].include? format
+          id = id.gsub(/\.(html|json|xml)$/, "")        
+        else
+          
+          # Otherwise, remove trailing .format
+          if id =~ /[.]/
+            id = id.split(".")
+            id.pop
+            id = id.join(".")
+          end
+          
         end
       
         if id == [] or id.nil?
           id == ""
         end
-  
+        
         id
   
       end
