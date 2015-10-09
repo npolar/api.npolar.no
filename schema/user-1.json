@@ -45,8 +45,8 @@
     },
     "hash": {
       "type": "string",
-	  "enum": [ "SHA-1", "SHA-256", "SHA-384", "SHA-512", "MD5" ],
-	  "default": "SHA-512",
+	  "enum": [ "sha1", "sha256", "sha384", "sha512", "md5" ],
+	  "default": "sha512",
       "description": "Hash algorithm"
     },
     "systems": {
