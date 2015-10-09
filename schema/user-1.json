@@ -5,13 +5,11 @@
   "additionalProperties": true,
   "properties": {
     "_id": {
-      "id": "http://api.npolar.no/schema/user-1/_id",
       "type": "string",
-      "description": "Login email",
+      "description": "Login e-mail address",
       "format": "email" 
     },
     "_rev": {
-      "id": "http://api.npolar.no/schema/user-1/_rev",
       "type": "string"
     },
     "created": { "type": "string", "format": "datetime" },
@@ -19,22 +17,18 @@
     "created_by": { "type": "string", "format": "email" },
     "updated_by": { "type": "string", "format": "email" },
     "password": {
-      "id": "http://api.npolar.no/schema/user-1/password",
       "type": "string",
       "description": "Salted and hashed password"
     },
     "salt": {
-      "id": "http://api.npolar.no/schema/user-1/salt",
       "type": "string",
-      "description": "Password hash (random string)"
+      "description": "Password salt (random string)"
     },
     "name": {
-      "id": "http://api.npolar.no/schema/user-1/name",
       "type": "string",
-      "description": "Name"
+      "description": "Name of the user"
     },
     "groups": {
-      "id": "http://api.npolar.no/schema/user-1/groups",
       "type": "array",
       "items": {
         "id": "http://api.npolar.no/schema/user-1/groups/0",
@@ -42,35 +36,32 @@
       }
     },
     "uri": {
-      "id": "http://api.npolar.no/schema/user-1/uri",
       "type": "string",
       "description": "URI to the user's public profile"
     },
     "active": {
-      "id": "http://api.npolar.no/schema/user-1/active",
-      "type": "boolean", "default": true
+      "type": "boolean",
+	  "default": true
     },
     "hash": {
-      "id": "http://api.npolar.no/schema/user-1/hash",
       "type": "string",
+	  "enum": [ "SHA-1", "SHA-256", "SHA-384", "SHA-512", "MD5" ],
+	  "default": "SHA-512",
       "description": "Hash algorithm"
     },
     "systems": {
-      "id": "http://api.npolar.no/schema/user-1/systems",
       "type": "array",
+	  "description": "List of systems associated with the user",
       "items": {
-        "id": "http://api.npolar.no/schema/user-1/systems/0",
         "type": "object",
         "properties": {
           "uri": {
-            "id": "http://api.npolar.no/schema/user-1/systems/0/uri",
-            "type": "string"
+            "type": "string",
+			"description": "System URI (supports wildcards)"
           },
           "rights": {
-            "id": "http://api.npolar.no/schema/user-1/systems/0/rights",
             "type": "array",
             "items": {
-              "id": "http://api.npolar.no/schema/user-1/systems/0/rights/3",
               "type": "string",
               "enum": [
                 "create",
