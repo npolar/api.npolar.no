@@ -155,7 +155,11 @@
 },
 "editor_assessment": {
 "description": "red-yellow-green-NA. NA is set for new observations.",
-"type": "string"
+"enum": [
+"green",
+"yellow",
+"red"
+]
 },
 "editor_comment": {
 "description": "comment about species observation",
