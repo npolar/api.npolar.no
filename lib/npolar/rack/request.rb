@@ -170,10 +170,14 @@ module Npolar
       end
   
       def username
+        
         if headers["HTTP_AUTHORIZATION"] =~ /^Bearer\s[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/
-          payload = JSON.parse(Base64.decode64(headers["HTTP_AUTHORIZATION"].split("Bearer ")[1].split(".")[1]))
-          if payload.key? "user"
-            payload["user"]
+         
+          payload = headers["HTTP_AUTHORIZATION"].split("Bearer ")[1]
+          payload += '=' * (4 - payload.length.modulo(4))
+          decoded = JSON.parse(Base64.decode64(payload.tr('-_', '+/'))).strip
+          if decoded =~ /^{/ and decoded =~ /"email"/
+            JSON.parse(decoded)["email"]
           else
             ""
           end
@@ -181,7 +185,7 @@ module Npolar
         elsif false == basic.provided? or basic.username.empty?
           ""
         else
-          basic.username
+          URI.decode(basic.username).force_encoding('utf-8')
         end
       end
   
