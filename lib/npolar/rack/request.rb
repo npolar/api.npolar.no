@@ -173,19 +173,23 @@ module Npolar
         
         if headers["HTTP_AUTHORIZATION"] =~ /^Bearer\s[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/
          
-          payload = headers["HTTP_AUTHORIZATION"].split("Bearer ")[1]
-          payload += '=' * (4 - payload.length.modulo(4))
-          decoded = JSON.parse(Base64.decode64(payload.tr('-_', '+/'))).strip
-          if decoded =~ /^{/ and decoded =~ /"email"/
-            JSON.parse(decoded)["email"]
+          payload = headers["HTTP_AUTHORIZATION"].split("Bearer ")[1].split(".")[1]
+          decoded = Base64.decode64(payload).strip
+
+          if decoded =~ /^{/ and decoded =~ /"email"/ and decoded =~ /[:]/
+            # OUCH the following crashes bad UTF-8
+            # JSON.parse(decoded)["email"]
+            decoded.split('"email"')[1].split(":")[1].split(",")[0].gsub(/["]/, "")
+            
           else
             ""
           end
-          
-        elsif false == basic.provided? or basic.username.empty?
-          ""
         else
-          URI.decode(basic.username).force_encoding('utf-8')
+          if false == basic.provided? or basic.username.empty?
+            ""
+          else
+            URI.decode(basic.username).force_encoding('utf-8')
+          end
         end
       end
   
