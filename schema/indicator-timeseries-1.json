@@ -180,9 +180,6 @@
                     "year": {
                         "type": "number"
                     },
-                    "when": {
-                        "type": "string"
-                    },
                     "value": {
                         "type": "number"
                     },
@@ -199,9 +196,6 @@
                         "type": "number"
                     },
                     "year_format": {
-                        "type": "string"
-                    },
-                    "when_format": {
                         "type": "string"
                     }
                 },
