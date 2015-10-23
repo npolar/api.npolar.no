@@ -178,25 +178,25 @@
                 "type": "object",
                 "properties": {
                     "year": {
-                        "type": "number"
+                        "type": ["number", "null"]
                     },
-                    "isodate": {
-                        "type": "string", "format": "date"
+                    "date": {
+                        "type": ["string", "null"], "format": "date"
                     },
                     "value": {
                         "type": ["number", "null"]
                     },
                     "low": {
-                        "type": "number"
+                        "type": ["number", "null"]
                     },
                     "high": {
-                        "type": "number"
+                        "type": ["number", "null"]
                     },
                     "min": {
-                        "type": "number"
+                        "type": ["number", "null"]
                     },
                     "max": {
-                        "type": "number"
+                        "type": ["number", "null"]
                     },
                     "year_format": {
                         "type": "string"
