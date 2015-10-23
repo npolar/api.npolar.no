@@ -180,8 +180,11 @@
                     "year": {
                         "type": "number"
                     },
+                    "isodate": {
+                        "type": "string", "format": "date"
+                    },
                     "value": {
-                        "type": "number"
+                        "type": ["number", "null"]
                     },
                     "low": {
                         "type": "number"
