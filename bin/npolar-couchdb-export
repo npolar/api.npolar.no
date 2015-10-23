@@ -1,0 +1,8 @@
+#!/bin/bash
+all_dbs=`curl --silent -XGET "$NPOLAR_API_COUCHDB/_all_dbs" | tr '",' '\n' | grep "^[a-z]"`
+dest="/mnt/datasets/dbmaster.data.npolar.no-replica/couchdb_all_docs"
+for database in $all_dbs 
+  do
+    cmd="curl -XGET $NPOLAR_API_COUCHDB/$database/_all_docs?include_docs=true > $dest/$database.json"
+    $cmd
+  done
