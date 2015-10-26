@@ -172,6 +172,12 @@
                 }
             }
         },
+        "resolution": {
+          "type": "string",
+          "enum": [ "year", "month", "day", "hour", "minute", "second" ],
+          "default": "year",
+          "description": "Data period (minimum time between reported values)"
+        },
         "data": {
             "type": "array",
             "items": {
@@ -180,8 +186,8 @@
                     "year": {
                         "type": ["number", "null"]
                     },
-                    "date": {
-                        "type": ["string", "null"], "format": "date"
+                    "when": {
+                        "type": ["string", "null"], "pattern": "^[0-9]{4}"
                     },
                     "value": {
                         "type": ["number", "null"]
