@@ -317,6 +317,9 @@
 },
 "_rev": {
 "type": "string"
+},
+"_deleted": {
+"type": "boolean"
 }
 }
 }
