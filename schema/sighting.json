@@ -68,7 +68,7 @@
 },
 "species": {
 "description": "Species name in latin - small letters",
-"enum": ["ursus maritimus","odobenus rosmarus","erignathus barbatus", "phoca vitulina","phoca groenlandica","cystophora cristata","pusa hispida", "delphinapterus leucas","balaenoptera musculus","balaena mysticetus","balaenoptera acutorostrata","balaenoptera physalus","megaptera novaeangliae", "orcinus orca", "monodon monoceros", "hyperoodon ampullatus", "globicephala melas", "balaenoptera borealis", "physeter macrocephalus", "lagenorhynchus albirostris","unknown"],
+"enum": ["unknown","ursus maritimus","odobenus rosmarus","erignathus barbatus", "phoca vitulina","phoca groenlandica","cystophora cristata","pusa hispida", "delphinapterus leucas","balaenoptera musculus","balaena mysticetus","balaenoptera acutorostrata","balaenoptera physalus","megaptera novaeangliae", "orcinus orca", "monodon monoceros", "hyperoodon ampullatus", "globicephala melas", "balaenoptera borealis", "physeter macrocephalus", "lagenorhynchus albirostris"],
 "type": "string"
 },
 "adult_m": {
@@ -110,9 +110,9 @@
 "dead_alive": {
 "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
 "enum": [
+"unknown",
 "alive",
-"dead",
-"unknown"
+"dead"
 ]
 },
 "total": {
@@ -122,10 +122,10 @@
 "habitat": {
 "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
 "enum": [
+"unknown",
 "land",
 "water",
-"ice",
-"unknown"
+"ice"
 ]
 },
 "occurrence_remarks": {
@@ -156,10 +156,10 @@
 "editor_assessment": {
 "description": "red-yellow-green-unknown. unknown is set for new observations.",
 "enum": [
+"unknown",
 "green",
 "yellow",
-"red",
-"unknown"
+"red"
 ]
 },
 "editor_comment": {
