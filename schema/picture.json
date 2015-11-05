@@ -49,10 +49,6 @@
 "comments": {
 "description": "comments related to picture",
 "type": "string"
-},
-"other_info": {
-"description": "other info f.ex from the old database",
-"type": "string"
 }
 }
 }
