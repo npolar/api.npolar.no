@@ -1,0 +1,70 @@
+{
+"$schema": "http://json-schema.org/draft-04/schema#",
+"id": "http://api.npolar.no/schema/images-1.0-rc4",
+"title": "Norwegian Polar Institute picture schema",
+"description": "Picture upload wrapper",
+"type":"object",
+"additionalProperties": false,
+"properties": {
+"id": {
+"description": "Identifier (UUID | URI). Also dwc:occurrenceID, dwc:catalogNumber",
+"type": "string"
+},
+"schema": {
+"type": "string"
+},
+"collection": {
+"enum": [
+"picture"
+]
+},
+"base": {
+"enum": [
+"http://api.npolar.no"
+]
+},
+"pictures": {
+"title": "pictures",
+"description": "Included pictures",
+"type": "array",
+"additionalItems": false,
+"items": {
+"type":"object",
+"additionalProperties":false,
+"properties": {
+"filename": {
+"description": "picture file name",
+"type": "string"
+},
+"content_type": {
+"type": "string"
+},
+"content_size": {
+"type": "string"
+},
+"photographer": {
+"description": "name of photographer",
+"type": "string"
+},
+"comments": {
+"description": "comments related to picture",
+"type": "string"
+},
+"other_info": {
+"description": "other info f.ex from the old database",
+"type": "string"
+}
+}
+}
+},
+"_id": {
+"type": "string"
+},
+"_rev": {
+"type": "string"
+},
+"_deleted": {
+"type": "boolean"
+}
+}
+}
