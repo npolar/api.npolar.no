@@ -45,7 +45,15 @@
       "type": "string"
     },
     "publication_lang": {
-      "type": "string"
+      "type": "string",
+      "enum": ["ab", "ar", "an","hy","as","av","az", "eu", "be","bh", "bs","br","bg", "ca", 
+		"ce", "zh","cv", "kw", "hr", "cs", "da",    
+		"nl","dz","en","et", "fo", "fi", "fr", "gl","ka","de", "el", "he", 
+		"hi","hu", "id", "ga", "ik", "is", "it", "iu", "ja","kl", "ks","kk", "ky", "kv", "ko", 
+		"lb", "lt", "lv", "gv", "mk", "ml", "mr", "mn", "ne", "no", "ii",
+		"oc", "cu", "or", "os", "pa", "fa","pl", "pt", "qu", "rm","ro", "ru", "sd",     
+		"se", "sr", "gd", "si", "sk", "sl", "az", "es", "sv", "ta", "te", "tg", "bo", "tk", "tr", "tt", 
+ 		"ug", "uk", "ur", "uz", "wa","cy", "fy", "yi","za"] 
     },
     "scientific_abstract": {
       "description": "Paper abstract. Markdown accepted.", 
