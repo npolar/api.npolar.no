@@ -23,7 +23,7 @@ module Npolar
             format = accept_format
           end
         end
-  
+        
         if format.empty?
           # Still no format, go for .format
           format = format_from_path
@@ -61,7 +61,15 @@ module Npolar
         return "" if env['HTTP_ACCEPT'].nil?
   
         format = env['HTTP_ACCEPT'].scan(/[^;,\s]*\/[^;,\s]*/)[0].split("/")[1]
-  
+        
+        # Exception for HTML if path contains .format
+        if format == 'html' and path_info =~ /.\w+$/
+          path_format = path_info.split(".").last
+          if path_format != 'html'
+            format = path_format
+          end
+        end
+        
         if format =~ /[+]/
           format = format.split("+")[0]
         end
