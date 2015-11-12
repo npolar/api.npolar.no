@@ -263,38 +263,10 @@
 }
 },
 "pictures": {
-"title": "pictures",
-"description": "Included pictures",
-"type": "array",
-"additionalItems": false,
-"items": {
-"type":"object",
-"additionalProperties":false,
-"properties": {
-"filename": {
-"description": "picture file name",
-"type": "string"
-},
-"content_type": {
-"type": "string"
-},
-"content_size": {
-"type": "string"
-},
-"photographer": {
-"description": "name of photographer",
-"type": "string"
-},
-"comments": {
-"description": "comments related to picture",
-"type": "string"
-},
-"other_info": {
-"description": "other info f.ex from the old database",
-"type": "string"
-}
-}
-}
+	"type": "array",
+			"items": {
+				"$ref": "https://api.npolar.no/schema/file"
+			}
 },
 "created": {
 "description": "Document was published",

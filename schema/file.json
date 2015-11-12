@@ -1,8 +1,8 @@
 {
 "$schema": "http://json-schema.org/draft-04/schema#",
 "id": "http://api.npolar.no/schema/images-1.0-rc4",
-"title": "Norwegian Polar Institute picture schema",
-"description": "Picture upload wrapper",
+"title": "Norwegian Polar Institute schema for all types of files",
+"description": "General file upload",
 "type":"object",
 "additionalProperties": false,
 "properties": {
@@ -15,7 +15,7 @@
 },
 "collection": {
 "enum": [
-"picture"
+"file"
 ]
 },
 "base": {
@@ -24,8 +24,8 @@
 ]
 },
 "pictures": {
-"title": "pictures",
-"description": "Included pictures",
+"title": "file",
+"description": "Subschema for file content",
 "type": "array",
 "additionalItems": false,
 "items": {
@@ -49,6 +49,10 @@
 "comments": {
 "description": "comments related to picture",
 "type": "string"
+},
+"other_info":{
+"decription": "comments from older databases or whatever needed",
+"type":"string"
 }
 }
 }
