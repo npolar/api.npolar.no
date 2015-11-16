@@ -172,7 +172,7 @@
 "type": "object",
 "additionalProperties": false,
 "properties": {
-"items": { "$ref": "https://api.npolar.no/_schema/ref/file" },
+"item": { "$ref": "https://api.npolar.no/_schema/ref/file" },
 "other_info": {
 "description": "other info f.ex from the old database",
 "type": "string"
