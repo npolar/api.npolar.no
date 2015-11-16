@@ -265,7 +265,19 @@
 "pictures": {
 	"type": "array",
 			"items": {
-				"$ref": "https://api.npolar.no/schema/file"
+				"$ref": "https://api.npolar.no/_schema/ref/file"
+			},
+			"photographer": {
+				"description": "name of photographer",
+				"type": "string"
+			},
+			"comments": {
+				"description": "comments related to picture",
+				"type": "string"
+			},
+			"other_info":{
+				"decription": "comments from older databases or whatever needed",
+				"type":"string"
 			}
 },
 "created": {
