@@ -172,18 +172,7 @@
 "type": "object",
 "additionalProperties": false,
 "properties": {
-"filename": {
-"description": "name of excel file",
-"type": "string"
-},
-"content_type": {
-"description": "content description",
-"type": "string"
-},
-"content_size": {
-"description": "file size",
-"type": "string"
-},
+"file": { "$ref": "https://api.npolar.no/_schema/ref/file" },
 "other_info": {
 "description": "other info f.ex from the old database",
 "type": "string"
