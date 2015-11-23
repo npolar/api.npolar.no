@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/text-1",
+  "type": "object",
+  "additionalProperties": true,
+  "required":["code"],
+  "properties": {
+    
+    
+    "id": {
+      "id": "id",
+      "type": "string"
+    },
+    "code": {
+      "id": "code",
+      "type": "string"
+    },
+    "bundle": {
+      "id": "bundle",
+      "type": "string"
+    },
+    "created_by": {
+      "id": "created_by",
+      "type": "string"
+    },
+    "texts": {
+      "id": "texts",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "@value": {
+            "id": "@value",
+            "type": "string"
+          },
+          "@language": {
+            "id": "@language",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "_rev": {
+      "id": "_rev",
+      "type": "string",
+      "format": "^[0-9]{1}-{1}[0-9a-f]{32,128}$"
+    },
+    "_id": {
+      "id": "_id",
+      "type": "string",
+      "format": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "created":{
+      "type":["string", "null"],
+      "format":"date-time"
+    },
+    "updated":{
+      "type":["string", "null"],
+      "format":"date-time"
+    },
+    
+    "updated_by": {
+      "id": "updated_by",
+      "type": "string"
+    }
+  }
+}

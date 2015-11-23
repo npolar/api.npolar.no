@@ -1,0 +1,52 @@
+{
+  "id": "text-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "path": "/text",
+  "title": "Text API",
+  "summary": "Multilingual text storage",
+  "storage": "Couch",
+  "database": "text_i18n",
+  "model": "Text",
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "http://json.org"
+  },
+  "category": [
+    "CouchDB",
+    "Elasticsearch",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "text",
+    "type": "translation",
+    "log": false,
+    "params": {
+      "facets": "bundle",
+      "fields": "code,bundle,texts"
+      "size-facet": 100
+    }
+  },
+  "base": "http://api.npolar.no",
+  "editlog": {
+    "disabled": true
+  }
+}
