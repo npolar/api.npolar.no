@@ -169,7 +169,7 @@
 "excelfile": {
 "description": "Uploaded excel file",
 "type": "object",
-"item": { "$ref": "https://api.npolar.no/_schema/ref/file" },
+"properties": { "$ref": "https://api.npolar.no/_schema/ref/file" },
 "other_info": {
 "description": "other info f.ex from the old database",
 "type": "string"
