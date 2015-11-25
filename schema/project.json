@@ -76,7 +76,7 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["atmosphere", "biodiversity", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "marine ecosystems", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
+        "enum": ["acidification","atmosphere", "biodiversity", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "marine ecosystems", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
       }
     },
     "tags": {
