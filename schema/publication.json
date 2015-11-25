@@ -307,6 +307,7 @@
       "items": {
         "type": "string",
         "enum": [
+          "acidification",
           "atmosphere",
           "biology",
           "biogeochemistry",
