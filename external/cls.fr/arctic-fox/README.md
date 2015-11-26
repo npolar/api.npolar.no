@@ -4,11 +4,11 @@ This file contains behind-the-scenes documentation of the data management of Arc
 
 In a nutshell:
 * Argos data XML from the last 20 days are harvested to disk `/mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/` every night
-* Known platforms (ie. those defined in the Tracking deployment API]() are then published into the Artcic fox tracking API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox)
+* Known platforms (ie. those defined in the [Tracking deployment API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox) are then published into the [Arctic fox tracking API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox)
 
 See [Argos data management](https://github.com/npolar/api.npolar.no/tree/master/external/cls.fr) for details on Argos data formats, and how data is harvested and archived.
 
-For dataset metadata, including principal investigators and information on accessing and citing the dataset, see [data.npolar.no](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82).
+For dataset metadata, including principal investigators and information on accessing and citing the dataset, see https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82
 
 For detailed documentation of how to access the data, visit the [Tracking Arctic fox API wiki](https://github.com/npolar/api.npolar.no/wiki/Arctic-fox-tracking-API).
 
