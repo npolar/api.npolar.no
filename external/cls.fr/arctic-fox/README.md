@@ -2,9 +2,13 @@
 
 This file contains behind-the-scenes documentation of the data management of Arctic fox telemetry data.
 
-See [Argos data management] for details on Argos data formats, and how data is harvested and archived.
+In a nutshell:
+* Argos data XML from the last 20 days are harvested to disk `/mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/` every night
+* Known platforms (ie. those defined in the Tracking deployment API]() are then published into the Artcic fox tracking API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox)
 
-For metadata, including principal investigators and information on accessing and citing the dataset, see [data.npolar.no](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82).
+See [Argos data management](https://github.com/npolar/api.npolar.no/tree/master/external/cls.fr) for details on Argos data formats, and how data is harvested and archived.
+
+For dataset metadata, including principal investigators and information on accessing and citing the dataset, see [data.npolar.no](https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82).
 
 For detailed documentation of how to access the data, visit the [Tracking Arctic fox API wiki](https://github.com/npolar/api.npolar.no/wiki/Arctic-fox-tracking-API).
 
@@ -29,7 +33,7 @@ Currently all transmitter platforms use the Argos system and all units are the s
 
 Original Argos DS/DIAG files: /mnt/datasets/Tracking/ARGOS/archive
 
-Original Argos XML files: /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml
+Original Argos XML files: /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/{year}/program-11660/platform-{platform}/argos*.xml
 
 ### JSON <- DS/DIAG
 Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https://github.com/npolar/argos-ruby) and stored at /mnt/datasets/Tracking/ARGOS/arctic-fox/**/*.json 
