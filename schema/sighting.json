@@ -203,7 +203,7 @@
                     "description": "excel file gets a timestamp to ensure uniqueness on disk",
                     "type": "string"
                 }
-            },
+            }
         },
         "expedition": {
             "title": "expedition",
