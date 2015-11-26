@@ -192,16 +192,18 @@
             "description": "Uploaded excel file",
             "type": "object",
             "properties": {
-                "$ref": "https://api.npolar.no/_schema/ref/file"
+                "file": {
+                    "$ref": "https://api.npolar.no/_schema/ref/file"
+                },
+                "other_info": {
+                    "description": "other info f.ex from the old database",
+                    "type": "string"
+                },
+                "timestamp": {
+                    "description": "excel file gets a timestamp to ensure uniqueness on disk",
+                    "type": "string"
+                }
             },
-            "other_info": {
-                "description": "other info f.ex from the old database",
-                "type": "string"
-            },
-            "timestamp": {
-                "description": "excel file gets a timestamp to ensure uniqueness on disk",
-                "type": "string"
-            }
         },
         "expedition": {
             "title": "expedition",
