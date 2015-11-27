@@ -77,11 +77,6 @@
   },
   "required": [
     "_id",
-    "password",
-    "salt",
-    "name",
-    "active",
-    "hash",
-    "systems"
+    "name"
   ]
 }
