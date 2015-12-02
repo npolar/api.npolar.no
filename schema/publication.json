@@ -46,17 +46,17 @@
     },
     "publication_lang": {
       "type": "string",
-      "enum": ["ab", "ar", "an","hy","as","av","az", "eu", "be","bh", "bs","br","bg", "ca", 
-		"ce", "zh","cv", "kw", "hr", "cs", "da",    
-		"nl","dz","en","et", "fo", "fi", "fr", "gl","ka","de", "el", "he", 
-		"hi","hu", "id", "ga", "ik", "is", "it", "iu", "ja","kl", "ks","kk", "ky", "kv", "ko", 
-		"lb", "lt", "lv", "gv", "mk", "ml", "mr", "mn", "ne", "no", "ii",
-		"oc", "cu", "or", "os", "pa", "fa","pl", "pt", "qu", "rm","ro", "ru", "sd",     
-		"se", "sr", "gd", "si", "sk", "sl", "es", "sv", "ta", "te", "tg", "bo", "tk", "tr", "tt", 
- 		"ug", "uk", "ur", "uz", "wa","cy", "fy", "yi","za"] 
+      "enum": ["ab", "ar", "an","hy","as","av","az", "eu", "be","bh", "bs","br","bg", "ca",
+    "ce", "zh","cv", "kw", "hr", "cs", "da",
+    "nl","dz","en","et", "fo", "fi", "fr", "gl","ka","de", "el", "he",
+    "hi","hu", "id", "ga", "ik", "is", "it", "iu", "ja","kl", "ks","kk", "ky", "kv", "ko",
+    "lb", "lt", "lv", "gv", "mk", "ml", "mr", "mn", "ne", "no", "ii",
+    "oc", "cu", "or", "os", "pa", "fa","pl", "pt", "qu", "rm","ro", "ru", "sd",
+    "se", "sr", "gd", "si", "sk", "sl", "es", "sv", "ta", "te", "tg", "bo", "tk", "tr", "tt",
+    "ug", "uk", "ur", "uz", "wa","cy", "fy", "yi","za"]
     },
     "scientific_abstract": {
-      "description": "Paper abstract. Markdown accepted.", 
+      "description": "Paper abstract. Markdown accepted.",
       "type": "string"
     },
     "norw_summary": {
@@ -128,8 +128,15 @@
               "string",
               "null"
             ],
-            "pattern": "^(([A-Z]|[a-z]){2})$"
-          },
+             "enum": [
+  "AX","DZ","AD","AQ","AR","AM","AU","AT","AZ","BD","BE","BT","BA","BW","BR","BG",
+  "KH","CA","CL","CN","CO","CR","HR","CU","CY","CZ","DK","EC","EG","ER","EE","ET","FO","FJ","FI",
+  "FR","GM","GE","DE","GH","GR","GL","GT","HK","HU","IS","IN","ID","IR","IQ","IE","IL","IT","JM",
+  "JP","JO","KZ","KE","KR","KG","LV","LI","LT","LU","MK","MY","MT","MX","MD","MC","MN","ME","MA",
+  "MM","NA","NP","NL","NZ","NI","NG","NO","PK","PA","PY","PE","PH","PL","PT","PR","QA","RO","RU",
+  "WS","SM","SA","SN","RS","SC","SG","SK","SI","ZA","ES","LK","SD","SR","SJ","SZ","SE","CH","SY",
+  "TW","TJ","TZ","TH","TT","TN","TR","TM","UG","UA","AE","GB","US","UY","UZ","VE","VN","ZM","ZW" ]
+   },
           "hemisphere": {
             "description": "Hemisphere: N or S",
             "type": [
