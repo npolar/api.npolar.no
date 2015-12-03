@@ -116,6 +116,7 @@
       "additionalItems": true,
       "items": {
         "type": "object",
+        "minItems": 1,
         "additionalProperties": true,
         "properties": {
           "placename": {
@@ -305,6 +306,7 @@
       "title": "NPI topics",
       "description": "See https://github.com/npolar/api.npolar.no/blob/master/schema/dataset.json",
       "type": "array",
+      "minItems": 1,
       "additionalItems": false,
       "items": {
         "type": "string",
