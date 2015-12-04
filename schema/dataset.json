@@ -145,9 +145,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "rel": { "type": "string",
-            "enum": ["Related", "Service", "Metadata", "Project", "Publication","Datacentre", "Parent", "Reference", "Internal", "Doi", "Via"]
-           },
+          "rel": { "type": "string" },
+          "items": {
+              "type": "string"
+            }
           "href": { "type": "string", "format": "uri" },
           "title": { "type": ["string", "null"] },
           "hreflang": { "type": ["string", "null"] },
