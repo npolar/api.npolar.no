@@ -25,7 +25,8 @@
         },
         "created": {
             "id": "created",
-            "type": "date-time"
+            "type": "string",
+            "format": "date-time"
         },
         "created_by": {
             "id": "created_by",
