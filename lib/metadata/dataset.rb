@@ -37,8 +37,8 @@ module Metadata
       "xml" => DIF_SCHEMA_URI
     }
 
-    AVL = "http://www.lovdata.no/all/hl-19610512-002.html"
-
+    AVL = "http://lovdata.no/lov/1961-05-12-2"
+    
     class << self
       attr_accessor :formats, :accepts, :base
     end
@@ -139,7 +139,7 @@ module Metadata
     def self.npolar(roles=["author", "originator", "owner", "publisher", "pointOfContact"])
       Hashie::Mash.new({ id: "npolar.no",
         name: "Norwegian Polar Institute",
-        email: "data[*]npolar.no",
+        email: "data@npolar.no",
         gcmd_short_name: "NO/NPI",
         roles: roles,
         homepage: "http://npolar.no"
@@ -153,7 +153,7 @@ module Metadata
       elsif dataset.open?
         "Open data: Free to reuse if attributed to the Norwegian Polar Institute."
       elsif dataset.åvl?
-        "Protected by Norwegian copyright law: http://lovdata.no/dokument/NL/lov/1961-05-12-2"
+        "Protected by 'åndsverkloven': https://lovdata.no/lov/1961-05-12-2"
       end
     end
 

@@ -61,7 +61,7 @@ module Followit
             
             from = dt.to_time.utc.iso8601
             to = DateTime.parse(date_to.to_s).to_time.utc.iso8601
-          
+                      
             positions = get_unit_report_positions(id, from, to)
             
             new_sha1 = Digest::SHA1.hexdigest(positions.to_xml)
@@ -70,19 +70,13 @@ module Followit
               if File.exists? filename
                 existing_sha1 = Digest::SHA1.file(filename).hexdigest
                 
-    
-                
                 if new_sha1 != existing_sha1
-                  
-                  existing_count = Nokogiri::XML(positions.to_xml).xpath("count(//followit:UnitReportPosition)", { followit: Followit::Soap::NAMESPACE })
-                                    
-                  if existing_count.to_i != @count
-  
+                    
                     File.open(filename, "wb") { |file| file.write(positions.to_xml)}
                     log.warn "Updated: #{filename}"
-                  end
+
                 else
-                  # log.debug "Keeping existing #{filename}"
+                  log.debug "Keeping existing #{filename}"
                 end
                 
               else

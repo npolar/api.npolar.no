@@ -44,11 +44,20 @@
       "description": "Exact title of the publication. Markdown accepted.",
       "type": "string"
     },
-    "publication_lang": {
-      "type": "string"
+     "publication_lang": {
+      "type": "string",
+      "default": "en",
+      "enum": ["ab", "ar", "an","hy","as","av","az", "eu", "be","bh", "bs","br","bg", "ca",
+    "ce", "zh","cv", "kw", "hr", "cs", "da",
+    "nl","dz","en","et", "fo", "fi", "fr", "gl","ka","de", "el", "he",
+    "hi","hu", "id", "ga", "ik", "is", "it", "iu", "ja","kl", "ks","kk", "ky", "kv", "ko",
+    "lb", "lt", "lv", "gv", "mk", "ml", "mr", "mn", "ne", "no", "ii",
+    "oc", "cu", "or", "os", "pa", "fa","pl", "pt", "qu", "rm","ro", "ru", "sd",
+    "se", "sr", "gd", "si", "sk", "sl", "es", "sv", "ta", "te", "tg", "bo", "tk", "tr", "tt",
+    "ug", "uk", "ur", "uz", "wa","cy", "fy", "yi","za"]
     },
     "scientific_abstract": {
-      "description": "Paper abstract. Markdown accepted.", 
+      "description": "Paper abstract. Markdown accepted.",
       "type": "string"
     },
     "norw_summary": {
@@ -77,6 +86,7 @@
       }
     },
     "publication_type": {
+      "type": "string",
       "enum": [
         "peer-reviewed",
         "editorial",
@@ -106,6 +116,7 @@
       "additionalItems": true,
       "items": {
         "type": "object",
+        "minItems": 1,
         "additionalProperties": true,
         "properties": {
           "placename": {
@@ -121,7 +132,7 @@
               "null"
             ],
             "pattern": "^(([A-Z]|[a-z]){2})$"
-          },
+   },
           "hemisphere": {
             "description": "Hemisphere: N or S",
             "type": [
@@ -216,8 +227,8 @@
             "type": "string"
           },
           "country": {
-            "type": "string"
-          },
+            "type":"string"
+         },
           "dates": {
             "type": "array",
             "items": {
@@ -295,10 +306,12 @@
       "title": "NPI topics",
       "description": "See https://github.com/npolar/api.npolar.no/blob/master/schema/dataset.json",
       "type": "array",
+      "minItems": 1,
       "additionalItems": false,
       "items": {
         "type": "string",
         "enum": [
+          "acidification",
           "atmosphere",
           "biology",
           "biogeochemistry",

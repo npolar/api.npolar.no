@@ -77,12 +77,11 @@
       "description":"Primary contact for information about the dataset.",
       "type":"array",
       "additionalItems":false,
-      "required":["first_name", "last_name", "roles"],
+      "required":["first_name", "last_name", "email"],
       "items":{
         "type":"object",
         "additionalProperties":false,
         "properties":{
-          "id":{"type":["string", "null"]},
           "first_name":{"type":["string", "null"]},
           "last_name":{"type":"string"},
           "roles":{
@@ -140,10 +139,6 @@
       "items":{
         "type":"object",
         "properties":{
-          "placename":{
-            "description":"Placename that helps identify the geographic location of the data",
-            "type":"string"
-          },
           "northeast":{
             "type":"object",
             "additionalProperties":false,
@@ -188,6 +183,16 @@
         "properties":{
           "placename":{
             "type":"string"
+          },
+          "latitude":{
+            "type":"number",
+            "minimum":78.55,
+            "maximum":79.3333
+          },
+          "longitude":{
+            "type":"number",
+            "minimum":10.4,
+            "maximum":14.0
           }
         }
       }

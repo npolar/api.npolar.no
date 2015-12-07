@@ -275,7 +275,7 @@ module Npolar
         id = uuid(placename[:ident]) # @todo check if placename id is uuid or uri 
         latitude = placename[:latitude] || placename[:north] || 0.0
         longitude = placename[:longitude] || placename[:east] || 0.0
-        altitude = placename[:altitude] || placename[:height] || 0.0
+        #altitude = placename[:altitude] || placename[:height] || 0.0
         published = placename.key?(:published) ? placename[:published] : placename[:created]
 
         # gn:NamedPlace        
@@ -298,8 +298,8 @@ module Npolar
         point["srsName"] = "http://www.opengis.net/def/crs/EPSG/0/4936"
             
         pos = node "gml:pos"
-        pos.content = "#{' '+altitude if altitude != 0.0 }#{longitude} #{latitude}"
-        pos["srsDimension"] =  altitude != 0.0 ? "3" : "2"
+        pos.content = "#{latitude} #{longitude}"
+        pos["srsDimension"] = 2 #altitude != 0.0 ? "3" : "2"
                 
         named_place.add_child(geometry)
         geometry.add_child(point)
@@ -326,9 +326,12 @@ module Npolar
         
         # gn:name (1..*)
         named_place.add_child(gn_name(placename))
+
         if placename[:approved]
-          placenames_from_variants(placename).each do | variant |
-            named_place.add_child(gn_name(variant))
+          if not request["reject-nameStatus"] == "historical"
+            placenames_from_variants(placename).each do | variant |
+              named_place.add_child(gn_name(variant))
+            end
           end
         end
         
@@ -418,15 +421,15 @@ module Npolar
         case placename[:terrainid]
 
        when 48, 141, 142
-          "administrative unit"
+          "administrativeUnit"
         when 76, 85, 97, 107, 116, 117, 124, 128, 133, 135, 146, 157, 158
           "hydrography"
         when 105
-          "protected site"
+          "protectedSite"
         when 80, 160
-          "populated place"
+          "populatedPlace"
         when 74, 118
-          "transport network"
+          "transportNetwork"
         when 83, 93, 129, 159
           "building"
         when 89, 103, 123, 149, 150, 162   

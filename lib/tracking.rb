@@ -218,7 +218,9 @@ class Tracking < Hashie::Mash
       # But for redeployed platforms the problem is that the measured time may be before 2 or more deployed times,
       # we should use deployment neareast in time after measured time
       times = deployments.map { |d| measured.to_i - Time.parse(d.deployed).to_i }
+      
       idx = times.find_index {|t| t == times.min }
+      
       deployments[idx]
     end
   end
@@ -280,6 +282,11 @@ class Tracking < Hashie::Mash
     # Set platform type
     if not platform_type? and deployment.key? :platform_type
       self[:platform_type] = deployment.platform_type
+    end
+    
+    # Set platform_name
+    if not platform_name? and deployment.key? :platform_name
+      self[:platform_name] = deployment.platform_name
     end
         
     # Add deployed and terminated so that we can later compare these with the Tracking Deployment API

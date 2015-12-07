@@ -1,10 +1,10 @@
 require "hashie"
 
-class User < Hashie::Mash
+class Text < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
   def schemas
-    ["user-1.json"] 
+    ["text-1.json"] 
   end
 
 end

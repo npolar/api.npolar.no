@@ -12,15 +12,15 @@
     "schema": { "type": "string" },
     "title": { "type": "string" },
     "acronym": { "type": "string" },
-    "summary": { "type": "string" },
-    "abstract": { "type": "string" },
-    "knowledge_gap_addressed": { "type": "string" },
+    "summary": { "type": "string", "description": "Summary should describe the general scope, activities and setting of the project." },
+    "abstract": { "type": "string", "description": "Abstract should be used to give detailed information about the scientific objectives of the project." },
+    "knowledge_gap_addressed": { "type": "string", "description":"Which knowledge gap identified by central authorities will this project contribute to?" },
     "state": { "type": "string", "enum": ["planned", "ongoing", "completed", "cancelled"] },
-    "draft": { "type": "string", "enum": ["yes", "no"] },
+    "draft": { "type": "string", "enum": ["yes", "no"], "description": "This information will be publicly available if you answer no." },
     "start_date": { "type": "string", "format" : "date-time" },
     "end_date": { "type": "string", "format" : "date-time" },
     "results_summary": { "type": "string" },
-    "ris_id": { "type": ["string", "null"] },
+    "ris_id": { "type": ["string", "null"] ,"description": "Id used in the Reseach in Svalbard database."},
     "type": { "type": "string", "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"] },
     "funding_sources" : {
       "type": "array",
@@ -76,7 +76,7 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["atmosphere", "biodiversity", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "marine ecosystems", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
+        "enum": ["acidification","atmosphere", "biodiversity", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "marine ecosystems", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
       }
     },
     "tags": {

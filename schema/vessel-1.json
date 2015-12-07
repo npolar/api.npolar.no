@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/vessel-1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "description": "Name of owner",
+            "type": "string"
+          },
+          "location": {
+            "type": ["string", "null"]
+          },
+          "from": {
+            "type": ["string", "null"],
+            "description": "Year or date required",
+            "pattern": "^[0-9]{4}"
+          }
+        }
+      }
+    },
+    "registrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "description": "Registration code",
+            "type": "string"
+          },
+          "registered": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9]{4}"
+          }
+        }
+      }
+    },
+    "built_year": {
+      "type": "integer"
+    },
+    "built_where": {
+      "type": "string"
+    },
+    "harbours": {
+
+      "type": "array",
+      "items": {
+        "type": "string",
+        "additionalProperties": false
+      }
+    },
+    "shipwrecked_year": {
+      "type": "integer"
+    },
+    "shipwrecked_location": {
+      "type": "string"
+    },
+    "caption": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string",
+      "default": "http://api.npolar.no/schema/vessel-1"
+    },
+    "collection": {
+      "type": "string",
+      "default": "vessel"
+    },
+    "history": {
+      "type": "string"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+            "href": {
+                "type": "string",
+                "description": "URI (web location)",
+                "format": "uri"
+            },
+            "title": {
+                "type": "string",
+                "description": "Title of the linked document"
+            }
+        },
+        "required": [ "href" ]
+      }
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "created": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "collection",
+    "name"
+  ]
+}

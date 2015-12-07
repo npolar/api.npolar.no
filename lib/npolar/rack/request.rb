@@ -8,18 +8,30 @@ module Npolar
 
       # Extract format from request
       def format
-        format = format_from_path
-  
-        if format.empty?
-          format = params["format"] ||= ""
-        end
-  
-        if format.empty?
+   
+        # If &format= is present we let that win
+        if params.size > 0 and params.key?("format")
+          format = params["format"]
+        else
+          # No &format, let Accept header win for GET, DELETE and
+
           if ["PUT", "POST"].include? request_method
+            # Use Content-Type for POST, PUT
             format = media_format
-          else  
+          else
+            # GET and DELETE, use Accept header
             format = accept_format
           end
+        end
+        
+        if format.empty?
+          # Still no format, go for .format
+          format = format_from_path
+        end
+        
+        # Still empty, set to ""
+        if format.empty?
+          format = ""
         end
         format
       end
@@ -30,6 +42,7 @@ module Npolar
         return "" if path_info.nil? or path_info !~ /[.]/
   
         format = path_info.split(".").last
+        
         if format =~ /[\w+\/]/
           format = format.split("/")[0]
         end
@@ -48,7 +61,15 @@ module Npolar
         return "" if env['HTTP_ACCEPT'].nil?
   
         format = env['HTTP_ACCEPT'].scan(/[^;,\s]*\/[^;,\s]*/)[0].split("/")[1]
-  
+        
+        # Exception for HTML if path contains .format
+        if format == 'html' and path_info =~ /.\w+$/
+          path_format = path_info.split(".").last
+          if path_format != 'html'
+            format = path_format
+          end
+        end
+        
         if format =~ /[+]/
           format = format.split("+")[0]
         end
@@ -86,21 +107,32 @@ module Npolar
         multi
       end
   
-      # Extract id
+      # Extract id (remove trailing .format)
       def id
   
         id = path_info.split("/")[1]
-  
-        if id =~ /[.]/
-          id = id.split(".")
-          id.pop
-          id = id.join(".")
+
+        # Fix for /path/id.with.dot like /person/full.name - where format is "json" (derived from either Accept or Content-Type)
+        if ["html", "json", "xml"].include? format
+          if not id.nil? # for POST id is null
+            id = id.gsub(/\.(html|json|xml)$/, "")
+          end
+          
+        else
+          
+          # Otherwise, remove trailing .json or .xml
+          if id =~ /[.]/
+            id = id.split(".")
+            id.pop
+            id = id.join(".")
+          end
+          
         end
       
         if id == [] or id.nil?
           id == ""
         end
-  
+        
         id
   
       end
@@ -146,18 +178,26 @@ module Npolar
       end
   
       def username
+        
         if headers["HTTP_AUTHORIZATION"] =~ /^Bearer\s[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/
-          payload = JSON.parse(Base64.decode64(headers["HTTP_AUTHORIZATION"].split("Bearer ")[1].split(".")[1]))
-          if payload.key? "user"
-            payload["user"]
+         
+          payload = headers["HTTP_AUTHORIZATION"].split("Bearer ")[1].split(".")[1]
+          decoded = Base64.decode64(payload).strip
+
+          if decoded =~ /^{/ and decoded =~ /"email"/ and decoded =~ /[:]/
+            # OUCH the following crashes bad UTF-8
+            # JSON.parse(decoded)["email"]
+            decoded.split('"email"')[1].split(":")[1].split(",")[0].gsub(/["]/, "")
+            
           else
             ""
           end
-          
-        elsif false == basic.provided? or basic.username.empty?
-          ""
         else
-          basic.username
+          if false == basic.provided? or basic.username.empty?
+            ""
+          else
+            URI.decode(basic.username).force_encoding('utf-8')
+          end
         end
       end
   

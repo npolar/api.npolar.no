@@ -7,10 +7,10 @@ class Vessel < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
   
   def schemas
-    ["historic-vessel.json"] 
+  	["vessel-1.json"] 
   end
   
-  def self.seed(filename_xml="#{__dir__}/../../seed/historic/vessel/Skip.xml")
+  def self.seed(filename_xml="/mnt/public/Datasets/Skipsregister/xml/Skip.xml")
     nori = Nori.new
     dataroot = nori.parse(File.read(filename_xml))["dataroot"]
                                                                
@@ -51,20 +51,19 @@ class Vessel < Hashie::Mash
             #"herku 1 => herku_1"
             #"herku 2 => herku_2"
             #"Hvalr T => Hvalr_T"
+            #"Nova Ze1 => Nova_Ze1"
+            #"ole&e1 => ole_e1"
             #"jopet 1 => jopet_1"
             #"jopet 2 => jopet_2"
             #"jul th => jul_th"
             #"lady j => lady_j"
             #"mag.tø. => mag_tø_"
             #"nils li => nils_li"
-            #"Nova Ze1 => Nova_Ze1"
-            #"ole&e1 => ole_e1"
             #"polen Å => polen_Å"
             #"spe & => spe__"
             #"syv.Ham => syv_Ham"
             #"ves møy => ves_møy"
             #"Wil.Bar. => Wil_Bar_"
-
           end
           v = clean_id
           
@@ -88,16 +87,15 @@ class Vessel < Hashie::Mash
         
         
       end
-      vessel["created_by"] = "Kjell Gudmund Kjær"
-      vessel["created"] = dataroot["@generated"]
-      vessel["alpha"] = vessel["name"][0].upcase
-      vessel["collection"] = "vessel"
+      vessel["created_by"] = "Kjell-G. Kjær"
+      vessel["created"] = dataroot["@generated"]+"Z"
+      
       vessel
     }
   end
   
-  def self.save_seed(filename_seed = "#{__dir__}/../../seed/historic/vessel/vessels.json")
-    File.open(filename_seed, "w") {|f| f.write seed.to_json}
+  def self.save_seed(filename_seed = "#{__dir__}/../../seed/vessel/vessel.json")
+    File.open(filename_seed, "w") {|f| f.write(JSON.pretty_generate(seed))}
   end
   
 end

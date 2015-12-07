@@ -1,0 +1,264 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/map-archive-1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "country": {
+          "description": "Map country, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "bbox": {
+          "description": "Map coverage (W,S,E,N)",
+          "type": "array",
+          "items": {
+            "type": "number", "minimum": -180, "maximum": 180
+          },
+          "minItems": 0,
+          "maxItems": 4  
+        },
+        "hemisphere": {
+          "type": "string", "enum": ["", "N", "S"]
+        },
+        "area": {
+          "type": "string"
+        },
+        "placename": {
+          "type": "string"
+        }
+      }
+    },
+    "schema": {
+      "type": "string", "minLength": 1,  "maxLength": 999, "format": "uri",  "default": "http://api.npolar.no/schema/map-archive-1" 
+    },
+    "title": {
+      "type": "string", "minLength": 1,  "maxLength": 999
+    },
+    "subtitle": {
+      "type": ["string", "null"], "minLength": 1
+    },
+    "created": {
+      "type": "string", "format":"date-time"
+    },
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "resolution": {
+          "type": "number", "description": "Resolution of scanned map"
+        },
+        "unit": {
+          "type": "string"
+        }
+      }
+    },
+    "restricted": { "type": "boolean", "default": false, "description": "Restrict public access to all but preview of the map scan" },
+    "rights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rightsHolder": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string", "description": "Name of copyright holder"
+        }
+      }
+    },
+    "summaries": {
+      "uniqueItems": true,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "lang": {
+            "type": "string", "enum": ["nn", "nb", "no", "en"]
+          },
+          "summary": {
+            "type": "string"
+          }
+
+        }
+      } 
+    },
+    "processor": {
+      "type": "object",
+      "description": "Person who scanned the map",
+      "additionalProperties": false,
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string", "description": "Map scanner"
+        }
+      }
+    },
+    "updated": {
+      "type": "string", "format":"date-time"
+    },
+    "media": {
+      "type": "string"
+    },
+    "cartography": {
+      "type": "object",
+      "description": "Cartography (datum, projection, etc.)",
+      "additionalProperties": false,
+      "properties": {
+        "horizontal": {
+          "type": "string"
+        },
+        "vertical": {
+          "type": "string"
+        }
+      }
+    },
+     "scale": {
+          "type": ["integer", "null"], "description": "Scale denominator N (1:N)"
+        },
+    "type": {
+        "type": "string",
+        "enum":  ["aeronautical", "geologic", "manuscript", "nautical", "overview", "satellite-image", "sketch", "thematic", "topographic", "unknown"]
+    },    
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "publisher": {
+          "type": "string", "description": "Name of publisher"
+        },
+        "year": {
+          "type": "integer", "description": "Year of publication"
+        },
+        "country": {
+          "type": "string", "description": "Country of publication, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "where": {
+          "type": ["string","null"], "description": "Place of publication"
+        },
+        "code": {
+          "type": "string", "description": "Map code, if any"
+        },
+        "series": {
+          "type": "string", "description": "Map series, if any"
+        }
+      }
+    },
+    "id": {
+      "type": "string"
+    },
+    "tags": {
+      "uniqueItems": true,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "collection": {
+      "type": "string", "default": "map-archive"
+    },
+    "comments": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lang": {
+            "type": "string", "enum": ["nn", "nb", "no", "en"], "default": "nn"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "archives": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "where": {
+            "type": "string", "description": "Location of the physical copies of the map (building, room, cabinet, drawer, etc.)"
+          },
+          "count": {
+            "type": "integer", "description": "Number of copies kept in this archive",  "default": 1
+          },
+          "organisation": {
+            "type": "string", "description": "Organisation hosting the archive",
+            "default": "Norsk Polarinstitutt"
+          },
+          "country": {
+            "type": "string", "description": "Country of archive",
+            "pattern": "^[A-Z]{2}$",
+            "default": "NO"
+          },
+          "placename": { 
+            "type": "string", "description": "City of the archive", "default": "Tromsø"
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": {
+            "type": "string", "description": "Relation \"edit-media\" are links to original map scan"
+          },
+          "href": {
+            "type": "string", "description": "URI"
+          },
+          "length": {
+            "type": "integer", "description": "Size of the resource in bytes"
+          },
+          "title": {
+            "type": "string"
+          },
+          "modified": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "created_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

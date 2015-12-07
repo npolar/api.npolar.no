@@ -20,49 +20,17 @@ end
 
 log = Logger.new(STDERR)
 
-begin
-  
-  if not ENV.key?("NPOLAR_API_USERNAME") or not ENV.key?("NPOLAR_API_PASSWORD")
-    raise "Please set NPOLAR_API_USERNAME and NPOLAR_API_PASSWORD"
-  end
-  if ARGV.size < 1
-    raise "Usage: #{__dir__} /path/to/followit/archive"
-  end
-  if not File.exist? ARGV[0]
-    raise "Source does not exist: #{ARGV[0]}"
-  end  
-  
-  source = ARGV[0]
-  uri = ARGV[1] ||= "https://api.npolar.no/tracking/svalbard-reindeer"
-  
-  glob = File.join(source, "**/*.xml")
-  fields = ["platform,latitude,longitude,measured"]
-  
-  ts = Followit::TrackerService.new
-  client = Npolar::Api::Client::JsonApiClient.new(uri)
-  
-  docs = []
-  Dir[glob].reject {|f| File.directory? f or File.size(f) == 0 }.map do |f|
-    add = ts.positions_from_xml(f)
-    docs += add
-    log.debug "+ #{add.size} converted: #{docs.size}"
-  end
-  
-  dates = docs.uniq.map do |d|
-    dt = DateTime.parse(d["measured"])
-  end
-  earliest = dates.min.to_time.utc.iso8601
-  latest = dates.max.to_time.utc.iso8601
+def latest(client)
 
   client.param = { q: "",
     format: "json",
     limit: 1,
     "filter-provider" => "followit.se",
-    "filter-measured" => "#{earliest}..#{latest}|#{latest}",
-    fields: "measured,updated",
+    "date-day" => "measured",
+    fields: "measured",
     sort: "-measured"
   }
-
+  
   client.authorization = true
   response = client.get
   
@@ -70,25 +38,67 @@ begin
   if existing.nil? or not existing.key? "feed"
     raise "Failed: #{response.status}"
   end
+  existing["feed"]
   
+end
+
+
+begin
   
-  if not existing["feed"]["entries"].any?
-    log.debug "About to POST #{docs.size} to #{uri} [0 existing documents between #{earliest} and #{latest}]"
-    client.param = {}
-    response = client.post(docs.to_json)
+  if not ENV.key?("NPOLAR_API_USERNAME") or not ENV.key?("NPOLAR_API_PASSWORD")
+    raise "Please set NPOLAR_API_USERNAME and NPOLAR_API_PASSWORD"
+  end
+  if ARGV.size < 1
+    raise "Usage: #{__dir__} /path/to/followit/archive [https://api.npolar.no/tracking/svalbard-reindeer]"
+  end
+  if not File.exist? ARGV[0]
+    raise "Source does not exist: #{ARGV[0]}"
+  end
+    
+  source = ARGV[0]
+  uri = ARGV[1] ||= "https://api.npolar.no/tracking/svalbard-reindeer"  
+  glob = File.join(source, "**/*.xml")
+  #if ARGV[2].to_s =~ /\d{4}/
+  #  last = DateTime.parse(ARGV[2])
+  #end
+  #
+  
+  ts = Followit::TrackerService.new
+  client = Npolar::Api::Client::JsonApiClient.new(uri)
+  #client.log = Logger.new(nil)
+  #client.log.level = Logger::WARN
+  
+  # get latest date and filter away all messages prior to that...
+  feed = latest(client)
+  if not feed["entries"].any?
+    log.debug "0 existing documents"
+    last = DateTime.new(1000)
   else
+    last = DateTime.parse feed["entries"][0]["measured"]
+    log.debug "#{last} last measured in #{uri} [#{feed["opensearch"]["totalResults"]}]"
+  end
   
-    measured = DateTime.parse(existing["feed"]["entries"][0]["measured"])
-    updated = DateTime.parse(existing["feed"]["entries"][0]["updated"])
-    totalResults = existing["feed"]["opensearch"]["totalResults"].to_i
+  docs = []
+  c=0
+  
+  Dir[glob].reject {|f| File.directory? f or File.size(f) == 0 }.map do |f|
+    msgs = ts.positions_from_xml(f)
+    c = c + msgs.size
+    log.debug "#{c} messages / #{docs.size} newer than #{last.to_time.utc.iso8601}"
+    add = msgs.select {| m | DateTime.parse(m["measured"]) > last }
     
-    newer = docs.select {|d| DateTime.parse(d["measured"]) > measured }
-    log.debug "Source: #{docs.size} / Destination: #{totalResults} / Newer: #{newer.size}"
-        
-    if (totalResults + newer.size) != docs.size
-      raise "Source contains #{docs.size} documents; destination + newer (#{totalResults} + #{newer.size}) != #{totalResults+newer.size}"
+    # reject if prior to latest
+    if add.any?
+      log.debug "#{f}"
+      c = c + add.size      
+      docs += add
     end
-    
+  end
+  
+  if docs.any?
+    log.debug "About to POST #{docs.size} new messages to #{uri}"
+    client.param = {}
+    response = client.post(docs)
   end
   exit(true)
 

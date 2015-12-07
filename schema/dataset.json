@@ -96,6 +96,7 @@
           "roles": {
             "type": "array",
             "items": {
+              "type": "string",
               "enum": ["author", "principalInvestigator", "processor", "pointOfContact", "editor"]
             }
           },
@@ -119,6 +120,7 @@
           "roles": {
             "type": "array",
             "items": {
+              "type": "string",
               "enum": ["author", "originator", "owner", "pointOfContact", "principalInvestigator", "publisher", "resourceProvider"]
             }
           },
@@ -144,6 +146,9 @@
         "additionalProperties": false,
         "properties": {
           "rel": { "type": "string" },
+          "items": {
+              "type": "string"
+            }
           "href": { "type": "string", "format": "uri" },
           "title": { "type": ["string", "null"] },
           "hreflang": { "type": ["string", "null"] },
@@ -213,7 +218,7 @@
     },
     "gcmd": { "description": "GCMD DIF object, see http://gcmd.gsfc.nasa.gov/add/difguide/index.html", "type": "object",
       "properties": {
-        "locations": { "description": "DIF element Location", "type": "array" },
+        "locations": { "description": "DIF element Location", "type": "array", "items": { "type": "object", "additionalProperties": true } },
         "projects": { "description": "DIF element Project", "type": "array"},
         "resolutions": { "description": "DIF element Data_Resolution", "type": "array"},
         "disciplines": { "description": "DIF element Discipline", "type": "array"},
