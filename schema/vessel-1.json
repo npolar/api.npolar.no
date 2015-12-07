@@ -103,27 +103,29 @@
       "items": {
         "type": "object",
         "properties": {
-            "href": {
-                "type": "string",
-                "description": "URI (web location)",
-                "format": "uri"
-            },
-            "title": {
-                "type": "string",
-                "description": "Title of the linked document"
-            }
+          "href": {
+            "type": "string",
+            "description": "URI (web location)",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the linked document"
+          }
         },
-        "required": [ "href" ]
+        "required": ["href"]
       }
     },
     "created_by": {
       "type": "string"
     },
     "created": {
-      "type": "string"
+      "type": "string",
+      "format": "date-time"
     },
     "updated": {
-      "type": "string"
+      "type": "string",
+      "format": "date-time"
     },
     "updated_by": {
       "type": "string"

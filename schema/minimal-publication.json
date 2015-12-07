@@ -6,9 +6,16 @@
   "type": "object",
   "required": ["title"],
   "properties": {
-    "id": { "description": "Identifier (UUID | URI)", "type": "string" },
-    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
-    "draft":{ "enum": ["yes"]}
+    "id": {
+      "description": "Identifier (UUID | URI)",
+      "type": "string"
+    },
+    "title": {
+      "description": "Title should be specific enough to make sense out of context",
+      "type": "string"
+    },
+    "draft": {
+      "enum": ["yes"]
+    }
   }
 }
-

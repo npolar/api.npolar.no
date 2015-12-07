@@ -3,10 +3,10 @@
   "id": "http://api.npolar.no/schema/text-1",
   "type": "object",
   "additionalProperties": true,
-  "required":["code"],
+  "required": ["code"],
   "properties": {
-    
-    
+
+
     "id": {
       "id": "id",
       "type": "string"
@@ -51,15 +51,15 @@
       "type": "string",
       "format": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
     },
-    "created":{
-      "type":["string", "null"],
-      "format":"date-time"
+    "created": {
+      "type": ["string", "null"],
+      "format": "date-time"
     },
-    "updated":{
-      "type":["string", "null"],
-      "format":"date-time"
+    "updated": {
+      "type": ["string", "null"],
+      "format": "date-time"
     },
-    
+
     "updated_by": {
       "id": "updated_by",
       "type": "string"

@@ -5,10 +5,20 @@
   "additionalProperties": false,
   "required": [],
   "properties": {
-    "id": { "type" :"string" },
-    "rev": { "type": "string" },
-    "_id": { "description": "Internal id", "type": "string" },
-    "_rev" : { "description": "Internal revision", "type": "string" },
+    "id": {
+      "type": "string"
+    },
+    "rev": {
+      "type": "string"
+    },
+    "_id": {
+      "description": "Internal id",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision",
+      "type": "string"
+    },
     "t2_last_sampling": {
       "type": "number",
       "description": "Number of seconds elapsed since 12:00 a.m., Friday, January 1, 1904"
@@ -179,4 +189,3 @@
     }
   }
 }
-

@@ -23,13 +23,16 @@
           "description": "Map coverage (W,S,E,N)",
           "type": "array",
           "items": {
-            "type": "number", "minimum": -180, "maximum": 180
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
           },
           "minItems": 0,
-          "maxItems": 4  
+          "maxItems": 4
         },
         "hemisphere": {
-          "type": "string", "enum": ["", "N", "S"]
+          "type": "string",
+          "enum": ["", "N", "S"]
         },
         "area": {
           "type": "string"
@@ -40,30 +43,43 @@
       }
     },
     "schema": {
-      "type": "string", "minLength": 1,  "maxLength": 999, "format": "uri",  "default": "http://api.npolar.no/schema/map-archive-1" 
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 999,
+      "format": "uri",
+      "default": "http://api.npolar.no/schema/map-archive-1"
     },
     "title": {
-      "type": "string", "minLength": 1,  "maxLength": 999
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 999
     },
     "subtitle": {
-      "type": ["string", "null"], "minLength": 1
+      "type": ["string", "null"],
+      "minLength": 1
     },
     "created": {
-      "type": "string", "format":"date-time"
+      "type": "string",
+      "format": "date-time"
     },
     "resolution": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "resolution": {
-          "type": "number", "description": "Resolution of scanned map"
+          "type": "number",
+          "description": "Resolution of scanned map"
         },
         "unit": {
           "type": "string"
         }
       }
     },
-    "restricted": { "type": "boolean", "default": false, "description": "Restrict public access to all but preview of the map scan" },
+    "restricted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Restrict public access to all but preview of the map scan"
+    },
     "rights": {
       "type": "array",
       "items": {
@@ -81,7 +97,8 @@
       "additionalProperties": false,
       "properties": {
         "name": {
-          "type": "string", "description": "Name of copyright holder"
+          "type": "string",
+          "description": "Name of copyright holder"
         }
       }
     },
@@ -92,15 +109,16 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-            "lang": {
-            "type": "string", "enum": ["nn", "nb", "no", "en"]
+          "lang": {
+            "type": "string",
+            "enum": ["nn", "nb", "no", "en"]
           },
           "summary": {
             "type": "string"
           }
 
         }
-      } 
+      }
     },
     "processor": {
       "type": "object",
@@ -111,12 +129,14 @@
           "type": "string"
         },
         "name": {
-          "type": "string", "description": "Map scanner"
+          "type": "string",
+          "description": "Map scanner"
         }
       }
     },
     "updated": {
-      "type": "string", "format":"date-time"
+      "type": "string",
+      "format": "date-time"
     },
     "media": {
       "type": "string"
@@ -134,35 +154,42 @@
         }
       }
     },
-     "scale": {
-          "type": ["integer", "null"], "description": "Scale denominator N (1:N)"
-        },
+    "scale": {
+      "type": ["integer", "null"],
+      "description": "Scale denominator N (1:N)"
+    },
     "type": {
-        "type": "string",
-        "enum":  ["aeronautical", "geologic", "manuscript", "nautical", "overview", "satellite-image", "sketch", "thematic", "topographic", "unknown"]
-    },    
+      "type": "string",
+      "enum": ["aeronautical", "geologic", "manuscript", "nautical", "overview", "satellite-image", "sketch", "thematic", "topographic", "unknown"]
+    },
     "publication": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "publisher": {
-          "type": "string", "description": "Name of publisher"
+          "type": "string",
+          "description": "Name of publisher"
         },
         "year": {
-          "type": "integer", "description": "Year of publication"
+          "type": "integer",
+          "description": "Year of publication"
         },
         "country": {
-          "type": "string", "description": "Country of publication, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+          "type": "string",
+          "description": "Country of publication, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
           "pattern": "^[A-Z]{2}$"
         },
         "where": {
-          "type": ["string","null"], "description": "Place of publication"
+          "type": ["string", "null"],
+          "description": "Place of publication"
         },
         "code": {
-          "type": "string", "description": "Map code, if any"
+          "type": "string",
+          "description": "Map code, if any"
         },
         "series": {
-          "type": "string", "description": "Map series, if any"
+          "type": "string",
+          "description": "Map series, if any"
         }
       }
     },
@@ -177,7 +204,8 @@
       }
     },
     "collection": {
-      "type": "string", "default": "map-archive"
+      "type": "string",
+      "default": "map-archive"
     },
     "comments": {
       "type": "array",
@@ -187,7 +215,9 @@
         "additionalProperties": false,
         "properties": {
           "lang": {
-            "type": "string", "enum": ["nn", "nb", "no", "en"], "default": "nn"
+            "type": "string",
+            "enum": ["nn", "nb", "no", "en"],
+            "default": "nn"
           },
           "comment": {
             "type": "string"
@@ -202,23 +232,30 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-            "where": {
-            "type": "string", "description": "Location of the physical copies of the map (building, room, cabinet, drawer, etc.)"
+          "where": {
+            "type": "string",
+            "description": "Location of the physical copies of the map (building, room, cabinet, drawer, etc.)"
           },
           "count": {
-            "type": "integer", "description": "Number of copies kept in this archive",  "default": 1
+            "type": "integer",
+            "description": "Number of copies kept in this archive",
+            "default": 1
           },
           "organisation": {
-            "type": "string", "description": "Organisation hosting the archive",
+            "type": "string",
+            "description": "Organisation hosting the archive",
             "default": "Norsk Polarinstitutt"
           },
           "country": {
-            "type": "string", "description": "Country of archive",
+            "type": "string",
+            "description": "Country of archive",
             "pattern": "^[A-Z]{2}$",
             "default": "NO"
           },
-          "placename": { 
-            "type": "string", "description": "City of the archive", "default": "Tromsø"
+          "placename": {
+            "type": "string",
+            "description": "City of the archive",
+            "default": "Tromsø"
           }
         }
       }
@@ -231,13 +268,16 @@
         "additionalProperties": false,
         "properties": {
           "rel": {
-            "type": "string", "description": "Relation \"edit-media\" are links to original map scan"
+            "type": "string",
+            "description": "Relation \"edit-media\" are links to original map scan"
           },
           "href": {
-            "type": "string", "description": "URI"
+            "type": "string",
+            "description": "URI"
           },
           "length": {
-            "type": "integer", "description": "Size of the resource in bytes"
+            "type": "integer",
+            "description": "Size of the resource in bytes"
           },
           "title": {
             "type": "string"

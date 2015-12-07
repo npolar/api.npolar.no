@@ -1,146 +1,156 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://api.npolar.no/tracking-deployment-1",
-    "type": "object",
-    "properties": { 
-        "provider": { "type": "string" },
-        "program": { "type": "string" },
-        "platform": { "type": "string" },
-        "technology": { "type": "string" },
-        "platform_model": {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/tracking-deployment-1",
+  "type": "object",
+  "properties": {
+    "provider": {
+      "type": "string"
+    },
+    "program": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "technology": {
+      "type": "string"
+    },
+    "platform_model": {
 
-            "type": "string"
-        },
-        "platform_name": {
- 
-            "type": "string"
-        },
-        "species": {
+      "type": "string"
+    },
+    "platform_name": {
 
-            "type": "string"
-        },
-        "object": {
-     
-            "type": "string"
-        },
-        "imei": {
+      "type": "string"
+    },
+    "species": {
 
+      "type": "string"
+    },
+    "object": {
+
+      "type": "string"
+    },
+    "imei": {
+
+      "type": "string"
+    },
+    "individual": {
+
+      "type": "string"
+    },
+
+    "registered": {
+
+      "type": "string",
+      "format": "date-time"
+    },
+    "deployed": {
+
+      "type": "string",
+      "format": "date-time"
+    },
+    "terminated": {
+
+      "type": "string",
+      "format": "date-time"
+    },
+    "links": {
+      "id": "links",
+      "type": "array",
+      "items": {
+        "id": "0",
+        "type": "object",
+        "properties": {
+          "rel": {
+            "id": "rel",
             "type": "string"
-        },
-        "individual": {
-
+          },
+          "href": {
+            "id": "href",
             "type": "string"
-        },
-        
-        "registered": {
-
-            "type": "string",
- "format": "date-time"
-        },
-        "deployed": {
-
-            "type": "string",
- "format": "date-time"
-        },
-           "terminated": {
-
-            "type": "string",
- "format": "date-time"
-        },
-        "links": {
-            "id": "links",
-            "type": "array",
-            "items": {
-                "id": "0",
-                "type": "object",
-                "properties": {
-                    "rel": {
-                        "id": "rel",
-                        "type": "string"
-                    },
-                    "href": {
-                        "id": "href",
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "comment": {
-            "id": "comment",
-            "type": "string"
-        },
-        "type": {
+          }
+        }
+      }
+    },
+    "comment": {
+      "id": "comment",
+      "type": "string"
+    },
+    "type": {
+      "id": "type",
+      "type": "string"
+    },
+    "features": {
+      "id": "features",
+      "type": "array",
+      "items": {
+        "id": "0",
+        "type": "object",
+        "properties": {
+          "type": {
             "id": "type",
             "type": "string"
-        },
-        "features": {
-            "id": "features",
-            "type": "array",
-            "items": {
-                "id": "0",
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "id": "type",
-                        "type": "string"
-                    },
-                    "geometry": {
-                        "id": "geometry",
-                        "type": "object",
-                        "properties": {
-                            "type": {
-                                "id": "type",
-                                "type": "string"
-                            },
-                            "coordinates": {
-                                "id": "coordinates",
-                                "type": "array",
-                                "items": {
-                                    "id": "1",
-                                    "type": "number"
-                                }
-                            }
-                        }
-                    },
-                    "properties": {
-                        "id": "properties",
-                        "type": "object",
-                        "properties": {
-                            "measured": {
-                                "id": "measured",
-                                "type": "string",
- "format": "date-time"
-                            },
-                            "event": {
-                                "id": "event",
-                                "type": "string"
-                            },
-                            "battery_voltage": {
-                                "id": "battery_voltage",
-                                "type": "string"
-                            }
-                        }
-                    }
+          },
+          "geometry": {
+            "id": "geometry",
+            "type": "object",
+            "properties": {
+              "type": {
+                "id": "type",
+                "type": "string"
+              },
+              "coordinates": {
+                "id": "coordinates",
+                "type": "array",
+                "items": {
+                  "id": "1",
+                  "type": "number"
                 }
+              }
             }
-        },
-        "updated": { "type": "string",
- "format": "date-time" },
-        "updated_by": {
-            "type": "string"
-        },
-        "created": {
-            "id": "created",
-            "type": "string",
- "format": "date-time"
-        },
-        "created_by": {
-            "id": "created_by",
-            "type": "string"
-        },
-        "id": {
-            "id": "id",
-            "type": "string"
+          },
+          "properties": {
+            "id": "properties",
+            "type": "object",
+            "properties": {
+              "measured": {
+                "id": "measured",
+                "type": "string",
+                "format": "date-time"
+              },
+              "event": {
+                "id": "event",
+                "type": "string"
+              },
+              "battery_voltage": {
+                "id": "battery_voltage",
+                "type": "string"
+              }
+            }
+          }
         }
+      }
+    },
+    "updated ": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "created": {
+      "id": "created",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "id": "created_by",
+      "type": "string"
+    },
+    "id": {
+      "id": "id",
+      "type": "string"
     }
+  }
 }

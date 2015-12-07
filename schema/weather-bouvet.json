@@ -5,89 +5,98 @@
   "additionalProperties": false,
   "required": [],
   "properties": {
-    "id": { "type" :"string" },
-    "rev": { "type": "string" },
-    "_id": { "description": "Internal id", "type": "string" },
-    "_rev" : { "description": "Internal revision", "type": "string" },
+    "id": {
+      "type": "string"
+    },
+    "rev": {
+      "type": "string"
+    },
+    "_id": {
+      "description": "Internal id",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision",
+      "type": "string"
+    },
     "TIMESTAMP": {
-      "type" : "string",
-      "format" : "datetime"
+      "type": "string",
+      "format": "datetime"
     },
     "RECORD": {
-      "type" : "number"
+      "type": "number"
     },
     "ID": {
-      "type" : "number"
+      "type": "number"
     },
     "Batt_V_Min": {
-      "type" : "number"
+      "type": "number"
     },
     "Batt_V_hoved_Min": {
-      "type" : "number"
+      "type": "number"
     },
     "Strom_I_hoved_Avg": {
-      "type" : "number"
+      "type": "number"
     },
     "Batt_kap_prosent": {
-      "type" : "number"
+      "type": "number"
     },
     "Batt_kap_nu_At": {
-      "type" : "number"
+      "type": "number"
     },
     "TA": {
-      "type" : "number"
+      "type": "number"
     },
     "TA_Min": {
-      "type" : "number"
+      "type": "number"
     },
     "TA_Max": {
-      "type" : "number"
+      "type": "number"
     },
     "UU": {
-      "type" : "number"
+      "type": "number"
     },
     "PA": {
-      "type" : "number"
+      "type": "number"
     },
     "FF": {
-      "type" : "number"
+      "type": "number"
     },
     "DD": {
-      "type" : "number"
+      "type": "number"
     },
     "FF_Max": {
-      "type" : "number"
+      "type": "number"
     },
     "DD_SMM": {
-      "type" : "number"
+      "type": "number"
     },
     "F_Max": {
-      "type" : "number"
+      "type": "number"
     },
     "OT": {
-      "type" : "number"
+      "type": "number"
     },
     "QA": {
-      "type" : "number"
+      "type": "number"
     },
     "R1_status": {
-      "type" : "number"
+      "type": "number"
     },
     "R2_status": {
-      "type" : "number"
+      "type": "number"
     },
     "R3_status": {
-      "type" : "number"
+      "type": "number"
     },
     "R4_status": {
-      "type" : "number"
+      "type": "number"
     },
     "T1": {
-      "type" : "number"
+      "type": "number"
     },
     "F1": {
-      "type" : "number"
+      "type": "number"
     }
   }
 }
-

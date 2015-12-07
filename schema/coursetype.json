@@ -1,88 +1,88 @@
 {
-"$schema": "http://json-schema.org/draft-04/schema#",
-"id": "http://api.npolar.no/schema/coursetype-1.0-rc4",
-"title": "Coursetype",
-"description": "Logistics Course database - coursetypes",
-"type": "object",
-"additionalProperties": false,
-"required": [
-"title",
-"schema",
-"area"
-],
-"properties": {
-"id": {
-"description": "Identifier (UUID | URI)",
-"type": "string"
-},
-"schema": {
-"type": "string"
-},
-"collection": {
-"enum": [
-"coursetype"
-]
-},
-"base": {
-"enum": [
-"http://api.npolar.no"
-]
-},
-"title": {
-"description": "Type of course",
-"type": "string"
-},
-"area": {
-"type": [
-"string",
-"null"
-]
-},
-"valid":{
-"type": [
-"string",
-"null"
-]
-},
-"location":{
-"type": [
-"string",
-"null"
-]
-},
-"comment": {
-"type": [
-"string",
-"null"
-]
-},
-"instructor_list": {
-"type": [
-"string",
-"null"
-]
-},
-"created": {
-"description": "Document was published",
-"type": "string",
-"format": "date-time"
-},
-"updated": {
-"description": "Document was updated",
-"type": "string",
-"format": "date-time"
-},
-"created_by": {
-"type": "string"
-},
-"updated_by": {
-"type": "string"
-},
-"_id": {
-"type": "string"
-},
-"_rev": {
-"type": "string"
-}
-}
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/coursetype-1.0-rc4",
+  "title": "Coursetype",
+  "description": "Logistics Course database - coursetypes",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "schema",
+    "area"
+  ],
+  "properties": {
+    "id": {
+      "description": "Identifier (UUID | URI)",
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "collection": {
+      "enum": [
+        "coursetype"
+      ]
+    },
+    "base": {
+      "enum": [
+        "http://api.npolar.no"
+      ]
+    },
+    "title": {
+      "description": "Type of course",
+      "type": "string"
+    },
+    "area": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "valid": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "comment": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "instructor_list": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created": {
+      "description": "Document was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Document was updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    }
+  }
 }

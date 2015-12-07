@@ -7,14 +7,37 @@
   "additionalProperties": false,
   "required": ["title"],
   "properties": {
-    "id": { "description": "Identifier (UUID | URI)", "type": "string" },
-    "title": { "description": "Title should be specific enough to make sense out of context", "type": "string"},
-    "schema": { "type": "string", "description": "JSON schema URI"},
-    "lang": { "type": "string"},
-    "base": { "type": "string", "description": "Base URI (for relative links)" },
-    "citation": { "description": "Citation string (in use only if the data publisher is not the Norwegian Polar Institue)", "type": "string" },
-    "summary": { "description": "Abstract", "type": "string"},
-    "draft": { "type": "string", "enum": ["yes", "no"]},
+    "id": {
+      "description": "Identifier (UUID | URI)",
+      "type": "string"
+    },
+    "title": {
+      "description": "Title should be specific enough to make sense out of context",
+      "type": "string"
+    },
+    "schema": {
+      "type": "string",
+      "description": "JSON schema URI"
+    },
+    "lang": {
+      "type": "string"
+    },
+    "base": {
+      "type": "string",
+      "description": "Base URI (for relative links)"
+    },
+    "citation": {
+      "description": "Citation string (in use only if the data publisher is not the Norwegian Polar Institue)",
+      "type": "string"
+    },
+    "summary": {
+      "description": "Abstract",
+      "type": "string"
+    },
+    "draft": {
+      "type": "string",
+      "enum": ["yes", "no"]
+    },
     "coverage": {
       "type": "array",
       "additionalItems": false,
@@ -22,14 +45,32 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "north": { "type": "number", "minimum": -90.0, "maximum": 90.0 },
-          "east": { "type": "number", "minimum": -180.0, "maximum": 180.0 },
-          "south": { "type": "number", "minimum": -90.0, "maximum": 90.0 },
-          "west": { "type": "number", "minimum": -180.0, "maximum": 180.0 }
+          "north": {
+            "type": "number",
+            "minimum": -90.0,
+            "maximum": 90.0
+          },
+          "east": {
+            "type": "number",
+            "minimum": -180.0,
+            "maximum": 180.0
+          },
+          "south": {
+            "type": "number",
+            "minimum": -90.0,
+            "maximum": 90.0
+          },
+          "west": {
+            "type": "number",
+            "minimum": -180.0,
+            "maximum": 180.0
+          }
         }
       }
     },
-    "progress": {"enum": ["ongoing","complete", "planned"]},
+    "progress": {
+      "enum": ["ongoing", "complete", "planned"]
+    },
     "topics": {
       "title": "Npolar topics",
       "description": "Includes http://www.npolar.no/en/research/topics/",
@@ -43,7 +84,7 @@
     "iso_topics": {
       "title": "ISO topic categories",
       "description": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml",
-      "type": ["array","null"],
+      "type": ["array", "null"],
       "additionalItems": false,
       "items": {
         "type": "string",
@@ -52,7 +93,9 @@
     },
     "tags": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "licences": {
       "title": "Licence URIs",
@@ -71,11 +114,22 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "datetime": {"type": "string", "format": "date-time"},
-          "name": { "type": "string" },
-          "email": { "type": "string" },
-          "comment": { "type": "string" },
-          "rev": { "type": "string" }
+          "datetime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "rev": {
+            "type": "string"
+          }
         },
         "required": ["datetime", "name"]
       }
@@ -90,9 +144,15 @@
         "additionalProperties": false,
 
         "properties": {
-          "id": { "type": ["string", "null"] },
-          "first_name": { "type": ["string", "null"] },
-          "last_name": { "type": "string" },
+          "id": {
+            "type": ["string", "null"]
+          },
+          "first_name": {
+            "type": ["string", "null"]
+          },
+          "last_name": {
+            "type": "string"
+          },
           "roles": {
             "type": "array",
             "items": {
@@ -100,9 +160,16 @@
               "enum": ["author", "principalInvestigator", "processor", "pointOfContact", "editor"]
             }
           },
-          "email": { "type": ["string","null"] },
-          "homepage": {  "type": ["string","null"], "pattern": "^http(s)?:\/\/" },
-          "organisation": { "type": ["string", "null"]}
+          "email": {
+            "type": ["string", "null"]
+          },
+          "homepage": {
+            "type": ["string", "null"],
+            "pattern": "^http(s)?:\/\/"
+          },
+          "organisation": {
+            "type": ["string", "null"]
+          }
         }
       }
     },
@@ -114,9 +181,15 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "gcmd_short_name": { "type": ["string", "null"] },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "gcmd_short_name": {
+            "type": ["string", "null"]
+          },
           "roles": {
             "type": "array",
             "items": {
@@ -125,12 +198,12 @@
             }
           },
           "email": {
-            "type": ["string","null"],
+            "type": ["string", "null"],
             "additionalItems": false,
             "format": "email"
           },
           "homepage": {
-            "type": ["string","null"],
+            "type": ["string", "null"],
             "pattern": "^http(s)?:\/\/"
           }
         },
@@ -145,19 +218,40 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "rel": { "type": "string" },
+          "rel": {
+            "type": "string"
+          },
           "items": {
-              "type": "string"
-            }
-          "href": { "type": "string", "format": "uri" },
-          "title": { "type": ["string", "null"] },
-          "hreflang": { "type": ["string", "null"] },
-          "length": { "type": ["number", "null"] },
-          "type": { "type": "string" },
-          "hash": { "type": "array" },
-          "etag": { "type": "string" },
-          "modified": { "type": "string" },
-          "acccessed": { "type": "string" }
+            "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": ["string", "null"]
+          },
+          "hreflang": {
+            "type": ["string", "null"]
+          },
+          "length": {
+            "type": ["number", "null"]
+          },
+          "type": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "array"
+          },
+          "etag": {
+            "type": "string"
+          },
+          "modified": {
+            "type": "string"
+          },
+          "acccessed": {
+            "type": "string"
+          }
         },
         "required": ["href"]
       }
@@ -170,11 +264,23 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "term": { "type": "string"},
-          "schema": { "type": "string", "format": "uri" },
-          "title": { "type": "string" },
-          "label": { "type": "string" },
-          "lang": { "type": "string", "pattern": "^[a-z]{2}$" }
+          "term": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string",
+            "pattern": "^[a-z]{2}$"
+          }
         },
         "required": ["term", "schema"]
       }
@@ -186,8 +292,12 @@
         "type": "object",
         "additionalProperties": true,
         "properties": {
-          "placename": { "type": "string" },
-          "area": { "type": "string" },
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
           "country": {
             "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
             "type": ["string", "null"],
@@ -203,32 +313,83 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "start": { "type": ["string", "null"], "format": "date-time" },
-          "stop": { "type": ["string", "null"],  "format": "date-time" }
+          "start": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "stop": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          }
         }
       }
     },
-    "quality": { "type": ["string", "null"] },
-    "restrictions": { "type": ["string", "null"] },
+    "quality": {
+      "type": ["string", "null"]
+    },
+    "restrictions": {
+      "type": ["string", "null"]
+    },
     "sets": {
       "description": "Subsets",
       "type": "array",
       "additionalItems": false,
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
-    "gcmd": { "description": "GCMD DIF object, see http://gcmd.gsfc.nasa.gov/add/difguide/index.html", "type": "object",
+    "gcmd": {
+      "description": "GCMD DIF object, see http://gcmd.gsfc.nasa.gov/add/difguide/index.html",
+      "type": "object",
       "properties": {
-        "locations": { "description": "DIF element Location", "type": "array", "items": { "type": "object", "additionalProperties": true } },
-        "projects": { "description": "DIF element Project", "type": "array"},
-        "resolutions": { "description": "DIF element Data_Resolution", "type": "array"},
-        "disciplines": { "description": "DIF element Discipline", "type": "array"},
-        "idn_nodes": { "description": "DIF element IDN_Node", "type": "array"},
-        "paleo_temporal_coverage": { "description": "DIF element Paleo_Temporal_Coverage", "type": "array"},
-        "instruments": { "description": "DIF instruments (DIF element Sensor_Name)", "type": "array"},
-        "platforms": { "description": "DIF platforms (DIF element Source_Name)", "type": "array"},
-        "references": { "description": "DIF element Reference", "type": "array"},
-        "extended": { "description": "DIF element Extended_Metadata)", "type": "array"},
-        "citation": { "description": "DIF element Data_Set_Citation", "type": "array"},
+        "locations": {
+          "description": "DIF element Location",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "projects": {
+          "description": "DIF element Project",
+          "type": "array"
+        },
+        "resolutions": {
+          "description": "DIF element Data_Resolution",
+          "type": "array"
+        },
+        "disciplines": {
+          "description": "DIF element Discipline",
+          "type": "array"
+        },
+        "idn_nodes": {
+          "description": "DIF element IDN_Node",
+          "type": "array"
+        },
+        "paleo_temporal_coverage": {
+          "description": "DIF element Paleo_Temporal_Coverage",
+          "type": "array"
+        },
+        "instruments": {
+          "description": "DIF instruments (DIF element Sensor_Name)",
+          "type": "array"
+        },
+        "platforms": {
+          "description": "DIF platforms (DIF element Source_Name)",
+          "type": "array"
+        },
+        "references": {
+          "description": "DIF element Reference",
+          "type": "array"
+        },
+        "extended": {
+          "description": "DIF element Extended_Metadata)",
+          "type": "array"
+        },
+        "citation": {
+          "description": "DIF element Data_Set_Citation",
+          "type": "array"
+        },
         "sciencekeywords": {
           "description": "DIF element Parameters (aka. Science Keywords)",
           "type": "array",
@@ -237,13 +398,27 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "Category": { "type": "string" },
-              "Topic": { "type": "string" },
-              "Term": { "type": "string" },
-              "Variable_Level_1": { "type": "string" },
-              "Variable_Level_2": { "type": "string" },
-              "Variable_Level_3": { "type": "string" },
-              "Detailed_Variable": { "type": "string" }
+              "Category": {
+                "type": "string"
+              },
+              "Topic": {
+                "type": "string"
+              },
+              "Term": {
+                "type": "string"
+              },
+              "Variable_Level_1": {
+                "type": "string"
+              },
+              "Variable_Level_2": {
+                "type": "string"
+              },
+              "Variable_Level_3": {
+                "type": "string"
+              },
+              "Detailed_Variable": {
+                "type": "string"
+              }
             }
           }
         }
@@ -251,7 +426,7 @@
     },
     "created": {
       "description": "Metadata was published",
-      "type": ["string","null"],
+      "type": ["string", "null"],
       "format": "date-time"
     },
     "updated": {
@@ -264,13 +439,31 @@
       "type": ["string", "null"],
       "format": "date-time"
     },
-    "comment": { "type": "string" },
-    "rights" : { "type": ["string", "null"] },
-    "_id": { "description": "Internal id", "type": "string" },
-    "_rev" : { "description": "Internal revision", "type": "string" },
-    "_attachments":{"type":"object"},
-    "created_by": { "type": "string" },
-    "collection": { "type": "string" },
-    "updated_by" : {  "type": "string" }
+    "comment": {
+      "type": "string"
+    },
+    "rights": {
+      "type": ["string", "null"]
+    },
+    "_id": {
+      "description": "Internal id",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision",
+      "type": "string"
+    },
+    "_attachments": {
+      "type": "object"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "collection": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    }
   }
 }
