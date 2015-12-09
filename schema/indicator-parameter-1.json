@@ -1,128 +1,129 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://api.npolar.no/schema/indicator-parameter-1.0.0.pre",
-    "type": "object",
-    "properties": {
-        "_id": {
-            "type": "string"
-        },
-        "_rev": {
-            "type": "string"
-        },
-        "workspace": {
-            "type": "string",
-            "default": "indicator"
-        },
-        "systems": {
-            "type": "array",
-            "items": {
-                "type": "string",
-                "minLength": 4
-            },
-            "minItems": 1,
-            "additionalItems": false,
-            "default": ["mosj.no"]
-        },
-        "created": {
-            "id": "created",
-            "type": "date-time"
-        },
-        "created_by": {
-            "id": "created_by",
-            "type": "string"
-        },
-        "species": {
-            "id": "species",
-            "type": "string"
-        },
-        "longitude": {
-            "type": "number"
-        },
-        "latitude": {
-            "type": "number"
-        },
-        "id": {
-            "type": "string"
-        },
-        "timeseries": {
-            "type": "array",
-            "items": {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-            },
-            "minItems": 0,
-            "additionalItems": false
-        },
-        "titles": {
-            "id": "titles",
-            "type": "array",
-            "items": {
-                "id": "1",
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string"
-                    },
-                    "label": {
-                        "type": "string"
-                    },
-                    "lang": {
-                        "id": "lang",
-                        "type": "string"
-                    }
-                },
-                "additionalProperties": false
-            },
-            "additionalItems": false
-        },
-        "schema": {
-            "id": "schema",
-            "type": "string",
-            "default": "http://api.npolar.no/schema/indicator-parameter-1"
-        },
-        "collection": {
-            "id": "collection",
-            "type": "string",
-            "default": "parameter"
-        },
-        "locations": {
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type": "object",
-                "additionalProperties": true,
-                "properties": {
-                    "placename": {
-                        "type": "string"
-                    },
-                    "area": {
-                        "type": "string"
-                    },
-                    "country": {
-                        "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "pattern": "^(([A-Z]|[a-z]){2})$"
-                    },
-                    "latitude": {
-                        "type": "number"
-                    },
-                    "longitude": {
-                        "type": "number"
-                    }
-                }
-            }
-        }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/indicator-parameter-1.0.0.pre",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
     },
-    "additionalProperties": true,
-    "required": [
-        "titles",
-        "schema",
-        "systems",
-        "workspace",
-        "collection"
-    ]
+    "_rev": {
+      "type": "string"
+    },
+    "workspace": {
+      "type": "string",
+      "default": "indicator"
+    },
+    "systems": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 4
+      },
+      "minItems": 1,
+      "additionalItems": false,
+      "default": ["mosj.no"]
+    },
+    "created": {
+      "id": "created",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "id": "created_by",
+      "type": "string"
+    },
+    "species": {
+      "id": "species",
+      "type": "string"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "id": {
+      "type": "string"
+    },
+    "timeseries": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "format": "uri"
+      },
+      "minItems": 0,
+      "additionalItems": false
+    },
+    "titles": {
+      "id": "titles",
+      "type": "array",
+      "items": {
+        "id": "1",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "lang": {
+            "id": "lang",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalItems": false
+    },
+    "schema": {
+      "id": "schema",
+      "type": "string",
+      "default": "http://api.npolar.no/schema/indicator-parameter-1"
+    },
+    "collection": {
+      "id": "collection",
+      "type": "string",
+      "default": "parameter"
+    },
+    "locations": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
+          "country": {
+            "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(([A-Z]|[a-z]){2})$"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "titles",
+    "schema",
+    "systems",
+    "workspace",
+    "collection"
+  ]
 }

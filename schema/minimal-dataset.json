@@ -3,14 +3,33 @@
   "description": "The minimal document body for a dataset record on http://api.npolar.no",
   "type": "object",
   "properties": {
-    "id": { "type": "string" },
-    "schema": { "type": "string", "format": "uri" },
-    "_attachments":{"type":"object"},
-    "title": { "type": "string" },
-    "published": { "type": "string", "format": "date-time" },
-    "updated": { "type": "string", "format": "date-time"},
-    "progress": { "enum": ["planned", "ongoing", "complete"] },
-    "draft": { "enum": ["yes"] },
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "_attachments": {
+      "type": "object"
+    },
+    "title": {
+      "type": "string"
+    },
+    "published": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "progress": {
+      "enum": ["planned", "ongoing", "complete"]
+    },
+    "draft": {
+      "enum": ["yes"]
+    },
     "edits": {
       "description": "List of edits",
       "type": "array",
@@ -23,8 +42,12 @@
             "type": "string",
             "format": "date-time"
           },
-          "email": { "type": "string" },
-          "name": { "type": "string" }
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
         },
         "required": ["edited", "name"]
       }
@@ -38,22 +61,28 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "name": { "type": "string" },
-        "gcmd_short_name": { "type": ["string", "null"] },
-        "shortname": { "type": ["string", "null"] },
+        "name": {
+          "type": "string"
+        },
+        "gcmd_short_name": {
+          "type": ["string", "null"]
+        },
+        "shortname": {
+          "type": ["string", "null"]
+        },
         "roles": {
           "type": "array",
           "items": {
-            "enum": ["originator", "owner",  "publisher", "resourceProvider"]
+            "enum": ["originator", "owner", "publisher", "resourceProvider"]
           }
         },
         "email": {
-          "type": ["string","null"],
+          "type": ["string", "null"],
           "additionalItems": false,
           "format": "email"
         },
         "uri": {
-          "type": ["string","null"],
+          "type": ["string", "null"],
           "additionalItems": false
         }
       },

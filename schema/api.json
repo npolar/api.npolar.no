@@ -7,36 +7,106 @@
   "additionalProperties": false,
   "required": ["id", "schema", "base", "path", "verbs", "formats", "accepts", "lifecycle", "open", "run"],
   "properties": {
-    "id": { "type": "string" },
-    "rev": { "type": "string" },
-    "schema": { "type": "string", "format": "uri", "default":"http://api.npolar.no/schema/api"},
-    "collection": { "type": "string" },
-    "base": { "type": "string", "format": "uri", "default":"http://api.npolar.no"},
-    "version": { "type": "string" },
-    "before": { "type": "string" },
-    "after": { "type": "string" },
-    "path": { "type": "string", "pattern": "^[/]"},
-    "title": { "type": "string" },
-    "summary": { "type": "string" },
-    "storage": { "type": ["string", "null"] },
-    "search": { "type": "object" },
-    "database": { "type": ["string", "null"] },
-    "model": { "type": ["string", "null"] },
-    "verbs": { "type": "array" },
-    "middleware": { "type": "array" },
-    "formats": { "type": "object" },
-    "accepts": { "type": "object" },
-    "editlog": { "type": "object" },
-    "category": { "type": "array" },
-    "lifecycle": { "type": "string", "default": "production" },
-    "run": { "type": ["string", "null"] },
-    "open": { "type": "boolean" },
-    "auth": { "type": "object" },
-    "created": { "type": "string", "format": "datetime"},
-    "created_by": { "type": ["string", "object"] },
-    "updated": { "type": "string", "format": "datetime"},
-    "updated_by": { "type": ["string", "object"] },
-    "_id": { "type": "string" },
-    "_rev": { "type": "string" }
+    "id": {
+      "type": "string"
+    },
+    "rev": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string",
+      "format": "uri",
+      "default": "http://api.npolar.no/schema/api"
+    },
+    "collection": {
+      "type": "string"
+    },
+    "base": {
+      "type": "string",
+      "format": "uri",
+      "default": "http://api.npolar.no"
+    },
+    "version": {
+      "type": "string"
+    },
+    "before": {
+      "type": "string"
+    },
+    "after": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^[/]"
+    },
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "storage": {
+      "type": ["string", "null"]
+    },
+    "search": {
+      "type": "object"
+    },
+    "database": {
+      "type": ["string", "null"]
+    },
+    "model": {
+      "type": ["string", "null"]
+    },
+    "verbs": {
+      "type": "array"
+    },
+    "middleware": {
+      "type": "array"
+    },
+    "formats": {
+      "type": "object"
+    },
+    "accepts": {
+      "type": "object"
+    },
+    "editlog": {
+      "type": "object"
+    },
+    "category": {
+      "type": "array"
+    },
+    "lifecycle": {
+      "type": "string",
+      "default": "production"
+    },
+    "run": {
+      "type": ["string", "null"]
+    },
+    "open": {
+      "type": "boolean"
+    },
+    "auth": {
+      "type": "object"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": ["string", "object"]
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "type": ["string", "object"]
+    },
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    }
   }
 }

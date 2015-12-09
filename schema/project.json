@@ -5,32 +5,81 @@
   "additionalProperties": false,
   "required": ["title"],
   "properties": {
-    "id": { "type" :"string" },
-    "rev": { "type": "string" },
-    "np_project_no" : { "type": "string"},
-    "collection" : { "type": "string", "default": "project" },
-    "schema": { "type": "string" },
-    "title": { "type": "string" },
-    "acronym": { "type": "string" },
-    "summary": { "type": "string", "description": "Summary should describe the general scope, activities and setting of the project." },
-    "abstract": { "type": "string", "description": "Abstract should be used to give detailed information about the scientific objectives of the project." },
-    "knowledge_gap_addressed": { "type": "string", "description":"Which knowledge gap identified by central authorities will this project contribute to?" },
-    "state": { "type": "string", "enum": ["planned", "ongoing", "completed", "cancelled"] },
-    "draft": { "type": "string", "enum": ["yes", "no"], "description": "This information will be publicly available if you answer no." },
-    "start_date": { "type": "string", "format" : "date-time" },
-    "end_date": { "type": "string", "format" : "date-time" },
-    "results_summary": { "type": "string" },
-    "ris_id": { "type": ["string", "null"] ,"description": "Id used in the Reseach in Svalbard database."},
-    "type": { "type": "string", "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"] },
-    "funding_sources" : {
+    "id": {
+      "type": "string"
+    },
+    "rev": {
+      "type": "string"
+    },
+    "np_project_no": {
+      "type": "string"
+    },
+    "collection": {
+      "type": "string",
+      "default": "project"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "acronym": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Summary should describe the general scope, activities and setting of the project."
+    },
+    "abstract": {
+      "type": "string",
+      "description": "Abstract should be used to give detailed information about the scientific objectives of the project."
+    },
+    "knowledge_gap_addressed": {
+      "type": "string",
+      "description": "Which knowledge gap identified by central authorities will this project contribute to?"
+    },
+    "state": {
+      "type": "string",
+      "enum": ["planned", "ongoing", "completed", "cancelled"]
+    },
+    "draft": {
+      "type": "string",
+      "enum": ["yes", "no"],
+      "description": "This information will be publicly available if you answer no."
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "results_summary": {
+      "type": "string"
+    },
+    "ris_id": {
+      "type": ["string", "null"],
+      "description": "Id used in the Reseach in Svalbard database."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"]
+    },
+    "funding_sources": {
       "type": "array",
       "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "organization_name": { "type": "string" },
-          "aggresso_code": { "type": "string" }
+          "organization_name": {
+            "type": "string"
+          },
+          "aggresso_code": {
+            "type": "string"
+          }
         }
       }
     },
@@ -41,8 +90,13 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "href": { "type": "string", "format": "uri" },
-          "title": { "type": ["string", "null"] }
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": ["string", "null"]
+          }
         }
       }
     },
@@ -53,8 +107,13 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "href": { "type": "string", "format": "uri" },
-          "title": { "type": ["string", "null"] }
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": ["string", "null"]
+          }
         }
       }
     },
@@ -65,23 +124,32 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "href": { "type": "string", "format": "uri" },
-          "title": { "type": ["string", "null"] }
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": ["string", "null"]
+          }
         }
       }
     },
-    "website" : { "type": "boolean" },
+    "website": {
+      "type": "boolean"
+    },
     "topics": {
       "type": "array",
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["acidification","atmosphere", "biodiversity", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "marine ecosystems", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
+        "enum": ["acidification", "atmosphere", "biodiversity", "biology", "chemistry", "climate", "ecology", "ecotoxicology", "geology", "glaciology", "marine", "marine ecosystems", "maps", "oceanography", "other", "remote-sensing", "seaice", "terrestrial", "topography", "vegetation"]
       }
     },
     "tags": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "people": {
       "type": "array",
@@ -90,14 +158,33 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": { "type": "string" },
-          "first_name": { "type": "string" },
-          "last_name": { "type": "string" },
-          "email": { "type": "string", "format": "email" },
-          "profile_href" : { "type": "string", "format": "uri" },
-          "role": { "type": "string", "enum": ["projectLeader", "projectParticipant"] },
-          "employee_no": { "type": "string" },
-          "organisation": { "type": ["string", "null"] }
+          "id": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "profile_href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["projectLeader", "projectParticipant"]
+          },
+          "employee_no": {
+            "type": "string"
+          },
+          "organisation": {
+            "type": ["string", "null"]
+          }
         }
       }
     },
@@ -108,10 +195,20 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "name": { "type": "string" },
-          "name_nb" : { "type": "string"},
-          "href": { "type": "string", "format": "uri" },
-          "role": { "type": "string", "enum": ["owner", "partner"] }
+          "name": {
+            "type": "string"
+          },
+          "name_nb": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["owner", "partner"]
+          }
         }
       }
     },
@@ -122,10 +219,26 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "north": { "type": "number", "maximum": 90.0, "minimum": -90.0 },
-          "east": { "type": "number", "maximum": 180.0, "minimum": -180.0 },
-          "south": { "type": "number", "maximum": 90.0, "minimum": -90.0  },
-          "west": { "type": "number", "maximum": 180.0, "minimum": -180.0  }
+          "north": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0
+          },
+          "east": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0
+          },
+          "south": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0
+          },
+          "west": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0
+          }
         }
       }
     },
@@ -136,8 +249,12 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "placename": { "type": "string" },
-          "area": { "type": "string" },
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
           "country": {
             "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
             "type": ["string", "null"],
@@ -153,11 +270,22 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "rel": { "type": "string" },
-          "href": { "type": "string", "format": "uri" },
-          "title": { "type": ["string", "null"] },
-          "hreflang": { "type": ["string", "null"] },
-          "type": { "type": "string" }
+          "rel": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": ["string", "null"]
+          },
+          "hreflang": {
+            "type": ["string", "null"]
+          },
+          "type": {
+            "type": "string"
+          }
         },
         "required": ["rel", "href"]
       }
@@ -174,16 +302,24 @@
             "type": "string",
             "format": "date-time"
           },
-          "email": { "type": "string" },
-          "name": { "type": "string" },
-          "comment": { "type": "string" },
-          "rev": { "type": "string" }
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "rev": {
+            "type": "string"
+          }
         },
         "required": ["edited", "name"]
       }
     },
-    "translations" : {
-      "type" : "object"
+    "translations": {
+      "type": "object"
     },
     "created": {
       "description": "Project was published",
@@ -195,9 +331,19 @@
       "type": "string",
       "format": "date-time"
     },
-    "created_by": { "type": "string" },
-    "updated_by" : {  "type": "string" },
-    "_id": { "description": "Internal id", "type": "string" },
-    "_rev" : { "description": "Internal revision", "type": "string" }
+    "created_by": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "_id": {
+      "description": "Internal id",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision",
+      "type": "string"
+    }
   }
 }

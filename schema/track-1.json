@@ -37,11 +37,13 @@
     },
     "updated": {
       "id": "http://api.npolar.no/schema/track-1/updated",
-      "type": "string"
+      "type": "string",
+      "format": "date-time"
     },
     "created": {
       "id": "http://api.npolar.no/schema/track-1/created",
-      "type": "string"
+      "type": "string",
+      "format": "date-time"
     },
     "updated_by": {
       "id": "http://api.npolar.no/schema/track-1/updated_by",

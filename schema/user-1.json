@@ -7,15 +7,27 @@
     "_id": {
       "type": "string",
       "description": "Login e-mail address",
-      "format": "email" 
+      "format": "email"
     },
     "_rev": {
       "type": "string"
     },
-    "created": { "type": "string", "format": "datetime" },
-    "updated": { "type": "string", "format": "datetime" },
-    "created_by": { "type": "string", "format": "email" },
-    "updated_by": { "type": "string", "format": "email" },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string",
+      "format": "email"
+    },
+    "updated_by": {
+      "type": "string",
+      "format": "email"
+    },
     "password": {
       "type": "string",
       "description": "Salted and hashed password"
@@ -41,23 +53,23 @@
     },
     "active": {
       "type": "boolean",
-	  "default": true
+      "default": true
     },
     "hash": {
       "type": "string",
-	  "enum": [ "sha1", "sha256", "sha384", "sha512", "md5" ],
-	  "default": "sha512",
+      "enum": ["sha1", "sha256", "sha384", "sha512", "md5"],
+      "default": "sha512",
       "description": "Hash algorithm"
     },
     "systems": {
       "type": "array",
-	  "description": "List of systems associated with the user",
+      "description": "List of systems associated with the user",
       "items": {
         "type": "object",
         "properties": {
           "uri": {
             "type": "string",
-			"description": "System URI (supports wildcards)"
+            "description": "System URI (supports wildcards)"
           },
           "rights": {
             "type": "array",

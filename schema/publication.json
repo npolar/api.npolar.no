@@ -44,17 +44,18 @@
       "description": "Exact title of the publication. Markdown accepted.",
       "type": "string"
     },
-     "publication_lang": {
+    "publication_lang": {
       "type": "string",
       "default": "en",
-      "enum": ["ab", "ar", "an","hy","as","av","az", "eu", "be","bh", "bs","br","bg", "ca",
-    "ce", "zh","cv", "kw", "hr", "cs", "da",
-    "nl","dz","en","et", "fo", "fi", "fr", "gl","ka","de", "el", "he",
-    "hi","hu", "id", "ga", "ik", "is", "it", "iu", "ja","kl", "ks","kk", "ky", "kv", "ko",
-    "lb", "lt", "lv", "gv", "mk", "ml", "mr", "mn", "ne", "no", "ii",
-    "oc", "cu", "or", "os", "pa", "fa","pl", "pt", "qu", "rm","ro", "ru", "sd",
-    "se", "sr", "gd", "si", "sk", "sl", "es", "sv", "ta", "te", "tg", "bo", "tk", "tr", "tt",
-    "ug", "uk", "ur", "uz", "wa","cy", "fy", "yi","za"]
+      "enum": ["ab", "ar", "an", "hy", "as", "av", "az", "eu", "be", "bh", "bs", "br", "bg", "ca",
+        "ce", "zh", "cv", "kw", "hr", "cs", "da",
+        "nl", "dz", "en", "et", "fo", "fi", "fr", "gl", "ka", "de", "el", "he",
+        "hi", "hu", "id", "ga", "ik", "is", "it", "iu", "ja", "kl", "ks", "kk", "ky", "kv", "ko",
+        "lb", "lt", "lv", "gv", "mk", "ml", "mr", "mn", "ne", "no", "ii",
+        "oc", "cu", "or", "os", "pa", "fa", "pl", "pt", "qu", "rm", "ro", "ru", "sd",
+        "se", "sr", "gd", "si", "sk", "sl", "es", "sv", "ta", "te", "tg", "bo", "tk", "tr", "tt",
+        "ug", "uk", "ur", "uz", "wa", "cy", "fy", "yi", "za"
+      ]
     },
     "scientific_abstract": {
       "description": "Paper abstract. Markdown accepted.",
@@ -132,7 +133,7 @@
               "null"
             ],
             "pattern": "^(([A-Z]|[a-z]){2})$"
-   },
+          },
           "hemisphere": {
             "description": "Hemisphere: N or S",
             "type": [
@@ -141,17 +142,28 @@
             ],
             "pattern": "^[NSns]{1}$"
           },
-          "latitude": { "type": "number", "minimum": -90.0, "maximum": 90.0 },
-          "longitude": { "type": "number", "minimum": -180.0, "maximum": 180.0 },
-          "geometry": { "type": "object", "description": "[GeoJSON geometry object](http://geojson.org/geojson-spec.html#geometry-objects)"}
+          "latitude": {
+            "type": "number",
+            "minimum": -90.0,
+            "maximum": 90.0
+          },
+          "longitude": {
+            "type": "number",
+            "minimum": -180.0,
+            "maximum": 180.0
+          },
+          "geometry": {
+            "type": "object",
+            "description": "[GeoJSON geometry object](http://geojson.org/geojson-spec.html#geometry-objects)"
+          }
         }
       }
     },
     "published_helper": {
-            "description": "Ex: %Y-%m-%d",
-            "type": "string"
+      "description": "Ex: %Y-%m-%d",
+      "type": "string"
     },
-    "published_sort":{
+    "published_sort": {
       "type": [
         "string",
         "null"
@@ -194,21 +206,21 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "np_series": {
-            "type": "string"
-          },
-          "series": {
-            "type": "string"
-          },
-          "series_no": {
-            "type": "string"
-          }
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "np_series": {
+          "type": "string"
+        },
+        "series": {
+          "type": "string"
+        },
+        "series_no": {
+          "type": "string"
+        }
       }
     },
     "conference": {
@@ -217,27 +229,27 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "place": {
-            "type": "string"
-          },
-          "country": {
-            "type":"string"
-         },
-          "dates": {
-            "type": "array",
-            "items": {
-              "type": [
-                "string",
-                null
-              ],
-              "format": "date-time"
-            }
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "place": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "dates": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              null
+            ],
+            "format": "date-time"
+          }
         }
       }
     },
@@ -379,14 +391,14 @@
         "type": "string"
       }
     },
-     "isbn": {
+    "isbn": {
       "additionalItems": false,
       "type": "array",
       "items": {
         "type": "string"
       }
     },
-     "issn": {
+    "issn": {
       "additionalItems": false,
       "type": "array",
       "items": {

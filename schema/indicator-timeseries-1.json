@@ -1,229 +1,232 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://api.npolar.no/schema/indicator-timeseries-1",
-    "type": "object",
-    "properties": {
-        "_id": {
-            "type": "string"
-        },
-        "_rev": {
-            "type": "string"
-        },
-        "workspace": {
-            "type": "string"
-        },
-        "systems": {
-            "type": "array",
-            "items": {
-                "type": "string",
-                "minLength": 1
-            },
-            "minItems": 1,
-            "additionalItems": false
-        },
-        "created": {
-            "id": "created",
-            "type": "string"
-        },
-        "created_by": {
-            "id": "created_by",
-            "type": "string"
-        },
-        "species": {
-            "id": "species",
-            "type": "string"
-        },
-        "longitude": {
-            "type": "number"
-        },
-        "latitude": {
-            "type": "number"
-        },
-        "unit": {
-            "type": "object",
-            "properties": {
-                "symbol": {
-                    "type": "string"
-                }
-            },
-            "additionalItems": false
-        },
-        "links": {
-            "id": "links",
-            "type": "array",
-            "items": {
-                "id": "2",
-                "type": "object",
-                "properties": {
-                    "href": {
-                        "id": "href",
-                        "type": "string"
-                    },
-                    "rel": {
-                        "id": "rel",
-                        "type": "string"
-                    },
-                    "type": {
-                        "id": "type",
-                        "type": "string"
-                    }
-                },
-                "additionalProperties": false
-            },
-            "additionalItems": false
-        },
-        "id": {
-            "type": "string"
-        },
-        "parameter": {
-            "type": "string"
-        },
-        "titles": {
-            "id": "titles",
-            "type": "array",
-            "items": {
-                "id": "1",
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string"
-                    },
-                    "label": {
-                        "type": "string"
-                    },
-                    "lang": {
-                        "id": "lang",
-                        "type": "string"
-                    }
-                },
-                "additionalProperties": false
-            },
-            "additionalItems": false
-        },
-        "schema": {
-            "id": "schema",
-            "type": "string"
-        },
-        "collection": {
-            "id": "collection",
-            "type": "string"
-        },
-        "locations": {
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type": "object",
-                "additionalProperties": true,
-                "properties": {
-                    "placename": {
-                        "type": "string"
-                    },
-                    "area": {
-                        "type": "string"
-                    },
-                    "country": {
-                        "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "pattern": "^(([A-Z]|[a-z]){2})$"
-                    },
-                    "latitude": {
-                        "type": "number"
-                    },
-                    "longitude": {
-                        "type": "number"
-                    }
-                }
-            }
-        },
-        "variables": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "variable": {
-                        "type": "string"
-                    },
-                    "type": {
-                        "type": "string"
-                    },
-                    "time": {
-                        "type": "boolean"
-                    }
-                }
-            }
-        },
-        "labels": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "variable": {
-                        "type": "string"
-                    },
-                    "label": {
-                        "type": "string"
-                    },
-                    "lang": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "resolution": {
-          "type": "string",
-          "enum": [ "year", "month", "day", "hour", "minute", "second" ],
-          "default": "year",
-          "description": "Data period (minimum time between reported values)"
-        },
-        "data": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "year": {
-                        "type": ["number", "null"]
-                    },
-                    "when": {
-                        "type": ["string", "null"], "pattern": "^[0-9]{4}"
-                    },
-                    "value": {
-                        "type": ["number", "null"]
-                    },
-                    "low": {
-                        "type": ["number", "null"]
-                    },
-                    "high": {
-                        "type": ["number", "null"]
-                    },
-                    "min": {
-                        "type": ["number", "null"]
-                    },
-                    "max": {
-                        "type": ["number", "null"]
-                    },
-                    "year_format": {
-                        "type": "string"
-                    }
-                },
-                "additionalProperties": false
-            },
-            "additionalItems": false
-        },
-        "updated": {
-            "id": "updated",
-            "type": "string"
-        },
-        "updated_by": {
-            "id": "updated_by",
-            "type": "string"
-        }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/indicator-timeseries-1",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
     },
-    "additionalProperties": true,
-    "required": [
-        "titles",
-        "schema"
-    ]
+    "_rev": {
+      "type": "string"
+    },
+    "workspace": {
+      "type": "string"
+    },
+    "systems": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "additionalItems": false
+    },
+    "created": {
+      "id": "created",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "id": "created_by",
+      "type": "string"
+    },
+    "species": {
+      "id": "species",
+      "type": "string"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "type": "string"
+        }
+      },
+      "additionalItems": false
+    },
+    "links": {
+      "id": "links",
+      "type": "array",
+      "items": {
+        "id": "2",
+        "type": "object",
+        "properties": {
+          "href": {
+            "id": "href",
+            "type": "string"
+          },
+          "rel": {
+            "id": "rel",
+            "type": "string"
+          },
+          "type": {
+            "id": "type",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalItems": false
+    },
+    "id": {
+      "type": "string"
+    },
+    "parameter": {
+      "type": "string"
+    },
+    "titles": {
+      "id": "titles",
+      "type": "array",
+      "items": {
+        "id": "1",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "lang": {
+            "id": "lang",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalItems": false
+    },
+    "schema": {
+      "id": "schema",
+      "type": "string"
+    },
+    "collection": {
+      "id": "collection",
+      "type": "string"
+    },
+    "locations": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
+          "country": {
+            "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(([A-Z]|[a-z]){2})$"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "variable": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "time": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "variable": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "resolution": {
+      "type": "string",
+      "enum": ["year", "month", "day", "hour", "minute", "second"],
+      "default": "year",
+      "description": "Data period (minimum time between reported values)"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": ["number", "null"]
+          },
+          "when": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9]{4}"
+          },
+          "value": {
+            "type": ["number", "null"]
+          },
+          "low": {
+            "type": ["number", "null"]
+          },
+          "high": {
+            "type": ["number", "null"]
+          },
+          "min": {
+            "type": ["number", "null"]
+          },
+          "max": {
+            "type": ["number", "null"]
+          },
+          "year_format": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalItems": false
+    },
+    "updated": {
+      "id": "updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "id": "updated_by",
+      "type": "string"
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "titles",
+    "schema"
+  ]
 }

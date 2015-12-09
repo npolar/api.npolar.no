@@ -1,70 +1,70 @@
 {
-	"title": "NPolar User v1.0",
-	"description": "Norwegian Polar Institute: User schema (v1.0-rc1)",
-	"$schema": "http://json-schema.org/draft-04/schema#",
-	"type": "object",
-	"properties": {
-		"email": {
-			"type": "string",
-			"format": "email",
-			"description": "Primary e-mail address of the user"
-		},
-		"password": {
-			"type": "string",
-			"description": "SHA encrypted password of the user"
-		},
-		"person_uri": {
-			"type": "string",
-			"format": "uri",
-			"description": "URI to the user's public person document"
-		},
-		"comment": {
-			"type": "string",
-			"description": "Additional comments about the user"
-		},
-		"groups": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"group": {
-						"$ref": "#/definitions/group"
-					},
-					"access": {
-						"type": "array",
-						"items": {
-							"$ref": "#/definitions/access"
-						}
-					}
-				},
-				"required": [
-					"group",
-					"access"
-				]
-			},
-			"description": "List of the user's group memberships"
-		},
-		"active": {
-			"type": "boolean",
-			"default": true
-		}
-	},
-	"required": [
-		"email",
-		"password"
-	],
-	"definitions": {
-		"group": {
-			"type": "string"
-		},
-		"access": {
-			"type": "string",
-			"enum": [
-				"read",
-				"create",
-				"update",
-				"delete"
-			]
-		}
-	}
+  "title": "NPolar User v1.0",
+  "description": "Norwegian Polar Institute: User schema (v1.0-rc1)",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Primary e-mail address of the user"
+    },
+    "password": {
+      "type": "string",
+      "description": "SHA encrypted password of the user"
+    },
+    "person_uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "URI to the user's public person document"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Additional comments about the user"
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "group": {
+            "$ref": "#/definitions/group"
+          },
+          "access": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/access"
+            }
+          }
+        },
+        "required": [
+          "group",
+          "access"
+        ]
+      },
+      "description": "List of the user's group memberships"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "email",
+    "password"
+  ],
+  "definitions": {
+    "group": {
+      "type": "string"
+    },
+    "access": {
+      "type": "string",
+      "enum": [
+        "read",
+        "create",
+        "update",
+        "delete"
+      ]
+    }
+  }
 }

@@ -1,248 +1,455 @@
 {
-	"title": "Marine biology sample schema",
-	"description": "Schema for Marine biology sample documents",
-	"$schema": "http://json-schema.org/draft-04/schema#",
-	"id": "http://api.npolar.no/schema/marine_sample-1.0.0",
-	"type": "object",
-	"properties": {
-		"abundances": {
+  "title": "Marine biology sample schema",
+  "description": "Schema for Marine biology sample documents",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/marine_sample-1.0.0",
+  "type": "object",
+  "properties": {
+    "abundances": {
       "type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-		      "type": {
-						"type": "string",
-						"enum": ["Phytoplankton","Zooplankton"]
-					},
-		      "animal": {
-						"type": "object",
-						"properties": {
-							"class": {"type": "string"},
-							"comment": {"type": "string"},
-							"family": {"type": "string"},
-							"genus": {"type": "string"},
-							"name_en": {"type": "string"},
-							"name_nb": {"type": "string"},
-							"name_sci": {"type": "string"},
-							"order": {"type": "string"},
-							"phylum": {"type": "string"},
-							"subphylum": {"type": "string"}
-						}
-		      },
-          "length": {"type": "string"},
-          "operation": {"type": "string"},
-		      "precision": {"type": "string"},
-					"sample_type": {"type": "string"},
-					"stage_name": {"type": "string"},
-					"type": {"type": "string"},
-		      "unit": {"type": "string"},
-		      "value": {"type": "number"}
-		    }
-			}
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["Phytoplankton", "Zooplankton"]
+          },
+          "animal": {
+            "type": "object",
+            "properties": {
+              "class": {
+                "type": "string"
+              },
+              "comment": {
+                "type": "string"
+              },
+              "family": {
+                "type": "string"
+              },
+              "genus": {
+                "type": "string"
+              },
+              "name_en": {
+                "type": "string"
+              },
+              "name_nb": {
+                "type": "string"
+              },
+              "name_sci": {
+                "type": "string"
+              },
+              "order": {
+                "type": "string"
+              },
+              "phylum": {
+                "type": "string"
+              },
+              "subphylum": {
+                "type": "string"
+              }
+            }
+          },
+          "length": {
+            "type": "string"
+          },
+          "operation": {
+            "type": "string"
+          },
+          "precision": {
+            "type": "string"
+          },
+          "sample_type": {
+            "type": "string"
+          },
+          "stage_name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        }
+      }
     },
-    "animal_group": {"type": "string"},
-    "bottomdepth": {"type": "number"},
-    "collection": {"type": "string"},
-		"comments": {"type": "string"},
-		"comment": {"type": "string"},
-    "conveyance": {"type": "string"},
-		"ctd_staff": {
-			"type": "object",
-			"properties": {
-				"email": {"type": "string"},
-				"fax": {"type": "string"},
-				"firstname": {"type": "string"},
-				"id": {"type": "string"},
-				"institution": {
-					"type": "object",
-					"properties": {
-						"address": {"type": "string"},
-						"city": {"type": "string"},
-						"country": {"type": "string"},
-						"name": {"type": "string"},
-						"postalcode": {"type": "string"},
-						"shortname": {"type": "string"}
-					}
-				},
-				"lastname": {"type": "string"},
-				"phone": {"type": "string"},
-				"title": {"type": "string"}
-			}
-		},
-    "ctdnr": {"type": "string"},
-    "draft": {"type": "string"},
-    "expedition": {"type": "string"},
-		"filteredwater": {"type": "number"},
-		"flowmeter_start": {"type": "number"},
-		"flowmeter_stop": {"type": "number"},
-    "gear": {"type": "string"},
+    "animal_group": {
+      "type": "string"
+    },
+    "bottomdepth": {
+      "type": "number"
+    },
+    "collection": {
+      "type": "string"
+    },
+    "comments": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "conveyance": {
+      "type": "string"
+    },
+    "ctd_staff": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "fax": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "institution": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "postalcode": {
+              "type": "string"
+            },
+            "shortname": {
+              "type": "string"
+            }
+          }
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "ctdnr": {
+      "type": "string"
+    },
+    "draft": {
+      "type": "string"
+    },
+    "expedition": {
+      "type": "string"
+    },
+    "filteredwater": {
+      "type": "number"
+    },
+    "flowmeter_start": {
+      "type": "number"
+    },
+    "flowmeter_stop": {
+      "type": "number"
+    },
+    "gear": {
+      "type": "string"
+    },
     "id": {
       "type": "string",
-			"description": "UUID of this doc"
+      "description": "UUID of this doc"
     },
-    "institution": {"type": "string"},
-    "instref": {"type": "string"},
-		"latitude": {
-			"type": "number",
-			"minimum": -90,
-			"maximum": 90,
-			"description": "Location latitude in WGS-84"
-		},
-		"longitude": {
-			"type": "number",
-			"minimum": -180,
-			"maximum": 180,
-			"description": "Location longitude in WGS-84"
-		},
-		"lipids": {
+    "institution": {
+      "type": "string"
+    },
+    "instref": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90,
+      "description": "Location latitude in WGS-84"
+    },
+    "longitude": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180,
+      "description": "Location longitude in WGS-84"
+    },
+    "lipids": {
       "type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"analyses": {
-						"type": "array",
-						"items": {
-							"type": "object",
-							"properties": {
-								"analysis": {"type": "string"},
-								"individuals": {"type": "number"},
-								"lipid_class": {"type": "string"},
-								"lipid_fat": {"type": "string"},
-								"replication": {"type": "number"},
-								"type": {"type": "string"},
-								"unit": {"type": "string"},
-								"value": {"type": "number"}
-							}
-						}
-					},
-					"specimen": {
-						"type": "object",
-						"properties": {
-							"comments": {"type": "string"},
-							"institution": {"type": "string"},
-							"length": {"type": "string"},
-							"name": {"type": "string"},
-							"species": {"type": "string"},
-							"stage": {"type": "string"},
-							"tissue": {"type": "string"},
-							"weight": {"type": "string"}
-						}
-					}
-				}
-			}
+      "items": {
+        "type": "object",
+        "properties": {
+          "analyses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "analysis": {
+                  "type": "string"
+                },
+                "individuals": {
+                  "type": "number"
+                },
+                "lipid_class": {
+                  "type": "string"
+                },
+                "lipid_fat": {
+                  "type": "string"
+                },
+                "replication": {
+                  "type": "number"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "specimen": {
+            "type": "object",
+            "properties": {
+              "comments": {
+                "type": "string"
+              },
+              "institution": {
+                "type": "string"
+              },
+              "length": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "species": {
+                "type": "string"
+              },
+              "stage": {
+                "type": "string"
+              },
+              "tissue": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
     },
     "local_date": {
-			"type": "string",
-			"format": "date-time"
+      "type": "string",
+      "format": "date-time"
     },
-    "metadata_id": {"type": "string"},
-    "name": {"type": "string"},
-		"nutrients": {
+    "metadata_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "nutrients": {
       "type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"analyses": {
-						"type": "array",
-						"items": {
-							"type": "object",
-							"properties": {
-								"average": {"type": "number"},
-								"nutrient": {"type": "string"},
-								"stdev": {"type": "number"},
-								"unit": {"type": "string"}
-							}
-						}
-					},
-					"sample_type": {"type": "string"}
-				}
-			}
+      "items": {
+        "type": "object",
+        "properties": {
+          "analyses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "average": {
+                  "type": "number"
+                },
+                "nutrient": {
+                  "type": "string"
+                },
+                "stdev": {
+                  "type": "number"
+                },
+                "unit": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "sample_type": {
+            "type": "string"
+          }
+        }
+      }
     },
-		"pigments": {
+    "pigments": {
       "type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"analyses": {
-						"type": "array",
-						"items": {
-							"type": "object",
-							"properties": {
-								"replication": {"type": "number"},
-								"phaeopigment": {"type": "number"},
-								"chlorophyll": {"type": "number"}
-							}
-						}
-					},
-					"sample_type": {"type": "string"}
-				}
-			}
+      "items": {
+        "type": "object",
+        "properties": {
+          "analyses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "replication": {
+                  "type": "number"
+                },
+                "phaeopigment": {
+                  "type": "number"
+                },
+                "chlorophyll": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "sample_type": {
+            "type": "string"
+          }
+        }
+      }
     },
-    "preservation": {"type": "string"},
+    "preservation": {
+      "type": "string"
+    },
     "processed_date": {
-			"type": "string",
-			"format": "date-time"
+      "type": "string",
+      "format": "date-time"
     },
     "programs": {
-			"type": "array",
-			"items": {"type" :"string"}
-		},
-    "sample_depth_from": {"type": "number"},
-    "sample_depth_to": {"type": "number"},
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sample_depth_from": {
+      "type": "number"
+    },
+    "sample_depth_to": {
+      "type": "number"
+    },
     "sample_gear": {
-			"type": "object",
-			"properties": {
-				"comment": {"type" :"string"},
-				"description": {"type" :"string"},
-				"id": {"type" :"string"},
-				"mesh_size": {"type" :"string"},
-				"name": {"type" :"string"},
-				"opening": {"type" :"string"}
-			}
-		},
-    "sample_name": {"type": "string"},
-		"sample_staff": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"email": {"type": "string"},
-					"fax": {"type": "string"},
-					"firstname": {"type": "string"},
-					"id": {"type": "string"},
-					"institution": {
-						"type": "object",
-						"properties": {
-							"address": {"type": "string"},
-							"city": {"type": "string"},
-							"country": {"type": "string"},
-							"name": {"type": "string"},
-							"postalcode": {"type": "string"},
-							"shortname": {"type": "string"}
-						}
-					},
-					"lastname": {"type": "string"},
-					"phone": {"type": "string"},
-					"title": {"type": "string"}
-				}
-			}
-		},
-    "sample_types": {"type": "array", "items": { "type" :"string"}},
-    "set": {"type": "string"},
-    "station": {"type": "string"},
-		"substation": {"type": "string"},
-    "title": {"type": "string"},
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "mesh_size": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "opening": {
+          "type": "string"
+        }
+      }
+    },
+    "sample_name": {
+      "type": "string"
+    },
+    "sample_staff": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "fax": {
+            "type": "string"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "institution": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "postalcode": {
+                "type": "string"
+              },
+              "shortname": {
+                "type": "string"
+              }
+            }
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sample_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "set": {
+      "type": "string"
+    },
+    "station": {
+      "type": "string"
+    },
+    "substation": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
     "utc_date": {
-			"type": "string",
-			"format": "date-time",
-			"description": ""
+      "type": "string",
+      "format": "date-time",
+      "description": ""
     }
-	},
-	"required": [
-		"sample_name",
-		"expedition",
-		"id",
-		"schema"
-	],
-	"additionalProperties": true
+  },
+  "required": [
+    "sample_name",
+    "expedition",
+    "id",
+    "schema"
+  ],
+  "additionalProperties": true
 }

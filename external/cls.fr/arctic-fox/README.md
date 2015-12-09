@@ -1,24 +1,23 @@
 # Arctic fox tracking data management
 
-This file contains behind-the-scenes documentation of the data management of Arctic fox telemetry data.
+This file contains behind-the-scenes documentation of the data management of Arctic fox telemetry data,
+obtained via the [Argos]() system.
 
-In a nutshell:
-* Argos data XML from the last 20 days are harvested to disk `/mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/` every night
-* Known platforms (ie. those defined in the [Tracking deployment API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox) are then published into the [Arctic fox tracking API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox)
+In a nutshell, every night
+* Argos data XML from the last 20 days are harvested to disk `/mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/`
+* Data for known platforms (ie. those defined in the [Tracking deployment API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox) is then published into the [Arctic fox tracking API](http://api.npolar.no/tracking/arctic-fox) [restricted access].
 
-See [Argos data management](https://github.com/npolar/api.npolar.no/tree/master/external/cls.fr) for details on Argos data formats, and how data is harvested and archived.
+See [Argos data management](https://github.com/npolar/api.npolar.no/tree/master/external/cls.fr/README.) for details on Argos data management.
 
 For dataset metadata, including principal investigators and information on accessing and citing the dataset, see https://data.npolar.no/dataset/8337bbf0-85e9-49cb-b070-9fa5fe503c82
 
-For detailed documentation of how to access the data, visit the [Tracking Arctic fox API wiki](https://github.com/npolar/api.npolar.no/wiki/Arctic-fox-tracking-API).
+For detailed information on how to access the data, visit the [Tracking Arctic fox API wiki](https://github.com/npolar/api.npolar.no/wiki/Arctic-fox-tracking-API).
 
 ## System overview
 
 Data is published in the [Arctic fox tracking API](https://api.npolar.no/tracking/arctic-fox/?q=) (**restricted**), a REST-style data service, powered by [Npolar::Api::Json](https://github.com/npolar/api.npolar.no/blob/master/lib/npolar/api/json.rb).
 
 Several key data management aspects are defined in the [Service definition](http://api.npolar.no/service/tracking-arctic-fox-api): database, search engine, authorization rules, model,schema,accepted and outgoing formats.
-
-Notice that the API has a separate CouchDB database, but share the Elasticsearch index ```tracking``` with other biological tracking data.
 
 The platform metadata for Arctic foxes is maintained in the [Tracking Deployment API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox)
 
@@ -42,9 +41,9 @@ For each of the years 2012, 2013, and 2014:
 ```sh
 # require "json"; require "open-uri"; JSON.parse(open("http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox&fields=platform&format=json&variant=array").read).map {|d| d["platform"].to_s }.sort.uniq 
 
-YEAR=2012 && argos-ascii --debug --filter='lambda {|d| ["113907", "113908", "113909", "113910", "113911", "113912", "113913", "113914", "113915", "131424", "131425", "131426", "131427", "131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR > /mnt/datasets/Tracking/ARGOS/arctic-fox/arctic-fox-$YEAR.json
-YEAR=2013 && argos-ascii --debug --filter='lambda {|d| ["113907", "113908", "113909", "113910", "113911", "113912", "113913", "113914", "113915", "131424", "131425", "131426", "131427", "131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR > /mnt/datasets/Tracking/ARGOS/arctic-fox/arctic-fox-$YEAR.json
-YEAR=2014 && argos-ascii --debug --filter='lambda {|d| ["113907", "113908", "113909", "113910", "113911", "113912", "113913", "113914", "113915", "131424", "131425", "131426", "131427", "131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR > /mnt/datasets/Tracking/ARGOS/arctic-fox/arctic-fox-$YEAR.json
+YEAR=2012 && /home/external/argos-ruby/bin/argos-ascii --debug --filter='lambda {|d| ["113907", "113908", "113909", "113910", "113911", "113912", "113913", "113914", "113915", "131424", "131425", "131426", "131427", "131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR > /mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-$YEAR.json
+YEAR=2013 && /home/external/argos-ruby/bin/argos-ascii --debug --filter='lambda {|d| ["113907", "113908", "113909", "113910", "113911", "113912", "113913", "113914", "113915", "131424", "131425", "131426", "131427", "131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR > /mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-$YEAR.json
+YEAR=2014 && /home/external/argos-ruby/bin/argos-ascii --debug --filter='lambda {|d| ["113907", "113908", "113909", "113910", "113911", "113912", "113913", "113914", "113915", "131424", "131425", "131426", "131427", "131428"].include? d[:platform].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR > /mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-$YEAR.json
 
 ```
 
@@ -56,6 +55,10 @@ http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2013-01-01..2014-01
 
 I, [2015-03-12T10:04:00.034353 #31301]  INFO -- : Documents: 14469, ds: 11030, diag: 3439, glob: /mnt/datasets/Tracking/ARGOS/archive/2014/**/*
 http://api.npolar.no/tracking/arctic-fox/?q=&filter-measured=2014-01-01..2014-03-01
+
+
+# 2012 (16445) 2013 (36640) 2014 (14469 DS/DIAG + 51243 XML = 65712)
+
 
 ### JSON <- Argos XML
 
@@ -74,9 +77,9 @@ Nighly cron job using [argos-soap](https://github.com/npolar/argos-ruby) --downl
 A. One-off publishing of the two disk archives
 
 ```sh
-[external@gustav ~]$ npolar-api -XPOST /tracking/arctic-fox\?overwrite=true -d@/mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-2012.json
-[external@gustav ~]$ npolar-api -XPOST /tracking/arctic-fox\?overwrite=true -d@/mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-2013.json
-[external@gustav ~]$ npolar-api -XPOST /tracking/arctic-fox\?overwrite=true -d@/mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-2014.json
+[external@gustav ~]$ npolar-api --debug -XPOST /tracking/arctic-fox -d@/mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-2012.json
+[external@gustav ~]$ npolar-api --debug -XPOST /tracking/arctic-fox -d@/mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-2013.json
+[external@gustav ~]$ npolar-api --debug -XPOST /tracking/arctic-fox -d@/mnt/datasets/Tracking/ARGOS/seed/arctic-fox/arctic-fox-2014.json
 
 [external@gustav ~]$ /home/external/api.npolar.no/external/cls.fr/arctic-fox/bin/npolar-argos-publish-arctic-fox-xml https://api.npolar.no/tracking/arctic-fox "/mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml"
 ```
