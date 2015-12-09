@@ -145,7 +145,16 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "rel": { "type": "string" },
+          "rel": { "type": "string",
+          "enum":["Related",
+          "Service",
+          "Metadata",
+          "Project",
+          "Publication",
+          "Datacentre",
+          "Parent",
+           "Reference",
+           "Internal", "Doi", "Via"]},
           "items": {
               "type": "string"
             }
