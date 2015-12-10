@@ -4,7 +4,7 @@ class Person < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
   def schemas
-    ["person.json"] 
+    ["person-1.json"] 
   end
 
 end
