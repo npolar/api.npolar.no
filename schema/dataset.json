@@ -218,6 +218,16 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "rel": { "type": "string",
+          "enum":["related",
+          "service",
+          "metadata",
+          "project",
+          "publication",
+          "datacentre",
+          "parent",
+           "reference",
+           "internal", "doi", "via", "edit", "alternate"]},
           "rel": {
             "type": "string"
           },
