@@ -54,7 +54,7 @@
       }
     },
     "events": {
-      "type": "Array",
+      "type": "array",
       "additionalItems": false,
       "items": {
         "type": "object",
