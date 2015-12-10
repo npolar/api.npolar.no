@@ -50,7 +50,14 @@
         },
         "no": {
           "type": "string"
+        },
+        "nb": {
+          "type": "string"
+        },
+        "nn": {
+          "type": "string"
         }
+        
       }
     },
     "events": {
@@ -61,18 +68,18 @@
         "additionalProperties": false,
         "properties": {
           "type": {
-            "type": "string"
+            "type": "string",
+            "enum": ["hired", "quit", "re-hired", "returned_from_leave", "on_leave"]
           },
           "date": {
             "type": "string",
-            "format": "date-time"
+            "pattern": "^[0-9]{4}"
           },
           "comment": {
             "type": "string"
           }
         }
-      },
-      "required": ["start"]
+      }
     },
     "organisation": {
       "type": "string"
