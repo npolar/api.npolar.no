@@ -227,10 +227,11 @@
           "datacentre",
           "parent",
            "reference",
-           "internal", "doi", "via", "edit", "alternate"]},
-          "rel": {
-            "type": "string"
-          },
+           "internal", 
+           "doi", 
+           "via", 
+           "edit", 
+           "alternate"]},
           "items": {
             "type": "string"
           },
