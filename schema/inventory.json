@@ -1,0 +1,365 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/inventory-1.0-rc1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "rev": {
+      "type": "string"
+    },
+    "collection": {
+      "type": "string",
+      "default": "inventory"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+      "instrument",
+      "depot",
+      "fuel",
+      "contamination",
+      "field hut",
+      "other"
+      ]
+    },
+    "instrument": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "string"
+    },
+    "reason_for_activity": {
+      "type": "string"
+    },
+    "cause_of_activity": {
+      "type": "string"
+    },
+    "release_date" {
+      "type": "string",
+      "format": "date-time"
+    },
+    "intended_removal_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "intended_removal_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "comment_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "people": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["projectLeader", "projectParticipant", "observer"]
+          },
+          "organisation": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "organisations": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+              "type": "string"
+          },
+          "zip": {
+              "type": "string"
+          },
+          "city": {
+              "type": "string"
+          },
+          "country": {
+              "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "activities": {
+      "title": "Field activites",
+      "description": "Select none or several activities carried out during expedition",
+      "type": "array",
+      "additionalItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "rock samples",
+          "soil samples",
+          "sediment samples",
+          "flora samples",
+          "fauna samples",
+          "interference fauna/flora",
+          "introduced species",
+          "animal censors",
+          "explosives",
+          "radionucleides",
+          "ice sampling",
+          "ice coring",
+          "snow sampling",
+          "air sampling",
+          "water sampling",
+          "other"
+        ]
+      }
+    },
+    "contamination": {
+        "type": "array",
+      "additionalItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "contamination_type": {
+               "type": "string",
+               "enum": [
+                "biological",
+                "contained PHC",
+                "heavy metal contaminated sediment",
+                "heritage",
+                "PCB",
+                "PHC sediment",
+                "hazardous to human health",
+                "recyclable",
+                "other"
+              ]
+              },
+          "priority": {
+            "type": "string",
+            "enum": [
+                "high priority for remediation",
+                "medium priority for remediation",
+                "low priority for remediation",
+                "futher assessment required",
+                "post-remediation monitoring"
+              ]
+          }
+        }
+      }
+      },
+      "impact": {
+        "type": "array",
+        "additionalItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+           "likelihood": {
+                "type": "string",
+                "enum": [
+                   "Almost certain",
+                   "Likely",
+                   "Possible",
+                   "Unlikely"
+                ]
+            },
+            "impact_spatial": {
+                "type": "string",
+                "enum": [
+                  "local <100 sq km",
+                  "immediate 100m – 1 sq km",
+                  "widespread >1 sq km"
+                ]
+            },
+            "impact_temporal":{
+                "type": "string",
+                "enum": [
+                  "short term <1 year",
+                  "intermediate 1-10 years",
+                  "long term > 10 years"
+                ]
+            },
+             "impact_documented":{
+                 "type": "string",
+                 "enum": [
+                    "yes",
+                    "no"
+                  ]
+            }
+          }
+         }
+      },
+      "fuel":{
+        "type": "array",
+        "additionalItems": true,
+        "items": {
+         "type": "object",
+         "additionalProperties": true,
+         "properties": {
+            "release_date":{
+                 "type": "string",
+                 "format": "date-time"
+            },
+            "removeal_date_intended":{
+                 "type": "string",
+                 "format": "date-time"
+            },
+            "removeal_date_actual":{
+                 "type": "string",
+                 "format": "date-time"
+            },
+            "comment":{
+                 "type": "string",
+                 "format": "date-time"
+            }
+         }
+       }
+      },
+     "locations": {
+      "type": "array",
+      "additionalItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
+          "country": {
+            "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(([A-Z]|[a-z]){2})$"
+          },
+          "hemisphere": {
+            "description": "Hemisphere: N or S",
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[NSns]{1}$"
+          },
+          "latitude": {
+            "type": "number",
+            "minimum": -90.0,
+            "maximum": 90.0
+          },
+          "longitude": {
+            "type": "number",
+            "minimum": -180.0,
+            "maximum": 180.0
+          },
+          "geometry": {
+            "type": "object",
+            "description": "[GeoJSON geometry object](http://geojson.org/geojson-spec.html#geometry-objects)"
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": ["string", "null"]
+          },
+          "hreflang": {
+            "type": ["string", "null"]
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": ["rel", "href"]
+      }
+    },
+     "uploads": {
+      "title": "Internet access to attachments",
+      "description": "Internet access to attachments",
+      "additionalItems": false,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "yes",
+          "no"
+        ]
+      }
+    },
+    "created": {
+      "description": "Footprint entry was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Footprint was updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "_id": {
+      "description": "Internal id",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision",
+      "type": "string"
+    }
+  }
+}
