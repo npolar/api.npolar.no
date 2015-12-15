@@ -1,48 +1,56 @@
 {
-  "_id": "gcmd-concept-api",
-  "_rev": "3-7ecf0223507ec58e2f0b8b82da31643f",
-  "schema": "http://api.npolar.no/schema/api",
-  "id": "gcmd-concept-api",
-  "path": "/gcmd/concept",
-  "title": "GCMD Concept",
-  "summary": "Global Change Master Directory concepts",
-  "storage": "Couch",
-  "database": "gcmd_concept",
-  "search": {
-    "engine": "Elasticsearch",
-    "index": "gcmd",
-    "type": "concept",
-    "facets": [
-      "concept"
-    ]
-  },
-  "verbs": [
-    "DELETE",
-    "GET",
-    "HEAD",
-    "POST",
-    "PUT"
-  ],
-  "formats": {
-    "json": "application/json",
-    "html": "text/html"
-  },
-  "accepts": {
-    "application/json": ""
-  },
-  "category": [
-    "CouchDB",
-    "REST",
-    "JSON",
-    "HTTP"
-  ],
-  "lifecycle": "production",
-  "run": "Npolar::Api::Json",
-  "open": true,
-  "auth": {
-    "authorize": "sysadmin",
-    "system": "api",
-    "authorizer": "Npolar::Auth::Ldap"
-  },
-  "base": "http://api.npolar.no"
+   "schema": "http://api.npolar.no/schema/api",
+   "id": "gcmd-concept-api",
+   "path": "/gcmd/concept",
+   "title": "GCMD Concept",
+   "summary": "Global Change Master Directory concepts",
+   "storage": "Couch",
+   "database": "gcmd_concept",
+   "search": {
+       "engine": "Elasticsearch",
+       "url": "http://dbmaster.data.npolar.no:9200",
+       "index": "gcmd",
+       "type": "concept",
+       "params": {
+           "facets": "concept,cardinality,version,ancestors,label"
+       }
+   },
+   "verbs": [
+       "DELETE",
+       "GET",
+       "HEAD",
+       "POST",
+       "PUT",
+       "OPTIONS"
+   ],
+   "formats": {
+       "json": "application/json"
+   },
+   "category": [
+       "CouchDB",
+       "REST",
+       "JSON",
+       "HTTP"
+   ],
+   "lifecycle": "production",
+   "run": "Npolar::Api::Json",
+   "open": true,
+   "base": "http://api.npolar.no",
+   "updated": "2015-01-13T09:34:24Z",
+   "updated_by": "conrad",
+   "created": "2013-10-02T10:43:19Z",
+   "created_by": "ruben",
+   "accepts": {
+       "application/json": "JSON"
+   },
+   "middleware": [
+   [
+       "::Rack::Gouncer",
+       {
+           "url": "https://api.npolar.no:8950",
+           "open": true,
+           "system": "https://api.npolar.no/admin"
+       }
+   ]
+]
 }
