@@ -1,0 +1,203 @@
+#!/usr/bin/env ruby
+
+# Ruby-based command to publish CLS Argos-system XML tracking data
+#
+# ./bin/npolar-argos-publish-xml /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/2015/program-11660 https://api.npolar.no/tracking/arctic-fox
+#
+# For more information: 
+# https://github.com/npolar/api.npolar.no/tree/master/external/cls.fr/README.md
+
+require "bundler/setup"
+require "logger"
+require "nokogiri"
+require "uri"
+require "argos"
+require "npolar/api/client"
+
+log = Logger.new(STDERR)
+#log.level = Logger::WARN
+#log.level = Logger::DEBUG
+  
+
+def latest(api_client, platform=nil)
+  param = { q: "",
+    format: "json",
+    variant: "atom",
+    limit: 1,
+    "filter-type" => "xml",
+    "date-day" => "measured",
+    fields: "platform,measured",
+    sort: "-measured"
+  }
+  if not platform.nil?
+    param[:"filter-platform"] = platform
+  end
+  
+  api_client.param = param
+  api_client.authorization = true
+  response = api_client.get
+  
+  existing = JSON.parse(response.body)
+  if existing.nil? or not existing.key? "feed"
+    raise "Failed: #{response.status}"
+  end
+  existing["feed"]
+end
+
+def deployments(platforms)
+  client = Npolar::Api::Client::JsonApiClient.new("https://api.npolar.no/tracking/deployment")
+  
+  log = Logger.new(STDERR)
+  log.level = Logger::WARN
+  client.log = log
+  
+  param = { q: "",
+    format: "json",
+    variant: "array",
+    limit: "all",
+    "filter-platform" => platforms.join("|"),
+    sort: "platform"
+  }
+  
+  client.param = param
+  response = client.get
+  if 200 != response.status
+    raise "Failed accessing #{uri}"
+  end
+  JSON.parse(response.body)
+end
+
+begin
+  
+  if not ENV.key?("NPOLAR_API_USERNAME") or not ENV.key?("NPOLAR_API_PASSWORD")
+    raise "Please set NPOLAR_API_USERNAME and NPOLAR_API_PASSWORD"
+  end
+  if ARGV.size < 2
+    raise "Usage: #{__dir__} /path/to/followit/archive https://api.npolar.no/tracking/endpoint"
+  end
+  if not File.exist? ARGV[0]  
+    raise "Source does not exist: #{ARGV[0]}"
+  end
+  if ARGV[1] !~ URI::regexp
+    raise "Invalid destination URI #{ARGV[1]}"
+  end
+  
+  # todo loop all but last param ..  
+  source = ARGV[0]
+  uri = ARGV[1]
+  glob = File.join(source, "**/*.xml")
+  
+  
+  api_client = Npolar::Api::Client::JsonApiClient.new(uri)
+  api_client.log = log
+  
+  # get latest date already published
+  latest_feed = latest(api_client)
+  
+  last = DateTime.new(1000)
+  if not latest_feed["entries"].any?
+    log.debug "0 existing documents"
+    last = DateTime.new(1000)
+  else
+    last = DateTime.parse latest_feed["entries"][0]["measured"]
+    log.debug "#{last.to_time.utc.iso8601} = last measured observation in #{uri} [totalResults: #{latest_feed["opensearch"]["totalResults"]}]"
+  end
+  #
+  # argos_json_xslt = File.join(File.dirname(Argos.method(:library_version).source_location[0]), "argos", "_xslt", "argos-json.xslt")
+  # if not File.exists? argos_json_xslt
+  #  raise "Cannot find Argis XML to JSON stylesheet: #{argos_json_xslt}"
+  # end
+  argos_xml = Argos::Xml.new
+  docs = [] # Holds all local XML messages
+  add = {} # Hash with platform as key, holds messages to add (newer in XML that latest in API for that platform) 
+  c=0
+  
+  Dir[glob].reject {|f|
+    (File.directory? f or File.size(f) == 0) or (File.mtime(f) < last.to_time.utc ) }.map do |f|
+    
+    log.info File.mtime(f).to_json
+    
+    argos_xml.xml = f
+    msgs = argos_xml.to_a
+    
+    if msgs.any?
+      c = c + msgs.size
+      log.debug "#{msgs.size} messages / #{c}  <- #{f}"
+    
+      docs += msgs
+    end
+  end
+  
+  if docs.any?
+    
+    platforms = docs.map {|d| d["platform"]}.uniq.sort
+    depl = deployments(platforms)
+    
+    log.debug "Platforms (N=#{platforms.size}) in source XML: #{platforms.to_json} - found #{depl.size} deployments" 
+    
+    platforms.each do |platform|
+      
+      deployments_for_platform = depl.select {|d| d["platform"] == platform }
+      # Only add known platforms (ie. with deployment metadata)
+      if deployments_for_platform.any?
+        
+        # 113909
+        if deployments_for_platform.size > 1
+          log.warn "Multiple deployments for platform #{platform}:\n#{deployments_for_platform.to_json}" 
+        end
+        
+        local_xml_msgs_for_platform = docs.select {|d| d["platform"] == platform }.sort_by {|d|
+          d["measured"]
+        }
+      
+        api_latest_feed_for_platform = latest(api_client, platform)
+        remote_api_msgs_for_platform = api_latest_feed_for_platform["opensearch"]["totalResults"]
+     
+        if api_latest_feed_for_platform["entries"].any?
+          last_remote = api_latest_feed_for_platform["entries"][0]["measured"]
+        else
+          last_remote = nil
+        end
+      
+        first_local = local_xml_msgs_for_platform.first["measured"]
+        last_local = local_xml_msgs_for_platform.last["measured"]
+        log.debug "Platform #{platform} local XML: #{source} remote API: #{uri}"
+        log.debug "Platform #{platform} local messages (XML): #{local_xml_msgs_for_platform.size}, remote messages (API): #{remote_api_msgs_for_platform}"
+        log.debug "Platform #{platform} [first local, last local, last remote]: [#{first_local.to_json}, #{last_local.to_json}, #{last_remote.to_json}]"
+        log.debug "Platform #{platform} deployments (N=#{deployments_for_platform.size}): #{deployments_for_platform}"
+        
+        add[platform] = local_xml_msgs_for_platform.select {| m | DateTime.parse(m["measured"]) > DateTime.parse(last_remote||"1000-01-01") }
+        
+        
+      else
+        log.warn "Missing deployment metadata for Argos platform #{platform}"
+      end
+
+    
+    end
+  
+    log.debug "New data for platforms (N=#{add.size}): #{add.keys}"
+    
+    add.each do |platform,msgs|
+      
+      log.info "#{msgs.size} new messages for platform #{platform}"
+      
+      if msgs.any?
+        log.debug "About to POST #{msgs.size} to #{uri}"
+        api_client.param = {}
+        response = api_client.post(msgs)
+        #log.debug response.to_s
+        #puts add.to_json
+      end
+    end
+  
+  end
+  
+  
+  
+  exit(true)
+
+rescue => e
+  log.fatal e
+  exit(false)
+end
