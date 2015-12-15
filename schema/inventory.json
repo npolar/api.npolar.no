@@ -357,6 +357,9 @@
     "_rev": {
       "description": "Internal revision",
       "type": "string"
+    },
+    "_deleted": {
+      "description": "Deleted entry",
+      "type": "boolean"
     }
-  }
 }
