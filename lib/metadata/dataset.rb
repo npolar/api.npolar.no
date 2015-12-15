@@ -29,7 +29,7 @@ module Metadata
 
     JSON_SCHEMA_URI = "http://api.npolar.no/schema/dataset"
 
-    JSON_SCHEMAS = ["dataset.json"]
+    JSON_SCHEMAS = ["dataset-1.json"]
 
     SCHEMA_URI = {
       "dif" =>  DIF_SCHEMA_URI,
