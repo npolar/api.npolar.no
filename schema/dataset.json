@@ -227,15 +227,12 @@
           "datacentre",
           "parent",
            "reference",
-           "internal", 
+           "internal",
            "doi",
-           "data", 
-           "via", 
-           "edit", 
+           "data",
+           "via",
+           "edit",
            "alternate"]},
-          "items": {
-            "type": "string"
-          },
           "href": {
             "type": "string",
             "format": "uri"
