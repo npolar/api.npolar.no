@@ -8,8 +8,8 @@ module Metadata
     # Returns [DCAT](http://www.w3.org/TR/vocab-dcat/) RDF graph from upstream Npolar dataset API /dataset
     #
     # Request in [JSON-LD](http://www.w3.org/TR/json-ld/) using either 
-    # * https://api.npolar.no/dataset/?q=&format=json&variant=dcat&limit=all (for all datasets)  
-    # * https://api.npolar.no/dataset/?q=&format=json&variant=dcat&limit=all&filter-links.rel=data&not-draft=yes&not-progress=planned (for published datasets with a distribution)
+    # * http://api.npolar.no/dataset/?q=&format=json&variant=dcat&limit=all (for all datasets)  
+    # * http://api.npolar.no/dataset/?q=&format=json&variant=dcat&limit=all&filter-links.rel=data&not-draft=yes&not-progress=planned (for published datasets with a distribution)
     #
     # See also
     # * [DCAT-AP](https://joinup.ec.europa.eu/asset/dcat_application_profile/description)
@@ -148,8 +148,8 @@ module Metadata
           "@type" => "dcat:Dataset",
           
           # mandatory (DCAT-AP)
-          "dc:title" => d.title,
-          "dc:description" => d.summary || d.title,
+          "dc:title" => [{"@value" => d.title, "@language" => "en" }],
+          "dc:description" => [{"@value" => (d.summary || d.title), "@language" => "en" }],
           
           # recommended
           # "dcat:contactPoint" => { "@id" => "http://data.npolar.no" },
@@ -201,7 +201,7 @@ module Metadata
       end
       
       def dcat_catalog_dc_issued
-        "2008-01-14T12:00:00Z"
+        "2008-01-01T00:00:00Z"
       end
       
       def dcat_catalog_dc_license_id
@@ -223,7 +223,7 @@ module Metadata
       
       def dcat_catalog_dc_title
         [
-          {"@language" => "en", "@value" => "Dataset Catalogue of the Norwegian Polar Institute" },
+          {"@language" => "en", "@value" => "Dataset catalogue of the Norwegian Polar Institute" },
           {"@language" => "nb", "@value" => "Datasett frå Norsk Polarinstitutt" },
           {"@language" => "nn", "@value" => "Datasett fra Norsk Polarinstitutt" },
         ]
@@ -252,10 +252,10 @@ module Metadata
              "@type": "@id"
           },
           "dc:issued": {
-            "@type": "http://www.w3.org/2001/XMLSchema#date"
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
           },
           "dc:modified": {
-            "@type": "http://www.w3.org/2001/XMLSchema#date"
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
           }
         })
       end
