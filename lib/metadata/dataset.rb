@@ -27,7 +27,7 @@ module Metadata
     
     DIF_SCHEMA_URI = "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"
 
-    JSON_SCHEMA_URI = "http://api.npolar.no/schema/dataset"
+    JSON_SCHEMA_URI = "http://api.npolar.no/schema/dataset-1"
 
     JSON_SCHEMAS = ["dataset-1.json"]
 
