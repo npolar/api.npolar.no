@@ -190,10 +190,7 @@
           },
           "details": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"]
           },
           "field_camp": {
             "description": "Location is a field camp",
@@ -204,10 +201,7 @@
             },
            "instrument_type": {
             "description": "GCMD vocabulary, http://gcmdservices.gsfc.nasa.gov/static/kms/instruments/instruments.csv",
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"]
           },
           "contamination_type": {
             "type": "string",
@@ -368,4 +362,5 @@
       "description": "Deleted entry",
       "type": "boolean"
     }
+}
 }
