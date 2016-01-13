@@ -257,10 +257,10 @@
             "impact_likelihood": {
                 "type": "string",
                 "enum": [
-                   "Almost certain",
-                   "Likely",
-                   "Possible",
-                   "Unlikely"
+                   "almost certain",
+                   "likely",
+                   "possible",
+                   "unlikely"
                 ]
             },
             "impact_spatial": {
