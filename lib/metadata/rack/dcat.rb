@@ -152,7 +152,7 @@ module Metadata
           "dc:description" => [{"@value" => (d.summary || d.title), "@language" => "en" }],
           
           # recommended
-          # "dcat:contactPoint" => { "@id" => "http://data.npolar.no" },
+          "dcat:contactPoint" => { "@id" => "http://data.npolar.no" },
           # dcat:distribution is added further down
           "dcat:keyword" => (d.tags || []),
           "dc:publisher" => dc_publisher_id,
@@ -238,7 +238,7 @@ module Metadata
           "dcat": "http://www.w3.org/ns/dcat#",
           "dc": "http://purl.org/dc/terms/",
           "foaf": "http://xmlns.com/foaf/0.1/",
-          "vcard": "http://www.w3.org/TR/vcard-rdf/",
+          "vcard": "http://www.w3.org/2006/vcard/ns#",
           "dcat:accessURL": {
              "@type": "@id"
           },
