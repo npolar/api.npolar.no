@@ -227,6 +227,8 @@
   "additionalProperties": false,
   "required": [
     "titles",
-    "schema"
+    "systems",
+    "workspace",
+    "collection"
   ]
 }
