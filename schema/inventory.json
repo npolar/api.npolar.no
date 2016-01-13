@@ -135,7 +135,7 @@
       "type": "array",
       "additionalItems": true,
       "items": {
-        "type": "boolean",
+        "type": "string",
         "enum": [
           "rock samples",
           "soil samples",
@@ -269,7 +269,21 @@
                 "type": "array",
                 "additionalItems": false,
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                  "Arctocephalus gazella",
+                  "Lobodon carcinophagus",
+                  "Leptonychotes weddelli",
+                  "Hydrurga leptonyx",
+                  "Mirounga leonina",
+                  "Ommatophoca rossi",
+                  "Stercorarius maccormicki",
+                  "Thalassoica antarctica",
+                  "Pagodroma nivea",
+                  "Larus dominicanus",
+                  "Aptenodytes forsteri",
+                  "Pygoscelis adeliae"
+                ]
                 }
             },
             "species_area": {
@@ -331,19 +345,6 @@
           }
         },
         "required": ["rel", "href"]
-      }
-    },
-     "uploads": {
-      "title": "Internet access to attachments",
-      "description": "Internet access to attachments",
-      "additionalItems": false,
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "yes",
-          "no"
-        ]
       }
     },
     "created": {
