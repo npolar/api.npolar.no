@@ -79,6 +79,54 @@
     "drum_active":{
         "type": "boolean"
     },
+    "rock_samples": {
+        "type": "boolean"
+    },
+    "soil_samples": {
+        "type": "boolean"
+    },
+    "sediment_samples": {
+        "type": "boolean"
+    },
+    "flora_samples": {
+        "type": "boolean"
+    },
+    "fauna_samples": {
+        "type": "boolean"
+    },
+    "interference_fauna/flora": {
+        "type": "boolean"
+    },
+    "introduced_species": {
+        "type": "boolean"
+    },
+    "animal_censors": {
+        "type": "boolean"
+    },
+    "explosives": {
+        "type": "boolean"
+    },
+    "radionucleides": {
+        "type": "boolean"
+    },
+    "ice_sampling": {
+        "type": "boolean"
+    },
+    "ice_coring": {
+        "type": "boolean"
+    },
+    "snow_sampling": {
+        "type": "boolean"
+    },
+    "air_sampling": {
+        "type": "boolean"
+    },
+    "water_sampling": {
+        "type": "boolean"
+    },
+    "other_invasive_activity": {
+        "type": "boolean"
+    },
     "people": {
       "type": "array",
       "additionalItems": false,
@@ -136,33 +184,6 @@
             "format": "uri"
           }
         }
-      }
-    },
-    "activities": {
-      "title": "Field activites",
-      "description": "Select none or several activities carried out during expedition",
-      "type": "array",
-      "additionalItems": true,
-      "items": {
-        "type": "string",
-        "enum": [
-          "rock samples",
-          "soil samples",
-          "sediment samples",
-          "flora samples",
-          "fauna samples",
-          "interference fauna/flora",
-          "introduced species",
-          "animal censors",
-          "explosives",
-          "radionucleides",
-          "ice sampling",
-          "ice coring",
-          "snow sampling",
-          "air sampling",
-          "water sampling",
-          "other"
-        ]
       }
     },
      "locations": {
