@@ -267,7 +267,22 @@
             "drum_active":{
                 "type": "boolean"
             },
-              "gps": {
+            "species": {
+                "title": "Species",
+                "type": "array",
+                "additionalItems": false,
+                "items": {
+                  "type": "string"
+                }
+            },
+            "species_area": {
+                "type": "string",
+                "enum": [
+                  "breeding",
+                  "feeding",
+                  "roosting"
+                ] },
+            "gps": {
                 "type": "array",
                 "additionalItems": false,
                 "items": {
