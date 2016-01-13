@@ -274,12 +274,12 @@
                   "type": "object",
                   "additionalProperties": false,
                   "properties": {
-                     "latitude_from": {
+                     "latitude": {
                         "type": "number",
                         "minimum": -90.0,
                         "maximum": 90.0
                       },
-                      "longitude_from": {
+                      "longitude": {
                         "type": "number",
                         "minimum": -180.0,
                         "maximum": 180.0
