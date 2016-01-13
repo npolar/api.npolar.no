@@ -27,6 +27,7 @@
       "heliport",
       "data collection",
       "operational activity",
+      "wildlife concentration",
       "other"
       ]
     },
@@ -37,7 +38,15 @@
       "type": "string"
     },
     "reason_for_activity": {
-      "type": "string"
+      "type": "string",
+       "enum": [
+      "operational activity",
+      "unknown",
+      "scientific research",
+      "heritage registration/conservation",
+      "monitoring",
+      "other"
+      ]
     },
     "number_of_persons": {
       "type": "string"
@@ -271,18 +280,18 @@
                 "items": {
                   "type": "string",
                   "enum": [
-                  "Arctocephalus gazella",
-                  "Lobodon carcinophagus",
-                  "Leptonychotes weddelli",
-                  "Hydrurga leptonyx",
-                  "Mirounga leonina",
-                  "Ommatophoca rossi",
-                  "Stercorarius maccormicki",
-                  "Thalassoica antarctica",
-                  "Pagodroma nivea",
-                  "Larus dominicanus",
-                  "Aptenodytes forsteri",
-                  "Pygoscelis adeliae"
+                  "arctocephalus gazella",
+                  "lobodon carcinophagus",
+                  "leptonychotes weddelli",
+                  "hydrurga leptonyx",
+                  "mirounga leonina",
+                  "ommatophoca rossi",
+                  "stercorarius maccormicki",
+                  "thalassoica antarctica",
+                  "pagodroma nivea",
+                  "larus dominicanus",
+                  "aptenodytes forsteri",
+                  "pygoscelis adeliae"
                 ]
                 }
             },
