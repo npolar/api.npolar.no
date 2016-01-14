@@ -18,7 +18,6 @@
     "category": {
       "type": "string",
       "enum": [
-      "other",
       "instrument",
       "depot",
       "station",
@@ -28,18 +27,19 @@
       "heliport",
       "data collection",
       "operational activity",
-      "wildlife concentration"
+      "wildlife concentration",
+      "other"
       ]
     },
     "reason_for_activity": {
       "type": "string",
       "enum": [
-      "other",
       "operational activity",
       "unknown",
       "scientific research",
       "heritage registration/conservation",
-      "monitoring"
+      "monitoring",
+       "other"
       ]
     },
      "description": {
@@ -76,7 +76,7 @@
     "fauna_samples": {
         "type": "boolean"
     },
-    "interference_fauna/flora": {
+    "interference_fauna_flora": {
         "type": "boolean"
     },
     "introduced_species": {
@@ -134,7 +134,7 @@
             "enum": ["leader", "participant", "observer"]
           },
           "organisation": {
-            "type": ["string", "null"]
+            "type": "string"
           }
         }
       }
