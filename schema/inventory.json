@@ -18,6 +18,7 @@
     "category": {
       "type": "string",
       "enum": [
+      "other",
       "instrument",
       "depot",
       "station",
@@ -27,19 +28,18 @@
       "heliport",
       "data collection",
       "operational activity",
-      "wildlife concentration",
-      "other"
+      "wildlife concentration"
       ]
     },
     "reason_for_activity": {
       "type": "string",
       "enum": [
+      "other",
       "operational activity",
       "unknown",
       "scientific research",
       "heritage registration/conservation",
-      "monitoring",
-      "other"
+      "monitoring"
       ]
     },
      "description": {
