@@ -67,18 +67,6 @@
        "type": "string",
        "format": "date-time"
     },
-    "drum_full":{
-       "type": "boolean"
-    },
-    "drum_emptied":{
-        "type": "boolean"
-    },
-    "drum_color":{
-        "type": "string"
-    },
-    "drum_active":{
-        "type": "boolean"
-    },
     "rock_samples": {
         "type": "boolean"
     },
