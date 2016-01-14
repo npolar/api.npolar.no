@@ -31,15 +31,9 @@
       "other"
       ]
     },
-     "description": {
-      "type": "string"
-    },
-    "quantity": {
-      "type": "string"
-    },
     "reason_for_activity": {
       "type": "string",
-       "enum": [
+      "enum": [
       "operational activity",
       "unknown",
       "scientific research",
@@ -47,6 +41,9 @@
       "monitoring",
       "other"
       ]
+    },
+     "description": {
+      "type": "string"
     },
     "release_date": {
       "type": "string",
@@ -200,6 +197,30 @@
             ],
             "pattern": "^[NSns]{1}$"
           },
+          "gps": {
+                "type": "array",
+                "additionalItems": false,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                     "latitude": {
+                        "type": "number",
+                        "minimum": -90.0,
+                        "maximum": 90.0
+                      },
+                      "longitude": {
+                        "type": "number",
+                        "minimum": -180.0,
+                        "maximum": 180.0
+                      },
+                      "geometry": {
+                        "type": "object",
+                        "description": "[GeoJSON geometry object](http://geojson.org/geojson-spec.html#geometry-objects)"
+                      }
+                  }
+                }
+          },
           "details": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
             "type": "string"
@@ -211,6 +232,9 @@
           "number_of_persons": {
               "type": "string"
           },
+          "quantity": {
+              "type": "string"
+           },
            "instrument": {
               "type": "string"
             },
@@ -218,6 +242,47 @@
             "description": "GCMD vocabulary, http://gcmdservices.gsfc.nasa.gov/static/kms/instruments/instruments.csv",
             "type": ["string", "null"]
           },
+           "drum_full":{
+               "type": "boolean"
+            },
+            "drum_emptied":{
+                "type": "boolean"
+            },
+            "drum_color":{
+                "type": "string"
+            },
+            "drum_active":{
+                "type": "boolean"
+            },
+            "species": {
+                "title": "Species",
+                "type": "array",
+                "additionalItems": false,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                  "arctocephalus gazella",
+                  "lobodon carcinophagus",
+                  "leptonychotes weddelli",
+                  "hydrurga leptonyx",
+                  "mirounga leonina",
+                  "ommatophoca rossi",
+                  "stercorarius maccormicki",
+                  "thalassoica antarctica",
+                  "pagodroma nivea",
+                  "larus dominicanus",
+                  "aptenodytes forsteri",
+                  "pygoscelis adeliae"
+                ]
+                }
+            },
+            "species_area": {
+                "type": "string",
+                "enum": [
+                  "breeding",
+                  "feeding",
+                  "roosting"
+                ] },
           "contamination_type": {
             "type": "string",
             "enum": [
@@ -269,72 +334,7 @@
             },
              "impact_documented":{
                  "type": "boolean"
-            },
-             "drum_full":{
-               "type": "boolean"
-            },
-            "drum_emptied":{
-                "type": "boolean"
-            },
-            "drum_color":{
-                "type": "string"
-            },
-            "drum_active":{
-                "type": "boolean"
-            },
-            "species": {
-                "title": "Species",
-                "type": "array",
-                "additionalItems": false,
-                "items": {
-                  "type": "string",
-                  "enum": [
-                  "arctocephalus gazella",
-                  "lobodon carcinophagus",
-                  "leptonychotes weddelli",
-                  "hydrurga leptonyx",
-                  "mirounga leonina",
-                  "ommatophoca rossi",
-                  "stercorarius maccormicki",
-                  "thalassoica antarctica",
-                  "pagodroma nivea",
-                  "larus dominicanus",
-                  "aptenodytes forsteri",
-                  "pygoscelis adeliae"
-                ]
-                }
-            },
-            "species_area": {
-                "type": "string",
-                "enum": [
-                  "breeding",
-                  "feeding",
-                  "roosting"
-                ] },
-            "gps": {
-                "type": "array",
-                "additionalItems": false,
-                "items": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                     "latitude": {
-                        "type": "number",
-                        "minimum": -90.0,
-                        "maximum": 90.0
-                      },
-                      "longitude": {
-                        "type": "number",
-                        "minimum": -180.0,
-                        "maximum": 180.0
-                      },
-                      "geometry": {
-                        "type": "object",
-                        "description": "[GeoJSON geometry object](http://geojson.org/geojson-spec.html#geometry-objects)"
-                      }
-                  }
-                }
-              }
+            }
         }
       }
     },
