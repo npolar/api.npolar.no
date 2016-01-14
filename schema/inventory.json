@@ -286,16 +286,17 @@
           "contamination_type": {
             "type": "string",
             "enum": [
-                "biological",
-                "contained PHC",
-                "heavy metal contaminated sediment",
-                "heritage",
-                "PCB",
-                "PHC sediment",
-                "hazardous to human health",
-                "recyclable",
-                "other"
-              ]
+            "metals",
+            "glass",
+            "mixed waste",
+            "paper/card board",
+            "plastics",
+            "food waste, compost",
+            "sewage, urine (non-composted)",
+            "oil contaminated items",
+            "sewage compost",
+            "chemicals and batteries"
+          ]
           },
           "priority": {
             "type": "string",
