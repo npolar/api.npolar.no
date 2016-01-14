@@ -48,9 +48,6 @@
       "other"
       ]
     },
-    "number_of_persons": {
-      "type": "string"
-    },
     "release_date": {
       "type": "string",
       "format": "date-time"
@@ -210,6 +207,9 @@
           "field_camp": {
             "description": "Location is a field camp",
             "type": "boolean"
+          },
+          "number_of_persons": {
+              "type": "string"
           },
            "instrument": {
               "type": "string"
