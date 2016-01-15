@@ -85,16 +85,17 @@
 
 				"type": "object",
 				"properties": {
+					"lang": {
+
+						"type": "string"
+					},
 					"title": {
 						"type": "string"
 					},
 					"label": {
 						"type": "string"
-					},
-					"lang": {
-
-						"type": "string"
 					}
+
 				},
 				"additionalProperties": false
 			},
@@ -160,13 +161,13 @@
 			"items": {
 				"type": "object",
 				"properties": {
+					"lang": {
+						"type": "string"
+					},
 					"variable": {
 						"type": "string"
 					},
 					"label": {
-						"type": "string"
-					},
-					"lang": {
 						"type": "string"
 					}
 				}
@@ -183,9 +184,6 @@
 			"items": {
 				"type": "object",
 				"properties": {
-					"year": {
-						"type": ["number", "null"]
-					},
 					"when": {
 						"type": ["string", "null"],
 						"pattern": "^[0-9]{4}"
@@ -204,9 +202,6 @@
 					},
 					"max": {
 						"type": ["number", "null"]
-					},
-					"year_format": {
-						"type": "string"
 					}
 				},
 				"additionalProperties": false
