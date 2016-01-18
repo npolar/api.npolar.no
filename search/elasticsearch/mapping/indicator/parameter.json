@@ -1,116 +1,18 @@
 {
   "parameter": {
-    "_all": {
-      "store": true
-    },
-    "properties": {
-      "_attachments": {
-        "type": "object",
-        "enabled": false
-      },
-      "_id": {
-        "type": "string",
-        "index": "not_analyzed"
-      },
-      "_rev": {
-        "type": "string",
-        "index": "not_analyzed"
-      },
-      "collection": {
-        "type": "string",
-        "index": "not_analyzed"
-      },
-      "timeseries": {"type":"string", "index":"not_analyzed" },
-      "label": {
-        "type": "string",
-        "index": "not_analyzed"
-      },
-      "species": {
-        "type": "string",
-        "index": "not_analyzed"
-      },
-      "comment": {
-        "type": "string"
-      },
-      "created": {
-        "type": "date",
-        "format": "dateOptionalTime"
-      },
-      "locations": {
-        "properties": {
-          "placename": {
-            "type": "string",
-            "index": "not_analyzed"
-          },
-          "area": {
-            "type": "string",
-            "index": "not_analyzed"
+    "dynamic_templates" : [
+      {
+        "strings_not_analyzed" : {
+          "match" : "*",
+          "match_mapping_type" : "string",
+          "mapping" : {
+            "type" : "string",
+            "index" : "not_analyzed"
           }
         }
-      },
-      "links": {
-        "properties": {
-          "accessed": {
-            "type": "date",
-            "format": "dateOptionalTime"
-          },
-          "etag": {
-            "type": "string",
-            "index": "not_analyzed"
-          },
-          "hash": {
-            "type": "string",
-            "index": "not_analyzed"
-          },
-          "href": {
-            "type": "string",
-            "index": "not_analyzed"
-          },
-          "hreflang": {
-            "type": "string",
-            "index": "not_analyzed"
-          },
-          "modified": {
-            "type": "date",
-            "format": "dateOptionalTime"
-          },
-          "rel": {
-            "type": "string",
-            "index": "not_analyzed"
-          },
-          "title": {
-            "type": "string",
-            "index": "not_analyzed"
-          },
-          "type": {
-            "type": "string",
-            "index": "not_analyzed"
-          }
-        }
-      },
-      "schema": {
-        "type": "string",
-        "index": "not_analyzed"
-      },
-      "titles": {
-        "type": "object"
-      },
-      "updated": {
-        "type": "date",
-        "format": "dateOptionalTime"
-      },
-      "created_by": {
-        "type": "string",
-        "index": "not_analyzed"
-      },
-      "updated_by": {
-        "type": "string",
-        "index": "not_analyzed"
-      },
-      "id": {
-        "type": "string",
-        "index": "not_analyzed"
       }
+    ],
+    "properties" : {
     }
   }
 }
