@@ -8,7 +8,7 @@
    "model": "Indicator::Timeseries",
    "search": {
        "engine": "Elasticsearch",
-       "index": "indicator",
+       "index": "indicator-timeseries",
        "type": "timeseries",
        "params": {
            "facets": "systems,species,themes,label,warn,variable,unit,locations.placename",

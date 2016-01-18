@@ -8,7 +8,7 @@
    "model": "Indicator::Parameter",
    "search": {
        "engine": "Elasticsearch",
-       "index": "indicator",
+       "index": "indicator-parameter",
        "type": "parameter",
        "params": {
            "facets": "systems,species,themes,label,value,high,warn,low,parameter,locations.placename,size,links.rel,dataseries_count",
