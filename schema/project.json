@@ -271,7 +271,20 @@
         "additionalProperties": false,
         "properties": {
           "rel": {
-            "type": "string"
+            "type": "string",
+             "enum": [
+             "Related",
+             "Program",
+             "Parent",
+             "Child",
+             "Dataset",
+             "Publication",
+             "Expedition",
+             "Project",
+             "Reference",
+             "Logo",
+             "Image"
+            ]
           },
           "href": {
             "type": "string",
