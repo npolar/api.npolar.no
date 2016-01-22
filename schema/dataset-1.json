@@ -102,8 +102,7 @@
       "type": "array",
       "additionalItems": false,
       "items": {
-        "type": "string",
-        "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://lovdata.no/dokument/NL/lov/1961-05-12-2", "http://creativecommons.org/publicdomain/zero/1.0/"]
+        "type": "string"
       }
     },
     "changes": {
@@ -343,8 +342,7 @@
       "type": "array",
       "additionalItems": false,
       "items": {
-        "type": "string",
-        "enum": ["arctic", "antarctic", "gcmd.nasa.gov", "cryoclim.net", "ipy.org","docipy"]
+        "type": ["string", "null"]
       }
     },
     "gcmd": {
