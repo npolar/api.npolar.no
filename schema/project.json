@@ -273,17 +273,17 @@
           "rel": {
             "type": "string",
              "enum": [
-             "Related",
-             "Program",
-             "Parent",
-             "Child",
-             "Dataset",
-             "Publication",
-             "Expedition",
-             "Project",
-             "Reference",
-             "Logo",
-             "Image"
+             "related",
+             "program",
+             "parent",
+             "child",
+             "dataset",
+             "publication",
+             "expedition",
+             "project",
+             "reference",
+             "logo",
+             "image"
             ]
           },
           "href": {

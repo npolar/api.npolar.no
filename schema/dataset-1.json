@@ -344,7 +344,7 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["Arctic", "Antarctic", "Gcmd.nasa.gov", "Cryoclim.net", "Ipy.org","docipy"]
+        "enum": ["arctic", "antarctic", "gcmd.nasa.gov", "cryoclim.net", "ipy.org","docipy"]
       }
     },
     "gcmd": {
