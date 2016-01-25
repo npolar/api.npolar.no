@@ -8,17 +8,11 @@
       "type": "string"
     },
     "_rev": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^[0-9]+-"
     },
-    "location": {
-      "type": "object",
-      "additionalProperties": false,
+    "geometry": {
       "properties": {
-        "country": {
-          "description": "Map country, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
-          "type": "string",
-          "pattern": "^[A-Z]{2}$"
-        },
         "bbox": {
           "description": "Map coverage (W,S,E,N)",
           "type": "array",
@@ -29,16 +23,37 @@
           },
           "minItems": 0,
           "maxItems": 4
-        },
-        "hemisphere": {
-          "type": "string",
-          "enum": ["", "N", "S"]
-        },
-        "area": {
-          "type": "string"
-        },
-        "placename": {
-          "type": "string"
+        }
+      }
+    },
+    "license": {
+      "title": "License URI",
+      "description": "Use the public domain mark for maps assumed to be out-of copyright",
+      "type": "string",
+      "format": "uri"
+    },
+    "placenames": {
+      "uniqueItems": true,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "country": {
+            "description": "Map country, https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "hemisphere": {
+            "type": "string",
+            "enum": ["", "N", "S"]
+          },
+          "area": {
+            "type": "string"
+          },
+          "placename": {
+            "type": "string"
+          }
         }
       }
     },
@@ -54,6 +69,10 @@
       "minLength": 1,
       "maxLength": 999
     },
+    "preamble": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
     "subtitle": {
       "type": ["string", "null"],
       "minLength": 1
@@ -61,19 +80,6 @@
     "created": {
       "type": "string",
       "format": "date-time"
-    },
-    "resolution": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "resolution": {
-          "type": "number",
-          "description": "Resolution of scanned map"
-        },
-        "unit": {
-          "type": "string"
-        }
-      }
     },
     "restricted": {
       "type": "boolean",
@@ -111,7 +117,7 @@
         "properties": {
           "lang": {
             "type": "string",
-            "enum": ["nn", "nb", "no", "en"]
+            "default": "nn"
           },
           "summary": {
             "type": "string"
@@ -154,9 +160,23 @@
         }
       }
     },
-    "scale": {
-      "type": ["integer", "null"],
-      "description": "Scale denominator N (1:N)"
+    "scales": {
+      "type": "array",
+      "items": {
+        "type": ["integer", "null"],
+        "description": "Scale denominator N (1:N)"
+      }
+    },
+    "publishers": {
+      "type": "array",
+      "description": "Publisher(s)",
+       "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of copyright holder"
+          }
+        }
     },
     "type": {
       "type": "string",
@@ -166,10 +186,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "publisher": {
-          "type": "string",
-          "description": "Name of publisher"
-        },
         "year": {
           "type": "integer",
           "description": "Year of publication"
@@ -190,6 +206,13 @@
         "series": {
           "type": "string",
           "description": "Map series, if any"
+        },
+        "languages": {
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -216,7 +239,6 @@
         "properties": {
           "lang": {
             "type": "string",
-            "enum": ["nn", "nb", "no", "en"],
             "default": "nn"
           },
           "comment": {
@@ -243,8 +265,7 @@
           },
           "organisation": {
             "type": "string",
-            "description": "Organisation hosting the archive",
-            "default": "Norsk Polarinstitutt"
+            "description": "Organisation hosting the archive"
           },
           "country": {
             "type": "string",
@@ -254,8 +275,7 @@
           },
           "placename": {
             "type": "string",
-            "description": "City of the archive",
-            "default": "Tromsø"
+            "description": "City of the archive"
           }
         }
       }
