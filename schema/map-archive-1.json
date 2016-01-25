@@ -271,6 +271,31 @@
           }
         }
       },
+      "contributors": {
+      "description": "",
+      "type": "array",
+      "additionalItems": false,
+      "required": ["name", "role"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+
+        "properties": {
+
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["principalInvestigator", "editor"]
+          },
+          "email": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+      
       "links": {
         "type": "array",
         "uniqueItems": true,
