@@ -92,9 +92,14 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of copyright holder"
+            "description": "Name of rights holder"
           }
         }
+      },
+      "rightsExpire": {
+          "type": "string",
+          "format": "date",
+          "description": "Date when (copy)rights expire"
       },
       "summaries": {
         "uniqueItems": true,
