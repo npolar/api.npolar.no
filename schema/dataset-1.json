@@ -72,7 +72,7 @@
       "enum": ["ongoing", "complete", "planned"]
     },
     "topics": {
-      "title": "Npolar topics",
+      "title": "npolar topics",
       "description": "Includes http://www.npolar.no/en/research/topics/",
       "type": "array",
       "additionalItems": false,
@@ -94,6 +94,7 @@
     "tags": {
       "type": "array",
       "items": {
+        "title": "tag",
         "type": "string"
       }
     },
@@ -342,6 +343,7 @@
       "type": "array",
       "additionalItems": false,
       "items": {
+        "title": "set",
         "type": ["string", "null"]
       }
     },
