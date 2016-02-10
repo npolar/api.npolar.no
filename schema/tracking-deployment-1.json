@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/tracking-deployment-1",
+  "id": "http://api.npolar.no/schema/tracking-deployment-1",
   "type": "object",
   "properties": {
     "provider": {
