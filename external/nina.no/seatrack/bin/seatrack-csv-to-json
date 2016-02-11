@@ -1,0 +1,144 @@
+#!/usr/bin/env ruby
+# $ cat seatrack-db/v1/2016/seatrack_export_*.csv | ./bin/seatrack-csv-to-json > seed/seatrack.json
+
+require "csv"
+require "time"
+require "json"
+require "logger"
+require "digest/sha1"
+require "hashie"
+
+begin
+  
+  log = Logger.new(STDERR)
+  log.level = Logger::DEBUG
+  
+  input = STDIN
+  #separator = ";"
+  
+  species_lambda = lambda {|name|
+    case name
+    when /^Common eider/i
+      "Somateria mollissima" # Ærfugl
+    when /^Common guillemot/i
+      "Uria aalge" # Lomvi
+    else
+      raise "Missing species: #{name}"
+    end
+  }
+  
+  def colony_lambda
+    lambda {|d|
+      if d.colony?
+        d.colony = case d.colony
+        when "Rost"
+          "Røst"
+        when "Bjornoya"
+          "Bjørnøya"
+        when "Hornoya"
+          "Hornøya"
+        when "Iceland"
+          "Ísland"
+        when "Hjelmsoya"
+          "Hjelmsøya"
+        else
+          d.colony
+        end
+      end
+      log.info d.to_json
+      d
+    }
+  end
+  
+  
+  row_lambda = lambda {|row, i|
+    
+    log.debug row.to_json
+    measured = Time.parse(row.date_time.gsub(/\s/,"T")+"Z")
+    latitude = longitude = geometry = nil
+    
+    if row.lat_smooth2 != "NA" and row.lon_smooth2 != "NA"
+      latitude = row.lat_smooth2.to_f
+      longitude = row.lon_smooth2.to_f
+      geometry = {
+        type: "Point",
+        coordinates: [longitude,latitude]
+      }
+    end
+    
+    #id = Digest::SHA1.hexdigest(row.to_json)
+    p = Hashie::Mash.new({ id: row.id,
+      created: Time.parse(row.import_date+"T12:00:00Z").utc.iso8601,
+      geometry: geometry,
+      # The following data duplication of time and position is to facilate easier search
+      latitude: latitude,
+      longitude: longitude,
+      #genus: species_lambda.call(row.species).split(" ").first,
+      year: measured.year.to_i,
+      month: measured.month.to_i,
+      day: measured.day.to_i,
+      ## End of data duplication
+      type: "Feature",
+      properties: {
+        time: measured.utc.iso8601,
+        species: species_lambda.call(row.species),
+        confidence: row.conf.to_i,
+        colony: colony_lambda.call(row.colony),
+        technology: "gls",
+        individual: row.ring_number.to_s,
+        project: "seatrack",
+        object: row.species,
+        data_version: row.data_version.to_i
+      }
+    })
+    
+    log.info p.to_json
+    p
+  }
+
+  csv_options = {
+    #:col_sep => separator,
+    :header_converters => [:symbol,:downcase],
+    :headers => true,
+    :return_headers => true,
+    :row_sep => :auto,
+    #:field_size_limit => 100
+  }
+
+  features = []
+
+  csv = CSV(input, csv_options)
+
+  csv.each_with_index {|row,i|
+    
+    unless row.header_row?
+      features << row_lambda.call(Hashie::Mash.new(row.to_hash), i)
+    end
+    
+  }  
+  log.debug __FILE__+" parsed #{features.size} rows"
+
+  features = features.reject {|f| f["geometry"].nil? }
+  
+  # reject current? data version
+  
+  log.debug __FILE__+" rows #{features.size} contained geometry"
+
+
+  geojson = {
+    type: "FeatureCollection",
+    features: features
+  }
+  # if geojson
+  # else
+  puts features.to_json
+  #end
+  exit(0)
+
+rescue => e
+
+  puts e
+  puts e.backtrace
+  exit(1)
+
+end
