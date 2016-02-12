@@ -13,7 +13,7 @@
     },
     "collection": {
       "type": "string",
-      "default": "project"
+      "default": "troll-project"
     },
     "schema": {
       "type": "string"

@@ -13,7 +13,7 @@
     },
     "collection": {
       "type": "string",
-      "default": "project"
+      "default": "troll-booking"
     },
     "schema": {
       "type": "string"
