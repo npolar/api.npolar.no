@@ -3,7 +3,7 @@
   "id": "http://api.npolar.no/schema/troll-booking-1.0-rc1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["last_name"],
+  "required": ["research_type"],
   "properties": {
     "id": {
       "type": "string"
@@ -18,31 +18,114 @@
     "schema": {
       "type": "string"
     },
-     "first_name": {
+    "research_type": {
+      "type": "string",
+      "enum": ["surveillance","project","not_research"]
+    },
+    "research_disciplines": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": ["marine_biology"]
+      }
+    },
+     "summary": {
       "type": "string"
     },
-    "last_name": {
+     "location": {
       "type": "string"
     },
-    "email": {
-      "type": "string"
-    },
-    "phone": {
-      "type": "string"
-    },
-    "organisation": {
-      "type": "string"
-    },
-    "country": {
-      "type": "string"
-    },
-    "comment": {
-      "type": "string"
-    },
-    "research_project": {
-      "type": "string"
-    },
-    "stay": {
+     "needs": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "personnel_needs": {
+            "type": "string"
+          },
+          "material_needs": {
+            "type": "string"
+          }
+          }
+          }
+      },
+       "people": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "organisation": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["carpenter",
+                "chef",
+                "electrician",
+                "expedition_leader",
+                "field_assistant",
+                "field_responsible",
+                "fire_security",
+                "investigator",
+                "it",
+                "mecanic",
+                "mecanic_fire_engine",
+                "mecanic_taf",
+                "operator_60_tons",
+                "other",
+                "physician",
+                "research_technician",
+                "security",
+                "service_technician",
+                "transport"
+            ]
+          },
+          "entry_transport": {
+                 "type": "string",
+                 "enum": ["FL1", "FL2","FL3","FL4","FL5",
+                         "FL6","FL7", "ship", "helicopter", "other"]
+          },
+          "departure_transport": {
+                 "type": "string",
+                  "enum": ["FL1", "FL2","FL3","FL4","FL5",
+                         "FL6","FL7", "ship", "helicopter", "other"]
+           },
+           "days_in_field": {
+              "type": "integer"
+           },
+            "lodging": {
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -55,107 +138,98 @@
           "departure_date": {
             "type": "string"
           },
-          "role": {
-          "type": "array",
-          "additionalItems": false,
-          "items": {
-               "type": "string",
-              "enum": [
-                "carpenter",
-                "chef",
-                "electrician",
-                "expedition leader (R)",
-                "field assistant (R)",
-                "field work responsible (R)",
-                "fire security",
-                "investigator (R)",
-                "IT",
-                "mecanic",
-                "mecanic fire engine",
-                "mecanic TAF",
-                "operator 60 tons",
-                "other",
-                "physician",
-                "research technician (R)",
-                "security",
-                "service technician",
-                "transport" ]
-              }
-          },
-          "entry_transport": {
-                 "type": "string",
-                 "enum": ["FL1", "FL2","FL3","FL4","FL5",
-                         "FL6","FL7", "ship", "helicopter", "other"]
-          },
-          "departure_transport": {
-                 "type": "string",
-                  "enum": ["FL1", "FL2","FL3","FL4","FL5",
-                         "FL6","FL7", "ship", "helicopter", "other"]
-           }
-         }
+         "room": {
+           "type": "string",
+           "enum": ["Lege", "Mekaniker","Eksp.leder","Kokk",
+                    "Elektriker", "Driftstekniker","Forskningstekniker",
+                    "Gammelfløy R1/S1","Gammelfløy R1/S2",
+                    "Gammelfløy R2/S1","Gammelfløy R2/S2",
+                    "Gammelfløy R3/S1","Gammelfløy R3/S2",
+                    "Anfield S1","Anfield S2","BlåBo R1/S1",
+                    "BlåBo R1/S2","BlåBo R2/S1","BlåBo R2/S2",
+                    "BlåBo R3/S1","BlåBo R3/S2","BlåBo R4/S1",
+                    "BlåBo R4/S2","BlåBo R5/S1","BlåBo R5/S2",
+                    "BlåBo R6/S1","BlåBo R6/S2","BlåBo R7/S1",
+                    "BlåBo R7/S2","Eksp.leder Blåbo S1",
+                    "Eksp.leder Blåbo S2","BlåBo R9/S1",
+                    "BlåBo R9/S2","BlåBo R10/S1","BlåBo R10/S2",
+                    "BlåBo R11/S1","BlåBo R11/S2","BlåBo R12/S1",
+                    "BlåBo R12/S2","BlåBo R13/S1","BlåBo R13/S2",
+                    "BlåBo R14/S1","BlåBo R14/S2","BlåBo R15/S1",
+                    "BlåBo R15/S2","BlåBo R16/S1","BlåBo R16/S2",
+                    "BlåBo R17/S1","BlåBo R17/S2","BlåBo R18/S1",
+                    "BlåBo R18/S2","BlåBo R19/S1","BlåBo R19/S2",
+                    "BlåBo R20/S1","BlåBo R20/S2",
+                    "Hundehus 1","Hundehus 2","Hundehus 3",
+                    "Richard R1/S1","Richard R1/S2","Richard R2/S1",
+                    "Richard R2/S2","Richard R2/S3","Richard R2/S4",
+                    "Richard R2/S5","Richard R2/S6","Richard R3/S1",
+                    "Richard R3/S2","Richard R3/S3","Richard R3/S4",
+                    "Richard R3/S5","Richard R3/S6",
+                    "Nødstasjon S1","Nødstasjon S2","Nødstasjon S3",
+                    "Nødstasjon S4","Nødstasjon S5","Nødstasjon S6",
+                    "Nødstasjon S7","Nødstasjon S8","Blåmyra C1/S1",
+                    "Blåmyra C1/S2","Blåmyra C2/S1","Blåmyra C2/S2",
+                    "Blåmyra C3/S1","Blåmyra C3/S2","Blåmyra C4/S1",
+                    "Blåmyra C4/S2","Blåmyra C4/S3","Blåmyra C5/S1",
+                    "Blåmyra C5/S2","MaraBu","Finnebu","Iglo","Rønne",
+                    "Camilla S1","Camilla S2","Camilla S3","Camilla S4",
+                    "Britt S1","Britt S2","Britt S3","Britt S4",
+                    "Roald 1","Roald 2","Roald 3","Roald 4","Nilu S1",
+                    "Nilu S2","Telt 1","Telt 2","Telt 3","Telt 4",
+                    "Telt 5","Telt 6","Telt 7","Telt 8","Telt 9","Telt 10"]
+            }
+          }
         }
+      }
+          }
+       }
+    },
+    "links": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": {
+            "type": "string",
+             "enum": [
+             "related",
+             "program",
+             "parent",
+             "child",
+             "dataset",
+             "publication",
+             "expedition",
+             "project",
+             "reference",
+             "logo",
+             "image"
+            ]
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": ["string", "null"]
+          },
+          "hreflang": {
+            "type": ["string", "null"]
+          },
+          "type": {
+            "type": "string"
+          }
         },
-          "lodging": {
-              "type": "array",
-              "additionalItems": false,
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                    "room": {
-                      "type": "string",
-                      "enum": ["Lege", "Mekaniker","Eksp.leder","Kokk",
-                               "Elektriker", "Driftstekniker","Forskningstekniker",
-                               "Gammelfløy R1/S1","Gammelfløy R1/S2",
-                               "Gammelfløy R2/S1","Gammelfløy R2/S2",
-                               "Gammelfløy R3/S1","Gammelfløy R3/S2",
-                               "Anfield S1","Anfield S2","BlåBo R1/S1",
-                               "BlåBo R1/S2","BlåBo R2/S1","BlåBo R2/S2",
-                               "BlåBo R3/S1","BlåBo R3/S2","BlåBo R4/S1",
-                               "BlåBo R4/S2","BlåBo R5/S1","BlåBo R5/S2",
-                               "BlåBo R6/S1","BlåBo R6/S2","BlåBo R7/S1",
-                               "BlåBo R7/S2","Eksp.leder Blåbo S1",
-                               "Eksp.leder Blåbo S2","BlåBo R9/S1",
-                               "BlåBo R9/S2","BlåBo R10/S1","BlåBo R10/S2",
-                               "BlåBo R11/S1","BlåBo R11/S2","BlåBo R12/S1",
-                               "BlåBo R12/S2","BlåBo R13/S1","BlåBo R13/S2",
-                               "BlåBo R14/S1","BlåBo R14/S2","BlåBo R15/S1",
-                               "BlåBo R15/S2","BlåBo R16/S1","BlåBo R16/S2",
-                               "BlåBo R17/S1","BlåBo R17/S2","BlåBo R18/S1",
-                               "BlåBo R18/S2","BlåBo R19/S1","BlåBo R19/S2",
-                               "BlåBo R20/S1","BlåBo R20/S2",
-                               "Hundehus 1","Hundehus 2","Hundehus 3",
-                               "Richard R1/S1","Richard R1/S2","Richard R2/S1",
-                               "Richard R2/S2","Richard R2/S3","Richard R2/S4",
-                               "Richard R2/S5","Richard R2/S6","Richard R3/S1",
-                               "Richard R3/S2","Richard R3/S3","Richard R3/S4",
-                               "Richard R3/S5","Richard R3/S6",
-                               "Nødstasjon S1","Nødstasjon S2","Nødstasjon S3",
-                               "Nødstasjon S4","Nødstasjon S5","Nødstasjon S6",
-                               "Nødstasjon S7","Nødstasjon S8","Blåmyra C1/S1",
-                               "Blåmyra C1/S2","Blåmyra C2/S1","Blåmyra C2/S2",
-                               "Blåmyra C3/S1","Blåmyra C3/S2","Blåmyra C4/S1",
-                               "Blåmyra C4/S2","Blåmyra C4/S3","Blåmyra C5/S1",
-                               "Blåmyra C5/S2","MaraBu","Finnebu","Iglo","Rønne",
-                               "Camilla S1","Camilla S2","Camilla S3","Camilla S4",
-                               "Britt S1","Britt S2","Britt S3","Britt S4",
-                               "Roald 1","Roald 2","Roald 3","Roald 4","Nilu S1",
-                               "Nilu S2","Telt 1","Telt 2","Telt 3","Telt 4",
-                               "Telt 5","Telt 6","Telt 7","Telt 8","Telt 9","Telt 10"]
-                            },
-                            "start_date": {
-                                "description": "start lodging from",
-                                "type": "string",
-                                "format": "date-time"
-                            },
-                            "end_date": {
-                                "description": "end date lodging",
-                                "type": "string",
-                                "format": "date-time"
-                              }
-
-                          }
-                      }
+        "required": ["rel", "href"]
+      }
+    },
+    "comment": {
+      "type": "string"
+    },
+    "changes": {
+      "type": "string"
     },
     "created": {
       "description": "Project was published",
