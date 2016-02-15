@@ -125,7 +125,7 @@
            "days_in_field": {
               "type": "integer"
            },
-            "lodging": {
+    "lodging": {
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -133,10 +133,12 @@
         "additionalProperties": false,
         "properties": {
           "entry_date": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "departure_date": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
          "room": {
            "type": "string",
