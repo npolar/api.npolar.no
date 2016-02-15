@@ -125,6 +125,15 @@
            "days_in_field": {
               "type": "integer"
            },
+           "entry_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "departure_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+
     "lodging": {
       "type": "array",
       "additionalItems": false,
@@ -132,11 +141,11 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "entry_date": {
+          "start_date": {
             "type": "string",
             "format": "date-time"
           },
-          "departure_date": {
+          "end_date": {
             "type": "string",
             "format": "date-time"
           },
