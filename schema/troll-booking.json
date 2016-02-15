@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/troll-booking-1.0-rc1",
+  "id": "http://api.npolar.no/schema/troll-booking",
   "type": "object",
   "additionalProperties": false,
   "required": ["research_type"],
