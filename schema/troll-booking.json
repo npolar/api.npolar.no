@@ -20,7 +20,7 @@
     },
     "research_type": {
       "type": "string",
-      "enum": ["surveillance","project","not_research"]
+      "enum": ["research_monitoring","research_project","not_research"]
     },
     "research_disciplines": {
       "type": "array",
