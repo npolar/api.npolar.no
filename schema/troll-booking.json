@@ -27,7 +27,18 @@
       "additionalItems": false,
       "items": {
         "type": "string",
-        "enum": ["marine_biology"]
+        "enum": [
+              "atmosphere",
+              "marine_biology",
+              "terrestrial_biology",
+              "cryosphere",
+              "geology",
+              "oceanography",
+              "social_sciences",
+              "space_physics",
+              "technology_and_engineering",
+              "other"
+        ]
       }
     },
      "summary": {
@@ -121,9 +132,6 @@
                  "type": "string",
                   "enum": ["FL1", "FL2","FL3","FL4","FL5",
                          "FL6","FL7", "ship", "helicopter", "other"]
-           },
-           "days_in_field": {
-              "type": "integer"
            },
            "entry_date": {
             "type": "string",
