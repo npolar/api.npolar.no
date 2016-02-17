@@ -41,6 +41,9 @@
         ]
       }
     },
+     "research_project": {
+      "type": "string"
+    },
      "summary": {
       "type": "string"
     },
@@ -91,8 +94,11 @@
             "type": "string"
           },
           "role": {
-            "type": "string",
-            "enum": ["carpenter",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+              "type": "string",
+              "enum": ["carpenter",
                 "chef",
                 "electrician",
                 "expedition_leader",
@@ -112,6 +118,7 @@
                 "service_technician",
                 "transport"
             ]
+          }
           },
           "entry_transport": {
                  "type": "string",
@@ -122,9 +129,6 @@
                  "type": "string",
                   "enum": ["FL1", "FL2","FL3","FL4","FL5",
                          "FL6","FL7", "ship", "helicopter", "other"]
-           },
-           "days_in_field": {
-               "type":"integer"
            },
            "entry_date": {
             "type": "string",
