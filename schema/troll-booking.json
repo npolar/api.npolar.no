@@ -47,30 +47,20 @@
      "location": {
       "type": "string"
     },
-     "needs": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "start_date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "end_date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "personnel_needs": {
-            "type": "string"
-          },
-          "material_needs": {
-            "type": "string"
-          }
-          }
-          }
-      },
+    "start_date": {
+       "type": "string",
+       "format": "date-time"
+    },
+    "end_date": {
+       "type": "string",
+       "format": "date-time"
+    },
+    "personnel_needs": {
+       "type": "string"
+    },
+    "material_needs": {
+      "type": "string"
+    },
        "people": {
       "type": "array",
       "additionalItems": false,
@@ -132,6 +122,9 @@
                  "type": "string",
                   "enum": ["FL1", "FL2","FL3","FL4","FL5",
                          "FL6","FL7", "ship", "helicopter", "other"]
+           },
+           "days_in_field": {
+               "type":"integer"
            },
            "entry_date": {
             "type": "string",
