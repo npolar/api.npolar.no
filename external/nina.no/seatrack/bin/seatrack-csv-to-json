@@ -14,7 +14,7 @@ begin
   log.level = Logger::DEBUG
   
   input = STDIN
-  #separator = ";"
+  separator = ";"
   
   species_lambda = lambda {|name|
     case name
@@ -28,38 +28,47 @@ begin
   }
   
   def colony_lambda
-    lambda {|d|
-      if d.colony?
-        d.colony = case d.colony
-        when "Rost"
-          "Røst"
-        when "Bjornoya"
-          "Bjørnøya"
-        when "Hornoya"
-          "Hornøya"
-        when "Iceland"
-          "Ísland"
-        when "Hjelmsoya"
-          "Hjelmsøya"
-        else
-          d.colony
-        end
+    lambda {|colony|
+
+      colony = case colony
+      when "Rost"
+        "Røst"
+      when "Bjornoya"
+        "Bjørnøya"
+      when "Hornoya"
+        "Hornøya"
+      when "Iceland"
+        "Ísland"
+      when "Hjelmsoya"
+        "Hjelmsøya"
+      else
+        colony
       end
-      log.info d.to_json
-      d
+      colony
     }
   end
   
   
   row_lambda = lambda {|row, i|
     
-    log.debug row.to_json
+    #log.debug row.to_json
     measured = Time.parse(row.date_time.gsub(/\s/,"T")+"Z")
     latitude = longitude = geometry = nil
     
+    if row.eqfilter3 == "1" and (row.lat_smooth2_eqfilt3 != row.lat_smooth2)
+      log.warn row.lat_smooth2_eqfilt3
+      log.warn row.lat_smooth2
+      log.warn "*"*80
+    end
+    
     if row.lat_smooth2 != "NA" and row.lon_smooth2 != "NA"
-      latitude = row.lat_smooth2.to_f
+      if row.eqfilter3 == "1"
+         latitude = row.lat_smooth2_eqfilt3.to_f
+      else
+         latitude = row.lat_smooth2.to_f
+      end
       longitude = row.lon_smooth2.to_f
+      
       geometry = {
         type: "Point",
         coordinates: [longitude,latitude]
@@ -92,12 +101,12 @@ begin
       }
     })
     
-    log.info p.to_json
+    #log.info p.to_json
     p
   }
 
   csv_options = {
-    #:col_sep => separator,
+    :col_sep => separator,
     :header_converters => [:symbol,:downcase],
     :headers => true,
     :return_headers => true,
