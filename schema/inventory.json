@@ -3,7 +3,7 @@
   "id": "http://api.npolar.no/schema/inventory-1.0-rc1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["title"],
+  "required": ["category"],
   "properties": {
     "id": {
       "type": "string"
