@@ -18,31 +18,29 @@
     "category": {
       "type": "string",
       "enum": [
-      "instrument",
-      "depot",
-      "station",
-      "contamination",
-      "field hut",
       "airstrip",
-      "heliport",
+      "building",
+      "contamination",
+      "cultural heritage",
       "data collection",
+      "depot",
+      "field hut",
+      "heliport",
+      "instrument",
       "operational activity",
-      "wildlife concentration",
-      "other"
-      ]
+      "other",
+      "research monitoring",
+      "research project",
+      "research station",
+      "unknown"]
     },
-    "reason_for_activity": {
-      "type": "string",
-      "enum": [
-      "operational activity",
-      "unknown",
-      "scientific research",
-      "heritage registration/conservation",
-      "monitoring",
-       "other"
-      ]
+    "title":{
+      "type": "string"
     },
      "description": {
+      "type": "string"
+    },
+     "ephorte_no": {
       "type": "string"
     },
     "release_date": {
@@ -109,6 +107,28 @@
     "other_invasive_activity": {
         "type": "boolean"
     },
+    "field_hut": {
+          "description": "Location is a field camp",
+          "type": "boolean"
+    },
+    "research_station": {
+            "type": "boolean"
+    },
+    "cultural_heritage":{
+            "type": "boolean"
+    },
+    "airstrip": {
+            "type": "boolean"
+    },
+    "heliport":{
+            "type": "boolean"
+    },
+     "stationary_other":{
+            "type": "string"
+    },
+    "stationary_quantity": {
+            "type": "string"
+    },
     "people": {
       "type": "array",
       "additionalItems": false,
@@ -128,6 +148,9 @@
           "email": {
             "type": "string",
             "format": "email"
+          },
+          "phone": {
+            "type": "string"
           },
           "role": {
             "type": "string",
@@ -191,11 +214,7 @@
           },
           "hemisphere": {
             "description": "Hemisphere: N or S",
-            "type": [
-              "string",
-              "null"
-            ],
-            "pattern": "^[NSns]{1}$"
+            "type": ["S"]
           },
           "gps": {
                 "type": "array",
@@ -221,178 +240,182 @@
                   }
                 }
           },
-          "details": {
+          "place": {
+             "type": ["string","null"],
+             "enum":["troll","tor","shelf_traverse"]
+          },
+          "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
             "type": "string"
+          }
+          }
+          }
           },
-          "field_camp": {
-            "description": "Location is a field camp",
-            "type": "boolean"
-          },
-          "number_of_persons": {
-              "type": "string"
-          },
-          "quantity": {
-              "type": "string"
-           },
-           "instrument": {
-              "type": "string"
-            },
-           "instrument_type": {
-            "description": "GCMD vocabulary, http://gcmdservices.gsfc.nasa.gov/static/kms/instruments/instruments.csv",
-            "type": ["string", "null"]
-          },
-           "drum_full":{
-               "type": "boolean"
-            },
-            "drum_emptied":{
-                "type": "boolean"
-            },
-            "drum_color":{
-                "type": "string"
-            },
-            "drum_active":{
-                "type": "boolean"
-            },
-            "species": {
-                "title": "Species",
+          "instrument": {
                 "type": "array",
                 "additionalItems": false,
                 "items": {
-                  "type": "string",
-                  "enum": [
-                  "arctocephalus gazella",
-                  "lobodon carcinophagus",
-                  "leptonychotes weddelli",
-                  "hydrurga leptonyx",
-                  "mirounga leonina",
-                  "ommatophoca rossi",
-                  "stercorarius maccormicki",
-                  "thalassoica antarctica",
-                  "pagodroma nivea",
-                  "larus dominicanus",
-                  "aptenodytes forsteri",
-                  "pygoscelis adeliae"
-                ]
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                     "instrument": {
+                        "type": "string"
+                      },
+                      "instrument_description": {
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "type": "string"
+                      }
+                  }
                 }
-            },
-            "species_area": {
-                "type": "string",
-                "enum": [
-                  "breeding",
-                  "feeding",
-                  "roosting"
-                ] },
-          "contamination_type": {
-            "type": "string",
-            "enum": [
-            "metals",
-            "glass",
-            "mixed waste",
-            "paper/card board",
-            "plastics",
-            "food waste, compost",
-            "sewage, urine (non-composted)",
-            "oil contaminated items",
-            "sewage compost",
-            "chemicals and batteries"
-          ]
           },
-          "priority": {
-            "type": "string",
-            "enum": [
-                "high priority for remediation",
-                "medium priority for remediation",
-                "low priority for remediation",
-                "further assessment required",
-                "post-remediation monitoring"
-              ]
-            },
-            "impact_likelihood": {
-                "type": "string",
-                "enum": [
-                   "almost certain",
-                   "likely",
-                   "possible",
-                   "unlikely"
-                ]
-            },
-            "impact_spatial": {
-                "type": "string",
-                "enum": [
-                  "local <100 sq km",
-                  "immediate 100m – 1 sq km",
-                  "widespread >1 sq km"
-                ]
-            },
-            "impact_temporal":{
-                "type": "string",
-                "enum": [
-                  "short term <1 year",
-                  "intermediate 1-10 years",
-                  "long term > 10 years"
-                ]
-            },
-             "impact_documented":{
-                 "type": "boolean"
+          "fuel": {
+                "type": "array",
+                "additionalItems": false,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                     "fuel_tank": {
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string",
+                        "enum": ["diesel","JET-A1","benzin"]
+                      },
+                      "drum_full":{
+                          "type": "boolean"
+                      },
+                      "drum_emptied":{
+                          "type": "boolean"
+                      },
+                       "expiration_date":{
+                          "type": "string",
+                          "format": "date-time"
+                      }
+                  }
+                }
+           },
+           "contamination": {
+                "type": "array",
+                "additionalItems": false,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                     "type": {
+                        "type": "string",
+                        "enum": [
+                            "metals",
+                            "glass",
+                            "mixed waste",
+                            "paper/card board",
+                            "plastics",
+                            "food waste, compost",
+                            "sewage, urine (non-composted)",
+                            "oil contaminated items",
+                            "sewage compost",
+                            "chemicals and batteries"
+                          ] },
+                      "quantity": {
+                        "type": "string"
+                      },
+                      "priority": {
+                      "type": "string",
+                      "enum": [
+                          "high priority for remediation",
+                          "medium priority for remediation",
+                          "low priority for remediation",
+                          "further assessment required",
+                          "post-remediation monitoring"
+                        ]
+                      },
+                      "impact_likelihood": {
+                          "type": "string",
+                          "enum": [
+                             "almost certain",
+                             "likely",
+                             "possible",
+                             "unlikely"]
+                      },
+                      "impact_spatial": {
+                          "type": "string",
+                          "enum": [
+                            "local <100 sq km",
+                            "immediate 100m – 1 sq km",
+                            "widespread >1 sq km"
+                       ]},
+                      "impact_temporal":{
+                          "type": "string",
+                          "enum": [
+                            "short term <1 year",
+                            "intermediate 1-10 years",
+                            "long term > 10 years"
+                       ]},
+                       "impact_documented":{
+                           "type": "boolean"
+                      }
+                  }
+                }
+           },
+          "links": {
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "rel": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "title": {
+                  "type": ["string", "null"]
+                },
+                "hreflang": {
+                  "type": ["string", "null"]
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": ["rel", "href"]
             }
-        }
-      }
-    },
-    "links": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "rel": {
-            "type": "string"
           },
-          "href": {
+          "created": {
+            "description": "Footprint entry was published",
             "type": "string",
-            "format": "uri"
+            "format": "date-time"
           },
-          "title": {
-            "type": ["string", "null"]
+          "updated": {
+            "description": "Footprint was updated",
+            "type": "string",
+            "format": "date-time"
           },
-          "hreflang": {
-            "type": ["string", "null"]
-          },
-          "type": {
+          "created_by": {
             "type": "string"
+          },
+          "updated_by": {
+            "type": "string"
+          },
+          "_id": {
+            "description": "Internal id",
+            "type": "string"
+          },
+          "_rev": {
+            "description": "Internal revision",
+            "type": "string"
+          },
+          "_deleted": {
+            "description": "Deleted entry",
+            "type": "boolean"
           }
-        },
-        "required": ["rel", "href"]
-      }
-    },
-    "created": {
-      "description": "Footprint entry was published",
-      "type": "string",
-      "format": "date-time"
-    },
-    "updated": {
-      "description": "Footprint was updated",
-      "type": "string",
-      "format": "date-time"
-    },
-    "created_by": {
-      "type": "string"
-    },
-    "updated_by": {
-      "type": "string"
-    },
-    "_id": {
-      "description": "Internal id",
-      "type": "string"
-    },
-    "_rev": {
-      "description": "Internal revision",
-      "type": "string"
-    },
-    "_deleted": {
-      "description": "Deleted entry",
-      "type": "boolean"
-    }
 }
 }
