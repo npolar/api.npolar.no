@@ -122,15 +122,15 @@
               "description": "role",
               "type": "string",
               "enum": [
-                "expedition_leader",
-                "field_assistant",
-                "principal_investigator",
-                "processor",
-                "point_of_contact"
+                "EXPEDITION_LEADER",
+                "FIELD_ASSISTANT",
+                "PRINCIPAL_INVESTIGATOR",
+                "PROCESSOR",
+                "POINT_OF_CONTACT"
               ]
           },
           "start_date": {
-            "description": "stats to keep track of research days in field",
+            "description": "X39 - The date and time the expedition started",
             "type": "string",
             "format": "date-time"
           },
@@ -182,12 +182,12 @@
     "ship_name": {
           "description": "X27 - The name of the vessel or vehicle. Example 'RV Lance.'",
           "type": "string",
-          "enum": ["Lance", "XXX"]
+          "enum": ["LANCE", "XXX"]
     },
     "ship_type":{
           "description": "X28 - Ship type ex research vessel",
           "type": "string",
-          "enum": ["research_vessel"]
+          "enum": ["RESEARCH_VESSEL"]
     },
      "limitations":{
       "description": "X34 SeaDataNet - use limitations",
@@ -205,12 +205,12 @@
         "type": "object",
         "properties": {
           "start_date": {
-            "description": "Th.",
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
            "end_date": {
-            "description": "The placename of the departure location.",
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "hemisphere": {
             "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
@@ -224,7 +224,7 @@
           "predefined_locality": {
             "description": "predefined areas",
             "type": "string",
-            "enum": ["fram_strait", "arctic_ocean", "barents_sea_north", "southern_ocean", "other"]
+            "enum": ["FRAM_STRAIT", "ARCTIC_OCEAN", "BARENTS_SEA_NORTH", "SOUTHERN_OCEAN", "OTHER"]
           },
           "country": {
             "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
@@ -324,19 +324,16 @@
       "description": "The progression state of the expedition.",
       "type": "string",
       "enum": [
-        "planned",
-        "ongoing",
-        "completed",
-        "cancelled"
+        "PLANNED",
+        "ONGOING",
+        "COMPLETED",
+        "CANCELLED"
       ]
     },
     "draft": {
       "description": "The publication state of the document.",
-      "type": "string",
-      "enum": [
-        "yes",
-        "no"
-      ]
+      "type": "sting",
+      "enum": ["YES"]
     },
      "research": {
       "description": "list of activite periods for the platform",
@@ -351,23 +348,23 @@
           "type":{
             "description": "Add one or more disciplines used in RiS",
             "type": "string",
-            "enum":["research_monitoring",
-                    "research_project",
-                    "not_research"]
+            "enum":["RESEARCH_MONITORING",
+                    "RESEARCH_PROJECT",
+                    "NOT_RESEARCH"]
           },
           "ris_disciplines": {
             "description": "Add one or more disciplines used in RiS",
             "type": "string",
-            "enum":["atmosphere",
-                    "marine_biology",
-                    "terrestrial_biology",
-                    "cryosphere",
-                    "geology",
-                    "oceanography",
-                    "social_sciences",
-                    "space_physics",
-                    "technology_and_engineering",
-                    "other"]
+            "enum":["ATMOSPHERE",
+                    "MARINE_BIOLOGY",
+                    "TERRESTRIAL_BIOLOGY",
+                    "CRYOSPHERE",
+                    "GEOLOGY",
+                    "OCEANOGRAPHY",
+                    "SOCIAL_SCIENCE",
+                    "SPACE_PHYSICS",
+                    "TECHNOLOGY_AND_ENGINEERING",
+                    "OTHER"]
           }
         },
         "additionalProperties": false
@@ -455,4 +452,7 @@
     }
   },
   "additionalProperties": false
+}
+}
+}
 }
