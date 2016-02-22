@@ -131,13 +131,19 @@
           },
           "start_date": {
             "description": "X39 - The date and time the expedition started",
+             "type": "array",
+            "items": {
             "type": "string",
             "format": "date-time"
+          }
           },
           "end_date": {
             "description": "X39 - The date and time the expedition returned.",
+             "type": "array",
+            "items": {
             "type": "string",
             "format": "date-time"
+          }
           },
             "additionalItems": false
       },
