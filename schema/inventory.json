@@ -277,14 +277,15 @@
                   "additionalProperties": false,
                   "properties": {
                      "fuel_tank": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": ["11_CUBIC","24_CUBIC", "DRUMS"]
                       },
                       "quantity": {
                         "type": "string"
                       },
                       "content": {
                         "type": "string",
-                        "enum": ["diesel","JET-A1","benzin"]
+                        "enum": ["DIESEL","JET-A1","BENZIN"]
                       },
                       "drum_full":{
                           "type": "boolean"
