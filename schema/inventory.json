@@ -18,21 +18,21 @@
     "category": {
       "type": "string",
       "enum": [
-      "airstrip",
-      "building",
-      "contamination",
-      "cultural heritage",
-      "data collection",
-      "depot",
-      "field hut",
-      "heliport",
-      "instrument",
-      "operational activity",
-      "other",
-      "research monitoring",
-      "research project",
-      "research station",
-      "unknown"]
+      "AIRSTRIP",
+      "BUILDING",
+      "CONTAMINATION",
+      "CULTURAL_HERITAGE",
+      "DATA_COLLECTION",
+      "DEPOT",
+      "FIELD_HUT",
+      "HELIPORT",
+      "INSTRUMENT",
+      "OPERATIONAL_ACTIVITY",
+      "OTHER",
+      "RESEARCH_MONITORING",
+      "RESEARCH_PROJECT",
+      "RESEARCH_STATION",
+      "UNKNOWN"]
     },
     "title":{
       "type": "string"
@@ -309,16 +309,16 @@
                      "type": {
                         "type": "string",
                         "enum": [
-                            "metals",
-                            "glass",
-                            "mixed waste",
-                            "paper/card board",
-                            "plastics",
-                            "food waste, compost",
-                            "sewage, urine (non-composted)",
-                            "oil contaminated items",
-                            "sewage compost",
-                            "chemicals and batteries"
+                            "METALS",
+                            "GLASS",
+                            "MIXED_WASTE",
+                            "PAPER_CARD_BOARD",
+                            "PLASTICS",
+                            "FOOD_WASTE",
+                            "SEWAGE",
+                            "OIL_CONTAMINATED",
+                            "SEWAGE_COMPOST",
+                            "CHEMICALS_BATTERIES"
                           ] },
                       "quantity": {
                         "type": "string"
@@ -326,34 +326,34 @@
                       "priority": {
                       "type": "string",
                       "enum": [
-                          "high priority for remediation",
-                          "medium priority for remediation",
-                          "low priority for remediation",
-                          "further assessment required",
-                          "post-remediation monitoring"
+                          "HIGH",
+                          "MEDIUM",
+                          "LOW",
+                          "ASSESSMENT_REQUIRED",
+                          "POST_REMEDIATION_MONITORING"
                         ]
                       },
                       "impact_likelihood": {
                           "type": "string",
                           "enum": [
-                             "almost certain",
-                             "likely",
-                             "possible",
-                             "unlikely"]
+                             "ALMOST_CERTAIN",
+                             "LIKELY",
+                             "POSSIBLE",
+                             "UNLIKELY"]
                       },
                       "impact_spatial": {
                           "type": "string",
                           "enum": [
-                            "local <100 sq km",
-                            "immediate 100m – 1 sq km",
-                            "widespread >1 sq km"
+                            "LOCAL",
+                            "IMMEDIATE",
+                            "WIDESPREAD"
                        ]},
                       "impact_temporal":{
                           "type": "string",
                           "enum": [
-                            "short term <1 year",
-                            "intermediate 1-10 years",
-                            "long term > 10 years"
+                            "SHORT",
+                            "INTERMEDIATE",
+                            "LONG"
                        ]},
                        "impact_documented":{
                            "type": "boolean"
