@@ -18,11 +18,11 @@
     "category": {
       "type": "string",
       "enum": [
+      "UNKNOWN",
       "AIRSTRIP",
       "BUILDING",
       "CONTAMINATION",
       "CULTURAL_HERITAGE",
-      "DATA_COLLECTION",
       "DEPOT",
       "FIELD_HUT",
       "HELIPORT",
@@ -31,8 +31,7 @@
       "OTHER",
       "RESEARCH_MONITORING",
       "RESEARCH_PROJECT",
-      "RESEARCH_STATION",
-      "UNKNOWN"]
+      "RESEARCH_STATION"]
     },
     "title":{
       "type": "string"
@@ -152,7 +151,7 @@
             "type": "string"
           },
           "role": {
-            "type": "string",
+            "type": ["string", "null"],
             "enum": ["LEADER", "PARTICIPANT", "OBSERVER"]
           },
           "organisation": {
@@ -213,7 +212,8 @@
           },
           "hemisphere": {
             "description": "Hemisphere: N or S",
-            "type": ["S"]
+            "type": "string",
+            "enum": ["S"]
           },
           "gps": {
                 "type": "array",
@@ -277,14 +277,14 @@
                   "additionalProperties": false,
                   "properties": {
                      "fuel_tank": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "enum": ["11_CUBIC","24_CUBIC", "DRUMS"]
                       },
                       "quantity": {
                         "type": "string"
                       },
                       "content": {
-                        "type": "string",
+                        "type": ["string","null"],
                         "enum": ["DIESEL","JET-A1","BENZIN"]
                       },
                       "drum_full":{
@@ -308,7 +308,7 @@
                   "additionalProperties": false,
                   "properties": {
                      "type": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "enum": [
                             "METALS",
                             "GLASS",
@@ -325,7 +325,7 @@
                         "type": "string"
                       },
                       "priority": {
-                      "type": "string",
+                      "type": ["string","null"],
                       "enum": [
                           "HIGH",
                           "MEDIUM",
@@ -335,7 +335,7 @@
                         ]
                       },
                       "impact_likelihood": {
-                          "type": "string",
+                          "type": ["string","null"],
                           "enum": [
                              "ALMOST_CERTAIN",
                              "LIKELY",
@@ -343,14 +343,14 @@
                              "UNLIKELY"]
                       },
                       "impact_spatial": {
-                          "type": "string",
+                          "type": ["string","null"],
                           "enum": [
                             "LOCAL",
                             "IMMEDIATE",
                             "WIDESPREAD"
                        ]},
                       "impact_temporal":{
-                          "type": "string",
+                          "type": ["string","null"],
                           "enum": [
                             "SHORT",
                             "INTERMEDIATE",
