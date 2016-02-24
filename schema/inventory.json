@@ -153,7 +153,7 @@
           },
           "role": {
             "type": "string",
-            "enum": ["leader", "participant", "observer"]
+            "enum": ["LEADER", "PARTICIPANT", "OBSERVER"]
           },
           "organisation": {
             "type": "string"
@@ -241,7 +241,7 @@
           },
           "place": {
              "type": ["string","null"],
-             "enum":["troll","tor","shelf_traverse"]
+             "enum":["TROLL","TOR","SHELF_TRAVERSE"]
           },
           "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
@@ -370,7 +370,14 @@
               "additionalProperties": false,
               "properties": {
                 "rel": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [ "SERVICE",
+                    "PROJECT",
+                    "PUBLICATION",
+                    "DATACENTRE",
+                    "PARENT"
+                    "DATA"
+                  ]
                 },
                 "href": {
                   "type": "string",
