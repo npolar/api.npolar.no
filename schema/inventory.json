@@ -285,7 +285,7 @@
                       },
                       "content": {
                         "type": ["string","null"],
-                        "enum": ["DIESEL","JET-A1","BENZIN"]
+                        "enum": ["DIESEL","JET_A-1","BENZIN"]
                       },
                       "drum_full":{
                           "type": "boolean"
