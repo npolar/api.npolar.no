@@ -136,7 +136,7 @@
         "format": "date-time"
       },
       "media": {
-        "type": "string"
+        "type": ["string", "null"]
       },
       "cartography": {
         "type": "object",
