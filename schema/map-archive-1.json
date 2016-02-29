@@ -98,7 +98,6 @@
       },
       "rightsExpire": {
           "type": "string",
-          "format": "date",
           "description": "Date when (copy)rights expire"
       },
       "summaries": {
@@ -176,6 +175,7 @@
       },
       "type": {
         "type": "string",
+        "default": "topographic",
         "enum": ["aeronautical", "geologic", "manuscript", "nautical", "overview", "satellite-image", "sketch", "thematic", "topographic", "unknown"]
       },
       "publication": {
@@ -328,6 +328,36 @@
             },
             "type": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "images": {
+        "type": "array",
+        "description": "Original map images",
+        "items": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "description": "URI of the image",
+              "format": "uri"
+            },
+            "filename": {
+              "type": "string",
+              "description": "Image file name"
+            },
+            "rel": {
+              "type": "string",
+              "description": ""
+            },
+            "length": {
+              "type": "integer",
+              "description": "File size in bytes"
+            },
+              "type": {
+              "type": "string",
+               "description": "Media type (e.g. image/tiff)"
             }
           }
         }
