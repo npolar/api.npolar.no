@@ -29,8 +29,7 @@
       "license": {
         "title": "License URI",
         "description": "Use the public domain mark for maps assumed to be out-of copyright",
-        "type": ["string", "null"],
-        "format": "uri"
+        "type": ["string", "null"]
       },
       "placenames": {
         "uniqueItems": true,
