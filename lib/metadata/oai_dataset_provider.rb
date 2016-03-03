@@ -12,7 +12,8 @@ module Metadata
         {:spec => "antarctic", :name => "Antarctic datasets"},
         {:spec => "ipy.org", :name => "International Polar Year", :description => "Datasets from the International Polar Year (2007-2008), see http://www.ipy.org"},
         {:spec => "cryoclim.net", :name => "Cryoclim", :description => "Climate monitoring of the cryosphere, see http://cryoclim.net"},
-        {:spec => "gcmd.nasa.gov", :name => "Global Change Master Directory" }
+        {:spec => "gcmd.nasa.gov", :name => "Global Change Master Directory" },
+        {:spec => "N-ICE2015", :name => "N-ICE2015 datasets" }
       ]+self.topic_sets.map {|t| { spec: t, name: t.capitalize+" datasets", description: "See http://api.npolar.no/dataset/?q=&filter-topics=#{t}" } }
       sets
     end
