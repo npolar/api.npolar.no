@@ -291,9 +291,12 @@
           },
           "role": {
             "type": "string",
-            "enum": ["principalInvestigator", "editor"]
+            "enum": ["principalInvestigator", "editor", "processor", "rightsHolder"]
           },
           "email": {
+            "type": ["string", "null"]
+          },
+          "homepage": {
             "type": ["string", "null"]
           }
         }
@@ -354,9 +357,21 @@
               "type": "integer",
               "description": "File size in bytes"
             },
-              "type": {
+            "type": {
               "type": "string",
-               "description": "Media type (e.g. image/tiff)"
+               "description": "Media type (e.g. image/png)"
+            },
+            "hash": {
+              "type": "string",
+               "description": ""
+            },
+            "width": {
+              "type": "integer",
+              "description": "Width in pixels"
+            },
+            "height": {
+              "type": "integer",
+              "description": "Height in pixels"
             }
           }
         }
