@@ -41,7 +41,7 @@
     "log": false,
     "params": {
       "facets": "bundle",
-      "fields": "code,bundle,texts"
+      "fields": "code,bundle,texts",
       "size-facet": 100
     }
   },

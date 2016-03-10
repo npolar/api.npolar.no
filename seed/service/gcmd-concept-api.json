@@ -8,7 +8,6 @@
    "database": "gcmd_concept",
    "search": {
        "engine": "Elasticsearch",
-       "url": "http://dbmaster.data.npolar.no:9200",
        "index": "gcmd",
        "type": "concept",
        "params": {
