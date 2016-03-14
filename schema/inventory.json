@@ -230,13 +230,9 @@
                         "type": "number",
                         "minimum": -180.0,
                         "maximum": 180.0
-                      },
-                      "geometry": {
-                        "type": "object",
-                        "description": "[GeoJSON geometry object](http://geojson.org/geojson-spec.html#geometry-objects)"
+                      }
                       }
                   }
-                }
           },
           "place": {
              "type": ["string","null"],
