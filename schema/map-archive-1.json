@@ -352,6 +352,11 @@
             "height": {
               "type": "integer",
               "description": "Height in pixels"
+            },
+            "restricted": {
+              "type": "boolean",
+              "default": false,
+              "description": "Restricted access?"
             }
           }
         }
