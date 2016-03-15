@@ -85,16 +85,6 @@
         "default": false,
         "description": "Restricted access to original map scan except preview?"
       },
-      "rightsHolder": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of rights holder"
-          }
-        }
-      },
       "rightsExpire": {
           "type": "string",
           "description": "Date when (copy)rights expire"
@@ -114,20 +104,6 @@
               "type": "string"
             }
   
-          }
-        }
-      },
-      "processor": {
-        "type": "object",
-        "description": "Person who scanned the map",
-        "additionalProperties": false,
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string",
-            "description": "Map scanner"
           }
         }
       },
@@ -334,7 +310,7 @@
           }
         }
       },
-      "images": {
+      "files": {
         "type": "array",
         "description": "Original map images",
         "items": {
@@ -362,6 +338,10 @@
                "description": "Media type (e.g. image/png)"
             },
             "hash": {
+              "type": "string",
+               "description": ""
+            },
+            "modified": {
               "type": "string",
                "description": ""
             },
