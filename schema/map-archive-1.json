@@ -266,8 +266,7 @@
             "type": "string"
           },
           "role": {
-            "type": "string",
-            "enum": ["principalInvestigator", "editor", "processor", "rightsHolder"]
+            "type": "string"
           },
           "email": {
             "type": ["string", "null"]
