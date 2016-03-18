@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/troll-booking",
+  "id": "http://api.npolar.no/schema/station-booking",
   "type": "object",
   "additionalProperties": false,
   "required": ["research_type", "research_station"],
@@ -13,7 +13,7 @@
     },
     "collection": {
       "type": "string",
-      "default": "troll-booking"
+      "default": "station-booking"
     },
     "schema": {
       "type": "string"

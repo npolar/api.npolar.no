@@ -162,7 +162,7 @@
             },
             "additionalItems": false
           },
-           "joined_dates": {
+           "expedition_dates": {
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -372,17 +372,18 @@
                   "description": "Resource relation to the current document",
                   "type": "string",
                   "enum": [
-                     "RELATED",
-                     "PROGRAM",
-                     "PARENT",
-                     "CHILD",
-                     "DATASET",
-                     "PUBLICATION",
-                     "EXPEDITION",
-                     "CRUISE",
-                     "PROJECT",
-                     "REFERENCE"
-                    ]
+                  "CRUISE",
+                  "EXPEDITION",
+                  "CHILD",
+                  "DATASET",
+                  "PARENT",
+                  "PROGRAM",
+                  "PROJECT",
+                  "PUBLICATION",
+                  "REFERENCE",
+                  "RELATED",
+                  "STATION_BOOKING"
+                  ]
                   },
                 "title": {
                   "description": "Title of linked resource",
