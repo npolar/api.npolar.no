@@ -1,45 +1,38 @@
-{
-  "troll-booking": {
+
+n-booking": {
     "_all": {"enabled": true,"store": "yes"},
     "properties": {
       "id":{"type":"string","index":"not_analyzed"},
+      "rev":{"type":"string","index":"not_analyzed"},
       "collection":{"type":"string","index":"not_analyzed"},
       "schema":{"type":"string","index":"not_analyzed"},
+      "lang":{"type":"string","index":"not_analyzed"},
+      "research_station":{"type":"string","index":"not_analyzed"},
       "research_type":{"type":"string","index":"not_analyzed"},
-      "research_disciplines":{"type":"string","index":"not_analyzed"},
       "summary": {"type":"string","index":"analyzed"},
-      "location":{"type":"string","index":"not_analyzed"},
-      "needs":{
-        "properties": {
-          "start_date":{"type":"date","index":"not_analyzed"},
-          "end_date":{"type":"date","index":"not_analyzed"},
-          "personnel_needs":{"type":"string","index":"analyzed"},
-          "material_needs":{"type":"string","index":"analyzed"}
+      "stay_dates":{
+        "properties":{
+           "start_date":{"type":"date","index":"not_analyzed"},
+           "end_date":{"type":"date","index":"not_analyzed"}
         }
       },
+      "research_project":{"type":"string","index":"not_analyzed"},
+      "topics":{"type":"string","index":"analyzed"},
       "people":{
-        "properties":{
+         "properties":{
           "id":{"type":"string","index":"not_analyzed"},
+          "number_of_persons":{"type":"string","index":"not_analyzed"},
           "first_name":{"type":"string","index":"not_analyzed"},
           "last_name":{"type":"string","index":"not_analyzed"},
-          "email":{"type":"string","index":"not_analyzed"},
-          "phone":{"type":"string","index":"not_analyzed"},
           "organisation":{"type":"string","index":"not_analyzed"},
           "country":{"type":"string","index":"not_analyzed"},
-          "role":{"type":"string","index":"not_analyzed"},
-          "entry_transport":{"type":"string","index":"not_analyzed"},
-          "departure_transport":{"type":"string","index":"not_analyzed"},
-          "days_in_field":{"type":"integer","index":"not_analyzed"},
-          "entry_date":{"type":"date","index":"not_analyzed"},
-          "departure_date":{"type":"date","index":"not_analyzed"},
-          "lodging":{
-              "properties":{
-                    "start_date":{"type":"date","index":"not_analyzed"},
-                    "end_date":{"type":"date","index":"not_analyzed"},
-                    "room":{"type":"string","index":"not_analyzed"}
-               }
+          "roles":{"type":"string","index":"not_analyzed"},
+          "station_dates":{
+           "properties":{
+             "start_date":{"type":"date","index":"not_analyzed"},
+             "end_date":{"type":"date","index":"not_analyzed"}
            }
-
+          }
         }
       },
       "links":{
@@ -58,7 +51,9 @@
       "created_by":{"type":"string","index":"not_analyzed"},
       "updated_by":{"type":"string","index":"not_analyzed"},
       "_id":{"type":"string","index":"not_analyzed"},
-      "_rev":{"type":"string","index":"not_analyzed"}
+      "_rev":{"type":"string","index":"not_analyzed"},
+      "_deleted":{"type":"boolean","index":"not_analyzed"}
     }
   }
 }
+

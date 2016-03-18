@@ -1,0 +1,70 @@
+{
+  "_id": "station-booking-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "id": "station-booking-api",
+  "path": "/sttaion-booking",
+  "title": "Station-booking API",
+  "storage": "Couch",
+  "database": "station-booking",
+  "model": "Station-booking",
+  "middleware": [
+    [
+      "Npolar::Rack::AttachmentDownloader",
+      {
+        "database": "station-booking"
+      }
+    ]
+  ],
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "station-booking",
+    "type": "station-booking",
+    "params": {
+      "size-facet": 99,
+      "date-year": "created",
+      "facets": "research_type,research_station,topics,research_project,people.first_name,people.last_name,people.organisation,people.country,people.roles,stay_dates.start_date,stay_dates.end_date"
+    }
+  },
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS",
+    "OPTIONS"
+  ],
+  "formats": {
+    "json": "application/json; charset=utf8"
+  },
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/station-booking"
+  },
+  "category": [
+    "CouchDB",
+    "Solr",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "XML",
+    "XML Schema",
+    "DIF",
+    "HTTP",
+    "Atom",
+    "ISO19139"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "auth": {
+    "authorize": "editor",
+    "system": "station-booking",
+    "authorizer": "Npolar::Auth::Ldap"
+  },
+  "updated": "2016-03-14T09:36:32Z",
+  "updated_by": "siri",
+  "created": "2016-03-14T11:35:26Z",
+  "created_by": "siri"
+}

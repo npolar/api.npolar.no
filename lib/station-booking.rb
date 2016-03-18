@@ -1,10 +1,10 @@
 require "hashie"
 
-class TrollBooking < Hashie::Mash
+class StationBooking < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
   def schemas
-    ["troll-booking.json"] 
+    ["station-booking.json"] 
   end
 
 end
