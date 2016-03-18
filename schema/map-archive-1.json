@@ -85,16 +85,6 @@
         "default": false,
         "description": "Restricted access to original map scan except preview?"
       },
-      "rightsHolder": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of rights holder"
-          }
-        }
-      },
       "rightsExpire": {
           "type": "string",
           "description": "Date when (copy)rights expire"
@@ -114,20 +104,6 @@
               "type": "string"
             }
   
-          }
-        }
-      },
-      "processor": {
-        "type": "object",
-        "description": "Person who scanned the map",
-        "additionalProperties": false,
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string",
-            "description": "Map scanner"
           }
         }
       },
@@ -290,8 +266,7 @@
             "type": "string"
           },
           "role": {
-            "type": "string",
-            "enum": ["principalInvestigator", "editor", "processor", "rightsHolder"]
+            "type": "string"
           },
           "email": {
             "type": ["string", "null"]
@@ -334,7 +309,7 @@
           }
         }
       },
-      "images": {
+      "files": {
         "type": "array",
         "description": "Original map images",
         "items": {
@@ -365,6 +340,10 @@
               "type": "string",
                "description": ""
             },
+            "modified": {
+              "type": "string",
+               "description": ""
+            },
             "width": {
               "type": "integer",
               "description": "Width in pixels"
@@ -372,6 +351,11 @@
             "height": {
               "type": "integer",
               "description": "Height in pixels"
+            },
+            "restricted": {
+              "type": "boolean",
+              "default": false,
+              "description": "Restricted access?"
             }
           }
         }
