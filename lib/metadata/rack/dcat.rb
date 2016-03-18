@@ -83,7 +83,8 @@ module Metadata
           "@graph" => [   
             dcat_Catalog(feed_entries),
             foaf_publisher,
-            vcard_contactpoint
+            vcard_contactpoint('Kind'),
+            vcard_contactpoint('Organization'),
           ]
         }
       end
@@ -295,10 +296,10 @@ module Metadata
         }
       end
       
-      def vcard_contactpoint
+      def vcard_contactpoint(vcardtype='Kind')
         JSON.parse %({
           "@id": "http://data.npolar.no",
-          "@type": "vcard:Organization",
+          "@type": "vcard:#{vcardtype}",
           "vcard:fn": "Norwegian Polar Data Centre",
           "vcard:hasEmail": {
             "@id": "mailto:data@npolar.no"

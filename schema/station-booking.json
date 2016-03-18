@@ -1,0 +1,250 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/station-booking",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["research_type", "research_station"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "rev": {
+      "type": "string"
+    },
+    "collection": {
+      "type": "string",
+      "default": "station-booking"
+    },
+    "schema": {
+      "type": "string"
+    },
+     "lang": {
+      "description": "The language of the document.",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
+     "research_station": {
+      "type": "string",
+      "enum": ["TROLL","NORWEGIA"]
+    },
+    "research_type": {
+      "type": "string",
+      "enum": [
+         "RESEARCH_MONITORING",
+         "RESEARCH_PROJECT",
+         "LOGISTIC_OPERATIONS",
+         "VIP",
+         "OTHER"]
+    },
+     "summary": {
+      "type": "string"
+    },
+    "stay_dates": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+           "start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+     "research_project": {
+      "type": "string"
+    },
+    "topics": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": [
+              "ACIDIFICATION",
+              "ATMOSPHERE",
+              "BIOLOGY",
+              "BIOCHEMISTRY",
+              "BIODIVERSITY",
+              "CHEMISTRY",
+              "CLIMATE",
+              "CONSERVATION",
+              "ECOLOGY",
+              "ECOTOXICOLOGY",
+              "ENVIRONMENT",
+              "GEOLOGY",
+              "GEOPHYSICS",
+              "GLACIOLOGY",
+              "HISTORY",
+              "HUMAN_DIMENSION",
+              "MANAGEMENT",
+              "MARINE",
+              "MARINEECOSYSTEMS",
+              "MAPS",
+              "OCEANOGRAPHY",
+              "OTHER",
+              "PALEOCLIMATE",
+              "REMOTE_SENSING",
+              "SEAICE",
+              "SNOW",
+              "TERRESTRIAL",
+              "TOPOGRAPHY",
+              "VEGETATION"
+        ]
+      }
+    },
+    "people": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "number_of_persons": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "organisation": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+              "type": "string",
+              "enum": [
+                "CARPENTER",
+                "CHEF",
+                "ELECTRICIAN",
+                "EXPEDITION_LEADER",
+                "FIELD_ASSISTANT",
+                "FIELD_RESPONSIBLE",
+                "INVESTIGATOR",
+                "IT",
+                "KSAT",
+                "MECANIC",
+                "MECANIC_TAF",
+                "OTHER",
+                "PHYSICIAN",
+                "PILOT",
+                "RESEARCH_TECHNITIAN",
+                "SECURITY",
+                "SERVICE_TECHNITIAN",
+                "TRANSPORT",
+                "VIP"
+            ]
+          }
+          },
+          "station_dates": {
+          "type": "array",
+          "additionalItems": false,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "start_date": {
+                "type": "string",
+                "format": "date-time"
+            },
+              "end_date": {
+                "type": "string",
+                "format": "date-time"
+            }
+        }
+      }
+    }
+       }
+     }
+    },
+    "links": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rel": {
+            "type": "string",
+             "enum": [
+             "RELATED",
+             "PROGRAM",
+             "PARENT",
+             "CHILD",
+             "DATASET",
+             "PUBLICATION",
+             "EXPEDITION",
+             "CRUISE",
+             "PROJECT",
+             "REFERENCE"
+            ]
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": ["string", "null"]
+          },
+          "hreflang": {
+            "type": ["string", "null"]
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": ["rel", "href"]
+      }
+    },
+    "comment": {
+      "type": "string"
+    },
+    "changes": {
+      "type": "string"
+    },
+    "created": {
+      "description": "Project was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Project was updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "_id": {
+      "description": "Internal id",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision",
+      "type": "string"
+    },
+    "_deleted": {
+      "description": "Deleted or not",
+      "type": "boolean"
+    }
+  }
+}
