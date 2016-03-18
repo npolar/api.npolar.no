@@ -34,7 +34,6 @@
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
-
     "progress": {
       "type": "string",
       "enum": ["PLANNED","ONGOING","COMPLETED","CANCEL"]
@@ -198,7 +197,7 @@
             "description": "The placename of the departure location.",
             "type": "string"
           },
-           "departure_areas": {
+           "departure_area": {
             "description": "The placename of the departure location.",
             "type": "string"
           },
@@ -372,23 +371,22 @@
       "type": "string",
       "enum": ["RESEARCH_VESSEL"]
     },
-
-            "sailed_distance": {
-            "description": "Length of sailed distance.",
-            "type": "string"
-          },
-            "fuel_main engine": {
-            "description": "main engine fuel consumption.",
-            "type": "string"
-          },
-           "fuel_auxillary_engine": {
-            "description": "auxillary engine fuel consumption.",
-            "type": "string"
-          },
-           "fuel_boiler": {
-            "description": "boiler fuel consumption.",
-            "type": "string"
-          },
+    "sailed_distance": {
+      "description": "Length of sailed distance.",
+      "type": "string"
+    },
+    "fuel_main_engine": {
+      "description": "main engine fuel consumption.",
+      "type": "string"
+    },
+    "fuel_auxillary_engine": {
+       "description": "auxillary engine fuel consumption.",
+       "type": "string"
+    },
+    "fuel_boiler": {
+       "description": "boiler fuel consumption.",
+       "type": "string"
+    },
     "use_limitation": {
       "description": "X34 publicly available or not",
       "type": "string",
@@ -447,13 +445,6 @@
                     "string",
                     "null"
                   ]
-                },
-                "length": {
-                  "description": "Content Length of the linked resource",
-                  "type": [
-                    "number",
-                    "null"
-                  ]
                 }
               }
             }
@@ -503,6 +494,10 @@
     "_rev": {
       "description": "Internal revision number.",
       "type": "string"
+    },
+     "_deleted": {
+      "description": "deleted items eq true.",
+      "type": "boolean"
     }
   },
   "additionalProperties": false

@@ -18,6 +18,12 @@
     "schema": {
       "type": "string"
     },
+     "lang": {
+      "description": "The language of the document.",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
      "research_station": {
       "type": "string",
       "enum": ["troll","norwegia"]
@@ -118,7 +124,7 @@
           "country": {
             "type": "string"
           },
-          "role": {
+          "roles": {
             "type": "array",
             "additionalItems": false,
             "items": {
