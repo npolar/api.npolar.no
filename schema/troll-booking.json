@@ -24,54 +24,72 @@
     },
     "research_type": {
       "type": "string",
-      "enum": ["research_monitoring","research_project", "logistic_operations", "VIP", "other"]
+      "enum": [
+         "RESEARCH_MONITORING",
+         "RESEARCH_PROJECT",
+         "LOGISTIC_OPERATIONS",
+         "VIP",
+         "OTHER"]
     },
      "summary": {
       "type": "string"
     },
-    "start_date": {
-       "type": "string",
-       "format": "date-time"
-    },
-    "end_date": {
-       "type": "string",
-       "format": "date-time"
+    "stay_dates": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+           "start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
     },
      "research_project": {
       "type": "string"
     },
-    "research_disciplines": {
+    "topics": {
       "type": "array",
       "additionalItems": false,
       "items": {
         "type": "string",
         "enum": [
-        "acidification",
-        "atmosphere",
-        "biology",
-        "biogeochemistry",
-        "chemistry",
-        "climate",
-        "conservation",
-        "ecology",
-        "ecotoxicology",
-        "environment",
-        "geophysics",
-        "geology",
-        "glaciology",
-        "history",
-        "human-dimension",
-        "management",
-        "marine",
-        "maps",
-        "oceanography",
-        "other",
-        "paleoclimate",
-        "remote-sensing",
-        "seaice","snow",
-        "terrestrial",
-        "topography",
-        "vegetation"
+              "ACIDIFICATION",
+              "ATMOSPHERE",
+              "BIOLOGY",
+              "BIOCHEMISTRY",
+              "BIODIVERSITY",
+              "CHEMISTRY",
+              "CLIMATE",
+              "CONSERVATION",
+              "ECOLOGY",
+              "ECOTOXICOLOGY",
+              "ENVIRONMENT",
+              "GEOLOGY",
+              "GEOPHYSICS",
+              "GLACIOLOGY",
+              "HISTORY",
+              "HUMAN_DIMENSION",
+              "MANAGEMENT",
+              "MARINE",
+              "MARINEECOSYSTEMS",
+              "MAPS",
+              "OCEANOGRAPHY",
+              "OTHER",
+              "PALEOCLIMATE",
+              "REMOTE_SENSING",
+              "SEAICE",
+              "SNOW",
+              "TERRESTRIAL",
+              "TOPOGRAPHY",
+              "VEGETATION"
         ]
       }
     },
@@ -106,43 +124,43 @@
             "items": {
               "type": "string",
               "enum": [
-                "carpenter",
-                "chef",
-                "electrician",
-                "expedition_leader",
-                "field_assistant",
-                "field_responsible",
-                "investigator",
-                "it",
-                "ksat",
-                "mecanic",
-                "mecanic_taf",
-                "other",
-                "physician",
-                "pilot",
-                "research_technician",
-                "security",
-                "service_technician",
-                "transport",
-                "vip"
+                "CARPENTER",
+                "CHEF",
+                "ELECTRICIAN",
+                "EXPEDITION_LEADER",
+                "FIELD_ASSISTANT",
+                "FIELD_RESPONSIBLE",
+                "INVESTIGATOR",
+                "IT",
+                "KSAT",
+                "MECANIC",
+                "MECANIC_TAF",
+                "OTHER",
+                "PHYSICIAN",
+                "PILOT",
+                "RESEARCH_TECHNITIAN",
+                "SECURITY",
+                "SERVICE_TECHNITIAN",
+                "TRANSPORT",
+                "VIP"
             ]
           }
           },
-          "dates": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-           "start_date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "end_date": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "station_dates": {
+          "type": "array",
+          "additionalItems": false,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "start_date": {
+                "type": "string",
+                "format": "date-time"
+            },
+              "end_date": {
+                "type": "string",
+                "format": "date-time"
+            }
         }
       }
     }
@@ -159,17 +177,16 @@
           "rel": {
             "type": "string",
              "enum": [
-             "related",
-             "program",
-             "parent",
-             "child",
-             "dataset",
-             "publication",
-             "expedition",
-             "project",
-             "reference",
-             "logo",
-             "image"
+             "RELATED",
+             "PROGRAM",
+             "PARENT",
+             "CHILD",
+             "DATASET",
+             "PUBLICATION",
+             "EXPEDITION",
+             "CRUISE",
+             "PROJECT",
+             "REFERENCE"
             ]
           },
           "href": {
