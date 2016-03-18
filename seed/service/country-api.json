@@ -1,0 +1,48 @@
+{
+  "id": "country-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "path": "/country",
+  "title": "Country API",
+  "summary": "Countries",
+  "storage": "Couch",
+  "database": "country",
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "http://json.org"
+  },
+  "category": [
+    "CouchDB",
+    "Elasticsearch",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "country",
+    "type": "country",
+    "log": false,
+    "params": {
+    }
+  },
+  "base": "http://api.npolar.no",
+  "editlog": {
+    "disabled": true
+  }
+}
