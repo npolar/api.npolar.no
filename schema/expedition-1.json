@@ -26,6 +26,10 @@
       "description": "Should be a descriptive code that the expedition can be identified by. Example Framstrait2014.",
       "type": "string"
     },
+    "type" {
+      "description":"expedition or cruise",
+      "enum": ['cruise','expedition']
+    },
     "summary": {
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
