@@ -30,28 +30,15 @@
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
+
+    "progress": {
+      "type": "string",
+      "enum": ["PLANNED","ONGOING","COMPLETED","CANCEL"]
+    },
     "research_type": {
        "description": "Research or not",
        "type":"string",
        "enum": ["RESEARCH_MONITORING", "RESEARCH_PROJECT", "NOT_RESEARCH"]
-    },
-    "expedition_dates": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-           "start_date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "end_date": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      }
     },
     "research": {
       "description": "List of research projects",
@@ -189,7 +176,7 @@
       "items": {
         "type": "object",
         "properties": {
-              "travel_dates": {
+              "departure_return_dates": {
                   "type": "object",
                   "additionalProperties": false,
                   "properties": {
@@ -276,13 +263,26 @@
       },
       "additionalItems": false
     },
-
     "locations": {
       "description": "A list of one or more Geographic locations relevant to the expedition.",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
+             "location_dates": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                       "start_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "end_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                  }
+          },
             "field_camp": {
             "description": "field camp or not.",
             "type": "boolean"
@@ -349,6 +349,51 @@
         }
       },
       "additionalItems": false
+    },
+     "cruise_id": {
+      "description": "X16/X76/X77 cruise identificator",
+      "type": "string"
+    },
+     "sponsor": {
+      "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
+      "type": "string"
+    },
+    "ship_name": {
+      "description": "X27 ship name",
+      "type": "string",
+      "enum": ["LANCE","KRONPRINS HAAKON"]
+    },
+    "ship_type": {
+      "description": "X28 ship name",
+      "type": "string",
+      "enum": ["RESEARCH_VESSEL"]
+    },
+
+            "sailed_distance": {
+            "description": "Length of sailed distance.",
+            "type": "string"
+          },
+            "fuel_main engine": {
+            "description": "main engine fuel consumption.",
+            "type": "string"
+          },
+           "fuel_auxillary_engine": {
+            "description": "auxillary engine fuel consumption.",
+            "type": "string"
+          },
+           "fuel_boiler": {
+            "description": "boiler fuel consumption.",
+            "type": "string"
+          },
+    "use_limitation": {
+      "description": "X34 publicly available or not",
+      "type": "string",
+      "enum": ["NONE"]
+    },
+    "availability": {
+      "description": "X35 who can access the metadata",
+      "type": "string",
+      "enum": ["UNRESTRICTED"]
     },
     "links": {
             "description": "List of relevant links related to this person",
