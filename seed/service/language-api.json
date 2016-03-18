@@ -1,11 +1,11 @@
 {
-  "id": "langauge-api",
+  "id": "language-api",
   "schema": "http://api.npolar.no/schema/api",
-  "path": "/langauge",
+  "path": "/language",
   "title": "Langauge API",
   "summary": "Langauges",
   "storage": "Couch",
-  "database": "langauge",
+  "database": "language",
   "verbs": [
     "DELETE",
     "GET",
@@ -35,8 +35,8 @@
   "open": true,
   "search": {
     "engine": "Elasticsearch",
-    "index": "langauge",
-    "type": "langauge",
+    "index": "language",
+    "type": "language",
     "log": false,
     "params": {
     }
