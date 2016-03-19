@@ -2,7 +2,7 @@
   "_id": "station-booking-api",
   "schema": "http://api.npolar.no/schema/api",
   "id": "station-booking-api",
-  "path": "/sttaion-booking",
+  "path": "/station-booking",
   "title": "Station-booking API",
   "storage": "Couch",
   "database": "station-booking",
