@@ -22,7 +22,7 @@
     "params": {
       "size-facet": 99,
       "date-year": "created",
-      "facets": "research_type,research_station,topics,research_project,people.first_name,people.last_name,people.organisation,people.country,people.roles,stay_dates.start_date,stay_dates.end_date"
+      "facets": "research_type,research_station,topics,research_project"
     }
   },
   "verbs": [
