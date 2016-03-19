@@ -1,0 +1,48 @@
+{
+  "id": "language-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "path": "/language",
+  "title": "Langauge API",
+  "summary": "Langauges",
+  "storage": "Couch",
+  "database": "language",
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "http://json.org"
+  },
+  "category": [
+    "CouchDB",
+    "Elasticsearch",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "language",
+    "type": "language",
+    "log": false,
+    "params": {
+    }
+  },
+  "base": "http://api.npolar.no",
+  "editlog": {
+    "disabled": true
+  }
+}
