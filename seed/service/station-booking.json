@@ -6,7 +6,7 @@
   "title": "Station-booking API",
   "storage": "Couch",
   "database": "station-booking",
-  "model": "Station-Booking",
+  "model": "Station-booking",
   "middleware": [
     [
       "Npolar::Rack::AttachmentDownloader",
