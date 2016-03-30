@@ -148,13 +148,14 @@ module Metadata
 
     # Default rights (human readable usage requirements)
     def self.rights(dataset=nil)
-      if dataset.publicdomain?
-        "Public domain."
-      elsif dataset.open?
-        "Open data: Free to reuse if attributed to the Norwegian Polar Institute."
-      elsif dataset.åvl?
-        "Protected by 'åndsverkloven': https://lovdata.no/lov/1961-05-12-2"
-      end
+      ""
+      #if dataset.publicdomain?
+      #  "Public domain."
+      #elsif dataset.open?
+      #  "Open data: Free to reuse if attributed to the Norwegian Polar Institute."
+      #elsif dataset.åvl?
+      #  "Protected by 'åndsverkloven': https://lovdata.no/lov/1961-05-12-2"
+      #end
     end
 
     # Åndsverksloven?
