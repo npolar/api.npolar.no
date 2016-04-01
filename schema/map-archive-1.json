@@ -259,14 +259,12 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-
         "properties": {
-
           "name": {
             "type": "string"
           },
           "role": {
-            "type": "string"
+            "type": "string", "enum": ["principalInvestigator", "editor", "processor", "rightsHolder", "originator"]
           },
           "email": {
             "type": ["string", "null"]
