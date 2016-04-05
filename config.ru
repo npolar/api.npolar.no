@@ -5,7 +5,7 @@
 # Use /service to create new API endpoints.
 # Example: $ curl -niXPUT https://api.npolar.no/service/dataset-api -H "Content-Type: application/json" -d@seed/service/dataset-api.json
 # Details: https://github.com/npolar/api.npolar.no/wiki/New-API
-# 
+#
 # Document API
 # How to POST, PUT, DELETE, and GET documents
 # * https://github.com/npolar/api.npolar.no/wiki/Example
@@ -17,7 +17,7 @@
 # User API
 # /user provides a lightweight alternative to LDAP or other directory services
 
-# More topics 
+# More topics
 # * https://github.com/npolar/api.npolar.no/blob/master/README.md for more topics
 
 Encoding.default_external = Encoding::UTF_8
@@ -36,7 +36,7 @@ if ENV.key? "NPOLAR_API_LDAP"
   Npolar::Auth::Ldap.config = ENV["NPOLAR_API_LDAP"] # ldap://cn=manager,dc=example,dc=com:password@ldap.example.com?dc=example,dc=com
 end
 Metadata::Dataset.formats = ["json", "atom", "dif", "iso", "xml"]
-  
+
 
 bootstrap = Npolar::Api::Bootstrap.new
 bootstrap.log = log = Npolar::Api.log
@@ -57,7 +57,7 @@ log.info "Booting API #{Npolar::Api.base}
 use Rack::Cors do
   allow do
     # Allow read-write to localhost
-    origins /http(s)?\:\/\/localhost(:\d+)?/
+    origins /http(s)?\:\/\/(localhost|10\.0\.2\.2)(:\d+)?/
     resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
   end
   allow do
@@ -91,32 +91,32 @@ end
 autorun_list.each do |api|
 
   map api.path do
-  
+
     log.info "#{api.path} = #{api.run} [autorun] open data: #{api.open}"
 
-    # Middleware for all autorunning APIs can be defined here   
+    # Middleware for all autorunning APIs can be defined here
     # api.middleware = api.middleware? ? api.middleware : []
     # api.middleware << ["Npolar::Rack::RequireParam", { :params => "key", :except => lambda { |request| ["GET", "HEAD"].include? request.request_method }} ]
-    
+
     # Editlog (enabled unless expliclitly disabled)
     editlog = (api.key?("editlog") and api.editlog.disabled == true) ? false : true
-    
+
     if true == editlog
-      
+
       max_body_size = case api.open
       when true
-        (api.key?("editlog") and api.editlog.key?("max_body_size")) ? api.editlog.max_body_size : 255 
+        (api.key?("editlog") and api.editlog.key?("max_body_size")) ? api.editlog.max_body_size : 255
       else
         0
-      end 
-      
+      end
+
       use Npolar::Rack::EditLog,
         save: EditLog.save_lambda(uri: ENV["NPOLAR_API_COUCHDB"], database: Service.factory("editlog-api").database),
-        index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: false), 
+        index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: false),
         open: api.open,
         max_body_size: max_body_size
     end
-    
+
     if api.auth?
       log.info Npolar::Rack::Authorizer.authorize_text(api)
     end
