@@ -12,6 +12,7 @@
         "pattern": "^[0-9]+-"
       },
       "geometry": {
+        "type": "object",
         "properties": {
           "bbox": {
             "description": "Map coverage (W,S,E,N)",
@@ -103,7 +104,7 @@
             "summary": {
               "type": "string"
             }
-  
+
           }
         }
       },
@@ -275,7 +276,7 @@
         }
       }
     },
-      
+
       "links": {
         "type": "array",
         "uniqueItems": true,
