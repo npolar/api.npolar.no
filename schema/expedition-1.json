@@ -27,75 +27,97 @@
       "type": "string"
     },
     "type": {
-      "description":"expedition or cruise",
-      "enum": ["cruise","expedition"]
+      "description": "Defines what the nature of the expedition is. Options are cruise, field work, traverse, etc...",
+      "type": "string"
     },
     "summary": {
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
-    "progress": {
-      "type": "string",
-      "enum": ["PLANNED","ONGOING","COMPLETED","CANCEL"]
-    },
-    "research_type": {
-       "description": "Research or not",
-       "type":"string",
-       "enum": ["RESEARCH_MONITORING", "RESEARCH_PROJECT", "NOT_RESEARCH"]
-    },
-    "research": {
-      "description": "List of research projects",
+    "platforms": {
+      "description": "A list containing the vehicles/vessels used for the expedition.",
       "type": "array",
       "items": {
+        "description": "A vehicle or vessel.",
         "type": "object",
         "properties": {
-        "title": {
-          "description": "Title research project",
-          "type": "string"
-        },
-        "topics": {
-          "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
-          "type": "array",
-          "items": {
+          "type": {
+            "description": "The type of platform being used.",
             "type": "string",
             "enum": [
-              "ACIDIFICATION",
-              "ATMOSPHERE",
-              "BIOLOGY",
-              "BIOCHEMISTRY",
-              "BIODIVERSITY",
-              "CHEMISTRY",
-              "CLIMATE",
-              "CONSERVATION",
-              "ECOLOGY",
-              "ECOTOXICOLOGY",
-              "ENVIRONMENT",
-              "GEOLOGY",
-              "GEOPHYSICS",
-              "GLACIOLOGY",
-              "HISTORY",
-              "HUMAN_DIMENSION",
-              "MANAGEMENT",
-              "MARINE",
-              "MARINEECOSYSTEMS",
-              "MAPS",
-              "OCEANOGRAPHY",
-              "OTHER",
-              "PALEOCLIMATE",
-              "REMOTE_SENSING",
-              "SEAICE",
-              "SNOW",
-              "TERRESTRIAL",
-              "TOPOGRAPHY",
-              "VEGETATION"
+              "ship",
+              "boat",
+              "helicopter",
+              "snowmobile",
+              "snow tractor"
             ]
           },
-          "additionalItems": false
-        }
-      }
-    }
+          "name": {
+            "description": "The name of the vessel or vehicle. Example 'RV Lance.'",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalItems": false
     },
-     "people": {
+    "progress": {
+      "description": "The progression state of the expedition.",
+      "type": "string",
+      "enum": ["planned",
+        "ongoing",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "research_type": {
+      "description": "Research or not",
+      "type": "string",
+      "enum": ["researchMonitoring", "researchProject", "notResearch"]
+    },
+    "title": {
+      "description": "Title research project",
+      "type": "string"
+    },
+    "topics": {
+      "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "atmosphere",
+          "biology",
+          "biochemistry",
+          "biodiversity",
+          "chemistry",
+          "climate",
+          "conservation",
+          "ecology",
+          "ecotoxicology",
+          "environment",
+          "geology",
+          "geophysics",
+          "glaciology",
+          "history",
+          "human-dimension",
+          "management",
+          "marine",
+          "marineecosystems",
+          "maps",
+          "oceanography",
+          "other",
+          "paleoclimate",
+          "remote-sensing",
+          "seaice",
+          "snow",
+          "terrestrial",
+          "topography",
+          "vegetation"
+        ]
+      },
+      "additionalItems": false
+    },
+    "people": {
       "description": "List of people participating on the cruise.",
       "type": "array",
       "items": {
@@ -123,9 +145,9 @@
               "null"
             ]
           },
-          "country":{
+          "country": {
             "description": "Organisation's country",
-            "type":"string"
+            "type": "string"
           },
           "email": {
             "description": "Email address",
@@ -142,363 +164,392 @@
               "description": "role",
               "type": "string",
               "enum": [
-                "EXPEDITION_LEADER",
-                "FIELD_ASSISTANT",
-                "PRINCIPAL_INVESTIGATOR",
-                "PROCESSOR",
-                "POINT_OF_CONTACT",
-                "OTHER"
+                "expeditionLeader",
+                "fieldAssistant",
+                "principalInvestigator",
+                "processor",
+                "pointOfContact"
               ]
             },
             "additionalItems": false
           },
-           "expedition_dates": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-           "start_date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "end_date": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      }
-    }
-        }
-        }
-        },
-    "activity": {
-      "description": "list of activite periods for the platform",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-              "departure_return_dates": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                       "start_date": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "end_date": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                  }
-          },
-          "departure_placename": {
-            "description": "The placename of the departure location.",
-            "type": "string"
-          },
-           "departure_area": {
-            "description": "The placename of the departure location.",
-            "type": "string"
-          },
-           "departure_country": {
-            "description": "The country of the departure location.",
-            "type": "string"
-          },
-           "departure_predefined_area": {
-            "description": "The official placename of the location.",
-            "type": "string",
-            "enum":[ "SVERDRUP", "ZEPPELIN", "SVALBARD", "FRANS_JOSEF_LAND", "JAN_MAYEN", "HOPEN", "BOUVET", "TROLL", "TOR",
-               "DML", "ANTARCTICA"]
-          },
-          "departure_gps": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                         "latitude": {
-                            "description": "Location north.",
-                            "type": "number",
-                            "minimum": -90,
-                            "maximum": 90
-                          },
-                          "longitude": {
-                            "description": "Location east.",
-                            "type": "number",
-                            "minimum": -180,
-                            "maximum": 180
-                          }
-              }
-          },
-           "return_placename": {
-            "description": "The placename of the return location.",
-            "type": "string"
-          },
-           "return_area": {
-            "description": "The placename of the return location.",
-            "type": "string"
-          },
-            "return_predefined_area": {
-            "description": "The official placename of the location.",
-            "type": "string",
-            "enum":[ "SVERDRUP", "ZEPPELIN", "SVALBARD", "FRANS_JOSEF_LAND", "JAN_MAYEN", "HOPEN", "BOUVET", "TROLL", "TOR",
-               "DML", "ANTARCTICA"]
-          },
-           "return_country": {
-            "description": "The country of the return location.",
-            "type": "string"
-          },
-          "return_gps": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                      "lat": {
-                        "description":"longitude",
-                        "type": "number"
-                      },
-                      "lng": {
-                        "description":"latitude",
-                        "type": "number"
-                      }
-              }
-          }
-        },
-        "additionalProperties": false
-      },
-      "additionalItems": false
-    },
-    "locations": {
-      "description": "A list of one or more Geographic locations relevant to the expedition.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-             "location_dates": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                       "start_date": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "end_date": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                  }
-          },
-            "field_camp": {
-            "description": "field camp or not.",
-            "type": "boolean"
-          },
-          "operation_area": {
-            "description": "operation area or not.",
-            "type": "boolean"
-          },
-          "hemisphere": {
-            "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
-            "type": "string",
-            "pattern": "^[nsNS]{1}$"
-          },
-          "area": {
-            "description": "Name identifiying the general area of the location.",
-            "type": "string"
-          },
-          "country": {
-            "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
-            "type": "string",
-            "pattern": "^(([A-Z]|[a-z]){2})$"
-          },
-          "placename": {
-            "description": "The official placename of the location.",
-            "type": "string"
-          },
-          "predefined_area": {
-            "description": "The official placename of the location.",
-            "type": "string",
-            "enum":[ "SVERDRUP", "ZEPPELIN", "SVALBARD", "FRANS_JOSEF_LAND", "JAN_MAYEN", "HOPEN", "BOUVET", "TROLL", "TOR",
-               "DML", "ANTARCTICA"]
-          },
-          "gps": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                        "north": {
-                            "description": "Location north.",
-                            "type": "number",
-                            "minimum": -90,
-                            "maximum": 90
-                          },
-                          "east": {
-                            "description": "Location east.",
-                            "type": "number",
-                            "minimum": -180,
-                            "maximum": 180
-                          },
-                          "south": {
-                            "description": "Location south.",
-                            "type": "number",
-                            "minimum": -90,
-                            "maximum": 90
-                          },
-                          "west": {
-                            "description": "Location west.",
-                            "type": "number",
-                            "minimum": -180,
-                            "maximum": 180
-                          }
-
-                    }
-             }
-        }
-      },
-      "additionalItems": false
-    },
-     "cruise_id": {
-      "description": "X16/X76/X77 cruise identificator",
-      "type": "string"
-    },
-     "sponsor": {
-      "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
-      "type": "string"
-    },
-    "ship_name": {
-      "description": "X27 ship name",
-      "type": "string",
-      "enum": ["LANCE","KRONPRINS HAAKON"]
-    },
-    "ship_type": {
-      "description": "X28 ship name",
-      "type": "string",
-      "enum": ["RESEARCH_VESSEL"]
-    },
-    "sailed_distance": {
-      "description": "Length of sailed distance.",
-      "type": "string"
-    },
-    "fuel_main_engine": {
-      "description": "main engine fuel consumption.",
-      "type": "string"
-    },
-    "fuel_auxillary_engine": {
-       "description": "auxillary engine fuel consumption.",
-       "type": "string"
-    },
-    "fuel_boiler": {
-       "description": "boiler fuel consumption.",
-       "type": "string"
-    },
-    "use_limitation": {
-      "description": "X34 publicly available or not",
-      "type": "string",
-      "enum": ["NONE"]
-    },
-    "availability": {
-      "description": "X35 who can access the metadata",
-      "type": "string",
-      "enum": ["UNRESTRICTED"]
-    },
-    "links": {
-            "description": "List of relevant links related to this person",
+          "expedition_dates": {
             "type": "array",
+            "additionalItems": false,
             "items": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
-                "href": {
-                  "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+                "start_date": {
                   "type": "string",
-                  "format": "uri"
+                  "format": "date-time"
                 },
-                "hreflang": {
-                  "description": "Language of the linked resousce",
-                  "type": [
-                    "string",
-                    "null"
-                  ]
-                },
-                "rel": {
-                  "description": "Resource relation to the current document",
+                "end_date": {
                   "type": "string",
-                  "enum": [
-                  "CRUISE",
-                  "EXPEDITION",
-                  "CHILD",
-                  "DATASET",
-                  "PARENT",
-                  "PROGRAM",
-                  "PROJECT",
-                  "PUBLICATION",
-                  "REFERENCE",
-                  "RELATED",
-                  "STATION_BOOKING"
-                  ]
-                  },
-                "title": {
-                  "description": "Title of linked resource",
-                  "type": [
-                    "string",
-                    "null"
-                  ]
-                },
-                "type": {
-                  "description": "Mime-type of linked resource",
-                  "type": [
-                    "string",
-                    "null"
-                  ]
+                  "format": "date-time"
                 }
               }
             }
-
           },
-    "draft": {
-      "description": "The publication state of the document.",
-      "type": "string",
-      "enum": [
-        "yes",
-        "no"
-      ]
+          "additionalProperties": false,
+          "required": [
+            "first_name",
+            "last_name",
+            "roles",
+            "organisation",
+            "country"
+          ]
+        },
+        "additionalItems": false
+      },
+      "cruise_id": {
+        "description": "X16/X76/X77 cruise identificator",
+        "type": "string"
+      },
+      "sponsor": {
+        "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
+        "type": "string"
+      },
+      "ship_name": {
+        "description": "X27 ship name",
+        "type": "string",
+        "enum": ["lance", "kronprinsHaakon"]
+      },
+      "ship_type": {
+        "description": "X28 ship name aka research vessel no 31",
+        "type": "string",
+        "enum": ["researchVessel"]
+      },
+      "sailed_distance": {
+        "description": "length of sailed distance - internal use.",
+        "type": "string"
+      },
+      "fuel_main_engine": {
+        "description": "main engine fuel consumption - internal use.",
+        "type": "string"
+      },
+      "fuel_auxillary_engine": {
+        "description": "auxillary engine fuel consumption - internal use.",
+        "type": "string"
+      },
+      "fuel_boiler": {
+        "description": "boiler fuel consumption - internal use.",
+        "type": "string"
+      },
+      "use_limitation": {
+        "description": "X34 publicly available or not",
+        "type": "string",
+        "enum": ["none"]
+      },
+      "availability": {
+        "description": "X35 who can access the metadata",
+        "type": "string",
+        "enum": ["unrestricted"]
+      },
+      "tags": {
+        "description": "A list of one or more free text keywords describing the cruise.",
+        "type": "array",
+        "items": {
+          "description": "A free text keyword",
+          "type": "string"
+        },
+        "additionalItems": false
+      },
+      "links": {
+        "description": "A list of links relevant to this perticular expedition. This should include links to the project(s) and expedition track(s). After completion it can also include links to datasets collected or updated during this expedition.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+              "type": "string",
+              "format": "uri"
+            },
+            "hreflang": {
+              "description": "Language of the linked resource",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "rel": {
+              "description": "Resource relation to the current document",
+              "type": "string",
+              "enum": [
+                "cruise",
+                "expedition",
+                "child",
+                "dataset",
+                "parent",
+                "program",
+                "project",
+                "publication",
+                "reference",
+                "related",
+                "stationInformation",
+                "track"
+              ]
+            },
+            "title": {
+              "description": "Title of linked resource",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": {
+              "description": "Mime-type of linked resource",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "length": {
+              "description": "Content Length of the linked resource",
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        },
+        "additionalItems": false
+      },
+      "activity": {
+        "description": "list of activite periods for the platform",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "departure_return_dates": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "start_date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "end_date": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            },
+            "departure_placename": {
+              "description": "The placename of the departure location. cruise - list C38, TOS,LYB, Cape Town most important",
+              "type": "string"
+            },
+            "departure_country": {
+              "description": "The country of the departure location.",
+              "type": "string"
+            },
+            "departure_predefined_area": {
+              "description": "The official placename of the location.",
+              "type": "string",
+              "enum": ["sverdrup", "zeppelin", "svalbard", "fransJosefLand", "janMayen", "hopen", "bouvet", "troll", "tor",
+                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
+              ]
+            },
+            "departure_gps": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "latitude": {
+                  "description": "Location north.",
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "longitude": {
+                  "description": "Location east.",
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                }
+              }
+            },
+            "return_placename": {
+              "description": "The placename of the return location.",
+              "type": "string"
+            },
+            "return_predefined_area": {
+              "description": "The official placename of the location.",
+              "type": "string",
+              "enum": ["sverdrup", "zeppelin", "svalbard", "fransJosefLand", "janMayen", "hopen", "bouvet", "troll", "tor",
+                "dronningMaudLand", "antarctica"
+              ]
+            },
+            "return_country": {
+              "description": "The country of the return location.",
+              "type": "string"
+            },
+            "return_gps": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "lat": {
+                  "description": "longitude",
+                  "type": "number"
+                },
+                "lng": {
+                  "description": "latitude",
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "additionalItems": false
+      },
+      "locations": {
+        "description": "A list of one or more Geographic locations relevant to the expedition.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "location_dates": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "start_date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "end_date": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            },
+            "field_camp": {
+              "description": "field camp or not.",
+              "type": "boolean"
+            },
+            "operation_area": {
+              "description": "operation area or not.",
+              "type": "boolean"
+            },
+            "hemisphere": {
+              "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
+              "type": "string",
+              "pattern": "^[nsNS]{1}$"
+            },
+            "area": {
+              "description": "Name identifiying the general area of the location.",
+              "type": "string"
+            },
+            "country": {
+              "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
+              "type": "string",
+              "pattern": "^(([A-Z]|[a-z]){2})$"
+            },
+            "placename": {
+              "description": "The official placename of the location.",
+              "type": "string"
+            },
+            "predefined_area": {
+              "description": "The official placename of the location.",
+              "type": "string",
+              "enum": ["sverdrup", "zeppelin", "svalbard", "fransJosefLand", "janMayen", "hopen", "bouvet", "troll", "tor",
+                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
+              ]
+            },
+            "gps": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "north": {
+                  "description": "Location north.",
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "east": {
+                  "description": "Location east.",
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                },
+                "south": {
+                  "description": "Location south.",
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "west": {
+                  "description": "Location west.",
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                }
+
+              }
+            }
+          }
+        },
+        "additionalItems": false
+      },
+      "draft": {
+        "description": "The publication state of the document.",
+        "type": "string",
+        "enum": [
+          "yes",
+          "no"
+        ]
+      },
+      "collection": {
+        "description": "The storage collection the document belongs to.",
+        "type": "string",
+        "enum": [
+          "expedition"
+        ]
+      },
+      "comment": {
+        "description": "A free text comment for anything of importance to the expedition description.",
+        "type": "string"
+      },
+      "attachments_access": {
+        "title": "Internet access to attachments",
+        "description": "Internet access to attachments",
+        "additionalItems": false,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
+      },
+      "created": {
+        "description": "The date the document was created.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "updated": {
+        "description": "The date the document was last updated.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "created_by": {
+        "description": "The username of the person who first created the document in the system.",
+        "type": "string"
+      },
+      "updated_by": {
+        "description": "The username of the person who last updated the document in the system.",
+        "type": "string"
+      },
+      "_id": {
+        "description": "Internal resource identifier.",
+        "type": "string"
+      },
+      "_rev": {
+        "description": "Internal revision number.",
+        "type": "string"
+      }
     },
-    "collection": {
-      "description": "The storage collection the document belongs to.",
-      "type": "string",
-      "enum": [
-        "expedition"
-      ]
-    },
-    "comment": {
-      "description": "A free text comment for anything of importance to the expedition description.",
-      "type": "string"
-    },
-    "created": {
-      "description": "The date the document was created.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "updated": {
-      "description": "The date the document was last updated.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "created_by": {
-      "description": "The username of the person who first created the document in the system.",
-      "type": "string"
-    },
-    "updated_by": {
-      "description": "The username of the person who last updated the document in the system.",
-      "type": "string"
-    },
-    "_id": {
-      "description": "Internal resource identifier.",
-      "type": "string"
-    },
-    "_rev": {
-      "description": "Internal revision number.",
-      "type": "string"
-    },
-     "_deleted": {
-      "description": "deleted items eq true.",
-      "type": "boolean"
-    }
-  },
-  "additionalProperties": false
+    "additionalProperties": false
+  }
 }
