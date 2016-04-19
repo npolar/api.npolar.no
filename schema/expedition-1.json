@@ -388,12 +388,12 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "lat": {
-                  "description": "longitude",
+                "latitude": {
+                  "description": "latitude",
                   "type": "number"
                 },
-                "lng": {
-                  "description": "latitude",
+                "longitude": {
+                  "description": "longitude",
                   "type": "number"
                 }
               }
