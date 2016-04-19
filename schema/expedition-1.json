@@ -204,10 +204,6 @@
         },
         "additionalItems": false
       },
-      "cruise_id": {
-        "description": "X16/X76/X77 cruise identificator",
-        "type": "string"
-      },
       "sponsor": {
         "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
         "type": "string"
