@@ -548,6 +548,10 @@
       "_rev": {
         "description": "Internal revision number.",
         "type": "string"
+      },
+      "_deleted":{
+        "description": "deleted entry",
+        "type": "string"
       }
     },
     "additionalProperties": false
