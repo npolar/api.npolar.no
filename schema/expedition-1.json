@@ -210,11 +210,6 @@
         "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
         "type": "string"
       },
-      "ship_name": {
-        "description": "X27 ship name",
-        "type": "string",
-        "enum": ["lance", "kronprinsHaakon"]
-      },
       "ship_type": {
         "description": "X28 ship name aka research vessel no 31",
         "type": "string",
