@@ -28,7 +28,9 @@
     },
     "type": {
       "description": "Defines what the nature of the expedition is. Options are cruise, field work, traverse, etc...",
-      "type": "string"
+      "type": "string",
+      "enum": ["cruise",
+        "expedition"]
     },
     "summary": {
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
