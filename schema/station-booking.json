@@ -8,9 +8,6 @@
     "id": {
       "type": "string"
     },
-    "rev": {
-      "type": "string"
-    },
     "collection": {
       "type": "string",
       "default": "station-booking"
