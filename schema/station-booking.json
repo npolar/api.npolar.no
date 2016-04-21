@@ -21,6 +21,9 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
+    "title": {
+      "type": "string"
+    },
      "research_station": {
       "type": "string",
       "enum": ["troll","norwegia"]
@@ -54,9 +57,6 @@
           }
         }
       }
-    },
-     "research_project": {
-      "type": "string"
     },
     "topics": {
       "type": "array",
