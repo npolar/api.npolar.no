@@ -23,16 +23,16 @@
     },
      "research_station": {
       "type": "string",
-      "enum": ["TROLL","NORWEGIA"]
+      "enum": ["troll","norwegia"]
     },
     "research_type": {
       "type": "string",
       "enum": [
-         "RESEARCH_MONITORING",
-         "RESEARCH_PROJECT",
-         "LOGISTIC_OPERATIONS",
-         "VIP",
-         "OTHER"]
+         "researchMonitoring",
+         "researchProject",
+         "logisticOperations",
+         "vip",
+         "other"]
     },
      "summary": {
       "type": "string"
@@ -64,35 +64,35 @@
       "items": {
         "type": "string",
         "enum": [
-              "ACIDIFICATION",
-              "ATMOSPHERE",
-              "BIOLOGY",
-              "BIOCHEMISTRY",
-              "BIODIVERSITY",
-              "CHEMISTRY",
-              "CLIMATE",
-              "CONSERVATION",
-              "ECOLOGY",
-              "ECOTOXICOLOGY",
-              "ENVIRONMENT",
-              "GEOLOGY",
-              "GEOPHYSICS",
-              "GLACIOLOGY",
-              "HISTORY",
-              "HUMAN_DIMENSION",
-              "MANAGEMENT",
-              "MARINE",
-              "MARINEECOSYSTEMS",
-              "MAPS",
-              "OCEANOGRAPHY",
-              "OTHER",
-              "PALEOCLIMATE",
-              "REMOTE_SENSING",
-              "SEAICE",
-              "SNOW",
-              "TERRESTRIAL",
-              "TOPOGRAPHY",
-              "VEGETATION"
+          "acidification",
+          "atmosphere",
+          "biology",
+          "biochemistry",
+          "biodiversity",
+          "chemistry",
+          "climate",
+          "conservation",
+          "ecology",
+          "ecotoxicology",
+          "environment",
+          "geology",
+          "geophysics",
+          "glaciology",
+          "history",
+          "human-dimension",
+          "management",
+          "marine",
+          "marineecosystems",
+          "maps",
+          "oceanography",
+          "other",
+          "paleoclimate",
+          "remote-sensing",
+          "seaice",
+          "snow",
+          "terrestrial",
+          "topography",
+          "vegetation"
         ]
       }
     },
@@ -116,7 +116,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-
           "first_name": {
             "type": "string"
           },
@@ -138,25 +137,25 @@
             "items": {
               "type": "string",
               "enum": [
-                "CARPENTER",
-                "CHEF",
-                "ELECTRICIAN",
-                "EXPEDITION_LEADER",
-                "FIELD_ASSISTANT",
-                "FIELD_RESPONSIBLE",
-                "INVESTIGATOR",
-                "IT",
-                "KSAT",
-                "MECANIC",
-                "MECANIC_TAF",
-                "OTHER",
-                "PHYSICIAN",
-                "PILOT",
-                "RESEARCH_TECHNITIAN",
-                "SECURITY",
-                "SERVICE_TECHNITIAN",
-                "TRANSPORT",
-                "VIP"
+                "carpenter",
+                "chef",
+                "electrician",
+                "expeditionLeader",
+                "fieldAssistant",
+                "fieldResponsible",
+                "investigator",
+                "it",
+                "ksat",
+                "mecanic",
+                "mecanicTaf"
+                "other",
+                "physician",
+                "pilot",
+                "researchTechnitian",
+                "security",
+                "serviceTechnitian",
+                "transport",
+                "vip"
             ]
           }
           },
@@ -191,16 +190,16 @@
           "rel": {
             "type": "string",
              "enum": [
-             "RELATED",
-             "PROGRAM",
-             "PARENT",
-             "CHILD",
-             "DATASET",
-             "PUBLICATION",
-             "EXPEDITION",
-             "CRUISE",
-             "PROJECT",
-             "REFERENCE"
+             "related",
+             "program",
+             "parent",
+             "child",
+             "dataset",
+             "publication",
+             "expedition",
+             "cruise",
+             "project",
+             "reference"
             ]
           },
           "href": {
