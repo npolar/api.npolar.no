@@ -72,14 +72,24 @@
         "cancelled"
       ]
     },
-    "research_type": {
-      "description": "Research or not",
-      "type": "string",
-      "enum": ["researchMonitoring", "researchProject", "notResearch"]
-    },
-    "reasearch_title": {
-      "description": "Title research project",
-      "type": "string"
+    "sub_activity": {
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                 "research_type": {
+                    "description": "Research or not",
+                    "type": "string",
+                    "enum": ["researchMonitoring", "researchProject", "notResearch"]
+                  },
+                  "reasearch_title": {
+                    "description": "Title research project",
+                    "type": "string"
+                  }
+              }
+            }
     },
     "topics": {
       "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
@@ -150,14 +160,6 @@
           "country": {
             "description": "Organisation's country",
             "type": "string"
-          },
-          "email": {
-            "description": "Email address",
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "email"
           },
           "roles": {
             "description": "List of roles performed by this person",
@@ -270,7 +272,6 @@
               "description": "Resource relation to the current document",
               "type": "string",
               "enum": [
-                "cruise",
                 "expedition",
                 "child",
                 "dataset",
@@ -340,7 +341,7 @@
             "departure_predefined_area": {
               "description": "The official placename of the location.",
               "type": "string",
-              "enum": ["sverdrup", "zeppelin", "svalbard", "fransJosefLand", "janMayen", "hopen", "bouvet", "troll", "tor",
+              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvet", "troll", "tor",
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
             },
@@ -369,8 +370,8 @@
             "return_predefined_area": {
               "description": "The official placename of the location.",
               "type": "string",
-              "enum": ["sverdrup", "zeppelin", "svalbard", "fransJosefLand", "janMayen", "hopen", "bouvet", "troll", "tor",
-                "dronningMaudLand", "antarctica"
+              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvet", "troll", "tor",
+                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
             },
             "return_country": {
@@ -445,7 +446,7 @@
             "predefined_area": {
               "description": "The official placename of the location.",
               "type": "string",
-              "enum": ["sverdrup", "zeppelin", "svalbard", "fransJosefLand", "janMayen", "hopen", "bouvet", "troll", "tor",
+               "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvet", "troll", "tor",
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
             },
