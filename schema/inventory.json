@@ -17,20 +17,21 @@
     "category": {
       "type": "string",
       "enum": [
-      "UNKNOWN",
-      "AIRSTRIP",
-      "BUILDING",
-      "CONTAMINATION",
-      "CULTURAL_HERITAGE",
-      "DEPOT",
-      "FIELD_HUT",
-      "HELIPORT",
-      "INSTRUMENT",
-      "OPERATIONAL_ACTIVITY",
-      "OTHER",
-      "RESEARCH_MONITORING",
-      "RESEARCH_PROJECT",
-      "RESEARCH_STATION"]
+      "unknown",
+      "airstrip",
+      "building",
+      "contamination",
+      "culturalHeritage",
+      "dataCollection",
+      "depot",
+      "fieldHut",
+      "helioport",
+      "instrument",
+      "operationalActivity",
+      "other",
+      "researchMonitoring",
+      "researchProject",
+      "researchStation"]
     },
     "title":{
       "type": "string"
@@ -151,7 +152,7 @@
           },
           "role": {
             "type": ["string", "null"],
-            "enum": ["LEADER", "PARTICIPANT", "OBSERVER"]
+            "enum": ["leader", "participant", "observer"]
           },
           "organisation": {
             "type": "string"
@@ -236,7 +237,7 @@
           },
           "place": {
              "type": ["string","null"],
-             "enum":["TROLL","TOR","SHELF_TRAVERSE"]
+             "enum":["troll","tor","shelfTraverse"]
           },
           "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
@@ -273,14 +274,14 @@
                   "properties": {
                      "fuel_tank": {
                         "type": ["string", "null"],
-                        "enum": ["11_CUBIC","24_CUBIC", "DRUMS"]
+                        "enum": ["11cubic","24cubic", "drums"]
                       },
                       "quantity": {
                         "type": "string"
                       },
                       "content": {
                         "type": ["string","null"],
-                        "enum": ["DIESEL","JET_A-1","BENZIN"]
+                        "enum": ["diesel","jetA-1","benzin"]
                       },
                       "drum_full":{
                           "type": "boolean"
@@ -305,16 +306,16 @@
                      "type": {
                         "type": ["string", "null"],
                         "enum": [
-                            "METALS",
-                            "GLASS",
-                            "MIXED_WASTE",
-                            "PAPER_CARD_BOARD",
-                            "PLASTICS",
-                            "FOOD_WASTE",
-                            "SEWAGE",
-                            "OIL_CONTAMINATED",
-                            "SEWAGE_COMPOST",
-                            "CHEMICALS_BATTERIES"
+                            "metals",
+                            "glass",
+                            "mixedWaste",
+                            "paperCardBoard",
+                            "plastics",
+                            "foodWaste",
+                            "sewage",
+                            "oilContaminated",
+                            "sewageCompost",
+                            "chemicalsBatteries"
                           ] },
                       "quantity": {
                         "type": "string"
@@ -322,34 +323,34 @@
                       "priority": {
                       "type": ["string","null"],
                       "enum": [
-                          "HIGH",
-                          "MEDIUM",
-                          "LOW",
-                          "ASSESSMENT_REQUIRED",
-                          "POST_REMEDIATION_MONITORING"
+                          "high",
+                          "medium",
+                          "low",
+                          "assessmentRequired",
+                          "postRemediationMonitoring"
                         ]
                       },
                       "impact_likelihood": {
                           "type": ["string","null"],
                           "enum": [
-                             "ALMOST_CERTAIN",
-                             "LIKELY",
-                             "POSSIBLE",
-                             "UNLIKELY"]
+                             "almostCertain",
+                             "likely",
+                             "possible",
+                             "unlikely"]
                       },
                       "impact_spatial": {
                           "type": ["string","null"],
                           "enum": [
-                            "LOCAL",
-                            "IMMEDIATE",
-                            "WIDESPREAD"
+                            "local",
+                            "immediate",
+                            "widespread"
                        ]},
                       "impact_temporal":{
                           "type": ["string","null"],
                           "enum": [
-                            "SHORT",
-                            "INTERMEDIATE",
-                            "LONG"
+                            "short",
+                            "intermediate",
+                            "long"
                        ]},
                        "impact_documented":{
                            "type": "boolean"
@@ -366,12 +367,12 @@
               "properties": {
                 "rel": {
                   "type": "string",
-                  "enum": [ "SERVICE",
-                    "PROJECT",
-                    "PUBLICATION",
-                    "DATACENTRE",
-                    "PARENT",
-                    "DATA"
+                  "enum": [ "service",
+                    "project",
+                    "publication",
+                    "datacentre",
+                    "parent",
+                    "data"
                   ]
                 },
                 "href": {
