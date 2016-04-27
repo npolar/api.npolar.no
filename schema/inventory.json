@@ -280,7 +280,7 @@
                   "properties": {
                      "fuel_tank": {
                         "type": ["string", "null"],
-                        "enum": [ "none","11cubic","24cubic", "drums"]
+                        "enum": [ "none","11Cubic","24Cubic", "drums"]
                       },
                       "quantity": {
                         "type": "string"
