@@ -109,23 +109,13 @@
           "number_of_persons": {
             "type": "string"
           },
-          "names": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
           "first_name": {
             "type": "string"
           },
           "last_name": {
             "type": "string"
-          }
-         }
-        }
-        },
-          "organisation": {
+          },
+           "organisation": {
             "type": "string"
           },
           "country": {
@@ -135,8 +125,8 @@
             "type": "array",
             "additionalItems": false,
             "items": {
-              "type": "string",
-              "enum": [
+                "type":"string",
+               "enum": [
                 "carpenter",
                 "chef",
                 "electrician",
@@ -174,11 +164,11 @@
                 "type": "string",
                 "format": "date-time"
             }
+            }
+          }
+         }
         }
       }
-    }
-       }
-     }
     },
     "links": {
       "type": "array",
