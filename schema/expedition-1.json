@@ -6,7 +6,6 @@
   "type": "object",
   "required":[
      "title",
-     "schema",
      "code",
      "summary",
      "platforms"
