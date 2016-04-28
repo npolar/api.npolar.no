@@ -7,8 +7,7 @@
   "required":[
      "title",
      "code",
-     "summary",
-     "platforms.type"
+     "summary"
   ],
   "properties": {
     "id": {
@@ -70,15 +69,6 @@
         "additionalProperties": false
       },
       "additionalItems": false
-    },
-    "progress": {
-      "description": "The progression state of the expedition.",
-      "type": "string",
-      "enum": ["planned",
-        "ongoing",
-        "completed",
-        "cancelled"
-      ]
     },
     "research": {
             "type": "array",
