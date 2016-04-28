@@ -4,6 +4,13 @@
   "title": "Expedition",
   "description": "Norwegian Polar Data expedition description.",
   "type": "object",
+  "required":[
+     "title",
+     "schema",
+     "code",
+     "summary",
+     "platforms"
+  ],
   "properties": {
     "id": {
       "description": "Resource identifier (UUID).",
@@ -51,7 +58,9 @@
               "boat",
               "helicopter",
               "snowmobile",
-              "snow tractor"
+              "snowTractor",
+              "hovercraft",
+              "other"
             ]
           },
           "name": {
@@ -87,47 +96,47 @@
                   "reasearch_title": {
                     "description": "Title research project",
                     "type": "string"
-                  }
+                  },
+                  "topics": {
+                    "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "atmosphere",
+                        "biology",
+                        "biochemistry",
+                        "biodiversity",
+                        "chemistry",
+                        "climate",
+                        "conservation",
+                        "ecology",
+                        "ecotoxicology",
+                        "environment",
+                        "geology",
+                        "geophysics",
+                        "glaciology",
+                        "history",
+                        "human-dimension",
+                        "management",
+                        "marine",
+                        "marineecosystems",
+                        "maps",
+                        "oceanography",
+                        "other",
+                        "paleoclimate",
+                        "remote-sensing",
+                        "seaice",
+                        "snow",
+                        "terrestrial",
+                        "topography",
+                        "vegetation"
+                      ]
+                      },
+                     "additionalItems": false
+                    },
               }
             }
-    },
-    "topics": {
-      "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "atmosphere",
-          "biology",
-          "biochemistry",
-          "biodiversity",
-          "chemistry",
-          "climate",
-          "conservation",
-          "ecology",
-          "ecotoxicology",
-          "environment",
-          "geology",
-          "geophysics",
-          "glaciology",
-          "history",
-          "human-dimension",
-          "management",
-          "marine",
-          "marineecosystems",
-          "maps",
-          "oceanography",
-          "other",
-          "paleoclimate",
-          "remote-sensing",
-          "seaice",
-          "snow",
-          "terrestrial",
-          "topography",
-          "vegetation"
-        ]
-      },
-      "additionalItems": false
     },
     "people": {
       "description": "List of people participating on the cruise.",
@@ -168,7 +177,7 @@
               "description": "role",
               "type": "string",
               "enum": [
-                "expeditionLeader",
+                "chiefScientist",
                 "fieldAssistant",
                 "principalInvestigator",
                 "processor",
