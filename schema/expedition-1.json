@@ -81,7 +81,7 @@
         "cancelled"
       ]
     },
-    "sub_activity": {
+    "research": {
             "type": "array",
             "additionalItems": false,
             "items": {
