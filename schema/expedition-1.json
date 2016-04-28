@@ -8,7 +8,7 @@
      "title",
      "code",
      "summary",
-     "platforms"
+     "platforms.type"
   ],
   "properties": {
     "id": {
