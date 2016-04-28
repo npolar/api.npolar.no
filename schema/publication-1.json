@@ -26,8 +26,8 @@
 			]
 		},
 		"doi": {
-			"type": "string",
-			"pattern": "^10\\."
+			"type": ["string", "null"],
+			"pattern": "^10\\.[0-9]{2,}\/.+$"
 		},
 		"draft": {
 			"enum": [
@@ -98,8 +98,10 @@
 				"review",
 				"correction",
 				"book",
+				"in-book",
 				"poster",
 				"report",
+				"in-report",
 				"abstract",
 				"phd",
 				"master",
@@ -232,7 +234,7 @@
 					"items": {
 						"type": [
 							"string",
-							null
+							"null"
 						],
 						"format": "date-time"
 					}
@@ -245,7 +247,7 @@
 			"type": "array",
 			"additionalItems": false,
 			"items": {
-				"type": "string"
+				"type": ["string", "null"]
 			}
 		},
 		"people": {
@@ -283,9 +285,12 @@
 								"author",
 								"editor",
 								"co-author",
-								"translator"
+								"translator",
+								"advisor",
+								"correspondent"
 							]
-						}
+						},
+						"default": ["author"]
 					},
 					"organisation": {
 						"type": [
@@ -358,7 +363,9 @@
 								"publisher",
 								"originator",
 								"owner",
-								"resourceProvider"
+								"resourceProvider",
+								"funder"
+								
 							]
 						}
 					}
