@@ -41,7 +41,7 @@
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
-    "platforms": {
+     "platforms": {
       "description": "A list containing the vehicles/vessels used for the expedition.",
       "type": "array",
       "items": {
@@ -192,6 +192,7 @@
                 }
               }
             }
+          }
           },
           "additionalProperties": false,
           "required": [
@@ -308,7 +309,7 @@
         },
         "additionalItems": false
       },
-      "activity": {
+       "activity": {
         "description": "list of activite periods for the platform",
         "type": "array",
         "items": {
@@ -545,7 +546,5 @@
         "description": "deleted entry",
         "type": "string"
       }
-    },
-    "additionalProperties": false
+    }
   }
-}
