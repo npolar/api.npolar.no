@@ -22,7 +22,7 @@
     "params": {
       "size-facet": 99,
       "date-year": "created",
-      "facets": "category,title,description,release_date"
+      "facets": "code,type"
     }
   },
   "verbs": [
