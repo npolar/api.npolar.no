@@ -1,0 +1,70 @@
+{
+  "_id": "expedition-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "id": "expedition-api",
+  "path": "/expedition",
+  "title": "Expedition API",
+  "storage": "Couch",
+  "database": "expedition",
+  "model": "Expedition",
+  "middleware": [
+    [
+      "Npolar::Rack::AttachmentDownloader",
+      {
+        "database": "expedition"
+      }
+    ]
+  ],
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "expedition",
+    "type": "expedition",
+    "params": {
+      "size-facet": 99,
+      "date-year": "created",
+      "facets": "category,title,description,release_date"
+    }
+  },
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS",
+    "OPTIONS"
+  ],
+  "formats": {
+    "json": "application/json; charset=utf8"
+  },
+  "accepts": {
+    "application/json": "https://api.npolar.no/schema/expedition-1"
+  },
+  "category": [
+    "CouchDB",
+    "Solr",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "XML",
+    "XML Schema",
+    "DIF",
+    "HTTP",
+    "Atom",
+    "ISO19139"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "auth": {
+    "authorize": "editor",
+    "system": "expedition",
+    "authorizer": "Npolar::Auth::Ldap"
+  },
+  "updated": "2016-03-14T09:36:32Z",
+  "updated_by": "siri",
+  "created": "2016-03-14T11:35:26Z",
+  "created_by": "siri"
+}
