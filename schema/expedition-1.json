@@ -82,7 +82,7 @@
                     "type": "string",
                     "enum": ["researchMonitoring", "researchProject", "notResearch"]
                   },
-                  "reasearch_title": {
+                  "research_title": {
                     "description": "Title research project",
                     "type": "string"
                   },
