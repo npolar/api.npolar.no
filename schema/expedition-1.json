@@ -427,7 +427,7 @@
             "hemisphere": {
               "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
               "type": "string",
-              "enum":['N','S']
+              "enum":["N","S"]
             },
             "area": {
               "description": "Name identifiying the general area of the location.",
