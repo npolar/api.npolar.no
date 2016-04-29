@@ -5,7 +5,7 @@
   "description": "Norwegian Polar Data expedition description.",
   "type": "object",
   "required":[
-     "title",
+     "type",
      "code",
      "summary"
   ],
