@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/dataset-1.0.0.pre",
+  "id": "http://api.npolar.no/schema/dataset-1.1",
   "title": "Dataset",
   "description": "Dataset metadata schema",
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": ["title"],
   "properties": {
     "id": {
@@ -14,6 +14,10 @@
     "title": {
       "description": "Title should be specific enough to make sense out of context",
       "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "description": "Dataset version string"
     },
     "schema": {
       "type": "string",
@@ -36,7 +40,8 @@
     },
     "draft": {
       "type": "string",
-      "enum": ["yes", "no"]
+      "enum": ["yes", "no"],
+      "default": "no"
     },
     "coverage": {
       "type": "array",
@@ -220,18 +225,18 @@
         "properties": {
           "rel": { "type": "string",
           "enum":["related",
-          "service",
-          "metadata",
-          "project",
-          "publication",
-          "datacentre",
-          "parent",
-           "internal",
-           "doi",
-           "data",
-           "via",
-           "edit",
-           "alternate"]},
+            "service",
+            "metadata",
+            "project",
+            "publication",
+            "datacentre",
+            "parent",
+             "internal",
+             "doi",
+             "data",
+             "via",
+             "edit",
+             "alternate"]},
           "href": {
             "type": "string",
             "format": "uri"
@@ -249,19 +254,17 @@
             "type": "string"
           },
           "hash": {
-            "type": "array"
+            "type": ["string", "null"]
           },
-          "etag": {
-            "type": "string"
+          "license": {
+            "type": ["string", "null"],
+            "format": "uri"
           },
           "modified": {
-            "type": "string"
-          },
-          "acccessed": {
-            "type": "string"
+            "type": ["string", "null"]
           }
         },
-        "required": ["href"]
+        "required": ["href", "type", "rel"]
       }
     },
     "categories": {
@@ -473,6 +476,28 @@
     },
     "updated_by": {
       "type": "string"
-    }
+    },
+    "attachments": {
+			"type": "array",
+			"description": "",
+			"items": {
+				"type": "object",
+				"properties": {
+					"href": {
+						"type": "string",
+						"description": "Web address (URI) of the attached file",
+						"format": "uri"
+					},
+					"filename": {
+						"type": "string",
+						"description": "File name"
+					},
+					"type": {
+						"type": "string",
+						"description": "Media type"
+					}
+				}
+			}
+		}
   }
 }
