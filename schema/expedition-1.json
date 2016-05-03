@@ -250,7 +250,7 @@
         "additionalItems": false
       },
       "links": {
-        "description": "A list of links relevant to this perticular expedition. This should include links to the project(s) and expedition track(s). After completion it can also include links to datasets collected or updated during this expedition.",
+        "description": "A list of links relevant to this particular expedition. This should include links to the project(s) and expedition track(s). After completion it can also include links to datasets collected or updated during this expedition.",
         "type": "array",
         "items": {
           "type": "object",
