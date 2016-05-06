@@ -409,6 +409,40 @@
               "required": ["rel", "href"]
             }
           },
+         "files": {
+			       "type": "array",
+			       "description": "",
+			       "items": {
+				          "type": "object",
+				          "properties": {
+    					"uri": {
+    						"type": "string",
+    						"description": "URI of the attached file",
+    						"format": "uri"
+    					},
+    					"filename": {
+    						"type": "string",
+    						"description": "File name"
+    					},
+    					"title": {
+    						"type": "string",
+    						"description": "Title"
+    					},
+    					"length": {
+    						"type": "integer",
+    						"description": "File size in bytes"
+    					},
+    					"type": {
+    						"type": "string",
+    						"description": "Media type (e.g. image/png)"
+    					},
+    					"hash": {
+    						"type": "string",
+    						"description": ""
+    					}
+    				}
+    			}
+    		 },
           "created": {
             "description": "Footprint entry was published",
             "type": "string",
