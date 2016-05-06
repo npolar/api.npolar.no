@@ -26,16 +26,19 @@
     },
      "research_station": {
       "type": "string",
-      "enum": ["troll","norwegia"]
+      "enum": ["troll","norwegia","sverdrup"]
     },
     "research_type": {
       "type": "string",
       "enum": [
          "researchMonitoring",
          "researchProject",
+         "mapping",
+         "outreachVIP",
+         "education",
          "logisticOperations",
-         "vip",
-         "other"]
+         "otherResearch",
+         "otherNotResearch"]
     },
      "summary": {
       "type": "string"
