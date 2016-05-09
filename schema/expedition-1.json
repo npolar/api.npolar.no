@@ -80,8 +80,7 @@
                  "research_type": {
                     "description": "Research or not",
                     "type": "string",
-                    "enum": ["researchMonitoring", "researchProject", "mapping", "outreachVIP", "education",
-                    "logisticOperations", "otherResearch", "otherNotResearch"]
+                    "enum": ["research", "monitoring", "mapping", "outreachVIP", "education","logisticOperations", "other"]
                   },
                   "research_title": {
                     "description": "Title research project",
