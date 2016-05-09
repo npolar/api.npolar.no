@@ -127,6 +127,9 @@
     "heliport":{
             "type": "boolean"
     },
+    "troll_cargo_site":{
+            "type": "boolean"
+    },
      "stationary_other":{
             "type": "string"
     },
