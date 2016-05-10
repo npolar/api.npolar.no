@@ -250,6 +250,31 @@
         },
         "additionalItems": false
       },
+"_attachments": {
+           "type":"object"
+},
+ "attachments": {
+			"type": "array",
+			"description": "",
+			"items": {
+				"type": "object",
+				"properties": {
+					"href": {
+						"type": "string",
+						"description": "Web address (URI) of the attached file",
+						"format": "uri"
+					},
+					"filename": {
+						"type": "string",
+						"description": "File name"
+					},
+					"type": {
+						"type": "string",
+						"description": "Media type"
+					}
+				}
+			}
+		},
       "links": {
         "description": "A list of links relevant to this particular expedition. This should include links to the project(s) and expedition track(s). After completion it can also include links to datasets collected or updated during this expedition.",
         "type": "array",
@@ -503,19 +528,6 @@
       "comment": {
         "description": "A free text comment for anything of importance to the expedition description.",
         "type": "string"
-      },
-      "attachments_access": {
-        "title": "Internet access to attachments",
-        "description": "Internet access to attachments",
-        "additionalItems": false,
-        "type": "array",
-        "items": {
-          "type": "string",
-          "enum": [
-            "yes",
-            "no"
-          ]
-        }
       },
       "created": {
         "description": "The date the document was created.",
