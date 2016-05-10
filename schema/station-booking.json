@@ -31,14 +31,13 @@
     "research_type": {
       "type": "string",
       "enum": [
-         "researchMonitoring",
-         "researchProject",
+         "research",
+         "monitoring",
          "mapping",
          "outreachVIP",
          "education",
          "logisticOperations",
-         "otherResearch",
-         "otherNotResearch"]
+         "other"]
     },
      "summary": {
       "type": "string"
