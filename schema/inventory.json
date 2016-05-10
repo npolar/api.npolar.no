@@ -392,7 +392,8 @@
                     "publication",
                     "datacentre",
                     "parent",
-                    "data"
+                    "data",
+                    "track"
                   ]
                 },
                 "href": {

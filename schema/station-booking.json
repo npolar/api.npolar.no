@@ -190,7 +190,8 @@
              "publication",
              "expedition",
              "project",
-             "reference"
+             "reference",
+             "track"
             ]
           },
           "href": {
