@@ -86,6 +86,7 @@
 			"title": "ICE programmes",
 			"description": "Select none or several ICE programmes affiliated with the publication",
 			"type": "array",
+			"uniqueItems": true,
 			"additionalItems": false,
 			"items": {
 				"type": "string"
@@ -121,6 +122,7 @@
 		},
 		"locations": {
 			"type": "array",
+			"uniqueItems": true,
 			"additionalItems": true,
 			"items": {
 				"type": "object",
@@ -346,6 +348,7 @@
 		"organisations": {
 			"description": "Organisations involved",
 			"type": "array",
+			"uniqueItems": true,
 			"additionalItems": false,
 			"items": {
 				"type": "object",
@@ -362,6 +365,7 @@
 					},
 					"roles": {
 						"type": "array",
+						"uniqueItems": true,
 						"items": {
 							"enum": [
 								"publisher",
@@ -379,12 +383,14 @@
 		"tags": {
 			"additionalItems": false,
 			"type": "array",
+			"uniqueItems": true,
 			"items": {
 				"type": "string"
 			}
 		},
 		"isbn": {
 			"additionalItems": false,
+			"uniqueItems": true,
 			"type": "array",
 			"items": {
 				"type": "string"
@@ -393,12 +399,14 @@
 		"issn": {
 			"additionalItems": false,
 			"type": "array",
+			"uniqueItems": true,
 			"items": {
 				"type": "string"
 			}
 		},
 		"links": {
 			"type": "array",
+			"uniqueItems": true,
 			"additionalItems": false,
 			"items": {
 				"type": "object",
@@ -435,6 +443,7 @@
 			"title": "NP research stations",
 			"description": "NPs research stations",
 			"type": "array",
+			"uniqueItems": true,
 			"additionalItems": false,
 			"items": {
 				"type": "string"
@@ -450,6 +459,7 @@
 		},
 		"files": {
 			"type": "array",
+			"uniqueItems": true,
 			"description": "",
 			"items": {
 				"type": "object",
