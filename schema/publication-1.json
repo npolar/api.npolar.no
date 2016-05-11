@@ -253,6 +253,7 @@
 		"people": {
 			"description": "People involved in creating the publication",
 			"type": "array",
+			"uniqueItems": true,
 			"additionalItems": false,
 			"required": [
 				"first_name",
@@ -290,7 +291,10 @@
 								"correspondent"
 							]
 						},
-						"default": ["author"]
+						"default": ["author"],
+						"minItems": 1,
+						"maxItems": 6,
+						"uniqueItems": true
 					},
 					"organisation": {
 						"type": [
