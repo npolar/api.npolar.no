@@ -205,10 +205,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-           "area": {
-            "type": "string"
-          },
-             "coverage": {
+           "coverage": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -242,11 +239,6 @@
             ],
             "pattern": "^(([A-Z]|[a-z]){2})$"
           },
-          "hemisphere": {
-            "description": "Hemisphere: N or S",
-            "type": "string",
-            "enum": ["S"]
-          },
           "place": {
              "type": ["string","null"],
              "enum":[ "none","troll","tor","shelfTraverse"]
@@ -254,6 +246,11 @@
           "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
             "type": "string"
+          },
+           "hemisphere": {
+            "description": "Hemisphere: N or S",
+            "type": "string",
+            "enum": ["S"]
           }
         }
       }
