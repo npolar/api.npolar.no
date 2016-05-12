@@ -224,10 +224,6 @@
             "type": "string",
             "enum": ["S"]
           },
-          "gps": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
           "north": {
             "type": "number",
             "minimum": -90.0,
@@ -249,6 +245,7 @@
             "maximum": 180.0
           }
           }
+        }
         },
           "place": {
              "type": ["string","null"],
