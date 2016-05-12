@@ -224,7 +224,18 @@
             "type": "string",
             "enum": ["S"]
           },
-           "coverage": {
+          "place": {
+             "type": ["string","null"],
+             "enum":[ "none","troll","tor","shelfTraverse"]
+          },
+          "comment": {
+            "description": "Description f.ex. about location, monitoring fields, field camps etc",
+            "type": "string"
+          }
+          }
+          }
+          },
+        "coverage": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -250,17 +261,6 @@
           }
         }
       },
-          "place": {
-             "type": ["string","null"],
-             "enum":[ "none","troll","tor","shelfTraverse"]
-          },
-          "comment": {
-            "description": "Description f.ex. about location, monitoring fields, field camps etc",
-            "type": "string"
-          }
-          }
-          }
-          },
           "instrument": {
                 "type": "array",
                 "additionalItems": false,
