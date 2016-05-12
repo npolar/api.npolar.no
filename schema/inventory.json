@@ -243,10 +243,7 @@
             "type": "number",
             "minimum": -180.0,
             "maximum": 180.0
-          }
-          }
-        }
-        },
+          },
           "place": {
              "type": ["string","null"],
              "enum":[ "none","troll","tor","shelfTraverse"]
