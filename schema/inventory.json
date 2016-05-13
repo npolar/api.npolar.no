@@ -237,6 +237,9 @@
              "type": ["string","null"],
              "enum":[ "none","troll","tor","shelfTraverse"]
           },
+          "placename": {
+             "type": ["string","null"]
+          },
           "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
             "type": "string"
@@ -382,7 +385,8 @@
                     "datacentre",
                     "parent",
                     "data",
-                    "track"
+                    "track",
+                    "expedition"
                   ]
                 },
                 "href": {
