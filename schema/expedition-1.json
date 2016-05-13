@@ -428,19 +428,29 @@
         "items": {
           "type": "object",
           "properties": {
-            "location_dates": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "start_date": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "end_date": {
-                  "type": "string",
-                  "format": "date-time"
-                }
-              }
+             "north": {
+                  "description": "Location north.",
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+            },
+            "east": {
+                  "description": "Location east.",
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+            },
+            "south": {
+                  "description": "Location south.",
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+            },
+            "west": {
+                  "description": "Location west.",
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
             },
             "field_camp": {
               "description": "field camp or not.",
@@ -449,20 +459,6 @@
             "operation_area": {
               "description": "operation area or not.",
               "type": "boolean"
-            },
-            "hemisphere": {
-              "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
-              "type": "string",
-              "enum":["N","S"]
-            },
-            "area": {
-              "description": "Name identifiying the general area of the location.",
-              "type": "string"
-            },
-            "country": {
-              "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
-              "type": "string",
-              "pattern": "^(([A-Z]|[a-z]){2})$"
             },
             "placename": {
               "description": "The official placename of the location.",
@@ -475,35 +471,28 @@
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
             },
-            "gps": {
+            "hemisphere": {
+              "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
+              "type": "string",
+              "enum":["N","S"]
+            },
+            "country": {
+              "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
+              "type": "string",
+              "pattern": "^(([A-Z]|[a-z]){2})$"
+            },
+            "location_dates": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "north": {
-                  "description": "Location north.",
-                  "type": "number",
-                  "minimum": -90,
-                  "maximum": 90
+                "start_date": {
+                  "type": "string",
+                  "format": "date-time"
                 },
-                "east": {
-                  "description": "Location east.",
-                  "type": "number",
-                  "minimum": -180,
-                  "maximum": 180
-                },
-                "south": {
-                  "description": "Location south.",
-                  "type": "number",
-                  "minimum": -90,
-                  "maximum": 90
-                },
-                "west": {
-                  "description": "Location west.",
-                  "type": "number",
-                  "minimum": -180,
-                  "maximum": 180
+                "end_date": {
+                  "type": "string",
+                  "format": "date-time"
                 }
-
               }
             }
           }
