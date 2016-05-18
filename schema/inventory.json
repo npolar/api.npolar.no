@@ -189,8 +189,7 @@
               "type": "string"
           },
           "@country": {
-              "type": "string",
-              "default":"en"
+              "type": "string"
           },
           "href": {
             "type": "string",
@@ -230,14 +229,14 @@
              "type": ["string","null"],
              "enum":[ "none","troll","tor","shelfTraverse"]
           },
-          "placename": {
+          "@placename": {
              "type": ["string","null"]
           },
           "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
             "type": "string"
           },
-           "country": {
+           "@country": {
             "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
             "type": [
               "string",
@@ -261,7 +260,7 @@
                   "type": "object",
                   "additionalProperties": false,
                   "properties": {
-                     "instrument": {
+                     "@instrument": {
                         "type": "string"
                       },
                       "instrument_description": {
