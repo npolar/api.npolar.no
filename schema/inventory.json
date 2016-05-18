@@ -188,8 +188,9 @@
           "city": {
               "type": "string"
           },
-          "country": {
-              "type": "string"
+          "@country": {
+              "type": "string",
+              "default":"en"
           },
           "href": {
             "type": "string",
