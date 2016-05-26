@@ -231,12 +231,13 @@
             "publication",
             "datacentre",
             "parent",
-             "internal",
-             "doi",
-             "data",
-             "via",
-             "edit",
-             "alternate"]},
+            "internal",
+            "doi",
+            "data",
+            "via",
+            "edit",
+            "alternate"],
+          "default": "related"},
           "href": {
             "type": "string",
             "format": "uri"
@@ -251,7 +252,8 @@
             "type": ["number", "null"]
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "default": "text/html"
           },
           "hash": {
             "type": ["string", "null"]
@@ -264,7 +266,7 @@
             "type": ["string", "null"]
           }
         },
-        "required": ["href", "type", "rel"]
+        "required": ["href", "rel"]
       }
     },
     "categories": {
