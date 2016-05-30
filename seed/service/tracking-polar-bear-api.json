@@ -1,0 +1,46 @@
+{
+    "id": "polar-bear-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/tracking/polar-bear",
+    "title": "Polar bear tracking API",
+    "storage": "Couch",
+    "database": "tracking-polar-bear",
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/tracking"
+    },
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "tracking-polar-bear",
+        "type": "message",
+        "params": {
+            "rangefacet-latitude": 10,
+            "rangefacet-longitude": 10,
+            "size-facet": 1000
+        }
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "base": "http://api.npolar.no",
+    "created": "2015-03-06T09:07:40Z",
+    "created_by": "conrad@npolar.no"
+}
