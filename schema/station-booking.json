@@ -120,7 +120,7 @@
            "organisation": {
             "type": "string"
           },
-          "country": {
+          "@country": {
             "type": "string"
           },
           "roles": {
