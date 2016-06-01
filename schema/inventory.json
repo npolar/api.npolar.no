@@ -236,7 +236,7 @@
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
             "type": "string"
           },
-           "@country": {
+           "@loc_country": {
             "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
             "type": [
               "string",
