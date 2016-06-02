@@ -169,36 +169,7 @@
         }
       }
     },
-    "organisations": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "address": {
-              "type": "string"
-          },
-          "zip": {
-              "type": "string"
-          },
-          "city": {
-              "type": "string"
-          },
-          "@country": {
-              "type": "string"
-          },
-          "href": {
-            "type": "string",
-            "format": "uri"
-          }
-        }
-      }
-    },
-      "locations": {
+     "locations": {
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -230,7 +201,7 @@
              "enum":[ "none","troll","tor","shelfTraverse"]
           },
           "@placename": {
-             "type": ["string","null"]
+             "type": "string"
           },
           "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
@@ -238,10 +209,7 @@
           },
            "@loc_country": {
             "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
-            "type": [
-              "string",
-              "null"
-            ],
+            "type":"string",
             "pattern": "^(([A-Z]|[a-z]){2})$"
           },
            "hemisphere": {
@@ -251,9 +219,37 @@
           }
         }
       }
+      },
+    "organisations": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+              "type": "string"
+          },
+          "zip": {
+              "type": "string"
+          },
+          "city": {
+              "type": "string"
+          },
+          "@country": {
+              "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
     },
-
-          "instrument": {
+        "instrument": {
                 "type": "array",
                 "additionalItems": false,
                 "items": {
