@@ -170,10 +170,10 @@
                 "expeditionCruiseLeader",
                 "fieldAssistant",
                 "guest",
+                "investigator",
                 "other",
                 "principalInvestigator",
-                "processor",
-                "investigator"
+                "technitian"
               ]
             },
             "additionalItems": false
