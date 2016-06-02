@@ -167,11 +167,12 @@
               "description": "role",
               "type": "string",
               "enum": [
-                "chiefScientist",
+                "expeditionCruiseLeader",
                 "fieldAssistant",
+                "other",
                 "principalInvestigator",
                 "processor",
-                "pointOfContact"
+                "scientist"
               ]
             },
             "additionalItems": false
@@ -214,22 +215,6 @@
         "description": "X28 ship name aka research vessel no 31",
         "type": "string",
         "enum": ["researchVessel"]
-      },
-      "sailed_distance": {
-        "description": "length of sailed distance - internal use.",
-        "type": "string"
-      },
-      "fuel_main_engine": {
-        "description": "main engine fuel consumption - internal use.",
-        "type": "string"
-      },
-      "fuel_auxillary_engine": {
-        "description": "auxillary engine fuel consumption - internal use.",
-        "type": "string"
-      },
-      "fuel_boiler": {
-        "description": "boiler fuel consumption - internal use.",
-        "type": "string"
       },
       "use_limitation": {
         "description": "X34 publicly available or not",
