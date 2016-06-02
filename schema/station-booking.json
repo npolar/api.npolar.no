@@ -134,7 +134,8 @@
                 "electrician",
                 "expeditionLeader",
                 "fieldAssistant",
-                "fieldResponsible",
+                "guest",
+                "principalInvestigator",
                 "investigator",
                 "it",
                 "ksat",
@@ -146,8 +147,7 @@
                 "researchTechnitian",
                 "security",
                 "serviceTechnitian",
-                "transport",
-                "vip"
+                "transport"
             ]
           }
           },

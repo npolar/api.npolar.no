@@ -169,10 +169,11 @@
               "enum": [
                 "expeditionCruiseLeader",
                 "fieldAssistant",
+                "guest",
                 "other",
                 "principalInvestigator",
                 "processor",
-                "scientist"
+                "investigator"
               ]
             },
             "additionalItems": false
