@@ -64,7 +64,11 @@
           "name": {
             "description": "The name of the vessel or vehicle. Example 'RV Lance.'",
             "type": "string"
-          }
+          },
+           "sponsor": {
+        "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
+        "type": "string"
+      }
         },
         "additionalProperties": false
       },
@@ -207,10 +211,6 @@
           ]
         },
         "additionalItems": false
-      },
-      "sponsor": {
-        "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
-        "type": "string"
       },
       "ship_type": {
         "description": "X28 ship name aka research vessel no 31",
