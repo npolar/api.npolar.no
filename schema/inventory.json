@@ -179,8 +179,8 @@
     "hours_clearing_troll_airfield": {
             "type": "number"
     },
-     "liter_fuel_spills_troll_airfield": {
-            "type": "string"
+     "liter_fuel_spilled_troll_airfield": {
+            "type": "number"
     },
     "population_snow_petrel_troll": {
             "type": "number"
@@ -197,16 +197,16 @@
     "amount_waste_removed_troll": {
             "type": "number"
     },
-    "helicopter_landings_bovet": {
+    "helicopter_landings_bouvet": {
             "type": "number"
     },
     "fuel_gas_chemicals_comsumed_bouvet": {
             "type": "number"
     },
-    "helicopter_landing_tor": {
+    "noise_helicopter_landing_tor": {
             "type": "number"
     },
-    "vehicle_usage_tor": {
+    "noise_vehicle_usage_tor": {
             "type": "number"
     },
     "liters_propane_gas_tor": {
@@ -530,9 +530,13 @@
             }
           }
          },
-         "draft":{
-            "type": "boolean"
-          },
+        "draft": {
+          "enum": [
+            "yes",
+            "no"
+          ],
+         "default": "no"
+        },
           "created": {
             "description": "Footprint entry was published",
             "type": "string",
