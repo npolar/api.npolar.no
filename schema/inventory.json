@@ -130,6 +130,9 @@
     "troll_cargo_site":{
             "type": "boolean"
     },
+    "site_containers":{
+            "type": "boolean"
+    },
      "stationary_other":{
             "type": "string"
     },
@@ -527,6 +530,9 @@
             }
           }
          },
+         "draft":{
+            "type": "boolean"
+          },
           "created": {
             "description": "Footprint entry was published",
             "type": "string",
