@@ -65,7 +65,7 @@
     },
     "type": {
       "type": "string",
-      "enum": ["Research", "Monitoring", "Modeling", "Mapping", "Education"]
+      "enum": ["Assessment","Research", "Monitoring", "Modeling", "Mapping", "Education"]
     },
     "funding_sources": {
       "type": "array",
