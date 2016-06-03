@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Create GeoJSON from all CSV files
+root=/mnt/datasets/Tracking/Telonics/Output  # CSV from Telonics Data Converter  
+dest=/mnt/datasets/Tracking/Telonics/GeoJSON # GeoJSON points
+dir=`dirname $0`
+
+mkdir -p $dest
+i=0
+
+find $root -type f -iname *Condensed.csv | while read csvfile 
+do
+  
+  i=$((i+1))
+  
+  basename=`basename "$csvfile" .csv`
+  
+  csvfiletime=`stat -c %Y "$csvfile"`
+  
+  jsonfile="$dest/`echo $basename | grep -o "^\w*\b"`.json"
+  
+  # echo "$csvfile [`stat -c %y "$csvfile"`]"
+  
+  if [ -f $jsonfile ];
+  then
+    jsonfiletime=`stat -c %Y "$jsonfile"`
+  else
+    jsonfiletime=1
+  fi
+  
+  # Create/update GeoJSON file (update only if the CSV file is newer)
+  if ( [ $csvfiletime -gt $jsonfiletime ] );
+  then
+   echo "$csvfile [`stat -c %y "$csvfile"`] > $jsonfile"
+   json=`$dir/telonics-csv-to-json "$csvfile" GeoJSON`
+   echo "$json" > "$jsonfile"
+  fi
+  
+done

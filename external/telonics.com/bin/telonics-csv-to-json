@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+# Create GeoJSON (or just array of features) for a TDC CSV file
+# ./bin/telonics-csv-to-json "/mnt/datasets/Tracking/Telonics/Output/683523A Condensed.csv" > /dev/null
+
+# Pass in a datestamp to reject features with an earlier time property
+# ./bin/telonics-csv-to-json "/mnt/datasets/Tracking/Telonics/Output/683523A Condensed.csv" 2016-05-29T12:02:57Z
+
+require "csv"
+require "time"
+require "json"
+require "logger"
+require "digest/sha1"
+Dir.chdir(__dir__) do
+  require_relative "../lib/telonics"
+end
+
+begin
+  
+  log = Logger.new(STDERR)
+  log.level = Logger::DEBUG
+
+  if ARGV.any? and File.exists? ARGV[0]
+    input = File.new(ARGV[0])
+  else
+    input = ARGF
+  end
+  
+  t = Telonics::TelonicsCondensedCsvParser.new(input)
+  t.log = log
+  r = []
+  
+  if ARGV.any? and ARGV.size >= 2 and ARGV[1] =~ /^[0-9]{4}/
+    timestamp = Time.parse(ARGV[1])
+  else
+    timestamp = Time.new(-1)
+  end
+  
+  if ARGV.to_json =~ /features/i
+    r = t.GeoJSON({ time: timestamp })[:features]  
+  else
+    r = t.GeoJSON({ time: timestamp })  
+  end
+  
+  puts JSON.pretty_generate(r)
+  exit(true)
+  
+
+rescue => e
+
+  puts e
+  puts e.backtrace
+  exit(1)
+
+end
