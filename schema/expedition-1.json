@@ -257,7 +257,15 @@
 					"type": {
 						"type": "string",
 						"description": "Media type"
-					}
+					},
+          "length":{
+            "type": "integer",
+            "description": "File size in bytes"
+          },
+          "hash": {
+            "type": "string",
+            "description": ""
+          }
 				}
 			}
 		},
