@@ -73,10 +73,11 @@
               "Institute of Marine Reseach",
               "The Arctic University of Norway"
             ]
-        },
-        "additionalProperties": false
-      },
-      "additionalItems": false
+        }
+      }
+    },
+         "additionalProperties": false,
+        "additionalItems": false
     },
     "research": {
             "type": "array",
