@@ -4,6 +4,30 @@ source=/mnt/datasets/Tracking/Telonics/Output
 base="https://api.npolar.no/tracking/polar-bear"
 dir=`dirname $0`
 i=0
+datecmd=/bin/date
+
+# If system's date command is older than 13, fallback to /usr/local/bin/date
+# http://git.savannah.gnu.org/cgit/coreutils.git/tree/NEWS?id=c7fca77515cc0c55f2c47c9f18c313aaef80922c
+# date now accepts ISO 8601 date-time strings with "T" as the
+#  separator.  It has long parsed dates like "2004-02-29 16:21:42"
+#  with a space between the date and time strings.  Now it also parses
+#  "2004-02-29T16:21:42" and fractional-second and time-zone-annotated
+#  variants like "2004-02-29T16:21:42.333-07:00"
+
+v=`$datecmd --version | grep -oE "[0-9]+\.[0-9]+"`
+major=`echo $v | grep -oE "^[0-9]+"`
+minor=`echo $v | grep -oE "[0-9]+$"`
+
+if [ $major -lt 9 ]; then
+  if [ $minor -lt 13 ]; then
+    datecmd=/usr/local/bin/date
+  fi
+fi
+
+if [ ! -f "$datecmd" ]; then
+  echo "Date command missing: $datecmd"
+  exit -1
+fi
 
 if [ ! -d "$source" ]; then
   echo "Source directory missing: $source"
@@ -21,7 +45,7 @@ do
   do
     t=`echo $row | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:\.Z\+\-\s]+'`
     if [ -z "$t" -a "$t" == " " ]; then
-      t="1900-01-01" # Set timestamp to 1900 if not in API
+      t="1970-01-01Z" # Set timestamp to UNIX Epoch if not in API
     fi  
   done
   
@@ -31,7 +55,7 @@ do
   
   # Set file modified time to time of latest message in API
   # [This should only be done after succesful publishing]
-  #if ( [ $apit -gt `date -d "1900-01-01" +%s` ] );
+  #if ( [ $apit -gt `date -d "1970-01-01Z" +%s` ] );
   #then
   #  echo "$f $platform source: $ft [`stat -c %y "$f"`] api: $apit [$t] $((ft-apit))"
   #  touch -m --date $t "$f"
