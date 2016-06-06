@@ -69,8 +69,8 @@ do
       echo ${#json}
       echo $json | curl -H "Content-Type: application/json" -vn -XPOST "$base" -d@-
     fi
-  else
-    echo "$f [`stat -c %y "$f"`] api: $t unix time diff: $((ft-apit))"
+  #else
+    #echo "$f [`stat -c %y "$f"`] api: $t unix time diff: $((ft-apit))"
   fi
   
 done
