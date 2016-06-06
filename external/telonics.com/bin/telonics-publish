@@ -5,25 +5,48 @@ base="https://api.npolar.no/tracking/polar-bear"
 dir=`dirname $0`
 i=0
 
+if [ ! -d "$source" ]; then
+  echo "Source directory missing: $source"
+  exit -1
+fi
+
 for f in $source/*Condensed.csv
 do
   
   platform=`basename "$f" ".csv" | grep -oE "^\w*\b"`
 	
-  # Get latest timestamp in API    
+  # t => Latest timestamp in API (ISO8601)   
   api="$base?q=&limit=1&format=csv&sort=-properties.time&fields=properties.time&filter-properties.platform=$platform"
   for row in `curl -n -XGET --silent "$api"`
   do
     t=`echo $row | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:\.Z\+\-\s]+'`
     if [ -z "$t" -a "$t" == " " ]; then
-      t="-1"  
+      t="1900-01-01" # Set timestamp to 1900 if not in API
     fi  
   done
   
-  json=`$dir/telonics-csv-to-json "$f" $t features`
-  if [ ${#json} -gt 4 ];
+  # UNIX timestamps
+  ft=`stat -c %Y "$f"`
+  apit=`date -d $t +%s`
+  
+  # Set file modified time to time of latest message in API
+  # [This should only be done after succesful publishing]
+  #if ( [ $apit -gt `date -d "1900-01-01" +%s` ] );
+  #then
+  #  echo "$f $platform source: $ft [`stat -c %y "$f"`] api: $apit [$t] $((ft-apit))"
+  #  touch -m --date $t "$f"
+  #fi
+  
+  if ( [ $ft -gt $apit ] );
   then
-    echo $json | curl -H "Content-Type: application/json" -vn -XPOST "$base" -d@-
+    json=`$dir/telonics-csv-to-json "$f" $t features`
+    if [ ${#json} -gt 4 ];
+    then
+      echo ${#json}
+      echo $json | curl -H "Content-Type: application/json" -vn -XPOST "$base" -d@-
+    fi
+  else
+    echo "$f [`stat -c %y "$f"`] api: $t unix time diff: $((ft-apit))"
   fi
   
 done
