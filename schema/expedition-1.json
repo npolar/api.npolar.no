@@ -67,8 +67,12 @@
           },
            "sponsor": {
         "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
-        "type": "string"
-      }
+        "type": "string",
+        "enum": [
+              "Norwegian Polar Institute",
+              "Institute of Marine Reseach",
+              "The Arctic University of Norway"
+            ]
         },
         "additionalProperties": false
       },
