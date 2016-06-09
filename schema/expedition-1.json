@@ -360,7 +360,7 @@
             "departure_predefined_area": {
               "description": "The official placename of the location.",
               "type": "string",
-              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvet", "troll", "tor",
+              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvetIsland", "troll", "tor",
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
             },
@@ -389,7 +389,7 @@
             "return_predefined_area": {
               "description": "The official placename of the location.",
               "type": "string",
-              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvet", "troll", "tor",
+              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvetIsland", "troll", "tor",
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
             },
