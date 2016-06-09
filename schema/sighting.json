@@ -26,6 +26,13 @@
       "description": "mostly en",
       "type": "string"
     },
+    "draft": {
+          "enum": [
+            "yes",
+            "no"
+          ],
+         "default": "no"
+    },
     "rights": {
       "description": "The licence web address, f.ex. licenced under Creative Commons",
       "type": "string"
@@ -272,22 +279,53 @@
         }
       }
     },
-    "pictures": {
+    "_attachments": {
+           "type":"object"
+},
+ "attachments": {
       "type": "array",
+      "description": "",
       "items": {
-        "$ref": "https://api.npolar.no/_schema/ref/file"
-      },
-      "photographer": {
-        "description": "name of photographer",
-        "type": "string"
-      },
-      "comments": {
-        "description": "comments related to picture",
-        "type": "string"
-      },
-      "other_info": {
-        "decription": "comments from older databases or whatever needed",
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "Web address (URI) of the attached file",
+            "format": "uri"
+          },
+          "filename": {
+            "type": "string",
+            "description": "File name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Media type"
+          },
+          "length":{
+            "type": "integer",
+            "description": "File size in bytes"
+          },
+          "hash": {
+            "type": "string",
+            "description": "MD5 included"
+          },
+          "thumbnail":{
+             "type": "string",
+              "enum": ["yes","no"]
+          },
+          "photographer": {
+           "description": "name of photographer",
+           "type": "string"
+          },
+          "comments": {
+           "description": "comments related to picture",
+           "type": "string"
+          },
+          "other_info": {
+           "decription": "comments from older databases or whatever needed",
+           "type": "string"
+         }
+        }
       }
     },
     "created": {
