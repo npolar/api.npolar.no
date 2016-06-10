@@ -198,8 +198,21 @@
       "description": "Uploaded excel file",
       "type": "object",
       "properties": {
-        "file": {
-          "$ref": "https://api.npolar.no/_schema/ref/file"
+        "uri": {
+          "type": "string",
+          "description": "URI to the file location",
+         "format": "uri"
+        },
+        "filename": {
+          "type": "string",
+          "description": "Original file name (and extension if applicable)"
+        },
+        "filesize": {
+          "type": "integer",
+          "description": "File size in bytes"
+        },
+        "mimetype": {
+           "type": "string"
         },
         "other_info": {
           "description": "other info f.ex from the old database",
