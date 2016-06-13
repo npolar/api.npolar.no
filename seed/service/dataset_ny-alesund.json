@@ -1,0 +1,61 @@
+{
+   "_id": "ny-alesund-api",
+   "_rev": "7-14d3f70e476d8675ea606082794cefa3",
+   "schema": "http://api.npolar.no/schema/api",
+   "id": "ny-alesund-api",
+   "path": "/dataset/ny-alesund",
+   "title": "Ny-Ålesund API",
+   "summary": "Data produced by the research stations in Ny-Ålesund (Svalbard)",
+   "storage": "Couch",
+   "database": "dataset_ny-alesund",
+   "search": {
+       "engine": "Elasticsearch",
+       "index": "dataset_ny-alesund",
+       "type": "dataset",
+       "log": true,
+       "params": {
+           "facets": "topics,links.rel",
+           "size-facet": 100
+       }
+   },
+   "verbs": [
+       "DELETE",
+       "GET",
+       "HEAD",
+       "OPTIONS",
+       "POST",
+       "PUT"
+   ],
+   "formats": {
+       "json": "application/json"
+   },
+   "accepts": {
+       "application/json": "http://api.npolar.no/schema/dataset-1"
+   },
+   "category": [
+       "CouchDB",
+       "Lucene",
+       "REST",
+       "Search",
+       "JSON",
+       "JSON Schema",
+       "HTTP"
+   ],
+   "lifecycle": "production",
+   "run": "Npolar::Api::Json",
+   "open": true,
+   "middleware": [
+       [
+           "::Rack::Gouncer",
+           {
+               "url": "https://api.npolar.no:8950",
+               "open": true,
+               "system": "https://api.npolar.no/dataset/ny-alesund"
+           }
+       ]
+   ],
+   "updated": "2015-12-02T12:05:32Z",
+   "updated_by": "conrad.helgeland@npolar.no",
+   "created_by": "ruben",
+   "created": "2015-06-11T10:03:44Z"
+}
