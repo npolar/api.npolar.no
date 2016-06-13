@@ -306,9 +306,15 @@
             "description": "Web address (URI) of the attached file",
             "format": "uri"
           },
-          "filename": {
+          "href": {
             "type": "string",
-            "description": "File name"
+            "description": "Web address (URI) of the attached file",
+            "format": "uri"
+          },
+          "thumb_href": {
+            "type": "string",
+            "description": "Web address (URI) of the attached file thumbnail",
+            "format": "uri"
           },
           "type": {
             "type": "string",
