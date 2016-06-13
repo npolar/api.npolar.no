@@ -306,11 +306,6 @@
             "description": "Web address (URI) of the attached file",
             "format": "uri"
           },
-          "href": {
-            "type": "string",
-            "description": "Web address (URI) of the attached file",
-            "format": "uri"
-          },
           "thumb_href": {
             "type": "string",
             "description": "Web address (URI) of the attached file thumbnail",
@@ -327,10 +322,6 @@
           "hash": {
             "type": "string",
             "description": "MD5 included"
-          },
-          "thumbnail":{
-             "type": "string",
-              "enum": ["yes","no"]
           },
           "photographer": {
            "description": "name of photographer",
