@@ -194,102 +194,40 @@
       "description": "comment about species observation",
       "type": "string"
     },
-    "excelfile": {
-      "description": "Uploaded excel file",
-      "type": "object",
-      "properties": {
-        "uri": {
-          "type": "string",
-          "description": "URI to the file location",
-         "format": "uri"
-        },
-        "filename": {
-          "type": "string",
-          "description": "Original file name (and extension if applicable)"
-        },
-        "filesize": {
-          "type": "integer",
-          "description": "File size in bytes"
-        },
-        "mimetype": {
-           "type": "string"
-        },
-        "other_info": {
-          "description": "other info f.ex from the old database",
-          "type": "string"
-        },
-        "timestamp": {
-          "description": "excel file gets a timestamp to ensure uniqueness on disk",
-          "type": "string"
-        }
-      }
-    },
-    "expedition": {
-      "title": "expedition",
-      "description": "expedition connected with the observation",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "name": {
+    "name": {
           "description": "name of expedition",
           "type": "string"
-        },
-        "contact_info": {
+    },
+    "contact_info": {
           "description": "address, additional email etc",
           "type": "string"
-        },
-        "organisation": {
+    },
+    "organisation": {
           "description": "organization arranging expedition",
           "type": "string"
-        },
-        "platform": {
+    },
+    "platform": {
           "description": "name of boat, plane or other craft",
           "type": "string"
-        },
-        "platform_comment": {
+    },
+    "platform_comment": {
           "description": "comment about platform",
           "type": "string"
-        },
-        "start_date": {
+    },
+    "start_date": {
           "description": "expedition start date",
           "type": "string",
           "format": "date-time"
-        },
-        "end_date": {
+    },
+    "end_date": {
           "description": "expedition end date",
           "type": "string",
           "format": "date-time"
-        },
-        "other_info": {
+    },
+    "other_info": {
           "description": "additional information f.ex from the old database",
           "type": "string"
-        },
-        "expedition_db": {
-          "description": "link to the data.npolar.no expedition database if NPI platform",
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "rel": {
-              "type": "string"
-            },
-            "href": {
-              "type": "string",
-              "format": "uri"
-            },
-            "hreflang": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "title": {
-              "type": [
-                "string",
-                "null"
-              ]
-            }
-          }
-        }
+    }
       }
     },
     "_attachments": {
