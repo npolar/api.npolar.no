@@ -228,7 +228,6 @@
           "description": "additional information f.ex from the old database",
           "type": "string"
     }
-      }
     },
     "_attachments": {
            "type":"object"
@@ -301,5 +300,4 @@
     "_deleted": {
       "type": "boolean"
     }
-  }
 }
