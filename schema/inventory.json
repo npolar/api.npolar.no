@@ -127,7 +127,7 @@
     "heliport":{
             "type": "boolean"
     },
-    "troll_cargo_site":{
+    "sledeneset_cargo_site":{
             "type": "boolean"
     },
     "site_containers":{
@@ -201,7 +201,7 @@
           },
           "place": {
              "type": ["string","null"],
-             "enum":[ "none","troll","tor", "bouvet", "shelfTraverse"]
+             "enum":[ "none", "troll", "troll_airstrip", "tor", "bouvet", "shelfTraverse"]
           },
           "@placename": {
              "type": "string"
