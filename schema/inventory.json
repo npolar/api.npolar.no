@@ -386,6 +386,7 @@
                     "publication",
                     "datacentre",
                     "parent",
+                    "child",
                     "data",
                     "track",
                     "expedition"
@@ -448,6 +449,9 @@
             "no"
           ],
          "default": "no"
+        },
+        "comment":{
+          "type": "string"
         },
           "created": {
             "description": "Footprint entry was published",
