@@ -201,19 +201,11 @@
           },
           "place": {
              "type": ["string","null"],
-             "enum":[ "none", "troll", "troll_airstrip", "tor", "bouvet", "shelfTraverse"]
+             "enum":[ "none", "troll", "troll_airstrip", "tor", "bouvet", "shelf_traverse"]
           },
-          "@placename": {
-             "type": "string"
-          },
-          "comment": {
+           "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
             "type": "string"
-          },
-           "@loc_country": {
-            "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
-            "type":"string",
-            "pattern": "^(([A-Z]|[a-z]){2})$"
           },
            "hemisphere": {
             "description": "Hemisphere: N or S",
