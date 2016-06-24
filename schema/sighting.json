@@ -95,7 +95,11 @@
         "globicephala melas",
         "balaenoptera borealis",
         "physeter macrocephalus",
-        "lagenorhynchus albirostris"
+        "lagenorhynchus albirostris",
+        "whale",
+        "seal",
+        "polar bear den",
+        "other species"
       ],
       "type": "string"
     },
