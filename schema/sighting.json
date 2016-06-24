@@ -224,6 +224,7 @@
           "description": "name of boat, plane or other craft",
           "type": "string",
           "enum": [
+          "unknown",
         "ship",
         "boat",
         "plane",
