@@ -64,7 +64,7 @@
         "minimum": -180.0,
         "maximum": 180.0
     },
-    "placename": {
+    "@placename": {
         "description": "Location description",
         "type": "string"
     },
@@ -208,7 +208,7 @@
       "description": "comment about species observation",
       "type": "string"
     },
-    "name": {
+    "title": {
           "description": "name of expedition",
           "type": "string"
     },
