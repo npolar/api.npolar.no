@@ -52,25 +52,35 @@
       "type": "string",
       "format": "date-time"
     },
-    "locality": {
-      "description": "Location description",
-      "type": "string"
-    },
-    "location_comment": {
-      "description": "Corresponds with the form's location ",
-      "type": "string"
-    },
-    "latitude": {
-      "type": "number",
-      "minimum": -90,
-      "maximum": 90,
-      "description": "Location longitude in WGS-84"
-    },
-    "longitude": {
-      "type": "number",
-      "minimum": -180,
-      "maximum": 180,
-      "description": "Location longitude in WGS-84"
+     "locations": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "north": {
+            "description": "Location latitude in WGS-84",
+            "type": "number",
+            "minimum": -90.0,
+            "maximum": 90.0
+          },
+          "east": {
+            "description": "Location longitude in WGS-84",
+            "type": "number",
+            "minimum": -180.0,
+            "maximum": 180.0
+          },
+          "placename": {
+            "description": "Location description",
+            "type": "string"
+          },
+          "placename_comment": {
+            "description": "Location comment",
+            "type": "string"
+          }
+          }
+          }
     },
     "species": {
       "description": "Species name in latin - small letters",
@@ -117,7 +127,13 @@
     },
     "polar_bear_condition": {
       "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-      "type": "string"
+      "type": "string",
+       "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"]
     },
     "polar_bear_den": {
       "descrition": "Observations of a polar bear den",
@@ -129,7 +145,11 @@
     },
     "bear_cubs": {
       "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-      "type": "string"
+      "type": "string",
+       "enum": [
+        "0",
+        "1",
+        "2"]
     },
     "unidentified": {
       "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
