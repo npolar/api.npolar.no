@@ -218,7 +218,19 @@
     },
     "platform": {
           "description": "name of boat, plane or other craft",
-          "type": "string"
+          "type": "string",
+          "enum": [
+        "ship",
+        "boat",
+        "plane",
+        "helicopter",
+        "ski",
+        "kayak",
+        "on foot",
+        "scooter",
+        "snowcat",
+        "other"
+      ]
     },
     "platform_comment": {
           "description": "comment about platform",
