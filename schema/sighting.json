@@ -52,35 +52,25 @@
       "type": "string",
       "format": "date-time"
     },
-     "locations": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "north": {
-            "description": "Location latitude in WGS-84",
-            "type": "number",
-            "minimum": -90.0,
-            "maximum": 90.0
-          },
-          "east": {
-            "description": "Location longitude in WGS-84",
-            "type": "number",
-            "minimum": -180.0,
-            "maximum": 180.0
-          },
-          "placename": {
-            "description": "Location description",
-            "type": "string"
-          },
-          "placename_comment": {
-            "description": "Location comment",
-            "type": "string"
-          }
-          }
-          }
+    "latitude": {
+        "description": "Location latitude in WGS-84",
+        "type": "number",
+        "minimum": -90.0,
+        "maximum": 90.0
+    },
+    "longitude": {
+        "description": "Location longitude in WGS-84",
+        "type": "number",
+        "minimum": -180.0,
+        "maximum": 180.0
+    },
+    "placename": {
+        "description": "Location description",
+        "type": "string"
+    },
+    "placename_comment": {
+        "description": "Location comment",
+        "type": "string"
     },
     "species": {
       "description": "Species name in latin - small letters",
