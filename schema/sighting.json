@@ -237,7 +237,6 @@
     "other_info": {
           "description": "additional information f.ex from the old database",
           "type": "string"
-    }
     },
     "_attachments": {
            "type":"object"
@@ -283,6 +282,7 @@
            "type": "string"
          }
         }
+      }
       },
     "created": {
       "description": "Document was published",
