@@ -283,8 +283,7 @@
            "type": "string"
          }
         }
-      }
-    },
+      },
     "created": {
       "description": "Document was published",
       "type": "string",
@@ -310,4 +309,5 @@
     "_deleted": {
       "type": "boolean"
     }
+  }
 }
