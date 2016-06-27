@@ -258,6 +258,66 @@
           "description": "additional information f.ex from the old database",
           "type": "string"
     },
+     "links": {
+        "description": "A list of links relevant to this particular expedition. This should include links to the project(s) and expedition track(s). After completion it can also include links to datasets collected or updated during this expedition.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+              "type": "string",
+              "format": "uri"
+            },
+            "hreflang": {
+              "description": "Language of the linked resource",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "rel": {
+              "description": "Resource relation to the current document",
+              "type": "string",
+              "enum": [
+                "expedition",
+                "child",
+                "dataset",
+                "parent",
+                "program",
+                "project",
+                "publication",
+                "reference",
+                "related",
+                "stationInformation",
+                "track"
+              ]
+            },
+            "title": {
+              "description": "Title of linked resource",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": {
+              "description": "Mime-type of linked resource",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "length": {
+              "description": "Content Length of the linked resource",
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        },
+        "additionalItems": false
+},
     "_attachments": {
            "type":"object"
 },
