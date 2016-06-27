@@ -131,7 +131,10 @@
     },
     "polar_bear_den": {
       "descrition": "Observations of a polar bear den",
-      "type": "string"
+      "type": "string",
+      "enum":[
+      "yes",
+      "no"]
     },
     "cub_calf_pup": {
       "description": "Juvenile - Cub,calf,pup,bear cubs",
