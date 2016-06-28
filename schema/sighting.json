@@ -264,38 +264,43 @@
               "type": "string",
               "format": "uri"
             },
-    "_attachments": {
-           "type":"object"
-},
- "attachments": {
-      "type": "array",
-      "description": "",
-      "items": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string",
-            "description": "Web address (URI) of the attached file",
-            "format": "uri"
-          },
-          "thumb_href": {
+             "files": {
+             "type": "array",
+             "description": "",
+             "items": {
+                  "type": "object",
+                  "properties": {
+              "uri": {
+                "type": "string",
+                "description": "Web address (URI) of the attached file",
+                "format": "uri"
+              },
+              "thumb_href": {
             "type": "string",
             "description": "Web address (URI) of the attached file thumbnail",
             "format": "uri"
           },
-          "type": {
-            "type": "string",
-            "description": "Media type"
-          },
-          "length":{
-            "type": "integer",
-            "description": "File size in bytes"
-          },
-          "hash": {
-            "type": "string",
-            "description": "MD5 included"
-          },
-          "photographer": {
+              "filename": {
+                "type": "string",
+                "description": "File name"
+              },
+              "title": {
+                "type": "string",
+                "description": "Title"
+              },
+              "length": {
+                "type": "integer",
+                "description": "File size in bytes"
+              },
+              "type": {
+                "type": "string",
+                "description": "Media type (e.g. image/png)"
+              },
+              "hash": {
+                "type": "string",
+                "description": ""
+              },
+              "photographer": {
            "description": "name of photographer",
            "type": "string"
           },
@@ -307,9 +312,9 @@
            "decription": "comments from older databases or whatever needed",
            "type": "string"
          }
-        }
-      }
-      },
+            }
+          }
+    },
     "created": {
       "description": "Document was published",
       "type": "string",
