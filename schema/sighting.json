@@ -270,7 +270,7 @@
              "items": {
                   "type": "object",
                   "properties": {
-              "href": {
+              "uri": {
                 "type": "string",
                 "description": "Web address (URI) of the attached file",
                 "format": "uri"
