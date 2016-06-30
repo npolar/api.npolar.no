@@ -21,17 +21,17 @@
       "airstrip",
       "building",
       "contamination",
-      "culturalHeritage",
-      "dataCollection",
+      "cultural heritage",
+      "datacollection",
       "depot",
-      "fieldHut",
-      "helioport",
+      "fieldhut",
+      "heliport",
       "instrument",
-      "operationalActivity",
+      "operational activity",
       "other",
-      "researchMonitoring",
-      "researchProject",
-      "researchStation"]
+      "monitoring",
+      "research",
+      "research station"]
     },
     "title":{
       "type": "string"
@@ -204,7 +204,7 @@
           },
           "place": {
              "type": ["string","null"],
-             "enum":[ "none", "troll", "troll_airstrip", "tor", "bouvet", "shelf_traverse"]
+             "enum":[ "none", "Troll", "Troll airstrip", "Tor", "Bouvet Island", "traverse"]
           },
            "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
@@ -280,7 +280,7 @@
                   "properties": {
                      "fuel_tank": {
                         "type": ["string", "null"],
-                        "enum": [ "none","11Cubic","24Cubic", "drums"]
+                        "enum": [ "none","11 cubic","24 cubic", "drums"]
                       },
                       "quantity": {
                         "type": "string"
@@ -318,14 +318,14 @@
                             "unknown",
                             "metals",
                             "glass",
-                            "mixedWaste",
-                            "paperCardBoard",
+                            "mixed waste",
+                            "paper/card board",
                             "plastics",
-                            "foodWaste",
-                            "sewage",
-                            "oilContaminated",
-                            "sewageCompost",
-                            "chemicalsBatteries"
+                            "food waste",
+                            "sewage, urine (non-composted)",
+                            "oil contaminated items",
+                            "sewage compost",
+                            "chemicals and batteries"
                           ] },
                       "quantity": {
                         "type": "string"
@@ -334,18 +334,18 @@
                       "type": ["string","null"],
                       "enum": [
                           "unknown",
-                          "high",
-                          "medium",
-                          "low",
-                          "assessmentRequired",
-                          "postRemediationMonitoring"
+                          "high priority for remediation",
+                          "medium priority for remediation",
+                          "low priority for remediation",
+                          "further assessment required",
+                          "post-remediation monitoring"
                         ]
                       },
                       "impact_likelihood": {
                           "type": ["string","null"],
                           "enum": [
                              "unknown",
-                             "almostCertain",
+                             "almost certain",
                              "likely",
                              "possible",
                              "unlikely"]
@@ -354,17 +354,17 @@
                           "type": ["string","null"],
                           "enum": [
                             "unknown",
-                            "local",
-                            "immediate ",
-                            "widespread"
+                            "local <100m²",
+                            "immediate 100m – 1km²",
+                            "widespread >1km²"
                        ]},
                       "impact_temporal":{
                           "type": ["string","null"],
                           "enum": [
                             "unknown",
-                            "short",
-                            "intermediate",
-                            "long"
+                            "short term <1 year",
+                            "intermediate 1-10 years",
+                            "long term > 10 years"
                        ]},
                        "impact_documented":{
                            "type": "boolean"
