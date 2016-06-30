@@ -230,7 +230,7 @@
           "address": {
               "type": "string"
           },
-          "zip": {
+          "postal_code": {
               "type": "string"
           },
           "city": {
