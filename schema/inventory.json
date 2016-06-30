@@ -42,19 +42,13 @@
      "ephorte_no": {
       "type": "string"
     },
-    "release_dates": {
-            "type": "object",
-            "additionalProperties": false,
-              "properties": {
-                "start_date": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "end_date": {
-                  "type": "string",
-                  "format": "date-time"
-                }
-            }
+    "start_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_date": {
+       "type": "string",
+       "format": "date-time"
     },
     "intended_removal_date": {
       "type": "string",
