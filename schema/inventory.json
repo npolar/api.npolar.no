@@ -24,7 +24,7 @@
       "cultural heritage",
       "datacollection",
       "depot",
-      "fieldhut",
+      "field hut",
       "heliport",
       "instrument",
       "operational activity",
@@ -442,7 +442,7 @@
             "yes",
             "no"
           ],
-         "default": "no"
+         "default": "yes"
         },
         "comment":{
           "type": "string"
