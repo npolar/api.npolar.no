@@ -28,7 +28,7 @@
       "building",
       "contamination",
       "cultural heritage",
-      "datacollection",
+      "data collection",
       "depot",
       "field hut",
       "heliport",
@@ -287,7 +287,7 @@
                       },
                       "content": {
                         "type": ["string","null"],
-                        "enum": ["none","diesel","jetA-1","benzin"]
+                        "enum": ["none","diesel","jet A-1","benzin"]
                       },
                       "drum_full":{
                           "type": "boolean"
@@ -345,10 +345,10 @@
                           "type": ["string","null"],
                           "enum": [
                              "unknown",
-                             "almost certain",
-                             "likely",
-                             "possible",
-                             "unlikely"]
+                             "almost certainly harmful",
+                             "probably harmful",
+                             "perhaps harmful",
+                             "little danger"]
                       },
                       "impact_spatial": {
                           "type": ["string","null"],
