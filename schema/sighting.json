@@ -31,7 +31,7 @@
             "yes",
             "no"
           ],
-         "default": "no"
+         "default": "yes"
     },
     "rights": {
       "description": "The licence web address, f.ex. licenced under Creative Commons",
@@ -64,44 +64,44 @@
         "minimum": -180.0,
         "maximum": 180.0
     },
-    "@placename": {
+    "placename": {
         "description": "Location description",
         "type": "string"
     },
     "placename_comment": {
-        "description": "Location comment",
-        "type": "string"
+        "type": "string",
+        "description": "Location comment"
     },
     "species": {
+      "type": "string",
       "description": "Species name in latin - small letters",
       "enum": [
-        "unknown",
-        "ursus maritimus",
-        "odobenus rosmarus",
-        "erignathus barbatus",
-        "phoca vitulina",
-        "phoca groenlandica",
-        "cystophora cristata",
-        "pusa hispida",
-        "delphinapterus leucas",
-        "balaenoptera musculus",
-        "balaena mysticetus",
-        "balaenoptera acutorostrata",
-        "balaenoptera physalus",
-        "megaptera novaeangliae",
-        "orcinus orca",
-        "monodon monoceros",
-        "hyperoodon ampullatus",
-        "globicephala melas",
-        "balaenoptera borealis",
-        "physeter macrocephalus",
-        "lagenorhynchus albirostris",
-        "whale",
-        "seal",
-        "polar bear den",
-        "other species"
-      ],
-      "type": "string"
+          "unknown",
+          "ursus maritimus",
+          "odobenus rosmarus",
+          "erignathus barbatus",
+          "phoca vitulina",
+          "phoca groenlandica",
+          "cystophora cristata",
+          "pusa hispida",
+          "delphinapterus leucas",
+          "balaenoptera musculus",
+          "balaena mysticetus",
+          "balaenoptera acutorostrata",
+          "balaenoptera physalus",
+          "megaptera novaeangliae",
+          "orcinus orca",
+          "monodon monoceros",
+          "hyperoodon ampullatus",
+          "globicephala melas",
+          "balaenoptera borealis",
+          "physeter macrocephalus",
+          "lagenorhynchus albirostris",
+          "whale",
+          "seal",
+          "polar bear den",
+          "other species"
+      ]
     },
     "adult_m": {
       "description": "Number of male adults",
@@ -123,19 +123,21 @@
       "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
       "type": ["string"],
        "enum": [
-        "not applicable/unknown",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"]
+          "not applicable/unknown",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+          ]
     },
     "polar_bear_den": {
       "descrition": "Observations of a polar bear den",
       "type": "string",
       "enum":[
-      "no",
-      "yes"]
+          "no",
+          "yes"
+          ]
     },
     "cub_calf_pup": {
       "description": "Juvenile - Cub,calf,pup,bear cubs",
@@ -145,10 +147,11 @@
       "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
       "type": ["string"],
        "enum": [
-        "not applicable/unknown",
-        "0",
-        "1",
-        "2"]
+          "not applicable/unknown",
+          "0",
+          "1",
+          "2"
+          ]
     },
     "unidentified": {
       "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
@@ -157,61 +160,62 @@
     "dead_alive": {
       "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
       "enum": [
-        "unknown",
-        "alive",
-        "dead"
-      ]
+            "unknown",
+            "alive",
+            "dead"
+       ]
     },
     "total": {
       "description": "Total number of individuals",
       "type": "string"
     },
     "habitat": {
-      "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
-      "enum": [
-        "unknown",
-        "land",
-        "water",
-        "ice"
-      ]
+        "type": "string",
+        "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
+        "enum": [
+            "unknown",
+            "land",
+            "water",
+            "ice"
+        ]
     },
     "occurrence_remarks": {
-      "description": "Comments about the observation - found dead f.ex.",
-      "type": "string"
+          "description": "Comments about the observation - found dead f.ex.",
+          "type": "string"
     },
     "info_comment": {
-      "description": "Info about the record- f.ex from old database",
-      "type": "string"
+          "description": "Info about the record- f.ex from old database",
+          "type": "string"
     },
     "recorded_by": {
-      "description": "Observer’s login or id ",
-      "type": "string"
+          "description": "Observer’s login or id ",
+          "type": "string"
     },
     "recorded_by_name": {
-      "description": "Name of observer",
-      "type": "string"
+          "description": "Name of observer",
+          "type": "string"
     },
     "identified_by": {
-      "description": "Name of person who identified the species -Observer's id ",
-      "type": "string"
+          "description": "Name of person who identified the species -Observer's id ",
+          "type": "string"
     },
     "date_identified": {
-      "description": "Date of observation or species correction ",
-      "type": "string",
-      "format": "date-time"
+          "description": "Date of observation or species correction ",
+          "type": "string",
+          "format": "date-time"
     },
     "editor_assessment": {
-      "description": "red-yellow-green-unknown. unknown is set for new observations.",
-      "enum": [
-        "unknown",
-        "green",
-        "yellow",
-        "red"
-      ]
+          "description": "red-yellow-green-unknown. unknown is set for new observations.",
+          "enum": [
+              "unknown",
+              "green",
+              "yellow",
+              "red"
+          ]
     },
     "editor_comment": {
-      "description": "comment about species observation",
-      "type": "string"
+          "description": "comment about species observation",
+          "type": "string"
     },
     "title": {
           "description": "name of expedition",
@@ -229,18 +233,18 @@
           "description": "name of boat, plane or other craft",
           "type": "string",
           "enum": [
-          "unknown",
-        "ship",
-        "boat",
-        "plane",
-        "helicopter",
-        "ski",
-        "kayak",
-        "on foot",
-        "scooter",
-        "snowcat",
-        "other"
-      ]
+              "unknown",
+              "ship",
+              "boat",
+              "plane",
+              "helicopter",
+              "ski",
+              "kayak",
+              "on foot",
+              "scooter",
+              "snowcat",
+              "other"
+              ]
     },
     "platform_comment": {
           "description": "comment about platform",
@@ -260,62 +264,57 @@
           "description": "additional information f.ex from the old database",
           "type": "string"
     },
-
-            "href": {
-              "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
-              "type": "string",
-              "format": "uri"
-            },
-             "files": {
-             "type": "array",
-             "description": "",
-             "items": {
+    "href": {
+          "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+          "type": "string",
+          "format": "uri"
+    },
+    "files": {
+            "type": "array",
+            "description": "",
+            "items": {
                   "type": "object",
                   "properties": {
-              "uri": {
-                "type": "string",
-                "description": "Web address (URI) of the attached file",
-                "format": "uri"
-              },
-              "thumb_href": {
-            "type": "string",
-            "description": "Web address (URI) of the attached file thumbnail",
-            "format": "uri"
-          },
-              "filename": {
-                "type": "string",
-                "description": "File name"
-              },
-              "title": {
-                "type": "string",
-                "description": "Title"
-              },
-              "length": {
-                "type": "integer",
-                "description": "File size in bytes"
-              },
-              "type": {
-                "type": "string",
-                "description": "Media type (e.g. image/png)"
-              },
-              "hash": {
-                "type": "string",
-                "description": ""
-              },
-              "photographer": {
-           "description": "name of photographer",
-           "type": "string"
-          },
-          "comments": {
-           "description": "comments related to picture",
-           "type": "string"
-          },
-          "other_info": {
-           "decription": "comments from older databases or whatever needed",
-           "type": "string"
-         }
+                      "uri": {
+                          "type": "string",
+                          "description": "Web address (URI) of the attached file",
+                          "format": "uri"
+                      },
+                      "thumb_href": {
+                          "type": "string",
+                          "description": "Web address (URI) of the attached file thumbnail",
+                          "format": "uri"
+                      },
+                      "filename": {
+                          "type": "string",
+                          "description": "File name"
+                      },
+                      "length": {
+                          "type": "integer",
+                          "description": "File size in bytes"
+                      },
+                      "type": {
+                          "type": "string",
+                          "description": "Media type (e.g. image/png)"
+                      },
+                      "hash": {
+                          "type": "string",
+                          "description": ""
+                      },
+                      "photographer": {
+                          "type": "string",
+                          "description": "name of photographer"
+                      },
+                      "comments": {
+                          "description": "comments related to picture",
+                          "type": "string"
+                      },
+                      "other_info": {
+                          "decription": "comments from older databases or whatever needed",
+                          "type": "string"
+                      }
+                  }
             }
-          }
     },
     "created": {
       "description": "Document was published",
