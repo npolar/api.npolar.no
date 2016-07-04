@@ -121,8 +121,9 @@
     },
     "polar_bear_condition": {
       "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-      "type": ["string", "null"],
+      "type": ["string"],
        "enum": [
+        "not applicable/unknown",
         "1",
         "2",
         "3",
@@ -142,8 +143,9 @@
     },
     "bear_cubs": {
       "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-      "type": ["string","null"],
+      "type": ["string"],
        "enum": [
+        "not applicable/unknown",
         "0",
         "1",
         "2"]
