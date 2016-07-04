@@ -64,7 +64,7 @@
         "minimum": -180.0,
         "maximum": 180.0
     },
-    "placename": {
+    "@placename": {
         "description": "Location description",
         "type": "string"
     },
