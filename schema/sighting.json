@@ -97,11 +97,17 @@
           "balaenoptera borealis",
           "physeter macrocephalus",
           "lagenorhynchus albirostris",
-          "whale",
-          "seal",
+          "phocoena phocoena",
+          "lagenorhynchus acutus",
+          "cetacea",
+          "pinnipedia",
           "polar bear den",
           "other species"
       ]
+    },
+    "other_species": {
+      "type": "string",
+      "description": "other species add text"
     },
     "adult_m": {
       "description": "Number of male adults",
