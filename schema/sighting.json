@@ -73,10 +73,9 @@
         "description": "Location comment"
     },
     "species": {
-      "type": "string",
+      "type": ["string", "null"]
       "description": "Species name in latin - small letters",
       "enum": [
-          "unknown",
           "ursus maritimus",
           "odobenus rosmarus",
           "erignathus barbatus",
@@ -129,7 +128,6 @@
       "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
       "type": ["string"],
        "enum": [
-          "not applicable/unknown",
           "1",
           "2",
           "3",
@@ -286,7 +284,7 @@
                           "description": "Web address (URI) of the attached file",
                           "format": "uri"
                       },
-                      "thumb_href": {
+                       "thumb_href": {
                           "type": "string",
                           "description": "Web address (URI) of the attached file thumbnail",
                           "format": "uri"
