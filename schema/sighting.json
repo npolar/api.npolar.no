@@ -73,7 +73,7 @@
         "description": "Location comment"
     },
     "species": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
       "description": "Species name in latin - small letters",
       "enum": [
           "ursus maritimus",
