@@ -265,7 +265,7 @@ module Metadata
           Data_Center_URL: npolar.homepage,
           Personnel: {
               Role: "Data Center Contact",
-              Last_Name: npolar.name,
+              Last_Name: "Norwegian Polar Data",
               Email: "data[*]npolar.no"
           }
         }
