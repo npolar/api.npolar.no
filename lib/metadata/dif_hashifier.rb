@@ -230,40 +230,43 @@ module Metadata
               data_center_contacts << {
                 Role: "Data Center Contact",
                 Last_Name: "Norwegian Polar Data",
-                Email: "data[*]npolar.no" }
-            end
+                Email: "data[*]npolar.no"
+              }
           else
-            data_set_id = nil
             # Data Center Contact is required. When no point of contact is listed use the
-            # GCMD short name as last name and list it as data center contact
+            # GCMD name of the organisation as last name and list it as data center contact.
             data_center_contacts = [Hashie::Mash.new({
-              "Role" => "Data Center Contact",
-              "Last_Name" => o.name
+              Role: "Data Center Contact",
+              Last_Name:  o.name
             })]
           end
 
         end
 
-        { "Data_Center_Name" => {
-          "Short_Name" => o.gcmd_short_name,
-          "Long_Name" => o.name
+        {
+          Data_Center_Name: {
+            Short_Name: o.gcmd_short_name,
+            Long_Name: o.name
           },
-          "Data_Center_URL" => data_center_url,
-          "Data_Set_ID" => data_set_id,
-          "Personnel" => data_center_contacts
+          Data_Center_URL: data_center_url,
+          Data_Set_ID: data_set_id,
+          Personnel: data_center_contacts
         }
       }
 
       if data_center.none?
         npolar = Metadata::Dataset.npolar(["pointOfContact"])
-        data_center << { "Data_Center_Name" => {
-          "Short_Name" => npolar.gcmd_short_name,
-          "Long_Name" => npolar.name
+        data_center << {
+          Data_Center_Name: {
+          Short_Name: npolar.gcmd_short_name,
+          Long_Name: npolar.name
           },
-          "Data_Center_URL" => npolar.homepage,
-          "Personnel" => { Role: "Data Center Contact",
-              Last_Name: "Norwegian Polar Data",
-              Email: "data[*]npolar.no" }
+          Data_Center_URL: npolar.homepage,
+          Personnel: {
+              Role: "Data Center Contact",
+              Last_Name: npolar.name,
+              Email: "data[*]npolar.no"
+          }
         }
       end
       data_center
