@@ -482,9 +482,9 @@ module Metadata
 	  # If there is an organisation with the originator role return that else
 	  # respond with Norwegian Polar Institute
       if originators.length > 0
-        return "#{originators.first.name} (#{originators.first.gcmd_short_name})"
+        return originators.first.name
       else
-        return "Norwegian Polar Institute (NO/NPI)"
+        return "Norwegian Polar Institute"
       end
     end
 
