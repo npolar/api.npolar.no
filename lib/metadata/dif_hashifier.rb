@@ -226,13 +226,11 @@ module Metadata
 
           if data_center_url =~ /npolar.no/ or o.id == "npolar.no"
             data_set_id = id
-            if o.roles.include? "pointOfContact"
-              data_center_contacts << {
-                Role: "Data Center Contact",
-                Last_Name: "Norwegian Polar Data",
-                Email: "data[*]npolar.no"
-              }
-            end
+            data_center_contacts << {
+              Role: "Data Center Contact",
+              Last_Name: "Norwegian Polar Data",
+              Email: "data[*]npolar.no"
+            }
           else
             # Data Center Contact is required. When no point of contact is listed use the
             # GCMD name of the organisation as last name and list it as data center contact.
