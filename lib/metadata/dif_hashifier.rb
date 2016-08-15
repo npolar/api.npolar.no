@@ -232,6 +232,7 @@ module Metadata
                 Last_Name: "Norwegian Polar Data",
                 Email: "data[*]npolar.no"
               }
+            end
           else
             # Data Center Contact is required. When no point of contact is listed use the
             # GCMD name of the organisation as last name and list it as data center contact.
@@ -240,7 +241,6 @@ module Metadata
               Last_Name:  o.name
             })]
           end
-
         end
 
         {
