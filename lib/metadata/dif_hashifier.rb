@@ -480,7 +480,9 @@ module Metadata
       originators = (organisations||[]).select {|o| o.roles.include? "originator"}
 
 	  # If there is an organisation with the originator role return that else
-	  # respond with Norwegian Polar Institute
+	  # respond with Norwegian Polar Institute. This is required by the NMDC
+      # metadata harvester. They made originating_center a required field in
+      # contrast to the default DIF implementation where it is just recommended.
       if originators.length > 0
         return originators.first.name
       else
