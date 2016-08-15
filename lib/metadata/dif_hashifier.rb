@@ -254,6 +254,7 @@ module Metadata
         }
       }
 
+      # If no data center was found set NP as the data center
       if data_center.none?
         npolar = Metadata::Dataset.npolar(["pointOfContact"])
         data_center << {
@@ -269,8 +270,8 @@ module Metadata
           }
         }
       end
-      data_center
 
+      data_center
     end
 
     # Data_Set_Language = inferred from link[rel=data].hreflang
