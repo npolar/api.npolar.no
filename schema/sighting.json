@@ -284,7 +284,7 @@
                           "description": "Web address (URI) of the attached file",
                           "format": "uri"
                       },
-                       "thumb_href": {
+                       "thumb_uri": {
                           "type": "string",
                           "description": "Web address (URI) of the attached file thumbnail",
                           "format": "uri"
@@ -304,6 +304,10 @@
                       "hash": {
                           "type": "string",
                           "description": ""
+                      },
+                      "thumb_hash":{
+                          "type": "string",
+                          "description":"hash for thumbnail image"
                       },
                       "photographer": {
                           "type": "string",
