@@ -33,39 +33,30 @@
       "description": "The licence web address, f.ex. licenced under Creative Commons",
       "type": "string"
     },
-    "files": {
-            "type": "array",
-            "description": "",
-            "items": {
-                  "type": "object",
-                  "properties": {
-                      "uri": {
-                          "type": "string",
-                          "description": "Web address (URI) of the attached file",
-                          "format": "uri"
-                      },
-                      "filename": {
-                          "type": "string",
-                          "description": "File name"
-                      },
-                      "length": {
-                          "type": "integer",
-                          "description": "File size in bytes"
-                      },
-                      "type": {
-                          "type": "string",
-                          "description": "Media type (e.g. image/png)"
-                      },
-                      "hash": {
-                          "type": "string",
-                          "description": ""
-                      },
-                      "comments": {
-                          "description": "comments related to excel file",
-                          "type": "string"
-                      }
-                  }
-            }
+    "uri": {
+      "type": "string",
+      "description": "Web address (URI) of the attached file",
+      "format": "uri"
+    },
+    "filename": {
+      "type": "string",
+      "description": "File name"
+    },
+    "length": {
+      "type": "integer",
+      "description": "File size in bytes"
+    },
+    "type": {
+      "type": "string",
+      "description": "Media type (e.g. image/png)"
+    },
+    "hash": {
+      "type": "string",
+      "description": "MD5 hash of file name"
+    },
+    "comments": {
+      "description": "comments related to excel file",
+      "type": "string"
     },
     "created": {
       "description": "Document was published",
