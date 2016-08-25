@@ -222,7 +222,7 @@
           "type": "string"
     },
     "title": {
-          "description": "name of expedition",
+          "description": "name of expedition or vessel name",
           "type": "string"
     },
     "contact_info": {
@@ -268,10 +268,22 @@
           "description": "additional information f.ex from the old database",
           "type": "string"
     },
-    "href": {
-          "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+    "excel_uri": {
+          "description": "Uri to excel form",
           "type": "string",
           "format": "uri"
+    },
+    "excel_filename": {
+          "description": "excel filename",
+          "type": "string"
+    },
+    "excel_type":{
+          "description": "excel type",
+          "type": "string"
+    },
+    "excel_length":{
+          "description": "excel file length",
+          "type": "string"
     },
     "files": {
             "type": "array",
