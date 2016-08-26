@@ -49,7 +49,7 @@
     },
     "event_date": {
       "description": "The date-time or interval during which the event occurred. Encoding scheme: iso8601, UTC",
-      "type": "string",
+      "type": ["string", "null"],
       "format": "date-time"
     },
     "latitude": {
@@ -66,7 +66,7 @@
     },
     "@placename": {
         "description": "Location description",
-        "type": "string"
+        "type": ["string", "null"]
     },
     "placename_comment": {
         "type": "string",
@@ -126,7 +126,7 @@
     },
     "polar_bear_condition": {
       "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-      "type": ["string"],
+       "type":["string", "null"],
        "enum": [
           "1",
           "2",
@@ -148,8 +148,8 @@
       "type": "string"
     },
     "bear_cubs": {
+      "type": ["string", "null"],
       "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-      "type": ["string"],
        "enum": [
           "not applicable/unknown",
           "0",
@@ -163,6 +163,7 @@
     },
     "dead_alive": {
       "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+       "type": ["string", "null"],
       "enum": [
             "unknown",
             "alive",
@@ -174,7 +175,7 @@
       "type": "string"
     },
     "habitat": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
         "enum": [
             "unknown",
@@ -205,11 +206,12 @@
     },
     "date_identified": {
           "description": "Date of observation or species correction ",
-          "type": "string",
+          "type":  ["string", "null"],
           "format": "date-time"
     },
     "editor_assessment": {
           "description": "red-yellow-green-unknown. unknown is set for new observations.",
+          "type": ["string", "null"],
           "enum": [
               "unknown",
               "green",
@@ -256,12 +258,12 @@
     },
     "start_date": {
           "description": "expedition start date",
-          "type": "string",
+          "type": ["string", "null"],
           "format": "date-time"
     },
     "end_date": {
           "description": "expedition end date",
-          "type": "string",
+          "type": ["string", "null"],
           "format": "date-time"
     },
     "other_info": {
