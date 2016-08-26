@@ -6,7 +6,7 @@
 "summary": "Excel sheets from sightings administered by the Norwegian Polar Data Centre",
 "storage": "Couch",
 "database": "sighting-excel",
-"model": "Sighting-excel",
+"model": "SightingExcel",
 "verbs": [
 "DELETE",
 "GET",
