@@ -1,6 +1,6 @@
 require "hashie"
 
-class Sighting < Hashie::Mash
+class SightingExcel < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
   def schemas
