@@ -50,7 +50,7 @@
         "properties": {
           "type": {
             "description": "The type of platform being used.",
-            "type": "string",
+            "type": ["string","null"],
             "enum": [
               "ship",
               "boat",
@@ -83,18 +83,23 @@
               "properties": {
                  "research_type": {
                     "description": "Research or not",
-                    "type": "string",
+                    "type": ["string","null"],
                     "enum": ["research", "monitoring", "mapping", "outreachVIP", "education","logisticOperations", "other"]
                   },
                   "research_title": {
                     "description": "Title research project",
                     "type": "string"
                   },
+                  "href": {
+                     "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
+                     "type": "string",
+                    "format": "uri"
+                  },
                   "topics": {
                     "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
                     "type": "array",
                     "items": {
-                      "type": "string",
+                      "type": ["string", "null"],
                       "enum": [
                         "acidification",
                         "atmosphere",
@@ -169,7 +174,7 @@
             "type": "array",
             "items": {
               "description": "role",
-              "type": "string",
+              "type": ["string","null"],
               "enum": [
                 "expeditionCruiseLeader",
                 "fieldAssistant",
@@ -240,24 +245,24 @@
            "type":"object"
 },
  "attachments": {
-			"type": "array",
-			"description": "",
-			"items": {
-				"type": "object",
-				"properties": {
-					"href": {
-						"type": "string",
-						"description": "Web address (URI) of the attached file",
-						"format": "uri"
-					},
-					"filename": {
-						"type": "string",
-						"description": "File name"
-					},
-					"type": {
-						"type": "string",
-						"description": "Media type"
-					},
+      "type": "array",
+      "description": "",
+      "items": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "Web address (URI) of the attached file",
+            "format": "uri"
+          },
+          "filename": {
+            "type": "string",
+            "description": "File name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Media type"
+          },
           "length":{
             "type": "integer",
             "description": "File size in bytes"
@@ -266,9 +271,9 @@
             "type": "string",
             "description": ""
           }
-				}
-			}
-		},
+        }
+      }
+    },
       "links": {
         "description": "A list of links relevant to this particular expedition. This should include links to the project(s) and expedition track(s). After completion it can also include links to datasets collected or updated during this expedition.",
         "type": "array",
@@ -292,9 +297,7 @@
               "type": "string",
               "enum": [
                 "expedition",
-                "child",
                 "dataset",
-                "parent",
                 "program",
                 "project",
                 "publication",
@@ -460,14 +463,14 @@
             },
             "predefined_area": {
               "description": "The official placename of the location.",
-              "type": "string",
+              "type": ["string", "null"],
                "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvet", "troll", "tor",
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
             },
             "hemisphere": {
               "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
-              "type": "string",
+              "type": ["string","null"],
               "enum":["N","S"]
             },
             "country": {
@@ -543,4 +546,4 @@
         "type": "string"
       }
     }
-  }
+}
