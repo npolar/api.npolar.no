@@ -355,7 +355,7 @@
                           "enum": [
                             "unknown",
                             "local <100m²",
-                            "immediate 100m – 1km²",
+                            "immediate 100m² – 1km²",
                             "widespread >1km²"
                        ]},
                       "impact_temporal":{
