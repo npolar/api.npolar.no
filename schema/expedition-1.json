@@ -74,19 +74,19 @@
          "additionalProperties": false,
         "additionalItems": false
     },
-    "research": {
+    "activity": {
             "type": "array",
             "additionalItems": false,
             "items": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                 "research_type": {
+                 "activity_type": {
                     "description": "Research or not",
                     "type": ["string","null"],
                     "enum": ["research", "monitoring", "mapping", "outreachVIP", "education","logisticOperations", "other"]
                   },
-                  "research_title": {
+                  "activity_title": {
                     "description": "Title research project",
                     "type": "string"
                   },
@@ -332,7 +332,7 @@
         },
         "additionalItems": false
       },
-     "activity": {
+     "travels": {
         "description": "list of activite periods for the platform",
         "type": "array",
         "items": {
