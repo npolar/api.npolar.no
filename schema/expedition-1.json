@@ -332,16 +332,12 @@
         },
         "additionalItems": false
       },
-       "activity": {
+     "activity": {
         "description": "list of activite periods for the platform",
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "departure_return_dates": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
                 "start_date": {
                   "type": "string",
                   "format": "date-time"
@@ -349,8 +345,6 @@
                 "end_date": {
                   "type": "string",
                   "format": "date-time"
-                }
-              }
             },
             "departure_placename": {
               "description": "The placename of the departure location. cruise - list C38, TOS,LYB, Cape Town most important",
@@ -367,23 +361,17 @@
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
             },
-            "departure_gps": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "latitude": {
+            "departure_latitude": {
                   "description": "Location north.",
                   "type": "number",
                   "minimum": -90,
                   "maximum": 90
                 },
-                "longitude": {
+            "departure_longitude": {
                   "description": "Location east.",
                   "type": "number",
                   "minimum": -180,
                   "maximum": 180
-                }
-              }
             },
             "return_placename": {
               "description": "The placename of the return location.",
@@ -400,25 +388,19 @@
               "description": "The country of the return location.",
               "type": "string"
             },
-            "return_gps": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "latitude": {
+            "return_latitude": {
                   "description": "latitude",
                   "type": "number"
-                },
-                "longitude": {
+            },
+            "return_longitude": {
                   "description": "longitude",
                   "type": "number"
-                }
-              }
-            }
-          },
+          }
+         },
           "additionalProperties": false
         },
         "additionalItems": false
-      },
+     },
       "locations": {
         "description": "A list of one or more Geographic locations relevant to the expedition.",
         "type": "array",
@@ -478,19 +460,13 @@
               "type": "string",
               "pattern": "^(([A-Z]|[a-z]){2})$"
             },
-            "location_dates": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "start_date": {
+            "start_date": {
                   "type": "string",
                   "format": "date-time"
-                },
-                "end_date": {
+             },
+            "end_date": {
                   "type": "string",
                   "format": "date-time"
-                }
-              }
             }
           }
         },
