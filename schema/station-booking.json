@@ -182,15 +182,10 @@
           "rel": {
             "type": "string",
              "enum": [
-             "related",
              "program",
-             "parent",
-             "child",
              "dataset",
-             "publication",
              "expedition",
-             "project",
-             "track"
+             "project"
             ]
           },
           "href": {
@@ -210,6 +205,12 @@
         "required": ["rel", "href"]
       }
     },
+     "draft": {
+      "enum": [
+        "yes",
+        "no"
+      ]
+     },
     "comment": {
       "type": "string"
     },
