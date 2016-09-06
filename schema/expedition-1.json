@@ -61,13 +61,13 @@
             "description": "The type of platform being used.",
             "type": ["string","null"],
             "enum": [
-              "ship",
-              "boat",
-              "helicopter",
-              "snowmobile",
-              "snowTractor",
-              "hovercraft",
-              "other"
+             "ship",
+             "boat",
+             "helicopter",
+             "snowmobile",
+             "snow tractor",
+             "hovercraft",
+             "other"
             ]
           },
           "name": {
@@ -93,7 +93,14 @@
                  "activity_type": {
                     "description": "Research or not",
                     "type": ["string","null"],
-                    "enum": ["research", "monitoring", "mapping", "outreachVIP", "education","logisticOperations", "other"]
+                    "enum": [
+                    "research",
+              "monitoring",
+              "mapping",
+              "outreach VIP",
+              "education",
+              "logistic operations",
+              "other"]
                   },
                   "activity_title": {
                     "description": "Title research project",
@@ -185,13 +192,13 @@
               "description": "role",
               "type": ["string","null"],
               "enum": [
-                "expeditionCruiseLeader",
-                "fieldAssistant",
-                "guest",
-                "investigator",
-                "other",
-                "principalInvestigator",
-                "technitian"
+              "expedition/cruise leader",
+              "field assistant",
+              "guest",
+              "investigator",
+              "other",
+              "principal investigator",
+              "technitian"
               ]
             },
             "additionalItems": false
@@ -296,14 +303,14 @@
               "description": "Resource relation to the current document",
               "type": "string",
               "enum": [
-                "expedition",
-                "dataset",
-                "program",
-                "project",
-                "reference",
-                "related",
-                "researchStationInformation",
-                "track"
+              "expedition",
+                    "dataset",
+                    "program",
+                    "project",
+                    "reference",
+                    "related",
+                    "research station information",
+                    "track"
               ]
             },
             "title": {
@@ -356,8 +363,25 @@
             "departure_predefined_area": {
               "description": "The official placename of the location.",
               "type": ["string","null"],
-              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvetIsland", "troll", "tor",
-                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
+              "enum": [
+                    "Sverdrup research station",
+                    "Zeppelin reserach station",
+                    "Ny-Ålesund",
+                    "Svalbard",
+                    "Frans Josefs land",
+                    "Bjørnøya",
+                    "Jan Mayen",
+                    "Hopen",
+                    "Bouvet Island",
+                    "Troll",
+                    "Tor",
+                    "Dronning Maud Land",
+                    "Antarctica",
+                    "Fram Strait",
+                    "Arctic Ocean",
+                    "Barents Sea North",
+                    "Southern Ocean",
+                    "other"
               ]
             },
             "departure_latitude": {
@@ -379,8 +403,25 @@
             "return_predefined_area": {
               "description": "The official placename of the location.",
               "type": ["string","null"],
-              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvetIsland", "troll", "tor",
-                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
+              "enum": [
+                    "Sverdrup research station",
+                    "Zeppelin reserach station",
+                    "Ny-Ålesund",
+                    "Svalbard",
+                    "Frans Josefs land",
+                    "Bjørnøya",
+                    "Jan Mayen",
+                    "Hopen",
+                    "Bouvet Island",
+                    "Troll",
+                    "Tor",
+                    "Dronning Maud Land",
+                    "Antarctica",
+                    "Fram Strait",
+                    "Arctic Ocean",
+                    "Barents Sea North",
+                    "Southern Ocean",
+                    "other"
               ]
             },
             "return_country": {
@@ -445,8 +486,25 @@
             "predefined_area": {
               "description": "The official placename of the location.",
               "type": ["string", "null"],
-               "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvet", "troll", "tor",
-                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
+               "enum": [
+                    "Sverdrup research station",
+                    "Zeppelin reserach station",
+                    "Ny-Ålesund",
+                    "Svalbard",
+                    "Frans Josefs land",
+                    "Bjørnøya",
+                    "Jan Mayen",
+                    "Hopen",
+                    "Bouvet Island",
+                    "Troll",
+                    "Tor",
+                    "Dronning Maud Land",
+                    "Antarctica",
+                    "Fram Strait",
+                    "Arctic Ocean",
+                    "Barents Sea North",
+                    "Southern Ocean",
+                    "other"
               ]
             },
             "hemisphere": {
