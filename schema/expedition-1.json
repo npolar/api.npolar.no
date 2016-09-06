@@ -435,8 +435,8 @@
               "description": "field camp or not.",
               "type": "boolean"
             },
-            "operation_area": {
-              "description": "operation area or not.",
+            "operational_area": {
+              "description": "area of operation.",
               "type": "boolean"
             },
             "placename": {
