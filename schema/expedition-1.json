@@ -41,7 +41,16 @@
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
-     "platforms": {
+    "tags": {
+        "description": "A list of one or more free text keywords describing the cruise.",
+        "type": "array",
+        "items": {
+          "description": "A free text keyword",
+          "type": "string"
+        },
+        "additionalItems": false
+    },
+    "platforms": {
       "description": "A list containing the vehicles/vessels used for the expedition.",
       "type": "array",
       "items": {
@@ -71,7 +80,7 @@
         }
       }
     },
-         "additionalProperties": false,
+        "additionalProperties": false,
         "additionalItems": false
     },
     "activity": {
@@ -232,15 +241,6 @@
         "type": "string",
         "enum": ["unrestricted"]
       },
-      "tags": {
-        "description": "A list of one or more free text keywords describing the cruise.",
-        "type": "array",
-        "items": {
-          "description": "A free text keyword",
-          "type": "string"
-        },
-        "additionalItems": false
-      },
 "_attachments": {
            "type":"object"
 },
@@ -356,7 +356,7 @@
             },
             "departure_predefined_area": {
               "description": "The official placename of the location.",
-              "type": "string",
+              "type": ["string","null"],
               "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvetIsland", "troll", "tor",
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
@@ -379,7 +379,7 @@
             },
             "return_predefined_area": {
               "description": "The official placename of the location.",
-              "type": "string",
+              "type": ["string","null"],
               "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvetIsland", "troll", "tor",
                 "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
               ]
