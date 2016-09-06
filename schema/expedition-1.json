@@ -300,10 +300,9 @@
                 "dataset",
                 "program",
                 "project",
-                "publication",
                 "reference",
                 "related",
-                "stationInformation",
+                "researchStationInformation",
                 "track"
               ]
             },
