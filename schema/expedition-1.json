@@ -181,7 +181,7 @@
               "null"
             ]
           },
-          "country": {
+          "@country": {
             "description": "Organisation's country",
             "type": "string"
           },
@@ -348,15 +348,15 @@
                   "type": "string",
                   "format": "date-time"
                 },
-                "end_date": {
+             "end_date": {
                   "type": "string",
                   "format": "date-time"
             },
-            "departure_placename": {
+            "@departure_placename": {
               "description": "The placename of the departure location. cruise - list C38, TOS,LYB, Cape Town most important",
               "type": "string"
             },
-            "departure_country": {
+            "@departure_country": {
               "description": "The country of the departure location.",
               "type": "string"
             },
@@ -396,7 +396,7 @@
                   "minimum": -180,
                   "maximum": 180
             },
-            "return_placename": {
+            "@return_placename": {
               "description": "The placename of the return location.",
               "type": "string"
             },
@@ -424,7 +424,7 @@
                     "other"
               ]
             },
-            "return_country": {
+            "@return_country": {
               "description": "The country of the return location.",
               "type": "string"
             },
@@ -479,7 +479,7 @@
               "description": "area of operation.",
               "type": "boolean"
             },
-            "placename": {
+            "@placename": {
               "description": "The official placename of the location.",
               "type": "string"
             },
@@ -512,7 +512,7 @@
               "type": ["string","null"],
               "enum":["N","S"]
             },
-            "country": {
+            "@country": {
               "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
               "type": "string",
               "pattern": "^(([A-Z]|[a-z]){2})$"
