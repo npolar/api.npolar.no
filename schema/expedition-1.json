@@ -479,7 +479,7 @@
               "description": "area of operation.",
               "type": "boolean"
             },
-            "@placename": {
+            "placename": {
               "description": "The official placename of the location.",
               "type": "string"
             },
@@ -512,7 +512,7 @@
               "type": ["string","null"],
               "enum":["N","S"]
             },
-            "@placename_country": {
+            "country": {
               "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
               "type": "string",
               "pattern": "^(([A-Z]|[a-z]){2})$"
