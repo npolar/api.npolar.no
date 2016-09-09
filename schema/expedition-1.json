@@ -512,7 +512,7 @@
               "type": ["string","null"],
               "enum":["N","S"]
             },
-            "@country": {
+            "@placename_country": {
               "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
               "type": "string",
               "pattern": "^(([A-Z]|[a-z]){2})$"
