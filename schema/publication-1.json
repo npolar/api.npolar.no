@@ -373,7 +373,7 @@
 								"owner",
 								"resourceProvider",
 								"funder"
-								
+
 							]
 						}
 					}
@@ -412,10 +412,22 @@
 				"type": "object",
 				"additionalProperties": false,
 				"properties": {
-					"rel": {
-						"type": "string",
-						"default": "related"
-					},
+					 "rel": { "type": "string",
+          				"enum":[
+          				    "related",
+            				"service",
+				            "dataset",
+				            "project",
+				            "publication",
+				            "datacentre",
+				            "research station information",
+				            "reference",
+				            "doi",
+				            "data",
+				            "parent",
+				            "child"
+				           ],
+				          "default": "dataset"},
 					"href": {
 						"type": "string",
 						"format": "uri"
