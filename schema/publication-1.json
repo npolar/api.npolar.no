@@ -426,8 +426,7 @@
 				            "data",
 				            "parent",
 				            "child"
-				           ],
-				          "default": "dataset"},
+				           ]},
 					"href": {
 						"type": "string",
 						"format": "uri"
