@@ -303,6 +303,7 @@
               "description": "Resource relation to the current document",
               "type": "string",
               "enum": [
+              "",
               "expedition",
                     "dataset",
                     "program",
@@ -442,7 +443,7 @@
         "additionalItems": false
      },
       "locations": {
-        "description": "A list of one or more Geographic locations relevant to the expedition.",
+        "description": "A list of one or more geographic locations relevant to the expedition.",
         "type": "array",
         "items": {
           "type": "object",
