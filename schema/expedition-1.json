@@ -301,7 +301,7 @@
             },
             "rel": {
               "description": "Resource relation to the current document",
-              "type": "string",
+              "type": ["string","null"],
               "enum": [
               "",
               "expedition",
@@ -366,7 +366,7 @@
               "type": ["string","null"],
               "enum": [
                     "Sverdrup research station",
-                    "Zeppelin reserach station",
+                    "Zeppelin research station",
                     "Ny-Ålesund",
                     "Svalbard",
                     "Frans Josefs land",
