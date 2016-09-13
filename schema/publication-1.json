@@ -412,21 +412,10 @@
 				"type": "object",
 				"additionalProperties": false,
 				"properties": {
-					 "rel": { "type": "string",
-          				"enum":[
-          				    "related",
-            				"service",
-				            "dataset",
-				            "project",
-				            "publication",
-				            "datacentre",
-				            "research station information",
-				            "reference",
-				            "doi",
-				            "data",
-				            "parent",
-				            "child"
-				           ]},
+					"rel": {
+						"type": "string",
+						"default": "related"
+					},
 					"href": {
 						"type": "string",
 						"format": "uri"
