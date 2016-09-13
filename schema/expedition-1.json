@@ -61,6 +61,7 @@
             "description": "The type of platform being used.",
             "type": ["string","null"],
             "enum": [
+             "",
              "ship",
              "boat",
              "helicopter",
@@ -94,13 +95,14 @@
                     "description": "Research or not",
                     "type": ["string","null"],
                     "enum": [
+                    "",
                     "research",
-              "monitoring",
-              "mapping",
-              "outreach VIP",
-              "education",
-              "logistic operations",
-              "other"]
+                    "monitoring",
+                    "mapping",
+                    "outreach VIP",
+                    "education",
+                    "logistic operations",
+                    "other"]
                   },
                   "activity_title": {
                     "description": "Title research project",
@@ -117,6 +119,7 @@
                     "items": {
                       "type": ["string", "null"],
                       "enum": [
+                        "",
                         "acidification",
                         "atmosphere",
                         "biology",
@@ -192,6 +195,7 @@
               "description": "role",
               "type": ["string","null"],
               "enum": [
+              "",
               "expedition/cruise leader",
               "field assistant",
               "guest",
@@ -365,6 +369,7 @@
               "description": "The official placename of the location.",
               "type": ["string","null"],
               "enum": [
+                    "",
                     "Sverdrup research station",
                     "Zeppelin research station",
                     "Ny-Ålesund",
@@ -409,6 +414,7 @@
               "description": "The official placename of the location.",
               "type": ["string","null"],
               "enum": [
+                    "",
                     "Sverdrup research station",
                     "Zeppelin reserach station",
                     "Ny-Ålesund",
@@ -488,6 +494,7 @@
               "description": "The official placename of the location.",
               "type": ["string", "null"],
                "enum": [
+                    "",
                     "Sverdrup research station",
                     "Zeppelin reserach station",
                     "Ny-Ålesund",
