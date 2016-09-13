@@ -400,7 +400,11 @@
               "description": "The placename of the return location.",
               "type": "string"
             },
-            "return_predefined_area": {
+            "@return_country": {
+              "description": "The country of the return location.",
+              "type": "string"
+            },
+              "return_predefined_area": {
               "description": "The official placename of the location.",
               "type": ["string","null"],
               "enum": [
@@ -423,10 +427,6 @@
                     "Southern Ocean",
                     "other"
               ]
-            },
-            "@return_country": {
-              "description": "The country of the return location.",
-              "type": "string"
             },
             "return_latitude": {
                   "description": "latitude",
