@@ -407,8 +407,7 @@
                 "type": {
                   "type": "string"
                 }
-              },
-              "required": ["rel", "href"]
+              }
             }
           },
          "files": {
