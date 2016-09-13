@@ -381,7 +381,9 @@
               "properties": {
                 "rel": {
                   "type": "string",
-                  "enum": [ "service",
+                  "enum": [
+                    "",
+                    "service",
                     "project",
                     "publication",
                     "datacentre",
