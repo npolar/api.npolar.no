@@ -192,9 +192,8 @@
             "type": "array",
             "items": {
               "description": "role",
-              "type": ["string","null"],
+              "type": ["string"],
               "enum": [
-              "",
               "expedition/cruise leader",
               "field assistant",
               "guest",
@@ -312,7 +311,7 @@
                     "program",
                     "project",
                     "reference",
-                    "related",
+                      "related",
                     "research station information",
                     "track"
               ]
