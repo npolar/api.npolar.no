@@ -145,7 +145,6 @@
       "descrition": "Observations of a polar bear den",
       "type": ["string","null"],
       "enum":[
-          "",
           "no",
           "yes"
           ]
