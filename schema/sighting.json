@@ -137,8 +137,9 @@
     },
     "polar_bear_den": {
       "descrition": "Observations of a polar bear den",
-      "type": "string",
+      "type": ["string","null"],
       "enum":[
+          "",
           "no",
           "yes"
           ]
