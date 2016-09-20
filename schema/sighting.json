@@ -234,9 +234,9 @@
     },
     "platform": {
           "description": "name of boat, plane or other craft",
-          "type": "string",
+          "type": ["string","null"],
           "enum": [
-              "unknown",
+              "",
               "ship",
               "boat",
               "plane",
