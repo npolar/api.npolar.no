@@ -72,6 +72,10 @@
         "type": "string",
         "description": "Location comment"
     },
+    "kingdom":{
+       "type":"string",
+       "enum":["animalia"]
+    },
     "species": {
       "type": ["string", "null"],
       "description": "Species name in latin - small letters",
