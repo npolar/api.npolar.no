@@ -133,6 +133,7 @@
       "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
        "type":["string", "null"],
        "enum": [
+          "not applicable/unknown",
           "1",
           "2",
           "3",
