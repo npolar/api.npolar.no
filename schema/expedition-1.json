@@ -34,8 +34,7 @@
     "type": {
       "description": "Defines what the nature of the expedition is. Options are cruise, field work, traverse, etc...",
       "type": "string",
-      "enum": ["cruise",
-        "fieldwork"]
+      "enum": ["cruise","fieldwork"]
     },
     "summary": {
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
@@ -89,6 +88,10 @@
     },
     "@return_placename": {
         "description": "The placename of the return location.",
+        "type": "string"
+    },
+    "research_program": {
+        "description": "The connected research programme (if applicable)",
         "type": "string"
     },
     "activity": {
