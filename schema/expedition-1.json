@@ -7,7 +7,9 @@
   "required":[
      "type",
      "code",
-     "summary"
+     "summary",
+     "locations.placename",
+     "locations.predefined_area"
   ],
   "properties": {
     "id": {
@@ -352,11 +354,6 @@
                     "other"
               ]
             },
-            "hemisphere": {
-              "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
-              "type": ["string","null"],
-              "enum":["N","S"]
-            },
             "start_date": {
                   "type": "string",
                   "format": "date-time"
@@ -364,6 +361,11 @@
             "end_date": {
                   "type": "string",
                   "format": "date-time"
+            },
+            "hemisphere": {
+              "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
+              "type": ["string","null"],
+              "enum":["N","S"]
             }
           }
         },
