@@ -7,9 +7,7 @@
   "required":[
      "type",
      "code",
-     "summary",
-     "locations.placename",
-     "locations.predefined_area"
+     "summary"
   ],
   "properties": {
     "id": {
@@ -367,7 +365,8 @@
               "type": ["string","null"],
               "enum":["N","S"]
             }
-          }
+          },
+           "required": ["placename", "predefined_area"]
         },
         "additionalItems": false
       },
