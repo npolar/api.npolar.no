@@ -169,6 +169,7 @@
       "description": "List of people participating on the cruise.",
       "type": "array",
       "items": {
+        "required": ["first_name", "last_name", "organisation","@country","roles"],
         "type": "object",
         "properties": {
           "id": {
@@ -217,10 +218,8 @@
           },
           "expedition_dates": {
             "type": "array",
-            "additionalItems": false,
             "items": {
               "type": "object",
-              "additionalProperties": false,
               "properties": {
                 "start_date": {
                   "type": "string",
@@ -231,16 +230,10 @@
                   "format": "date-time"
                 }
               }
+
             }
           }
-          },
-          "required": [
-            "first_name",
-            "last_name",
-            "roles",
-            "organisation",
-            "@country"
-          ]
+          }
         },
         "additionalItems": false
       },
