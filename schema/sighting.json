@@ -340,6 +340,10 @@
                   }
             }
     },
+    "comment": {
+        "description": "A free text comment for anything of importance updating the information.",
+        "type": "string"
+    },
     "created": {
       "description": "Document was published",
       "type": "string",
