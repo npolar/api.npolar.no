@@ -26,9 +26,10 @@
     "lang": {
       "type": "string"
     },
-    "base": {
+    "doi": {
       "type": "string",
-      "description": "Base URI (for relative links)"
+      "description": "Registered DOI for this dataset",
+      "pattern": "^10[.]"
     },
     "citation": {
       "description": "Citation string (in use only if the data publisher is not the Norwegian Polar Institue)",
