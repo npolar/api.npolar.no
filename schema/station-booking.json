@@ -109,13 +109,78 @@
           "id": {
             "type": "string"
           },
-          "number_of_persons": {
-            "type": "string"
-          },
           "first_name": {
             "type": "string"
           },
           "last_name": {
+            "type": "string"
+          },
+           "organisation": {
+            "type": "string"
+          },
+          "@country": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "type":"string",
+               "enum": [
+                "carpenter",
+                "chef",
+                "electrician",
+                "expeditionLeader",
+                "fieldAssistant",
+                "guest",
+                "principalInvestigator",
+                "investigator",
+                "it",
+                "ksat",
+                "mecanic",
+                "mecanicTaf",
+                "other",
+                "physician",
+                "pilot",
+                "researchTechnitian",
+                "security",
+                "serviceTechnitian",
+                "transport"
+            ]
+          }
+          },
+          "station_dates": {
+          "type": "array",
+          "additionalItems": false,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "start_date": {
+                "type": "string",
+                "format": "date-time"
+            },
+              "end_date": {
+                "type": "string",
+                "format": "date-time"
+            }
+            }
+          }
+         }
+        }
+      }
+    },
+     "groups": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "number_of_persons": {
             "type": "string"
           },
            "organisation": {
