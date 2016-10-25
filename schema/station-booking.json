@@ -66,6 +66,7 @@
       "items": {
         "type": "string",
         "enum": [
+          "not applicable",
           "acidification",
           "atmosphere",
           "biology",
