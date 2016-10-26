@@ -268,6 +268,10 @@
           "type": ["string", "null"],
           "format": "date-time"
     },
+      "href": {
+            "type": "string",
+            "format": "uri"
+    },
     "other_info": {
           "description": "additional information f.ex from the old database",
           "type": "string"
