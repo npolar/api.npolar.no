@@ -1,0 +1,26 @@
+{
+      "sighting-excel": {
+      "properties":
+        {
+        "id":{"type":"string","index":"not_analyzed"},
+        "schema":{"type":"string","index":"not_analyzed"},
+        "collection":{"type":"string","index":"not_analyzed"},
+        "base": {"type":"string","index":"not_analyzed"},
+        "language":{"type":"string","index":"not_analyzed"},
+        "rights": {"type":"string","index":"not_analyzed"},
+        "uri": {"type":"string","index":"not_analyzed"},
+        "filename": {"type":"string","index":"not_analyzed"},
+        "length": {"type":"integer","index":"not_analyzed"},
+        "type": {"type":"string","index":"not_analyzed"},
+        "hash":{"type":"string","index":"not_analyzed"},
+        "comments":{"type":"string","index":"not_analyzed"},
+        "created":{"type":"date","index":"not_analyzed"},
+        "updated":{"type":"date","index":"not_analyzed"},
+        "created_by":{"type":"string","index":"not_analyzed"},
+        "updated_by":{"type":"string","index":"not_analyzed"},
+        "_id":{"type":"string","index":"not_analyzed"},
+        "_rev":{"type":"string","index":"not_analyzed"},
+        "_deleted":{"type":"boolean","index":"not_analyzed"}
+}
+}
+}

@@ -362,7 +362,14 @@
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": true
+            "properties":{
+                "Location_Category": {"type":"string"},
+                "Location_Type": {"type":"string"},
+                "Location_Subregion1": {"type":"string"},
+                "Location_Subregion2": {"type":"string"},
+                "Location_Subregion3": {"type":"string"},
+                "Detailed_location": {"type":"string"}
+            }
           }
         },
         "projects": {

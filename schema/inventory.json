@@ -14,6 +14,12 @@
     "schema": {
       "type": "string"
     },
+     "lang": {
+      "description": "The language of the document.",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
     "category": {
       "type": "string",
       "enum": [
@@ -21,17 +27,17 @@
       "airstrip",
       "building",
       "contamination",
-      "culturalHeritage",
-      "dataCollection",
+      "cultural heritage",
+      "data collection",
       "depot",
-      "fieldHut",
-      "helioport",
+      "field hut",
+      "heliport",
       "instrument",
-      "operationalActivity",
+      "operational activity",
       "other",
-      "researchMonitoring",
-      "researchProject",
-      "researchStation"]
+      "monitoring",
+      "research",
+      "research station"]
     },
     "title":{
       "type": "string"
@@ -42,19 +48,13 @@
      "ephorte_no": {
       "type": "string"
     },
-    "release_dates": {
-            "type": "object",
-            "additionalProperties": false,
-              "properties": {
-                "start_date": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "end_date": {
-                  "type": "string",
-                  "format": "date-time"
-                }
-            }
+    "start_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_date": {
+       "type": "string",
+       "format": "date-time"
     },
     "intended_removal_date": {
       "type": "string",
@@ -127,7 +127,7 @@
     "heliport":{
             "type": "boolean"
     },
-    "troll_cargo_site":{
+    "sledeneset_cargo_site":{
             "type": "boolean"
     },
     "site_containers":{
@@ -138,94 +138,6 @@
     },
     "stationary_quantity": {
             "type": "string"
-    },
-    "fuel_consumption_generators_troll": {
-            "type": "number"
-    },
-     "hours_local_vehicle_NPI_troll": {
-            "type": "number"
-    },
-     "hours_local_vehicle_external": {
-            "type": "number"
-    },
-     "hours_alternative_energy_troll": {
-            "type": "number"
-    },
-     "liters_waste_water_discharged_troll": {
-            "type": "number"
-    },
-     "ice_buildup_area_discharge_point_troll": {
-            "type": "number"
-    },
-    "ice_buildup_depth_discharge_point_troll": {
-            "type": "number"
-    },
-    "number_fuel_spills_troll": {
-            "type": "number"
-    },
-    "liter_fuel_spills_troll": {
-            "type": "string",
-             "enum": [
-      "<200",
-      "200-1000",
-      ">1000"]
-    },
-    "liter_fuel_recovered_troll": {
-            "type": "string"
-    },
-    "troll_airfield_flights": {
-            "type": "number"
-    },
-    "hours_clearing_troll_airfield": {
-            "type": "number"
-    },
-     "liter_fuel_spilled_troll_airfield": {
-            "type": "number"
-    },
-    "population_snow_petrel_troll": {
-            "type": "number"
-    },
-    "breeding_success_snow_petrel_percentage_troll": {
-            "type": "number"
-    },
-    "new_structures_troll": {
-            "type": "number"
-    },
-    "meters_new_road_pipes_troll": {
-            "type": "number"
-    },
-    "amount_waste_removed_troll": {
-            "type": "number"
-    },
-    "helicopter_landings_bouvet": {
-            "type": "number"
-    },
-    "fuel_gas_chemicals_comsumed_bouvet": {
-            "type": "number"
-    },
-    "noise_helicopter_landing_tor": {
-            "type": "number"
-    },
-    "noise_vehicle_usage_tor": {
-            "type": "number"
-    },
-    "liters_propane_gas_tor": {
-            "type": "number"
-    },
-    "population_antarctic_petrel_tor": {
-            "type": "number"
-    },
-    "hours_vehicle_per_month_shelf":{
-            "type": "number"
-    },
-    "liters_hydraulic_oil_recovered_shelf":{
-            "type": "number"
-    },
-     "liters_fuel_spilled_recovered_shelf":{
-            "type": "number"
-    },
-     "liters_consumed_transport_shelf":{
-            "type": "number"
     },
     "people": {
       "type": "array",
@@ -287,18 +199,18 @@
             "minimum": -180.0,
             "maximum": 180.0
           },
-          "place": {
-             "type": ["string","null"],
-             "enum":[ "none","troll","tor", "bouvet", "shelfTraverse"]
-          },
-          "@placename": {
+           "placename": {
              "type": "string"
           },
-          "comment": {
+          "place": {
+             "type": ["string","null"],
+             "enum":[ "none", "Troll", "Troll airstrip", "Tor", "Bouvet Island", "traverse"]
+          },
+           "comment": {
             "description": "Description f.ex. about location, monitoring fields, field camps etc",
             "type": "string"
           },
-           "@loc_country": {
+           "loc_country": {
             "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), use 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica and 'XZ' = International waters",
             "type":"string",
             "pattern": "^(([A-Z]|[a-z]){2})$"
@@ -324,7 +236,7 @@
           "address": {
               "type": "string"
           },
-          "zip": {
+          "postal_code": {
               "type": "string"
           },
           "city": {
@@ -368,14 +280,14 @@
                   "properties": {
                      "fuel_tank": {
                         "type": ["string", "null"],
-                        "enum": [ "none","11Cubic","24Cubic", "drums"]
+                        "enum": [ "none","11 cubic","24 cubic", "drums"]
                       },
                       "quantity": {
                         "type": "string"
                       },
                       "content": {
                         "type": ["string","null"],
-                        "enum": ["none","diesel","jetA-1","benzin"]
+                        "enum": ["none","diesel","jet A-1","benzin"]
                       },
                       "drum_full":{
                           "type": "boolean"
@@ -406,14 +318,14 @@
                             "unknown",
                             "metals",
                             "glass",
-                            "mixedWaste",
-                            "paperCardBoard",
+                            "mixed waste",
+                            "paper/card board",
                             "plastics",
-                            "foodWaste",
-                            "sewage",
-                            "oilContaminated",
-                            "sewageCompost",
-                            "chemicalsBatteries"
+                            "food waste",
+                            "sewage, urine (non-composted)",
+                            "oil contaminated items",
+                            "sewage compost",
+                            "chemicals and batteries"
                           ] },
                       "quantity": {
                         "type": "string"
@@ -422,37 +334,37 @@
                       "type": ["string","null"],
                       "enum": [
                           "unknown",
-                          "high",
-                          "medium",
-                          "low",
-                          "assessmentRequired",
-                          "postRemediationMonitoring"
+                          "high priority for remediation",
+                          "medium priority for remediation",
+                          "low priority for remediation",
+                          "further assessment required",
+                          "post-remediation monitoring"
                         ]
                       },
                       "impact_likelihood": {
                           "type": ["string","null"],
                           "enum": [
                              "unknown",
-                             "almostCertain",
-                             "likely",
-                             "possible",
-                             "unlikely"]
+                             "almost certainly harmful",
+                             "probably harmful",
+                             "perhaps harmful",
+                             "little danger"]
                       },
                       "impact_spatial": {
                           "type": ["string","null"],
                           "enum": [
                             "unknown",
-                            "local",
-                            "immediate ",
-                            "widespread"
+                            "local <100m²",
+                            "immediate 100m² – 1km²",
+                            "widespread >1km²"
                        ]},
                       "impact_temporal":{
                           "type": ["string","null"],
                           "enum": [
                             "unknown",
-                            "short",
-                            "intermediate",
-                            "long"
+                            "short term <1 year",
+                            "intermediate 1-10 years",
+                            "long term > 10 years"
                        ]},
                        "impact_documented":{
                            "type": "boolean"
@@ -469,11 +381,14 @@
               "properties": {
                 "rel": {
                   "type": "string",
-                  "enum": [ "service",
+                  "enum": [
+                    "",
+                    "service",
                     "project",
                     "publication",
                     "datacentre",
                     "parent",
+                    "child",
                     "data",
                     "track",
                     "expedition"
@@ -492,8 +407,7 @@
                 "type": {
                   "type": "string"
                 }
-              },
-              "required": ["rel", "href"]
+              }
             }
           },
          "files": {
@@ -535,7 +449,10 @@
             "yes",
             "no"
           ],
-         "default": "no"
+         "default": "yes"
+        },
+        "comment":{
+          "type": "string"
         },
           "created": {
             "description": "Footprint entry was published",

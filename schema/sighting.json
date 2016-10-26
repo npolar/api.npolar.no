@@ -31,7 +31,7 @@
             "yes",
             "no"
           ],
-         "default": "no"
+         "default": "yes"
     },
     "rights": {
       "description": "The licence web address, f.ex. licenced under Creative Commons",
@@ -49,55 +49,69 @@
     },
     "event_date": {
       "description": "The date-time or interval during which the event occurred. Encoding scheme: iso8601, UTC",
-      "type": "string",
+      "type": ["string", "null"],
       "format": "date-time"
     },
-    "locality": {
-      "description": "Location description",
-      "type": "string"
-    },
-    "location_comment": {
-      "description": "Corresponds with the form's location ",
-      "type": "string"
-    },
     "latitude": {
-      "type": "number",
-      "minimum": -90,
-      "maximum": 90,
-      "description": "Location longitude in WGS-84"
+        "description": "Location latitude in WGS-84",
+        "type": "number",
+        "minimum": -90.0,
+        "maximum": 90.0
     },
     "longitude": {
-      "type": "number",
-      "minimum": -180,
-      "maximum": 180,
-      "description": "Location longitude in WGS-84"
+        "description": "Location longitude in WGS-84",
+        "type": "number",
+        "minimum": -180.0,
+        "maximum": 180.0
+    },
+    "@placename": {
+        "description": "Location description",
+        "type": ["string", "null"]
+    },
+    "placename_comment": {
+        "type": "string",
+        "description": "Location comment"
+    },
+    "kingdom":{
+       "type":"string",
+       "enum":["animalia"]
     },
     "species": {
+      "type": ["string", "null"],
       "description": "Species name in latin - small letters",
       "enum": [
-        "unknown",
-        "ursus maritimus",
-        "odobenus rosmarus",
-        "erignathus barbatus",
-        "phoca vitulina",
-        "phoca groenlandica",
-        "cystophora cristata",
-        "pusa hispida",
-        "delphinapterus leucas",
-        "balaenoptera musculus",
-        "balaena mysticetus",
-        "balaenoptera acutorostrata",
-        "balaenoptera physalus",
-        "megaptera novaeangliae",
-        "orcinus orca",
-        "monodon monoceros",
-        "hyperoodon ampullatus",
-        "globicephala melas",
-        "balaenoptera borealis",
-        "physeter macrocephalus",
-        "lagenorhynchus albirostris"
-      ],
-      "type": "string"
+          "",
+          "ursus maritimus",
+          "odobenus rosmarus",
+          "erignathus barbatus",
+          "phoca vitulina",
+          "phoca groenlandica",
+          "cystophora cristata",
+          "pusa hispida",
+          "delphinapterus leucas",
+          "balaenoptera musculus",
+          "balaena mysticetus",
+          "balaenoptera acutorostrata",
+          "balaenoptera physalus",
+          "megaptera novaeangliae",
+          "orcinus orca",
+          "monodon monoceros",
+          "hyperoodon ampullatus",
+          "globicephala melas",
+          "balaenoptera borealis",
+          "physeter macrocephalus",
+          "lagenorhynchus albirostris",
+          "phocoena phocoena",
+          "lagenorhynchus acutus",
+          "cetacea",
+          "pinnipedia",
+          "polar bear den",
+          "other species"
+      ]
+    },
+    "other_species": {
+      "type": "string",
+      "description": "other species add text"
     },
     "adult_m": {
       "description": "Number of male adults",
@@ -117,19 +131,37 @@
     },
     "polar_bear_condition": {
       "description": "Describe fat on polar bear. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-      "type": "string"
+       "type":["string", "null"],
+       "enum": [
+          "not applicable/unknown",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+          ]
     },
     "polar_bear_den": {
       "descrition": "Observations of a polar bear den",
-      "type": "string"
+      "type": ["string","null"],
+      "enum":[
+          "no",
+          "yes"
+          ]
     },
     "cub_calf_pup": {
       "description": "Juvenile - Cub,calf,pup,bear cubs",
       "type": "string"
     },
     "bear_cubs": {
+      "type": ["string", "null"],
       "description": "One, two-year old etc. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
-      "type": "string"
+       "enum": [
+          "not applicable/unknown",
+          "0",
+          "1",
+          "2"
+          ]
     },
     "unidentified": {
       "description": "Don't know adult,juvenile, subadult. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
@@ -137,209 +169,184 @@
     },
     "dead_alive": {
       "description": "Found alive or dead. Move to dwc:dynamicProperties or tag dwc:informationWithheld ",
+       "type": ["string", "null"],
       "enum": [
-        "unknown",
-        "alive",
-        "dead"
-      ]
+            "unknown",
+            "alive",
+            "dead"
+       ]
     },
     "total": {
       "description": "Total number of individuals",
       "type": "string"
     },
     "habitat": {
-      "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
-      "enum": [
-        "unknown",
-        "land",
-        "water",
-        "ice"
-      ]
+        "type": ["string", "null"],
+        "description": "Terrestrial habitat, saline water habitat, cold temperature habitat",
+        "enum": [
+            "unknown",
+            "land",
+            "water",
+            "ice"
+        ]
     },
     "occurrence_remarks": {
-      "description": "Comments about the observation - found dead f.ex.",
-      "type": "string"
+          "description": "Comments about the observation - found dead f.ex.",
+          "type": "string"
     },
     "info_comment": {
-      "description": "Info about the record- f.ex from old database",
-      "type": "string"
+          "description": "Info about the record- f.ex from old database",
+          "type": "string"
     },
     "recorded_by": {
-      "description": "Observer’s login or id ",
-      "type": "string"
+          "description": "Observer’s login or id ",
+          "type": "string"
     },
     "recorded_by_name": {
-      "description": "Name of observer",
-      "type": "string"
+          "description": "Name of observer",
+          "type": "string"
     },
     "identified_by": {
-      "description": "Name of person who identified the species -Observer's id ",
-      "type": "string"
+          "description": "Name of person who identified the species -Observer's id ",
+          "type": "string"
     },
     "date_identified": {
-      "description": "Date of observation or species correction ",
-      "type": "string",
-      "format": "date-time"
+          "description": "Date of observation or species correction ",
+          "type":  ["string", "null"],
+          "format": "date-time"
     },
     "editor_assessment": {
-      "description": "red-yellow-green-unknown. unknown is set for new observations.",
-      "enum": [
-        "unknown",
-        "green",
-        "yellow",
-        "red"
-      ]
+          "description": "red-yellow-green-unknown. unknown is set for new observations.",
+          "type": ["string", "null"],
+          "enum": [
+              "unknown",
+              "green",
+              "yellow",
+              "red"
+          ]
     },
     "editor_comment": {
-      "description": "comment about species observation",
-      "type": "string"
+          "description": "comment about species observation",
+          "type": "string"
     },
-    "excelfile": {
-      "description": "Uploaded excel file",
-      "type": "object",
-      "properties": {
-        "uri": {
-          "type": "string",
-          "description": "URI to the file location",
-         "format": "uri"
-        },
-        "filename": {
-          "type": "string",
-          "description": "Original file name (and extension if applicable)"
-        },
-        "filesize": {
-          "type": "integer",
-          "description": "File size in bytes"
-        },
-        "mimetype": {
-           "type": "string"
-        },
-        "other_info": {
-          "description": "other info f.ex from the old database",
-          "type": "string"
-        },
-        "timestamp": {
-          "description": "excel file gets a timestamp to ensure uniqueness on disk",
-          "type": "string"
-        }
-      }
-    },
-    "expedition": {
-      "title": "expedition",
-      "description": "expedition connected with the observation",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "name": {
-          "description": "name of expedition",
-          "type": "string"
-        },
-        "contact_info": {
+    "contact_info": {
           "description": "address, additional email etc",
           "type": "string"
-        },
-        "organisation": {
+    },
+    "organisation": {
           "description": "organization arranging expedition",
           "type": "string"
-        },
-        "platform": {
+    },
+    "platform": {
           "description": "name of boat, plane or other craft",
-          "type": "string"
-        },
-        "platform_comment": {
+          "type": ["string","null"],
+          "enum": [
+              "",
+              "ship",
+              "boat",
+              "plane",
+              "helicopter",
+              "ski",
+              "kayak",
+              "on foot",
+              "scooter",
+              "snowcat",
+              "other"
+              ]
+    },
+    "platform_comment": {
           "description": "comment about platform",
           "type": "string"
-        },
-        "start_date": {
+    },
+    "start_date": {
           "description": "expedition start date",
-          "type": "string",
+          "type": ["string", "null"],
           "format": "date-time"
-        },
-        "end_date": {
+    },
+    "end_date": {
           "description": "expedition end date",
-          "type": "string",
+          "type": ["string", "null"],
           "format": "date-time"
-        },
-        "other_info": {
+    },
+      "href": {
+            "type": "string",
+            "format": "uri"
+    },
+    "other_info": {
           "description": "additional information f.ex from the old database",
           "type": "string"
-        },
-        "expedition_db": {
-          "description": "link to the data.npolar.no expedition database if NPI platform",
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "rel": {
-              "type": "string"
-            },
-            "href": {
-              "type": "string",
-              "format": "uri"
-            },
-            "hreflang": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "title": {
-              "type": [
-                "string",
-                "null"
-              ]
-            }
-          }
-        }
-      }
     },
-    "_attachments": {
-           "type":"object"
-},
- "attachments": {
-      "type": "array",
-      "description": "",
-      "items": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string",
-            "description": "Web address (URI) of the attached file",
-            "format": "uri"
-          },
-          "filename": {
-            "type": "string",
-            "description": "File name"
-          },
-          "type": {
-            "type": "string",
-            "description": "Media type"
-          },
-          "length":{
-            "type": "integer",
-            "description": "File size in bytes"
-          },
-          "hash": {
-            "type": "string",
-            "description": "MD5 included"
-          },
-          "thumbnail":{
-             "type": "string",
-              "enum": ["yes","no"]
-          },
-          "photographer": {
-           "description": "name of photographer",
-           "type": "string"
-          },
-          "comments": {
-           "description": "comments related to picture",
-           "type": "string"
-          },
-          "other_info": {
-           "decription": "comments from older databases or whatever needed",
-           "type": "string"
-         }
-        }
-      }
+    "excel_uri": {
+          "description": "Uri to excel form",
+          "type": "string",
+          "format": "uri"
+    },
+    "excel_filename": {
+          "description": "excel filename",
+          "type": "string"
+    },
+    "excel_type":{
+          "description": "excel type",
+          "type": "string"
+    },
+    "excel_length":{
+          "description": "excel file length",
+          "type": "string"
+    },
+    "files": {
+            "type": "array",
+            "description": "",
+            "items": {
+                  "type": "object",
+                  "properties": {
+                      "uri": {
+                          "type": "string",
+                          "description": "Web address (URI) of the attached file",
+                          "format": "uri"
+                      },
+                       "thumb_uri": {
+                          "type": "string",
+                          "description": "Web address (URI) of the attached file thumbnail",
+                          "format": "uri"
+                      },
+                      "filename": {
+                          "type": "string",
+                          "description": "File name"
+                      },
+                      "length": {
+                          "type": "integer",
+                          "description": "File size in bytes"
+                      },
+                      "type": {
+                          "type": "string",
+                          "description": "Media type (e.g. image/png)"
+                      },
+                      "hash": {
+                          "type": "string",
+                          "description": ""
+                      },
+                      "thumb_hash":{
+                          "type": "string",
+                          "description":"hash for thumbnail image"
+                      },
+                      "photographer": {
+                          "type": "string",
+                          "description": "name of photographer"
+                      },
+                      "comments": {
+                          "description": "comments related to picture",
+                          "type": "string"
+                      },
+                      "other_info": {
+                          "decription": "comments from older databases or whatever needed",
+                          "type": "string"
+                      }
+                  }
+            }
+    },
+    "comment": {
+        "description": "A free text comment for anything of importance updating the information.",
+        "type": "string"
     },
     "created": {
       "description": "Document was published",

@@ -1,9 +1,8 @@
-
-n-booking": {
+{
+  "station-booking": {
     "_all": {"enabled": true,"store": "yes"},
     "properties": {
       "id":{"type":"string","index":"not_analyzed"},
-      "rev":{"type":"string","index":"not_analyzed"},
       "collection":{"type":"string","index":"not_analyzed"},
       "schema":{"type":"string","index":"not_analyzed"},
       "lang":{"type":"string","index":"not_analyzed"},
@@ -44,6 +43,7 @@ n-booking": {
           "type":{"type":"string","index":"not_analyzed"}
         }
       },
+      "draft":{"type":"string","index":"not_analyzed"},
       "comment":{"type":"string","index":"analyzed"},
       "changes":{"type":"string","index":"not_analyzed"},
       "created":{"type":"date","index":"not_analyzed"},
@@ -56,4 +56,3 @@ n-booking": {
     }
   }
 }
-

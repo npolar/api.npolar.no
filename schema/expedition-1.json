@@ -34,14 +34,13 @@
     "type": {
       "description": "Defines what the nature of the expedition is. Options are cruise, field work, traverse, etc...",
       "type": "string",
-      "enum": ["cruise",
-        "expedition"]
+      "enum": ["cruise","fieldwork"]
     },
     "summary": {
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
-     "platforms": {
+    "platforms": {
       "description": "A list containing the vehicles/vessels used for the expedition.",
       "type": "array",
       "items": {
@@ -50,15 +49,16 @@
         "properties": {
           "type": {
             "description": "The type of platform being used.",
-            "type": "string",
+            "type": ["string","null"],
             "enum": [
-              "ship",
-              "boat",
-              "helicopter",
-              "snowmobile",
-              "snowTractor",
-              "hovercraft",
-              "other"
+             "",
+             "ship",
+             "boat",
+             "helicopter",
+             "snowmobile",
+             "snow tractor",
+             "hovercraft",
+             "other"
             ]
           },
           "name": {
@@ -71,30 +71,63 @@
         }
       }
     },
-         "additionalProperties": false,
+        "additionalProperties": false,
         "additionalItems": false
     },
-    "research": {
+    "start_date": {
+        "type": "string",
+        "format": "date-time"
+    },
+    "end_date": {
+        "type": "string",
+        "format": "date-time"
+    },
+    "@departure_placename": {
+        "description": "The placename of the departure location. cruise - list C38, TOS,LYB, Cape Town most important",
+        "type": "string"
+    },
+    "@return_placename": {
+        "description": "The placename of the return location.",
+        "type": "string"
+    },
+    "research_program": {
+        "description": "The connected research programme (if applicable)",
+        "type": "string"
+    },
+    "activity": {
             "type": "array",
             "additionalItems": false,
             "items": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                 "research_type": {
-                    "description": "Research or not",
-                    "type": "string",
-                    "enum": ["research", "monitoring", "mapping", "outreachVIP", "education","logisticOperations", "other"]
+                 "activity_type": {
+                    "description": "Activity type",
+                    "type": ["string","null"],
+                    "enum": [
+                    "",
+                    "research",
+                    "monitoring",
+                    "mapping",
+                    "outreach VIP",
+                    "education",
+                    "logistic operations",
+                    "other"]
                   },
-                  "research_title": {
-                    "description": "Title research project",
+                  "activity_title": {
+                    "description": "Activity title",
                     "type": "string"
+                  },
+                  "href": {
+                     "description": "Web link to activity resource",
+                     "type": "string",
+                    "format": "uri"
                   },
                   "topics": {
                     "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
                     "type": "array",
                     "items": {
-                      "type": "string",
+                      "type": ["string", "null"],
                       "enum": [
                         "acidification",
                         "atmosphere",
@@ -160,7 +193,7 @@
               "null"
             ]
           },
-          "country": {
+          "@country": {
             "description": "Organisation's country",
             "type": "string"
           },
@@ -169,25 +202,23 @@
             "type": "array",
             "items": {
               "description": "role",
-              "type": "string",
+              "type": ["string"],
               "enum": [
-                "expeditionCruiseLeader",
-                "fieldAssistant",
-                "guest",
-                "investigator",
-                "other",
-                "principalInvestigator",
-                "technitian"
+              "expedition/cruise leader",
+              "field assistant",
+              "guest",
+              "investigator",
+              "other",
+              "principal investigator",
+              "technitian"
               ]
             },
             "additionalItems": false
           },
           "expedition_dates": {
             "type": "array",
-            "additionalItems": false,
             "items": {
               "type": "object",
-              "additionalProperties": false,
               "properties": {
                 "start_date": {
                   "type": "string",
@@ -198,17 +229,10 @@
                   "format": "date-time"
                 }
               }
+
             }
           }
-          },
-          "additionalProperties": false,
-          "required": [
-            "first_name",
-            "last_name",
-            "roles",
-            "organisation",
-            "country"
-          ]
+          }
         },
         "additionalItems": false
       },
@@ -227,37 +251,28 @@
         "type": "string",
         "enum": ["unrestricted"]
       },
-      "tags": {
-        "description": "A list of one or more free text keywords describing the cruise.",
-        "type": "array",
-        "items": {
-          "description": "A free text keyword",
-          "type": "string"
-        },
-        "additionalItems": false
-      },
 "_attachments": {
            "type":"object"
 },
  "attachments": {
-			"type": "array",
-			"description": "",
-			"items": {
-				"type": "object",
-				"properties": {
-					"href": {
-						"type": "string",
-						"description": "Web address (URI) of the attached file",
-						"format": "uri"
-					},
-					"filename": {
-						"type": "string",
-						"description": "File name"
-					},
-					"type": {
-						"type": "string",
-						"description": "Media type"
-					},
+      "type": "array",
+      "description": "",
+      "items": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "Web address (URI) of the attached file",
+            "format": "uri"
+          },
+          "filename": {
+            "type": "string",
+            "description": "File name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Media type"
+          },
           "length":{
             "type": "integer",
             "description": "File size in bytes"
@@ -266,158 +281,11 @@
             "type": "string",
             "description": ""
           }
-				}
-			}
-		},
-      "links": {
-        "description": "A list of links relevant to this particular expedition. This should include links to the project(s) and expedition track(s). After completion it can also include links to datasets collected or updated during this expedition.",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "href": {
-              "description": "Uniform Resource Identifier following http://tools.ietf.org/html/rfc3986",
-              "type": "string",
-              "format": "uri"
-            },
-            "hreflang": {
-              "description": "Language of the linked resource",
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "rel": {
-              "description": "Resource relation to the current document",
-              "type": "string",
-              "enum": [
-                "expedition",
-                "child",
-                "dataset",
-                "parent",
-                "program",
-                "project",
-                "publication",
-                "reference",
-                "related",
-                "stationInformation",
-                "track"
-              ]
-            },
-            "title": {
-              "description": "Title of linked resource",
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "type": {
-              "description": "Mime-type of linked resource",
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "length": {
-              "description": "Content Length of the linked resource",
-              "type": [
-                "number",
-                "null"
-              ]
-            }
-          }
-        },
-        "additionalItems": false
-      },
-       "activity": {
-        "description": "list of activite periods for the platform",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "departure_return_dates": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "start_date": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "end_date": {
-                  "type": "string",
-                  "format": "date-time"
-                }
-              }
-            },
-            "departure_placename": {
-              "description": "The placename of the departure location. cruise - list C38, TOS,LYB, Cape Town most important",
-              "type": "string"
-            },
-            "departure_country": {
-              "description": "The country of the departure location.",
-              "type": "string"
-            },
-            "departure_predefined_area": {
-              "description": "The official placename of the location.",
-              "type": "string",
-              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvetIsland", "troll", "tor",
-                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
-              ]
-            },
-            "departure_gps": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "latitude": {
-                  "description": "Location north.",
-                  "type": "number",
-                  "minimum": -90,
-                  "maximum": 90
-                },
-                "longitude": {
-                  "description": "Location east.",
-                  "type": "number",
-                  "minimum": -180,
-                  "maximum": 180
-                }
-              }
-            },
-            "return_placename": {
-              "description": "The placename of the return location.",
-              "type": "string"
-            },
-            "return_predefined_area": {
-              "description": "The official placename of the location.",
-              "type": "string",
-              "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvetIsland", "troll", "tor",
-                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
-              ]
-            },
-            "return_country": {
-              "description": "The country of the return location.",
-              "type": "string"
-            },
-            "return_gps": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "latitude": {
-                  "description": "latitude",
-                  "type": "number"
-                },
-                "longitude": {
-                  "description": "longitude",
-                  "type": "number"
-                }
-              }
-            }
-          },
-          "additionalProperties": false
-        },
-        "additionalItems": false
-      },
+        }
+      }
+    },
       "locations": {
-        "description": "A list of one or more Geographic locations relevant to the expedition.",
+        "description": "A list of one or more geographic locations relevant to the expedition.",
         "type": "array",
         "items": {
           "type": "object",
@@ -446,50 +314,50 @@
                   "minimum": -180,
                   "maximum": 180
             },
-            "field_camp": {
-              "description": "field camp or not.",
-              "type": "boolean"
-            },
-            "operation_area": {
-              "description": "operation area or not.",
-              "type": "boolean"
-            },
             "placename": {
               "description": "The official placename of the location.",
               "type": "string"
             },
             "predefined_area": {
               "description": "The official placename of the location.",
-              "type": "string",
-               "enum": ["sverdrup", "zeppelin", "nyAlesund", "svalbard", "fransJosefLand", "bjornoya", "janMayen", "hopen", "bouvet", "troll", "tor",
-                "dronningMaudLand", "antarctica", "framStrait", "arcticOcean", "barentsseaNorth", "southernOcean", "other"
+              "type": ["string", "null"],
+               "enum": [
+                    "",
+                    "Sverdrup research station",
+                    "Zeppelin reserach station",
+                    "Ny-Ålesund",
+                    "Svalbard",
+                    "Frans Josefs land",
+                    "Bjørnøya",
+                    "Jan Mayen",
+                    "Hopen",
+                    "Bouvet Island",
+                    "Troll",
+                    "Tor",
+                    "Dronning Maud Land",
+                    "Antarctica",
+                    "Fram Strait",
+                    "Arctic Ocean",
+                    "Barents Sea North",
+                    "Southern Ocean",
+                    "other"
               ]
+            },
+            "start_date": {
+                  "type": "string",
+                  "format": "date-time"
+             },
+            "end_date": {
+                  "type": "string",
+                  "format": "date-time"
             },
             "hemisphere": {
               "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
-              "type": "string",
+              "type": ["string","null"],
               "enum":["N","S"]
-            },
-            "country": {
-              "description": "[Country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). With the exception of 'NO' to be used for Svalbard, Jan Mayen, Bouvetøya, Peter I Øy. 'AQ' should be used for Antarctica and 'XZ' for international waters. ",
-              "type": "string",
-              "pattern": "^(([A-Z]|[a-z]){2})$"
-            },
-            "location_dates": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "start_date": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "end_date": {
-                  "type": "string",
-                  "format": "date-time"
-                }
-              }
             }
-          }
+          },
+           "required": ["placename", "predefined_area"]
         },
         "additionalItems": false
       },
@@ -543,4 +411,4 @@
         "type": "string"
       }
     }
-  }
+}

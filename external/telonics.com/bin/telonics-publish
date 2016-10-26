@@ -36,23 +36,23 @@ fi
 
 for f in $source/*Condensed.csv
 do
-  
+
   platform=`basename "$f" ".csv" | grep -oE "^\w*\b"`
-	
-  # t => Latest timestamp in API (ISO8601)   
+
+  # t => Latest timestamp in API (ISO8601)
   api="$base?q=&limit=1&format=csv&sort=-properties.time&fields=properties.time&filter-properties.platform=$platform"
   for row in `curl -n -XGET --silent "$api"`
   do
     t=`echo $row | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:\.Z\+\-\s]+'`
-    if [ -z "$t" -a "$t" == " " ]; then
+    if [[ -z $t ]]; then
       t="1970-01-01Z" # Set timestamp to UNIX Epoch if not in API
-    fi  
+    fi
   done
-  
+
   # UNIX timestamps
   ft=`stat -c %Y "$f"`
   apit=`date -d $t +%s`
-  
+
   # Set file modified time to time of latest message in API
   # [This should only be done after succesful publishing]
   #if ( [ $apit -gt `date -d "1970-01-01Z" +%s` ] );
@@ -60,7 +60,7 @@ do
   #  echo "$f $platform source: $ft [`stat -c %y "$f"`] api: $apit [$t] $((ft-apit))"
   #  touch -m --date $t "$f"
   #fi
-  
+
   if ( [ $ft -gt $apit ] );
   then
     json=`$dir/telonics-csv-to-json "$f" $t features`
@@ -72,5 +72,5 @@ do
   #else
     #echo "$f [`stat -c %y "$f"`] api: $t unix time diff: $((ft-apit))"
   fi
-  
+
 done

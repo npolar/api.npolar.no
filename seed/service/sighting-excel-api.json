@@ -1,12 +1,12 @@
 {
 "schema": "http://api.npolar.no/schema/api",
-"id": "sighting-api",
-"path": "/sighting",
-"title": "Sighting API",
+"id": "sighting-excel-api",
+"path": "/sighting-excel",
+"title": "Sighting excel API",
 "summary": "Excel sheets from sightings administered by the Norwegian Polar Data Centre",
 "storage": "Couch",
-"database": "sighting",
-"model": "Sighting",
+"database": "sighting-excel",
+"model": "SightingExcel",
 "verbs": [
 "DELETE",
 "GET",
@@ -24,7 +24,7 @@
 "category": ["CouchDB", "Elasticsearch", "Lucene", "REST", "Search", "JSON", "JSON Schema", "HTTP"],
 "lifecycle": "production",
 "run": "Npolar::Api::Json",
-"open": false,
+"open": true,
 "auth": {
 "authorize": "editor",
 "system": "MMS",
@@ -32,9 +32,9 @@
 },
 "search": { "engine": "Elasticsearch",
 "uri": "http://localhost:9200",
-"facets": ["name,species,latitude,longitude,recorded_by,date_identified,habitat,start_date,event_date,locality,files.filename"],
-"type": "sighting",
-"index": "sighting"
+"facets": ["filename,length,type,comment"],
+"type": "sighting-excel",
+"index": "sighting-excel"
 },
 "base": "http://api.npolar.no"
 }

@@ -1,10 +1,10 @@
 require "hashie"
 
-class Expedition < Hashie::Mash
+class SightingExcel < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
   def schemas
-    ["http://api.npolar.no/schema/expedition-1"]
+    ["sighting-excel.json"] 
   end
 
 end

@@ -7,7 +7,7 @@ module Metadata
   #
   # The mapping is defined in #to_hash. Each DIF element is typically
   # defined in a method named after the element (lowercased), like #dif_revision_history
-  # 
+  #
   # Usage
   #   dif_hash = Metadata::DifHashifier.new(npolar_dataset_hash).to_hash
   #   dif_xml = Gcmd::Dif.new(dif_hash).to_xml
@@ -34,7 +34,7 @@ module Metadata
   # also created automagically when there is an appropriate mapping.
   #
   # Links
-  # * Metadata::Dataset#to_dif_hash 
+  # * Metadata::Dataset#to_dif_hash
   # * https://github.com/npolar/gcmd/blob/master/lib/gcmd/dif.rb
   # * http://gcmd.nasa.gov/add/difguide/
   #
@@ -47,7 +47,7 @@ module Metadata
   # FIXME OOps#<Role>author</Role>
 
   class DifHashifier < Hashie::Mash
-    
+
     # Map [topics](http://api.npolar.no/schema/npolar_topic)to DIF Parameters (Science Keywords)
     # DIF Parameters: http://api.npolar.no/gcmd/concept/?q=&filter-concept=sciencekeywords
     # The main trouble is that 3 levels (down to Topic) are required by DIF - impossible for just "biology"/"geology"/"atmosphere"
@@ -58,9 +58,9 @@ module Metadata
       dif_Topic, dif_Term, dif_Variable_Level_1 = case topic
 
         # Terms for BIOSPHERE from: http://api.npolar.no/gcmd/concept/?q=&start=0&limit=10&sort=&fq=concept:sciencekeywords&fq=ancestors:EARTH+SCIENCE&fq=ancestors:Science+Keywords&fq=ancestors:BIOSPHERE&fq=cardinality:3
-        # * TERRESTRIAL ECOSYSTEMS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
-        # * VEGETATION (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
-        # * ECOLOGICAL DYNAMICS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept 
+        # * TERRESTRIAL ECOSYSTEMS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept
+        # * VEGETATION (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept
+        # * ECOLOGICAL DYNAMICS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept
         # * AQUATIC ECOSYSTEMS (Science Keywords > EARTH SCIENCE > BIOSPHERE) | concept
         when "biology"
           ["BIOSPHERE", "ECOLOGICAL DYNAMICS"]
@@ -74,8 +74,8 @@ module Metadata
         when "geology"
           ["SOLID EARTH"]
 
-        # GLACIERS (Science Keywords > EARTH SCIENCE > CRYOSPHERE > GLACIERS/ICE SHEETS) | concept 
-        # GLACIERS (Science Keywords > EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > GLACIERS/ICE SHEETS) | concept 
+        # GLACIERS (Science Keywords > EARTH SCIENCE > CRYOSPHERE > GLACIERS/ICE SHEETS) | concept
+        # GLACIERS (Science Keywords > EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > GLACIERS/ICE SHEETS) | concept
         when "glaciology"
           ["CRYOSPHERE", "GLACIERS/ICE SHEETS", "GLACIERS"]
 
@@ -97,8 +97,8 @@ module Metadata
           # Others/more:
           # WATER TEMPERATURE (Science Keywords > EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE)
           # WATER PRESSURE (Science Keywords > EARTH SCIENCE > OCEANS > OCEAN PRESSURE)
-          # DENSITY (Science Keywords > EARTH SCIENCE > OCEANS > SALINITY/DENSITY) | concept 
-          # SALINITY (Science Keywords > EARTH SCIENCE > OCEANS > SALINITY/DENSITY) | concept 
+          # DENSITY (Science Keywords > EARTH SCIENCE > OCEANS > SALINITY/DENSITY) | concept
+          # SALINITY (Science Keywords > EARTH SCIENCE > OCEANS > SALINITY/DENSITY) | concept
 
         else
           []
@@ -117,7 +117,7 @@ module Metadata
 
     # @return [Hashie::Mash] with GCMD DIF element names as keys
     def to_hash
-      
+
         unless gcmd?
           self[:gcmd]=Hashie::Mash.new
         end
@@ -175,9 +175,9 @@ module Metadata
           "Related_URL" => related_url,
           "Parent_DIF" => parent_dif,
           "IDN_Node" => idn_node,
-          
 
-          # Watch out, all of these have multiplicity 1  
+
+          # Watch out, all of these have multiplicity 1
           #<xs:element ref="Originating_Metadata_Node" minOccurs="0" maxOccurs="1"/>
           #<xs:element ref="Metadata_Name" minOccurs="1" maxOccurs="1"/>
           #<xs:element ref="Metadata_Version" minOccurs="1" maxOccurs="1"/>
@@ -186,7 +186,7 @@ module Metadata
           #<xs:element ref="DIF_Revision_History" minOccurs="0" maxOccurs="1"/>
           #<xs:element ref="Future_DIF_Review_Date" minOccurs="0" maxOccurs="1"/>
           #<xs:element ref="Private" minOccurs="0" maxOccurs="1"/>
-          
+
           "Originating_Metadata_Node" => originating_metadata_node,
           "Metadata_Name" => "CEOS IDN DIF",
           "Metadata_Version" => ::Gcmd::Schema::VERSION,
@@ -195,7 +195,7 @@ module Metadata
           "DIF_Revision_History" => dif_revision_history,
           "Future_DIF_Review_Date" => future_dif_review_date,
           "Private" => draft == "yes" ? "True" : "False",
-          "Extended_Metadata" => extended_metadata  
+          "Extended_Metadata" => extended_metadata
       })
       # Gcmd::Dif currently needs a ordered Hash to write valid DIF XML.
       # Therefore we insert all DIF elements above, and then remove empty ones
@@ -219,56 +219,61 @@ module Metadata
 
         data_center_url = o.homepage
         data_center_contacts = personnel(/pointOfContact/, o.id)
-        
-        # Data Center Contact is required
+
+        # If no point of contact is listed that can be used as data center contact
+        # Set Npolar if we are the data center else generate a blank entry.
         if data_center_contacts.none?
-         data_center_contacts = [Hashie::Mash.new({
-          "Role" => "Data Center Contact",
-          "First_Name" => "",
-          "Last_Name" => "",
-          "Email" => [""]
-        })]
-        end
-        
-        if data_center_url =~ /npolar.no/ or o.id == "npolar.no"
-          data_set_id = id
-          if o.roles.include? "pointOfContact"
-            data_center_contacts << { Role: "Data Center Contact",
+
+          if data_center_url =~ /npolar.no/ or o.id == "npolar.no"
+            data_set_id = id
+            data_center_contacts << {
+              Role: "Data Center Contact",
               Last_Name: "Norwegian Polar Data",
-              Email: "data[*]npolar.no" }
+              Email: "data[*]npolar.no"
+            }
+          else
+            # Data Center Contact is required. When no point of contact is listed use the
+            # GCMD name of the organisation as last name and list it as data center contact.
+            data_center_contacts = [Hashie::Mash.new({
+              Role: "Data Center Contact",
+              Last_Name:  o.name
+            })]
           end
-        else
-          data_set_id = nil
         end
-        
-        { "Data_Center_Name" => {
-          "Short_Name" => o.gcmd_short_name,
-          "Long_Name" => o.name
+
+        {
+          Data_Center_Name: {
+            Short_Name: o.gcmd_short_name,
+            Long_Name: o.name
           },
-          "Data_Center_URL" => data_center_url,
-          "Data_Set_ID" => data_set_id,
-          "Personnel" => data_center_contacts
+          Data_Center_URL: data_center_url,
+          Data_Set_ID: data_set_id,
+          Personnel: data_center_contacts
         }
       }
-      
+
+      # If no data center was found set NP as the data center
       if data_center.none?
         npolar = Metadata::Dataset.npolar(["pointOfContact"])
-        data_center << { "Data_Center_Name" => {
-          "Short_Name" => npolar.gcmd_short_name,
-          "Long_Name" => npolar.name
+        data_center << {
+          Data_Center_Name: {
+          Short_Name: npolar.gcmd_short_name,
+          Long_Name: npolar.name
           },
-          "Data_Center_URL" => npolar.homepage,
-          "Personnel" => { Role: "Data Center Contact",
+          Data_Center_URL: npolar.homepage,
+          Personnel: {
+              Role: "Data Center Contact",
               Last_Name: "Norwegian Polar Data",
-              Email: "data[*]npolar.no" }
+              Email: "data[*]npolar.no"
+          }
         }
       end
+
       data_center
-      
     end
 
     # Data_Set_Language = inferred from link[rel=data].hreflang
-    # http://gcmd.gsfc.nasa.gov/add/difguide/data_set_language.html 
+    # http://gcmd.gsfc.nasa.gov/add/difguide/data_set_language.html
     def data_set_language
       links.select {|link| link.rel == "data"}.map {|link| link.hreflang }
     end
@@ -312,7 +317,7 @@ module Metadata
       # @mightdo Subdiscipline
       # @mightdo Detailed_Subdiscipline
       names = (topics||[]).map {|topic| discipline_name.call(topic) }.uniq
-      if names.any?      
+      if names.any?
         { "Discipline_Name" => names[0] }
       else
         []
@@ -326,7 +331,7 @@ module Metadata
         Hashie::Mash.new({
           Distribution_Media: "Online Internet (HTTP)", Distribution_Size: link[:length], Distribution_Format: link.type
         })
-      }.uniq 
+      }.uniq
     end
 
     # Data_Set_Citation = "gcmd.citation" (if present) OR generated
@@ -337,11 +342,11 @@ module Metadata
       if gcmd.citation? and gcmd.citation.any?
         return gcmd.citation
       end
-      
+
       dois = links.select {|link| link.rel == "doi"}
       publishers = (organisations||[]).select {|o| o.roles.include? "publisher" }
       html_links = links.select {|link| link.rel == "alternate" and link.type == "text/html"}
-      
+
       doi = dois.any? ? dois[0].href : nil
       publisher = publishers.any? ? publishers[0].name : nil
       online_resource = html_links.any? ? html_links[0].href : nil
@@ -357,7 +362,7 @@ module Metadata
         "Dataset_Release_Place" => release_place,
         "Dataset_Publisher" => publisher,
         "Dataset_DOI" =>  doi,
-        "Online_Resource" => online_resource 
+        "Online_Resource" => online_resource
       })
     end
 
@@ -365,7 +370,7 @@ module Metadata
     def entry_id
       id||_id
     end
-    
+
     def future_dif_review_date
       if released?
         now = DateTime.now
@@ -392,7 +397,7 @@ module Metadata
       end
 
       #ARCTIC/NO
-      if ((sets||[]).include?("arctic") and norway) 
+      if ((sets||[]).include?("arctic") and norway)
         nodes << "ARCTIC/NO"
       end
 
@@ -465,14 +470,24 @@ module Metadata
           when "geoscientificInformation"
             "GEOSCIENTIFIC INFORMATION"
           else
-            i.upcase   
+            i.upcase
         end
       }
     end
-    
+
     def originating_center
       # or links[rel=datacenter]?
-      (organisations||[]).select {|o| o.roles.include? "originator"}.map {|o| "#{o.name} (#{o.gcmd_short_name})" }.first
+      originators = (organisations||[]).select {|o| o.roles.include? "originator"}
+
+	  # If there is an organisation with the originator role return that else
+	  # respond with Norwegian Polar Institute. This is required by the NMDC
+      # metadata harvester. They made originating_center a required field in
+      # contrast to the default DIF implementation where it is just recommended.
+      if originators.length > 0
+        return originators.first.name
+      else
+        return "Norwegian Polar Institute"
+      end
     end
 
     def originating_metadata_node
@@ -489,7 +504,7 @@ module Metadata
       arctic = {"Location_Category" => "GEOGRAPHIC REGION", "Location_Type" => "ARCTIC"}
 
       (placenames||[]).each do | p |
-        
+
         area = p.area
         if p.area? and p.area == ""
           area = p.placename
@@ -547,12 +562,12 @@ module Metadata
 
     # Multimedia_Sample
     def multimedia_sample
-      #  multimedia_samples = gcmd.multimedia_samples? ? gcmd.multimedia_samples : [] @todo 
+      #  multimedia_samples = gcmd.multimedia_samples? ? gcmd.multimedia_samples : [] @todo
       links.select {|link| multimedia?(link) }.map {|link|
         Hashie::Mash.new({
           URL: link.href, Format: link.type, Caption: link.title
         })
-      } 
+      }
     end
 
     def multimedia?(link)
@@ -574,10 +589,10 @@ module Metadata
       references = gcmd.references? ? gcmd.references : []
       references += links.select {|link| link.rel == "publication" }.map {|link|
         Hashie::Mash.new({
-          Publication_Date: "Unknown", Title: link.title, Online_Resource: link.href,        
+          Publication_Date: "Unknown", Title: link.title, Online_Resource: link.href,
         })
       }
-      
+
     end
     alias :reference :references
 
@@ -597,8 +612,8 @@ module Metadata
         #  "GET RELATED METADATA RECORD (DIF)"
         when "internal", "parent", "datacentre" # parent => Parent_DIF, datacentre => Data_Center
           nil
-        else # e.g. "related", "alternate", "", nil    
-          "VIEW RELATED INFORMATION" 
+        else # e.g. "related", "alternate", "", nil
+          "VIEW RELATED INFORMATION"
         end
 
       }
@@ -644,9 +659,9 @@ module Metadata
         if not dif_subtype.nil?
           r.URL_Content_Type.Subtype = dif_subtype
         end
-    
+
         related_url << r
-        
+
       }
       related_url
     end
@@ -687,24 +702,24 @@ module Metadata
           })
         end
       end
-      
+
       #if edits.any?
       #  # FIXME select max date
       #  dif_author = edits.last
       #else
       #  dif_author = Hashie::Mash.new({ first_name: updated_by, last_name: "", email: "" })
       #end
-      
+
       #personnel << Hashie::Mash.new({
       #  "Role" => "DIF Author",
       #  "First_Name" => dif_author.first_name,
       #  "Last_Name" =>dif_author.last_name,
       #  "Email" => dif_author.email
       #})
-      
+
       personnel
     end
-  
+
     # Spatial_Coverage <= coverage
     def spatial_coverage
       coverage.map {|c|
@@ -712,9 +727,9 @@ module Metadata
           "Southernmost_Latitude" => c.south,
           "Northernmost_Latitude" => c.north,
           "Westernmost_Longitude" => c.west,
-          "Easternmost_Longitude" => c.east  
+          "Easternmost_Longitude" => c.east
         }
-      }        
+      }
     end
 
     # Temporal_Coverage <= activity
@@ -722,9 +737,9 @@ module Metadata
       activity.map {|a|
         {
           "Start_Date" => (a.start||"T").split("T")[0],
-          "Stop_Date" => (a.stop||"T").split("T")[0] 
+          "Stop_Date" => (a.stop||"T").split("T")[0]
         }
-      }        
+      }
     end
 
     # Use_Constraints <= rights (but only if npolar.no is publisher)
