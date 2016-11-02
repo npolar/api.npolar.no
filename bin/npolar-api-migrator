@@ -61,6 +61,8 @@ module Npolar
         Logger::ERROR
       when /debug/i
         Logger::DEBUG
+      else
+        log_level
       end
     end
 
