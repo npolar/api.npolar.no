@@ -46,12 +46,12 @@ module Npolar
     migration = Factory.constantize(migration).new
     
     really = false
-    if ARGV.any? {|a| /^(--really|--really=true)$/}
-      really = true
+    if n = ARGV.find {|a| a =~ /^--really=(true|false)$/}
+      really = ($1 == "true") ? true : false
     end
     
     log_level = Logger::INFO
-    if id = ARGV.index {|a| a =~ /^--log-level=(.+)/ }
+    if ARGV.index {|a| a =~ /^--log-level=(.+)/ }
       log_level = case $1
       when /warn/i
         Logger::WARN
