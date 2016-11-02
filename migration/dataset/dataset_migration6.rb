@@ -13,7 +13,7 @@ module Metadata
 
     attr_accessor :log
     
-    @@changes = JSON.parse(File.read "migration/dataset/changes.txt")
+    # @@changes = JSON.parse(File.read "migration/dataset/changes.txt")
 
    
     def migrations
@@ -39,7 +39,7 @@ module Metadata
               elsif k == "rights" 
                 if v =~ /Open data. Free to reuse if attributed to the Norwegian Polar Institute/
                   d[k] = "Open data: Free to reuse if attributed to the Norwegian Polar Institute"
-                elsif /Protected/
+                elsif  v=~/Protected/
                   d[k] = "Protected by Norwegian copyright law: http://lovdata.no/dokument/NL/lov/1961-05-12-2"
                   d.licences = ["http://lovdata.no/dokument/NL/lov/1961-05-12-2"]
                 end
