@@ -46,7 +46,7 @@ module Npolar
     migration = Factory.constantize(migration).new
     
     really = false
-    if n = ARGV.find {|a| a =~ /^--really=(true|false)$/}
+    if ARGV.any? {|a| a =~ /^--really=(true|false)$/}
       really = ($1 == "true") ? true : false
     end
     
