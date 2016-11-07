@@ -157,6 +157,7 @@
             "additionalProperties": false,
             "properties": {
                "accomodation":{
+               "description": "accomodation included",
              "type": "boolean",
              "default": true
            },
@@ -230,6 +231,7 @@
             "properties": {
                "accomodation":{
              "type": "boolean",
+             "description": "accomodation included"
              "default": true
            },
               "start_date": {
