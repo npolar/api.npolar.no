@@ -15,6 +15,11 @@
     "schema": {
       "type": "string"
     },
+     "base": {
+      "enum": [
+        "http://api.npolar.no"
+      ]
+},
      "lang": {
       "description": "The language of the document.",
       "type": "string",
