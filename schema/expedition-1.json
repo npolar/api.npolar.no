@@ -164,10 +164,10 @@
                         "vegetation"
                       ]
                       },
-                    "required": ["activity_type", "activity_title","topics"],
                      "additionalItems": false
                     }
-              }
+              },
+               "required": ["activity_type", "activity_title","topics"]
             }
     },
     "people": {
@@ -217,9 +217,7 @@
               "principal investigator",
               "technitian"
               ]
-            },
-            "additionalItems": false,
-             "required": ["roles", "@country","organisation","first_name","last_name"]
+            }
           },
           "expedition_dates": {
             "type": "array",
@@ -238,7 +236,8 @@
              "required": ["start_date","end_date"]
             }
           }
-          }
+          },
+          "required": ["roles", "@country","organisation","first_name","last_name"]
         }
       },
       "ship_type": {
