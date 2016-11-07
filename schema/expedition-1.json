@@ -177,13 +177,15 @@
     "people": {
       "description": "List of people participating on the cruise.",
       "type": "array",
+       "additionalItems": false,
       "items": {
         "type": "object",
+        "additionalProperties": false,
          "required": [
-           "organisation",
-           "first_name",
-           "last_name",
            "roles",
+            "first_name",
+            "last_name",
+           "organisation",
            "@country"
        ],
         "properties": {
