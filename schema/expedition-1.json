@@ -180,11 +180,11 @@
       "items": {
         "type": "object",
          "required": [
-           "roles",
-           "@country",
            "organisation",
            "first_name",
-           "last_name"
+           "last_name",
+           "roles",
+           "@country"
        ],
         "properties": {
           "id": {
