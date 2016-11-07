@@ -231,7 +231,7 @@
             "properties": {
                "accomodation":{
              "type": "boolean",
-             "description": "accomodation included"
+             "description": "accomodation included",
              "default": true
            },
               "start_date": {
