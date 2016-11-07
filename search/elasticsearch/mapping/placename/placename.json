@@ -1,0 +1,100 @@
+{
+	"placename": {
+		"dynamic_templates": [{
+			"iri": {
+				"match": "@id",
+				"match_mapping_type": "string",
+				"mapping": {
+					"type": "string",
+					"index": "not_analyzed"
+				}
+			}
+		}, {
+			"language": {
+				"match": "@language",
+				"match_mapping_type": "string",
+				"mapping": {
+					"type": "string",
+					"index": "not_analyzed"
+				}
+			}
+		}, {
+			"type_is_case_sensitive": {
+				"match": "type",
+				"match_mapping_type": "string",
+				"mapping": {
+					"type": "string",
+					"index": "not_analyzed"
+				}
+			}
+		}, {
+			"properties_are_facets": {
+				"path_match": "properties.*",
+				"match_mapping_type": "string",
+				"mapping": {
+					"type": "string",
+					"index": "not_analyzed"
+				}
+			}
+		},
+		{
+			"GeoJSON_GeometryCollection": {
+				"match": "geometry",
+				"mapping": {
+					"type": "geo_shape"
+				}
+			}
+		}],
+		"properties": {
+			"id": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"_id": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"_rev": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"created_by": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"updated_by": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"names": {
+				"properties": {
+					"authority": {
+						"type": "string",
+						"index": "not_analyzed"
+					},
+					"country_of_origin": {
+						"type": "string",
+						"index": "not_analyzed"
+					},
+					"name": {
+						"properties": {
+							"@language": {
+								"type": "string",
+								"index": "not_analyzed"
+							},
+							"@value": {
+								"type": "string",
+								"boost": 100
+							}
+						}
+					},
+					"status": {
+						"type": "string",
+						"index": "not_analyzed"
+					}
+				}
+			}
+
+		}
+	}
+}
