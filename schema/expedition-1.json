@@ -7,7 +7,11 @@
   "required":[
      "type",
      "code",
-     "summary"
+     "summary",
+     "start_date",
+     "end_date",
+     "@departure_placename",
+     "@return_placename"
   ],
   "properties": {
     "id": {
@@ -160,6 +164,7 @@
                         "vegetation"
                       ]
                       },
+                    "required": ["activity_type", "activity_title","topics"],
                      "additionalItems": false
                     }
               }
@@ -213,7 +218,8 @@
               "technitian"
               ]
             },
-            "additionalItems": false
+            "additionalItems": false,
+             "required": ["roles", "@country","organisation","first_name","last_name"]
           },
           "expedition_dates": {
             "type": "array",
@@ -228,13 +234,12 @@
                   "type": "string",
                   "format": "date-time"
                 }
-              }
-
+              },
+             "required": ["start_date","end_date"]
             }
           }
           }
-        },
-        "additionalItems": false
+        }
       },
       "ship_type": {
         "description": "X28 ship name aka research vessel no 31",
@@ -323,15 +328,15 @@
               "type": ["string", "null"],
                "enum": [
                     "",
-                    "Sverdrup research station",
-                    "Zeppelin reserach station",
+                    "Sverdrup Research Station",
+                    "Zeppelin Research Station",
                     "Ny-Ålesund",
                     "Svalbard",
                     "Frans Josefs land",
                     "Bjørnøya",
                     "Jan Mayen",
                     "Hopen",
-                    "Bouvet Island",
+                    "Bouvetøya",
                     "Troll",
                     "Tor",
                     "Dronning Maud Land",
@@ -357,7 +362,7 @@
               "enum":["N","S"]
             }
           },
-           "required": ["placename", "predefined_area"]
+           "required": ["placename", "predefined_area", "start_date", "end_date"]
         },
         "additionalItems": false
       },
