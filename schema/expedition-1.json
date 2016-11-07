@@ -101,6 +101,11 @@
     "activity": {
             "type": "array",
             "additionalItems": false,
+            "required": [
+                "activity_type",
+                "activity_title",
+                "topics"
+            ],
             "items": {
               "type": "object",
               "additionalProperties": false,
@@ -166,13 +171,19 @@
                       },
                      "additionalItems": false
                     }
-              },
-               "required": ["activity_type", "activity_title","topics"]
+              }
             }
     },
     "people": {
       "description": "List of people participating on the cruise.",
       "type": "array",
+      "required": [
+           "roles",
+           "@country",
+           "organisation",
+           "first_name",
+           "last_name"
+      ],
       "items": {
         "type": "object",
         "properties": {
@@ -236,8 +247,7 @@
              "required": ["start_date","end_date"]
             }
           }
-          },
-          "required": ["roles", "@country","organisation","first_name","last_name"]
+          }
         }
       },
       "ship_type": {
