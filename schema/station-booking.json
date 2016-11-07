@@ -49,6 +49,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+           "accomodation":{
+             "type": "boolean"
+           },
            "start_date": {
             "type": "string",
             "format": "date-time"
