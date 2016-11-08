@@ -3,7 +3,7 @@
   "id": "http://api.npolar.no/schema/station-booking",
   "type": "object",
   "additionalProperties": false,
-  "required": ["research_type", "research_station"],
+  "required": ["research_type", "research_station", "summary","topics"],
   "properties": {
     "id": {
       "type": "string"
