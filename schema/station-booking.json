@@ -31,7 +31,7 @@
     },
      "research_station": {
       "type": "string",
-      "enum": ["troll","norvegia","sverdrup"]
+      "enum": ["troll","sverdrup"]
     },
     "research_type": {
       "type": "string",
