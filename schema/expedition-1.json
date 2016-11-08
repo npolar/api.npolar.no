@@ -246,16 +246,13 @@
         "type": "string",
         "enum": ["unrestricted"]
       },
-"_attachments": {
-           "type":"object"
-},
- "attachments": {
-      "type": "array",
-      "description": "",
-      "items": {
-        "type": "object",
-        "properties": {
-          "href": {
+      "files": {
+            "type": "array",
+            "description": "",
+            "items": {
+                  "type": "object",
+                  "properties": {
+                      "uri": {
             "type": "string",
             "description": "Web address (URI) of the attached file",
             "format": "uri"
@@ -276,9 +273,9 @@
             "type": "string",
             "description": ""
           }
-        }
-      }
-    },
+                  }
+            }
+      },
       "locations": {
         "description": "A list of one or more geographic locations relevant to the expedition.",
         "type": "array",
