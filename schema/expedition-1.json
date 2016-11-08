@@ -233,8 +233,7 @@
                   "type": "string",
                   "format": "date-time"
                 }
-              },
-             "required": ["start_date","end_date"]
+              }
             }
           }
           }
