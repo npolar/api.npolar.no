@@ -272,7 +272,44 @@
           "hash": {
             "type": "string",
             "description": ""
-          }
+          },
+          "placename": {
+              "description": "The official placename of the location.",
+              "type": "string"
+            },
+            "predefined_area": {
+              "description": "The official placename of the location.",
+              "type": ["string", "null"],
+               "enum": [
+                    "",
+                    "Sverdrup Research Station",
+                    "Zeppelin Research Station",
+                    "Ny-Ålesund",
+                    "Svalbard",
+                    "Frans Josefs land",
+                    "Bjørnøya",
+                    "Jan Mayen",
+                    "Hopen",
+                    "Bouvetøya",
+                    "Troll",
+                    "Tor",
+                    "Dronning Maud Land",
+                    "Antarctica",
+                    "Fram Strait",
+                    "Arctic Ocean",
+                    "Barents Sea North",
+                    "Southern Ocean",
+                    "other"
+              ]
+            },
+            "start_date": {
+                  "type": "string",
+                  "format": "date-time"
+             },
+            "end_date": {
+                  "type": "string",
+                  "format": "date-time"
+            }
                   }
             }
       },
