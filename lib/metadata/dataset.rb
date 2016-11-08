@@ -121,8 +121,7 @@ module Metadata
 
     # Default licences
     def self.licences
-      ["http://data.norge.no/nlod/no/1.0",
-      "http://creativecommons.org/licenses/by/3.0/no/"]
+      ["http://creativecommons.org/licenses/by/4.0/"]
     end
 
     # Not used atm.
