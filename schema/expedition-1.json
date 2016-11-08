@@ -272,8 +272,19 @@
           "hash": {
             "type": "string",
             "description": ""
-          },
-          "placename": {
+          }
+                  }
+            }
+      },
+      "track_information": {
+ "description": "List of places and times for the track",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+           "placename": {
               "description": "The official placename of the location.",
               "type": "string"
             },
@@ -310,9 +321,9 @@
                   "type": "string",
                   "format": "date-time"
             }
-                  }
-            }
-      },
+        }
+      }
+     },
       "locations": {
         "description": "A list of one or more geographic locations relevant to the expedition.",
         "type": "array",
