@@ -169,47 +169,37 @@
               }
             }
     },
-    "people": {
-      "description": "List of people participating on the cruise.",
+   "people": {
+ "description": "List of people participating on the cruise",
       "type": "array",
-       "additionalItems": false,
+      "additionalItems": false,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
-            "description": "Norwegian Polar Data personal ID",
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           },
           "first_name": {
-            "description": "First and middle name",
+     "description": "First and middle name",
             "type": "string"
           },
           "last_name": {
             "description": "Last name",
             "type": "string"
           },
-          "organisation": {
-            "description": "Affiliation",
-            "type": [
-              "string",
-              "null"
-            ]
+           "organisation": {
+            "type": "string"
           },
           "@country": {
-            "description": "Organisation's country",
             "type": "string"
           },
           "roles": {
-            "description": "List of roles performed by this person",
             "type": "array",
+            "additionalItems": false,
             "items": {
-              "description": "role",
-              "type": ["string"],
-              "enum": [
+                "type":"string",
+               "enum": [
               "expedition/cruise leader",
               "field assistant",
               "guest",
@@ -217,28 +207,30 @@
               "other",
               "principal investigator",
               "technitian"
-              ]
-            }
+            ]
+          }
           },
           "expedition_dates": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "start_date": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "end_date": {
-                  "type": "string",
-                  "format": "date-time"
-                }
-              }
+          "type": "array",
+          "additionalItems": false,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "start_date": {
+                "type": "string",
+                "format": "date-time"
+            },
+              "end_date": {
+                "type": "string",
+                "format": "date-time"
+            }
             }
           }
-          }
+         }
         }
-      },
+      }
+   },
       "ship_type": {
         "description": "X28 ship name aka research vessel no 31",
         "type": "string",
