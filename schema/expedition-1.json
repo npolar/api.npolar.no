@@ -104,11 +104,6 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-               "required": [
-                "activity_type",
-                "activity_title",
-                "topics"
-              ],
               "properties": {
                  "activity_type": {
                     "description": "Activity type",
@@ -181,13 +176,6 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-         "required": [
-           "roles",
-            "first_name",
-            "last_name",
-           "organisation",
-           "@country"
-       ],
         "properties": {
           "id": {
             "description": "Norwegian Polar Data personal ID",
@@ -372,8 +360,7 @@
               "type": ["string","null"],
               "enum":["N","S"]
             }
-          },
-           "required": ["placename", "predefined_area", "start_date", "end_date"]
+          }
         },
         "additionalItems": false
       },
