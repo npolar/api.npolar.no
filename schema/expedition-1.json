@@ -133,7 +133,7 @@
                     "items": {
                       "type": ["string", "null"],
                       "enum": [
-                        "",
+                        "not applicable",
                         "acidification",
                         "atmosphere",
                         "biology",
