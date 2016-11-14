@@ -189,7 +189,7 @@
             "description": "Last name",
             "type": "string"
           },
-           "organisation": {
+           "@organisation": {
             "type": "string"
           },
           "@country": {
@@ -355,47 +355,56 @@
                   "minimum": -180,
                   "maximum": 180
             },
-            "placename": {
-              "description": "The official placename of the location.",
-              "type": "string"
-            },
-            "predefined_area": {
-              "description": "The official placename of the location.",
-              "type": ["string", "null"],
-               "enum": [
-                    "",
-                    "Sverdrup Research Station",
-                    "Zeppelin Research Station",
-                    "Ny-Ålesund",
-                    "Svalbard",
-                    "Frans Josefs land",
-                    "Bjørnøya",
-                    "Jan Mayen",
-                    "Hopen",
-                    "Bouvetøya",
-                    "Troll",
-                    "Tor",
-                    "Dronning Maud Land",
-                    "Antarctica",
-                    "Fram Strait",
-                    "Arctic Ocean",
-                    "Barents Sea North",
-                    "Southern Ocean",
-                    "other"
-              ]
-            },
-            "start_date": {
+             "places": {
+            "type": "array",
+            "description": "",
+            "items": {
+                  "type": "object",
+                  "properties": {
+                    "placename": {
+                      "description": "The official placename of the location.",
+                      "type": "string"
+                    },
+                  "predefined_area": {
+                    "description": "The official placename of the location.",
+                    "type": ["string", "null"],
+                    "enum": [
+                        "",
+                        "Sverdrup Research Station",
+                        "Zeppelin Research Station",
+                        "Ny-Ålesund",
+                        "Svalbard",
+                        "Frans Josefs land",
+                        "Bjørnøya",
+                        "Jan Mayen",
+                        "Hopen",
+                        "Bouvetøya",
+                        "Troll",
+                        "Tor",
+                        "Dronning Maud Land",
+                        "Antarctica",
+                        "Fram Strait",
+                        "Arctic Ocean",
+                        "Barents Sea North",
+                        "Southern Ocean",
+                        "other"
+                  ]
+                },
+                "start_date": {
                   "type": "string",
                   "format": "date-time"
-             },
-            "end_date": {
+                },
+                "end_date": {
                   "type": "string",
                   "format": "date-time"
-            },
-            "hemisphere": {
-              "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
-              "type": ["string","null"],
-              "enum":["N","S"]
+                },
+                "hemisphere": {
+                  "description": "Indicates the hemisphere in which the location resides. Options are 'N' or 'S'",
+                  "type": ["string","null"],
+                  "enum":["N","S"]
+                }
+               }
+              }
             }
           }
         },
