@@ -189,7 +189,7 @@
             "description": "Last name",
             "type": "string"
           },
-           "@organisation": {
+           "organisation": {
             "type": "string"
           },
           "@country": {
