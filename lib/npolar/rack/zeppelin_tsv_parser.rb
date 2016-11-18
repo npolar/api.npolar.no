@@ -4,7 +4,7 @@ require 'pp'
 
 module Npolar
   module Rack
-   
+
     class ZeppelinTsvParser < Npolar::Rack::Middleware
 
       # fields, in the order they appear posted by Tor Ivan
@@ -43,47 +43,47 @@ module Npolar
         "max_ir_solar",
         "min_ir_solar",
         "s_ir_solar"
-      ]      
+      ]
 
       def condition?(request)
         create?(request)
       end
-      
+
       def handle(request)
         log.info "@ZeppelinTsvParser: parsing input"
         t0 = Time.now
         data = request.body.read
-       
-        docs = parse(data) 
+
+        docs = parse(data)
         request.env["rack.input"] = StringIO.new(docs.to_json)
         request.env['CONTENT_TYPE'] = "application/json"
-        
+
         log.info "@TsvParser: Input parsed in #{Time.now - t0}"
-        app.call(request.env)     
+        app.call(request.env)
       end
-      
+
       def create?(request)
         ["PUT", "POST"].include?(request.request_method)
       end
-     
+
       # parse text data, returns array of docs
       def parse(data)
 
         # convert to utf-8
-        data_utf8 = data.encode('UTF-8', :invalid => replace, :replace => "")
+        data_utf8 = data.encode('UTF-8', :invalid => :replace, :replace => "")
 
         # split into nice rows
         rows = data_utf8.split(/\r\n?|\n/)
 
         # to store units info
         units = {}
- 
+
         # read values, store each doc in array
         docs = []
 
         rows.each do |row|
           doc = {}
-          row.split(/\s+/).each_with_index do |value, index|
+          row.split(/\s+|\\t+/).each_with_index do |value, index|
             if index < @@header.length
               name = @@header[index]
               if !value.nil? and !value.empty?
@@ -106,7 +106,7 @@ module Npolar
 
         docs
       end
-      
+
     end
   end
 end
