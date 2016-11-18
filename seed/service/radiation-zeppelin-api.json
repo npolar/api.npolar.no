@@ -3,35 +3,29 @@
    "schema": "http://api.npolar.no/schema/api",
    "path": "/radiation/zeppelin",
    "title": "Incoming radiation at Zeppelin Station",
-   "summary": "",
    "storage": "Couch",
    "database": "radiation-zeppelin",
    "search": {
        "engine": "Elasticsearch",
-       "uri": "http://localhost:9200",
-       "facets": [
-         "t2_last_sampling"
-       ],
-       "type": "radiation-zeppelin",
-       "index": "radiation-zeppelin"
+       "type": "measurement",
+       "index": "radiation-zeppelin",
+       "params": {
+           "date-year": "created",
+           "date-month": "created",
+           "date-day": "created"
+       }
    },
    "base": "http://api.npolar.no",
    "verbs": [
        "DELETE",
        "GET",
        "HEAD",
+       "OPTIONS",
        "POST",
        "PUT"
    ],
    "formats": {
-       "json": "application/json",
-       "html": "text/html"
-   },
-   "accepts": {
-       "application/json": "",
-       "text/html": "",
-       "text/plain": "",
-       "text/tab-separated-values": ""
+       "json": "application/json"
    },
    "category": [
        "CouchDB",
@@ -43,15 +37,23 @@
    "run": "Npolar::Api::Json",
    "middleware": [
        [
-           "Npolar::Rack::ZeppelinTsvParser",
+           "::Rack::Gouncer",
            {
+               "url": "https://api.npolar.no:8950",
+               "open": true,
+               "system": "https://api.npolar.no/radiation/zeppelin"
            }
+       ],
+       [
+           "Npolar::Rack::ZeppelinTsvParser"
        ]
    ],
    "open": true,
-   "auth": {
-       "authorize": "editor",
-       "system": "zeppelin",
-       "authorizer": "Npolar::Auth::Ldap"
+   "updated": "2015-12-02T12:05:32Z",
+   "updated_by": "conrad.helgeland@npolar.no",
+   "created": "2014-10-31T08:19:43Z",
+   "created_by": "conrad",
+   "accepts": {
+       "application/json": "http://json.org"
    }
 }
