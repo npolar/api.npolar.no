@@ -249,7 +249,7 @@ module Metadata
 
         deduplicate_links
 
-        deduplicate_people
+        #deduplicate_people
         
         #deduplicate_organisations
         
@@ -323,110 +323,6 @@ module Metadata
     end
     alias :publicdomain? :cc0?
     
-    # Map dataset to Solr "api" schema
-    # See https://github.com/npolar/api.npolar.no/blob/master/search/solr/api/schema.xml
-    def to_solr
-      doc = self
-
-      id = doc["id"] ||=  doc["_id"]
-      rev = doc["rev"] ||=  doc["_rev"] ||= nil
-
-      solr = Hashie::Mash.new({ :id => id,
-        :rev => rev,
-        :title => title,
-        :topics => topics,
-        :tags => tags,
-        :sets => sets,
-        :iso_topics => iso_topics,
-        :licences => licences,
-        :restricted => restricted,
-        :restrictions => restrictions,
-        :draft => draft,
-        :workspace => "metadata",
-        :collection => "dataset",
-        :links => links,
-        :rights => rights,
-        :progress => progress,
-        :formats => self.class.formats,
-        :accepts => self.class.accepts,
-        :accept_mimetypes => self.class.mimetypes,
-        :accept_schemas => self.class.schemas,
-        :relations => [],
-        :category => [],
-        :comment => comment,
-        :schemas => self.class.schemas,
-        :label => [],
-        :people => (people||[]).map {|p| "#{p.first_name} #{p.last_name}"}
-      })
-
-        if placenames?
-          solr.placename = placenames.map {|p| p.placename}.uniq.select {|p|p != ""}
-          solr.area = placenames.map {|p| p.area}.uniq.select {|a|a != ""}
-          solr.country = placenames.map {|p| p.country}.uniq.select {|c|c != ""}
-        end
-
-        if gcmd? and gcmd.sciencekeywords?
-          cat = []
-          cat += gcmd.sciencekeywords.map {|keyword| [keyword.Category, keyword.Topic, keyword.Term, keyword.Variable_Level_1, keyword.Variable_Level_2, keyword.Variable_Level_3 ]}
-          cat = cat.flatten.uniq
-          solr[:category] = cat
-        end
-
-        if category?
-          solr[:category] += category.map {|c| c["term"] }
-          solr[:schemas] += category.map {|c| c["schema"] }
-          solr[:label] +=  category.map {|c| c["label"] }
-        end
-
-        # Reduce locations to 1 bounding box
-        if doc.locations.respond_to? :map
-          solr[:north] = doc.locations.select {|l|l.north?}.map {|l|l.north}.max
-          solr[:east]  = doc.locations.select {|l|l.east?}.map  {|l|l.east}.max
-          solr[:south] = doc.locations.select {|l|l.south?}.map {|l|l.south}.min
-          solr[:west]  = doc.locations.select {|l|l.west?}.map  {|l|l.west}.min
-          unless solr.key? :placename
-            solr[:placename] = []
-          end
-          solr[:placename] += doc.locations.select {|l|l.placename? and l.placename.size > 0 }.map {|l|l.placename}
-
-        end
-
-        if doc.links.respond_to? :map
-          relations = doc.links.select {|l|l.rel?}
-          solr[:relations] += relations.map {|l|l.rel}
-          relations.each do |l|
-            solr[:"link_#{l.rel}"] = l.href
-          end
-          
-        end
-
-      text = ""
-      self.to_hash.each do |k,v|
-         text += "#{k} = #{v} | "
-      end
-      solr[:text] = text
-
-      schema = ::Gcmd::Schema.new
-      errors = schema.validate_xml( self.to_dif ).map {|e|e["details"].to_s.gsub(/["'\/\\()]/, "")}
-
-      solr[:errors] = errors
-      solr[:valid] = errors.any? ? false : true
-
-      solr[:link_edit] = "/dataset/#{id}.json"
-      solr[:link_html] = "http://data.npolar.no/dataset/#{id}"
-      solr[:link_dif] = "/dataset/#{id}.dif"
-      solr[:link_iso] = "/dataset/#{id}.iso"
-
-      solr[:published] = published
-      solr[:updated] = updated
-
-      solr[:owners] = owners.map {|o|o.id}
-      # org roles => owner publisher resP
-
-      solr
-
-    end
-
     def authors 
       (people||[]).select {|o| o.roles.include? "author" or  o.roles.include? "principalInvestigator" }
     end
@@ -486,6 +382,7 @@ module Metadata
       self[:people] = unique_people.map {|first_name, last_name |
         persons = people.select {|p| first_name == p.first_name and last_name == p.last_name }
         person = persons[0]
+        # Not future proof
         {
           "id" => person.id,
           "first_name" => first_name,
