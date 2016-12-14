@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
-	"id": "http://api.npolar.no/schema/publication-1.",
-	"title": "Publication",
+	"id": "http://api.npolar.no/schema/publication-1",
+	"title": "Publication data model",
 	"description": "A publication reference",
 	"type": "object",
 	"additionalProperties": false,
@@ -18,7 +18,7 @@
 		},
 		"schema": {
 			"type": "string",
-			"pattern": "^http:\/\/"
+			"pattern": "^http(s)?:\/\/"
 		},
 		"collection": {
 			"enum": [
@@ -66,7 +66,7 @@
 		"overview": {
 			"uniqueItems": true,
 			"type": "array",
-			"description": "Summary for non scientists. Markdown accepted",
+			"description": "Summary for non-scientists. Markdown accepted",
 			"items": {
 				"type": "object",
 				"additionalProperties": false,
@@ -83,16 +83,36 @@
 			}
 		},
 		"programme": {
-			"title": "ICE programmes",
-			"description": "Select none or several ICE programmes affiliated with the publication",
+			"title": "Programmes",
+			"description": "Select programmes affiliated with the publication",
 			"type": "array",
-			"uniqueItems": true,
 			"additionalItems": false,
+			"uniqueItems": true,
 			"items": {
-				"type": "string"
+				"enum": ["Fram Strait", "Biodiversity", "Environmental management", "Environmental pollutants", "Geology and geophysics", "ICE Antarctica", "ICE Ecosystems", "ICE Fluxes", "N-ICE2015", "Oceans and sea ice"]
 			}
 		},
 		"publication_type": {
+			"enum": [
+				"peer-reviewed",
+				"editorial",
+				"review",
+				"correction",
+				"book",
+				"in-book",
+				"poster",
+				"report",
+				"in-report",
+				"abstract",
+				"phd",
+				"master",
+				"map",
+				"proceedings",
+				"popular",
+				"other"
+			]
+		},
+		"type": {
 			"enum": [
 				"peer-reviewed",
 				"editorial",
@@ -154,6 +174,13 @@
 			}
 		},
 		"published": {
+			"type": [
+				"string",
+				"null"
+			],
+			"format": "/^[0-9]{4}/"
+		},
+		"printed": {
 			"type": [
 				"string",
 				"null"
@@ -303,6 +330,24 @@
 							"string",
 							"null"
 						]
+					},
+					"affiliation": {
+						"description": "Affilated organisations ",
+						"type": "array",
+						"uniqueItems": true,
+						"additionalItems": false,
+						"items": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"@id": {
+									"type": ["string", "null"]
+								},
+								"name": {
+									"type": ["string", "null"]
+								}
+							}
+						}
 					}
 				}
 			}
@@ -311,6 +356,7 @@
 			"title": "NPI topics",
 			"description": "See https://github.com/npolar/api.npolar.no/blob/master/schema/dataset.json",
 			"type": "array",
+			"uniqueItems": true,
 			"additionalItems": false,
 			"items": {
 				"type": "string",
@@ -446,7 +492,12 @@
 			"uniqueItems": true,
 			"additionalItems": false,
 			"items": {
-				"type": "string"
+				"type": "string",
+				"enum": ["Troll",
+						"Ny-Ålesund",
+						"Zeppelin",
+						"Bouvetøya",
+						"Svarthamaren"]
 			}
 		},
 		"license": {
