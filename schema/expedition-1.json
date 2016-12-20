@@ -232,15 +232,10 @@
         }
       }
    },
-      "use_limitation": {
-        "description": "X34 publicly available or not",
-        "type": "string",
-        "enum": ["none"]
-      },
       "availability": {
         "description": "X35 who can access the metadata",
         "type": "string",
-        "enum": ["unrestricted"]
+        "enum": ["unrestricted","by negotiation"]
       },
       "files": {
             "type": "array",
