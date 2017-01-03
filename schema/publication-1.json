@@ -308,6 +308,12 @@
 							"null"
 						]
 					},
+					"homepage": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
 					"roles": {
 						"type": "array",
 						"items": {
