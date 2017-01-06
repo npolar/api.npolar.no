@@ -13,6 +13,31 @@
       "type": "string",
       "default": "indicator"
     },
+    "authors": {
+
+      "type": "array",
+      "items": {
+
+        "type": "object",
+        "properties": {
+          "@id": {
+            "type": "string"
+          },
+          "names": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "@language": { "type": "string"},
+                "@value": { "type": "string" }
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalItems": false
+    },
     "links": {
 
       "type": "array",
@@ -25,10 +50,18 @@
             "type": "string"
           },
           "rel": {
-   
+
             "type": "string"
           },
           "type": {
+
+            "type": "string"
+          },
+          "title": {
+
+            "type": "string"
+          },
+          "hreflang": {
 
             "type": "string"
           }
@@ -41,7 +74,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "minLength": 4
+        "minLength": 3
       },
       "minItems": 1,
       "additionalItems": false,
@@ -61,7 +94,7 @@
       "format": "date-time"
     },
     "updated_by": {
- 
+
       "type": "string"
     },
     "species": {
@@ -91,7 +124,7 @@
 
       "type": "array",
       "items": {
-  
+
         "type": "object",
         "properties": {
           "title": {
