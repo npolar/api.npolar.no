@@ -70,15 +70,18 @@
 				"type": "object",
 				"properties": {
 					"href": {
-
+						"type": "string"
+					},
+					"title": {
 						"type": "string"
 					},
 					"rel": {
-
 						"type": "string"
 					},
 					"type": {
-
+						"type": "string"
+					},
+					"hreflang": {
 						"type": "string"
 					}
 				},
