@@ -278,8 +278,6 @@
 	"additionalProperties": false,
 	"required": [
 		"titles",
-		"systems",
-		"topics",
-		"keywords"
+		"systems"
 	]
 }
