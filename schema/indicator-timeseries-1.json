@@ -9,9 +9,6 @@
 		"_rev": {
 			"type": "string"
 		},
-		"workspace": {
-			"type": "string"
-		},
 		"size": {
 			"type": ["number", "null"]
 		},
@@ -26,6 +23,15 @@
 			"additionalItems": false
 		},
 		"systems": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"minLength": 1
+			},
+			"minItems": 1,
+			"additionalItems": false
+		},
+		"topics": {
 			"type": "array",
 			"items": {
 				"type": "string",
@@ -145,10 +151,6 @@
 			"additionalItems": false
 		},
 		"schema": {
-
-			"type": "string"
-		},
-		"collection": {
 
 			"type": "string"
 		},
@@ -277,7 +279,5 @@
 	"required": [
 		"titles",
 		"systems",
-		"workspace",
-		"collection"
 	]
 }
