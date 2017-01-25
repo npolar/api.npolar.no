@@ -141,10 +141,23 @@
 				"nb": {
 					"type": "string"
 				}
-
 			},
 			"additionalProperties": true
 
+		},
+		"keyword": {
+			"type": "object",
+			"properties": {
+				"en": {
+
+					"type": "string"
+				},
+				"nb": {
+					"type": "string"
+				}
+
+			},
+			"additionalProperties": true
 		},
 		"titles": {
 			"type": "array",
