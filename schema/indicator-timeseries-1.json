@@ -145,20 +145,6 @@
 			"additionalProperties": true
 
 		},
-		"keyword": {
-			"type": "object",
-			"properties": {
-				"en": {
-
-					"type": "string"
-				},
-				"nb": {
-					"type": "string"
-				}
-
-			},
-			"additionalProperties": true
-		},
 		"titles": {
 			"type": "array",
 			"items": {
@@ -308,7 +294,7 @@
 	},
 	"additionalProperties": false,
 	"required": [
-		"titles",
+		"title",
 		"systems"
 	]
 }
