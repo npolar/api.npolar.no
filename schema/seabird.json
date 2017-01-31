@@ -2,7 +2,7 @@
   "id": "http://api.npolar.no/schema/seabird",
   "$schema": "http://json-schema.org/draft-04/schema",
   "title": "Seabird",
-  "description": "Norwegian Polar Institute's database on Arctic seabirds counting and tagging."
+  "description": "Norwegian Polar Institute's database on Arctic seabirds counting and tagging",
   "type": "object",
   "properties": {
     "id": {
@@ -113,6 +113,41 @@
           "unknown"
       ]
     },
+    "reference":{
+       "description": "The source where the count first was described",
+       "type": "object",
+        "properties": {
+             "refID": {
+                "description": "refenceID from MS database.",
+                "type": "string"
+             },
+             "ref_unique_id": {
+                "description": "refence id from ???",
+                "type": "string"
+             },
+             "authors": {
+                "description": "reference authors",
+                "type": "string"
+             },
+             "title": {
+                "description": "reference title",
+                "type": "string"
+             },
+             "year": {
+                "description": "year reference was published",
+                "type": "string"
+             },
+             "pages": {
+                "description": "refence pages",
+                "type": "string"
+             },
+             "journal": {
+                "description": "reference journal",
+                "type": "string"
+             }
+        },
+      "additionalProperties": false
+    },
     "useful":{
       "description": "The usefulness of the count",
       "type": "boolean"
@@ -150,8 +185,7 @@
     "_deleted": {
       "description": "Internal revision number.",
       "type": "string"
-    },
-
+    }
   },
   "additionalProperties": false
 }

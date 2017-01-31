@@ -2,7 +2,7 @@
   "id": "http://api.npolar.no/schema/seabird",
   "$schema": "http://json-schema.org/draft-04/schema",
   "title": "Seabird",
-  "description": "Norwegian Polar Institute's database on Arctic seabird colonies."
+  "description": "Norwegian Polar Institute's database on Arctic seabird colonies",
   "type": "object",
   "properties": {
     "id": {
@@ -174,7 +174,7 @@
             ]
     },
     "ownership": {
-            "description":"The owner of the colony??"
+            "description":"The owner of the colony??",
             "type": "string",
             "enum": [
               "private",
@@ -182,6 +182,7 @@
               "claim",
               "combined",
               "unknown"
+              ]
     },
     "length": {
             "description": "colony length - applies mostly to coast colonies",
@@ -215,9 +216,40 @@
       "description": "Can the birds be accessed/caught in this colony",
             "type": "boolean"
     },
-    "reference": {
-      "description": "Where the colony is mentioned first",
-            "type": "number"
+     "reference":{
+       "description": "Where the colony is mentioned first",
+       "type": "object",
+        "properties": {
+             "refID": {
+                "description": "refenceID from MS database.",
+                "type": "string"
+             },
+             "ref_unique_id": {
+                "description": "refence id from ???",
+                "type": "string"
+             },
+             "authors": {
+                "description": "reference authors",
+                "type": "string"
+             },
+             "title": {
+                "description": "reference title",
+                "type": "string"
+             },
+             "year": {
+                "description": "year reference was published",
+                "type": "string"
+             },
+             "pages": {
+                "description": "refence pages",
+                "type": "string"
+             },
+             "journal": {
+                "description": "reference journal",
+                "type": "string"
+             }
+        },
+      "additionalProperties": false
     },
     "comment": {
       "description": "Colony comments",
@@ -276,8 +308,7 @@
     "_deleted": {
       "description": "Internal revision number.",
       "type": "string"
-    },
-
+    }
   },
   "additionalProperties": false
 }
