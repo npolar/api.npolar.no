@@ -15,11 +15,11 @@
 		"uri": {
 			"type": "array",
 			"items": {
-				"type": "string",
+				"type": ["string","null"],
 				"format": "uri",
 				"minLength": 1
 			},
-			"minItems": 1,
+			"minItems": 0,
 			"additionalItems": false
 		},
 		"systems": {
@@ -37,7 +37,7 @@
 				"type": "string",
 				"minLength": 1
 			},
-			"minItems": 1,
+			"minItems": 0,
 			"additionalItems": false
 		},
 		"created": {
@@ -110,24 +110,41 @@
         "properties": {
           "@id": {
             "type": "string"
-          },
-          "names": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "@language": { "type": "string"},
-                "@value": { "type": "string" }
-              },
-              "additionalProperties": false
-            },
-            "additionalItems": false
           }
         },
-        "additionalProperties": false
+        "additionalProperties": true
       },
       "additionalItems": false
     },
+		"title": {
+			"type": "object",
+			"properties": {
+				"en": {
+
+					"type": "string"
+				},
+				"nb": {
+					"type": "string"
+				}
+
+			},
+			"additionalProperties": true
+
+		},
+		"label": {
+			"type": "object",
+			"properties": {
+				"en": {
+
+					"type": "string"
+				},
+				"nb": {
+					"type": "string"
+				}
+			},
+			"additionalProperties": true
+
+		},
 		"titles": {
 			"type": "array",
 			"items": {
@@ -277,7 +294,7 @@
 	},
 	"additionalProperties": false,
 	"required": [
-		"titles",
+		"title",
 		"systems"
 	]
 }
