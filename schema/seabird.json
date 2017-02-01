@@ -22,8 +22,8 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
-    "observer":{
-      "description": "Observer's name",
+    "access_id": {
+      "description": "The corresponding MS access database id",
       "type": "string"
     },
     "colony_id": {
@@ -113,16 +113,16 @@
           "unknown"
       ]
     },
+    "useful":{
+      "description": "Useful as total count?",
+      "type": "boolean"
+    },
     "reference":{
        "description": "The source where the count first was described",
        "type": "object",
         "properties": {
              "refID": {
-                "description": "refenceID from MS database.",
-                "type": "string"
-             },
-             "ref_unique_id": {
-                "description": "refence id from ???",
+                "description": "RefenceID from Access database",
                 "type": "string"
              },
              "authors": {
@@ -148,14 +148,44 @@
         },
       "additionalProperties": false
     },
-    "useful":{
-      "description": "The usefulness of the count",
-      "type": "boolean"
-    },
     "comment":{
       "description": "comment about the count",
       "type": "string"
     },
+     "people": {
+ "description": "List of people participating on the cruise",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "first_name": {
+            "description": "First and middle name",
+            "type": "string"
+          },
+          "last_name": {
+            "description": "Last name",
+            "type": "string"
+          },
+           "address": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "@country": {
+            "type": "string"
+          },
+           "phone": {
+            "type": "string"
+          }
+        }
+      }
+},
     "created": {
       "description": "The date the document was created.",
       "type": "string",

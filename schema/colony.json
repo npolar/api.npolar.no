@@ -22,12 +22,8 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
-    "colony_access_id":{
+    "access_id":{
       "description": "The corresponding MS access database id",
-      "type": "string"
-    },
-     "colony_num": {
-      "description": "??",
       "type": "string"
     },
      "colony_name": {
@@ -160,7 +156,17 @@
     },
     "location_accuracy": {
             "description": "lat/lon accuracy",
-            "type": "number"
+            "type": "string",
+            "enum": [
+                "> 10 km",
+                "< 10 km",
+                "< 2 km",
+                "< 500 m",
+                "< 100 m",
+                "GPS-measured",
+                "unknown",
+                "digital map"
+            ]
     },
     "colony_type": {
             "description": "Type of colony",
@@ -174,7 +180,7 @@
             ]
     },
     "ownership": {
-            "description":"The owner of the colony??",
+            "description":"Colony ownership",
             "type": "string",
             "enum": [
               "private",
@@ -184,12 +190,35 @@
               "unknown"
               ]
     },
+    "island":{
+       "description": "Island information about the colony",
+       "type": "object",
+        "properties": {
+             "island": {
+                "description": "name of island",
+                "type": "string"
+             },
+             "size": {
+                "description": "reference journal",
+                "type": "string"
+             },
+             "archipelago": {
+                "description": "the island belong to archipelago",
+                "type": "string"
+             },
+             "island_updated": {
+                "description": "information about the island was last updated",
+                "type": "string"
+             }
+        }
+      "additionalProperties": false
+    },
     "length": {
             "description": "colony length - applies mostly to coast colonies",
             "type": "number"
     },
     "distance": {
-            "description": "distance of the colony???",
+            "description": "colony length - unsure measurement",
             "type": "number"
     },
     "distance_mainland": {
@@ -197,7 +226,7 @@
             "type": "number"
     },
     "exposure": {
-            "description": "Direction of the colony- south, west, etc - CHECK ALT HERE ??",
+            "description": "Direction of the colony- south, west, etc",
             "type": "string"
     },
     "area": {
@@ -205,7 +234,7 @@
             "type": "string"
     },
     "confirmed": {
-            "description": "maybe from historical sources..????",
+            "description": "Year the colony first were confirmed",
             "type": "number"
     },
     "map": {
@@ -254,18 +283,6 @@
     "comment": {
       "description": "Colony comments",
             "type": "string"
-    },
-    "island": {
-      "description": "Name of island - in use??",
-      "type": "string"
-    },
-    "island_size": {
-      "description": "Island size - in use??",
-      "type": "number"
-    },
-    "island_archipelago": {
-      "description": "Island belongs to archipelago - in use??",
-      "type": "string"
     },
     "geometry": {
             "description": "Geojson object outlining the colony",
