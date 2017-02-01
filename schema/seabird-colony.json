@@ -1,0 +1,336 @@
+{
+  "id": "http://api.npolar.no/schema/seabird-colony",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Seabird",
+  "description": "Norwegian Polar Institute's database on Arctic seabird colonies",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Resource identifier (UUID)",
+      "type": "string"
+    },
+    "schema": {
+      "description": "Schema defining this object (this schema)",
+      "type": "string",
+      "enum": [
+        "http://api.npolar.no/schema/seabird-colony"
+      ]
+    },
+    "lang": {
+      "description": "The language of the document",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
+    "access_id":{
+      "description": "The corresponding MS access database id",
+      "type": "string"
+    },
+     "colony_name": {
+      "description": "Colony name",
+      "type": "string"
+    },
+     "colony_last_update": {
+      "description": "When was field data collected last time?",
+      "type": "string",
+      "format": "date-time"
+    },
+     "colony_alternative_name": {
+      "description": "Colony's alternative name",
+      "type": "string"
+    },
+    "conservation_type":{
+      "description": "Conservation type",
+      "type": "string",
+      "enum": [
+          "IBA",
+          "Ramsar",
+          "Emerald",
+          "World Heritage",
+          "IUCN-categories",
+          "National Conservation Status",
+          "Biosphere Reserve"
+      ]
+    },
+    "region": {
+            "description": "The region the colony belongs to",
+            "type": "string",
+             "enum": [
+             "Frans Josef Land",
+             "Novaja Zemlja (Barents Sea)",
+             "Nenets district (Barents Sea)",
+             "The White Sea",
+             "Murman coast",
+             "Norwegian coast",
+             "Svalbard",
+             "Jan Mayen",
+             "Novaja Zemlja (Kara Sea)",
+             "The Kara Sea Islands",
+             "Severnaya Zemlya",
+             "Taimyr Peninsula",
+             "Yamal/Gydan",
+             "Nenets District (Kara Sea)"
+            ]
+    },
+    "zone": {
+            "description": "The region the colony belongs to",
+            "type": "string",
+             "enum": [
+             "Hornsund",
+             "Bellsund",
+             "Isfjorden",
+             "Prins Karls Forland",
+             "Kongsfjorden/Krossfjorden",
+             "NW Spitsbergen",
+             "Wijdefjorden",
+             "Hinlopen",
+             "Nordaustlandet",
+             "Storfjorden",
+             "Kvitøya",
+             "Kong Karls Land",
+             "Hopen",
+             "Bjørnøya",
+             "Finnmark east",
+             "Finnmark west",
+             "Troms north",
+             "Troms south",
+             "Nordland north",
+             "SW archipelago",
+             "Central archipelago",
+             "NE archipelago",
+             "Northern island",
+             "Southern island",
+             "Outer part, Voronka, Mezen b",
+             "Narrow part, Gorlo",
+             "Central part, Basin",
+             "Dvina bay",
+             "Onega bay",
+             "Kandalaksha bay",
+             "Eastern Murman",
+             "Western Murman",
+             "Vaigach-Yugor part",
+             "Bolshezemelskaya tundra",
+             "Pechora bay",
+             "Malozemelskaya tundra",
+             "Chesha bay",
+             "Kolguev island",
+             "North-Kanin peninsula",
+             "Nord-Jan",
+             "Sør-Jan",
+             "Northern Island",
+             "Southern Island",
+             "Ushakova Island",
+             "Vize Island",
+             "Uedineniya Island",
+             "Sverdrup Island",
+             "Voronina Island",
+             "Arcticheskogo Inst. Islands",
+             "Sergeya Kirova Islands",
+             "Izvestiy TSIK Islands",
+             "Komsomolets Island",
+             "Pioner Island",
+             "Oktyabr'skoy Revolyutsii Isl",
+             "Bolshevik Island",
+             "Sedova Archipelago",
+             "Krasnoflotskiye Islands",
+             "Malvyy Taimyr Island",
+             "Shmidta Island",
+             "Northern Taimyr",
+             "Central Taimyr",
+             "Western Taimyr",
+             "Nordenshel'da Archipelago",
+             "Taimyr Island Region",
+             "Pyasinskiy Bay Islands",
+             "Gydanskiy Peninsula",
+             "Tazovskiy Peninsula",
+             "Yamal Peninsula",
+             "Eastern Yugor Peninsula",
+             "Vaigach - Yogur part"]
+    },
+    "latitude": {
+            "description": "Latitude of the location",
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
+    },
+    "longitude": {
+            "description": "Longitude of the location",
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
+    },
+    "location_accuracy": {
+            "description": "lat/lon accuracy",
+            "type": "string",
+            "enum": [
+                "> 10 km",
+                "< 10 km",
+                "< 2 km",
+                "< 500 m",
+                "< 100 m",
+                "GPS-measured",
+                "unknown",
+                "digital map"
+            ]
+    },
+    "colony_type": {
+            "description": "Type of colony",
+            "type": "string",
+            "enum": [
+              "verical cliff",
+              "hillside",
+              "flat area",
+              "mixed",
+              "unknown"
+            ]
+    },
+    "ownership": {
+            "description":"Colony ownership",
+            "type": "string",
+            "enum": [
+              "private",
+              "government",
+              "claim",
+              "combined",
+              "unknown"
+              ]
+    },
+    "island":{
+       "description": "Island information about the colony",
+       "type": "object",
+        "properties": {
+             "island": {
+                "description": "name of island",
+                "type": "string"
+             },
+             "size": {
+                "description": "reference journal",
+                "type": "string"
+             },
+             "archipelago": {
+                "description": "the island belong to archipelago",
+                "type": "string"
+             },
+             "island_updated": {
+                "description": "information about the island was last updated",
+                "type": "string"
+             }
+        }
+      "additionalProperties": false
+    },
+    "length": {
+            "description": "colony length - applies mostly to coast colonies",
+            "type": "number"
+    },
+    "distance": {
+            "description": "colony length - unsure measurement",
+            "type": "number"
+    },
+    "distance_mainland": {
+            "description": "Distance from colony to mainland",
+            "type": "number"
+    },
+    "exposure": {
+            "description": "Direction of the colony- south, west, etc",
+            "type": "string"
+    },
+    "area": {
+            "description": "Area of cliff wall",
+            "type": "string"
+    },
+    "confirmed": {
+            "description": "Year the colony first were confirmed",
+            "type": "number"
+    },
+    "map": {
+      "description": "The map that shows the colony place",
+            "type": "string"
+    },
+    "catching": {
+      "description": "Can the birds be accessed/caught in this colony",
+            "type": "boolean"
+    },
+     "reference":{
+       "description": "Where the colony is mentioned first",
+       "type": "object",
+        "properties": {
+             "refID": {
+                "description": "refenceID from MS database.",
+                "type": "string"
+             },
+             "ref_unique_id": {
+                "description": "refence id from ???",
+                "type": "string"
+             },
+             "authors": {
+                "description": "reference authors",
+                "type": "string"
+             },
+             "title": {
+                "description": "reference title",
+                "type": "string"
+             },
+             "year": {
+                "description": "year reference was published",
+                "type": "string"
+             },
+             "pages": {
+                "description": "refence pages",
+                "type": "string"
+             },
+             "journal": {
+                "description": "reference journal",
+                "type": "string"
+             }
+        },
+      "additionalProperties": false
+    },
+    "comment": {
+      "description": "Colony comments",
+            "type": "string"
+    },
+    "geometry": {
+            "description": "Geojson object outlining the colony",
+            "type": "object"
+    },
+    "created": {
+      "description": "The date the document was created.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "historical_colony": {
+      "description": "where was the colony first described",
+            "type": "string"
+    },
+    "colony_area":{
+      "description": "area measured from above - 0 and 1 - remove ??",
+            "type": "string"
+    },
+    "updated": {
+      "description": "The date the document was last updated.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "The username of the person who first created the document in the system.",
+      "type": "string"
+    },
+    "updated_by": {
+      "description": "The username of the person who last updated the document in the system.",
+      "type": "string"
+    },
+    "_id": {
+      "description": "Internal resource identifier.",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision number.",
+      "type": "string"
+    },
+    "_deleted": {
+      "description": "Internal revision number.",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
