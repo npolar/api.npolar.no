@@ -43,8 +43,7 @@ $ SEED=/mnt/datasets/Tracking/ARGOS/seed/ivory-gull
 
 ### DS
 
-**-> CSV**$ curl "http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=csv&limit=all" > "$MIDL/ivory-gull-argos-all.csv"
-  % Total    % Received % Xferd
+**-> CSV**
 YEAR=2013 && ./bin/argos-ascii --debug --format=csv --filter='lambda {|d| ["10660"].include? d[:program].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR > $MIDL/ivory-gull-argos-$YEAR.csv
 YEAR=2014 && ./bin/argos-ascii --debug --format=csv --filter='lambda {|d| ["10660"].include? d[:program].to_s }' /mnt/datasets/Tracking/ARGOS/archive/$YEAR > $MIDL/ivory-gull-argos-$YEAR.csv
 
@@ -88,9 +87,12 @@ npolar-api --debug -XPOST http://apptest.data.npolar.no:9000/tracking/ivory-gull
 
 Service: http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q= [Restricted]
 
-* DS fields: "program,platform,lines,sensors,satellite,lc,positioned,latitude,longitude,altitude,headers,measured,identical,sensor_data,technology,type,cardinality,warn",
-* DIAG fields:
-* XML fields:
+DS fields
+"program,platform,lines,sensors,satellite,lc,positioned,latitude,longitude,altitude,headers,measured,identical,sensor_data,technology,type,cardinality,warn",
+
+DIAG fields:
+
+XML fields:
 
 Formats
 * CSV: http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=csv
