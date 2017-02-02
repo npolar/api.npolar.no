@@ -26,14 +26,14 @@
       "description": "The corresponding MS access database id",
       "type": "string"
     },
-     "colony_name": {
-      "description": "Colony name",
-      "type": "string"
-    },
      "colony_last_update": {
       "description": "When was field data collected last time?",
       "type": "string",
       "format": "date-time"
+    },
+     "colony_name": {
+      "description": "Colony name",
+      "type": "string"
     },
      "colony_alternative_name": {
       "description": "Colony's alternative name",
@@ -199,6 +199,10 @@
        "description": "Island information about the colony",
        "type": "object",
         "properties": {
+             "access_id": {
+                "description": "id from the access database",
+                "type": "string"
+             },
              "island": {
                 "description": "name of island",
                 "type": "string"
@@ -209,10 +213,6 @@
              },
              "archipelago": {
                 "description": "the island belong to archipelago",
-                "type": "string"
-             },
-             "island_updated": {
-                "description": "information about the island was last updated",
                 "type": "string"
              }
         },
@@ -254,7 +254,7 @@
        "description": "Where the colony is mentioned first",
        "type": "object",
         "properties": {
-             "refID": {
+             "ref_id":{
                 "description": "refenceID from MS database.",
                 "type": "string"
              },
@@ -303,10 +303,6 @@
         "properties": {
     "access_id": {
       "description": "The corresponding MS access database id",
-      "type": "string"
-    },
-    "colony_id": {
-      "description": "Species belonging to colony",
       "type": "string"
     },
     "species": {
@@ -400,7 +396,7 @@
        "description": "The source where the count first was described",
        "type": "object",
         "properties": {
-             "refID": {
+             "ref_id{
                 "description": "RefenceID from Access database",
                 "type": "string"
              },
@@ -414,6 +410,10 @@
              },
              "year": {
                 "description": "year reference was published",
+                "type": "string"
+             },
+             "volume": {
+                "description": "publication volume",
                 "type": "string"
              },
              "pages": {
@@ -439,7 +439,8 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
+          "obs_id":{
+            "description": "RefenceID from Access database",
             "type": "string"
           },
           "first_name": {
@@ -456,7 +457,7 @@
           "postal_code": {
             "type": "string"
           },
-          "@country": {
+          "country": {
             "type": "string"
           },
            "phone": {
