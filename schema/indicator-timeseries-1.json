@@ -235,6 +235,12 @@
 				}
 			}
 		},
+		"domainType": {
+			"type": "string",
+			"enum": ["PointSeries", "PolygonSeries"],
+			"default": "PointSeries",
+			"description": "CovJSON domainType"
+		},
 		"resolution": {
 			"type": "string",
 			"enum": ["year", "month", "day", "hour", "minute", "second"],
