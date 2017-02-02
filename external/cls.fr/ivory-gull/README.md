@@ -98,6 +98,3 @@ Formats
 * CSV: http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=csv
 * JSON: http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=json&variant=array
 * GeoJSON: http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=geojson
-
-CSV to disk
-$ curl "http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=csv&limit=all" > "$MIDL/ivory-gull-argos-all.csv"
