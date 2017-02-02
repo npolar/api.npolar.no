@@ -215,7 +215,7 @@
                 "description": "information about the island was last updated",
                 "type": "string"
              }
-        }
+        },
       "additionalProperties": false
     },
     "length": {
@@ -293,6 +293,179 @@
             "description": "Geojson object outlining the colony",
             "type": "object"
     },
+    "count": {
+     "description": "List of people participating on the cruise",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+    "access_id": {
+      "description": "The corresponding MS access database id",
+      "type": "string"
+    },
+    "colony_id": {
+      "description": "Species belonging to colony",
+      "type": "string"
+    },
+    "species": {
+      "description": "Which species",
+      "type": "string"
+    },
+    "start_date": {
+      "description": "Start date of counting",
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_date": {
+      "description": "End date of counting",
+      "type": "string",
+      "format": "date-time"
+    },
+    "mean":{
+      "description": "mean count value for the species in the colony",
+      "type": "number"
+    },
+    "max":{
+      "description": "max count value for the species in the colony",
+      "type": "number"
+    },
+    "min":{
+      "description": "min count value for the species in the colony",
+      "type": "number"
+    },
+    "accuracy":{
+      "description": "how accurate is the count",
+      "type": "string",
+      "enum": [
+          "exactly",
+          "rough estimate"
+      ]
+    },
+    "unit":{
+      "description": "Type of unit",
+      "type": "string",
+      "enum": [
+          "individual",
+          "unknown",
+          "apparently occupied nest",
+          "nest",
+          "adult male",
+          "unknown but probably pairs",
+          "unknown but probably individuals"
+      ]
+    },
+    "method":{
+      "description": "Counting method",
+      "type": "string",
+      "enum": [
+          "direct count",
+          "from photograph",
+          "extrapolated",
+          "combination",
+          "unknown"
+      ]
+    },
+    "platform":{
+      "description": "Viewed from platform",
+      "type": "string",
+      "enum": [
+          "land",
+          "boat",
+          "helicopter",
+          "airplane",
+          "combination",
+          "unknown"
+      ]
+    },
+    "breeding":{
+      "description": "Stage of breeding",
+      "type": "string",
+      "enum": [
+          "pre-laying period",
+          "eggs only",
+          "hatching period",
+          "chicks only",
+          "unknown but breeding",
+          "not breeding season",
+          "unknown"
+      ]
+    },
+    "useful":{
+      "description": "Useful as total count?",
+      "type": "boolean"
+    },
+    "reference":{
+       "description": "The source where the count first was described",
+       "type": "object",
+        "properties": {
+             "refID": {
+                "description": "RefenceID from Access database",
+                "type": "string"
+             },
+             "authors": {
+                "description": "reference authors",
+                "type": "string"
+             },
+             "title": {
+                "description": "reference title",
+                "type": "string"
+             },
+             "year": {
+                "description": "year reference was published",
+                "type": "string"
+             },
+             "pages": {
+                "description": "refence pages",
+                "type": "string"
+             },
+             "journal": {
+                "description": "reference journal",
+                "type": "string"
+             }
+        },
+      "additionalProperties": false
+    },
+    "comment":{
+      "description": "comment about the count",
+      "type": "string"
+    },
+     "people": {
+ "description": "List of people participating on the cruise",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "first_name": {
+            "description": "First and middle name",
+            "type": "string"
+          },
+          "last_name": {
+            "description": "Last name",
+            "type": "string"
+          },
+           "address": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "@country": {
+            "type": "string"
+          },
+           "phone": {
+            "type": "string"
+          }
+        }
+      }
+}
+}}},
     "created": {
       "description": "The date the document was created.",
       "type": "string",
@@ -305,6 +478,17 @@
     "colony_area":{
       "description": "area measured from above - 0 and 1 - remove ??",
             "type": "string"
+    },
+     "predators":{
+      "description": "Predators in the colony",
+      "type": "string",
+      "enum": [
+          "rat",
+          "mink",
+          "cat",
+          "rabbit",
+          "other"
+      ]
     },
     "updated": {
       "description": "The date the document was last updated.",
