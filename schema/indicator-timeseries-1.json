@@ -236,13 +236,13 @@
 			}
 		},
 		"domainType": {
-			"type": "string",
+			"type": ["string","null"],
 			"enum": ["PointSeries", "PolygonSeries"],
 			"default": "PointSeries",
 			"description": "CovJSON domainType"
 		},
 		"resolution": {
-			"type": "string",
+			"type": ["string","null"],
 			"enum": ["year", "month", "day", "hour", "minute", "second"],
 			"default": "year",
 			"description": "Data period (minimum time between reported values)"
