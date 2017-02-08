@@ -16,12 +16,17 @@
         "http://api.npolar.no/schema/seabird-colony"
       ]
     },
+     "collection": {
+      "type": "string",
+      "default": "seabird-colony"
+    },
     "lang": {
       "description": "The language of the document",
       "type": "string",
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
+
     "access_id":{
       "description": "The corresponding MS access database id",
       "type": "string"
@@ -274,6 +279,10 @@
                 "description": "year reference was published",
                 "type": "string"
              },
+              "volume": {
+                "description": "year reference was published",
+                "type": "string"
+             },
              "pages": {
                 "description": "refence pages",
                 "type": "string"
@@ -291,7 +300,18 @@
     },
     "geometry": {
             "description": "Geojson object outlining the colony",
-            "type": "object"
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "description": "the type of geometry object",
+                "type": "string"
+              },
+              "coordinates": {
+                "description": "the coordinates",
+                "type": "string"
+              }
+          }
     },
     "count": {
      "description": "List of people participating on the cruise",
@@ -392,47 +412,12 @@
       "description": "Useful as total count?",
       "type": "boolean"
     },
-    "reference":{
-       "description": "The source where the count first was described",
-       "type": "object",
-        "properties": {
-             "ref_id{
-                "description": "RefenceID from Access database",
-                "type": "string"
-             },
-             "authors": {
-                "description": "reference authors",
-                "type": "string"
-             },
-             "title": {
-                "description": "reference title",
-                "type": "string"
-             },
-             "year": {
-                "description": "year reference was published",
-                "type": "string"
-             },
-             "volume": {
-                "description": "publication volume",
-                "type": "string"
-             },
-             "pages": {
-                "description": "refence pages",
-                "type": "string"
-             },
-             "journal": {
-                "description": "reference journal",
-                "type": "string"
-             }
-        },
-      "additionalProperties": false
-    },
     "comment":{
       "description": "comment about the count",
       "type": "string"
     },
      "people": {
- "description": "List of people participating on the cruise",
+      "description": "List of people participating on the cruise",
       "type": "array",
       "additionalItems": false,
       "items": {
@@ -467,18 +452,13 @@
       }
 }
 }}},
-    "created": {
-      "description": "The date the document was created.",
-      "type": "string",
-      "format": "date-time"
-    },
     "historical_colony": {
       "description": "where was the colony first described",
             "type": "string"
     },
     "colony_area":{
       "description": "area measured from above - 0 and 1 - remove ??",
-            "type": "string"
+            "type": "boolean"
     },
      "predators":{
       "description": "Predators in the colony",
@@ -490,6 +470,11 @@
           "hare",
           "other"
       ]
+    },
+    "created": {
+      "description": "The date the document was created.",
+      "type": "string",
+      "format": "date-time"
     },
     "updated": {
       "description": "The date the document was last updated.",
