@@ -363,6 +363,7 @@
       "description": "Type of unit",
       "type": "string",
       "enum": [
+          "pair",
           "individual",
           "unknown",
           "apparently occupied nest",
