@@ -10,6 +10,7 @@
        "type": "measurement",
        "index": "radiation-zeppelin",
        "params": {
+           "sort":"-created",
            "date-year": "created",
            "date-month": "created",
            "date-day": "created"
@@ -43,14 +44,11 @@
                "open": true,
                "system": "https://api.npolar.no/radiation/zeppelin"
            }
-       ],
-       [
-           "Npolar::Rack::ZeppelinTsvParser"
        ]
    ],
    "open": true,
-   "updated": "2015-12-02T12:05:32Z",
-   "updated_by": "conrad.helgeland@npolar.no",
+   "updated": "2017-02-09T13:27:32Z",
+   "updated_by": "ruben@npolar.no",
    "created": "2014-10-31T08:19:43Z",
    "created_by": "conrad",
    "accepts": {
