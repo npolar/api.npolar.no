@@ -416,6 +416,45 @@
       "description": "comment about the count",
       "type": "string"
     },
+    "reference":{
+       "description": "Where the colony is mentioned first",
+       "type": "object",
+        "properties": {
+             "ref_id":{
+                "description": "refenceID from MS database.",
+                "type": "string"
+             },
+             "ref_unique_id": {
+                "description": "refence id from ???",
+                "type": "string"
+             },
+             "authors": {
+                "description": "reference authors",
+                "type": "string"
+             },
+             "title": {
+                "description": "reference title",
+                "type": "string"
+             },
+             "year": {
+                "description": "year reference was published",
+                "type": "string"
+             },
+              "volume": {
+                "description": "year reference was published",
+                "type": "string"
+             },
+             "pages": {
+                "description": "refence pages",
+                "type": "string"
+             },
+             "journal": {
+                "description": "reference journal",
+                "type": "string"
+             }
+        },
+      "additionalProperties": false
+    },
      "people": {
       "description": "List of people participating on the cruise",
       "type": "array",
