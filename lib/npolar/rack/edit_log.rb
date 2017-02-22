@@ -9,7 +9,7 @@ module Npolar
     # use Npolar::Rack::EditLog,
     #   save: lambda {|edit| # whatever },
     class EditLog < Npolar::Rack::Middleware
-      
+
       CONFIG = {
         edit: nil,
         save: nil,
@@ -17,7 +17,7 @@ module Npolar
         open: nil,
         max_body_size: nil,
       }
-      
+
       # See Npolar::Rack::Middleware
       def condition?(request)
         request.edit? and app.respond_to?(:call)
@@ -49,7 +49,7 @@ module Npolar
         end
 
         id = UUIDTools::UUID.random_create.to_s
-        
+
         url = URI.parse(request.url)
         server = url.host
         port = url.port
@@ -60,9 +60,9 @@ module Npolar
         # Identifier
         identifier = request.id
         if identifier.nil? and endpoint != "" and path != endpoint
-          identifier = path.split(endpoint)[1]  
+          identifier = path.split(endpoint)[1]
         end
-        
+
         # Revision - from ETag minus "
         revision = nil
         if response.respond_to?(:header) and not response.header["ETag"].nil?
@@ -101,9 +101,9 @@ module Npolar
           authorization = request.env["HTTP_AUTHORIZATION"].split(" ")[0]
         end
 
-        # Store incoming body for *open* data (when we have a revision)           
+        # Store incoming body for *open* data (when we have a revision)
         if request.delete?
-          body = body_hash = nil 
+          body = body_hash = nil
         else
 
           body = request.body.read
@@ -114,9 +114,9 @@ module Npolar
             body = nil
           end
         end
-        
+
         max_body_size = config[:max_body_size].to_i
-        
+
         edit = {
           id: id,
           server: server,
@@ -127,13 +127,13 @@ module Npolar
           revision: revision,
           location: location,
           request: {
- 
+
             uri: request.url,
             format: request.format,
             mediatype: request.media_type,
             authorization: authorization,
             protocol: request.env["SERVER_PROTOCOL"],
-            username: URI.decode(request.username),
+            username: request.username,
             time: Time.now.utc.iso8601,
             ip: request.ip,
             body: body.nil? ? nil : body,
@@ -147,21 +147,23 @@ module Npolar
             header: header,
             body: response_body(response, status, open?)
 
-          },   
+          },
           severity: severity(status),
           open: open?
         }
-        
-        # Limit request and response body to max body size
-        if max_body_size <= 0
-          edit[:request][:body] = "[⋯]"
-          edit[:response][:body] = "[⋯]"
-        elsif edit[:request][:body].size > max_body_size 
-          edit[:request][:body] = edit[:request][:body][0..max_body_size].force_encoding("utf-8")+"[⋯]"
-        elsif edit[:response][:body].size > max_body_size
-          edit[:response][:body] = edit[:response][:body][0..max_body_size].force_encoding("utf-8")+"[⋯]"
+
+        # Limit POST and PUT request and response body to max body size
+        if request.request_method != "DELETE"
+          if max_body_size <= 0
+            edit[:request][:body] = "[⋯]"
+            edit[:response][:body] = "[⋯]"
+          elsif edit[:request][:body].size > max_body_size
+            edit[:request][:body] = edit[:request][:body][0..max_body_size].force_encoding("utf-8")+"[⋯]"
+          elsif edit[:response][:body].size > max_body_size
+            edit[:response][:body] = edit[:response][:body][0..max_body_size].force_encoding("utf-8")+"[⋯]"
+          end
         end
-    
+        
         edit[:request][:header][:"Content-Type"] = request.env["CONTENT_TYPE"]
         edit[:request][:header][:"Content-Length"] = request.env["CONTENT_LENGTH"].to_i
         edit[:request][:header][:"User-Agent"] = request.user_agent
@@ -169,7 +171,7 @@ module Npolar
       end
 
       def response_body(response, status, open_data)
-        
+
         if response.respond_to?(:body)
           body = response.body
         else
@@ -183,11 +185,11 @@ module Npolar
         if body.is_a? StringIO
           body = body.read
         end
-        
+
         if status >= 400
           body
         elsif true == open_data
-          body     
+          body
         else
           ""
         end
@@ -196,7 +198,7 @@ module Npolar
       def open?
         config[:open] == true
       end
-      
+
       # http://tools.ietf.org/html/rfc5424#section-6.2.1
       #0       Emergency: system is unusable
       #1       Alert: action must be taken immediately
