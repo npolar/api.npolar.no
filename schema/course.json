@@ -43,17 +43,11 @@
       ]
     },
     "start_date": {
-      "type": [
-        "string",
-        "null"
-      ],
+      "type":"string",
       "format": "date-time"
     },
     "end_date": {
-      "type": [
-        "string",
-        "null"
-      ],
+      "type":"string",
       "format": "date-time"
     },
     "people": {
