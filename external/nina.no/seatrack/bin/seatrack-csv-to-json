@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-# $ cat seatrack-db/v1/2016/seatrack_export_*.csv | ./bin/seatrack-csv-to-json > seed/seatrack.json
+# $ cd ~/npolar/api.npolar.no/external/nina.no/seatrack
+# $ cat seatrack-db/v2/2016/seatrack_export_2016-05-13.csv | ./bin/seatrack-csv-to-json > seed/seatrack-db-v2.geojson
 
 require "csv"
 require "time"
@@ -9,24 +10,26 @@ require "digest/sha1"
 require "hashie"
 
 begin
-  
+
   log = Logger.new(STDERR)
   log.level = Logger::DEBUG
-  
+
   input = STDIN
-  separator = ";"
-  
+  separator = ","
+
   species_lambda = lambda {|name|
     case name
     when /^Common eider/i
       "Somateria mollissima" # Ærfugl
     when /^Common guillemot/i
       "Uria aalge" # Lomvi
+    when /Atlantic puffin/i
+      "Fratercula arctica" # Lunde
     else
       raise "Missing species: #{name}"
     end
   }
-  
+
   def colony_lambda
     lambda {|colony|
 
@@ -47,38 +50,77 @@ begin
       colony
     }
   end
-  
-  
+
+
   row_lambda = lambda {|row, i|
-    
-    #log.debug row.to_json
-    measured = Time.parse(row.date_time.gsub(/\s/,"T")+"Z")
-    latitude = longitude = geometry = nil
-    
-    if row.eqfilter3 == "1" and (row.lat_smooth2_eqfilt3 != row.lat_smooth2)
-      log.warn row.lat_smooth2_eqfilt3
-      log.warn row.lat_smooth2
-      log.warn "*"*80
+
+    log.debug row.to_json
+    dt = row.date_time
+
+    begin
+      measured = Time.parse(dt.gsub(/\s/,"T")+"Z")
+    rescue
+      measured = Time.parse("1000-01-01")
     end
-    
-    if row.lat_smooth2 != "NA" and row.lon_smooth2 != "NA"
-      if row.eqfilter3 == "1"
-         latitude = row.lat_smooth2_eqfilt3.to_f
+
+    latitude = longitude = geometry = nil
+
+    if (!row.eqfilter3.nil? and row.lat_smooth2_eqfilt3 != row.lat_smooth2)
+      if row.lat_smooth2_eqfilt3 != "NA"
+        log.warn row.lat_smooth2_eqfilt3
+        log.warn row.lat_smooth2
+        log.warn row.to_json
+        log.warn "*"*80
+        raise row.to_json
       else
-         latitude = row.lat_smooth2.to_f
+        # noop: OK
       end
+    end
+
+    if row.eqfilter3 == "1" and row.lat_smooth2_eqfilt3 != "NA" and row.lon_smooth2 != "NA"
+
+      latitude = row.lat_smooth2_eqfilt3.to_f
       longitude = row.lon_smooth2.to_f
-      
+      algorithm = "eqfilter3"
+
+    elsif row.lat_smooth2? and row.lon_smooth2? and row.lat_smooth2 != "NA" and row.lon_smooth2 != "NA"
+
+      latitude = row.lat_smooth2.to_f
+      longitude = row.lon_smooth2.to_f
+      algorithm = "smooth2"
+
+    elsif row.lat_raw? and row.lon_raw? and row.lat_raw != "NA" and row.lon_raw != "NA"
+
+      latitude = row.lat_raw.to_f
+      longitude = row.lon_raw.to_f
+      algorithm = "raw"
+    else
+      latitude = nil
+      longitude = nil
+      algorithm = nil
+    end
+
+    if algorithm.nil?
+      geometry = nil
+    else
+      coordinates = [longitude,latitude]
       geometry = {
         type: "Point",
-        coordinates: [longitude,latitude]
+        coordinates: coordinates
       }
+      if ["raw", "smooth2"].include? algorithm
+        log.debug geometry
+      end
     end
-    
+
     #id = Digest::SHA1.hexdigest(row.to_json)
+
+    created = "#{row.import_date}T12:00:00Z"
+
     p = Hashie::Mash.new({ id: row.id,
-      created: Time.parse(row.import_date+"T12:00:00Z").utc.iso8601,
+      created: Time.parse(created).utc.iso8601,
       geometry: geometry,
+
       # The following data duplication of time and position is to facilate easier search
       latitude: latitude,
       longitude: longitude,
@@ -87,20 +129,22 @@ begin
       month: measured.month.to_i,
       day: measured.day.to_i,
       ## End of data duplication
+
       type: "Feature",
       properties: {
         time: measured.utc.iso8601,
-        species: species_lambda.call(row.species),
+        species: row.latin_name,
         confidence: row.conf.to_i,
         colony: colony_lambda.call(row.colony),
         technology: "gls",
+        algorithm: algorithm,
         individual: row.ring_number.to_s,
         project: "seatrack",
         object: row.species,
         data_version: row.data_version.to_i
       }
     })
-    
+
     #log.info p.to_json
     p
   }
@@ -119,18 +163,16 @@ begin
   csv = CSV(input, csv_options)
 
   csv.each_with_index {|row,i|
-    
+
     unless row.header_row?
       features << row_lambda.call(Hashie::Mash.new(row.to_hash), i)
     end
-    
-  }  
+
+  }
   log.debug __FILE__+" parsed #{features.size} rows"
 
   features = features.reject {|f| f["geometry"].nil? }
-  
-  # reject current? data version
-  
+
   log.debug __FILE__+" rows #{features.size} contained geometry"
 
 
@@ -138,11 +180,13 @@ begin
     type: "FeatureCollection",
     features: features
   }
-  # if geojson
-  # else
-  puts features.to_json
-  #end
-  exit(0)
+  outputGeoJSON = true
+
+  if outputGeoJSON
+    puts geojson.to_json
+  else
+    puts features.to_json
+  end
 
 rescue => e
 
