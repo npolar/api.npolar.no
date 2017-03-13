@@ -1,9 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/geology-samples",
+  "id": "http://api.npolar.no/schema/rock-collection",
   "type": "object",
   "additionalProperties": false,
-  "required": ["title", "research_type", "research_station", "summary","topics"],
+  "required": ["title"],
   "properties": {
     "id": {
       "type": "string"
@@ -26,7 +26,8 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
-     "sample_name": {
+     "title": {
+      "description":"Sample name",
       "type": "string"
     },
       "original_sample_name": {
@@ -70,55 +71,6 @@
         "type": ["string", "null"]
       }
     },
-     "comment": {
-      "type": "string"
-    },
-    "links": {
-      "description": "Links to data, references, project, parent, doi, related, self, alternate, etc. See IANA's registry: http://www.iana.org/assignments/link-relations/link-relations.xhtml and the Atom Format RFC: http://tools.ietf.org/html/rfc4287 and ",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "rel": { "type": "string",
-          "enum":["related",
-            "metadata",
-            "project",
-            "publication",
-            "doi"],
-          "default": "related"},
-          "href": {
-            "type": "string",
-            "format": "uri"
-          },
-          "title": {
-            "type": ["string", "null"]
-          },
-          "hreflang": {
-            "type": ["string", "null"]
-          },
-          "length": {
-            "type": ["number", "null"]
-          },
-          "type": {
-            "type": "string",
-            "default": "text/html"
-          },
-          "hash": {
-            "type": ["string", "null"]
-          },
-          "license": {
-            "type": ["string", "null"],
-            "format": "uri"
-          },
-          "modified": {
-            "type": ["string", "null"]
-          }
-        },
-        "required": ["href", "rel"]
-      }
-   },
   "people": {
         "type": "object",
         "additionalProperties": false,

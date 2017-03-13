@@ -1,28 +1,28 @@
 {
-  "_id": "seabird-colony-api",
+  "_id": "rock-collection-api",
   "schema": "http://api.npolar.no/schema/api",
-  "id": "seabird-colony-api",
-  "path": "/seabird-colony",
-  "title": "Seabird colony API",
+  "id": "rock-collection-api",
+  "path": "/rock-collection",
+  "title": "Geology rock collection API",
   "storage": "Couch",
-  "database": "seabird-colony",
-  "model": "Seabird-colony",
+  "database": "rock-collection",
+  "model": "Rock-collection",
   "middleware": [
     [
       "Npolar::Rack::AttachmentDownloader",
       {
-        "database": "seabird-colony"
+        "database": "rock-collection"
       }
     ]
   ],
   "search": {
     "engine": "Elasticsearch",
-    "index": "seabird-colony",
-    "type": "seabird-colony",
+    "index": "rock-collection",
+    "type": "rock-collection",
     "params": {
       "size-facet": 99,
       "date-year": "created",
-      "facets": "colony_name,conservation_type,region,zone,count.species,count.start_date"
+      "facets": ""
     }
   },
   "verbs": [
@@ -38,7 +38,7 @@
     "json": "application/json; charset=utf8"
   },
   "accepts": {
-    "application/json": "https://api.npolar.no/schema/seabird-colony"
+    "application/json": "https://api.npolar.no/schema/rock-collection"
   },
   "category": [
     "CouchDB",
@@ -60,11 +60,11 @@
   "open": true,
   "auth": {
     "authorize": "editor",
-    "system": "seabird-colony",
+    "system": "rock-collection",
     "authorizer": "Npolar::Auth::Ldap"
   },
-  "updated": "2017-02-08T09:36:32Z",
+  "updated": "2017-03-13T09:36:32Z",
   "updated_by": "siri",
-  "created": "2017-02-08T11:35:26Z",
+  "created": "2017-03-13T11:35:26Z",
   "created_by": "siri"
 }
