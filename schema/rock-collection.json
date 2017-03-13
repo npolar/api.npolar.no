@@ -54,7 +54,7 @@
     "rock_description": {
       "type": "string"
     },
-     "thin section": {
+     "thin_section": {
       "type": "string"
     },
      "collected_year": {

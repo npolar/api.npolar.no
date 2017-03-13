@@ -22,7 +22,7 @@
     "params": {
       "size-facet": 99,
       "date-year": "created",
-      "facets": ""
+      "facets": "title,original_sample_name,placename,latitude,longitude,lithology,thin_section"
     }
   },
   "verbs": [
