@@ -116,6 +116,54 @@
         "required": ["href"]
       }
     },
+    "files": {
+			"type": "array",
+			"description": "",
+			"items": {
+				"type": "object",
+				"properties": {
+					"href": {
+						"type": "string",
+						"description": "Web address (URI) of the attached file",
+						"format": "uri"
+					},
+					"filename": {
+						"type": "string",
+						"description": "File name"
+					},
+					"type": {
+						"type": "string",
+						"description": "Media type"
+					},
+          "size": {
+						"type": "number",
+						"description": "Byte size of file"
+					}
+				}
+			}
+		},
+    "images": {
+			"type": "array",
+			"description": "",
+			"items": {
+				"type": "object",
+				"properties": {
+					"href": {
+						"type": "string",
+						"description": "Web address (URI) of the attached file",
+						"format": "uri"
+					},
+          "title": {
+						"type": "string",
+						"description": "Title"
+					},
+          "attribution": {
+						"type": "string",
+						"description": "Attribution text"
+					}
+				}
+			}
+		},
     "created_by": {
       "type": "string"
     },
