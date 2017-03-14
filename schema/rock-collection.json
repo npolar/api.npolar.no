@@ -10,7 +10,7 @@
     },
     "collection": {
       "type": "string",
-      "default": "geology-samples"
+      "default": "rock-collection"
     },
     "schema": {
       "type": "string"
@@ -82,6 +82,9 @@
             "type": "string"
           },
           "last_name": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           },
            "organisation": {
