@@ -16,7 +16,11 @@
       "type": "string"
     },
     "schema": {
-      "type": "string"
+      "type": "string",     
+      "enum": [
+        "http://api.npolar.no/schema/course"
+]
+
     },
     "collection": {
       "enum": [
