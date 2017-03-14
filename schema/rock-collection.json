@@ -84,6 +84,9 @@
           "last_name": {
             "type": "string"
           },
+          "email": {
+            "type": "string"
+          },
            "organisation": {
             "type": "string"
           }
