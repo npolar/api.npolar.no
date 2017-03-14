@@ -6,7 +6,7 @@
   "title": "Geology rock collection API",
   "storage": "Couch",
   "database": "rock-collection",
-  "model": "RockCollection",
+  "model": "Rock-collection",
   "middleware": [
     [
       "Npolar::Rack::AttachmentDownloader",
