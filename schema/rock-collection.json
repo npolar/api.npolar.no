@@ -10,7 +10,7 @@
     },
     "collection": {
       "type": "string",
-      "default": "geology-samples"
+      "default": "rock-collection"
     },
     "schema": {
       "type": "string"
