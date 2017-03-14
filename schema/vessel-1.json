@@ -106,7 +106,7 @@
           "href": {
             "type": "string",
             "description": "URI (web location)",
-            "format": "uri"
+            "format": "iri"
           },
           "title": {
             "type": "string",
@@ -124,8 +124,8 @@
 				"properties": {
 					"href": {
 						"type": "string",
-						"description": "Web address (URI) of the attached file",
-						"format": "uri"
+						"description": "Web address (IRI) of the attached file",
+						"format": "iri"
 					},
 					"filename": {
 						"type": "string",
@@ -150,8 +150,13 @@
 				"properties": {
 					"href": {
 						"type": "string",
-						"description": "Web address (URI) of the attached file",
-						"format": "uri"
+						"description": "Web address (IRI) of the attached file",
+						"format": "iri"
+					},
+          "filename": {
+						"type": "string",
+						"description": "Filename",
+						"format": "iri"
 					},
           "title": {
 						"type": "string",
