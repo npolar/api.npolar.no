@@ -7,8 +7,7 @@
   "additionalProperties": false,
   "required": [
     "title",
-    "coursetype_id",
-    "schema"
+    "coursetype_id"
   ],
   "properties": {
     "id": {

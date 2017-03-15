@@ -7,7 +7,6 @@
   "additionalProperties": false,
   "required": [
     "title",
-    "schema",
     "area"
   ],
   "properties": {
