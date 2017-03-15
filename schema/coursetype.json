@@ -15,10 +15,6 @@
       "description": "Identifier (UUID | URI)",
       "type": "string"
     },
-    "schema": {
-      "type": "string",
-      "pattern": "^http(s)?:\/\/"
-    },
     "collection": {
       "enum": [
         "coursetype"
