@@ -17,9 +17,7 @@
     },
     "schema": {
       "type": "string",
-      "enum": [
-        "http://api.npolar.no/schema/coursetype"
-    ]
+      "pattern": "^http(s)?:\/\/"
     },
     "collection": {
       "enum": [
