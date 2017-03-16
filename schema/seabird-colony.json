@@ -183,10 +183,6 @@
               "unknown"
               ]
     },
-    "island_access_id": {
-        "description": "id from the access database",
-        "type": "string"
-    },
     "island": {
          "description": "name of island",
          "type": "string"
@@ -227,7 +223,7 @@
       "description": "The map that shows the colony place",
             "type": "string"
     },
-    "reference":{
+    "colony_reference":{
        "description": "Where the colony is mentioned first",
        "type": "object",
         "properties": {
