@@ -9,13 +9,6 @@
       "description": "Resource identifier (UUID)",
       "type": "string"
     },
-    "schema": {
-      "description": "Schema defining this object (this schema)",
-      "type": "string",
-      "enum": [
-        "http://api.npolar.no/schema/seabird-colony"
-      ]
-    },
      "collection": {
       "type": "string",
       "default": "seabird-colony"
@@ -26,16 +19,6 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
-
-    "access_id":{
-      "description": "The corresponding MS access database id",
-      "type": "string"
-    },
-     "colony_last_update": {
-      "description": "When was field data collected last time?",
-      "type": "string",
-      "format": "date-time"
-    },
      "colony_name": {
       "description": "Colony name",
       "type": "string"
@@ -43,19 +26,6 @@
      "colony_alternative_name": {
       "description": "Colony's alternative name",
       "type": "string"
-    },
-    "conservation_type":{
-      "description": "Conservation type",
-      "type": "string",
-      "enum": [
-          "IBA",
-          "Ramsar",
-          "Emerald",
-          "World Heritage",
-          "IUCN-categories",
-          "National Conservation Status",
-          "Biosphere Reserve"
-      ]
     },
     "region": {
             "description": "The region the colony belongs to",
@@ -178,6 +148,19 @@
                 "digital map"
             ]
     },
+     "conservation_type":{
+      "description": "Conservation type",
+      "type": "string",
+      "enum": [
+          "IBA",
+          "Ramsar",
+          "Emerald",
+          "World Heritage",
+          "IUCN-categories",
+          "National Conservation Status",
+          "Biosphere Reserve"
+      ]
+    },
     "colony_type": {
             "description": "Type of colony",
             "type": "string",
@@ -200,28 +183,21 @@
               "unknown"
               ]
     },
-    "island":{
-       "description": "Island information about the colony",
-       "type": "object",
-        "properties": {
-             "access_id": {
-                "description": "id from the access database",
-                "type": "string"
-             },
-             "island": {
-                "description": "name of island",
-                "type": "string"
-             },
-             "size": {
-                "description": "reference journal",
-                "type": "string"
-             },
-             "archipelago": {
-                "description": "the island belong to archipelago",
-                "type": "string"
-             }
-        },
-      "additionalProperties": false
+    "island_access_id": {
+        "description": "id from the access database",
+        "type": "string"
+    },
+    "island": {
+         "description": "name of island",
+         "type": "string"
+    },
+    "island_size": {
+         "description": "reference journal",
+         "type": "string"
+    },
+    "island_archipelago": {
+         "description": "the island belong to archipelago",
+         "type": "string"
     },
     "length": {
             "description": "colony length - applies mostly to coast colonies",
@@ -251,11 +227,7 @@
       "description": "The map that shows the colony place",
             "type": "string"
     },
-    "catching": {
-      "description": "Can the birds be accessed/caught in this colony",
-            "type": "boolean"
-    },
-     "reference":{
+    "reference":{
        "description": "Where the colony is mentioned first",
        "type": "object",
         "properties": {
@@ -264,7 +236,7 @@
                 "type": "string"
              },
              "ref_unique_id": {
-                "description": "refence id from ???",
+                "description": "refence id from ?",
                 "type": "string"
              },
              "authors": {
@@ -313,16 +285,27 @@
               }
           }
     },
-    "count": {
-     "description": "List of people participating on the cruise",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
+    "historical_colony": {
+      "description": "where was the colony first described",
+            "type": "string"
+    },
+    "colony_area":{
+      "description": "area measured from above - 0 and 1 - remove ??",
+            "type": "boolean"
+    },
+    "predators":{
+      "description": "Predators in the colony",
+      "type": "string",
+      "enum": [
+          "rat",
+          "mink",
+          "cat",
+          "hare",
+          "other"
+      ]
+    },
     "access_id": {
-      "description": "The corresponding MS access database id",
+      "description": "The corresponding MS access database id for count",
       "type": "string"
     },
     "species": {
@@ -413,103 +396,9 @@
       "description": "Useful as total count?",
       "type": "boolean"
     },
-    "comment":{
+    "count_comment":{
       "description": "comment about the count",
       "type": "string"
-    },
-    "reference":{
-       "description": "Where the colony is mentioned first",
-       "type": "object",
-        "properties": {
-             "ref_id":{
-                "description": "refenceID from MS database.",
-                "type": "string"
-             },
-             "ref_unique_id": {
-                "description": "refence id from ???",
-                "type": "string"
-             },
-             "authors": {
-                "description": "reference authors",
-                "type": "string"
-             },
-             "title": {
-                "description": "reference title",
-                "type": "string"
-             },
-             "year": {
-                "description": "year reference was published",
-                "type": "string"
-             },
-              "volume": {
-                "description": "year reference was published",
-                "type": "string"
-             },
-             "pages": {
-                "description": "refence pages",
-                "type": "string"
-             },
-             "journal": {
-                "description": "reference journal",
-                "type": "string"
-             }
-        },
-      "additionalProperties": false
-    },
-     "people": {
-      "description": "List of people participating on the cruise",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "obs_id":{
-            "description": "RefenceID from Access database",
-            "type": "string"
-          },
-          "first_name": {
-            "description": "First and middle name",
-            "type": "string"
-          },
-          "last_name": {
-            "description": "Last name",
-            "type": "string"
-          },
-           "address": {
-            "type": "string"
-          },
-          "postal_code": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-           "phone": {
-            "type": "string"
-          }
-        }
-      }
-}
-}}},
-    "historical_colony": {
-      "description": "where was the colony first described",
-            "type": "string"
-    },
-    "colony_area":{
-      "description": "area measured from above - 0 and 1 - remove ??",
-            "type": "boolean"
-    },
-     "predators":{
-      "description": "Predators in the colony",
-      "type": "string",
-      "enum": [
-          "rat",
-          "mink",
-          "cat",
-          "hare",
-          "other"
-      ]
     },
     "created": {
       "description": "The date the document was created.",
