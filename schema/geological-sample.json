@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/geological-sample",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "collection": {
+      "type": "string",
+      "default": "geological-sample"
+    },
+    "schema": {
+      "type": "string"
+    },
+     "base": {
+      "enum": [
+        "http://api.npolar.no"
+      ]
+     },
+     "lang": {
+      "description": "The language of the document.",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
+     "title": {
+      "description":"Sample name",
+      "type": "string"
+    },
+      "original_sample_name": {
+      "type": "string"
+    },
+    "latitude": {
+            "description": "Latitude of the location",
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
+    },
+    "longitude": {
+            "description": "Longitude of the location",
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
+    },
+    "placename": {
+      "type": "string"
+    },
+    "lithology": {
+      "type": "string"
+    },
+    "rock_description": {
+      "type": "string"
+    },
+     "thin_section": {
+      "type": "string"
+    },
+     "collected_year": {
+      "type": "string"
+    },
+    "expedition": {
+      "type": "string"
+    },
+    "analysis": {
+      "title": "analysis methods",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": ["string", "null"]
+      }
+    },
+  "people": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+           "organisation": {
+            "type": "string"
+          }
+      }
+    },
+  "links": {
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "rel": {
+                  "type": "string",
+                  "enum": [
+                    "related",
+                    "project",
+                    "publication",
+                    "track",
+                    "expedition"
+                  ]
+                },
+                "href": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "title": {
+                  "type": ["string", "null"]
+                },
+                "hreflang": {
+                  "type": ["string", "null"]
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+     },
+     "files": {
+             "type": "array",
+             "description": "",
+             "items": {
+                  "type": "object",
+                  "properties": {
+              "uri": {
+                "type": "string",
+                "description": "URI of the attached file",
+                "format": "uri"
+              },
+              "filename": {
+                "type": "string",
+                "description": "File name"
+              },
+              "title": {
+                "type": "string",
+                "description": "Title"
+              },
+              "length": {
+                "type": "integer",
+                "description": "File size in bytes"
+              },
+              "type": {
+                "type": "string",
+                "description": "Media type (e.g. image/png)"
+              },
+              "hash": {
+                "type": "string",
+                "description": ""
+              }
+            }
+          }
+    },
+    "comment": {
+      "type": "string"
+    },
+    "changes": {
+      "type": "string"
+    },
+    "created": {
+      "description": "Project was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Project was updated",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "_id": {
+      "description": "Internal id",
+      "type": "string"
+    },
+    "_rev": {
+      "description": "Internal revision",
+      "type": "string"
+    },
+    "_deleted": {
+      "description": "Deleted or not",
+      "type": "boolean"
+    }
+  }
+}
