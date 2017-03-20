@@ -22,7 +22,7 @@
     "params": {
       "size-facet": 99,
       "date-year": "created",
-      "facets": "colony_name,conservation_type,region,zone,count.species,count.start_date"
+      "facets": "colony_name,conservation_type,region,zone,species,start_date"
     }
   },
   "verbs": [
