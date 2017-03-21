@@ -2,7 +2,7 @@
   "_id": "geological-sample-api",
   "schema": "http://api.npolar.no/schema/api",
   "id": "geological-sample-api",
-  "path": "/geological-sample",
+  "path": "/geology/sample",
   "title": "Archive for geological samples from the Norwegian polar areas (Svalbard, Dronning Maud Land, Jan Mayen)",
   "storage": "Couch",
   "database": "geological-sample",
