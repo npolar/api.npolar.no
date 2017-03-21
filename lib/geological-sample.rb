@@ -1,10 +1,10 @@
 require "hashie"
 
-class RockCollection < Hashie::Mash
+class GeologicalSample < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
   def schemas
-    ["rock-collection.json"] 
+    ["geological-sample.json"] 
   end
 
 end
