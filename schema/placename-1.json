@@ -89,7 +89,8 @@
 			"type": "integer"
 		},
 		"country": {
-			"type": "string"
+			"type": "string",
+			"enum": ["NO", "US", "RU", "JP", "DE", "BL", "IN", "GB", "CL", "ZA", "AR", "AU", "NZ"]
 		},
 		"area": {
 			"type": "string",
