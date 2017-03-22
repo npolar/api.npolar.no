@@ -30,7 +30,24 @@
       "original_sample_name": {
       "type": "string"
     },
-    "latitude": {
+    "lithology": {
+      "type": "string"
+    },
+     "thin_section": {
+      "type": "string"
+    },
+    "analysis": {
+      "title": "analysis methods",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": ["string", "null"]
+      }
+    },
+    "sample_description": {
+      "type": "string"
+    },
+     "latitude": {
             "description": "Latitude of the location",
             "type": "number",
             "minimum": -90,
@@ -45,54 +62,33 @@
     "@placename": {
       "type": "string"
     },
-    "lithology": {
-      "type": "string"
-    },
-    "sample_description": {
-      "type": "string"
-    },
-     "thin_section": {
-      "type": "string"
-    },
      "collected_year": {
       "type": "string"
     },
     "expedition": {
       "type": "string"
     },
-    "analysis": {
-      "title": "analysis methods",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": ["string", "null"]
-      }
+     "sample_comment": {
+      "title": "comment about the sample",
+      "type":"string"
     },
-    "sample_comment": {
-     "title": "comment about the sample"
-     "type":"string"
+    "people_id": {
+        "type": "string"
     },
-    "people": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "first_name": {
-            "type": "string"
-          },
-          "last_name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-           "organisation": {
-            "type": "string"
-          }
-      }
+    "first_name": {
+        "description": "First and middle name",
+        "type": "string"
     },
+    "last_name": {
+        "description": "Last name",
+        "type": "string"
+    },
+    "organisation": {
+        "type": "string"
+    },
+    "email": {
+        "type": "string"
+   },
   "links": {
             "type": "array",
             "additionalItems": false,
