@@ -68,7 +68,11 @@
         "type": ["string", "null"]
       }
     },
-  "people": {
+    "sample_comment": {
+     "title": "comment about the sample"
+     "type":"string"
+    },
+    "people": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
