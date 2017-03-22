@@ -1,0 +1,255 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"_id": {
+			"type": "string"
+		},
+		"_rev": {
+			"type": "string"
+		},
+		"id": {
+			"type": "string"
+		},
+		"type": {
+			"type": "string",
+			"default": "Feature"
+		},
+		"latitude": {
+			"type": "number"
+		},
+		"longitude": {
+			"type": "number"
+		},
+		"altitude": {
+			"type": "number"
+		},
+		"geometry": {
+			"type": "object",
+			"required": ["type"],
+			"properties": {
+				"type": {
+					"type": "string",
+					"default": "Point"
+				},
+				"geometry": {
+					"type": "object",
+					"properties": {
+						"coordinates": {
+							"type": ["array", "null"],
+							"items": {
+								"type": "number"
+							}
+						}
+					}
+				},
+				"geometries": {
+					"type": ["array", "null"],
+					"items": {
+						"type": "object",
+						"properties": {
+							"type": {
+								"type": "string"
+							},
+							"coordinates": {
+								"type": "array",
+								"items": {
+									"type": "number"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"name": {
+			"type": "object",
+			"required": ["@value", "@language"],
+			"properties": {
+				"@value": {
+					"type": "string"
+				},
+				"@language": {
+					"type": "string",
+					"default": "nn"
+				}
+			}
+		},
+		"status": {
+			"type": "string",
+			"enum": ["official", "historical", "standardised", "other"],
+			"default": "official"
+		},
+		"country_of_origin": {
+			"type": "string",
+			"enum": ["NO", "US", "RU", "JP", "DE", "BL", "IN", "GB", "CL", "ZA", "AR", "AU", "NZ"]
+		},
+		"ident": {
+			"type": "integer"
+		},
+		"country": {
+			"type": "string"
+		},
+		"area": {
+			"type": "string",
+			"enum": ["Svalbard", "Dronning Maud Land", "Jan Mayen", "Bouvetøya", "Peter I Øy", "Arktis", "Antarktis"]
+		},
+		"terrain_type": {
+			"type": "string",
+			"default": "landform",
+			"enum": ["landform", "other", "landcover", "hydrography","building","administrativeUnit","protectedSite","populatedPlace","transportNetwork"]
+		},
+		"terrain": {
+			"type": "object",
+			"additionalProperties": true,
+			"properties": {
+				"en": {
+					"type": "string"
+				},
+				"nn": {
+					"type": "string"
+				}
+			}
+		},
+		"texts": {
+			"type": "object",
+			"properties": {
+				"definition": {
+					"type": "object",
+					"additionalProperties": true,
+					"properties": {
+						"en": {
+							"type": "string"
+						},
+						"nn": {
+							"type": "string"
+						}
+					}
+				},
+				"origin": {
+					"type": "object",
+					"additionalProperties": true,
+					"properties": {
+						"en": {
+							"type": "string"
+						},
+						"nn": {
+							"type": "string"
+						}
+					}
+				},
+				"note": {
+					"type": "object",
+					"additionalProperties": true,
+					"properties": {
+						"en": {
+							"type": "string"
+						},
+						"nn": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		"relations": {
+			"type": "object",
+			"properties": {
+				"replaces": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"required": ["@id"],
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"@id": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"replaced_by": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"@id": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"same_as": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"@id": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"authority": {
+					"type": "object",
+					"properties": {
+						"@context": {
+							"type": "object",
+							"properties": {
+								"@base": {
+									"type": "string",
+									"format": "uri",
+									"default": "http://api.npolar.no/organisation/"
+								}
+							}
+						},
+						"@id": {
+							"type": "string",
+							"default": "npolar.no"
+						}
+					}
+				},
+				"name_committee_case": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"label": {
+								"type": "string"
+							},
+							"@id": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+		"created": {
+			"type": "string"
+		},
+		"updated": {
+			"type": "string"
+		},
+		"updated_by": {
+			"type": "string"
+		},
+		"created_by": {
+			"type": "string"
+		},
+		"properties": {
+			"additionalProperties": true,
+			"type": "object"
+		}
+	},
+	"required": ["name", "status", "area", "country", "type", "terrain_type", "latitude", "longitude"]
+}
