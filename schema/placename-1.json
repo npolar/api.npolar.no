@@ -90,7 +90,7 @@
 		},
 		"country": {
 			"type": "string",
-			"enum": ["NO", "US", "RU", "JP", "DE", "BL", "IN", "GB", "CL", "ZA", "AR", "AU", "NZ"]
+			"enum": ["NO", "US", "RU", "JP", "DE", "BL", "IN", "GB", "CL", "ZA", "AR", "AU", "NZ", "AQ"]
 		},
 		"area": {
 			"type": "string",
