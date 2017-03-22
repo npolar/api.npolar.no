@@ -48,7 +48,7 @@
     "lithology": {
       "type": "string"
     },
-    "rock_description": {
+    "sample_description": {
       "type": "string"
     },
      "thin_section": {
