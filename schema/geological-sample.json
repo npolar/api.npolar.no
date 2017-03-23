@@ -72,9 +72,6 @@
       "title": "comment about the sample",
       "type":"string"
     },
-    "people_id": {
-        "type": "string"
-    },
     "first_name": {
         "description": "First and middle name",
         "type": "string"
@@ -86,9 +83,6 @@
     "organisation": {
         "type": "string"
     },
-    "email": {
-        "type": "string"
-   },
   "links": {
             "type": "array",
             "additionalItems": false,
