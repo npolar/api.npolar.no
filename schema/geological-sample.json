@@ -118,6 +118,7 @@
      },
      "files": {
              "type": "array",
+            "uniqueItems": true,
              "description": "",
              "items": {
                   "type": "object",
