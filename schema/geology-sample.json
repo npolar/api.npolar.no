@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/geological-sample",
+  "id": "http://api.npolar.no/schema/geology-sample",
   "type": "object",
   "additionalProperties": false,
   "required": ["title"],
@@ -10,7 +10,11 @@
     },
     "collection": {
       "type": "string",
-      "default": "geological-sample"
+      "default": "geology-sample"
+    },
+    "schema": {
+      "type": "string",
+      "default": "http://api.npolar.no/schema/geology-sample"
     },
      "base": {
       "enum": [

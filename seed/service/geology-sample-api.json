@@ -1,24 +1,24 @@
 {
-  "_id": "geological-sample-api",
+  "_id": "geology-sample-api",
   "schema": "http://api.npolar.no/schema/api",
   "id": "geological-sample-api",
   "path": "/geology/sample",
   "title": "Archive for geological samples from the Norwegian polar areas (Svalbard, Dronning Maud Land, Jan Mayen)",
   "storage": "Couch",
-  "database": "geological-sample",
-  "model": "Geological-sample",
+  "database": "geology-sample",
+  "model": "Geology::Sample",
   "middleware": [
     [
       "Npolar::Rack::AttachmentDownloader",
       {
-        "database": "geological-sample"
+        "database": "geology-sample"
       }
     ]
   ],
   "search": {
     "engine": "Elasticsearch",
-    "index": "geological-sample",
-    "type": "geological-sample",
+    "index": "geology-sample",
+    "type": "sample",
     "params": {
       "size-facet": 99,
       "date-year": "created",
@@ -38,7 +38,7 @@
     "json": "application/json; charset=utf8"
   },
   "accepts": {
-    "application/json": "https://api.npolar.no/schema/geological-sample"
+    "application/json": "https://api.npolar.no/schema/geology-sample"
   },
   "category": [
     "CouchDB",
@@ -60,7 +60,7 @@
   "open": true,
   "auth": {
     "authorize": "editor",
-    "system": "geological-sample",
+    "system": "geology/sample",
     "authorizer": "Npolar::Auth::Ldap"
   },
   "updated": "2017-03-21T09:36:32Z",
