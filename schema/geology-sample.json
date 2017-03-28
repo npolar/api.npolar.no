@@ -44,6 +44,14 @@
 	],
       "default": "no"
      },
+      "position_accuracy": {
+       "enum": [
+         "GPS",
+         "good estimate",
+         "poorly known (set to placename)"
+        ],
+      "default": "GPS"
+     },
      "thin_section": {
       "type": "string"
     },
