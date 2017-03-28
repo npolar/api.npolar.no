@@ -37,6 +37,13 @@
     "lithology": {
       "type": "string"
     },
+    "draft": {
+       "enum": [
+	 "yes",
+	 "no"
+	],
+      "default": "no"
+     },
      "thin_section": {
       "type": "string"
     },
