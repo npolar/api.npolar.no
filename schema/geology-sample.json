@@ -91,15 +91,8 @@
       "title": "comment about the sample",
       "type":"string"
     },
-    "first_name": {
-        "description": "First and middle name",
-        "type": "string"
-    },
-    "last_name": {
-        "description": "Last name",
-        "type": "string"
-    },
-    "organisation": {
+    "geologist": {
+        "description": "Geologist's name",
         "type": "string"
     },
   "links": {
