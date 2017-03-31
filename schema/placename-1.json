@@ -65,13 +65,13 @@
 		},
 		"name": {
 			"type": "object",
-			"required": ["@value", "@language"],
+			"required": ["@value"],
 			"properties": {
 				"@value": {
 					"type": "string"
 				},
 				"@language": {
-					"type": "string",
+					"type": ["string", "null"],
 					"default": "nn"
 				}
 			}
