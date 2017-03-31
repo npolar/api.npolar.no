@@ -147,9 +147,9 @@
                 "other",
                 "physician",
                 "pilot",
-                "researchTechnitian",
+                "researchTechnician",
                 "security",
-                "serviceTechnitian",
+                "serviceTechnician",
                 "transport"
             ]
           }
@@ -220,9 +220,9 @@
                 "other",
                 "physician",
                 "pilot",
-                "researchTechnitian",
+                "researchTechnician",
                 "security",
-                "serviceTechnitian",
+                "serviceTechnician",
                 "transport"
             ]
           }
