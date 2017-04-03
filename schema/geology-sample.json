@@ -41,7 +41,10 @@
       "type":"string"
     },
     "fossil":{
-      "type":"string"
+      "enum":[
+        "yes",
+        "no"
+      ]
     },
     "draft": {
        "enum": [
