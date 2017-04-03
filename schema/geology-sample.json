@@ -37,6 +37,12 @@
     "lithology": {
       "type": "string"
     },
+    "cabinet_no":{
+      "type":"string"
+    },
+    "fossil":{
+      "type":"string"
+    },
     "draft": {
        "enum": [
 	 "yes",
