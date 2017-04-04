@@ -42,8 +42,8 @@
     },
     "fossil":{
       "enum":[
-        "yes",
-        "no"
+        "no",
+        "yes"
       ]
     },
     "draft": {
