@@ -37,8 +37,11 @@
 			"default": "no"
 		},
 		"title": {
-			"description": "Exact title of the publication. Markdown accepted.",
+			"description": "Title - exactly as published in the original language. Markdown accepted.",
 			"type": "string"
+		},
+		"subtitle": {
+			"type": ["string", "null"]
 		},
 		"publication_lang": {
 			"type": ["string", "null"],
@@ -384,6 +387,7 @@
 					"human-dimension",
 					"management",
 					"marine",
+					"modelling",
 					"maps",
 					"oceanography",
 					"other",
