@@ -1,8 +1,44 @@
 #!/bin/bash
 all_dbs=`curl --silent -XGET "$NPOLAR_API_COUCHDB/_all_dbs" | tr '",' '\n' | grep "^[a-z]"`
 dest="/mnt/datasets/dbmaster.data.npolar.no-replica/couchdb_all_docs"
-for database in $all_dbs 
-  do
-    cmd="curl -XGET $NPOLAR_API_COUCHDB/$database/_all_docs?include_docs=true > $dest/$database.json"
-    $cmd
-  done
+
+mkdir -p "$dest"
+mkdir -p "$dest/_fresh"
+mkdir -p "$dest/_prev"
+echo "Starting CouchDB export from `echo -n $NPOLAR_API_COUCHDB | cut -d'@' -f2` to $dest"
+
+for database in $all_dbs
+do
+
+  prevcount=0
+  freshcount=0
+
+  fresh="$dest/_fresh/$database.json"
+  prev="$dest/_prev/$database.json"
+
+  curl --silent -XGET "$NPOLAR_API_COUCHDB/$database/_all_docs?include_docs=true" > "$fresh"
+
+  if [ -s "$fresh" ] # if fresh > 0 bytes
+  then
+
+    freshcount=`cat "$fresh" | grep -c '"id":'`
+    if [ $freshcount -gt 0 ]
+    then
+
+      if [ -s "$dest/$database.json" ]
+      then
+        mv -f "$dest/$database.json" "$prev"
+        prevcount=`cat "$prev" | grep -c '"id":'`
+      fi
+
+      mv -f "$fresh" "$dest/$database.json"
+      echo "Exported $database (fresh count: $freshcount, previous count: $prevcount)"
+
+    else
+      echo "ERROR: Fresh export of $database to $fresh failed (0 documents found)"
+    fi
+
+  else
+    echo "ERROR: Export of $database to $fresh failed (0 bytes written)"
+  fi
+done
