@@ -49,8 +49,7 @@ class DatasetDoi
   end
 
   def migrations
-    #[hashi,data_link,doi]
-    [protect_unreleased_files,unprotect_released_files,data_link,doi]
+    [hashi,protect_unreleased_files,unprotect_released_files,data_link,doi]
   end
   
   def protect_unreleased_files # ie when the release date is set to the future ie dataset is under embargo
@@ -61,6 +60,12 @@ class DatasetDoi
         if (DateTime.now < released and d.attachments? and d.attachments.any?)
           r = get(_file_base_uri(d.id))
           hashi = JSON.parse r.body
+          
+          if not hashi.key? "files"
+            log.warn "No files: #{d.id} #{d.title}"
+            return d
+          end
+          
           all_restricted = hashi["files"].all? {|f| f.key? "restricted" and f["restricted"] == true }
           if not all_restricted
             log.warn "#{d.id} has uploaded unprotected files, but the release date is in #{(released - DateTime.now).to_i} days [#{released.to_date}] \"#{d.title}\""
@@ -71,10 +76,9 @@ class DatasetDoi
                 log.info "Protecting #{uri}"
                 put(uri+"?restricted=true", "")
               end
-            end
-            
-            
+            end  
           end
+          
         end
       end
       d
@@ -87,8 +91,16 @@ class DatasetDoi
       if d.released and d.released =~ /^[0-9]{4}/
         released = DateTime.parse(d.released)
         if (DateTime.now+1 > released and d.attachments? and d.attachments.any?)
-          r = get(_file_base_uri(d.id))
+          uri = _file_base_uri(d.id)
+          
+          r = get(uri)
           hashi = JSON.parse r.body
+          
+          if not hashi.key? "files"
+            log.warn "No files: #{d.id} #{d.title}"
+            return d
+          end
+          
           protected_uris = hashi["files"].select {|f| f.key?("restricted") and f["restricted"] == true }.map {|f| f["url"] }
           if protected_uris.any?
             log.info "#{d.id} dataset released #{d.released}, unprotecting uploaded files \"#{d.title}\""
@@ -127,9 +139,10 @@ class DatasetDoi
             log.info d.attachments.to_json
           end
         else
-          # No files in hashi
+          # No files in hashi (this should not happen tm)
           if d.attachments? and d.attachments.any?
             log.error "#{d.id} MISSING files: #{d.attachments.to_json}"
+            # d.attachments = []
           end
         end
 
@@ -172,7 +185,7 @@ class DatasetDoi
   def doi
     lambda {|d|
 
-      doi = self.class.doi(d) # remember: a different doi may be registered for various reasons...
+      doi = self.class.doi(d) # remember: a different doi may be registered for various reasons, see line #240
       dataset_is_updated_after_doi = false
       changed = true
 
@@ -189,9 +202,13 @@ class DatasetDoi
           updated = DateTime.parse d.updated
           dataset_is_updated_after_doi = (updated > doi_updated)
 
-          if !d.doi.nil? && d.doi != doi
+          if not d.doi.nil?
+            #if d.doi != doi
+            #   # Not harmful as long as d.doi == doi_identifier
+            #  log.warn "Dataset: #{d.doi} Datacite: #{doi_identifier} - different from auto-generated DOI #{doi}"
+            #end
             if d.doi != doi_identifier
-               log.warn "Dataset DOI #{d.doi} is different from the registered DOI #{doi_identifier}"
+              log.error "Dataset DOI #{d.doi} is different from the registered DOI #{doi_identifier}"
             end
           end
 
@@ -222,7 +239,7 @@ class DatasetDoi
           #begin
 
             url = "https://data.npolar.no/dataset/#{d.id}"
-            newkernel = ::Metadata::DataciteXml.kernel(d, doi)
+            newkernel = ::Metadata::DataciteXml.kernel(d, d.doi) # Using d.doi - the DOI inside the dataset (in case it's different from auto-generated doi)
             xml = newkernel.to_xml
 
             if self.class.dois.include? d.doi or self.class.dois.include? doi
