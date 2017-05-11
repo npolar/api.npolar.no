@@ -9,6 +9,7 @@ module Npolar
       def self.documents(client)
         lambda {|client|
           client.param = { fields: "*"}
+          client.authorization = true
           client.all
           }
       end
@@ -75,8 +76,8 @@ module Npolar
               
               fixed << d
               
-              log.info "[#{fixed.size}] fixed #{d.id} "
-              log.debug "Fixed: #{d.to_json}"
+              #log.info "[#{fixed.size}] fixed #{d.id} "
+              #log.debug "Fixed: #{d.to_json}"
              
             else
               
@@ -86,7 +87,7 @@ module Npolar
               log.error "Failed migrating #{d.id}, errors: #{client.errors(d).to_json}\n#{d.to_json}"
               
             end
-            log.info "="*80
+            #log.info "="*80
             
           else
             unaffected << d
