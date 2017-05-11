@@ -1,10 +1,12 @@
 # encoding: utf-8
 class EditLog
 
+  # @param config {"uri":"https://user:password@couchdb.example.com:6984","database":"api_editlog"}
   def self.save_lambda(config={})
     lambda {|edit|
 
       require "faraday"
+      
 
       uri = config[:uri]
       username = config[:username]
@@ -17,7 +19,6 @@ class EditLog
       id = edit[:id]
 
       edit_text = Yajl::Encoder.encode(edit)
-
 
       faraday = Faraday.new(uri)
 
@@ -37,7 +38,8 @@ class EditLog
 
     }
   end
-
+  
+  # Meant for updating search index, not needed if for example using CouchDB river in Elasticsearch
   def self.index_lambda(config={})
     lambda {|edit|
 
