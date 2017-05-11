@@ -1,70 +1,57 @@
 {
-  "_id": "seabird-colony-api",
-  "schema": "http://api.npolar.no/schema/api",
-  "id": "seabird-colony-api",
-  "path": "/seabird-colony",
-  "title": "Seabird colony API",
-  "storage": "Couch",
-  "database": "seabird-colony",
-  "model": "Seabird-colony",
-  "middleware": [
-    [
-      "Npolar::Rack::AttachmentDownloader",
-      {
-        "database": "seabird-colony"
-      }
+    "id": "seabird-colony-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/seabird-colony",
+    "title": "Seabird colony count API",
+    "summary": "Norwegian Polar Institute's seabird colony count",
+    "storage": "Couch",
+    "database": "seabird-colony",
+    "model": "SeabirdColony",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "seabird-colony",
+        "type": "seabird-colony",
+        "log": false,
+        "params": {
+            "facets": "colony_name,conservation_type,region,zone,species,start_date,length,distance_mainland,island",
+            "date-year": "released",
+            "size-facet": 1000
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "OPTIONS"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "https://api.npolar.no/schema/seabird-colony.json"
+    },
+    "category": [
+        "CouchDB",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no/user/",
+                "open": true,
+                "system": "https://api.npolar.no/seabird-colony"
+            }
+        ]
     ]
-  ],
-  "search": {
-    "engine": "Elasticsearch",
-    "index": "seabird-colony",
-    "type": "seabird-colony",
-    "params": {
-      "size-facet": 99,
-      "date-year": "created",
-      "facets": "colony_name,conservation_type,region,zone,species,start_date"
-    }
-  },
-  "verbs": [
-    "DELETE",
-    "GET",
-    "HEAD",
-    "POST",
-    "PUT",
-    "OPTIONS",
-    "OPTIONS"
-  ],
-  "formats": {
-    "json": "application/json; charset=utf8"
-  },
-  "accepts": {
-    "application/json": "https://api.npolar.no/schema/seabird-colony"
-  },
-  "category": [
-    "CouchDB",
-    "Solr",
-    "Lucene",
-    "REST",
-    "Search",
-    "JSON",
-    "JSON Schema",
-    "XML",
-    "XML Schema",
-    "DIF",
-    "HTTP",
-    "Atom",
-    "ISO19139"
-  ],
-  "lifecycle": "production",
-  "run": "Npolar::Api::Json",
-  "open": true,
-  "auth": {
-    "authorize": "editor",
-    "system": "seabird-colony",
-    "authorizer": "Npolar::Auth::Ldap"
-  },
-  "updated": "2017-02-08T09:36:32Z",
-  "updated_by": "siri",
-  "created": "2017-02-08T11:35:26Z",
-  "created_by": "siri"
 }
