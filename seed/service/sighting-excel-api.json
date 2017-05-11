@@ -1,41 +1,61 @@
 {
-"schema": "http://api.npolar.no/schema/api",
-"id": "sighting-excel-api",
-"path": "/sighting-excel",
-"title": "Sighting excel API",
-"summary": "Excel sheets from sightings administered by the Norwegian Polar Data Centre",
-"storage": "Couch",
-"database": "sighting-excel",
-"model": "SightingExcel",
-"verbs": [
-"DELETE",
-"GET",
-"HEAD",
-"POST",
-"PUT"
-],
-"formats": {
-"json": "application/json",
-"html": "text/html"
-},
-"accepts": {
-"application/json": ""
-},
-"category": ["CouchDB", "Elasticsearch", "Lucene", "REST", "Search", "JSON", "JSON Schema", "HTTP"],
-"lifecycle": "production",
-"run": "Npolar::Api::Json",
-"open": true,
-"auth": {
-"authorize": "editor",
-"system": "MMS",
-"authorizer": "Npolar::Auth::Ldap"
-},
-"search": { "engine": "Elasticsearch",
-"uri": "http://localhost:9200",
-"facets": ["filename,length,type,comment"],
-"type": "sighting-excel",
-"index": "sighting-excel"
-},
-"base": "http://api.npolar.no"
+    "id": "sighting-excel-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/sighting-excel",
+    "title": "Excel files for sighting API",
+    "summary": "Norwegian Polar Institute's excel file observation database. Storage format is JSON.",
+    "storage": "Couch",
+    "database": "sighting-excel",
+    "model": "SightingExcel",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "sighting-excel",
+        "type": "sighting-excel",
+        "params": {
+            "size-facet": 9999,
+            "facets": "filename,length,type,uri"
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json; charset=utf8"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/sighting-excel.json"
+    },
+    "category": [
+        "CouchDB",
+        "Solr",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "XML",
+        "XML Schema",
+        "DIF",
+        "HTTP",
+        "Atom",
+        "ISO19139"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": false,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": false,
+                "system": "https://api.npolar.no/sighting-excel"
+            }
+        ]
+    ]
 }
-
