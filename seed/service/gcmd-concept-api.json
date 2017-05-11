@@ -1,7 +1,6 @@
 {
-    "_id": "gcmd-concept-api",
-    "schema": "http://api.npolar.no/schema/api",
     "id": "gcmd-concept-api",
+    "schema": "http://api.npolar.no/schema/api",
     "path": "/gcmd/concept",
     "title": "GCMD Concept",
     "summary": "Global Change Master Directory concepts",
