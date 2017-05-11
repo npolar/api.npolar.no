@@ -1,0 +1,45 @@
+{
+    "id": "placename-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/placename",
+    "title": "Placenames",
+    "summary": "Authoritative placenames in Norwegian polar areas (Svalbard, Jan Mayen, Dronning Maud Land, Bouvetøya, and Peter I Øy",
+        "verbs": [
+            "GET",
+            "HEAD",
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "DELETE"
+        ],
+        "database": "placename-1-geojson-ld",
+        "storage": "CouchDB",
+        "formats": {
+            "json": "application/json",
+            "geojson": "application/geo+json"
+        },
+        "category": [
+            "Elasticsearch",
+            "Lucene",
+            "Search",
+            "JSON",
+            "HTTP"
+        ],
+        "lifecycle": "production",
+        "run": "Npolar::Api::Json",
+        "open": true,
+        "search": {
+            "engine": "Elasticsearch",
+            "index": "placename",
+            "type": "placename",
+            "params": {
+                "facets": "status,name.@language,area,country,relations.authority.@id,country_of_origin,terrain_type",
+                "size-facet": 1000
+            }
+        },
+        "base": "http://api.npolar.no",
+        "accepts": {
+            "application/json": "http://json.org"
+        },
+        "model": "Placename"
+}
