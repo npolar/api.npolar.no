@@ -1,70 +1,58 @@
 {
-  "_id": "expedition-api",
-  "schema": "http://api.npolar.no/schema/api",
-  "id": "expedition-api",
-  "path": "/expedition",
-  "title": "Expedition API",
-  "storage": "Couch",
-  "database": "expedition",
-  "model": "Expedition",
-  "middleware": [
-    [
-      "Npolar::Rack::AttachmentDownloader",
-      {
-        "database": "expedition"
-      }
-    ]
-  ],
-  "search": {
-    "engine": "Elasticsearch",
-    "index": "expedition",
-    "type": "expedition",
-    "params": {
-      "size-facet": 99,
-      "date-year": "created",
-      "facets": "code,type"
-    }
-  },
-  "verbs": [
-    "DELETE",
-    "GET",
-    "HEAD",
-    "POST",
-    "PUT",
-    "OPTIONS",
-    "OPTIONS"
-  ],
-  "formats": {
-    "json": "application/json; charset=utf8"
-  },
-  "accepts": {
-    "application/json": "https://api.npolar.no/schema/expedition-1"
-  },
-  "category": [
-    "CouchDB",
-    "Solr",
-    "Lucene",
-    "REST",
-    "Search",
-    "JSON",
-    "JSON Schema",
-    "XML",
-    "XML Schema",
-    "DIF",
-    "HTTP",
-    "Atom",
-    "ISO19139"
-  ],
-  "lifecycle": "production",
-  "run": "Npolar::Api::Json",
-  "open": true,
-  "auth": {
-    "authorize": "editor",
-    "system": "expedition",
-    "authorizer": "Npolar::Auth::Ldap"
-  },
-  "updated": "2016-03-14T09:36:32Z",
-  "updated_by": "siri",
-  "created": "2016-03-14T11:35:26Z",
-  "created_by": "siri"
+    "id": "expedition-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/expedition",
+    "title": "Norwegian Polar Institutes expedition database",
+    "summary": "Norwegian Polar Institutes expedition API. Contains metadata about cruises and land expeditions",
+    "storage": "Couch",
+    "database": "expedition",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "expedition",
+        "type": "expedition",
+        "log": false,
+        "bulk_size": 500,
+        "params": {
+            "facets": "code,summary,topics,start_date,end_date",
+            "date-year": "travels.start_date",
+            "size-facet": 100
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/expedition-1"
+    },
+    "category": [
+        "CouchDB",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://data.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/expedition"
+            }
+        ]
+    ],
+    "model": "Expedition"
 }
