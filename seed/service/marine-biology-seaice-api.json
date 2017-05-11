@@ -1,52 +1,55 @@
 {
-   "id": "marine-biology-seaice-api",
-   "schema": "http://api.npolar.no/schema/api",
-   "path": "/marine/biology/seaice",
-   "title": "Sea Ice Macrofauna (1947-2012)",
-   "storage": "Couch",
-   "database": "marine-biology-seaice",
-   "model": "MarineBiologySeaice",
-   "search": {
-       "engine": "Elasticsearch",
-       "index": "marine-biology-seaice",
-       "type": "document"
-   },
-   "verbs": [
-       "DELETE",
-       "GET",
-       "HEAD",
-       "POST",
-       "PUT",
-       "OPTIONS"
-   ],
-   "formats": {
-       "json": "application/json"
-   },
-   "accepts": {
-       "application/json": "http://api.npolar.no/_schema/marine/biology/seaice"
-   },
-   "middleware": [
-       [
-           "::Rack::Gouncer",
-           {
-               "url": "https://api.npolar.no/user",
-               "open": true,
-               "system": "https://api.npolar.no/marine/biology/seaice"
-           }
-       ]
-   ],
-   "category": [
-       "NMDC",
-       "Marine",
-	   "Biology",
-	   "Seaice",
-       "CouchDB",
-       "REST",
-       "JSON",
-       "HTTP",
-       "Elasticsearch"
-   ],
-   "lifecycle": "production",
-   "run": "Npolar::Api::Json",
-   "open": true
+    "id": "marine-biology-seaice-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/marine/biology/seaice",
+    "title": "Sea Ice Macrofauna (1947-2012)",
+    "storage": "Couch",
+    "database": "marine-biology-seaice",
+    "model": "MarineBiologySeaice",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "marine-biology-seaice",
+        "type": "document",
+        "params": {
+            "date-year": "date.from"
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/_schema/marine/biology/seaice"
+    },
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no/user",
+                "open": true,
+                "system": "http://api.npolar.no/marine/biology/seaice"
+            }
+        ]
+    ],
+    "category": [
+        "NMDC",
+        "Marine",
+        "Biology",
+        "Seaice",
+        "CouchDB",
+        "REST",
+        "JSON",
+        "HTTP",
+        "Elasticsearch"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true
 }

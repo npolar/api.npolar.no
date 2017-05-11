@@ -1,10 +1,20 @@
 {
-    "id": "marine-biology-valids-api",
+    "id": "map-archive-api",
     "schema": "http://api.npolar.no/schema/api",
-    "path": "/marine/biology/valid",
-    "title": "Marine Biology Valids",
+    "path": "/map/archive",
+    "title": "Map archive API",
     "storage": "Couch",
-    "database": "marine_valids_dataset",
+    "database": "map-archive",
+    "model": "MapArchive",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "map-archive",
+        "type": "map",
+        "params": {
+            "facets": "scale",
+            "size-facet": 100
+        }
+    },
     "verbs": [
         "DELETE",
         "GET",
@@ -13,29 +23,31 @@
         "POST",
         "PUT"
     ],
-    "accepts": {
-        "application/json": "json"
-    },
     "formats": {
         "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/map-archive"
     },
     "category": [
         "CouchDB",
         "REST",
+        "Search",
         "JSON",
-        "HTTP"
+        "HTTP",
+        "Lucene",
+        "Elasticsearch"
     ],
     "lifecycle": "production",
     "run": "Npolar::Api::Json",
     "open": true,
-    "base": "https://api.npolar.no",
     "middleware": [
         [
             "::Rack::Gouncer",
             {
                 "url": "https://api.npolar.no:8950",
                 "open": true,
-                "system": "https://api.npolar.no/marine/biology/valid"
+                "system": "http://api.npolar.no/map/archive"
             }
         ]
     ]
