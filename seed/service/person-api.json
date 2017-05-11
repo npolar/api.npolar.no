@@ -1,48 +1,53 @@
 {
-   "schema": "http://api.npolar.no/schema/api",
-   "id": "person-api",
-   "path": "/person",
-   "title": "Person API",
-   "storage": "Couch",
-   "database": "person",
-   "model": "Person",
-   "search": {
-     "engine": "Elasticsearch",
-     "index": "person",
-     "type": "person",
-     "params": {
-       "facets": "organisation,orgtree,currently_employed,employment,workplace"
-     }
-   },
-   "verbs": [
-     "DELETE",
-     "GET",
-     "HEAD",
-     "POST",
-     "PUT"
-   ],
-   "formats": {
-     "json": "application/json"
-   },
-   "accepts": {
-     "application/json": "http://api.npolar.no/schema/person"
-   },
-   "category": [
-     "CouchDB",
-     "REST",
-     "JSON",
-     "HTTP",
-     "Lucene",
-     "Elasticsearch"
-   ],
-   "lifecycle": "production",
-   "run": "Npolar::Api::Json",
-   "auth": {
-     "authorize": "editor",
-     "system": "person",
-     "authorizer": "Npolar::Auth::Ldap"
-   },
-   "open": true,
-   "created": "2013-10-03T22:17:09Z",
-   "created_by": "Conrad Helgeland"
+    "id": "person-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/person",
+    "title": "People API",
+    "storage": "Couch",
+    "database": "person",
+    "model": "Person",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "person",
+        "type": "person",
+        "params": {
+            "facets": "organisation,orgtree,currently_employed,employment,workplace,on_leave,jobtitle.en,jobtitle.no"
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/person"
+    },
+    "category": [
+        "CouchDB",
+        "REST",
+        "Search",
+        "JSON",
+        "HTTP",
+        "Lucene",
+        "Elasticsearch"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/person"
+            }
+        ]
+    ]
 }
