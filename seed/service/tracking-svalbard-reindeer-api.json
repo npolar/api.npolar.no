@@ -1,5 +1,4 @@
 {
-    "_id": "tracking-svalbard-reindeer-api",
     "id": "tracking-svalbard-reindeer-api",
     "schema": "http://api.npolar.no/schema/api",
     "path": "/tracking/svalbard-reindeer",
