@@ -1,37 +1,42 @@
 {
-   "schema": "http://api.npolar.no/schema/api",
-   "id": "marine-biology-valids-api",
-   "path": "/marine/biology/valid",
-   "title": "Marine Biology Valids",
-   "storage": "Couch",
-   "database": "marine_valids_dataset",
-   "verbs": [
-       "DELETE",
-       "GET",
-       "HEAD",
-       "POST",
-       "PUT",
-       "OPTIONS"
-   ],
-   "accepts": {
-     "application/json": "json"
-   },
-   "formats": {
-     "json": "application/json"
-   },
-   "category": [
-       "CouchDB",
-       "REST",
-       "JSON",
-       "HTTP"
-   ],
-   "lifecycle": "production",
-   "run": "Npolar::Api::Json",
-   "open": true,
-   "auth": {
-       "authorize": "sysadmin",
-       "system": "api",
-       "authorizer": "Npolar::Auth::Ldap"
-   },
-   "base": "https://api.npolar.no"
+    "id": "marine-biology-valids-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/marine/biology/valid",
+    "title": "Marine Biology Valids",
+    "storage": "Couch",
+    "database": "marine_valids_dataset",
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "accepts": {
+        "application/json": "json"
+    },
+    "formats": {
+        "json": "application/json"
+    },
+    "category": [
+        "CouchDB",
+        "REST",
+        "JSON",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "base": "https://api.npolar.no",
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/marine/biology/valid"
+            }
+        ]
+    ]
 }
