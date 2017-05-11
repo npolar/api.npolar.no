@@ -1,0 +1,54 @@
+{
+    "id": "coursetype-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/coursetype",
+    "title": "Coursetype API",
+    "storage": "Couch",
+    "database": "coursetype",
+    "model": "Coursetype",
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/coursetype"
+            }
+        ]
+    ],
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "coursetype",
+        "type": "coursetype",
+        "params": {
+            "facets": "title,people"
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json; charset=utf8"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/coursetype"
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true
+}
