@@ -81,8 +81,7 @@ module Npolar
 
       def call(env)
         @request = Npolar::Rack::Request.new(env)
-
-        if except?
+        if "OPTIONS" == request.request_method or except?
           return app.call(env)
         end
 
