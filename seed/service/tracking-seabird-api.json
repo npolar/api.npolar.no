@@ -1,0 +1,57 @@
+{
+    "id": "tracking-seabird-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/tracking/seabird",
+    "title": "Seabird tracking API",
+    "storage": "Couch",
+    "database": "tracking-seabird",
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/tracking"
+    },
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "tracking-seabird",
+        "type": "message",
+        "params": {
+            "facets": "species,object,colony,project,year,technology,geometry.type,algorithm,confidence",
+            "rangefacet-latitude": 10,
+            "rangefacet-longitude": 10,
+            "rangefacet-month": 3,
+            "sort": "properties.time",
+            "size-facet": 1000
+        }
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "base": "http://api.npolar.no",
+    "middleware": [
+        [
+            "Npolar::Rack::RequireParam",
+            {
+                "params": [
+                    "filter-geometry.type"
+                ]
+            }
+        ]
+    ]
+}
