@@ -1,70 +1,58 @@
 {
-  "_id": "geology-sample-api",
-  "schema": "http://api.npolar.no/schema/api",
-  "id": "geological-sample-api",
-  "path": "/geology/sample",
-  "title": "Archive for geological samples from the Norwegian polar areas (Svalbard, Dronning Maud Land, Jan Mayen)",
-  "storage": "Couch",
-  "database": "geology-sample",
-  "model": "Geology::Sample",
-  "middleware": [
-    [
-      "Npolar::Rack::AttachmentDownloader",
-      {
-        "database": "geology-sample"
-      }
+    "id": "geology-sample-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/geology/sample",
+    "title": "Archive for geological samples from the Norwegian polar areas (Svalbard, Dronning Maud Land, Jan Mayen)",
+    "summary": "Norwegian Polar Institute's archive for geological samples from the Norwegian polar areas",
+    "storage": "Couch",
+    "database": "geology-sample",
+    "model": "Geology::Sample",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "geology-sample",
+        "type": "sample",
+        "log": false,
+        "params": {
+            "facets": "title,original_sample_name,lithology,cabinet_no,fossil,draft,thin_section,analysis,@placename,collected_year,expedition,geologist",
+            "date-year": "created",
+            "size-facet": 100
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "OPTIONS"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "https://api.npolar.no/schema/geology-sample.json"
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no/user",
+                "open": true,
+                "system": "https://api.npolar.no/geology"
+            }
+        ]
     ]
-  ],
-  "search": {
-    "engine": "Elasticsearch",
-    "index": "geology-sample",
-    "type": "sample",
-    "params": {
-      "size-facet": 99,
-      "date-year": "created",
-      "facets": "title,original_sample_name,lithology,cabinet_no,fossil,draft,thin_section,analysis,@placename,collected_year,expedition,geologist"
-    }
-  },
-  "verbs": [
-    "DELETE",
-    "GET",
-    "HEAD",
-    "POST",
-    "PUT",
-    "OPTIONS",
-    "OPTIONS"
-  ],
-  "formats": {
-    "json": "application/json; charset=utf8"
-  },
-  "accepts": {
-    "application/json": "https://api.npolar.no/schema/geology-sample"
-  },
-  "category": [
-    "CouchDB",
-    "Solr",
-    "Lucene",
-    "REST",
-    "Search",
-    "JSON",
-    "JSON Schema",
-    "XML",
-    "XML Schema",
-    "DIF",
-    "HTTP",
-    "Atom",
-    "ISO19139"
-  ],
-  "lifecycle": "production",
-  "run": "Npolar::Api::Json",
-  "open": true,
-  "auth": {
-    "authorize": "editor",
-    "system": "geology/sample",
-    "authorizer": "Npolar::Auth::Ldap"
-  },
-  "updated": "2017-03-21T09:36:32Z",
-  "updated_by": "siri",
-  "created": "2017-03-21T11:35:26Z",
-  "created_by": "siri"
 }
