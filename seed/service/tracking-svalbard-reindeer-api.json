@@ -1,0 +1,65 @@
+{
+    "_id": "tracking-svalbard-reindeer-api",
+    "id": "tracking-svalbard-reindeer-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/tracking/svalbard-reindeer",
+    "title": "Tracking Svalbard reindeer API",
+    "storage": "Couch",
+    "database": "tracking-svalbard-reindeer",
+    "model": "Tracking",
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/tracking"
+    },
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "tracking-svalbard-reindeer",
+        "type": "message",
+        "params": {
+            "facets": "object,species,platform,individual,speed,course,comment,fom,hdop,technology,provider",
+            "rangefacet-latitude": 10,
+            "rangefacet-longitude": 10,
+            "rangefacet-altitude": 250,
+            "rangefacet-temperature": 10,
+            "rangefacet-satellites": 5,
+            "rangefacet-activity_x": 10,
+            "rangefacet-activity_y": 10,
+            "rangefacet-hdop": 1,
+            "size-facet": 1000,
+            "date-year": "measured",
+            "sort": "measured,positioned,updated"
+        }
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": false,
+    "base": "http://api.npolar.no",
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": false,
+                "system": "http://api.npolar.no/tracking/svalbard-reindeer"
+            }
+        ]
+    ]
+}
