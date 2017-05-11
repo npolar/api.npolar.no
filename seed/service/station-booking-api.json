@@ -1,0 +1,63 @@
+{
+    "id": "station-booking-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/station-booking",
+    "title": "Station booking API",
+    "summary": "Norwegian Polar Institute's module over activity Troll and Norwegia station",
+    "storage": "Couch",
+    "database": "station-booking",
+    "model": "StationBooking",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "station-booking",
+        "type": "station-booking",
+        "log": false,
+        "params": {
+            "facets": "research_type,research_station,topics,research_project",
+            "date-year": "released",
+            "size-facet": 100
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "OPTIONS"
+    ],
+    "formats": {
+        "json": "application/json; charset=utf8"
+    },
+    "accepts": {
+        "application/json": "https://api.npolar.no/schema/station-booking.json"
+    },
+    "category": [
+        "CouchDB",
+        "Solr",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "XML",
+        "XML Schema",
+        "DIF",
+        "HTTP",
+        "Atom",
+        "ISO19139"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": false,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": false,
+                "system": "https://api.npolar.no/station-booking"
+            }
+        ]
+    ]
+}
