@@ -1,6 +1,5 @@
 {
   "schema": "http://api.npolar.no/schema/api",
-
   "id": "dataset-api",
   "path": "/dataset",
   "title": "Dataset API",
@@ -8,32 +7,68 @@
   "storage": "Couch",
   "database": "dataset",
   "model": "Metadata::Dataset",
-  "middleware": [["Metadata::Rack::DifJsonizer", {}]],
+  "middleware": [
+    [
+      "::Rack::Gouncer",
+      {
+        "url": "https://api.npolar.no:8950",
+        "open": true,
+        "system": "https://api.npolar.no/dataset"
+      }
+    ],
+    [
+      "Metadata::Rack::Dcat"
+    ],
+    [
+      "Metadata::Rack::DifJsonizer"
+    ]
+  ],
   "search": {
-   "engine": "Elasticsearch",
-   "index": "metadata",
-   "type": "dataset",
-   "facets": [
-      "topics",
-      "sets",
-      "links.rel",
-      "licences",
-      "restricted",
-      "placenames.placename",
-      "progress",
-      "draft",      
-      "organisations.id",
-      "organisations.roles",
-      "people.email",
-      "people.roles"
-   ]
+    "engine": "Elasticsearch",
+    "index": "metadata",
+    "type": "dataset",
+    "log": false,
+    "params": {
+      "facets": "topics,sets,links.rel,licences,placenames.placename,progress,draft,people.email,organisations.id",
+      "date-year": "released",
+      "size-facet": 100
+    }
   },
-  "verbs": ["DELETE", "GET", "HEAD", "POST", "PUT"],
-  "formats": {"atom":"application/atom+xml", "json":"application/json", "dif":"application/xml", "iso":"application/vnd.iso.19139+xml", "xml":"application/xml"},
-  "accepts": {"application/json": "http://api.npolar.no/schema/dataset", "application/xml": "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"},
-  "category": ["CouchDB", "Solr", "Lucene", "REST", "Search", "JSON", "JSON Schema", "XML", "XML Schema", "DIF", "HTTP", "Atom", "ISO19139"],
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "OPTIONS",
+    "POST",
+    "PUT"
+  ],
+  "formats": {
+    "atom": "application/atom+xml",
+    "json": "application/json",
+    "dif": "application/xml",
+    "iso": "application/vnd.iso.19139+xml",
+    "vnd.iso.19139": "application/vnd.iso.19139+xml",
+    "xml": "application/xml"
+  },
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/dataset",
+    "application/xml": "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"
+  },
+  "category": [
+    "CouchDB",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "XML",
+    "XML Schema",
+    "DIF",
+    "HTTP",
+    "Atom",
+    "ISO19139"
+  ],
   "lifecycle": "production",
-  "run":"Npolar::Api::Json",
-  "auth":{"authorize":"editor","system":"metadata", "authorizer":"Npolar::Auth::Ldap" },
+  "run": "Npolar::Api::Json",
   "open": true
 }
