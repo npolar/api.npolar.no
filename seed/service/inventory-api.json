@@ -1,70 +1,60 @@
 {
-  "_id": "inventory-api",
-  "schema": "http://api.npolar.no/schema/api",
-  "id": "inventory-api",
-  "path": "/inventory",
-  "title": "Inventory API",
-  "storage": "Couch",
-  "database": "inventory",
-  "model": "Inventory",
-  "middleware": [
-    [
-      "Npolar::Rack::AttachmentDownloader",
-      {
-        "database": "inventory"
-      }
+    "id": "inventory-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/inventory",
+    "title": "Inventory API",
+    "summary": "Norwegian Polar Institute's inventory database. Storage format is JSON.",
+    "storage": "Couch",
+    "database": "inventory",
+    "model": "Inventory",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "inventory",
+        "type": "inventory",
+        "params": {
+            "facets": "category,title,ephorte_no,draft",
+            "date-year": "updated",
+            "size-facet": 100
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json; charset=utf8"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/inventory.json"
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "experimental",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "editlog": {
+        "max_body_size": 10000
+    },
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://data.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/inventory"
+            }
+        ]
     ]
-  ],
-  "search": {
-    "engine": "Elasticsearch",
-    "index": "inventory",
-    "type": "inventory",
-    "params": {
-      "size-facet": 99,
-      "date-year": "created",
-      "facets": "category,title,description,release_date"
-    }
-  },
-  "verbs": [
-    "DELETE",
-    "GET",
-    "HEAD",
-    "POST",
-    "PUT",
-    "OPTIONS",
-    "OPTIONS"
-  ],
-  "formats": {
-    "json": "application/json; charset=utf8"
-  },
-  "accepts": {
-    "application/json": "http://api.npolar.no/schema/inventory"
-  },
-  "category": [
-    "CouchDB",
-    "Solr",
-    "Lucene",
-    "REST",
-    "Search",
-    "JSON",
-    "JSON Schema",
-    "XML",
-    "XML Schema",
-    "DIF",
-    "HTTP",
-    "Atom",
-    "ISO19139"
-  ],
-  "lifecycle": "production",
-  "run": "Npolar::Api::Json",
-  "open": true,
-  "auth": {
-    "authorize": "editor",
-    "system": "inventory",
-    "authorizer": "Npolar::Auth::Ldap"
-  },
-  "updated": "2016-03-14T09:36:32Z",
-  "updated_by": "siri",
-  "created": "2016-03-14T11:35:26Z",
-  "created_by": "siri"
 }
