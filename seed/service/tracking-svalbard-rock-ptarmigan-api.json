@@ -1,0 +1,61 @@
+{
+    "id": "tracking-svalbard-rock-ptarmigan-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/tracking/svalbard-rock-ptarmigan",
+    "title": "Tracking Svalbard rock ptarmigan API",
+    "storage": "Couch",
+    "database": "tracking-svalbard-rock-ptarmigan",
+    "model": "Tracking",
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/tracking"
+    },
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "tracking",
+        "type": "message",
+        "params": {
+            "facets": "object,species,platform,individual,sensor_variables,lc,warn,errors,individuals,objects,species-list,parser,technology,type",
+            "rangefacet-latitude": 10,
+            "rangefacet-longitude": 10,
+            "size-facet": 100,
+            "date-year": "measured",
+            "rangefacet-temperature": 10,
+            "rangefacet-voltage": 1,
+            "filter-object": "Svalbard rock ptarmigan",
+            "sort": "measured,positioned,updated"
+        }
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": false,
+    "base": "http://api.npolar.no",
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": false,
+                "system": "https://api.npolar.no/tracking/svalbard-rock-ptarmigan"
+            }
+        ]
+    ]
+}
