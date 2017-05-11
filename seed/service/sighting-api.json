@@ -1,41 +1,55 @@
 {
-"schema": "http://api.npolar.no/schema/api",
-"id": "sighting-api",
-"path": "/sighting",
-"title": "Sighting API",
-"summary": "Excel sheets from sightings administered by the Norwegian Polar Data Centre",
-"storage": "Couch",
-"database": "sighting",
-"model": "Sighting",
-"verbs": [
-"DELETE",
-"GET",
-"HEAD",
-"POST",
-"PUT"
-],
-"formats": {
-"json": "application/json",
-"html": "text/html"
-},
-"accepts": {
-"application/json": ""
-},
-"category": ["CouchDB", "Elasticsearch", "Lucene", "REST", "Search", "JSON", "JSON Schema", "HTTP"],
-"lifecycle": "production",
-"run": "Npolar::Api::Json",
-"open": false,
-"auth": {
-"authorize": "editor",
-"system": "MMS",
-"authorizer": "Npolar::Auth::Ldap"
-},
-"search": { "engine": "Elasticsearch",
-"uri": "http://localhost:9200",
-"facets": ["name,species,latitude,longitude,recorded_by,date_identified,habitat,start_date,event_date,locality,files.filename"],
-"type": "sighting",
-"index": "sighting"
-},
-"base": "http://api.npolar.no"
+    "id": "sighting-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/sighting",
+    "title": "Sighting API",
+    "summary": "Norwegian Polar Institute's observation database. Storage format is JSON.",
+    "storage": "Couch",
+    "database": "sighting",
+    "model": "Sighting",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "sighting",
+        "type": "sighting",
+        "params": {
+            "size-facet": 9999,
+            "facets": "name,latitude,longitude,species,editor_assessment,recorded_by,date_identified,habitat,start_date,event_date,@placename,excel_filename"
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json; charset=utf8"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/sighting.json"
+    },
+    "category": [
+        "CouchDB",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": false,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": false,
+                "system": "https://api.npolar.no/sighting"
+            }
+        ]
+    ]
 }
-
