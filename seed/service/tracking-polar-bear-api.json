@@ -1,5 +1,5 @@
 {
-    "id": "polar-bear-api",
+    "id": "tracking-polar-bear-api",
     "schema": "http://api.npolar.no/schema/api",
     "path": "/tracking/polar-bear",
     "title": "Polar bear tracking API",
@@ -28,6 +28,16 @@
             "size-facet": 1000
         }
     },
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": false,
+                "system": "https://api.npolar.no/tracking/polar-bear"
+            }
+        ]
+    ],
     "category": [
         "CouchDB",
         "Elasticsearch",
@@ -39,8 +49,6 @@
     ],
     "lifecycle": "production",
     "run": "Npolar::Api::Json",
-    "open": true,
-    "base": "http://api.npolar.no",
-    "created": "2015-03-06T09:07:40Z",
-    "created_by": "conrad@npolar.no"
+    "open": false,
+    "base": "http://api.npolar.no"
 }
