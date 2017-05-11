@@ -9,9 +9,8 @@ module Metadata
   # [Features]
   #   * Extends Hashie::Mash for easy method access
   #   * Before and after logic
-  #   * Transform to Solr-style Hash (for creating Solr JSON)
   #   * Transform to DIF XML Hash (for creating DIF XML)
-  #   * Validation based on JSON Schema
+  #   * Double schema validation (JSON + XML)!
   #
   # [License]
   #   {http://www.gnu.org/licenses/gpl.html GNU General Public License Version 3} (GPLv3)
@@ -20,11 +19,11 @@ module Metadata
   class Dataset < Hashie::Mash
 
     include Npolar::Validation::MultiJsonSchemaValidator
-    
+
     BASE = "http://api.npolar.no/dataset/"
 
     CC0 = "http://creativecommons.org/publicdomain/zero/1.0/"
-    
+
     DIF_SCHEMA_URI = "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd"
 
     JSON_SCHEMA_URI = "http://api.npolar.no/schema/dataset-1"
@@ -38,7 +37,7 @@ module Metadata
     }
 
     AVL = "http://lovdata.no/lov/1961-05-12-2"
-    
+
     class << self
       attr_accessor :formats, :accepts, :base
     end
@@ -62,7 +61,7 @@ module Metadata
       body = response.body.respond_to?(:read) ? response.body.read : response.body.join("")
       datasets = JSON.parse(body)
       datasets = datasets.is_a?(Hash) ? [datasets] : datasets
-      
+
       datasets = datasets.map {|d|
         dataset = self.new(d)
         dataset = dataset.add_edit_and_alternate_links
@@ -75,7 +74,7 @@ module Metadata
         else
           datasets.to_json
       end
-      response.body = StringIO.new(body) 
+      response.body = StringIO.new(body)
       response
 
     end
@@ -107,7 +106,7 @@ module Metadata
         new(dataset).before_save(request)
 
       }
-  
+
       body = case datasets.size
         when 1
           datasets[0].to_json
@@ -115,7 +114,7 @@ module Metadata
           datasets.to_json
       end
 
-      request.body = body 
+      request.body = body
       request
     end
 
@@ -135,7 +134,7 @@ module Metadata
     end
 
     # Organisation template for npolar.no
-    def self.npolar(roles=["author", "originator", "owner", "publisher", "pointOfContact"])
+    def self.npolar(roles=["originator", "owner", "publisher", "pointOfContact", "resourceProvider"])
       Hashie::Mash.new({ id: "npolar.no",
         name: "Norwegian Polar Institute",
         email: "data@npolar.no",
@@ -187,15 +186,15 @@ module Metadata
         if not progress?
           self[:progress] = "planned"
         end
-        
+
         if not lang?
           self[:lang] = "en"
         end
-        
+
         # @todo !? Force to draft if missing title,\ and licences?
         # self[:draft] = "yes"
         #end
-      
+
         if not title?
           self[:title] = "Dataset created by #{username} at #{Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")}"
         end
@@ -209,7 +208,7 @@ module Metadata
         elsif licences.include? AVL
           self[:licences] = [AVL]
         end
-        
+
         if not rights? or rights.nil? or rights == ""
           self[:rights] = self.class.rights(self)
         end
@@ -239,22 +238,22 @@ module Metadata
         if not schema?
           self[:schema] = self.class.schema_uri
         end
-        
+
         #if placenames? and placenames.area etc Svalbard (150) Antarctica (3) Alaska (1) Southern Ocean (1)
         #  # sets << arctic
         #end
         #    # @todo Set arctic/antarctic based on coverage.latitude !?
-        
+
         before_valid
 
         deduplicate_links
 
         #deduplicate_people
-        
+
         #deduplicate_organisations
-        
+
         add_edit_and_alternate_links
-        
+
         # sets from topics
         # @todo oceanography => force "marine"
 
@@ -265,8 +264,8 @@ module Metadata
     # Manipulates dataset before validation
     # @override MultiJsonSchemaValidator
     def before_valid
-      
-      if activity?      
+
+      if activity?
         activity.map {|a|
           if a.start? and a.start == ""
             a.delete :start
@@ -293,7 +292,7 @@ module Metadata
             c.west = c.west.to_f
           end
         }
-      end      
+      end
       self
 
     end
@@ -322,15 +321,15 @@ module Metadata
       (licences||[]).select {|l| l =~ cc0 }.size > 0
     end
     alias :publicdomain? :cc0?
-    
-    def authors 
+
+    def authors
       (people||[]).select {|o| o.roles.include? "author" or  o.roles.include? "principalInvestigator" }
     end
 
     def owners
       (organisations||[]).select {|o| o.roles.include? "owner"}
     end
-    
+
     def updated_time
       DateTime.parse(updated).to_time
     end
@@ -340,14 +339,14 @@ module Metadata
     end
 
     def pointOfContact
-      (people||[]+organisations||[]).select {|entity| entity.roles.include? "pointOfContact"} 
+      (people||[]+organisations||[]).select {|entity| entity.roles.include? "pointOfContact"}
     end
 
     def to_dif
       dif = ::Gcmd::Dif.new( to_dif_hash )
       dif.to_xml.gsub(/\<\?xml.*\?\>/, "")
     end
-    
+
     #def to_oai_dc
     #  xml = Builder::XmlMarkup.new
     #  xml.tag!("oai_dc:dc",
@@ -366,7 +365,7 @@ module Metadata
     #  end
     #  xml.target!
     #end
-    
+
     def uri(id)
       self.class.uri + id
     end
@@ -401,14 +400,14 @@ module Metadata
 
       self[:organisations] = unique_organisations.map {|id|
           same_id = (organisations||[]).select {|o| o.id == id }
-          
+
           roles = same_id.map {|o| o.roles }.flatten.uniq
           links = same_id.map {|o| o.links }.flatten.uniq
           org = same_id[0]
           org[:roles] = roles
           org[:links] = links
           org
-          
+
         }
       self
     end
@@ -417,34 +416,34 @@ module Metadata
     def add_edit_and_alternate_links
       api = ENV["NPOLAR_API"] ||= "https://api.npolar.no"
 
-      self[:links] = links||[] 
+      self[:links] = links||[]
 
       if id? # => These links are not added on POST
-      
+
         # edit  ("application/json")
         if links.select {|link| link.rel=="edit" and link.type == "application/json"}.size == 0
           self[:links] << Hashie::Mash.new({ "href" => "#{api.gsub(/^http[:]/, "https:")}/dataset/#{id}",
             "rel" => "edit", "title" => "JSON (edit URI)", "type" => "application/json" })
         end
-  
+
         # DIF XML
         if links.select {|link| link.rel=="alternate" and link.type == "application/xml"}.size == 0
           self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.xml",
             "rel" => "alternate", "title" => "DIF XML", "type" => "application/xml"})
         end
-  
+
         # DIF XML
         if links.select {|link| link.rel=="alternate" and link.type == "application/vnd.iso.19139+xml"}.size == 0
           self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.iso",
             "rel" => "alternate", "title" => "ISO 19139 XML", "type" => "application/vnd.iso.19139+xml"})
         end
-  
+
         # Atom XML
         if links.select {|link| link.rel=="alternate" and link.type == "application/atom+xml"}.size == 0
           self[:links] << Hashie::Mash.new({ "href" => "#{api}/dataset/#{id}.atom",
             "rel" => "alternate", "title" => "Atom entry XML", "type" => "application/atom+xml"})
         end
-  
+
         # html
         if links.select {|link| link.rel=="alternate" and link.type == "text/html"}.size == 0
           self[:links] << Hashie::Mash.new({ "href" => "http://data.npolar.no/dataset/#{id}",
@@ -460,12 +459,12 @@ module Metadata
     def schemas
       JSON_SCHEMAS
     end
-    
+
     # Validate using Dataset JSON schema *and* DIF XML schema
     def valid?(d=nil)
       [super,valid_dif?].all? {|v| v == true }
     end
-    
+
     def valid_dif?
       dif = Gcmd::Dif.new(to_dif_hash)
       v = dif.valid?
@@ -478,9 +477,9 @@ module Metadata
       end
       v
     end
-    
-    
-    
-  end 
-  
+
+
+
+  end
+
 end
