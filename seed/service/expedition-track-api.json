@@ -1,21 +1,20 @@
 {
-    "id": "expedition-api",
     "schema": "http://api.npolar.no/schema/api",
-    "path": "/expedition",
-    "title": "Norwegian Polar Institutes expedition database",
-    "summary": "Norwegian Polar Institutes expedition API. Contains metadata about cruises and land expeditions",
+    "id": "expedition-track-api",
+    "path": "/expedition/track",
+    "title": "API holding track data an additional metrics",
+    "summary": "Norwegian Polar Institutes expedition track API. Contains vessel tracks and metrics.",
     "storage": "Couch",
-    "database": "expedition",
+    "database": "expedition_track",
     "search": {
         "engine": "Elasticsearch",
-        "index": "expedition",
-        "type": "expedition",
+        "index": "expedition-track",
+        "type": "track",
         "log": false,
         "bulk_size": 500,
         "params": {
-            "facets": "code,summary,topics,start_date,end_date",
-            "date-year": "travels.start_date",
-            "size-facet": 100
+            "facets": "code,expedition,collection,object,platform",
+            "date-day": "measured"
         }
     },
     "verbs": [
@@ -30,7 +29,7 @@
         "json": "application/json"
     },
     "accepts": {
-        "application/json": "http://api.npolar.no/schema/expedition-1"
+        "application/json": "http://api.npolar.no/schema/expedition_track"
     },
     "category": [
         "CouchDB",
@@ -48,11 +47,10 @@
         [
             "::Rack::Gouncer",
             {
-                "url": "https://data.npolar.no:8950",
+                "url": "https://api.npolar.no:8950",
                 "open": true,
-                "system": "https://api.npolar.no/expedition"
+                "system": "https://api.npolar.no/expedition/track"
             }
         ]
-    ],
-    "model": "Expedition"
+    ]
 }
