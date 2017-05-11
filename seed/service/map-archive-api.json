@@ -1,0 +1,54 @@
+{
+    "id": "map-archive-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/map/archive",
+    "title": "Map archive API",
+    "storage": "Couch",
+    "database": "map-archive",
+    "model": "MapArchive",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "map-archive",
+        "type": "map",
+        "params": {
+            "facets": "scale",
+            "size-facet": 100
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/map-archive"
+    },
+    "category": [
+        "CouchDB",
+        "REST",
+        "Search",
+        "JSON",
+        "HTTP",
+        "Lucene",
+        "Elasticsearch"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": true,
+                "system": "http://api.npolar.no/map/archive"
+            }
+        ]
+    ]
+}
