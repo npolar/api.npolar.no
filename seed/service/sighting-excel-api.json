@@ -32,18 +32,12 @@
     },
     "category": [
         "CouchDB",
-        "Solr",
         "Lucene",
         "REST",
         "Search",
         "JSON",
         "JSON Schema",
-        "XML",
-        "XML Schema",
-        "DIF",
-        "HTTP",
-        "Atom",
-        "ISO19139"
+        "HTTP"
     ],
     "lifecycle": "production",
     "run": "Npolar::Api::Json",
