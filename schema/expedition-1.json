@@ -189,7 +189,7 @@
           "@country": {
             "type": "string"
           },
-          "roles": {
+          "role": {
             "type": "string",
             "enum": [
               "expedition/cruise leader",
