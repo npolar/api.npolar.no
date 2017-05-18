@@ -190,11 +190,8 @@
             "type": "string"
           },
           "roles": {
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-                "type":"string",
-               "enum": [
+            "type": "string",
+            "enum": [
               "expedition/cruise leader",
               "field assistant",
               "guest",
@@ -202,7 +199,6 @@
               "other",
               "technician"
             ]
-          }
           },
           "expedition_dates": {
             "type": "array",
