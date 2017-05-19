@@ -301,8 +301,6 @@
                     "type": ["string", "null"],
                     "enum": [
                         "",
-                        "Sverdrup Research Station",
-                        "Zeppelin Research Station",
                         "Ny-Ålesund",
                         "Svalbard",
                         "Frans Josefs land",
@@ -310,7 +308,6 @@
                         "Jan Mayen",
                         "Hopen",
                         "Bouvetøya",
-                        "Troll",
                         "Tor",
                         "Dronning Maud Land",
                         "Antarctica",
@@ -335,14 +332,6 @@
           }
         },
         "additionalItems": false
-      },
-      "draft": {
-        "description": "The publication state of the document.",
-        "type": "string",
-        "enum": [
-          "yes",
-          "no"
-        ]
       },
       "collection": {
         "description": "The storage collection the document belongs to.",
