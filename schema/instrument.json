@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/instrument-1.0.0.pre",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    },
+     "schema": {
+      "id": "schema",
+      "type": "string"
+    },
+    "collection": {
+      "id": "collection",
+      "type": "string",
+      "default": "instrument"
+    },
+    "instrument": {
+      "type": "string"
+    },
+     "human_id": {
+      "type": "string"
+    },
+    "description": {
+        "type": "string"
+    },
+    "people": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      }
+    },
+    "locations": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
+          "country": {
+            "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(([A-Z]|[a-z]){2})$"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "start_date": {
+            "type": "number"
+          },
+          "end_date": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "files": {
+             "type": "array",
+             "description": "",
+             "items": {
+                  "type": "object",
+                  "properties": {
+              "uri": {
+                "type": "string",
+                "description": "URI of the attached file",
+                "format": "uri"
+              },
+              "filename": {
+                "type": "string",
+                "description": "File name"
+              },
+              "title": {
+                "type": "string",
+                "description": "Title"
+              },
+              "length": {
+                "type": "integer",
+                "description": "File size in bytes"
+              },
+              "type": {
+                "type": "string",
+                "description": "Media type (e.g. image/png)"
+              },
+              "hash": {
+                "type": "string",
+                "description": ""
+              }
+          }
+      }
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated": {
+       "type": "string",
+       "format": "date-time"
+    },
+    "updated_by": {
+        "type": "string"
+    }
+}

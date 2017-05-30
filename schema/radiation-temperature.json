@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/radiation-temperature-1.0.0.pre",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    },
+     "schema": {
+      "id": "schema",
+      "type": "string"
+    },
+    "collection": {
+      "id": "collection",
+      "type": "string",
+      "default": "instrument"
+    },
+    "instrument_id": {
+      "type": "string"
+    },
+    "location": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "placename": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
+          "country": {
+            "description": "Country code like ISO 3611-1, except 'NO' for Norway, including Svalbard and Jan Mayen, Bouvetøya, and Peter I Øy. 'AQ' = Antarctica.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(([A-Z]|[a-z]){2})$"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+
+        }
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string",
+            "format": "date-time"
+    },
+    "updated_by": {
+            "type": "string"
+    }
+}
+}
