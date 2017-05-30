@@ -1,0 +1,53 @@
+{
+    "id": "vessel-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/vessel",
+    "title": "Vessel API",
+    "storage": "Couch",
+    "database": "vessel",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "historic",
+        "type": "vessel",
+        "params": {
+            "facets": "harbours,type,built_where,built_year,shipwrecked_year,shipwrecked_location,alpha",
+            "size-facet": 100
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/vessel_flat"
+    },
+    "category": [
+        "CouchDB",
+        "REST",
+        "Search",
+        "JSON",
+        "HTTP",
+        "Lucene",
+        "Elasticsearch"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://apptest.data.npolar.no:8950",
+                "open": true,
+                "system": "https://apptest.data.npolar.no:3000/vessel"
+            }
+        ]
+    ]
+}

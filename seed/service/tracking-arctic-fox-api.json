@@ -1,6 +1,4 @@
 {
-  "_id": "tracking-arctic-fox-api",
-  "_rev": "4-421bf8b2268a3eab424890b0c7f7cc23",
     "id": "tracking-arctic-fox-api",
     "schema": "http://api.npolar.no/schema/api",
     "path": "/tracking/arctic-fox",
@@ -31,9 +29,9 @@
             "rangefacet-longitude": 10,
             "size-facet": 100,
             "date-year": "measured",
-            "rangefacet-temperature":10,
-            "rangefacet-voltage":1,
-            "filter-object": "Arctic fox",
+            "rangefacet-temperature": 10,
+            "rangefacet-voltage": 1,
+            "filter-object": "Arctic fox|unknown",
             "sort": "measured,positioned,updated"
         }
     },
@@ -48,13 +46,16 @@
     ],
     "lifecycle": "production",
     "run": "Npolar::Api::Json",
-    "open": true,
-    "auth": {
-        "authorize": "editor",
-        "system": "tracking",
-        "authorizer": "Npolar::Auth::Ldap"
-    },
+    "open": false,
     "base": "http://api.npolar.no",
-    "created": "2015-03-06T09:07:40Z",
-    "created_by": "conrad@npolar.no"
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/tracking/arctic-fox"
+            }
+        ]
+    ]
 }

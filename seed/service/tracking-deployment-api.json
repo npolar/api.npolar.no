@@ -1,73 +1,49 @@
 {
-"_id": "tracking-deployment-api",
-"_rev": "3-2606d867f16d235f475066d9a2ece765",
-"id": "tracking-deployment-api",
-"schema": "http://api.npolar.no/schema/api",
-"collection": "service",
-"path": "/tracking/deployment",
-"storage": "Couch",
-"database": "tracking-deployment",
-"verbs": [
-"DELETE",
-"GET",
-"HEAD",
-"POST",
-"PUT"
-],
-"formats": {
-"json": "application/json",
-"html": "text/html"
-},
-"accepts": {
-"application/json": ""
-},
-"lifecycle": "production",
-"run": "Npolar::Api::Json",
-"open": true,
-"search": {
-"engine": "Elasticsearch",
-"facets": [
-"species",
-"object",
-"individual",
-"program",
-"platform",
-"technology",
-"gps",
-"lifespan",
-"vendor",
-"comment",
-"area",
-"placename",
-"investigators"
-],
-"date_facets": [
-{
-"field": "deployed",
-"interval": "year"
-},
-{
-"field": "deployed",
-"interval": "month"
-},
-{
-"field": "terminated",
-"interval": "year"
-},
-{
-"field": "terminated",
-"interval": "month"
-}
-],
-"index": "tracking",
-"type": "deployment"
-},
-"auth": {
-"authorize": "sysadmin",
-"system": "api",
-"authorizer": "Npolar::Auth::Couch"
-},
-"base": "http://api.npolar.no",
-"created": "2013-10-10T11:18:33Z",
-"created_by": "conrad"
+    "id": "tracking-deployment-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "collection": "service",
+    "path": "/tracking/deployment",
+    "storage": "Couch",
+    "database": "tracking-deployment",
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "tracking-deployment",
+        "type": "deployment",
+        "params": {
+            "facets": "species,object,individual,program,platform,technology,provider,vendor,platform_model,platform_name,lifespan,comment",
+            "date-year": "deployed,terminated",
+            "date-month": "deployed,terminated",
+            "limit": 100,
+            "size-facet": 999,
+            "sort": "deployed,platform"
+        }
+    },
+    "base": "http://api.npolar.no",
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/tracking-deployment-1"
+    },
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/tracking/deployment"
+            }
+        ]
+    ]
 }
