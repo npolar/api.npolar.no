@@ -28,15 +28,11 @@
       "building",
       "contamination",
       "cultural heritage",
-      "data collection",
       "depot",
-      "field hut",
       "heliport",
       "instrument",
-      "operational activity",
       "other",
-      "monitoring",
-      "research",
+      "research/monitoring",
       "research station"]
     },
     "title":{
@@ -330,6 +326,9 @@
                       "quantity": {
                         "type": "string"
                       },
+                      "quantity_recovered":{
+                        "type":"string"
+                     },
                       "priority": {
                       "type": ["string","null"],
                       "enum": [
