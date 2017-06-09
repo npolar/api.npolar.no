@@ -4,7 +4,7 @@
 # * sends DOI XML metadata to datacite.org
 # * binds DOI to landing page on https://data.npolar.no/dataset
 # * injects a magic data link (to the auto-zip of all uploaded files)
-# * forces dataset.attachments to match actual filenames in the hashi file api 
+# * forces dataset.attachments to match actual filenames in the hashi file api
 # * creates/updates readme.txt and md5sum.txt
 # * Releases files when embargo period ends
 # * Protects files that are uploaded with a future release date (@todo consider "embargo" as new progress state)
@@ -24,7 +24,7 @@ class DatasetDoi
   attr_accessor :log
 
   NS = { datacite: "http://datacite.org/schema/kernel-4"}
-  
+
   @@really = (ARGV[2] =~ /^(--really|--really=true)$/) != nil ? true : false
   credentials = []
   if ARGV.find {|a| a=~ /^--credentials=(.+[:].+)/ }
@@ -32,11 +32,11 @@ class DatasetDoi
   end
   ::Metadata::DataciteMds.credentials = credentials
   ::Metadata::DataciteMds.testMode = (@@really == true) ? false : true
-  
+
   def self.dois
     @@dois ||= ::Metadata::DataciteMds.dois
   end
-  
+
   def self.publicationYear(d)
     DateTime.parse(d.released||d.created).year
   end
@@ -47,25 +47,25 @@ class DatasetDoi
     prefix = ::Metadata::DataciteXml::NPOLAR_DOI_PREFIX
     "#{prefix}/npolar.#{year}.#{ident}"
   end
-  
+
   # RIS
   # https://data.datacite.org/application/x-research-info-systems/#{d.doi}
-  
+
   def self.readme_txt d,files
     people = (d.people||[]).map {|p| "#{p.first_name} #{p.last_name}"}.join(", ")
     filenames = files.map {|h| h["filename"]}.sort.join("\n")
-    
+
     "https://doi.org/#{d.doi}\n\n#{d.title}
-    
+
 Authors: #{people}\n\n
 
 Files:\n#{filenames}\n
- 
+
       ".encode(crlf_newline: true)
   end
-  
+
   def self.md5sum_txt files
-    files.map {|f| f["md5sum"] +" "+ f["filename"] }.join("\n")   
+    files.map {|f| f["md5sum"] +" "+ f["filename"] }.join("\n")
   end
 
   def model
@@ -75,52 +75,56 @@ Files:\n#{filenames}\n
   def migrations
     [hashi,data_link,doi]
   end
-    
+
   def hashi
     lambda {|d|
-      
+
       d.title = d.title.strip
       begin
-    
+
         r = request("GET", _file_base_uri(d.id))
         hashi = JSON.parse r.body
-        
+
         if r.code.to_i == 200 and hashi.key? "files"
           attachment_filenames = (d.attachments||[]).map {|a| a["filename"]}
           hashi_filenames = hashi["files"].map {|h| h["filename"]}
-        
-          # Make sure that links in dataset.attachments matches actual filenames in the hashi file api 
-          if attachment_filenames.sort.to_json != hashi_filenames.sort.to_json
+
+          # Make sure that links in dataset.attachments matches actual filenames in the hashi file api
+          # Notice: if there's exactly 1 attachment pointing to the hashi base uri
+          # => IGNORE; this means that we do not want to expose the magic _all link (too many files/too large dataset)
+          if d.attachments.size == 1 and d.attachments[0].href = _file_base_uri(d.id)
+            # IGNORE
+          elsif attachment_filenames.sort.to_json != hashi_filenames.sort.to_json
             log.error "#{d.id} linked filenames in dataset attachments != file api filenames \"#{d.title}\""
             log.error "#{d.id} dataset attachments count: #{attachment_filenames.size}, file api filename count: #{hashi_filenames.size}"
             #  hashi: {"filename":"","content_type":"","id":"","file_size":407014,"md5sum":"","modified":"2016-12-16T11:14:25Z","url":""}
             d.attachments = hashi["files"].map {|h| { filename: h["filename"], href: h["url"], type: h["content_type"] } }
             log.info "Setting file attachments to: "+d.attachments.map {|f| f.filename }.to_json
           end
-          
+
           # Protect / unprotect
           if hashi["files"].length > 0 and d.released? and d.released =~ /^[0-9]{4}/
-            
+
             released = DateTime.parse(d.released)
             now = DateTime.now
             #diff = (released > now) ? (released-now).to_i : (now-released).to_i
-             
+
             if now+1 > released
-              
+
               restricted_files = hashi["files"].reject {|f|
                 f["filename"] == "readme.txt" or f["filename"] == "md5sum.txt"
               }.select {|f|
                 f.key? "restricted" and f["restricted"] == true
               }.map {|f| f["filename"] }
-              
+
               if restricted_files.any?
-                log.info "#{d.id} released on #{d.released}, unprotecting uploaded files"  
+                log.info "#{d.id} released on #{d.released}, unprotecting uploaded files"
                 unprotect_released_files hashi["files"]
               end
               # @todo mail_release_annoucement d
-              
+
             else
-              
+
               all_restricted = hashi["files"].reject {|f|
                 f["filename"] == "readme.txt" or f["filename"] == "md5sum.txt"
               }.all? {|f|
@@ -130,13 +134,13 @@ Files:\n#{filenames}\n
                 log.warn "#{d.id} has uploaded unprotected files, but the dataset is in embargo in #{(released - DateTime.now).to_i} days until #{released.to_date} (\"#{d.title}\"), protecting the files now"
                 protect_unreleased_files hashi["files"]
               end
-              
-              
+
+
             end
           end # No files or no released date
-          
+
         else # No hashi files
-          
+
           if d.attachments? and d.attachments.any?
             # Attachments and still no files in hashi? (this should not happen tm)
             log.error "#{d.id} MISSING files: #{d.attachments.to_json} [Hashi HTTP status: #{r.code}]"
@@ -150,7 +154,7 @@ Files:\n#{filenames}\n
       d
     }
   end
-  
+
   #def readme
   #  lambda {|d|
   #  # If doi and create readme.txt and md5sum.txt if missing
@@ -158,7 +162,7 @@ Files:\n#{filenames}\n
   #          has_readme_txt = hashi_filenames.find {|f| f=~ /^readme\.txt$/i }
   #          if not has_readme_txt # in theory this should be run after doi creation, but then hashi would need to be called again...
   #            # r = save_hashi(d.id, 'readme.txt', self.class.readme_txt(d, hashi["files"]))
-  #            # log.info r  
+  #            # log.info r
   #          else
   #            del = _file_base_uri(d.id)+"/readme.txt"
   #            log.info "npolar-api -X   DELETE #{del}"
@@ -167,31 +171,31 @@ Files:\n#{filenames}\n
   #    d
   #  }
   #end
-    
+
   def data_link
     lambda {|d|
-      
+
       if not d.links?
         d.links = []
       end
-      
+
       if d.attachments? and d.attachments.size > 0
-        
+
         if not d.links.any? {|l| l.href =~ /\/_all\// and l.rel == "data" }
           filename = (d.doi.to_s =~ /#{::Metadata::DataciteXml::NPOLAR_DOI_PREFIX}/) ? d.doi.split('/')[1]+'-data' : nil
           href = "#{_file_base_uri(d.id)}/_all/?filename=#{filename}&format=zip"
           type = "application/zip"
           d.links << { rel: "data", href: href, type: type }
         end
-        
+
       else
         #if not d.links.any? {|l| l.rel == "data" } and d.links.any? {|l| l.rel == "service" }
         #  first_service = d.links.select {|l| l.rel == "service" }.first
         #  # @todo force data link when there is a service?
         #end
       end
-      
-      
+
+
       d
     }
   end
@@ -257,7 +261,7 @@ Files:\n#{filenames}\n
             xml = newkernel.to_xml
 
             if self.class.dois.include? d.doi or self.class.dois.include? doi
-              
+
               if dataset_is_updated_after_doi and is_doi_metadata_changed? d,kernel
                 log.info "[UPDATING] https://doi.org/#{d.doi} npolar: #{d.updated} datacite: #{doi_updated} \"#{d.title}\""
                 ::Metadata::DataciteMds.sendMetadata(xml)
@@ -292,20 +296,20 @@ Files:\n#{filenames}\n
   end
 
   protected
-  
+
   def _file_base_uri id
     "https://api.npolar.no/dataset/#{id}/_file"
   end
-  
+
   def authors d
     authors = (d.people||[]).select {|p| p.roles.include? "author"}.map {|p| p.last_name+", "+p.first_name }
     if not authors.any?
       authors = (d.organisations||[]).select {|o| o.roles.include? "author"}.map {|o| "#{o.name} (#{o.id})" }
     end
-    authors  
+    authors
   end
-  
-  
+
+
   def save_hashi id,filename,str
     uri = _file_base_uri(id)+"/"+filename
     if @@really
@@ -315,7 +319,7 @@ Files:\n#{filenames}\n
       log.debug "Not really, so NOT saving #{uri}"
     end
   end
-  
+
   # run by #hashi when the release date is set to the future ie dataset is under embargo
   def protect_unreleased_files files
     protect = files.reject {|f|
@@ -323,7 +327,7 @@ Files:\n#{filenames}\n
     }.select {|f|
       not f.key? "restricted" or f["restricted"] == false
     }
-           
+
     if protect.any? and @@really
       protect.each do |f|
         uri = f["url"]+"?restricted=true"
@@ -331,9 +335,9 @@ Files:\n#{filenames}\n
         r = request("PUT", uri, "")
         log.info r
       end
-    end       
+    end
   end
-  
+
   def unprotect_released_files files
     protected = files.select {|f| f.key?("restricted") and f["restricted"] == true }
     if protected.any? and @@really
@@ -353,7 +357,7 @@ Files:\n#{filenames}\n
     #  log.warn "No authors: #{d.id}"
     #end
     d.released? and d.links? and (d.people? or d.organisations?) and d.licences?
-    d.released =~ /^[0-9]{4}/ and # not in future   
+    d.released =~ /^[0-9]{4}/ and # not in future
     d.links.any? {|l| ["data", "service"].include? l.rel } and
     authors.any? and
     d.organisations.any? {|p| p.roles.include? "publisher"} and
@@ -397,12 +401,12 @@ Files:\n#{filenames}\n
     end
     (new.to_json != was.to_json)
   end
-  
+
   def request(method, path, body="", headers={"Content-Type"=>"application/json"}, credentials=[ ENV["NPOLAR_API_USERNAME"], ENV["NPOLAR_API_PASSWORD"] ])
     uri = URI.parse(path)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
-    
+
     request = case method.upcase
     when "GET"
       Net::HTTP::Get.new(uri.request_uri)
@@ -413,7 +417,7 @@ Files:\n#{filenames}\n
     when "DELETE"
       Net::HTTP::Delete.new(uri.request_uri)
     end
-    
+
     if credentials.length == 2
       request.basic_auth credentials[0],credentials[1]
     end
