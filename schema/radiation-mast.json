@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://api.npolar.no/schema/radiation-mast-1.0.0.pre",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    },
+     "schema": {
+      "id": "schema",
+      "type": "string"
+    },
+    "collection": {
+      "id": "collection",
+      "type": "string",
+      "default": "radiation-mast"
+    },
+    "instrument_id": {
+      "type": "string"
+    },
+    "interval": {
+      "type": "string",
+        "enum": [
+                "10 min",
+                "1 min"
+    ]
+    },
+    "timestamp":{
+       "type": "string",
+       "format": "date-time"
+    },
+    "record":{
+       "type": "integer"
+    },
+    "sw_in_wpm2_avg":{
+       "type": "number"
+    },
+    "lw_in_corr_wpm2_avg":{
+        "type": "number"
+    },
+    "sw_out_wpm2_avg": {
+        "type": "number"
+    },
+    "lw_out_corr_wpm2_avg":{
+        "type": "number"
+    },
+    "sw_in_t_c_avg":{
+       "type": "number"
+    },
+    "lw_in_t_c_avg": {
+       "type": "number"
+    },
+    "sw_out_t_c_avg": {
+       "type": "number"
+    },
+    "lw_out_t_c_avg": {
+       "type": "number"
+    },
+    "sw_in_fan_hz_avg": {
+        "type": "number"
+    },
+    "lw_in_fan_hz_avg": {
+        "type": "number"
+    },
+    "sw_out_fan_hz_avg": {
+       "type": "number"
+    },
+    "lw_out_fan_hz_avg": {
+       "type": "number"
+    },
+    "sw_in_wpm2_std": {
+       "type": "number"
+    },
+    "lw_in_corr_wpm2_std": {
+       "type": "number"
+    },
+    "sw_out_wpm2_std": {
+       "type": "number"
+    },
+    "lw_out_corr_wpm2_std": {
+       "type": "number"
+    },
+    "battv": {
+       "type": "number"
+    },
+    "ptemp_c": {
+       "type": "number"
+    },
+    "battbankv_avg": {
+       "type": "number"
+    },
+    "at_2_avg": {
+       "type": "number"
+    },
+    "at_4_avg": {
+       "type": "number"
+    },
+    "at_10_avg": {
+       "type": "number"
+    },
+    "apogeefan_avg1":  {
+       "type": "number"
+    },
+    "apogeefan_avg2": {
+       "type": "number"
+    },
+    "apogeefan_avg3": {
+       "type": "number"
+    },
+    "rh_2_avg": {
+       "type": "number"
+    },
+    "rh_4_avg": {
+       "type": "number"
+    },
+    "rh_10_avg": {
+       "type": "number"
+    },
+    "p_sfc_avg": {
+       "type": "number"
+    },
+    "ws_2_wvc1": {
+       "type": "number"
+    },
+    "ws_2_wvc2": {
+       "type": "number"
+    },
+    "ws_4_wvc1": {
+       "type": "number"
+    },
+    "ws_4_wvc2": {
+       "type": "number"
+    },
+    "ws_10_wvc1": {
+       "type": "number"
+    },
+    "ws_10_wvc2": {
+       "type": "number"
+    },
+    "gust_2_max": {
+       "type": "number"
+    },
+    "gust_4_max": {
+       "type": "number"
+    },
+    "gust_10_max": {
+       "type": "number"
+    },
+    "tcdt":  {
+       "type": "number"
+    },
+    "q": {
+       "type": "number"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string",
+            "format": "date-time"
+    },
+    "updated_by": {
+            "type": "string"
+    }
+}
+}
