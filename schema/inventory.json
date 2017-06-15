@@ -20,26 +20,24 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
-    "category": {
+    "category",
+    "title":{
       "type": "string",
       "enum": [
-      "unknown",
-      "airstrip",
-      "building",
-      "contamination",
-      "cultural heritage",
-      "depot",
-      "field hut",
-      "fuel",
-      "heliport",
-      "instrument",
-      "operational activity",
-      "other",
-      "research/monitoring",
-      "research station"]
-    },
-    "title":{
-      "type": "string"
+        "unknown",
+        "airstrip",
+        "building",
+        "contamination",
+        "cultural heritage",
+        "depot",
+        "field hut",
+        "fuel",
+        "heliport",
+        "instrument",
+        "operational activity",
+        "other",
+        "research including monitoring",
+        "research station"]
     },
      "description": {
       "type": "string"
