@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/radiation-mast-1.0.0.pre",
+  "id": "http://api.npolar.no/schema/radiation-weather-1.0.0.pre",
   "type": "object",
   "properties": {
     "id": {
@@ -19,17 +19,14 @@
     "collection": {
       "id": "collection",
       "type": "string",
-      "default": "radiation-mast"
+      "default": "radiation-weather"
     },
-    "instrument_id": {
+    "instrument_station": {
       "type": "string"
     },
     "interval": {
-      "type": "string",
-        "enum": [
-                "10 min",
-                "1 min"
-    ]
+      "type": "number",
+      "description": "Number of seconds elapsed between each count, 3600 sek one hour, 600 in 10 min"
     },
     "timestamp":{
        "type": "string",
@@ -141,6 +138,9 @@
        "type": "number"
     },
     "ws_10_wvc2": {
+       "type": "number"
+    },
+    "ws_2_min": {
        "type": "number"
     },
     "gust_2_max": {
