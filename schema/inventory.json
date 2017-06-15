@@ -35,8 +35,8 @@
         "instrument",
         "operational activity",
         "other",
-        "research station",
-        "research including monitoring"]
+        "research including monitoring",
+        "research station"]
     },
      "description": {
       "type": "string"
