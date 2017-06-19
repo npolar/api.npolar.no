@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/radiation-weather-1.0.0.pre",
+  "id": "http://api.npolar.no/schema/weather-radiation-1.0.0.pre",
   "type": "object",
   "properties": {
     "id": {
@@ -19,15 +19,15 @@
     "collection": {
       "id": "collection",
       "type": "string",
-      "description": "This database contains the 1 hour aggregated data",
-      "default": "radiation-weather"
+      "description": "This database contains the original sampled data, 10 min og 1 min",
+      "default": "weather-radiation"
     },
     "instrument_station": {
       "type": "string"
     },
     "interval": {
       "type": "number",
-      "description": "Number of seconds elapsed between each count, 3600 sek one hour"
+      "description": "Number of seconds elapsed between each count, 60 in one min, 600 in 10 min"
     },
     "timestamp":{
        "type": "string",
