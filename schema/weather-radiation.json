@@ -37,167 +37,167 @@
        "type": "integer"
     },
     "sw_in_wpm2_avg":{
-       "type": "number"
+       "type": "number",
        "description": "Incoming shortwave radiation (W/m2)"
     },
     "lw_in_corr_wpm2_avg":{
-        "type": "number"
+        "type": "number",
         "description": "Incoming longwave radiation (W/m2)"
     },
     "sw_out_wpm2_avg": {
-        "type": "number"
+        "type": "number",
         "description": "Reflected shortwave radiation (W/m2)"
     },
     "lw_out_corr_wpm2_avg":{
-        "type": "number"
+        "type": "number",
         "description": "Outgoing longwave radiation (W/m2)"
     },
     "sw_in_t_c_avg":{
-       "type": "number"
+       "type": "number",
        "description": "Instrument temperature incoming shortwave (C)"
     },
     "lw_in_t_c_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Instrument temperature incoming longwave (C)"
     },
     "sw_out_t_c_avg": {
-       "type": "number"
+       "type": "number",
        "description":  "Instrument temperature reflected shortwave (C)"
     },
     "lw_out_t_c_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Instrument temperature outgoing longwave (C)"
     },
     "sw_in_fan_hz_avg": {
-        "type": "number"
+        "type": "number",
         "description": "Ventilator fan speed incoming shortwave (Hz)"
     },
     "lw_in_fan_hz_avg": {
-        "type": "number"
+        "type": "number",
         "description": "Ventilator fan speed incoming longwave (Hz)"
     },
     "sw_out_fan_hz_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Ventilator fan speed reflected shortwave (Hz)"
     },
     "lw_out_fan_hz_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Ventilator fan speed outgoing longwave (Hz)"
     },
     "sw_in_wpm2_std": {
-       "type": "number"
+       "type": "number",
        "description": "Incoming shortwave standard deviation (W/m2)"
     },
     "lw_in_corr_wpm2_std": {
-       "type": "number"
+       "type": "number",
        "description": "Incoming longwave standard deviation (W/m2)"
     },
     "sw_out_wpm2_std": {
-       "type": "number"
+       "type": "number",
        "description": "Reflected shortwave standard deviation (W/m2)"
     },
     "lw_out_corr_wpm2_std": {
-       "type": "number"
+       "type": "number",
        "description": "Outgoing longwave standard deviation (W/m2)"
     },
     "battv": {
-       "type": "number"
+       "type": "number",
        "description": "Logger and instrument battery voltage (V)"
     },
     "ptemp_c": {
-       "type": "number"
+       "type": "number",
        "description": "Logger temperature (C)"
     },
     "battbankv_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Battery voltage for ventilators for radiation sensors (V)"
     },
     "at_2_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Air temperature 2 m above ice surface (C)"
     },
     "at_4_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Air temperature 4 m above ice surface (C)"
     },
     "at_10_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Air temperature 10 m above ice surface (C)"
     },
     "apogeefan_avg1":  {
-       "type": "number"
+       "type": "number",
        "description": "Fan speed for 2-m temperature ventilator (Hz)"
     },
     "apogeefan_avg2": {
-       "type": "number"
+       "type": "number",
        "description": "Fan speed for 4-m temperature ventilator (Hz)"
     },
     "apogeefan_avg3": {
-       "type": "number"
+       "type": "number",
        "description": "Fan speed for 10-m temperature ventilator (Hz)"
     },
     "rh_2_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Relative humidity 2 m above ice surface (%)"
     },
     "rh_4_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Relative humidity 4 m above ice surface (%)"
     },
     "rh_10_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Relative humidity 10 m above ice surface (%)"
     },
     "p_sfc_avg": {
-       "type": "number"
+       "type": "number",
        "description": "Surface air pressure (hPa)"
     },
     "ws_2_wvc1": {
-       "type": "number"
+       "type": "number",
        "description": "Wind speed 2 m over ice surface (m/s)"
     },
     "ws_2_wvc2": {
-       "type": "number"
+       "type": "number",
        "description": "Wind direction 2 m over ice surface (degrees)"
     },
     "ws_4_wvc1": {
-       "type": "number"
+       "type": "number",
        "description": "Wind speed 4 m over ice surface (m/s)"
     },
     "ws_4_wvc2": {
-       "type": "number"
+       "type": "number",
        "description": "Wind direction 4 m over ice surface (degrees)"
     },
     "ws_10_wvc1": {
-       "type": "number"
+       "type": "number",
        "description": "Wind speed 10 m over ice surface (m/s)"
     },
     "ws_10_wvc2": {
-       "type": "number"
+       "type": "number",
        "description": "Wind direction 10 m over ice surface (degrees)"
     },
     "ws_2_min": {
-       "type": "number"
+       "type": "number",
        "description": "Minimum wind speed 2 m over ice surface (m/s)"
     },
     "gust_2_max": {
-       "type": "number"
+       "type": "number",
        "description": "Maximum wind gust 2 m over ice surface (m/s)"
     },
     "gust_4_max": {
-       "type": "number"
+       "type": "number",
        "description":  "Maximum wind gust 4 m over ice surface (m/s)"
     },
     "gust_10_max": {
-       "type": "number"
+       "type": "number",
        "description": "Maximum wind gust 10 m over ice surface (m/s)"
     },
     "tcdt":  {
-       "type": "number"
+       "type": "number",
        "description": "Distance to snow or ice surface (m)"
     },
     "q": {
-       "type": "number"
+       "type": "number",
        "description": "Quality flag for TCDT"
     },
     "created": {
