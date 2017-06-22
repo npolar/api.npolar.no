@@ -286,6 +286,12 @@
                   "minimum": -180,
                   "maximum": 180
             },
+           "places": {
+            "type": "array",
+            "description": "",
+            "items": {
+                  "type": "object",
+"properties": {
             "placename": {
                   "description": "The official placename of the location.",
                   "type": "string"
@@ -321,6 +327,9 @@
                   "format": "date-time"
             }
           }
+        }
+       }
+       }
         },
         "additionalItems": false
       },
