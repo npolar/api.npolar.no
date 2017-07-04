@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Norwegian Polar Institute track database",
+  "description": "Expedition/Cruise tracks for Norwegian Polar Institute",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "description": "Identifier (UUID | URI). Also dwc:occurrenceID, dwc:catalogNumber",
+      "type": "string"
+    },
+    "schema": {
+      "type": "string",
+       "enum": [
+        "http://api.npolar.no/schema/expedition_track"
+      ]
+    },
+    "collection": {
+      "enum": [
+        "track"
+      ]
+    },
+    "base": {
+      "enum": [
+        "http://api.npolar.no"
+      ]
+    },
+    "language": {
+      "description": "en",
+      "type": "string"
+    },
+    "air_pressure": {
+      "type": "number"
+    },
+    "air_temperature": {
+      "type": "number"
+    },
+    "code": {
+      "type": "string"
+    },
+    "course": {
+      "type": "number"
+    },
+    "expedition": {
+      "description": "link ro expedition database",
+      "type": "string"
+    },
+    "heading": {
+      "type": "number"
+    },
+    "humidity": {
+      "type": "number"
+    },
+    "latitude": {
+        "description": "Location latitude in WGS-84",
+        "type": "number",
+        "minimum": -90.0,
+        "maximum": 90.0
+    },
+    "longitude": {
+        "description": "Location longitude in WGS-84",
+        "type": "number",
+        "minimum": -180.0,
+        "maximum": 180.0
+    },
+    "measured": {
+          "description": "Sampling time",
+          "type":  "string",
+          "format": "date-time"
+    },
+    "object": {
+      "type": "string",
+      "enum": [
+        "ship",
+        "hiking",
+        "helicopter",
+        "snow mobile",
+        "snow tractor",
+        "hovercraft"
+      ]
+    },
+    "platform": {
+      "enum": [
+        "ship"
+      ]
+    },
+    "sea_temperature": {
+      "type": "number"
+    },
+    "speed": {
+      "type": "number"
+    },
+    "wind_direction_mean": {
+      "type": "number"
+    },
+    "wind_speed_mean": {
+      "type": "number"
+    },
+    "created": {
+      "description": "Document was published",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "description": "Document was updated. Equal to dcterms:modified ",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    }
+  }
+}
