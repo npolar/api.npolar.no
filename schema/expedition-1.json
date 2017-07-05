@@ -286,20 +286,20 @@
                   "minimum": -180,
                   "maximum": 180
             },
-             "places": {
+           "places": {
             "type": "array",
             "description": "",
             "items": {
                   "type": "object",
-                  "properties": {
-                    "placename": {
-                      "description": "The official placename of the location.",
-                      "type": "string"
-                    },
-                  "predefined_area": {
-                    "description": "The official placename of the location.",
-                    "type": ["string", "null"],
-                    "enum": [
+"properties": {
+            "placename": {
+                  "description": "The official placename of the location.",
+                  "type": "string"
+            },
+            "predefined_area": {
+                  "description": "The official placename of the location.",
+                  "type": ["string", "null"],
+                  "enum": [
                         "",
                         "Ny-Ålesund",
                         "Svalbard",
@@ -318,18 +318,18 @@
                         "other"
                   ]
                 },
-                "start_date": {
+            "start_date": {
                   "type": "string",
                   "format": "date-time"
-                },
-                "end_date": {
+            },
+            "end_date": {
                   "type": "string",
                   "format": "date-time"
-                }
-               }
-              }
             }
           }
+        }
+       }
+       }
         },
         "additionalItems": false
       },

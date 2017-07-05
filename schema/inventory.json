@@ -14,6 +14,9 @@
     "schema": {
       "type": "string"
     },
+    "title":{
+      "type":"string"
+    },
      "lang": {
       "description": "The language of the document.",
       "type": "string",
@@ -23,41 +26,26 @@
     "category": {
       "type": "string",
       "enum": [
-      "unknown",
-      "airstrip",
-      "building",
-      "contamination",
-      "cultural heritage",
-      "depot",
-      "heliport",
-      "instrument",
-      "other",
-      "research/monitoring",
-      "research station"]
-    },
-    "title":{
-      "type": "string"
+        "unknown",
+        "airstrip",
+        "building",
+        "contamination",
+        "cultural heritage",
+        "depot",
+        "field hut",
+        "fuel",
+        "heliport",
+        "instrument",
+        "operational activity",
+        "other",
+        "research including monitoring",
+        "research station"]
     },
      "description": {
       "type": "string"
     },
      "ephorte_no": {
       "type": "string"
-    },
-    "start_date": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "end_date": {
-       "type": "string",
-       "format": "date-time"
-    },
-    "intended_removal_date": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "comment_date": {
-       "type": "string"
     },
     "rock_samples": {
         "type": "boolean"
@@ -107,33 +95,30 @@
     "other_invasive_activity": {
         "type": "boolean"
     },
-    "field_hut": {
-          "description": "Location is a field camp",
-          "type": "boolean"
-    },
-    "research_station": {
-            "type": "boolean"
-    },
-    "cultural_heritage":{
-            "type": "boolean"
-    },
-    "airstrip": {
-            "type": "boolean"
-    },
-    "heliport":{
-            "type": "boolean"
-    },
-    "sledeneset_cargo_site":{
-            "type": "boolean"
-    },
-    "site_containers":{
-            "type": "boolean"
-    },
-     "stationary_other":{
-            "type": "string"
-    },
-    "stationary_quantity": {
-            "type": "string"
+    "dates": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+           "start_date": {
+              "type": "string",
+              "format": "date-time"
+           },
+          "end_date": {
+             "type": "string",
+             "format": "date-time"
+          },
+          "intended_removal_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "comment_date": {
+             "type": "string"
+          }
+        }
+      }
     },
     "people": {
       "type": "array",
@@ -283,7 +268,7 @@
                       },
                       "content": {
                         "type": ["string","null"],
-                        "enum": ["none","diesel","jet A-1","benzin"]
+                        "enum": ["none","diesel","jet A-1","benzin","propane"]
                       },
                       "drum_full":{
                           "type": "boolean"
