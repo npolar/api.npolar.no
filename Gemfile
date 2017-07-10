@@ -2,18 +2,18 @@ source "https://rubygems.org"
 
 # Npolar gems
 gem "nori"
-gem "gcmd", git: "git://github.com/npolar/gcmd.git"
-gem "icelastic", git: "git://github.com/npolar/icelastic.git"
-gem "npolar-api-client-ruby", git: "git://github.com/npolar/npolar-api-client-ruby"
-gem "argos-ruby", git: "git://github.com/npolar/argos-ruby"
-gem "rack-gouncer", git: "git://github.com/npolar/rack-gouncer.git"
+gem "gcmd", git: "https://github.com/npolar/gcmd.git"
+gem "icelastic", git: "https://github.com/npolar/icelastic.git"
+gem "npolar-api-client-ruby", git: "https://github.com/npolar/npolar-api-client-ruby"
+gem "argos-ruby", git: "https://github.com/npolar/argos-ruby"
+gem "rack-gouncer", git: "https://github.com/npolar/rack-gouncer.git"
 gem "highline"
 
 # HTTP/network
 gem "unicorn"
 gem "net-ldap"
 gem "faraday"
-gem "faraday_middleware", git: "git://github.com/lostisland/faraday_middleware"
+gem "faraday_middleware", git: "https://github.com/lostisland/faraday_middleware"
 gem "typhoeus", "1.1.2"
 gem "eventmachine"
 gem "em-http-request"
@@ -35,20 +35,20 @@ gem "ratom"
 gem "nokogiri", "1.5.11"
 gem "uuidtools"
 gem "hashie", "3.5.5"
-gem "json-schema", git: "git://github.com/hoxworth/json-schema.git"
+gem "json-schema", git: "https://github.com/hoxworth/json-schema.git"
 gem "jsonify"
 gem "require_all"
 
 #gem "ruby-netcdf"
 gem "addressable"
 gem "mustache"
-gem "libxml-ruby" #,git:  "git://github.com/xml4r/libxml-ruby.git"
+gem "libxml-ruby" #,git:  "https://github.com/xml4r/libxml-ruby.git"
 
 # Search
 # gem "rsolr" branch json_update
 # Until branch "json_update" is merged...
-gem "rsolr", git: "git://github.com/mootpointer/rsolr.git", :branch => "json_update"
-gem "elasticsearch", git: "git://github.com/elasticsearch/elasticsearch-ruby.git"
+gem "rsolr", git: "https://github.com/mootpointer/rsolr.git", :branch => "json_update"
+gem "elasticsearch", git: "https://github.com/elasticsearch/elasticsearch-ruby.git"
 
 # Dev/Test
 group :development, :test do
