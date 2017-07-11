@@ -27,7 +27,7 @@ source "https://rubygems.org" do
     gem "ratom"
     gem "nokogiri", "1.5.11"
     gem "uuidtools"
-    gem "hashie", "3.5.5"
+    gem "hashie", "3.4.6"
     gem "json-schema", "2.8.0"
     gem "jsonify"
     gem "require_all"
