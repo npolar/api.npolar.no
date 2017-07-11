@@ -1,48 +1,49 @@
-source "https://rubygems.org"
+source "https://rubygems.org" do
+    gem "nori", "2.6.0"
+    gem "highline"
 
-# Npolar gems
-gem "nori"
-gem "gcmd", git: "https://github.com/npolar/gcmd.git"
-gem "icelastic", git: "https://github.com/npolar/icelastic.git"
-gem "npolar-api-client-ruby", git: "https://github.com/npolar/npolar-api-client-ruby"
-gem "argos-ruby", git: "https://github.com/npolar/argos-ruby"
-gem "rack-gouncer", git: "https://github.com/npolar/rack-gouncer.git"
-gem "highline"
+    # HTTP/network
+    gem "unicorn"
+    gem "net-ldap"
+    gem "faraday"
+    gem "faraday_middleware", "0.11.0.1"
+    gem "typhoeus", "1.1.2"
+    gem "eventmachine"
+    gem "em-http-request"
+    gem "chronic"
+    gem "oai"
 
-# HTTP/network
-gem "unicorn"
-gem "net-ldap"
-gem "faraday"
-gem "faraday_middleware", git: "https://github.com/lostisland/faraday_middleware"
-gem "typhoeus", "1.1.2"
-gem "eventmachine"
-gem "em-http-request"
-gem "chronic"
-gem "oai"
+    # Rack
+    gem "rack", "1.6.8"
+    gem "rack-contrib", "1.4.0"
+    gem "rack-protection"
+    gem "rack-client" #https://github.com/halorgium/rack-client
+    gem "rack-ssl" #https://github.com/josh/rack-ssl
+    gem "rack-cache"
+    gem "rack-cors" #https://github.com/cyu/rack-cors
 
-# Rack
-gem "rack", "1.6.8"
-gem "rack-contrib", "1.4.0"
-gem "rack-protection"
-gem "rack-client" #https://github.com/halorgium/rack-client
-gem "rack-ssl" #https://github.com/josh/rack-ssl
-gem "rack-cache"
-gem "rack-cors" #https://github.com/cyu/rack-cors
+    # Helpers
+    gem "yajl-ruby", "1.3.0"
+    gem "ratom"
+    gem "nokogiri", "1.5.11"
+    gem "uuidtools"
+    gem "hashie", "3.5.5"
+    gem "json-schema", "2.8.0"
+    gem "jsonify"
+    gem "require_all"
 
-# Helpers
-gem "yajl-ruby"
-gem "ratom"
-gem "nokogiri", "1.5.11"
-gem "uuidtools"
-gem "hashie", "3.5.5"
-gem "json-schema", git: "https://github.com/hoxworth/json-schema.git"
-gem "jsonify"
-gem "require_all"
+    #gem "ruby-netcdf"
+    gem "addressable"
+    gem "mustache"
+    gem "libxml-ruby" #,git:  "https://github.com/xml4r/libxml-ruby.git"
+end
 
-#gem "ruby-netcdf"
-gem "addressable"
-gem "mustache"
-gem "libxml-ruby" #,git:  "https://github.com/xml4r/libxml-ruby.git"
+## Npolar gems
+gem "gcmd"                   , git: "https://github.com/npolar/gcmd.git"                   , branch: "master"
+gem "icelastic"              , git: "https://github.com/npolar/icelastic.git"              , branch: "master"
+gem "npolar-api-client-ruby" , git: "https://github.com/npolar/npolar-api-client-ruby.git" , branch: "master"
+gem "argos-ruby"             , git: "https://github.com/npolar/argos-ruby"
+gem "rack-gouncer"           , git: "https://github.com/npolar/rack-gouncer.git"
 
 # Search
 # gem "rsolr" branch json_update
