@@ -1,0 +1,119 @@
+{
+  "id": "http://api.npolar.no/schema/statistic",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Statistics",
+  "description": "Norwegian Polar Data statistics module.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Resource identifier (UUID).",
+      "type": "string"
+    },
+    "schema": {
+      "description": "Schema defining this object (this schema).",
+      "type": "string",
+      "enum": [
+        "http://api.npolar.no/schema/statistic"
+      ]
+    },
+    "lang": {
+      "description": "The language of the document.",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
+    "start_date": {
+        "type": "string",
+        "format": "date-time"
+    },
+    "end_date": {
+        "type": "string",
+        "format": "date-time"
+    },
+    "main_title": {
+        "type": "string",
+        "format": "date-time"
+    },
+    "main_subtitle": {
+        "type": "string",
+        "format": "date-time"
+    },
+    "component": {
+            "type": "array",
+            "description": "presentation component",
+            "items": {
+                  "type": "object",
+                  "properties": {
+                     "presentation": {
+                         "description": "Type of presentation",
+                         "type": "string",
+                         "enum": [
+                             "piechart",
+                             "barchart",
+                             "graph"
+                         ]
+                       },
+                  	  "db_field": {
+            			       "type": "string",
+            			       "description": "database field"
+                       },
+                       "title": {
+            			 "type": "string",
+            			 "description": "component title"
+                       },
+                       "subtitle": {
+                         "type": "string",
+                         "description": "component subtitle"
+                       },
+                       "component_text": {
+            			       "type": "string",
+            			       "description": "component text below illustration/data"
+                       },
+                       "yAxis_label":{
+                         "type": "string",
+                         "description": "label for y-axis"
+                        },
+                        "xAxis_label":{
+                         "type": "string",
+                         "description": "label for x-axis"
+                        },
+                       "search_uri": {
+            			 "type": "string",
+            			 "description": "search string or storage link (not real time) for presentation",
+            			 "format": "uri"
+                       }
+                  }
+                }
+      },
+      "created": {
+        "description": "The date the document was created.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "updated": {
+        "description": "The date the document was last updated.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "created_by": {
+        "description": "The username of the person who first created the document in the system.",
+        "type": "string"
+      },
+      "updated_by": {
+        "description": "The username of the person who last updated the document in the system.",
+        "type": "string"
+      },
+      "_id": {
+        "description": "Internal resource identifier.",
+        "type": "string"
+      },
+      "_rev": {
+        "description": "Internal revision number.",
+        "type": "string"
+      },
+      "_deleted":{
+        "description": "deleted entry",
+        "type": "string"
+      }
+    }
+}
