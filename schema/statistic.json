@@ -69,11 +69,11 @@
             			       "type": "string",
             			       "description": "component text below illustration/data"
                        },
-                       "yAxis_label":{
+                       "yaxis_label":{
                          "type": "string",
                          "description": "label for y-axis"
                         },
-                        "xAxis_label":{
+                        "xaxis_label":{
                          "type": "string",
                          "description": "label for x-axis"
                         },
