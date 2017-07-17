@@ -13,7 +13,7 @@
         "type": "statistic",
         "params": {
             "size-facet": 9999,
-            "facets": "component.db_field,component.title"
+            "facets": "main_title,main_subtitle"
         }
     },
     "verbs": [
