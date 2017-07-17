@@ -55,8 +55,13 @@
                        },
                   	  "db_field": {
             			       "type": "string",
-            			       "description": "database field"
+            			       "description": "database field to present"
                        },
+                        "operational_field": {
+                                       "type": "string",
+                                       "description": "database field where computations are summed"
+                       },
+
                        "title": {
             			 "type": "string",
             			 "description": "component title"
