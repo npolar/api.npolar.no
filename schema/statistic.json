@@ -22,14 +22,6 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
-    "start_date": {
-        "type": "string",
-        "format": "date-time"
-    },
-    "end_date": {
-        "type": "string",
-        "format": "date-time"
-    },
     "main_title": {
         "type": "string",
         "format": "date-time"
@@ -39,20 +31,36 @@
         "format": "date-time"
     },
     "component": {
-            "type": "array",
-            "description": "presentation component",
-            "items": {
-                  "type": "object",
-                  "properties": {
-                     "presentation": {
-                         "description": "Type of presentation",
-                         "type": "string",
-                         "enum": [
+        "description": "A list of elements to visualize.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+             "search_uri": {
+                   "type": "string",
+                   "description": "search string or storage link (not real time) for presentation",
+                   "format": "uri"
+              },
+             "operational_field": {
+                   "type": "string",
+                   "description": "field to sum up",
+                   "format": "uri"
+              },
+              "visuals": {
+                   "type": "array",
+                   "description": "presentation component",
+                   "items": {
+                     "type": "object",
+                       "properties": {
+                       "presentation": {
+                          "description": "Type of presentation",
+                          "type": "string",
+                          "enum": [
                              "piechart",
                              "barchart",
                              "graph"
-                         ]
-                       },
+                           ]
+                          },
                   	  "db_field": {
             			       "type": "string",
             			       "description": "database field to present"
@@ -61,7 +69,10 @@
                                        "type": "string",
                                        "description": "database field where computations are summed"
                        },
-
+                       "db_field_dates": {
+                                       "type": "string",
+                                       "description": "db_field dates to be compared with operational_field"
+                       },
                        "title": {
             			 "type": "string",
             			 "description": "component title"
@@ -81,14 +92,12 @@
                         "xaxis_label":{
                          "type": "string",
                          "description": "label for x-axis"
-                        },
-                       "search_uri": {
-            			 "type": "string",
-            			 "description": "search string or storage link (not real time) for presentation",
-            			 "format": "uri"
-                       }
+                        }
                   }
                 }
+              }
+            }
+          }
       },
       "created": {
         "description": "The date the document was created.",
