@@ -42,7 +42,7 @@
       "type": "number"
     },
     "expedition": {
-      "description": "link ro expedition database",
+      "description": "link to expedition database",
       "type": "string"
     },
     "heading": {

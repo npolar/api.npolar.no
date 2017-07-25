@@ -41,11 +41,6 @@
                    "description": "search string or storage link (not real time) for presentation",
                    "format": "uri"
               },
-             "operational_field": {
-                   "type": "string",
-                   "description": "field to sum up",
-                   "format": "uri"
-              },
               "visuals": {
                    "type": "array",
                    "description": "presentation component",
