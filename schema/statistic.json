@@ -60,6 +60,10 @@
             			       "type": "string",
             			       "description": "database field to present"
                        },
+                        "replacement_field": {
+                                       "type": "string",
+                                       "description":"if operational field does not exist, use this field instead"
+                        },
                         "operational_field": {
                                        "type": "string",
                                        "description": "database field where computations are summed"
