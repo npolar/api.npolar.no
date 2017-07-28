@@ -48,7 +48,7 @@
         [
             "::Rack::Gouncer",
             {
-                "url": "https://data.npolar.no:8950",
+                "url": "https://api.npolar.no:8950",
                 "open": true,
                 "system": "https://api.npolar.no/expedition"
             }
