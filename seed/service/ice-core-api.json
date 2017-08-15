@@ -1,0 +1,56 @@
+{
+  "schema": "http://api.npolar.no/schema/api",
+  "id": "ice-core-api",
+  "path": "/seaice/core",
+  "title": "Ice core API",
+  "summary": "Measurements from Sea ice cores",
+  "storage": "Couch",
+  "database": "ice-core",
+  "model": "IceCore",
+  "middleware": [
+    [
+      "::Rack::Gouncer",
+      {
+        "url": "https://api.npolar.no:8950",
+        "open": true,
+        "system": "https://api.npolar.no/seaice/core"
+      }
+    ]
+  ],
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "seaice",
+    "type": "core",
+    "log": false,
+    "params": {
+      "size-facet": 100
+    }
+  },
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "OPTIONS",
+    "POST",
+    "PUT"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "http://api.npolar.no/schema/ice-core-schema"
+  },
+  "category": [
+    "CouchDB",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP",
+    "ISO19139"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true
+}
