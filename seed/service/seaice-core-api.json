@@ -1,12 +1,12 @@
 {
   "schema": "http://api.npolar.no/schema/api",
-  "id": "ice-core-api",
+  "id": "seaice-core-api",
   "path": "/seaice/core",
-  "title": "Ice core API",
-  "summary": "Measurements from Sea ice cores",
+  "title": "Seaice core API",
+  "summary": "Measurements from seaice cores",
   "storage": "Couch",
-  "database": "ice-core",
-  "model": "IceCore",
+  "database": "seaice-core",
+  "model": "SeaIceCore",
   "middleware": [
     [
       "::Rack::Gouncer",
@@ -38,7 +38,7 @@
     "json": "application/json"
   },
   "accepts": {
-    "application/json": "http://api.npolar.no/schema/ice-core-schema"
+    "application/json": "http://api.npolar.no/schema/seaice-core"
   },
   "category": [
     "CouchDB",
