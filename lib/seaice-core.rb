@@ -1,10 +1,10 @@
 require "hashie"
 
-class IceCore < Hashie::Mash
+class SeaIceCore < Hashie::Mash
     include Npolar::Validation::MultiJsonSchemaValidator
 
     def schemas
-        ["ice-core-schema.json"]
+        ["seaice-core.json"]
     end
 
 end
