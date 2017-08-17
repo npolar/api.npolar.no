@@ -188,7 +188,7 @@ module Npolar
 
         # If the scheme indicates that we are using SSL add the protocol field.
         if couchdb_uri.scheme == "https"
-            river[:couchdb][:protocol] = couchdb_uri.schema
+            river[:couchdb][:protocol] = couchdb_uri.scheme
         end
 
         # PUT new river
