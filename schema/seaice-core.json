@@ -1,112 +1,139 @@
-
 {
-	"$schema": "http://json-schema.org/draft-04/schema#",
-	"type": "object",
-	"properties": {
-		"snow_depth": {
-			"type": "number",
-			"description": "Measured snow depth in meters"
-		},
-		"time": {
-			"type": "string",
-			"format": "date-time",
-			"description": "Date and time of sampling (ISO 8601)"
-		},
-	        "expedition": {
-		        "type": "string",
-			"description": " expedition name"
-	        },
-		"floe": {
-		        "type": "number",
-			"description": "number of ice floes"
-	        },
-		"coring_site": {
-		        "type": "string",
-			"description": "location of the core"
-		},
-		"core": {
-		        "type": "string",
-			"description": "name of the core"
-		},
-                "sea_ice_freeboard": {
-		        "type": "number",
-			"description": "??"
-		},
-		"sea_ice_thickness": {
-		        "type": "number",
-			"description": "ice thickness in meters"
-		},
-		"air_temperature": {
-		        "type": "number",
-			"description": "air temperature in celsius"
-		},
-		"surface_temperature": {
-		        "type": "number",
-			"description": "surface tenmperature in celsius"
-		},
-		"snow_ice_interface_temperature": {
-		        "type": "number",
-			"description": "snow ice interface temperature in celsius"
-		},
-		"sea_water_temperature": {
-		        "type": "number",
-			"description": "sea water temperature in celsius"
-		},
-		"segments": {
-		        "type": "integer",
-			"description": "number of segments"
-		},
-		"latitude": {
-			"type": "number",
-			"minimum": -90,
-			"maximum": 90,
-			"description": "Latitude in degrees (WGS84)"
-		},
-		"longitude": {
-			"type": "number",
-			"minimum": -180,
-			"maximum": 180,
-			"description": "Longitude in degrees (WGS84)"
-		},
-		"samples": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"depth": {
-						"type": "number",
-						"description": "Ice core sample depth in meters"
-					},
-					"height": {
-						"type": "number",
-						"description": "Ice core sample height in meters"
-					},
-					"temperature": {
-						"type": "number",
-						"description": "Ice core sample temperature in celcius"
-					},
-					"salinity": {
-						"type": "number",
-						"description": "Ice core sample salinity in PSU"
-					},
-					"density": {
-					        "type": "number",
-						"description": "Ice core sample density in kg/m3"
-					}
-				},
-				"required": [
-					"depth"
-				]
-			},
-			"minItems": 1
-		}
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "Identifier (UUID | URI)",
+            "type": "string"
+        },
+        "created": {
+            "description": "Metadata was published",
+            "type": ["string", "null"],
+            "format": "date-time"
+        },
+        "updated": {
+            "description": "Metadata was updated",
+            "type": ["string", "null"],
+            "format": "date-time"
+        },
+        "created_by": {
+            "type": "string"
+        },
+        "updated_by": {
+            "type": "string"
+        },
+        "_id": {
+            "description": "Internal id",
+            "type": "string"
+        },
+        "_rev": {
+            "description": "Internal revision",
+            "type": "string"
+        },
+        "snow_depth": {
+            "type": "number",
+            "description": "Measured snow depth in meters"
+        },
+        "time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time of sampling (ISO 8601)"
+        },
+        "expedition": {
+            "type": "string",
+            "description": " expedition name"
+        },
+        "floe": {
+            "type": "number",
+            "description": "number of ice floes"
+        },
+        "coring_site": {
+            "type": "string",
+            "description": "location of the core"
+        },
+        "core": {
+            "type": "string",
+            "description": "name of the core"
+        },
+        "sea_ice_freeboard": {
+            "type": "number",
+            "description": "??"
+        },
+        "sea_ice_thickness": {
+            "type": "number",
+            "description": "ice thickness in meters"
+        },
+        "air_temperature": {
+            "type": "number",
+            "description": "air temperature in celsius"
+        },
+        "surface_temperature": {
+            "type": "number",
+            "description": "surface tenmperature in celsius"
+        },
+        "snow_ice_interface_temperature": {
+            "type": "number",
+            "description": "snow ice interface temperature in celsius"
+        },
+        "sea_water_temperature": {
+            "type": "number",
+            "description": "sea water temperature in celsius"
+        },
+        "segments": {
+            "type": "integer",
+            "description": "number of segments"
+        },
+        "latitude": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90,
+            "description": "Latitude in degrees (WGS84)"
+        },
+        "longitude": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180,
+            "description": "Longitude in degrees (WGS84)"
+        },
+        "samples": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "depth": {
+                        "type": "number",
+                        "description": "Ice core sample depth in meters"
+                    },
+                    "height": {
+                        "type": "number",
+                        "description": "Ice core sample height in meters"
+                    },
+                    "temperature": {
+                        "type": "number",
+                        "description": "Ice core sample temperature in celcius"
+                    },
+                    "salinity": {
+                        "type": "number",
+                        "description": "Ice core sample salinity in PSU"
+                    },
+                    "density": {
+                        "type": "number",
+                        "description": "Ice core sample density in kg/m3"
+                    }
+                },
+                "required": [
+                    "depth"
+                ]
+            },
+            "minItems": 1
+        }
 
-	},
-	"required": [
-		"time",
-		"latitude",
-		"longitude",
-		"samples"
-	],
-	"additionalProperties": false
+    },
+    "required": [
+        "time",
+        "latitude",
+        "longitude",
+        "samples"
+    ],
+    "additionalProperties": false
 }
