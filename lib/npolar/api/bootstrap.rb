@@ -112,7 +112,7 @@ module Npolar
           sleep(3)
         end
       end
-      
+
       # http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-create-index.html
       def create_elasticsearch_index(service)
 
@@ -134,7 +134,7 @@ module Npolar
         log.info "Index document #{index_document.to_json}"
         log.info "Elasticsearch index PUT #{client.uri}: #{response.status}"
       end
-      
+
       # Create Elasticsearch index, mapping, and river (river first)
       # Elastic needs a little napping, so there is 3 sleeps
       def delete_elasticsearch(service)
@@ -143,7 +143,7 @@ module Npolar
           delete_elasticsearch_couchdb_river(service)
           sleep(3)
         end
-        
+
         # delete es mapping or gone with index delete?
 
         delete_elasticsearch_index(service)
@@ -185,6 +185,11 @@ module Npolar
           ignore_attachments: true },
           index: { index: elastic["index"], type: elastic["type"], bulk_size: "100", bulk_timeout: "50ms" }
         }.merge(elastic.river||{})
+
+        # If the scheme indicates that we are using SSL add the protocol field.
+        if couchdb_uri.scheme == "https"
+            river[:couchdb][:protocol] = couchdb_uri.schema
+        end
 
         # PUT new river
         uri = elastic_uri(elastic)
