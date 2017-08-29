@@ -343,11 +343,9 @@ module Metadata
         return gcmd.citation
       end
 
-      dois = links.select {|link| link.rel == "doi"}
       publishers = (organisations||[]).select {|o| o.roles.include? "publisher" }
       html_links = links.select {|link| link.rel == "alternate" and link.type == "text/html"}
 
-      doi = dois.any? ? dois[0].href : nil
       publisher = publishers.any? ? publishers[0].name : nil
       online_resource = html_links.any? ? html_links[0].href : nil
 
@@ -361,7 +359,7 @@ module Metadata
         "Dataset_Release_Date" => release_date,
         "Dataset_Release_Place" => release_place,
         "Dataset_Publisher" => publisher,
-        "Dataset_DOI" =>  doi,
+        "Dataset_DOI" =>  "https://doi.org/#{doi}",
         "Online_Resource" => online_resource
       })
     end
