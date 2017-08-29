@@ -7,8 +7,8 @@ module Metadata
   module Rack
     # Returns [DCAT](http://www.w3.org/TR/vocab-dcat/) RDF graph from upstream Npolar dataset API /dataset
     #
-    # Request in [JSON-LD](http://www.w3.org/TR/json-ld/) using either 
-    # * http://api.npolar.no/dataset/?q=&format=json&variant=dcat&limit=all (for all datasets)  
+    # Request in [JSON-LD](http://www.w3.org/TR/json-ld/) using
+    # * http://api.npolar.no/dataset/?q=&format=json&variant=dcat&limit=all (for all datasets)
     # * http://api.npolar.no/dataset/?q=&format=json&variant=dcat&limit=all&filter-links.rel=data&not-draft=yes&not-progress=planned (for published datasets with a distribution)
     #
     # See also
@@ -28,18 +28,18 @@ module Metadata
     # @todo Support GeoDCAT
     # @todo? Support other RDF serialisations
     class Dcat < Npolar::Rack::Middleware
-      
+
       DCAT_MEDIATYPE_REGEX = /^application\/ld\+json/
-      
+
       FORMATS = ["json"]
 
       JSON_LD_CONTENT_TYPE = {"Content-Type" => "application/ld+json; charset=utf-8"}
-      
+
       LOC_ISO639_1 = "http://id.loc.gov/vocabulary/iso639-1"
-          
+
       # Trigger on ?q=&format=json&variant=dcat or Accept: application/ld+json
       def condition?(request)
-        if "GET" == request.request_method and request["q"] and ( request["variant"] =~ /^((json-)?ld|dcat)$/ or request.content_type =~ DCAT_MEDIATYPE_REGEX) 
+        if "GET" == request.request_method and request["q"] and ( request["variant"] =~ /^((json-)?ld|dcat)$/ or request.content_type =~ DCAT_MEDIATYPE_REGEX)
           true
         else
           false
@@ -57,30 +57,30 @@ module Metadata
       def dcat_catalog_response(request)
 
         response = app.call(request.env)
-               
+
         status = response.is_a?(Array) ? response[0] : response.status
 
         if status > 300
           response
         else
-          
+
           body = response.is_a?(Array) ? response[2].join() : response.body.to_s
-          
+
           feed_entries = ::Yajl::Parser.parse(body)["feed"]["entries"]
-          
+
           [status, JSON_LD_CONTENT_TYPE, [json_ld_graph(feed_entries).to_json]]
-     
+
         end
       end
 
       protected
-   
+
       # @return [Hash] JSON-LD graph with @context header
       def json_ld_graph(feed_entries)
-        
+
         { "@context" => dcat_context,
           # "@id" => request.url # hmm: named graph via @id here breaks the opendatasupport validator
-          "@graph" => [   
+          "@graph" => [
             dcat_Catalog(feed_entries),
             foaf_publisher,
             vcard_contactpoint('Kind'),
@@ -88,36 +88,36 @@ module Metadata
           ]
         }
       end
-   
-      # @return [Hash] Object of @type dcat:Catalog   
+
+      # @return [Hash] Object of @type dcat:Catalog
       def dcat_Catalog(feed_entries)
-        
+
         # Reverse sort
         feed_entries = feed_entries.select {|d|
           d.key?("id")
         }.sort_by! {|d| d["updated"] }.reverse
-        
+
         dcat_catalog_dataset = feed_entries.map {|d|
           dcat_Dataset(d)
         }
-        
+
         if feed_entries.length > 0
           dc_modified = feed_entries.first["updated"]
         else
           dc_modified = Time.now.utc.xmlschema
         end
-              
+
         {
           # id and type
           "@id" => dcat_catalog_id,
           "@type" => "dcat:Catalog",
-          
+
           # mandatory
           "dcat:dataset" => dcat_catalog_dataset,
           "dc:description" => dcat_catalog_dc_description,
           "dc:publisher" => dc_publisher_id,
           "dc:title" => dcat_catalog_dc_title,
-          
+
           #recommended
           "foaf:homepage" => dcat_catalog_foaf_homepage,
           "dc:language" => "#{LOC_ISO639_1}/en",
@@ -125,7 +125,7 @@ module Metadata
           "dc:issued" => dcat_catalog_dc_issued,
           #"dcat:themeTaxonomy" => [{ "@id" => "id"}],
           "dc:modified" => dc_modified
-     
+
           # optional
           # dc:hasPart
           # dc:isPart
@@ -134,94 +134,95 @@ module Metadata
           # dc:spatial
         }
       end
-      
-      # @return [Hash] Object of @type dcat:Dataset     
+
+      # @return [Hash] Object of @type dcat:Dataset
       def dcat_Dataset(npolar_dataset)
         d = Metadata::Dataset.new(npolar_dataset)
         if d.title.nil?
-          d.title="" 
+          d.title=""
         end
 
         dataset = {
-          
+
           # type and id
           "@id" => Dataset::BASE + d.id,
+          "_rev": d._rev,
           "@type" => "dcat:Dataset",
-          
+
           # mandatory (DCAT-AP)
           "dc:title" => [{"@value" => d.title, "@language" => "en" }],
           "dc:description" => [{"@value" => (d.summary || d.title), "@language" => "en" }],
-          
+
           # recommended
           "dcat:contactPoint" => { "@id" => "http://data.npolar.no" },
           # dcat:distribution is added further down
           "dcat:keyword" => (d.tags || []),
           "dc:publisher" => dc_publisher_id,
           # "dcat:theme" => [] @todo
-          
+
           # optional
-          "dc:identifier" => d.id,
+          "id" => d._id,
           "dcat:landingPage" => "https://data.npolar.no/#{d.id}",
           "dc:issued" => d.released || d.created,
           "dc:modified" => d.updated
         }
-          
+
         # @todo ISO topic => dct:subject (GeoDCAT)
         # @todo "accessLevel" => d.restricted.nil? ? "public" : "restricted",
         # @todo "conformsTo"
-        
+
         # Add distribution for all data links
         data_links = d["links"].select {|l| l["rel"] == "data"}
         if data_links.size > 0
           dataset["dcat:distribution"] = data_links.map {|link| dcat_distribution(link,d) }
         end
-        
+
         dataset
       end
-      
-      def dcat_catalog_id        
+
+      def dcat_catalog_id
         request.url
       end
-      
+
       def dcat_catalog_dc_description
         uri = "https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c"
         [ { "@language" => "en",
-            "@value" => "Datasets published by the Norwegian Polar Institute. See #{uri} for alternative metadata formats and access protocols" 
+            "@value" => "Datasets published by the Norwegian Polar Institute. See #{uri} for alternative metadata formats and access protocols"
           },
           { "@language" => "nb",
-            "@value" => "Datasett publisert av Norsk Polarinstitutt. Se #{uri} for mer informasjon" 
+            "@value" => "Datasett publisert av Norsk Polarinstitutt. Se #{uri} for mer informasjon"
           },
           { "@language" => "nn",
-            "@value" => "Datasett publisert av Norsk Polarinstitutt. Sjå #{uri} for meir informasjon" 
+            "@value" => "Datasett publisert av Norsk Polarinstitutt. Sjå #{uri} for meir informasjon"
           }
         ]
       end
-      
+
       def dc_publisher_id
         "http://npolar.no"
       end
-      
+
       def dcat_catalog_dc_issued
         "2008-01-01T00:00:00Z"
       end
-      
+
       def dcat_catalog_dc_license_id
          "http://creativecommons.org/licenses/by/4.0/"
       end
-      
+
       #def dcat_catalog_dc_rights
       #  [ { "@language" => "en",
-      #      "@value" => "" 
+      #      "@value" => ""
       #    },
       #    { "@language" => "nb",
-      #      "@value" => "" 
+      #      "@value" => ""
       #    },
       #    { "@language" => "nn",
-      #      "@value" => "" 
+      #      "@value" => ""
       #    }
       #  ]
       #end
-      
+
       def dcat_catalog_dc_title
         [
           {"@language" => "en", "@value" => "Dataset catalogue of the Norwegian Polar Institute" },
@@ -229,11 +230,11 @@ module Metadata
           {"@language" => "nn", "@value" => "Datasett fra Norsk Polarinstitutt" },
         ]
       end
- 
+
       def dcat_catalog_foaf_homepage
         "https://data.npolar.no"
       end
-      
+
       def dcat_context
         JSON.parse %({
           "dcat": "http://www.w3.org/ns/dcat#",
@@ -257,7 +258,9 @@ module Metadata
           },
           "dc:modified": {
             "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
-          }
+          },
+          "id": "dc:identifier",
+          "_rev": null
         })
       end
 
@@ -276,26 +279,26 @@ module Metadata
           "dc:modified" => (link.modified or d.updated)
         }
       end
-      
+
       # @return [Hash] Object of type foaf:Agent
       def foaf_publisher
         { "@id" => dc_publisher_id,
           "@type" => "foaf:Agent",
           "foaf:name" => [
             { "@language" => "en",
-              "@value" => "Norwegian Polar Institute" 
+              "@value" => "Norwegian Polar Institute"
             },
             { "@language" => "nb",
-              "@value" => "Norsk Polarinstitutt" 
+              "@value" => "Norsk Polarinstitutt"
             },
             { "@language" => "nn",
-              "@value" => "Norsk Polarinstitutt" 
+              "@value" => "Norsk Polarinstitutt"
             }
           ],
           "foaf:homepage" => "https://npolar.no"
         }
       end
-      
+
       def vcard_contactpoint(vcardtype='Kind')
         JSON.parse %({
           "@id": "http://data.npolar.no",
@@ -306,7 +309,7 @@ module Metadata
           }
         })
       end
-      
+
     end
   end
 end
