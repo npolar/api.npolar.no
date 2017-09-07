@@ -1,5 +1,5 @@
 {
-    "schema": "https://api.npolar.no/schema/api",
+    "schema": "http://api.npolar.no/schema/api",
     "id": "publication-api",
     "path": "/publication",
     "title": "Publication API",
