@@ -1,71 +1,54 @@
 {
-  "_id": "publication-api",
-  "_rev": "7-80a6c49cfd1cb77da087902e424ba90b",
-  "schema": "http://api.npolar.no/schema/api",
-  "id": "publication-api",
-  "path": "/publication",
-  "title": "Publication API",
-  "storage": "Couch",
-  "database": "publication",
-  "model": "Publication",
-  "middleware": [
-    [
-      "Npolar::Rack::AttachmentDownloader",
-      {
-        "database": "publication"
-      }
-    ]
-  ],
-  "search": {
-    "engine": "Elasticsearch",
-    "index": "publication",
-    "type": "publication",
-    "params": {
-      "size-facet": 99,
-      "date-year": "published_sort",
-      "facets": "publication_type,publication_lang,topics,category,publisher,people.email,draft,state"
-    }
-  },
-  "verbs": [
-    "DELETE",
-    "GET",
-    "HEAD",
-    "POST",
-    "PUT",
-    "OPTIONS",
-    "OPTIONS"
-  ],
-  "formats": {
-    "json": "application/json; charset=utf8"
-  },
-  "accepts": {
-    "application/json": "http://api.npolar.no/schema/publication"
-  },
-  "category": [
-    "CouchDB",
-    "Solr",
-    "Lucene",
-    "REST",
-    "Search",
-    "JSON",
-    "JSON Schema",
-    "XML",
-    "XML Schema",
-    "DIF",
-    "HTTP",
-    "Atom",
-    "ISO19139"
-  ],
-  "lifecycle": "production",
-  "run": "Npolar::Api::Json",
-  "open": true,
-  "auth": {
-    "authorize": "editor",
-    "system": "publication",
-    "authorizer": "Npolar::Auth::Ldap"
-  },
-  "updated": "2015-01-13T09:36:32Z",
-  "updated_by": "conrad",
-  "created": "2013-10-02T11:35:26Z",
-  "created_by": "ruben"
+    "schema": "https://api.npolar.no/schema/api",
+    "id": "publication-api",
+    "path": "/publication",
+    "title": "Publication API",
+    "storage": "Couch",
+    "database": "publication",
+    "model": "Publication",
+    "middleware":[
+        "::Rack::Gouncer",
+        {
+            "url": "https://api.npolar.no:8950",
+            "open": true,
+            "system": "https://api.npolar.no/publication"
+        }
+    ],
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "publication",
+        "type": "publication",
+        "params": {
+            "size-facet": 99,
+            "date-year": "published",
+            "facets": "publication_type,publication_lang,topics,category,publisher,people.email,draft,state,locations.area,locations.hemisphere,locations.placename,locations.area,people.organisation"
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "OPTIONS",
+        "OPTIONS"
+    ],
+    "formats": {
+        "json": "application/json; charset=utf8"
+    },
+    "accepts": {
+        "application/json": "https://api.npolar.no/schema/publication"
+    },
+    "category": [
+        "CouchDB",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true
 }
