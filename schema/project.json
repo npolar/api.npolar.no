@@ -45,7 +45,7 @@
     },
     "draft": {
       "type": "string",
-      "enum": ["yes", "no"],
+      "enum": ["no","yes"],
       "description": "This information will be publicly available if you answer no."
     },
     "start_date": {

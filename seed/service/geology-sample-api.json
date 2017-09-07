@@ -10,7 +10,7 @@
     "search": {
         "engine": "Elasticsearch",
         "index": "geology-sample",
-        "type": "sample",
+        "type": "geology-sample",
         "log": false,
         "params": {
             "facets": "title,original_sample_name,lithology,cabinet_no,fossil,draft,thin_section,analysis,@placename,collected_year,expedition,geologist",
