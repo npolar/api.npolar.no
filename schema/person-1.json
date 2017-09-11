@@ -57,7 +57,7 @@
         "nn": {
           "type": "string"
         }
-        
+
       }
     },
     "events": {
@@ -152,8 +152,13 @@
     "_rev": {
       "type": "string"
     },
-    "_attachments": {
-      "type": "object"
+    "hired": {
+      "type": "string",
+      "pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?"
+    },
+    "left": {
+      "type": "string",
+      "pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?"
     }
   },
   "required": ["first_name", "last_name", "id"]
