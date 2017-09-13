@@ -1,201 +1,205 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/person-1",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "id": {
-      "type": "string"
-    },
-    "first_name": {
-      "type": "string"
-    },
-    "last_name": {
-      "type": "string"
-    },
-    "title": {
-      "type": "string"
-    },
-    "email": {
-      "type": "string",
-      "format": "email"
-    },
-    "phone": {
-      "type": "string"
-    },
-    "mobile": {
-      "type": "string"
-    },
-    "workplace": {
-      "type": "string"
-    },
-    "currently_employed": {
-      "type": "boolean"
-    },
-    "on_leave": {
-      "type": "boolean"
-    },
-    "jobtitle": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "en": {
-          "type": "string"
-        },
-        "no": {
-          "type": "string"
-        },
-        "nb": {
-          "type": "string"
-        },
-        "nn": {
-          "type": "string"
-        }
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"id": "http://api.npolar.no/schema/person-1",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"id": {
+			"type": "string"
+		},
+		"first_name": {
+			"type": "string"
+		},
+		"last_name": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string"
+		},
+		"email": {
+			"type": "string",
+			"format": "email"
+		},
+		"phone": {
+			"type": "string"
+		},
+		"mobile": {
+			"type": "string"
+		},
+		"workplace": {
+			"type": "string"
+		},
+		"currently_employed": {
+			"type": "boolean"
+		},
+		"on_leave": {
+			"type": "boolean"
+		},
+		"jobtitle": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"en": {
+					"type": "string"
+				},
+				"no": {
+					"type": "string"
+				},
+				"nb": {
+					"type": "string"
+				},
+				"nn": {
+					"type": "string"
+				}
 
-      }
-    },
-    "events": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["hired", "quit", "re-hired", "returned_from_leave", "on_leave"]
-          },
-          "date": {
-            "type": "string",
-            "pattern": "^[0-9]{4}"
-          },
-          "comment": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "organisation": {
-      "type": "string"
-    },
-    "links": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "rel": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string",
-            "format": "uri"
-          },
-          "hreflang": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "default": "text/html"
-          }
-        }
-      },
-      "required": ["rel", "href"]
-    },
-    "comment": {
-      "type": "string"
-    },
-    "created": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "updated": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "created_by": {
-      "type": "string"
-    },
-    "updated_by": {
-      "type": "string"
-    },
-    "_id": {
-      "type": "string"
-    },
-    "_rev": {
-      "type": "string"
-    },
-    "hired": {
-      "type": "string",
-      "pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?$"
-    },
-    "left": {
-      "type": "string",
-      "pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?$"
-    },
-    "orgunit": {
-      "description": "",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string",
-        "enum": [
-          "research",
-          "operations-logistics",
-          "environment-data-mapping",
-          "administration",
-          "commmunications",
-          "director",
-          "external"]
-      }
-    },
-    "subunit": {
-      "description": "",
-      "type": ["array", "null"],
-      "additionalItems": false,
-      "items": {
-        "type": "string",
-        "enum": [
-          "biodiversity", "ecotoxicology","geology-geophysics", "ice", "oceans-seaice",
-          "antarktis","arktis","troll",
-          "environmental-management", "datacentre", "mapping",
-          "accounting", "human-resources", "it-support",
-          "info",
-          "other"]
-      }
-    },
-    "group": {
-      "description": "",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string",
-        "enum": ["director-staff",
-          "leader-group",
-          "emergency",
-          "section-leader",
-          "department-director",
-          "media-contact",
-          "phd",
-          "postdoc"]
-      }
-    },
-    "orgtree": {
-      "description": "",
-      "type": ["array", "null"],
-      "additionalItems": false,
-      "items": {
-        "type": "string"
-      }
-    }
+			}
+		},
+		"events": {
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"type": {
+						"type": "string",
+						"enum": ["hired", "quit", "re-hired", "returned_from_leave", "on_leave"]
+					},
+					"date": {
+						"type": "string",
+						"pattern": "^[0-9]{4}"
+					},
+					"comment": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"organisation": {
+			"type": "string"
+		},
+		"links": {
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"rel": {
+						"type": "string"
+					},
+					"href": {
+						"type": "string",
+						"format": "uri"
+					},
+					"hreflang": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"default": "text/html"
+					}
+				}
+			},
+			"required": ["rel", "href"]
+		},
+		"comment": {
+			"type": "string"
+		},
+		"created": {
+			"type": "string",
+			"format": "date-time"
+		},
+		"updated": {
+			"type": "string",
+			"format": "date-time"
+		},
+		"created_by": {
+			"type": "string"
+		},
+		"updated_by": {
+			"type": "string"
+		},
+		"_id": {
+			"type": "string"
+		},
+		"_rev": {
+			"type": "string"
+		},
+		"hired": {
+			"type": "string",
+			"pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?$"
+		},
+		"left": {
+			"type": "string",
+			"pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?$"
+		},
+		"orgunit": {
+			"description": "",
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"type": "string",
+				"enum": [
+					"research",
+					"operations-logistics",
+					"environment-data-mapping",
+					"administration",
+					"commmunications",
+					"director",
+					"external"
+				]
+			}
+		},
+		"subunit": {
+			"description": "",
+			"type": ["array", "null"],
+			"additionalItems": false,
+			"items": {
+				"type": "string",
+				"enum": [
+					"biodiversity", "ecotoxicology", "geology-geophysics", "ice", "oceans-seaice",
+					"antarktis", "arktis", "troll", "tech-support",
+					"environmental-management", "datacentre", "mapping",
+					"accounting", "human-resources", "ict",
+					"info",
+					"other",
+          "null"
+				]
+			}
+		},
+		"group": {
+			"description": "",
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"type": "string",
+				"enum": ["director-staff",
+					"leader-group",
+					"emergency",
+					"section-leader",
+					"department-director",
+					"media-contact",
+					"phd",
+					"postdoc"
+				]
+			}
+		},
+		"orgtree": {
+			"description": "",
+			"type": ["array", "null"],
+			"additionalItems": false,
+			"items": {
+				"type": "string"
+			}
+		}
 
 
 
 
-  },
-  "required": ["first_name", "last_name", "id"]
+	},
+	"required": ["first_name", "last_name", "id", "orgunit", "subunit"]
 }
