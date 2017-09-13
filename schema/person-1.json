@@ -1,17 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://api.npolar.no/schema/person-1.0-rc1",
+  "id": "http://api.npolar.no/schema/person-1",
   "type": "object",
   "additionalProperties": false,
   "properties": {
     "id": {
       "type": "string"
-    },
-    "schema": {
-      "type": "string"
-    },
-    "collection": {
-      "enum": ["person"]
     },
     "first_name": {
       "type": "string"
@@ -84,13 +78,6 @@
     "organisation": {
       "type": "string"
     },
-    "orgtree": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "string"
-      }
-    },
     "links": {
       "type": "array",
       "additionalItems": false,
@@ -119,13 +106,6 @@
       },
       "required": ["rel", "href"]
     },
-    "tags": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "additionalItems": false
-    },
     "comment": {
       "type": "string"
     },
@@ -143,9 +123,6 @@
     "updated_by": {
       "type": "string"
     },
-    "uuid": {
-      "type": "string"
-    },
     "_id": {
       "type": "string"
     },
@@ -154,12 +131,71 @@
     },
     "hired": {
       "type": "string",
-      "pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?"
+      "pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?$"
     },
     "left": {
       "type": "string",
-      "pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?"
+      "pattern": "^[0-9]{4}(-[0-1][0-9])?(-[0-3][0-9][zZ]?)?$"
+    },
+    "orgunit": {
+      "description": "",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": [
+          "research",
+          "operations-logistics",
+          "environment-data-mapping",
+          "administration",
+          "commmunications",
+          "director",
+          "external"]
+      }
+    },
+    "subunit": {
+      "description": "",
+      "type": ["array", "null"],
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": [
+          "biodiversity", "ecotoxicology","geology-geophysics", "ice", "oceans-seaice",
+          "antarktis","arktis","troll",
+          "environmental-management", "datacentre", "mapping",
+          "accounting", "human-resources", "it-support",
+          "info",
+          "other"]
+      }
+    },
+    "group": {
+      "description": "",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "string",
+        "enum": ["director-staff",
+          "leader-group",
+          "emergency",
+          "section-leader",
+          "department-director",
+          "media-contact",
+          "phd",
+          "postdoc"]
+      }
+    },
+    "orgtree": {
+      "description": "",
+      "type": ["array", "null"],
+      "additionalItems": false,
+      "items": {
+        "type": "string"
+      }
     }
+
+
+
+
   },
   "required": ["first_name", "last_name", "id"]
 }
