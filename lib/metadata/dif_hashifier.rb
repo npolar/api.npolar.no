@@ -436,6 +436,8 @@ module Metadata
       parameters += topics.map {|topic| self.class.dif_Parameter(topic) }
       parameters = parameters.uniq
 
+      parameters.reject! {|p| p.Topic.nil? or p.Term.nil? }
+
       parameters.each_with_index do |p,i|
         if p.Topic.nil?
           # One of: http://api.npolar.no/gcmd/concept/?limit=250&q=&sort=&filter-concept=sciencekeywords&filter-cardinality=2&fields=title&format=csv
