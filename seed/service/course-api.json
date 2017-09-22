@@ -1,0 +1,53 @@
+{
+    "id": "course-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/course",
+    "title": "Course API",
+    "storage": "Couch",
+    "database": "course",
+    "model": "Course",
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no/user/",
+                "open": false,
+                "system": "https://api.npolar.no/course"
+            }
+        ]
+    ],
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "course",
+        "type": "course",
+        "params": {
+            "facets": "title,people"
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json; charset=utf8"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/course"
+    },
+    "category": [
+        "CouchDB",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true
+}
