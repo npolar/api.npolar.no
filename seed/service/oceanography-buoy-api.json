@@ -1,56 +1,69 @@
 {
-  "schema": "http://api.npolar.no/schema/api",
-  "id": "oceanography-buoy-api",
-  "path": "/oceanography/buoy",
-  "title": "Physical oceanography buoy API",
-  "summary": "Norwegian Polar Institutes physical oceanography API. Contains buoy data.",
-  "storage": "Couch",
-  "database": "oceanography_buoy",
-  "model": "OceanographyPoint",
-  "editlog": {
-    "disabled": true
-  },
-  "search": {
-    "engine": "Elasticsearch",
-    "index": "oceanography_buoy",
-    "type": "oceanography_point",
-    "log": false,
-    "bulk_size": 500,
-    "params": {
-      "facets": "collection,title,IMEI",
-      "date-year": "measured"
-    }
-  },
-  "verbs": [
-    "DELETE",
-    "GET",
-    "HEAD",
-    "POST",
-    "PUT",
-    "OPTIONS"
-  ],
-  "formats": {
-    "json": "application/json"
-  },
-  "accepts": {
-    "application/json": "http://api.npolar.no/schema/oceanography_point"
-  },
-  "category": [
-    "CouchDB",
-    "Lucene",
-    "REST",
-    "Search",
-    "JSON",
-    "JSON Schema",
-    "HTTP"
-  ],
-  "lifecycle": "production",
-  "run": "Npolar::Api::Json",
-  "open": true,
-  "middleware": [],
-  "auth": {
-    "authorize": "sysadmin",
-    "system": "api",
-    "authorizer": "Npolar::Auth::Ldap"
-  }
+"_id": "oceanography-buoy-api",
+"_rev": "3-5d7adc71beaf060a559a946c448cb360",
+"schema": "http://api.npolar.no/schema/api",
+"id": "oceanography-buoy-api",
+"path": "/oceanography/buoy",
+"title": "Buoy API",
+"summary": "Buoy oceanography data",
+"storage": "Couch",
+"database": "oceanography_buoy",
+"model": "OceanographyPoint",
+"editlog": {
+"disabled": true
+},
+"search": {
+"engine": "Elasticsearch",
+"index": "oceanography_buoy",
+"type": "oceanography_point",
+"log": false,
+"bulk_size": 500,
+"params": {
+"fields-remove": "_id,_rev,id,schema,created,updated,created_by,updated_by,collection,imei,buoy_type,variables",
+"facets": "quality,buoy,expedition,buoy_type,message_type,variables",
+"size-facet": 1000,
+"date-year": "measured",
+"sort": "-measured"
+}
+},
+"verbs": [
+"DELETE",
+"GET",
+"HEAD",
+"OPTIONS",
+"POST",
+"PUT"
+],
+"formats": {
+"json": "application/json"
+},
+"accepts": {
+"application/json": "http://api.npolar.no/schema/oceanography_point"
+},
+"category": [
+"CouchDB",
+"Lucene",
+"REST",
+"Search",
+"JSON",
+"JSON Schema",
+"HTTP"
+],
+"lifecycle": "production",
+"run": "Npolar::Api::Json",
+"open": true,
+"updated": "2015-12-02T12:05:32Z",
+"updated_by": "conrad.helgeland@npolar.no",
+"created": "2015-06-03T14:08:49Z",
+"created_by": "anders.balter",
+"middleware": [
+[
+"::Rack::Gouncer",
+{
+"url": "https://api.npolar.no:8950",
+"open": true,
+"system": "https://api.npolar.no/oceanography/buoy"
+}
+]
+]
 }
