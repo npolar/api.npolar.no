@@ -10,7 +10,8 @@
         "type": "observation",
         "index": "weather-troll",
         "params": {
-            "sort": "-created",
+            "fields-remove":"created,created_by,updated,updated_by,_rev,_id",
+            "sort": "-measured",
             "facets":"station_id",
             "date-year": "measured",
             "date-month": "measured",
