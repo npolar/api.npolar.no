@@ -461,9 +461,9 @@ module Metadata
     end
 
     # Validate using Dataset JSON schema *and* DIF XML schema
-    def valid?(d=nil)
-      [super,valid_dif?].all? {|v| v == true }
-    end
+    # def valid?(d=nil)
+    #   [super,valid_dif?].all? {|v| v == true }
+    # end
 
     def valid_dif?
       dif = Gcmd::Dif.new(to_dif_hash)
