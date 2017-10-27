@@ -67,8 +67,8 @@ use Rack::Cors do
   end
     allow do
     # HTTP: Allow read-only from any npolar.no host over http
-    origins /^http\:\/\/(.+)?npolar\.no/
-    resource "*", :headers => :any, :methods => [:get, :head, :options], credentials: true
+    origins "*"
+    resource "*", :headers => :any, :methods => [:get, :head, :options], credentials: false
   end
 end
 
