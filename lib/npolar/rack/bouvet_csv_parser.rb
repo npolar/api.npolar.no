@@ -60,7 +60,7 @@ module Npolar
             # generate the sha256 digest based on the measurement time and use it as
             # a namespaced UUID seed to prevent duplicate data from entering the database.
             seed = Digest::SHA256.hexdigest doc["measured"]
-            doc["id"] = seed[0,8] + "-" + seed[8,4] + "-" + seed[12:4] + "-" + seed[16,4] + "-" + seed[20,12]
+            doc["id"] = seed[0,8] + "-" + seed[8,4] + "-" + seed[12,4] + "-" + seed[16,4] + "-" + seed[20,12]
 
             # point to our schema
             doc["schema"] = "http://api.npolar.no/schema/weather-bouvet-1.0-rc1"
