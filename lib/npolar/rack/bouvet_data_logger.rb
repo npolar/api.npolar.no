@@ -37,7 +37,8 @@ module Npolar
                     values.each do |d|
                         doc = {}
                         i = 0
-                        doc["measured"] = d["time"]
+                        # Station is configured with UTC time so we append a Z
+                        doc["measured"] = d["time"] + "Z"
 
                         ## Generate a time based UUID using the sha256 sum as a seed
                         seed = Digest::SHA256.hexdigest doc["measured"]
