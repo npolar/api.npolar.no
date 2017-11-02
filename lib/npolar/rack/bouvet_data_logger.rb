@@ -37,7 +37,7 @@ module Npolar
                     values.each do |d|
                         doc = {}
                         i = 0
-                        doc["measured"] = values["time"]
+                        doc["measured"] = d["time"]
 
                         ## Generate a time based UUID using the sha256 sum as a seed
                         seed = Digest::SHA256.hexdigest doc["measured"]
