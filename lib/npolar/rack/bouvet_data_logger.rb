@@ -37,7 +37,7 @@ module Npolar
 
                         ## Generate a time based UUID using the sha256 sum as a seed
                         seed = Digest::Sha256.hexdigest doc[:measured]
-                        doc[:id] = seed[0,8] + "-" + seed[8,4] + "-" + seed[12,4] + "-" + seed[16,4] + "-" seed[20,12]
+                        doc[:id] = seed[0,8] + "-" + seed[8,4] + "-" + seed[12,4] + "-" + seed[16,4] + "-" + seed[20,12]
 
                         fields.with_index do |f,i|
                             doc[f] = d[:vals][i]
