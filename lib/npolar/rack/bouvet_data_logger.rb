@@ -1,3 +1,5 @@
+require "yajl/json_gem"
+
 module Npolar
     module Rack
 
@@ -10,10 +12,10 @@ module Npolar
             def handle(request)
                 log.info "@BouvetDataLogger"
 
-                data = request.body.read
+                data = JSON.parse(request.body.read)
                 docs = parse(data)
 
-                request.env["rack.input"] = docs
+                request.env["rack.input"] = StringIO.new(docs.to_json)
                 request.env["CONTENT_TYPE"] = "application/json"
 
                 app.call(request.env)
@@ -26,23 +28,27 @@ module Npolar
             def parse(data)
                 docs = []
 
-                fields = data[:head][:fields]
-                data = data[:data]
+                fields = data["head"]["fields"]
+                values = data["data"]
 
                 # Check if there is a header for each data value
-                if fields.length == data[0][:vals].length
-                    data.with_index do |d,j|
+                if fields.length == values[0]["vals"].length
+                    j = 0
+                    values.each do |d|
                         doc = {}
-                        doc[:measured] = data[:time]
+                        i = 0
+                        doc["measured"] = values["time"]
 
                         ## Generate a time based UUID using the sha256 sum as a seed
-                        seed = Digest::Sha256.hexdigest doc[:measured]
-                        doc[:id] = seed[0,8] + "-" + seed[8,4] + "-" + seed[12,4] + "-" + seed[16,4] + "-" + seed[20,12]
+                        seed = Digest::SHA256.hexdigest doc["measured"]
+                        doc["id"] = seed[0,8] + "-" + seed[8,4] + "-" + seed[12,4] + "-" + seed[16,4] + "-" + seed[20,12]
 
-                        fields.with_index do |f,i|
-                            doc[f] = d[:vals][i]
+                        fields.each do |f|
+                            doc[f["name"]] = d["vals"][i]
+                            i += 1
                         end
                         docs[j] = doc
+                        j += 1
                     end
                 end
 
