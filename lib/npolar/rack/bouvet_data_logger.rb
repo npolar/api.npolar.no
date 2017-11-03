@@ -49,7 +49,11 @@ module Npolar
                         doc["id"] = seed[0,8] + "-" + seed[8,4] + "-" + seed[12,4] + "-" + seed[16,4] + "-" + seed[20,12]
 
                         fields.each do |f|
-                            doc[f["name"].downcase] = d["vals"][i]
+                            if f["name"] == "ID"
+                                doc["station_id"] = d["vals"][i]
+                            else
+                                doc[f["name"].downcase] = d["vals"][i]
+                            end
                             i += 1
                         end
                         docs[j] = doc
