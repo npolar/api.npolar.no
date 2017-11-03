@@ -14,7 +14,7 @@ module Npolar
 
                 data = JSON.parse(request.body.read)
 
-                if data.has_key?("head")
+                if !data.is_a? Array && data.has_key?("head")
                     docs = parse(data)
                     request.env["rack.input"] = StringIO.new(docs.to_json)
                 else
