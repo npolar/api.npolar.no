@@ -13,9 +13,13 @@ module Npolar
                 log.info "@BouvetDataLogger"
 
                 data = JSON.parse(request.body.read)
-                docs = parse(data)
 
-                request.env["rack.input"] = StringIO.new(docs.to_json)
+                if data.has_key?("head")
+                    docs = parse(data)
+                    request.env["rack.input"] = StringIO.new(docs.to_json)
+                else
+                    request.env["rack.input"] = StringIO.new(data.to_json)
+                end
                 request.env["CONTENT_TYPE"] = "application/json"
 
                 app.call(request.env)
@@ -45,7 +49,7 @@ module Npolar
                         doc["id"] = seed[0,8] + "-" + seed[8,4] + "-" + seed[12,4] + "-" + seed[16,4] + "-" + seed[20,12]
 
                         fields.each do |f|
-                            doc[f["name"]] = d["vals"][i]
+                            doc[f["name"].downcase] = d["vals"][i]
                             i += 1
                         end
                         docs[j] = doc
