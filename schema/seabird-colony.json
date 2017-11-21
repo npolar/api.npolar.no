@@ -266,21 +266,35 @@
       "description": "Colony comments",
             "type": "string"
     },
-    "geometry": {
-            "description": "Geojson object outlining the colony",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "type": {
-                "description": "the type of geometry object",
-                "type": "string"
-              },
-              "coordinates": {
-                "description": "the coordinates",
-                "type": "string"
-              }
+     "geometry": {
+  "description": "Geojson object outlining the colony",
+
+  "type": "object",
+  "properties": {
+    "geometries": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "description": "the type of geometry object",
+            "type": "string"
+          },
+          "coordinates": {
+
+            "description": "the coordinates",
+
+            "type": "string"
+
           }
-    },
+        }
+
+      }
+    }
+  }
+},
     "historical_colony": {
       "description": "where was the colony first described",
             "type": "string"
