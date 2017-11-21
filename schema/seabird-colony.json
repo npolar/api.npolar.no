@@ -286,7 +286,9 @@
               "type": "array",
               "additionalItems": false,
               "items": {
-     "type": "string"
+                "type": "number",
+                 "minimum": -180,
+                 "maximum": 180
               }
 
 
