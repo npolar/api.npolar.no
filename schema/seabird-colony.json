@@ -283,13 +283,22 @@
           },
           "coordinates": {
               "description": "the coordinates",
-               "type": "string"
+               "type": "array",
+                "additionalItems": false,
+                "items": {
+                    "type": "array",
+                    "additionalItems": false,
+                    "items": {
+                          "type": "number"
+                    }
+
           }
         }
 
       }
     }
   }
+}
 },
     "historical_colony": {
       "description": "where was the colony first described",
