@@ -283,15 +283,7 @@
           },
           "coordinates": {
               "description": "the coordinates",
-              "type": "array",
-              "additionalItems": false,
-              "items": {
-                "type": "number",
-                 "minimum": -180,
-                 "maximum": 180
-              }
-
-
+               "type": "string"
           }
         }
 
