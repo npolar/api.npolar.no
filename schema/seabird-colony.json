@@ -266,9 +266,8 @@
       "description": "Colony comments",
             "type": "string"
     },
-     "geometry": {
+    "geometry": {
   "description": "Geojson object outlining the colony",
-
   "type": "object",
   "properties": {
     "geometries": {
@@ -283,10 +282,13 @@
             "type": "string"
           },
           "coordinates": {
+              "description": "the coordinates",
+              "type": "array",
+              "additionalItems": false,
+              "items": {
+     "type": "string"
+              }
 
-            "description": "the coordinates",
-
-            "type": "string"
 
           }
         }
