@@ -217,7 +217,7 @@
     },
     "confirmed": {
             "description": "Year the colony first were confirmed",
-            "type": "number"
+            "type": "string"
     },
     "map": {
       "description": "The map that shows the colony place",
