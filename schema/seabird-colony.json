@@ -165,7 +165,7 @@
             "description": "Type of colony",
             "type": "string",
             "enum": [
-              "verical cliff",
+              "vertical cliff",
               "hillside",
               "flat area",
               "mixed",
