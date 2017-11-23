@@ -266,7 +266,8 @@
       "description": "Colony comments",
             "type": "string"
     },
-    "geometry": {
+    "geometry":
+     {
   "description": "Geojson object outlining the colony",
   "type": "object",
   "properties": {
@@ -274,23 +275,43 @@
       "type": "array",
       "additionalItems": false,
       "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "type": {
-            "description": "the type of geometry object",
-            "type": "string"
-          },
-          "coordinates": {
-              "description": "the coordinates",
-               "type": "array",
-                "additionalItems": false,
+        "type": {
+          "description": "the type of geometry object",
+          "type": "string",
+          "enum": [
+            "Point",
+            "Polygon"
+          ]
+        },
+        "coordinates": {
+          "oneOf": [{
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "array",
                 "items": {
-                          "type": "number"
+                  "type": {
+                    "type": "array",
+                    "additionalItems": false,
+                    "items": {
+                      "type": "number"
                     }
-          }
+                  }
+                }
+              }
+            }
+          ]
         }
-
       }
     }
   }
