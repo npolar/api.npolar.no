@@ -122,18 +122,6 @@
              "Eastern Yugor Peninsula",
              "Vaigach - Yogur part"]
     },
-    "latitude": {
-            "description": "Latitude of the location",
-            "type": "number",
-            "minimum": -90,
-            "maximum": 90
-    },
-    "longitude": {
-            "description": "Longitude of the location",
-            "type": "number",
-            "minimum": -180,
-            "maximum": 180
-    },
     "location_accuracy": {
             "description": "lat/lon accuracy",
             "type": "string",
