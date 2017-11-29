@@ -3,9 +3,9 @@
 # Ruby-based command to publish Followit tracking data
 #
 # ./bin/followit-publish /mnt/datasets/Tracking/followit.se https://api.npolar.no/tracking/svalbard-reindeer
-# ./bin/followit-publish /mnt/datasets/Tracking/followit.se https://apptest.data.npolar.no/tracking/svalbard-reindeer
+# ./bin/followit-publish /mnt/datasets/Tracking/followit.se https://api-test.data.npolar.no/tracking/svalbard-reindeer
 #
-# For more information: 
+# For more information:
 # https://github.com/npolar/api.npolar.no/tree/master/external/followit.se/README.md
 
 require "bundler/setup"
@@ -19,8 +19,9 @@ Dir.chdir(__dir__) do
 end
 
 log = Logger.new(STDERR)
+log.level = Logger::INFO
 
-def latest(client)
+def latest(client, log, platform=nil, from=nil, to=nil)
 
   client.param = { q: "",
     format: "json",
@@ -30,21 +31,36 @@ def latest(client)
     fields: "measured",
     sort: "-measured"
   }
-  
+  if not platform.nil?
+    client.param["filter-platform"] = platform
+    client.param[:fields] = "measured,id,latitude,longitude,platform"
+    client.param[:limit] = "all"
+  end
+  if not from.nil?
+    client.param["filter-measured"] = from+".."
+    if not to.nil?
+      # Add a second since API ranges are [..>
+      # to = Time.parse(to)
+      # to_plus_1 = to+1
+      client.param["filter-measured"] += to+"|#{to}"
+    end
+  end
+  #log.info client.param.to_json
+
   client.authorization = true
   response = client.get
-  
+
   existing = JSON.parse(response.body)
   if existing.nil? or not existing.key? "feed"
     raise "Failed: #{response.status}"
   end
   existing["feed"]
-  
+
 end
 
 
 begin
-  
+
   if not ENV.key?("NPOLAR_API_USERNAME") or not ENV.key?("NPOLAR_API_PASSWORD")
     raise "Please set NPOLAR_API_USERNAME and NPOLAR_API_PASSWORD"
   end
@@ -54,52 +70,152 @@ begin
   if not File.exist? ARGV[0]
     raise "Source does not exist: #{ARGV[0]}"
   end
-    
+
   source = ARGV[0]
-  uri = ARGV[1] ||= "https://api.npolar.no/tracking/svalbard-reindeer"  
+  uri = ARGV[1] ||= "https://api.npolar.no/tracking/svalbard-reindeer"
   glob = File.join(source, "**/*.xml")
   #if ARGV[2].to_s =~ /\d{4}/
   #  last = DateTime.parse(ARGV[2])
   #end
-  #
-  
+  log.info uri
+
   ts = Followit::TrackerService.new
   client = Npolar::Api::Client::JsonApiClient.new(uri)
   #client.log = Logger.new(nil)
-  #client.log.level = Logger::WARN
-  
-  # get latest date and filter away all messages prior to that...
-  feed = latest(client)
+  client.log.level = Logger::WARN
+
+  # get latest date
+  feed = latest(client, log)
   if not feed["entries"].any?
-    log.debug "0 existing documents"
-    last = DateTime.new(1000)
+    log.debug "0 existing documents in #{uri}"
   else
-    last = DateTime.parse feed["entries"][0]["measured"]
-    log.debug "#{last} last measured in #{uri} [#{feed["opensearch"]["totalResults"]}]"
+    last_in_api = DateTime.parse feed["entries"][0]["measured"]
+    log.debug "#{last_in_api} last measured in #{uri} [#{feed["opensearch"]["totalResults"]}]"
   end
-  
-  docs = []
+
+  #docs = []
   c=0
-  
+
   Dir[glob].reject {|f| File.directory? f or File.size(f) == 0 }.map do |f|
+    #log.info "="*80
+    log.debug f
+    last = DateTime.new(1000)
+    add = []
     msgs = ts.positions_from_xml(f)
-    c = c + msgs.size
-    log.debug "#{c} messages / #{docs.size} newer than #{last.to_time.utc.iso8601}"
-    add = msgs.select {| m | DateTime.parse(m["measured"]) > last }
-    
-    # reject if prior to latest
-    if add.any?
-      log.debug "#{f}"
-      c = c + add.size      
-      docs += add
+
+    platforms = msgs.map {|m| m["platform"]}.sort.uniq
+
+    if platforms.size != 1
+      raise "More than one platform in #{f}: #{platforms.to_json}"
     end
+    platform = platforms[0]
+    if f !~ /#{platform}/
+      raise "Platform #{platform} does not match filename #{f}"
+    end
+
+    disk_measured_sorted = msgs.map {|m| m["measured"]}.sort
+    log.debug "XML: #{msgs.size} messages for platform #{platform} #{disk_measured_sorted.first}/#{disk_measured_sorted.last}"
+
+    feed = latest(client, log, platform, disk_measured_sorted.first, disk_measured_sorted.last)
+
+    days = feed["facets"].select{|f| f.key? "day-measured"}.first["day-measured"].map {|d| [d["term"], d["count"]] }
+    counts = days.map {|d| d[1]}
+    messages = counts.reduce(0, :+)
+    per_day = nil
+    if days.size > 0
+      per_day = (messages.to_f/days.size.to_f).round(1)
+      if per_day > 33
+        log.warn "Over 33 messages per day (#{per_day}) for #{f}"
+      end
+    end
+
+    log.debug "API: #{messages} messages for platform #{platform} #{disk_measured_sorted.first}/#{disk_measured_sorted.last}"
+    txy_xml = msgs.map {|d| [ d["measured"], d["longitude"], d["latitude"], d["platform"] ] }
+
+    if feed["entries"].size > 0
+
+      last = DateTime.parse(feed["entries"][0]["measured"])
+      api_measured = feed["entries"].map {|d| DateTime.parse d["measured"]}
+
+      log.debug "messages counted by facets #{messages.to_json}"
+      log.debug "API measured: #{api_measured.sort.size.to_json} XML: #{msgs.size}"
+      #log.info (disk_measured_sorted - api_measured).sort.to_json
+
+
+
+      txy_api = feed["entries"].map {|d| [ d["measured"], d["longitude"], d["latitude"], d["platform"] ] }
+
+      measured_not_in_xml = feed["entries"].select {|d| not msgs.map {|m| m["measured"]}.include? d["measured"] }
+      if measured_not_in_xml.any?
+        log.fatal "DELETE: #{measured_not_in_xml.to_json}"
+        bad_ids = measured_not_in_xml.map {|e| e["id"]}
+        bad_measured = measured_not_in_xml.map {|e| e["measured"]}
+        txy_api.reject! {|t| bad_measured.include? t[0] }
+        client.delete_ids uri,bad_ids
+      end
+
+      if add.any? and msgs.size != (api_measured.sort.size + add.size) # Should not happen TM
+        # log.fatal "Count mismatch for #{f}"
+        # log.fatal "Fresh messages from XML: #{add.size} (newer than #{last})"
+        # log.fatal "XML: #{msgs.size} messages API: #{messages} messages [days: #{days.size}] api+add #{api_measured.sort.size + add.size}"
+        # bad = feed["entries"].select {|d| not msgs.map {|m| m["measured"]}.include? d["measured"] }
+        # log.fatal bad.to_json
+        #
+        # ids = bad.map {|e| e["id"]}
+        # log.fatal "DELETE: #{ids.to_json}"
+        # client.delete_ids uri,ids
+
+        #txy_api.reject! {|d| bad.map {|e| e["id"]}.include? d[0] }
+
+
+      end
+
+
+      diff = txy_xml - txy_api
+      if diff.size == 0
+        log.debug "XML/API time/positions are identical for platform #{platform} [XML/API #{msgs.size}=#{messages}+#{add.size} fresh] #{disk_measured_sorted.first}/#{disk_measured_sorted.last}"
+      else
+        log.warn "Time/position/platform mismatch for XML source file #{f}"
+        log.warn "XML: #{msgs.size} messages"
+        log.warn "API: #{txy_api.size} [facets #{messages}] messages [days: #{days.size}]"
+        log.warn diff.to_json
+        log.info add.size
+      end
+
+            # Add a second since API ranges are [..>
+      last_plus1 = last.to_time.utc+1
+            # to_plus_1 = to+1
+            #add = msgs.select {| m | DateTime.parse(m["measured"]).to_time.utc > last_plus1  }
+      if diff.any?
+        diff_times = diff.map {|d| d[0] }
+        add = msgs.select {|d| diff_times.include? d["measured"] }
+        log.info add.to_json
+      end
+
+
+
+
+    else
+      txy_api = []
+      log.info "0 in API: #{f}"
+      add = msgs.dup
+    end
+
+    if add.any?
+      c = c + add.size
+      log.info "About to POST #{add.size} messages from #{f} newer than #{last.to_time.utc.iso8601} [total: #{c}] to #{uri}"
+
+      #docs += add
+      client.param = {}
+      response = client.post(add)
+      #log.info response
+
+
+    end
+
   end
-  
-  if docs.any?
-    log.debug "About to POST #{docs.size} new messages to #{uri}"
-    client.param = {}
-    response = client.post(docs)
-  end
+
+
   exit(true)
 
 rescue => e
