@@ -31,6 +31,10 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
+    "ris": {
+      "description": "Add RiS project number.",
+      "type": "string"
+    },
     "code": {
       "description": "Should be a descriptive code that the expedition can be identified by. Example Framstrait2014.",
       "type": "string"
