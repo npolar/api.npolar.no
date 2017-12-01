@@ -25,6 +25,7 @@
         "type": "message",
         "params": {
             "facets": "object,species,platform,individual,speed,course,comment,fom,hdop,technology,provider",
+            "fields-remove": "id,_id,_rev,schema,created,created_by,updated_by,collection,species,provider,object,base,technology,platform_model,deployment,deployed",
             "rangefacet-latitude": 10,
             "rangefacet-longitude": 10,
             "rangefacet-altitude": 250,
