@@ -15,7 +15,7 @@ module Metadata
 
       XML_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
 
-      ATOM_HEADER_HASH = {"Content-Type" => "application/xml; charset=utf-8"}
+      ATOM_HEADER_HASH = {"Content-Type" => "application/atom+xml; charset=utf-8"}
       # The official is atom+xml but browsers refuse to display nice XML anymore :)
 
       ISO_HEADER_HASH = {"Content-Type" => "application/vnd.iso.19139+xml; charset=utf-8"}

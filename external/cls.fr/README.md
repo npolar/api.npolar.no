@@ -1,10 +1,10 @@
-# Argos system data management
+# Argos data management
 
-The [Argos](http://en.wikipedia.org/wiki/Argos_system) system has been used at the Norwegian Polar Institute since 1979.
+The [Argos](http://en.wikipedia.org/wiki/Argos_system) satellite tracking system has been used at the Norwegian Polar Institute since 1979, the first project being drift buoys in the Southern Ocean.
 
-This document outlines how Argos data is managed internally. Data management involves
-* harvesting, archiving, processing, publishing, validating, and securing data
-* monitoring and documenting the data flow, as well as systems, software, people and organisations involved
+This document outlines Argos XML data management, for data harvested on and after 2014-03-01
+
+For older Argos data, see [Argos legacy data management](argos-legacy-data-management.md) (DS/DIAG formats)
 
 ## System overview
 
@@ -20,9 +20,9 @@ Notice that the API has a separate CouchDB database, but share the Elasticsearch
 
 The platform metadata for Arctic foxes is maintained in the [Tracking Deployment API](http://api.npolar.no/tracking/deployment/?q=&filter-object=Arctic+fox)
 
-Currently all transmitter platforms use the Argos system and all units are the same model: 
+Currently all transmitter platforms use the Argos system and all units are the same model:
 * Data provider: [CLS](http://cls.fr)
-* Positioning technology: 
+* Positioning technology:
 * Platform vendor: [Sirtrack](http://sirtrack.com)
 * Platform model: [KiwiSat303](http://www.sirtrack.com/images/pdfs/303_K3HVHF.pdf)
 * Sensor data [decoder](https://github.com/npolar/argos-ruby/blob/master/lib/argos/kiwisat303_decoder.rb)
@@ -37,6 +37,13 @@ From 1 March 2014 all Argos data XML is downloaded nightly before being converte
 The data pipeline consists of several steps:
 
 **1. Harvesting.** Argos data XML for the last 20 days is [downloaded](https://github.com/npolar/argos-ruby/blob/master/lib/argos/download.rb) each night from CLS from their SOAP web service accesses via the [argos-soap](https://github.com/npolar/argos-ruby/wiki/argos-soap) commmand
+
+
+./bin/argos-soap --debug --download /mnt/datasets/oceanography/buoy/ws-argos.cls.fr --username=nice2015 --password=arctic
+./bin/argos-soap --debug --download /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr --username=andersen --password=maritimus
+./bin/argos-soap --debug --download /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr --username=andermag --password=playa # Arctic fox
+./bin/argos-soap --debug --download /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr --username=andersenmag --password=ivory
+./bin/argos-soap --debug --download /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr --username=KITTIWAKES --password=PERSONALES
 
 **2. Archiving.** Data is archived on disk untouched in one file per platform per day
 
@@ -81,7 +88,7 @@ Original Argos DS/DIAG files: /mnt/datasets/Tracking/ARGOS/archive
 Original Argos XML files: /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-11660/platform-*/argos*.xml
 
 ### JSON <- DS/DIAG
-Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https://github.com/npolar/argos-ruby) and stored at /mnt/datasets/Tracking/ARGOS/seed/**/*.json 
+Legacy Argos DS/DIAG text files are converted to JSON using [argos-ruby](https://github.com/npolar/argos-ruby) and stored at /mnt/datasets/Tracking/ARGOS/seed/**/*.json
 
 ### JSON <- Argos XML
 

@@ -20,16 +20,19 @@ class MarineBiologySampleMigration1
         if d.sample_name =~ /^((MOSJ|ICE|ALK|CLE|FLT|MAR|MER|NON|OTI|SANA|ice96B|mø00)\d+(AB)?)[-_\s]/ui
 
           d.expedition = $1
+          log.fatal d.expedition
 
         elsif d.sample_name =~ /^(ice95A|ice95b|ice96a|ice96B|mø99A|02 UNIS|03 UNIS|04BIO|mø99A|mø99B|mø00|UN04|AB320_04|05CAB|06MAR|06ABS|2004UV|2003UV|04CAB|MAR06|CLEO07|ALK10a).+/ui
 
           d.expedition = $1
+           log.fatal d.expedition
 
         else
 
           log.warn d.sample_name
 
         end
+        
       end
       d
     }

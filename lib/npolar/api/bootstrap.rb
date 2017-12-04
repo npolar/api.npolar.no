@@ -170,6 +170,8 @@ module Npolar
           client = Npolar::Api::Client::JsonApiClient.new(uri.to_s)
           client.param = { ignore_conflicts: true }
           client.put(mapping)
+        else
+          log.warn "Did not find mapping file: #{mappingfile}"
         end
       end
 

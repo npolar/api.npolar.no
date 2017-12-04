@@ -28,6 +28,10 @@ Encoding.default_internal = Encoding::UTF_8
 #if File.exists? configfile
 #  require configfile
 #end
+if not ENV.key? "NPOLAR_API_COUCHDB"
+  raise "Please set environmental variable NPOLAR_API_COUCHDB to https://user:password@example.com:port"
+end
+
 require "./load"
 
 Npolar::Storage::Couch.uri = ENV["NPOLAR_API_COUCHDB"] # http://user:password@localhost:5984
@@ -66,7 +70,7 @@ use Rack::Cors do
     resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
   end
     allow do
-    # HTTP: Allow read-only from any npolar.no host over http
+    # Allow GET | HEAD | OPTIONS from any origin 
     origins "*"
     resource "*", :headers => :any, :methods => [:get, :head, :options], credentials: false
   end

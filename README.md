@@ -24,3 +24,13 @@ other middleware for security, validation, search/indexing, logging, transformat
 
 [![Code Climate](https://codeclimate.com/github/npolar/api.npolar.no.png)](https://codeclimate.com/github/npolar/api.npolar.no)
 [RubyDoc](http://rdoc.info/github/npolar/api.npolar.no/index)
+
+TODO
+Cache-Control: max-age=86400
+var=col
+geojsson linestri col
+https://stackoverflow.com/questions/5851727/leverage-browser-caching-expires-or-max-age-last-modified-or-etag
+
+facet.format = legacy
+facet.format = object
+facet.format = ...?

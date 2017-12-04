@@ -20,6 +20,6 @@ for f in $FILES
 do
  
   echo "About to POST $f to $URI"
-  npolar-api -s500 -c2 -i -X POST $URI -d@$f
+  npolar-api -s500 -c2 -i -XPOST $URI -d@$f -H "Content-Type: application/json"
 done
 echo "End POST glob $FILES to $URI"

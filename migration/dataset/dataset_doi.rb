@@ -25,6 +25,8 @@ class DatasetDoi
 
   NS = { datacite: "http://datacite.org/schema/kernel-4"}
 
+  @@people = JSON.parse open("http://api.npolar.no/person/?q=&fields=email,first_name,last_name,currently_employed,events,links&format=json&variant=array&limit=all").read
+
   @@really = (ARGV[2] =~ /^(--really|--really=true)$/) != nil ? true : false
   credentials = []
   if ARGV.find {|a| a=~ /^--credentials=(.+[:].+)/ }
@@ -39,6 +41,30 @@ class DatasetDoi
 
   def self.publicationYear(d)
     DateTime.parse(d.released||d.created).year
+  end
+
+  def email
+    lambda {|d|
+
+      if not d.people?
+        d.people = []
+      end
+
+      d.people.map! {|p|
+        m = @@people.map {|p| Hashie::Mash.new p }.find {|person| person.last_name == p.last_name and person.first_name == p.first_name }
+        if m and m.email?
+          if not p.email or p.email.nil? or p.email == "" or p.email != m.email
+
+            p.email = m.email
+            log.info p.to_json
+
+          end
+        end
+
+        p
+      }
+      d
+    }
   end
 
   def self.doi(d)
@@ -73,7 +99,7 @@ Files:\n#{filenames}\n
   end
 
   def migrations
-    [hashi,data_link,doi]
+    [email,hashi,data_link,doi]
   end
 
   def hashi
@@ -92,8 +118,8 @@ Files:\n#{filenames}\n
           # Make sure that links in dataset.attachments matches actual filenames in the hashi file api
           # Notice: if there's exactly 1 attachment pointing to the hashi base uri
           # => IGNORE; this means that we do not want to expose the magic _all link (too many files/too large dataset)
-          if d.attachments.size == 1 and d.attachments[0].href = _file_base_uri(d.id)
-            # IGNORE
+          if d.attachments? and d.attachments.size == 1 and d.attachments[0].href = _file_base_uri(d.id)
+            # NOOP: IGNORE
           elsif attachment_filenames.sort.to_json != hashi_filenames.sort.to_json
             log.error "#{d.id} linked filenames in dataset attachments != file api filenames \"#{d.title}\""
             log.error "#{d.id} dataset attachments count: #{attachment_filenames.size}, file api filename count: #{hashi_filenames.size}"
@@ -252,7 +278,7 @@ Files:\n#{filenames}\n
         released = DateTime.parse(d.released||d.created)
         inamonth = DateTime.now+30
         cand = ((d.attachments? and d.attachments.any?) or (DateTime.now > released) or (released < inamonth))
-
+        cand = true
         if cand # if data is released in a month (or there is at least 1 attachment)
           #begin
 
@@ -351,6 +377,9 @@ Files:\n#{filenames}\n
   end
 
   def is_released? d
+    if d.id == "881dbd20-fffc-4b9b-8b25-b417b3a1fc28"
+      return true
+    end
 
     authors = ((d.people||[]).select {|p| p.roles.include? "author"} + d.organisations.select {|o| o.roles.include? "author"})
     #if authors.none?

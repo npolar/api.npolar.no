@@ -359,7 +359,7 @@ module Metadata
         "Dataset_Release_Date" => release_date,
         "Dataset_Release_Place" => release_place,
         "Dataset_Publisher" => publisher,
-        "Dataset_DOI" =>  "https://doi.org/#{doi}",
+        "Dataset_DOI" => (not doi.nil? ? "https://doi.org/#{doi}" : ""),
         "Online_Resource" => online_resource
       })
     end
@@ -645,7 +645,7 @@ module Metadata
       related_url = []
       # All links except internal (hidden), datacentre (in Online_Resource) and
       # publication (in References)
-      links.reject {|link| link.rel =~ /internal|datacentre|publication/ }.each {|link|
+      links.reject {|link| link.rel =~ /internal|datacentre|publication|alternate/ }.each {|link|
 
         dif_type = typer.call(link.rel)
         dif_subtype = subtyper.call(link)

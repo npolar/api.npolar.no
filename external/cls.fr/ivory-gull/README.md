@@ -1,6 +1,7 @@
 # Ivory gull tracking data management
 
 Argos program 10660 (and potentially 32660)
+https://gist.github.com/cnrdh/6cbe11d1db26eea3bda59e6ce4adee3d#file-gistfile1-txt-L2​
 
 ## Platform deployments
 
@@ -13,17 +14,26 @@ require "json"; require "open-uri";
 uri = "http://api.npolar.no/tracking/deployment/?q=&filter-species=Pagophila+eburnea&fields=platform&format=json&variant=array"
 platforms = JSON.parse(open(uri).read).map {|d| d["platform"].to_s }.sort.uniq
 ```
-
+## 94 platforms
 ```json
 { "platforms": [52054, 52055, 52056, 52058, 52059, 52089, 52090, 52092, 52099, 52101, 52178, 52179, 52182, 52183, 52188, 52190, 52192, 52281, 52284, 52453, 52454, 52457, 52467, 52470, 52473, 61132, 61133, 61134, 61135, 61138, 61139, 61140, 61141, 61143, 61144, 74878, 74879, 74880, 74881, 74882, 74883, 74884, 74885, 74886, 74887, 74888, 74889, 74890, 74891, 74892, 74893, 74894, 74895, 74896, 74897, 108702, 108703, 108704, 113916, 113917, 113918, 113919, 113920, 113921, 113922, 113923, 113924, 113925, 113926, 113927, 113928, 113929, 113930, 113931, 113932, 113933, 113934, 113935, 113936, 113937, 113938, 113939, 113940, 129642, 129643, 129644, 129645, 129646, 129652, 129653, 129654, 129655, 129656] }
 ```
-
 
 # Actual 53 platforms (from DS files) for program 10666 in 2013-2014
 
 ```json
 {"platforms": [52054, 52056, 52058, 52059, 52099, 52101, 52192, 52281, 52454, 52457, 52467, 52470, 52473, 61141, 108704, 113916, 113918, 113919, 113920, 113921, 113922, 113923, 113924, 113925, 113926, 113927, 113928, 113930, 113931, 113932, 113933, 113934, 113935, 113936, 113937, 113938, 113939, 113940, 129642, 129643, 129644, 129645, 129646, 129647, 129648, 129649, 129650, 129651, 129652, 129653, 129654, 129655, 129656] }
 ```
+
+Missing in DS/DIAG:
+[52055, 52089, 52090, 52092, 52178, 52179, 52182, 52183, 52188, 52190, 52284, 52453,
+ 61132, 61133, 61134, 61135, 61138, 61139, 61140, 61143, 61144,
+ 74878, 74879, 74880, 74881, 74882, 74883, 74884, 74885, 74886, 74887, 74888, 74889, 74890, 74891, 74892, 74893, 74894, 74895, 74896, 74897,
+ 108702, 108703,
+  113917, 113929]
+
+
+
 
 ## Extracting data
 
@@ -70,8 +80,24 @@ Documents: 4094, ds: 0, diag: 4094, bundle: 8f22444ce456f55a867167be16e75910679e
 
 
 ### XML
-ch@arken:~/npolar/api.npolar.no$ ./external/cls.fr/bin/npolar-argos-xml-to-json /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/*/program-10660 > $SEED/ivory-gull-argos-from-xml.json
+
+#2014
+YEAR=2014 && ./external/cls.fr/bin/npolar-argos-xml-to-json /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/$YEAR/program-10660 > $SEED/ivory-gull-argos-xml-$YEAR.json
 D, [2017-02-02T15:09:56.215205 #13190] DEBUG -- : +2 messages / 271433  <- /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/2014/program-10660/platform-61141/argos-2014-08-26-platform-61141.xml
+
+YEAR=2015 && ./external/cls.fr/bin/npolar-argos-xml-to-json /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/$YEAR/program-10660 > $SEED/ivory-gull-argos-xml-$YEAR.json
+D, [2017-02-03T15:15:05.139351 #13002] DEBUG -- : +3 messages / 435475  <- /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/2015/program-10660/platform-61141/argos-2015-08-19-platform-61141.xml
+
+YEAR=2016 && ./external/cls.fr/bin/npolar-argos-xml-to-json /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/$YEAR/program-10660 > $SEED/ivory-gull-argos-xml-$YEAR.json
+D, [2017-02-03T13:03:45.285410 #12452] DEBUG -- : +1 messages / 280263  <- /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/2016/program-10660/platform-61141/argos-2016-08-20-platform-61141.xml
+
+YEAR=2017 && ./external/cls.fr/bin/npolar-argos-xml-to-json /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/$YEAR/program-10660 > $SEED/ivory-gull-argos-xml-$YEAR.json
+D, [2017-02-03T12:47:33.846283 #12481] DEBUG -- : +28 messages / 4728  <- /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/2017/program-10660/platform-146879/argos-2017-01-26-platform-146879.xml
+
+~/npolar/api.npolar.no$ YEAR=2017 && PROGRAM=32660 && ./external/cls.fr/bin/npolar-argos-xml-to-json /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/$YEAR/program-$PROGRAM/ > /mnt/datasets/Tracking/ARGOS/seed/ivory-gull/tsv/ivory-gull-argos-xml-$YEAR-program-$PROGRAM.tsv^C
+
+~/npolar/api.npolar.no$ YEAR=2017 && PROGRAM=10660 && ./external/cls.fr/bin/npolar-argos-xml-to-json /mnt/datasets/Tracking/ARGOS/ws-argos.cls.fr/$YEAR/program-$PROGRAM/ > /mnt/datasets/Tracking/ARGOS/seed/ivory-gull/tsv/ivory-gull-argos-xml-$YEAR-program-$PROGRAM.tsv^C
+
 
 ## Publishing data
 
@@ -98,3 +124,6 @@ Formats
 * CSV: http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=csv
 * JSON: http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=json&variant=array
 * GeoJSON: http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&format=geojson
+
+
+* curl "http://apptest.data.npolar.no:9000/tracking/ivory-gull/?q=&filter-measured=2015-01-01T00:00:00Z..2016-01-01T00:00:00Z&fields-remove=id,_id,_rev,created_by,created,updated,updated_by,schema,collection,system,row,base,parser,technology,sensor,sensor_data&format=json&variant=array&limit=all" >

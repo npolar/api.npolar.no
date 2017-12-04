@@ -30,8 +30,10 @@
               "properties": {
                 "@language": { "type": "string"},
                 "@value": { "type": "string" }
-              }
-            }
+              },
+              "additionalProperties": false
+            },
+            "additionalItems": false
           }
         },
         "additionalProperties": false

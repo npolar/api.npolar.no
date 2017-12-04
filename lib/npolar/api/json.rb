@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "hashie/mash"
 require "rack/builder"
+require "base64"
 
 module Npolar
   module Api
@@ -12,7 +13,7 @@ module Npolar
         @middleware ||= []
       end
 
-      def middleware=middleware
+      def middleware=middlewareq
         @middleware = middleware
       end
 
@@ -40,30 +41,41 @@ module Npolar
               end
             end
 
-            if api.auth?
-              auth = api.auth
+            # FIXME remce => select goeunder add except/bypass lambda/clasa
+            #if api.auth?
+            #  auth = api.auth
+            #
+            #  # Open => open data => GET, HEAD, OPTIONS are excepted from Authorization
+            #  except = api.open? ? lambda {|request| ["GET", "HEAD", "OPTIONS"].include? request.request_method } : false
+            #
+            #  authorizer = case api.auth.authorizer
+            #    when /Ldap/i then begin
+            #      #Npolar::Auth::Ldap.config = ENV["NPOLAR_API_LDAP"]
+            #      Npolar::Auth::Ldap.new(Npolar::Auth::Ldap.config)
+            #    end
+            #    else Npolar::Auth::Couch.new(Service.factory("user-api.json").database)
+            #  end
+            #
+            #  use Npolar::Rack::Authorizer, { :auth => authorizer,
+            #    :system => auth.system,
+            #    :except? => except
+            #  }
+            #end
 
-              # Open => open data => GET, HEAD, OPTIONS are excepted from Authorization
-              except = api.open? ? lambda {|request| ["GET", "HEAD", "OPTIONS"].include? request.request_method } : false
 
-              authorizer = case api.auth.authorizer
-                when /Ldap/i then begin
-                  #Npolar::Auth::Ldap.config = ENV["NPOLAR_API_LDAP"]
-                  Npolar::Auth::Ldap.new(Npolar::Auth::Ldap.config)
-                end
-                else Npolar::Auth::Couch.new(Service.factory("user-api.json").database)
-              end
-
-              use Npolar::Rack::Authorizer, { :auth => authorizer,
-                :system => auth.system,
-                :except? => except
-              }
-            end
 
             if api.middleware? and api.middleware.is_a? Array
+
               api.middleware.each do |classname, config|
+
+                if classname.is_a? Hash
+                  config = classname.config || {}
+                  classname = classname.fetch(:class)
+
+                end
+
                 c = {}
-                if config.respond_to?(:each)
+                if not config.nil? and config.respond_to?(:each)
                   config.each do |k,v|
                     c[k.to_sym]=v
                   end
@@ -82,8 +94,8 @@ module Npolar
                 }
               }
               use Views::Api::Index, { :services => services}
-              
-              
+
+
 
               if /Solr/i =~ api.search.engine
 
@@ -107,8 +119,8 @@ module Npolar
                   }
                 }
               elsif /Elasticsearch/i =~ api.search.engine
-                
-                use Npolar::Rack::HashCleaner
+
+                #use Npolar::Rack::HashCleaner
 
                 # Relative URIs => depend on NPOLAR_API_ELASTICSEARCH
                 if api.search.url.nil?
@@ -116,8 +128,8 @@ module Npolar
                 else
                  uri = URI.parse(api.search.url)
                 end
-                        
-                
+
+
                 use ::Rack::Icelastic, {
                   :url => uri,
                   :index => api.search["index"],
@@ -149,10 +161,10 @@ module Npolar
               aft = Npolar::Factory.constantize(name)
               after << aft.send(met.to_sym)
             end
-            
+
             accepts = api.accepts.nil? ? {} : api.accepts
             formats = api.formats.nil? ? {} : api.formats
-            
+
             run Core.new(nil,
               {:storage => storage,
               :formats => formats.keys,
@@ -168,6 +180,12 @@ module Npolar
 
       def call(env)
         @app.call(env)
+      end
+
+      def self.jwt_payload(jwt)
+        header, payload, crypto = jwt.split(".")
+        payload += '=' * (4 - payload.length.modulo(4))
+        Base64.decode64(payload.tr('-_', '+/'))
       end
 
       # Adds "created", "edited", "created_by", "edited_by" before POST/PUT

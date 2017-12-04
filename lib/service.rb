@@ -13,6 +13,12 @@ class Service < Hashie::Mash
   # * create Elasticsearch index, mapping, and CouchDB river
   def self.after_lambda
     lambda {|request, response|
+      response
+    }
+  end
+  
+  def self.xafter_lambda
+    lambda {|request, response|
 
       if response.is_a? Array and response.size == 3
         status = response[0]
@@ -44,7 +50,7 @@ class Service < Hashie::Mash
   end
 
   def schemas
-    ["api.json"]
+    ["api_v2.json"]
   end
 
   # Get all services
@@ -56,8 +62,8 @@ class Service < Hashie::Mash
 
     client = Npolar::Api::Client::JsonApiClient.new(ENV["NPOLAR_API_COUCHDB"]+"/#{database}")
     client.get_body("_all_docs", {"include_docs"=>true}).rows.map {|row|
-       Service.new(row.doc)
-     }
+      Service.new(row.doc)
+    }
   end
 
   def to_s

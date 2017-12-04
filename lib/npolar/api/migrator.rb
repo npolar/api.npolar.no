@@ -5,7 +5,7 @@ module Npolar
     class Migrator
       attr_accessor :client, :migrations, :log, :batch, :uri
       attr_writer :select, :documents
-      
+
       def self.documents(client)
         lambda {|client|
           client.param = { fields: "*"}
@@ -21,9 +21,9 @@ module Npolar
       def select
         @select ||= lambda {|d| true }
       end
-      
+
       def run(really=false)
-        log.info "#{self.class.name}#run #{uri} [Migrations: #{migrations.size}] --really=#{really}"      
+        log.info "#{self.class.name}#run #{uri} [Migrations: #{migrations.size}] --really=#{really}"
         log.debug "Migrations: #{migrations}"
 
         # 1. Get (all) documents
@@ -34,9 +34,9 @@ module Npolar
         fixed = []
         failed = []
         unaffected = []
-        
+
         selected.each_with_index do |d,j|
-          
+
           valid?(d)
           log.debug "Errors before: #{client.errors(d).to_json}\n#{d.to_json}"
 
@@ -47,53 +47,53 @@ module Npolar
               before = d.dup.to_hash
               @before_sha1 = Digest::SHA1.hexdigest(before.to_json)
             end
-            
 
-            if fixer.nil? 
+
+            if fixer.nil?
               fixer = condition
               condition = lambda {|d| true }
             end
-            
+
             i += 1
             if condition.call(d)
-      
+
               # 3. Apply fix directly to document (for the next fixer)
               d = Hashie::Mash.new(fixer.call(d))
               log.debug "#{" "*2}Migration #{i}/#{migrations.size} for #{d.id}"
-                      
+
             else
               log.debug "#{" "*2}Document #{d.id} not selected by condition #{condition}: [migration #{i}/#{migrations.size}]"
             end
           end
 
           # 4. Validate document
-         
+
           after_sha1 = Digest::SHA1.hexdigest(d.dup.to_hash.to_json)
-                    
+
           if @before_sha1 != after_sha1
-            
+
             if valid?(d)
-              
+
               fixed << d
-              
+
               #log.info "[#{fixed.size}] fixed #{d.id} "
-              #log.debug "Fixed: #{d.to_json}"
-             
+              log.info "Fixed: #{d.id} #{d.title}"
+
             else
-              
+
               failed << d
-              
+
               log.info "[#{failed.size}] failed #{d.id} "
               log.error "Failed migrating #{d.id}, errors: #{client.errors(d).to_json}\n#{d.to_json}"
-              
+
             end
             #log.info "="*80
-            
+
           else
             unaffected << d
           end
           log.debug "Finished document #{d.id} [##{j+1}/#{selected.size}]"
-          
+
         end
         log.info "Finished processing #{batch}; failed: #{failed.size}, fixed: #{fixed.size}, unaffected: #{unaffected.size}"
         log.debug "Unaffacted: #{unaffected.to_json}"
@@ -106,13 +106,13 @@ module Npolar
             log.info "About to POST #{fixed.size} fixed documents back to #{uri}"
             client.uri = URI.parse(uri)
             response = client.post(fixed)
-            
+
             if response.is_a? Array
               responses = response
             else
               responses = [response]
             end
-            
+
             statuses = responses.map {|r| r.status }
             log.info "HTTP response status(es): #{statuses}"
 
@@ -123,14 +123,15 @@ module Npolar
             end
           end
         end
-        
+
         if fixed.any? and false == really
+          #log.info fixed.to_json
           log.info "Not publishing fixes to #{uri} --really was false"
         end
 
         # Fixes to STDOUT
         puts fixed.to_json
- 
+
       end
 
       def valid?(document)

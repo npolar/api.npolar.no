@@ -16,7 +16,7 @@ require "npolar/api/client"
 
 log = Logger.new(STDERR)
 #log.level = Logger::WARN
-#log.level = Logger::DEBUG
+log.level = Logger::DEBUG
   
 
 def latest(api_client, platform=nil)

@@ -18,20 +18,23 @@ require_relative "./../lib/npolar/auth/couch"
 require_relative "./../lib/service"
 
 begin
-  
+
   log = Logger.new(STDERR)
   log.level = Logger::INFO
-  
-  #ENV["NPOLAR_API_ELASTICSEARCH"] = "http://dbmaster.data.npolar.no:9200"
+
   #ENV["NPOLAR_API_ELASTICSEARCH"] = "http://localhost:9200"
   #ENV["NPOLAR_API_ELASTICSEARCH"] = "http://dbtest.data.npolar.no:9200"
-  
+  ENV["NPOLAR_API_ELASTICSEARCH"] = "http://dbmaster.data.npolar.no:9200"
+
   b = Npolar::Api::Bootstrap.new
   b.log = log
 
   service = Service.factory(ARGV[0])
-  b.delete_elasticsearch(service)
+
   #b.delete_elasticsearch_couchdb_river(service)
-  #b.create_elasticsearch_couchdb_river(service)
+  b.delete_elasticsearch(service)
+
   b.create_elasticsearch(service)
+  #b.create_elasticsearch_couchdb_river(service)
+
 end
