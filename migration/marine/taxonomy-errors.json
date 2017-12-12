@@ -13,8 +13,8 @@
       "verbatim": "Isopoda Bopyridae",
       "trimmed": false,
       "name": "Bopyridae",
+      "affected": 496,
       "gbif": "https://api.gbif.org/v1/species/8697"
-      "affected": 496
     },
     {
       "search": "Jashnovia brevis",
