@@ -156,10 +156,8 @@
                   }
             }
       },
-      "locations": {
+      "location": {
         "description": "A list of one or more geographic locations relevant to the expedition.",
-        "type": "array",
-        "items": {
           "type": "object",
           "properties": {
              "north": {
@@ -191,7 +189,6 @@
                   "type": "string"
             }
           }
-        }
       },
       "collection": {
         "description": "The storage collection the document belongs to.",
