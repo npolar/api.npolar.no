@@ -1,145 +1,987 @@
 {
-  "context": { "expedition": "ICE12"},
   "errors": [
-    "Unknown species: 'Beröe cucumis'  (1099)",
-    "Unknown species: 'Isopoda Bopyridae'  (496)",
-    "Unknown species: 'Jashnovia brevis'  (267)",
-    "Unknown species: 'Nemertea pilidium'  (235)",
-    "Unknown species: 'Flagellatae'  (164)",
-    "Unknown species: 'Chaetoceros furcellatus cyst'  (156)",
-    "Unknown species: 'Biflagellatae'  (150)",
-    "Unknown species: 'Flagellatae' [Flagellatae sp.] (124)",
-    "Unknown species: 'Chrysophyta cyst' [Chrysophyta cyst ] (124)",
-    "Unknown species: 'Algiosphera robusta'  (124)",
-    "Unknown species: 'Amphidinium cf longum'  (124)",
-    "Unknown species: 'Cell'  (124)",
-    "Unknown species: 'Cellgwiazda'  (124)",
-    "Unknown species: 'Cellw otoczce'  (124)",
-    "Unknown species: 'Centriceae'  (124)",
-    "Unknown species: 'Chaetoceros borealissp.' [Chaetoceros borealissp. ] (124)",
-    "Unknown species: 'Chaetoceros lorenzianussp.' [Chaetoceros lorenzianussp. ] (124)",
-    "Unknown species: 'Choanoflagellida sp'  (124)",
-    "Unknown species: 'Choanoflagellidasp.'  (124)",
-    "Unknown species: 'Ciliataduze slonce'  (124)",
-    "Unknown species: 'Ciliatajajo'  (124)",
-    "Unknown species: 'Ciliataogromne slonce'  (124)",
-    "Unknown species: 'Ciliataolbrzym'  (124)",
-    "Unknown species: 'Ciliataslonce'  (124)",
-    "Unknown species: 'Ciliatasloneczko' [Ciliatasloneczko ] (124)",
-    "Unknown species: 'Cos jak kisc'  (124)",
-    "Unknown species: 'Cyst'  (124)",
-    "Unknown species: 'Cyst of Dinobryon'  (124)",
-    "Unknown species: 'Cystsp.'  (124)",
-    "Unknown species: 'Dinoflagellatae'  (124)",
-    "Unknown species: 'Dinoflagellataew otoczce'  (124)",
-    "Unknown species: 'Entomoneis kjellmanii var. kariana'  (124)",
-    "Unknown species: 'Flagellatae wiele'  (124)",
-    "Unknown species: 'Gymnodinium cf arcticum'  (124)",
-    "Unknown species: 'Gymnodinium cf gracilentum'  (124)",
-    "Unknown species: 'Gymnodinium cf simplex'  (124)",
-    "Unknown species: 'Gymnodinium gracilientum' [Gymnodinium gracilientum ] (124)",
-    "Unknown species: 'Gymnodinium sp.sp.'  (124)",
-    "Unknown species: 'Gyrodinium pinque'  (124)",
-    "Unknown species: 'Halosphaera cos'  (124)",
-    "Unknown species: 'Halosphaeracos'  (124)",
-    "Unknown species: 'Heterocapsasp.''Gymnodinium sp.sp.  (124)",
-    "Unknown species: 'Kathodinium' [Kathodinium sp.] (124)",
-    "Unknown species: 'Meringosphaerazielone'  (124)",
-    "Unknown species: 'Mieczyk'  (124)",
-    "Unknown species: 'Navicula gelida var. radissonii'  (124)",
-    "Unknown species: 'Navicula valida var. minuta'  (124)",
-    "Unknown species: 'Naviculasp.'  (124)",
-    "Unknown species: 'Naviculatasma' [Naviculatasma sp.] (124)",
-    "Unknown species: 'Nitzschiabananik bokeim'  (124)",
-    "Unknown species: 'Nitzschiasp.'  (124)",
-    "Unknown species: 'Pennate'  (124)",
-    "Unknown species: 'Pennate rogalik'  (124)",
-    "Unknown species: 'Phaeocystissp.'  (124)",
-    "Unknown species: 'Pierscionek'  (124)",
-    "Unknown species: 'Protoperidiniumsp.'  (124)",
-    "Unknown species: 'Pseudo-niotzschia pseudodelicatissima'  (124)",
-    "Unknown species: 'Salpingella laminatafiolka'  (124)",
-    "Unknown species: 'Strombidium spiralis'  (124)",
-    "Unknown species: 'Strombidium spiralissloneczko' [Strombidium spiralissloneczko ] (124)",
-    "Unknown species: 'Sztylecik'  (124)",
-    "Unknown species: 'Thalasiossira borealis var. antarctica'  (124)",
-    "Unknown species: 'Thalasiossira pacyfica'  (124)",
-    "Unknown species: 'Thalasiossira pacyficaphoto'  (124)",
-    "Unknown species: 'Thalassiosira borealis var. antarctica'  (124)",
-    "Unknown species: 'Thecate dinoflagellata'  (124)",
-    "Unknown species: 'Thecate dinoflagellatae'  (124)",
-    "Unknown species: 'Zlote'  (124)",
-    "Unknown species: 'cyst of Dinobryon'  (124)",
-    "Unknown species: 'taksonsp'  (124)",
-    "Unknown species: '„pierscionek”'  (124)",
-    "Unknown species: 'Thalassiosira antarctica var. Borealis'  (121)",
-    "Unknown species: 'Gammarus wilkitzki'  (57)",
-    "Unknown species: 'Tharybis cf. groenlandicus'  (47)",
-    "Unknown species: 'Chrysophyta cyst'  (6)",
-    "Unknown species: 'Calanoida nauplii'  (33)",
-    "Unknown species: 'Gammarocanthus loricatus'  (29)",
-    "Unknown species: 'Ciliate'  (27)",
-    "Unknown species: 'Nauplii Copepoda'  (23)",
-    "Unknown species: 'Dayus mysidea'  (22)",
-    "Unknown species: 'Athecate dinophyceae'  (20)",
-    "Unknown species: 'Chaetoceros diadema cyst'  (20)",
-    "Unknown species: 'Chaetoceros socialis cysts'  (20)",
-    "Unknown species: 'Dinobryon balticum colony'  (20)",
-    "Unknown species: 'Dinobryon balticum cyst'  (20)",
-    "Unknown species: 'Dinophyta cyst'  (20)",
-    "Unknown species: 'Gymnodinium flagellare'  (20)",
-    "Unknown species: 'Heterokontophyta cysts'  (20)",
-    "Unknown species: 'Phaeocystis pouchetii colony'  (20)",
-    "Unknown species: 'Rhizosolenia hebetata forma semispina'  (20)",
-    "Unknown species: 'Thecate dinophyceae'  (20)",
-    "Unknown species: 'Cliona limacina'  (18)",
-    "Unknown species: 'Gymnodinium gaelatum'  (16)",
-    "Unknown species: 'Calanoida gen.' [Calanoida gen. sp.] (13)",
-    "Unknown species: 'Ostracoda gen.sp.'  (13)",
-    "Unknown species: 'Uniflagellatae'  (13)",
-    "Unknown species: 'Copepoda nauplii'  (12)",
-    "Unknown species: 'Harpacticoida gen.' [Harpacticoida gen. sp.] (11)",
-    "Unknown species: 'Gymnodinium krasnal'  (9)",
-    "Unknown species: 'Hydromedusae larvae'  (9)",
-    "Unknown species: 'Radiolaria gen.' [Radiolaria gen. sp.] (8)",
-    "Unknown species: 'Dayus mysidis' [Dayus mysidis ] (6)",
-    "Unknown species: 'Eukronia hamata'  (6)",
-    "Unknown species: 'Hippolytidae zoea'  (6)",
-    "Unknown species: 'Cyst' [Cyst sp.] (124)",
-    "Unknown species: 'Dinoflagellatae' [Dinoflagellatae sp.] (124)",
-    "Unknown species: 'Gymnodinium gracilientum'  (43)",
-    "Unknown species: 'Naviculasp.' [Naviculasp. ] (124)",
-    "Unknown species: 'Harpacricoida nauplii'  (4)",
-    "Unknown species: 'Isopoda gen.' [Isopoda gen. sp. ] (4)",
-    "Unknown species: 'Limnocalanus grimaldi'  (4)",
-    "Unknown species: 'Nematoda gen.' [Nematoda gen. sp.] (4)",
-    "Unknown species: 'Oncea borealis'  (4)",
-    "Unknown species: 'Ova copepoda'  (4)",
-    "Unknown species: 'Echinodermata larvae'  (3)",
-    "Unknown species: 'Asteroidea larvae'  (2)",
-    "Unknown species: 'Bivalvia larvae'  (2)",
-    "Unknown species: 'Bivalvia larvae (Mollusca)'  (2)",
-    "Unknown species: 'Cyclopoida nauplii'  (2)",
-    "Unknown species: 'Globegerina pachyderma'  (2)",
-    "Unknown species: 'Strombidium estatum'  (2)",
-    "Unknown species: 'Сalanus glacialis'  (2)",
-    "Unknown species: 'Ciridius obtusifrons' [ Ciridius obtusifrons ] (1)",
-    "Unknown species: 'Arrhis phyllony'  (1)",
-    "Unknown species: 'Chaetoceros terens'  (1)",
-    "Unknown species: 'Cirripedia cypris'  (1)",
-    "Unknown species: 'Cyclopoida G.' [Cyclopoida G. sp.] (1)",
-    "Unknown species: 'Dimophyes arctica zooids'  (1)",
-    "Unknown species: 'Eualus gaimardi var. belcheri'  (1)",
-    "Unknown species: 'Euphausiacea furcilia larvae'  (1)",
-    "Unknown species: 'Harpacticus longiremis'  (1)",
-    "Unknown species: 'Metopa derjuginia' [Metopa derjuginia  ] (1)",
-    "Unknown species: 'Monoculoides pacardi'  (1)",
-    "Unknown species: 'Ostracoda (Conchoecia spp.)'  (1)",
-    "Unknown species: 'Polychaeta (Pelagobia)'  (1)",
-    "Unknown species: 'Scolocithricella minor'  (1)",
-    "Unknown species: 'Spinocalaus magnus'  (1)",
-    "Unknown species: 'Thalassiosira antarctica variety borealis'  (1)",
-    "Unknown species: 'Choanoflagellidano' [Choanoflagellidano indet.] (124)",
-    "Unknown species: 'Nauplii' [Nauplii indet.] (1)"
+    {
+      "search": "Beröe cucumis",
+      "verbatim": "Beröe cucumis",
+      "trimmed": false,
+      "name": "Beroe cucumis",
+      "affected": 1099,
+      "species": "https://api.gbif.org/v1/species/2501114"
+    },
+    {
+      "search": "Isopoda Bopyridae",
+      "verbatim": "Isopoda Bopyridae",
+      "trimmed": false,
+      "name": "Bopyridae",
+      "gbif": "https://api.gbif.org/v1/species/8697"
+      "affected": 496
+    },
+    {
+      "search": "Jashnovia brevis",
+      "verbatim": "Jashnovia brevis",
+      "trimmed": false,
+      "name": "Jaschnovia brevis",
+      "affected": 267,
+      "gbif": "https://api.gbif.org/v1/species/2115264"
+    },
+    {
+      "search": "Nemertea pilidium",
+      "verbatim": "Nemertea pilidium",
+      "trimmed": false,
+      "name": "",
+      "affected": 235
+    },
+    {
+      "search": "Flagellatae",
+      "verbatim": "Flagellatae",
+      "trimmed": false,
+      "name": "",
+      "affected": 164
+    },
+    {
+      "search": "Chaetoceros furcellatus cyst",
+      "verbatim": "Chaetoceros furcellatus cyst",
+      "trimmed": false,
+      "name": "",
+      "affected": 156
+    },
+    {
+      "search": "Biflagellatae",
+      "verbatim": "Biflagellatae",
+      "trimmed": false,
+      "name": "",
+      "affected": 150
+    },
+    {
+      "search": "Algiosphera robusta",
+      "verbatim": "Algiosphera robusta",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Amphidinium cf longum",
+      "verbatim": "Amphidinium cf longum",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Cell",
+      "verbatim": "Cell",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Cellgwiazda",
+      "verbatim": "Cellgwiazda",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Cellw otoczce",
+      "verbatim": "Cellw otoczce",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Centriceae",
+      "verbatim": "Centriceae",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Chaetoceros borealissp.",
+      "verbatim": "Chaetoceros borealissp. ",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Chaetoceros lorenzianussp.",
+      "verbatim": "Chaetoceros lorenzianussp. ",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Choanoflagellida sp",
+      "verbatim": "Choanoflagellida sp",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Choanoflagellidano",
+      "verbatim": "Choanoflagellidano indet.",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Choanoflagellidasp.",
+      "verbatim": "Choanoflagellidasp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Chrysophyta cyst",
+      "verbatim": "Chrysophyta cyst ",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Ciliataduze slonce",
+      "verbatim": "Ciliataduze slonce",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Ciliatajajo",
+      "verbatim": "Ciliatajajo",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Ciliataogromne slonce",
+      "verbatim": "Ciliataogromne slonce",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Ciliataolbrzym",
+      "verbatim": "Ciliataolbrzym",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Ciliataslonce",
+      "verbatim": "Ciliataslonce",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Ciliatasloneczko",
+      "verbatim": "Ciliatasloneczko ",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Cos jak kisc",
+      "verbatim": "Cos jak kisc",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Cyst",
+      "verbatim": "Cyst",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Cyst of Dinobryon",
+      "verbatim": "Cyst of Dinobryon",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Cystsp.",
+      "verbatim": "Cystsp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Dinoflagellatae",
+      "verbatim": "Dinoflagellatae",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Dinoflagellataew otoczce",
+      "verbatim": "Dinoflagellataew otoczce",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Entomoneis kjellmanii var. kariana",
+      "verbatim": "Entomoneis kjellmanii var. kariana",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Flagellatae wiele",
+      "verbatim": "Flagellatae wiele",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Gymnodinium cf arcticum",
+      "verbatim": "Gymnodinium cf arcticum",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Gymnodinium cf gracilentum",
+      "verbatim": "Gymnodinium cf gracilentum",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Gymnodinium cf simplex",
+      "verbatim": "Gymnodinium cf simplex",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Gymnodinium gracilientum",
+      "verbatim": "Gymnodinium gracilientum ",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Gymnodinium sp.sp.",
+      "verbatim": "Gymnodinium sp.sp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Gyrodinium pinque",
+      "verbatim": "Gyrodinium pinque",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Halosphaera cos",
+      "verbatim": "Halosphaera cos",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Halosphaeracos",
+      "verbatim": "Halosphaeracos",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Heterocapsasp.",
+      "verbatim": "Heterocapsasp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Kathodinium",
+      "verbatim": "Kathodinium sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Meringosphaerazielone",
+      "verbatim": "Meringosphaerazielone",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Mieczyk",
+      "verbatim": "Mieczyk",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Navicula gelida var. radissonii",
+      "verbatim": "Navicula gelida var. radissonii",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Navicula valida var. minuta",
+      "verbatim": "Navicula valida var. minuta",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Naviculasp.",
+      "verbatim": "Naviculasp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Naviculatasma",
+      "verbatim": "Naviculatasma sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Nitzschiabananik bokeim",
+      "verbatim": "Nitzschiabananik bokeim",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Nitzschiasp.",
+      "verbatim": "Nitzschiasp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Flagellatae",
+      "verbatim": "Flagellatae sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Pennate",
+      "verbatim": "Pennate",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Pennate rogalik",
+      "verbatim": "Pennate rogalik",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Phaeocystissp.",
+      "verbatim": "Phaeocystissp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Pierscionek",
+      "verbatim": "Pierscionek",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Protoperidiniumsp.",
+      "verbatim": "Protoperidiniumsp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Pseudo-niotzschia pseudodelicatissima",
+      "verbatim": "Pseudo-niotzschia pseudodelicatissima",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Salpingella laminatafiolka",
+      "verbatim": "Salpingella laminatafiolka",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Strombidium spiralis",
+      "verbatim": "Strombidium spiralis",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Strombidium spiralissloneczko",
+      "verbatim": "Strombidium spiralissloneczko ",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Sztylecik",
+      "verbatim": "Sztylecik",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Thalasiossira borealis var. antarctica",
+      "verbatim": "Thalasiossira borealis var. antarctica",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Thalasiossira pacyfica",
+      "verbatim": "Thalasiossira pacyfica",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Thalasiossira pacyficaphoto",
+      "verbatim": "Thalasiossira pacyficaphoto",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Thalassiosira borealis var. antarctica",
+      "verbatim": "Thalassiosira borealis var. antarctica",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Thecate dinoflagellata",
+      "verbatim": "Thecate dinoflagellata",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Thecate dinoflagellatae",
+      "verbatim": "Thecate dinoflagellatae",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Zlote",
+      "verbatim": "Zlote",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "cyst of Dinobryon",
+      "verbatim": "cyst of Dinobryon",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "taksonsp",
+      "verbatim": "taksonsp",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "„pierscionek”",
+      "verbatim": "„pierscionek”",
+      "trimmed": false,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Thalassiosira antarctica var. Borealis",
+      "verbatim": "Thalassiosira antarctica var. Borealis",
+      "trimmed": false,
+      "name": "",
+      "affected": 121
+    },
+    {
+      "search": "Gammarus wilkitzki",
+      "verbatim": "Gammarus wilkitzki",
+      "trimmed": false,
+      "name": "",
+      "affected": 57
+    },
+    {
+      "search": "Tharybis cf. groenlandicus",
+      "verbatim": "Tharybis cf. groenlandicus",
+      "trimmed": false,
+      "name": "",
+      "affected": 47
+    },
+    {
+      "search": "Calanoida nauplii",
+      "verbatim": "Calanoida nauplii",
+      "trimmed": false,
+      "name": "",
+      "affected": 33
+    },
+    {
+      "search": "Gammarocanthus loricatus",
+      "verbatim": "Gammarocanthus loricatus",
+      "trimmed": false,
+      "name": "",
+      "affected": 29
+    },
+    {
+      "search": "Ciliate",
+      "verbatim": "Ciliate",
+      "trimmed": false,
+      "name": "",
+      "affected": 27
+    },
+    {
+      "search": "Nauplii Copepoda",
+      "verbatim": "Nauplii Copepoda",
+      "trimmed": false,
+      "name": "",
+      "affected": 23
+    },
+    {
+      "search": "Dayus mysidea",
+      "verbatim": "Dayus mysidea",
+      "trimmed": false,
+      "name": "",
+      "affected": 22
+    },
+    {
+      "search": "Athecate dinophyceae",
+      "verbatim": "Athecate dinophyceae",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Chaetoceros diadema cyst",
+      "verbatim": "Chaetoceros diadema cyst",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Chaetoceros socialis cysts",
+      "verbatim": "Chaetoceros socialis cysts",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Dinobryon balticum colony",
+      "verbatim": "Dinobryon balticum colony",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Dinobryon balticum cyst",
+      "verbatim": "Dinobryon balticum cyst",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Dinophyta cyst",
+      "verbatim": "Dinophyta cyst",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Gymnodinium flagellare",
+      "verbatim": "Gymnodinium flagellare",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Heterokontophyta cysts",
+      "verbatim": "Heterokontophyta cysts",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Phaeocystis pouchetii colony",
+      "verbatim": "Phaeocystis pouchetii colony",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Rhizosolenia hebetata forma semispina",
+      "verbatim": "Rhizosolenia hebetata forma semispina",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Thecate dinophyceae",
+      "verbatim": "Thecate dinophyceae",
+      "trimmed": false,
+      "name": "",
+      "affected": 20
+    },
+    {
+      "search": "Cliona limacina",
+      "verbatim": "Cliona limacina",
+      "trimmed": false,
+      "name": "",
+      "affected": 18
+    },
+    {
+      "search": "Gymnodinium gaelatum",
+      "verbatim": "Gymnodinium gaelatum",
+      "trimmed": false,
+      "name": "",
+      "affected": 16
+    },
+    {
+      "search": "Calanoida gen.",
+      "verbatim": "Calanoida gen. sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 13
+    },
+    {
+      "search": "Ostracoda gen.sp.",
+      "verbatim": "Ostracoda gen.sp.",
+      "trimmed": false,
+      "name": "",
+      "affected": 13
+    },
+    {
+      "search": "Uniflagellatae",
+      "verbatim": "Uniflagellatae",
+      "trimmed": false,
+      "name": "",
+      "affected": 13
+    },
+    {
+      "search": "Copepoda nauplii",
+      "verbatim": "Copepoda nauplii",
+      "trimmed": false,
+      "name": "",
+      "affected": 12
+    },
+    {
+      "search": "Harpacticoida gen.",
+      "verbatim": "Harpacticoida gen. sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 11
+    },
+    {
+      "search": "Gymnodinium krasnal",
+      "verbatim": "Gymnodinium krasnal",
+      "trimmed": false,
+      "name": "",
+      "affected": 9
+    },
+    {
+      "search": "Hydromedusae larvae",
+      "verbatim": "Hydromedusae larvae",
+      "trimmed": false,
+      "name": "",
+      "affected": 9
+    },
+    {
+      "search": "Radiolaria gen.",
+      "verbatim": "Radiolaria gen. sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 8
+    },
+    {
+      "search": "Dayus mysidis",
+      "verbatim": "Dayus mysidis ",
+      "trimmed": true,
+      "name": "",
+      "affected": 6
+    },
+    {
+      "search": "Eukronia hamata",
+      "verbatim": "Eukronia hamata",
+      "trimmed": false,
+      "name": "",
+      "affected": 6
+    },
+    {
+      "search": "Hippolytidae zoea",
+      "verbatim": "Hippolytidae zoea",
+      "trimmed": false,
+      "name": "",
+      "affected": 6
+    },
+    {
+      "search": "Harpacricoida nauplii",
+      "verbatim": "Harpacricoida nauplii",
+      "trimmed": false,
+      "name": "",
+      "affected": 4
+    },
+    {
+      "search": "Isopoda gen.",
+      "verbatim": "Isopoda gen. sp. ",
+      "trimmed": true,
+      "name": "",
+      "affected": 4
+    },
+    {
+      "search": "Limnocalanus grimaldi",
+      "verbatim": "Limnocalanus grimaldi",
+      "trimmed": false,
+      "name": "",
+      "affected": 4
+    },
+    {
+      "search": "Nematoda gen.",
+      "verbatim": "Nematoda gen. sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 4
+    },
+    {
+      "search": "Oncea borealis",
+      "verbatim": "Oncea borealis",
+      "trimmed": false,
+      "name": "",
+      "affected": 4
+    },
+    {
+      "search": "Ova copepoda",
+      "verbatim": "Ova copepoda",
+      "trimmed": false,
+      "name": "",
+      "affected": 4
+    },
+    {
+      "search": "Echinodermata larvae",
+      "verbatim": "Echinodermata larvae",
+      "trimmed": false,
+      "name": "",
+      "affected": 3
+    },
+    {
+      "search": "Asteroidea larvae",
+      "verbatim": "Asteroidea larvae",
+      "trimmed": false,
+      "name": "",
+      "affected": 2
+    },
+    {
+      "search": "Bivalvia larvae",
+      "verbatim": "Bivalvia larvae",
+      "trimmed": false,
+      "name": "",
+      "affected": 2
+    },
+    {
+      "search": "Bivalvia larvae (Mollusca)",
+      "verbatim": "Bivalvia larvae (Mollusca)",
+      "trimmed": false,
+      "name": "",
+      "affected": 2
+    },
+    {
+      "search": "Cyclopoida nauplii",
+      "verbatim": "Cyclopoida nauplii",
+      "trimmed": false,
+      "name": "",
+      "affected": 2
+    },
+    {
+      "search": "Globegerina pachyderma",
+      "verbatim": "Globegerina pachyderma",
+      "trimmed": false,
+      "name": "",
+      "affected": 2
+    },
+    {
+      "search": "Strombidium estatum",
+      "verbatim": "Strombidium estatum",
+      "trimmed": false,
+      "name": "",
+      "affected": 2
+    },
+    {
+      "search": "Сalanus glacialis",
+      "verbatim": "Сalanus glacialis",
+      "trimmed": false,
+      "name": "",
+      "affected": 2
+    },
+    {
+      "search": "Ciridius obtusifrons",
+      "verbatim": " Ciridius obtusifrons ",
+      "trimmed": true,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Arrhis phyllony",
+      "verbatim": "Arrhis phyllony",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Chaetoceros terens",
+      "verbatim": "Chaetoceros terens",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Cirripedia cypris",
+      "verbatim": "Cirripedia cypris",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Cyclopoida G.",
+      "verbatim": "Cyclopoida G. sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Dimophyes arctica zooids",
+      "verbatim": "Dimophyes arctica zooids",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Eualus gaimardi var. belcheri",
+      "verbatim": "Eualus gaimardi var. belcheri",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Euphausiacea furcilia larvae",
+      "verbatim": "Euphausiacea furcilia larvae",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Harpacticus longiremis",
+      "verbatim": "Harpacticus longiremis",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Metopa derjuginia",
+      "verbatim": "Metopa derjuginia  ",
+      "trimmed": true,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Monoculoides pacardi",
+      "verbatim": "Monoculoides pacardi",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Nauplii",
+      "verbatim": "Nauplii indet.",
+      "trimmed": true,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Chrysophyta cyst",
+      "verbatim": "Chrysophyta cyst",
+      "trimmed": false,
+      "name": "",
+      "affected": 6
+    },
+    {
+      "search": "Cyst",
+      "verbatim": "Cyst sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Dinoflagellatae",
+      "verbatim": "Dinoflagellatae sp.",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Gymnodinium gracilientum",
+      "verbatim": "Gymnodinium gracilientum",
+      "trimmed": false,
+      "name": "",
+      "affected": 43
+    },
+    {
+      "search": "Naviculasp.",
+      "verbatim": "Naviculasp. ",
+      "trimmed": true,
+      "name": "",
+      "affected": 124
+    },
+    {
+      "search": "Ostracoda (Conchoecia spp.)",
+      "verbatim": "Ostracoda (Conchoecia spp.)",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Polychaeta (Pelagobia)",
+      "verbatim": "Polychaeta (Pelagobia)",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Scolocithricella minor",
+      "verbatim": "Scolocithricella minor",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Spinocalaus magnus",
+      "verbatim": "Spinocalaus magnus",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    },
+    {
+      "search": "Thalassiosira antarctica variety borealis",
+      "verbatim": "Thalassiosira antarctica variety borealis",
+      "trimmed": false,
+      "name": "",
+      "affected": 1
+    }
   ]
 }
