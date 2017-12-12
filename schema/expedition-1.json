@@ -46,8 +46,8 @@
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
-     "kronprins_haakon": {
-         "type": "boolean"
+     "ship": {
+         "type": "string"
     },
     "start_date": {
         "type": "string",
