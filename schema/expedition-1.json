@@ -1,4 +1,4 @@
-{
+|{
   "id": "http://api.npolar.no/schema/expedition-1",
   "$schema": "http://json-schema.org/draft-04/schema",
   "title": "Expedition",
@@ -9,9 +9,7 @@
      "code",
      "summary",
      "start_date",
-     "end_date",
-     "@departure_placename",
-     "@return_placename"
+     "end_date"
   ],
   "properties": {
     "id": {
@@ -48,39 +46,8 @@
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
-    "platforms": {
-      "description": "A list containing the vehicles/vessels used for the expedition.",
-      "type": "array",
-      "items": {
-        "description": "A vehicle or vessel.",
-        "type": "object",
-        "properties": {
-          "type": {
-            "description": "The type of platform being used.",
-            "type": ["string","null"],
-            "enum": [
-             "",
-             "ship",
-             "boat",
-             "helicopter",
-             "snowmobile",
-             "snow tractor",
-             "hovercraft",
-             "other"
-            ]
-          },
-          "name": {
-            "description": "The name of the vessel or vehicle. Example 'RV Lance.'",
-            "type": "string"
-          },
-           "sponsor": {
-        "description": "X18 EDMO code for NPI or the partner NPI keeps this dataset (cruise entry) on behalf of",
-        "type": ["string","null"]
-        }
-      }
-    },
-        "additionalProperties": false,
-        "additionalItems": false
+     "kronprins_haakon": {
+         "type": "boolean"
     },
     "start_date": {
         "type": "string",
@@ -89,14 +56,6 @@
     "end_date": {
         "type": "string",
         "format": "date-time"
-    },
-    "@departure_placename": {
-        "description": "The placename of the departure location. cruise - list C38, TOS,LYB, Cape Town most important",
-        "type": "string"
-    },
-    "@return_placename": {
-        "description": "The placename of the return location.",
-        "type": "string"
     },
      "activity_type": {
                     "description": "Activity type",
@@ -108,65 +67,6 @@
                     "outreach VIP",
                     "logistic operations",
                     "other"]
-                  },
-    "activity": {
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                  "activity_title": {
-                    "description": "Activity title",
-                    "type": "string"
-                  },
-                  "href": {
-                     "description": "Web link to activity resource",
-                     "type": "string",
-                    "format": "uri"
-                  },
-                  "topics": {
-                    "description": "A list of one or more npolar topics identifying the subject matter of the expedition.",
-                    "type": "array",
-                    "items": {
-                      "type": ["string", "null"],
-                      "enum": [
-                        "not applicable",
-                        "acidification",
-                        "atmosphere",
-                        "biology",
-                        "biochemistry",
-                        "biodiversity",
-                        "chemistry",
-                        "climate",
-                        "conservation",
-                        "ecology",
-                        "ecotoxicology",
-                        "environment",
-                        "geology",
-                        "geophysics",
-                        "glaciology",
-                        "history",
-                        "human-dimension",
-                        "management",
-                        "marine",
-                        "marineecosystems",
-                        "maps",
-                        "oceanography",
-                        "other",
-                        "paleoclimate",
-                        "remote-sensing",
-                        "seaice",
-                        "snow",
-                        "terrestrial",
-                        "topography",
-                        "vegetation"
-                      ]
-                      },
-                     "additionalItems": false
-                    }
-              }
-            }
     },
    "people": {
       "description": "List of people participating on the cruise",
@@ -197,11 +97,7 @@
             "type": "string",
             "enum": [
               "expedition/cruise leader",
-              "field assistant",
-              "guest",
-              "investigator",
-              "other",
-              "technician"
+              "other"
             ]
           },
           "expedition_dates": {
@@ -290,52 +186,12 @@
                   "minimum": -180,
                   "maximum": 180
             },
-           "places": {
-            "type": "array",
-            "description": "",
-            "items": {
-                  "type": "object",
-"properties": {
             "placename": {
                   "description": "The official placename of the location.",
                   "type": "string"
-            },
-            "predefined_area": {
-                  "description": "The official placename of the location.",
-                  "type": ["string", "null"],
-                  "enum": [
-                        "",
-                        "Ny-Ålesund",
-                        "Svalbard",
-                        "Frans Josefs land",
-                        "Bjørnøya",
-                        "Jan Mayen",
-                        "Hopen",
-                        "Bouvetøya",
-                        "Tor",
-                        "Dronning Maud Land",
-                        "Antarctica",
-                        "Fram Strait",
-                        "Arctic Ocean",
-                        "Barents Sea North",
-                        "Southern Ocean",
-                        "other"
-                  ]
-                },
-            "start_date": {
-                  "type": "string",
-                  "format": "date-time"
-            },
-            "end_date": {
-                  "type": "string",
-                  "format": "date-time"
             }
           }
         }
-       }
-       }
-        },
-        "additionalItems": false
       },
       "collection": {
         "description": "The storage collection the document belongs to.",
