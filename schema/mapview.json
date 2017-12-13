@@ -1,0 +1,101 @@
+{
+  "id": "http://api.npolar.no/schema/mapview",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "NPDC Maps",
+  "description": "Norwegian Polar Institute's map generator from databases",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Resource identifier (UUID)",
+      "type": "string"
+    },
+     "collection": {
+      "type": "string",
+      "default": "mapview"
+    },
+    "lang": {
+      "description": "The language of the document",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
+    "target_database": {
+        "description": "The database to display",
+        "type": "string"
+      },
+     "geojson": {
+        "description": "Name of the geojson object in schema which holds coord",
+        "type": "string"
+      },
+      "map": {
+        "description": "Display map",
+        "type": "string",
+         "enum": [
+              "Actic",
+              "Antarctic"
+	]
+      },
+      "select_parameters":{
+       "description": "Decides the parameters used as select menu for map points",
+       "type": "object",
+        "properties": {
+              "heading": {
+                "description": "First alternative in the parameter list",
+                "type": "string"
+	      },
+              "parameter":{
+                "description": "Display parameter in select list",
+                "type": "string"
+             }
+         }
+     },
+     "display_parameters":{
+       "description": "Info displayed with each marker",
+       "type": "object",
+        "properties": {
+             "parameters":{
+                "description": "Parameters displayed",
+                "type": "string"
+             },
+             "main_heading": {
+                "description": "Info heading field",
+                "type": "string"
+	    },
+            "top_heading": {
+                "description": "Info smaller top heading",
+                "type": "string"
+	    }
+         }
+     },
+    "created": {
+        "description": "The date the document was created.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "updated": {
+        "description": "The date the document was last updated.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "created_by": {
+        "description": "The username of the person who first created the document in the system.",
+        "type": "string"
+      },
+      "updated_by": {
+        "description": "The username of the person who last updated the document in the system.",
+        "type": "string"
+      },
+      "_id": {
+        "description": "Internal resource identifier.",
+        "type": "string"
+      },
+      "_rev": {
+        "description": "Internal revision number.",
+        "type": "string"
+      },
+      "_deleted":{
+        "description": "deleted entry",
+        "type": "string"
+      }
+    }
+}
