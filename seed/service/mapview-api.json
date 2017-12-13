@@ -1,0 +1,58 @@
+{
+    "id": "mapview-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/mapview",
+    "title": "Norwegian Polar Institute's maps",
+    "summary": "Norwegian Polar Institutes database coordinate views",
+    "storage": "Couch",
+    "database": "mapview",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "mapview",
+        "type": "mapview",
+        "log": false,
+        "bulk_size": 500,
+        "params": {
+            "facets": "target_database,map",
+            "date-year": "updated",
+            "size-facet": 100
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/mapview"
+    },
+    "category": [
+        "CouchDB",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/mapview"
+            }
+        ]
+    ],
+    "model": "Mapview"
+}
