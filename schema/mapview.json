@@ -13,6 +13,10 @@
       "type": "string",
       "default": "mapview"
     },
+     "schema":{
+      "type":"string",
+      "enum":["http://api.npolar.no/schema/mapview"]
+    },
     "lang": {
       "description": "The language of the document",
       "type": "string",
