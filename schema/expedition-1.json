@@ -1,4 +1,4 @@
-|{
+{
   "id": "http://api.npolar.no/schema/expedition-1",
   "$schema": "http://json-schema.org/draft-04/schema",
   "title": "Expedition",
@@ -46,8 +46,8 @@
       "description": "A free text explaining the area of operation and any specifics about the expedition.",
       "type": "string"
     },
-     "kronprins_haakon": {
-         "type": "boolean"
+     "ship": {
+         "type": "string"
     },
     "start_date": {
         "type": "string",
@@ -156,10 +156,8 @@
                   }
             }
       },
-      "locations": {
+      "location": {
         "description": "A list of one or more geographic locations relevant to the expedition.",
-        "type": "array",
-        "items": {
           "type": "object",
           "properties": {
              "north": {
@@ -191,7 +189,6 @@
                   "type": "string"
             }
           }
-        }
       },
       "collection": {
         "description": "The storage collection the document belongs to.",
