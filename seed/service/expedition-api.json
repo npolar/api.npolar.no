@@ -13,7 +13,7 @@
         "log": false,
         "bulk_size": 500,
         "params": {
-            "facets": "code,summary,start_date,end_date,location.placename",
+            "facets": "code,summary,start_date,end_date",
             "date-year": "start_date",
             "size-facet": 100
         }
