@@ -54,5 +54,5 @@
             }
         ]
     ],
-    "model": "Expedition"
+    "model": "Expedition::Expedition"
 }

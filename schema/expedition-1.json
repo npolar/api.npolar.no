@@ -156,8 +156,8 @@
                   }
             }
       },
-      "location": {
-        "description": "A list of one or more geographic locations relevant to the expedition.",
+      "locations": {
+        "description": "A geographic location relevant to the expedition.",
           "type": "object",
           "properties": {
              "north": {
