@@ -70,7 +70,7 @@ use Rack::Cors do
     resource "*", :headers => :any, :methods => [:delete, :get, :head, :options, :post, :put], credentials: true
   end
     allow do
-    # Allow GET | HEAD | OPTIONS from any origin 
+    # Allow GET | HEAD | OPTIONS from any origin
     origins "*"
     resource "*", :headers => :any, :methods => [:get, :head, :options], credentials: false
   end
@@ -103,23 +103,23 @@ autorun_list.each do |api|
     # api.middleware << ["Npolar::Rack::RequireParam", { :params => "key", :except => lambda { |request| ["GET", "HEAD"].include? request.request_method }} ]
 
     # Editlog (enabled unless expliclitly disabled)
-    editlog = (api.key?("editlog") and api.editlog.disabled == true) ? false : true
-
-    if true == editlog
-
-      max_body_size = case api.open
-      when true
-        (api.key?("editlog") and api.editlog.key?("max_body_size")) ? api.editlog.max_body_size : 255
-      else
-        0
-      end
-
-      use Npolar::Rack::EditLog,
-        save: EditLog.save_lambda(uri: ENV["NPOLAR_API_COUCHDB"], database: Service.factory("editlog-api").database),
-        index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: false),
-        open: api.open,
-        max_body_size: max_body_size
-    end
+    # editlog = (api.key?("editlog") and api.editlog.disabled == true) ? false : true
+    #
+    # if true == editlog
+    #
+    #   max_body_size = case api.open
+    #   when true
+    #     (api.key?("editlog") and api.editlog.key?("max_body_size")) ? api.editlog.max_body_size : 255
+    #   else
+    #     0
+    #   end
+    #
+    #   use Npolar::Rack::EditLog,
+    #     save: EditLog.save_lambda(uri: ENV["NPOLAR_API_COUCHDB"], database: Service.factory("editlog-api").database),
+    #     index: EditLog.index_lambda(host: ENV["NPOLAR_API_ELASTICSEARCH"], log: false),
+    #     open: api.open,
+    #     max_body_size: max_body_size
+    # end
 
     if api.auth?
       log.info Npolar::Rack::Authorizer.authorize_text(api)
