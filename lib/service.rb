@@ -16,27 +16,27 @@ class Service < Hashie::Mash
       response
     }
   end
-  
-  def self.xafter_lambda
-    lambda {|request, response|
 
-      if response.is_a? Array and response.size == 3
-        status = response[0]
-      else
-        status = response.status
-      end
-
-      if ["POST","PUT"].include? request.request_method and 201 == status
-
-        service = self.new(JSON.parse(request.body.read))
-
-        bootstrap = Npolar::Api::Bootstrap.new
-        bootstrap.log = Npolar::Api.log
-        bootstrap.bootstrap(service, false) # false => don't inject the service document we just created
-      end
-      response
-    }
-  end
+  # def self.after_lambda
+  #   lambda {|request, response|
+  #
+  #     if response.is_a? Array and response.size == 3
+  #       status = response[0]
+  #     else
+  #       status = response.status
+  #     end
+  #
+  #     if ["POST","PUT"].include? request.request_method and 201 == status
+  #
+  #       service = self.new(JSON.parse(request.body.read))
+  #
+  #       bootstrap = Npolar::Api::Bootstrap.new
+  #       bootstrap.log = Npolar::Api.log
+  #       bootstrap.bootstrap(service, false) # false => don't inject the service document we just created
+  #     end
+  #     response
+  #   }
+  # end
 
   def self.factory(seedfile)
     seedfile = File.absolute_path(File.join(File.dirname(__FILE__), "..", "seed", "service", seedfile))
@@ -50,7 +50,7 @@ class Service < Hashie::Mash
   end
 
   def schemas
-    ["api_v2.json"]
+    ["api.json"]
   end
 
   # Get all services
