@@ -45,7 +45,7 @@
 				}
 			},
 			"required": [
-				"type",
+				"category",
 				"datetime",
 				"datetime_accuracy"
 			]
