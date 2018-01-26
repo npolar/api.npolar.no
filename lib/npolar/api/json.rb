@@ -142,12 +142,7 @@ module Npolar
               end
             end
 
-            if api.before? and api.before !~ /[.]/
-              before = []
-            else
-              before = [Npolar::Api::Json.before_lambda]
-            end
-
+            before = [Npolar::Api::Json.before_lambda]
             after = [Npolar::Api::Json.after_lambda]
 
             if api.before? and api.before =~ /[.]/
