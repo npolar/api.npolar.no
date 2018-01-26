@@ -4,18 +4,18 @@
 class MarineBiologySampleMigration1
 
   attr_accessor :log
-  
+
   def model
-    Marine::Samples.new
+    MarineSample.new
   end
- 
+  
   def migrations
     [split_programs, add_expedition]
   end
-  
+
   def add_expedition
       lambda {|d|
-        
+
       if not d.expedition?
         if d.sample_name =~ /^((MOSJ|ICE|ALK|CLE|FLT|MAR|MER|NON|OTI|SANA|ice96B|mø00)\d+(AB)?)[-_\s]/ui
 
@@ -32,15 +32,15 @@ class MarineBiologySampleMigration1
           log.warn d.sample_name
 
         end
-        
+
       end
       d
     }
   end
-  
+
   def split_programs
     lambda {|d|
-      
+
       if d.programs =~ /.*[,;|].*/
         was = d.programs
         d.programs = d.programs.split(/[,;|]/).map {|p| p.strip}.uniq

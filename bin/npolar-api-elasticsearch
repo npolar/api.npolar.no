@@ -23,8 +23,7 @@ begin
   log.level = Logger::INFO
 
   #ENV["NPOLAR_API_ELASTICSEARCH"] = "http://localhost:9200"
-  #ENV["NPOLAR_API_ELASTICSEARCH"] = "http://dbtest.data.npolar.no:9200"
-  ENV["NPOLAR_API_ELASTICSEARCH"] = "http://dbmaster.data.npolar.no:9200"
+  #ENV["NPOLAR_API_ELASTICSEARCH"] = "http://search-test.data.npolar.no:9200"
 
   b = Npolar::Api::Bootstrap.new
   b.log = log

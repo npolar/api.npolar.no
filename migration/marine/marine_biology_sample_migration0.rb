@@ -10,7 +10,7 @@ class MarineBiologySampleMigration0
   def model
     Marine::Samples.new
   end
- 
+
   def migrations
     [remove_end_dec_min_from_latitude_longitude, latitude_longitude, simplify]
   end
@@ -23,31 +23,31 @@ class MarineBiologySampleMigration0
         #log.info d.latitude_start
         d.delete :latitude_start_dec
       end
-      
+
       if d.longitude_start_dec?
 
         d.longitude_start=d.longitude_start_dec
         #log.info d.longitude_start
         d.delete :longitude_start_dec
-        
+
       end
-      
+
       d.delete :latitude_end
       d.delete :longitude_end
-      
+
       d.delete :latitude_end_dec
       d.delete :longitude_end_dec
-      
-      
+
+
       d.delete :latitude_start_min
       d.delete :longitude_start_min
-      
+
       d.delete :latitude_end_min
       d.delete :longitude_end_min
       d
     }
   end
-  
+
   # Use just latitude/longitude (no _start)
   def latitude_longitude
     lambda {|d|
@@ -55,7 +55,7 @@ class MarineBiologySampleMigration0
         d.latitude = d.latitude_start
         d.delete :latitude_start
       end
-      
+
       if d.longitude_start?
         d.longitude = d.longitude_start
         d.delete :longitude_start
@@ -64,19 +64,19 @@ class MarineBiologySampleMigration0
       d
     }
   end
-  
-  def simplify
-     lambda {|d|
-      if d.conveyance == "LANCE"
-         d.conveyance = "Lance"
-      end
-      d.delete :status
-      d.delete :flowmeter_start
-      d.delete :flowmeter_stop
-      d.delete :filteredwater
-      d
-     }
-  end
+
+  # def simplify
+  #    lambda {|d|
+  #     if d.conveyance == "LANCE"
+  #        d.conveyance = "Lance"
+  #     end
+  #     d.delete :status
+  #     d.delete :flowmeter_start
+  #     d.delete :flowmeter_stop
+  #     d.delete :filteredwater
+  #     d
+  #    }
+  # end
 
 
 end

@@ -1,12 +1,12 @@
 {
-  "errors": [
+  "fixes": [
     {
       "search": "Beröe cucumis",
       "verbatim": "Beröe cucumis",
       "trimmed": false,
       "name": "Beroe cucumis",
       "affected": 1099,
-      "species": "https://api.gbif.org/v1/species/2501114"
+      "gbif": "https://api.gbif.org/v1/species/2501114"
     },
     {
       "search": "Isopoda Bopyridae",
@@ -29,6 +29,7 @@
       "verbatim": "Nemertea pilidium",
       "trimmed": false,
       "name": "",
+      "check": "Nemertea",
       "affected": 235
     },
     {
@@ -105,7 +106,7 @@
       "search": "Chaetoceros lorenzianussp.",
       "verbatim": "Chaetoceros lorenzianussp. ",
       "trimmed": true,
-      "name": "",
+      "name": "Chaetoceros lorenzianus",
       "affected": 124
     },
     {
@@ -336,7 +337,7 @@
       "search": "Naviculasp.",
       "verbatim": "Naviculasp.",
       "trimmed": false,
-      "name": "",
+      "name": "Navicula sp.",
       "affected": 124
     },
     {
@@ -518,7 +519,7 @@
       "search": "Gammarus wilkitzki",
       "verbatim": "Gammarus wilkitzki",
       "trimmed": false,
-      "name": "",
+      "name": "Gammarus wilkitzkii",
       "affected": 57
     },
     {

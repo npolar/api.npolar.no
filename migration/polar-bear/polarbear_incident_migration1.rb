@@ -4,17 +4,18 @@
 class PolarbearIncidentMigration1
 
   attr_accessor :log
-  
+
   def model
     PolarbearIncident.new
   end
-  
+
   def migrations
     [remove]
   end
-  
+
   def remove
     lambda {|d|
+
       if d.author?
         d.delete :author
       end

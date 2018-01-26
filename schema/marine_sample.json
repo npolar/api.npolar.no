@@ -449,7 +449,7 @@
     "sample_name",
     "expedition",
     "id",
-    "schema"
+    "utc_date"
   ],
   "additionalProperties": true
 }

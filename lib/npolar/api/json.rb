@@ -13,7 +13,7 @@ module Npolar
         @middleware ||= []
       end
 
-      def middleware=middlewareq
+      def middleware=middleware
         @middleware = middleware
       end
 
