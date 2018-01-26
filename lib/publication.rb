@@ -1,5 +1,6 @@
 require "hashie"
 
+# @todo WIP
 class Publication < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
@@ -21,9 +22,11 @@ class Publication < Hashie::Mash
   end
 
   def self.before_save(request)
+    request
   end
 
   def before_save(args)
+    request
     # N-ICE2015 programme? => force set
     # N-ICE2015 set? => force program
     # N-ICE2015? => force project relation link
