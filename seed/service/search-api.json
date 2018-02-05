@@ -17,7 +17,7 @@
         [
             "::Rack::Gouncer",
             {
-                "url": "https://api.npolar.no:8950",
+                "url": "https://api.npolar.no/user/",
                 "open": true,
                 "system": "https://api.npolar.no/"
             }
