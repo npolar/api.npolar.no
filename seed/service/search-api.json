@@ -24,11 +24,8 @@
         ]
     ],
     "verbs": [
-        "DELETE",
         "GET",
         "HEAD",
-        "POST",
-        "PUT",
         "OPTIONS"
     ],
     "formats": {
