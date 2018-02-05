@@ -2,7 +2,7 @@
     "_id": "search-api",
     "schema": "http://api.npolar.no/schema/api",
     "id": "search-api",
-    "path": "/search",
+    "path": "/",
     "title": "Search Norwegian Polar Data API",
     "summary": "Service configuration for global search service at http://api.npolar.no/?q=",
     "search": {
