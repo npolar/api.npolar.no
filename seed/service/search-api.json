@@ -1,53 +1,50 @@
 {
-"_id": "search-api",
-"_rev": "8-58f58ca871506a67aba3a1858cf1e3b2",
-"schema": "http://api.npolar.no/schema/api",
-"id": "search-api",
-"path": "/search",
-"title": "Search Norwegian Polar Data API",
-"summary": "Service configuration for global search service at http://api.npolar.no/?q=",
-"search": {
-"engine": "Elasticsearch",
-"index": "project,metadata,publication",
-"type": "project,dataset,publication",
-"params": {
-"facets": "collection,topics,tags"
-}
-},
-"before": "Npolar::Api::Json.before_lambda",
-"verbs": [
-"DELETE",
-"GET",
-"HEAD",
-"POST",
-"PUT",
-"OPTIONS",
-"OPTIONS"
-],
-"formats": {
-"json": "application/json",
-"html": "text/html"
-},
-"accepts": {
-"application/json": "http://api.npolar.no/schema/api"
-},
-"category": [
-"CouchDB",
-"REST",
-"JSON",
-"HTTP"
-],
-"lifecycle": "production",
-"run": "Npolar::Api::Json",
-"open": true,
-"auth": {
-"authorize": "sysadmin",
-"system": "api",
-"authorizer": "Npolar::Auth::Ldap"
-},
-"base": "http://api.npolar.no",
-"updated": "2015-01-13T09:36:32Z",
-"updated_by": "conrad",
-"created": "2013-10-02T11:03:59Z",
-"created_by": "ruben"
+    "_id": "search-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "id": "search-api",
+    "path": "/search",
+    "title": "Search Norwegian Polar Data API",
+    "summary": "Service configuration for global search service at http://api.npolar.no/?q=",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "project,metadata,publication,person,indicator-timeseries",
+        "type": "project,dataset,publication,person,timeseries",
+        "params": {
+            "facets": "collection,topics,tags"
+        }
+    },
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no:8950",
+                "open": true,
+                "system": "https://api.npolar.no/"
+            }
+        ]
+    ],
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "OPTIONS"
+    ],
+    "formats": {
+        "json": "application/json",
+        "html": "text/html"
+    },
+    "accepts": {
+        "application/json": "http://api.npolar.no/schema/api"
+    },
+    "category": [
+        "CouchDB",
+        "REST",
+        "JSON",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true
 }
