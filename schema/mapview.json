@@ -27,50 +27,76 @@
         "description": "The database to display",
         "type": "string"
       },
-     "geojson": {
-        "description": "Name of the geojson object in schema which holds coord",
+      "display_link": {
+          "description": "Link base for modal window",
+          "type": "string"
+      },
+      "heading": {
+          "description": "Heading in search page",
+          "type": "string"
+      },
+      "description": {
+          "description": "Brief description for search page",
+          "type": "string"
+      },
+      "location": {
+          "description": "Which tag to look for coord",
+          "type": "string"
+     },
+     "map": {
+         "description": "Map options displayed - Arctic or Antarctica sep by comma",
+         "type": "string"
+    },
+    "search init": {
+        "description": "String to be included in all db searches, f.ex. exclude drafts",
         "type": "string"
-      },
-      "map": {
-        "description": "Display map",
-        "type": "string",
-         "enum": [
-              "Actic",
-              "Antarctic"
-	]
-      },
-      "select_parameters":{
-       "description": "Decides the parameters used as select menu for map points",
-       "type": "object",
-        "properties": {
-              "heading": {
-                "description": "First alternative in the parameter list",
-                "type": "string"
-	      },
-              "parameter":{
-                "description": "Display parameter in select list",
-                "type": "string"
-             }
-         }
-     },
-     "display_parameters":{
-       "description": "Info displayed with each marker",
-       "type": "object",
-        "properties": {
-             "parameters":{
-                "description": "Parameters displayed",
-                "type": "string"
-             },
-             "main_heading": {
-                "description": "Info heading field",
-                "type": "string"
-	    },
-            "top_heading": {
-                "description": "Info smaller top heading",
-                "type": "string"
-	    }
-         }
-     },
+   },
+  "select": {
+        "description": "Select menus options",
+        "type": "array",
+        "additionalItems": false,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+                "enum": {
+                  "description": "Parameters in select list",
+                  "type": "string"
+                },
+                "entry": {
+                  "description": "The matching database field",
+                  "type": "string"
+                }
+ 	      }
+      }
+  },
+  "display_parameters": {
+        "description": "Select menus options",
+        "type": "array",
+        "additionalItems": false,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+                "parameter": {
+                  "description": "Parameter display in modal window",
+                  "type": "string"
+                },
+                "heading": {
+                  "description": "Title display in modal window",
+                  "type": "string"
+                }
+ 	      }
+      }
+  },
+  "display_main_heading": {
+      "description": "The main heading in modal window.",
+      "type": "string"
+    },
+    "display_top_heading": {
+        "description": "Display top heading in modal window.",
+        "type": "string"
+    },
     "created": {
         "description": "The date the document was created.",
         "type": "string",
