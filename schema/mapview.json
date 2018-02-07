@@ -47,7 +47,7 @@
          "description": "Map options displayed - Arctic or Antarctica sep by comma",
          "type": "string"
     },
-    "search init": {
+    "search_init": {
         "description": "String to be included in all db searches, f.ex. exclude drafts",
         "type": "string"
    },
