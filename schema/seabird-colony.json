@@ -260,18 +260,7 @@
   			"properties": {
   				"type": {
   					"type": "string",
-  					"default": "Point"
-  				},
-  				"geometry": {
-  					"type": "object",
-  					"properties": {
-  						"coordinates": {
-  							"type": ["array", "null"],
-  							"items": {
-  								"type": "number"
-  							}
-  						}
-  					}
+  					"default": "GeometryCollection"
   				},
   				"geometries": {
   					"type": ["array", "null"],
