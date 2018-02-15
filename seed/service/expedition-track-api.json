@@ -9,7 +9,7 @@
     "search": {
         "engine": "Elasticsearch",
         "index": "expedition-track",
-        "type": "expedition-track",
+        "type": "track",
         "log": false,
         "bulk_size": 500,
         "params": {
