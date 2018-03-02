@@ -14,6 +14,24 @@
 			"default": "incomplete",
 			"description": "Current status of the record"
 		},
+                "db_comment":{
+                        "type": "string",
+                        "description": "information from old database"
+                },
+                "created": {
+      			"type": "string",
+      			"format": "date-time"
+  		 },
+    		"created_by": {
+      			"type": "string"
+    		},
+    		"updated": {
+      			"type": "string",
+            		"format": "date-time"
+    		},
+    		"updated_by": {
+            		"type": "string"
+		},
 		"incident": {
 			"type": "object",
 			"properties": {
