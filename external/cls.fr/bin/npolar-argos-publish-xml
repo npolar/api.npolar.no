@@ -57,11 +57,9 @@ def decode_lambda
          d[k]=v
        end
 
-       puts decoder.data.to_json
+       #puts decoder.data.to_json
        d["sensor_variables"] = decoder.data.keys
      end
-     #puts d.to_json
-     #puts "*"*80
      d
 
    }
@@ -289,8 +287,8 @@ begin
       if msgs.any?
         log.debug "About to POST #{msgs.size} messages to #{uri}"
         api_client.param = {}
-        #response = api_client.post(msgs)
-        #log.debug response.map {|r| r.status }
+        response = api_client.post(msgs)
+        log.debug response.map {|r| r.status }
       end
     end
 
