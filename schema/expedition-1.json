@@ -164,22 +164,12 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "north": {
+          "latitude": {
             "type": "number",
             "minimum": -90.0,
             "maximum": 90.0
           },
-          "east": {
-            "type": "number",
-            "minimum": -180.0,
-            "maximum": 180.0
-          },
-          "south": {
-            "type": "number",
-            "minimum": -90.0,
-            "maximum": 90.0
-          },
-          "west": {
+          "longitude": {
             "type": "number",
             "minimum": -180.0,
             "maximum": 180.0
