@@ -1,7 +1,7 @@
 {
     "id": "seabird-colony-api",
     "schema": "http://api.npolar.no/schema/api",
-    "path": "/seabird-colony",
+    "path": "/seabird/colony",
     "title": "Seabird colony count API",
     "summary": "Norwegian Polar Institute's seabird colony count",
     "storage": "Couch",
