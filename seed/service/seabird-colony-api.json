@@ -13,7 +13,7 @@
         "type": "seabird-colony",
         "log": false,
         "params": {
-            "facets": "colony_name,id,conservation_type,region,zone,species,start_date,length,distance_mainland,island",
+            "facets": "colony_name,conservation_type,region,zone,species,start_date,length,distance_mainland,island",
             "date-year": "released",
             "size-facet": 1000
         }
