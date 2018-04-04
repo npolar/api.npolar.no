@@ -188,7 +188,7 @@
             "type": "number"
     },
     "distance": {
-            "description": "colony length - uncertain",
+            "description": "Distance from colony to closest coastline",
             "type": "number"
     },
     "distance_mainland": {
