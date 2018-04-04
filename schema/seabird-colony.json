@@ -188,7 +188,7 @@
             "type": "number"
     },
     "distance": {
-            "description": "colony length - unsure measurement",
+            "description": "colony length - uncertain",
             "type": "number"
     },
     "distance_mainland": {
@@ -305,11 +305,11 @@
     }
    },
     "historical_colony": {
-      "description": "where was the colony first described",
+      "description": "where was the colony first described - field used f.ex. if colony can't be found anymore to keep old data",
             "type": "string"
     },
     "colony_area":{
-      "description": "area measured from above - 0 and 1 - remove ??",
+      "description": "1 if there exists a location area polygon for the colony an 0 if not.",
             "type": "boolean"
     },
     "predators":{
