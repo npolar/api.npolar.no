@@ -1,5 +1,4 @@
 {
-    "_id": "editlog-api",
     "id": "editlog-api",
     "schema": "http://api.npolar.no/schema/api",
     "path": "/editlog",
