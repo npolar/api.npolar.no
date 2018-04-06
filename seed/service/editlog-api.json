@@ -35,8 +35,8 @@
     "open": true,
     "search": {
         "engine": "Elasticsearch",
-        "index": "api",
-        "type": "editlog",
+        "index": "editlog",
+        "type": "item",
         "log": false,
         "params": {
             "facets": "server,method,endpoint,response.status,request.mediatype,request.username",
