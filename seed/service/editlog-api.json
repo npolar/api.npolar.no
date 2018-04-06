@@ -1,66 +1,63 @@
 {
-"_id": "editlog-api",
-"_rev": "27-aaf32b1211a31a4ff57cf49f05d5ea44",
-"id": "editlog-api",
-"schema": "http://api.npolar.no/schema/api",
-"path": "/editlog",
-"title": "Edits API",
-"summary": "HTTP edit log, contains all DELETE, POST, and PUT requests with response status, headers and body (the latter only if the collection is open data).",
-"storage": "Couch",
-"database": "api_editlog",
-"verbs": [
-"DELETE",
-"GET",
-"HEAD",
-"POST",
-"PUT",
-"OPTIONS",
-"OPTIONS"
-],
-"formats": {
-"json": "application/json"
-},
-"accepts": {
-"application/json": "http://json.org"
-},
-"category": [
-"CouchDB",
-"Elasticsearch",
-"Lucene",
-"REST",
-"Search",
-"JSON",
-"JSON Schema",
-"HTTP"
-],
-"lifecycle": "production",
-"run": "Npolar::Api::Json",
-"open": true,
-"search": {
-"engine": "Elasticsearch",
-"index": "editlog",
-"type": "item",
-"log": false,
-"params": {
-"facets": "server,method,endpoint,response.status,request.mediatype,request.username",
-"date-year": "request.time",
-"date-month": "request.time",
-"date-day": "request.time",
-"sort": "-request.time",
-"size-facet": 100
-}
-},
-"auth": {
-"authorize": "sysadmin",
-"system": "api",
-"authorizer": "Npolar::Auth::Ldap"
-},
-"base": "http://api.npolar.no",
-"updated": "2015-01-13T09:36:32Z",
-"created": "2013-08-06T16:58:42Z",
-"created_by": "conrad",
-"updated_by": "conrad",
-"editlog": {
-"disabled": true
-}
+    "_id": "editlog-api",
+    "id": "editlog-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/editlog",
+    "title": "Edits API",
+    "summary": "HTTP edit log, contains all DELETE, POST, and PUT requests with response status, headers and body (the latter only if the collection is open data).",
+    "storage": "Couch",
+    "database": "api_editlog",
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "http://json.org"
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "api",
+        "type": "editlog",
+        "log": false,
+        "params": {
+            "facets": "server,method,endpoint,response.status,request.mediatype,request.username",
+            "date-year": "request.time",
+            "sort": "-request.time",
+            "size-facet": 100
+        }
+    },
+    "base": "http://api.npolar.no",
+    "editlog": {
+        "disabled": true
+    },
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no/user/",
+                "open": true,
+                "system": "https://api.npolar.no/editlog"
+            }
+        ]
+    ]
 }
