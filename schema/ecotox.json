@@ -1,0 +1,246 @@
+{
+  "id": "http://api.npolar.no/schema/ecotox",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Ecotox",
+  "description": "Norwegian Polar Data expedition description.",
+  "type": "object",
+  "required":[
+
+  ],
+  "properties": {
+    "id": {
+      "description": "Resource identifier (UUID).",
+      "type": "string"
+    },
+    "schema": {
+      "description": "Schema defining this object (this schema).",
+      "type": "string",
+      "enum": [
+        "http://api.npolar.no/schema/expedition-1"
+      ]
+    },
+    "lang": {
+      "description": "The language of the document.",
+      "type": "string",
+      "default": "en",
+      "pattern": "^[a-z]{2}$"
+    },
+    "project": {
+      "description": "Project name or other identificator",
+      "enum": ["BearHealth","BearEnergy"],
+      "type": "string"
+    },
+    "laboratory": {
+      "description": "Name of laboratory performing analysis",
+      "enum": ["NMBU","NILU","Örebro University","Environment Canada"],
+      "type": "string"
+    },
+    "species": {
+      "description": "Latin species name",
+      "enum": ["ursus maritimus"],
+      "type": "string"
+    },
+    "species_description": {
+      "description": "About the species, chicks etc",
+      "type": "string"
+    },
+    "age": {
+      "description": "Age species",
+      "type": "string"
+    },
+    "sex": {
+      "description": "Sex species",
+      "type": "string"
+    },
+    "matrix": {
+      "description": "type of sample - eggs, blood etc",
+      "type": "string",
+      "enum": ["egg",
+              "milk",
+              "blood plasma",
+              "blood serum",
+              "fat",
+              "subcutaneous fat",
+              "blubber",
+              "muscle",
+              "liver",
+              "brain"]
+    },
+    "research_no":{
+      "description": "number given by the researchers",
+      "type": "string"
+    },
+    "lab_no":{
+      "description": "number given by the lab",
+      "type": "string"
+    },
+    "fat_percentage":{
+      "description": "sample fat percentage",
+      "type": "string"
+    },
+    "component": {
+           "type": "array",
+           "additionalItems": false,
+           "items": {
+             "type": "object",
+             "additionalProperties": false,
+             "properties": {
+               "analyte_category": {
+                 "description": "category of toxic material",
+                 "type": "string",
+                 "enum": ["chlorinated pesticides",
+                          "PCBs",
+                          "brominated flame retardants",
+                          "OH-PCB",
+                          "PFAS"]
+               },
+               "analyte": {
+                 "description": "type of toxic material",
+                 "type": "string",
+                 "enum": ["HCB","alfa-HCH","beta-HCH","gamma-HCH",
+                   "heptaklor", "oxyklordan", "trans-Klordan", "cis-Klordan",
+                   "trans-Nonaklor", "cis-Nonaklor", "pp-DDE",
+                   "op-DDD", "pp-DDD", "op-DDT", "pp-DDT","mirex",
+                   "PCB-28", "PCB-29", "PCB-31", "PCB-47", "PCB-52",
+                   "PCB-56", "PCB-66", "PCB-74", "PCB-87", "PCB-99",
+                   "PCB-101", "PCB-105", "PCB-110", "PCB-112", "PCB-114",
+                   "PCB-118", "PCB-128", "PCB-132", "PCB-136", "PCB-137",
+                   "PCB-138", "PCB-141", "PCB-149", "PCB-151", "PCB-153",
+                   "PCB-156", "PCB-157", "PCB-170", "PCB-180", "PCB-183", "PCB-187", "PCB-189",
+                   "PCB-194", "PCB-196", "PCB-199","PCB-206", "PCB-207", "PCB-209",
+                   "BDE-77", "BDE-28", "BDE-47", "BDE-100", "BDE-153", "BDE-154",
+                   "BDE-183", "BDE-209","HBCDD",
+                   "PCP","4-OH-CB106","4-OH-CB107","4-OH-CB108",
+                   "3-OH-CB118","4-OH-BDE42","3-OH-BDE47",
+                   "6-OH-BDE47","4-OH-BDE49","2-OH-BDE68",
+                   "4-OH-CB106","4-OH-CB107","4-OH-CB130","3-OH-CB138",
+                   "4-OH-CB146","4-OH-CB159","4-OH-CB172",
+                   "3-OH-CB180","4-OH-CB187",
+                   "PFHxA","PFHpA","PFOA","PFNA","PFDA","PFUdA",
+                   "PFDoDA","PFTrDA","PFTeDA","PFBS","PFHxS","PFOS",
+                   "FOSA","N-MeFOSA","N-MeFOSE","N-EtFOSA","N-EtFOSE"
+                 ]
+               },
+               "corrected_blank_contamination":{
+                   "type": "string",
+                   "enum": ["no","yes"]
+               },
+               "percent_recovery": {
+                 "description": "How many percent was recovered compared to control sample",
+                 "type": "number"
+               },
+               "detection_limit": {
+                 "description": "The smallest limit detectable",
+                 "type": "number"
+               }
+             }
+           }
+},
+    "wet_weight": {
+      "description": "Wet weight measured in unit",
+      "type": "string",
+      "enum": ["nanogram/gram","picogram/gram"]
+    },
+    "date_sample collected": {
+      "description": "The event day for date sampling",
+      "type": "string",
+      "format": "/^[0-9]{4}/"
+    },
+    "date_report": {
+      "description": "Date when report was written",
+      "type": "string",
+      "format": "/^[0-9]{4}/"
+    },
+    "latitude": {
+      "type": "number",
+      "minimum": -90.0,
+      "maximum": 90.0
+    },
+    "longitude": {
+      "type": "number",
+      "minimum": -180.0,
+      "maximum": 180.0
+    },
+     "placename": {
+       "type": "string"
+    },
+    "schema_collected": {
+      "description": "Name of Excel sheet the data was collected from",
+      "type": "string"
+    },
+    "expedition": {
+      "description": "Expedition name where sample was collected",
+      "type": "string"
+    },
+    "ownership": {
+      "description": "Who owns the data",
+      "enum": [
+        "NPI",
+        "NTNU",
+        "UiO",
+        "NPI and UiO",
+        "NPI and NTNU"
+      ],
+      "type": "string"
+    },
+    "excel_uri": {
+          "description": "Uri to excel form",
+          "type": "string",
+          "format": "uri"
+    },
+    "excel_filename": {
+          "description": "excel filename",
+          "type": "string"
+    },
+    "excel_type":{
+          "description": "excel type",
+          "type": "string"
+    },
+    "excel_length":{
+          "description": "excel file length",
+          "type": "string"
+},
+      "collection": {
+        "description": "The storage collection the document belongs to.",
+        "type": "string",
+        "enum": [
+          "ecotox"
+        ]
+      },
+      "comment": {
+        "description": "A free text comment for anything of importance to the expedition description.",
+        "type": "string"
+      },
+      "created": {
+        "description": "The date the document was created.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "updated": {
+        "description": "The date the document was last updated.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "created_by": {
+        "description": "The username of the person who first created the document in the system.",
+        "type": "string"
+      },
+      "updated_by": {
+        "description": "The username of the person who last updated the document in the system.",
+        "type": "string"
+      },
+      "_id": {
+        "description": "Internal resource identifier.",
+        "type": "string"
+      },
+      "_rev": {
+        "description": "Internal revision number.",
+        "type": "string"
+      },
+      "_deleted":{
+        "description": "deleted entry",
+        "type": "string"
+      }
+    }
+}
+

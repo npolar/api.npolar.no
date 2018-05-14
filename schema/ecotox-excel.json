@@ -1,0 +1,102 @@
+{
+  "id": "http://api.npolar.no/schema/ecotox-excel",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Ecotox",
+  "description": "Norwegian Polar Data expedition description.",
+  "type": "object",
+  "required":[
+     "schema",
+     "files"
+  ],
+  "properties": {
+    "id": {
+      "description": "Resource identifier (UUID).",
+      "type": "string"
+    },
+    "schema": {
+      "description": "Schema defining this object (this schema).",
+      "type": "string",
+      "enum": [
+        "http://api.npolar.no/schema/ecotox-excel"
+      ]
+    },
+    "base": {
+     "enum": [
+       "http://api.npolar.no"
+     ]
+    },
+    "language": {
+      "description": "The language of the document.",
+      "type": "string",
+      "enum": [
+        "en"
+      ]
+    },
+    "collection": {
+      "description": "The storage collection the document belongs to.",
+      "type": "string",
+      "enum": [
+        "ecotox-files"
+      ]
+    },
+    "rights": {
+     "description": "The licence web address, f.ex. licenced under Creative Commons",
+     "type": "string"
+    },
+    "uri": {
+      "type": "string",
+      "description": "Web address (URI) of the attached file",
+      "format": "uri"
+    },
+    "filename": {
+      "type": "string",
+      "description": "File name"
+    },
+    "length": {
+      "type": "integer",
+      "description": "File size in bytes"
+    },
+    "type": {
+      "type": "string",
+      "description": "Media type (e.g. image/png)"
+    },
+    "hash": {
+      "type": "string",
+      "description": "MD5 hash of file name"
+    },
+    "comments": {
+      "description": "comments related to excel file",
+      "type": "string"
+    },
+      "created": {
+        "description": "The date the document was created.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "updated": {
+        "description": "The date the document was last updated.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "created_by": {
+        "description": "The username of the person who first created the document in the system.",
+        "type": "string"
+      },
+      "updated_by": {
+        "description": "The username of the person who last updated the document in the system.",
+        "type": "string"
+      },
+      "_id": {
+        "description": "Internal resource identifier.",
+        "type": "string"
+      },
+      "_rev": {
+        "description": "Internal revision number.",
+        "type": "string"
+      },
+      "_deleted":{
+        "description": "deleted entry",
+        "type": "string"
+      }
+    }
+}
