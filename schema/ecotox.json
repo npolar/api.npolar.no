@@ -66,11 +66,11 @@
               "liver",
               "brain"]
     },
-    "research_no":{
+    "sample_id":{
       "description": "number given by the researchers",
       "type": "string"
     },
-    "lab_no":{
+    "lab_id":{
       "description": "number given by the lab",
       "type": "string"
     },
@@ -164,14 +164,6 @@
      "placename": {
        "type": "string"
     },
-    "schema_collected": {
-      "description": "Name of Excel sheet the data was collected from",
-      "type": "string"
-    },
-    "expedition": {
-      "description": "Expedition name where sample was collected",
-      "type": "string"
-    },
     "ownership": {
       "description": "Who owns the data",
       "enum": [
@@ -243,4 +235,3 @@
       }
     }
 }
-
