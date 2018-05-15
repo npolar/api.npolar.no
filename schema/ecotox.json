@@ -67,11 +67,15 @@
               "brain"]
     },
     "sample_id":{
-      "description": "number given by the researchers",
+      "description": "id given by the researchers",
+      "type": "string"
+    },
+    "polar_bear_id":{
+      "description": "internal NPI id",
       "type": "string"
     },
     "lab_id":{
-      "description": "number given by the lab",
+      "description": "id given by the lab",
       "type": "string"
     },
     "fat_percentage":{
