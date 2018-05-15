@@ -136,6 +136,38 @@
              }
            }
 },
+"people": {
+     "description": "People responsible for dataset",
+     "type": "array",
+     "additionalItems": false,
+     "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+         "id": {
+           "type": "string"
+         },
+         "first_name": {
+           "type": "string"
+         },
+         "last_name": {
+           "type": "string"
+         },
+         "email": {
+           "type": [
+             "string",
+             "null"
+           ]
+         },
+         "organisation": {
+           "type": [
+             "string",
+             "null"
+           ]
+         }
+       }
+     }
+},
     "wet_weight": {
       "description": "Wet weight measured in unit",
       "type": "string",
