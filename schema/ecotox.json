@@ -18,7 +18,7 @@
       "description": "Schema defining this object (this schema).",
       "type": "string",
       "enum": [
-        "http://api.npolar.no/schema/expedition-1"
+        "http://api.npolar.no/schema/ecotox"
       ]
     },
     "lang": {
