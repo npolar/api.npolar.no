@@ -175,7 +175,7 @@
       "type": "string",
       "enum": ["nanogram/gram","picogram/gram"]
     },
-    "date_sample collected": {
+    "date_sample_collected": {
       "description": "The event day for date sampling",
       "type": "string",
       "format": "/^[0-9]{4}/"
