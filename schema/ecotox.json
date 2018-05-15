@@ -5,7 +5,9 @@
   "description": "Norwegian Polar Data expedition description.",
   "type": "object",
   "required":[
-
+       "species",
+       "sample_id",
+       "lab_ref"
   ],
   "properties": {
     "id": {
@@ -20,14 +22,14 @@
       ]
     },
     "lang": {
-      "description": "The language of the document.",
+      "description": "The language of the document",
       "type": "string",
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
     "project": {
       "description": "Project name or other identificator",
-      "enum": ["BearHealth","BearEnergy"],
+      "enum": ["BearHealth","BearEnergy","MOSJ"],
       "type": "string"
     },
     "laboratory": {
@@ -40,10 +42,6 @@
       "enum": ["ursus maritimus"],
       "type": "string"
     },
-    "species_description": {
-      "description": "About the species, chicks etc",
-      "type": "string"
-    },
     "age": {
       "description": "Age species",
       "type": "string"
@@ -53,7 +51,7 @@
       "type": "string"
     },
     "matrix": {
-      "description": "type of sample - eggs, blood etc",
+      "description": "Type of sample - eggs, blood etc",
       "type": "string",
       "enum": ["egg",
               "milk",
@@ -67,19 +65,19 @@
               "brain"]
     },
     "sample_id":{
-      "description": "id given by the researchers",
+      "description": "Id given by the researchers",
       "type": "string"
     },
     "polar_bear_id":{
-      "description": "internal NPI id",
+      "description": "Internal NPI id",
       "type": "string"
     },
-    "lab_id":{
-      "description": "id given by the lab",
+    "lab_ref":{
+      "description": "Ref given by the lab",
       "type": "string"
     },
     "fat_percentage":{
-      "description": "sample fat percentage",
+      "description": "Sample fat percentage",
       "type": "string"
     },
     "component": {
@@ -90,7 +88,7 @@
              "additionalProperties": false,
              "properties": {
                "analyte_category": {
-                 "description": "category of toxic material",
+                 "description": "Category of toxic material",
                  "type": "string",
                  "enum": ["chlorinated pesticides",
                           "PCBs",
@@ -99,7 +97,7 @@
                           "PFAS"]
                },
                "analyte": {
-                 "description": "type of toxic material",
+                 "description": "Type of toxic material",
                  "type": "string",
                  "enum": ["HCB","alfa-HCH","beta-HCH","gamma-HCH",
                    "heptaklor", "oxyklordan", "trans-Klordan", "cis-Klordan",
@@ -217,15 +215,15 @@
           "format": "uri"
     },
     "excel_filename": {
-          "description": "excel filename",
+          "description": "Excel filename",
           "type": "string"
     },
     "excel_type":{
-          "description": "excel type",
+          "description": "Excel type",
           "type": "string"
     },
     "excel_length":{
-          "description": "excel file length",
+          "description": "Excel file length",
           "type": "string"
 },
       "collection": {
@@ -266,7 +264,7 @@
         "type": "string"
       },
       "_deleted":{
-        "description": "deleted entry",
+        "description": "Deleted entry",
         "type": "string"
       }
     }
