@@ -55,11 +55,14 @@
       "type": "string",
       "enum": ["egg",
               "milk",
+              "whole blood",
               "blood plasma",
               "blood serum",
               "fat",
               "subcutaneous fat",
               "blubber",
+              "hair",
+              "feather",
               "muscle",
               "liver",
               "brain"]
@@ -90,38 +93,54 @@
                "analyte_category": {
                  "description": "Category of toxic material",
                  "type": "string",
-                 "enum": ["chlorinated pesticides",
-                          "PCBs",
-                          "brominated flame retardants",
-                          "OH-PCB",
-                          "PFAS"]
+                 "enum": ["polychlorinated biphenyls (PCBs)",
+                          "brominated flame retardants (BFRs)",
+                          "hydroxyl polychlorinated biphenyls (OH-PCBs)",
+                          "hydroxylated polybrominated diphenyl ethers metabolites (OH-PBDEs)", 
+                          "poly- and perfluoroalkyl subtances (PFAS)",
+			  "organochlorine pesticides (OCPs)",
+                          "toxaphenes"
+                       ]
                },
                "analyte": {
                  "description": "Type of toxic material",
                  "type": "string",
-                 "enum": ["HCB","alfa-HCH","beta-HCH","gamma-HCH",
-                   "heptaklor", "oxyklordan", "trans-Klordan", "cis-Klordan",
-                   "trans-Nonaklor", "cis-Nonaklor", "pp-DDE",
+                 "enum": ["HCB","a-HCH","b-HCH","g-HCH",
+                   "heptachlor", "oxy-CHL", "t-CHL", "c-CHL",
+                   "tn-CHL", "cn-CHL", "pp-DDE",
                    "op-DDD", "pp-DDD", "op-DDT", "pp-DDT","mirex",
                    "PCB-28", "PCB-29", "PCB-31", "PCB-47", "PCB-52",
                    "PCB-56", "PCB-66", "PCB-74", "PCB-87", "PCB-99",
                    "PCB-101", "PCB-105", "PCB-110", "PCB-112", "PCB-114",
-                   "PCB-118", "PCB-128", "PCB-132", "PCB-136", "PCB-137",
+                   "PCB-118", "PCB-123","PCB-128", "PCB-132", 
+		   "PCB-136", "PCB-137",
                    "PCB-138", "PCB-141", "PCB-149", "PCB-151", "PCB-153",
-                   "PCB-156", "PCB-157", "PCB-170", "PCB-180", "PCB-183", "PCB-187", "PCB-189",
+                   "PCB-156", "PCB-157", "PCB-167","PCB-170", "PCB-180", "PCB-183", "PCB-187", "PCB-189",
                    "PCB-194", "PCB-196", "PCB-199","PCB-206", "PCB-207", "PCB-209",
-                   "BDE-77", "BDE-28", "BDE-47", "BDE-100", "BDE-153", "BDE-154",
-                   "BDE-183", "BDE-209","HBCDD",
+                   "BDE-77", "BDE-28", "BDE-47", "BDE-99", "BDE-100", "BDE-153", "BDE-154",
+                   "BDE-183", "BDE-206","BDE-207","BDE-208",
+		   "BDE-209","HBCDD",
                    "PCP","4-OH-CB106","4-OH-CB107","4-OH-CB108",
                    "3-OH-CB118","4-OH-BDE42","3-OH-BDE47",
                    "6-OH-BDE47","4-OH-BDE49","2-OH-BDE68",
                    "4-OH-CB106","4-OH-CB107","4-OH-CB130","3-OH-CB138",
                    "4-OH-CB146","4-OH-CB159","4-OH-CB172",
                    "3-OH-CB180","4-OH-CB187",
-                   "PFHxA","PFHpA","PFOA","PFNA","PFDA","PFUdA",
+                   "PFHxS","PFHxA","PFHpA","PFOA","PFNA","PFDA","PFnUdA",
                    "PFDoDA","PFTrDA","PFTeDA","PFBS","PFHxS","PFOS",
-                   "FOSA","N-MeFOSA","N-MeFOSE","N-EtFOSA","N-EtFOSE"
+                   "FOSA","N-MeFOSA","N-MeFOSE","N-EtFOSA","N-EtFOSE",
+		   "aldrin","dieldrin","endrin","heptachlor epoxide",
+                   "CHB-26","CHB-40","CHB-41","CHB-44","CHB-50","CHB-62",
+                   "PBT","PBEB","DPTE","HBB"
                  ]
+               },
+               "wet_weight":{
+                   "description":"weight of pollutant found in wet weight including n.a. and n.d",
+                   "type":"string"
+               },
+               "fat_weight":{
+                   "description":"weight of pollutant found in fat weight including n.a. and n.d",
+                   "type":"string"
                },
                "corrected_blank_contamination":{
                    "type": "string",
@@ -130,6 +149,11 @@
                "percent_recovery": {
                  "description": "How many percent was recovered compared to control sample",
                  "type": "number"
+               },
+               "unit": {
+                "description": "measured  unit",
+                "type": "string",
+                "enum": ["ng/g","pg/g"]
                },
                "detection_limit": {
                  "description": "The smallest limit detectable",
@@ -155,12 +179,6 @@
          "last_name": {
            "type": "string"
          },
-         "email": {
-           "type": [
-             "string",
-             "null"
-           ]
-         },
          "organisation": {
            "type": [
              "string",
@@ -170,10 +188,10 @@
        }
      }
 },
-    "wet_weight": {
-      "description": "Wet weight measured in unit",
+    "unit": {
+      "description": "measured  unit",
       "type": "string",
-      "enum": ["nanogram/gram","picogram/gram"]
+      "enum": ["ng/g","pg/g"]
     },
     "date_sample_collected": {
       "description": "The event day for date sampling",
