@@ -1,0 +1,57 @@
+{
+	 "ecotox":{
+  "properties":{
+			  "id":{"type":"string", "index": "not_analyzed"},
+			  "collection":{"type":"string", "index": "not_analyzed"},
+			  "lang":{"type":"string","index": "not_analyzed"},
+        "schema":{"type":"string","index":"not_analyzed"},
+				"project":{"type":"string", "index": "not_analyzed"},
+				"laboratory":{"type":"string", "index": "not_analyzed"},
+				"species":{"type":"string", "index": "not_analyzed"},
+				"age":{"type":"string", "index": "not_analyzed"},
+        "sex":{"type":"string", "index": "not_analyzed"},
+				"matrix":{"type":"string", "index": "not_analyzed"},
+				"sample_id": {"type":"string", "index": "not_analyzed"},
+        "NPI_species_id": {"type":"string", "index": "not_analyzed"},
+				"lab_ref": {"type":"string", "index": "not_analyzed"},
+				"fat_percentage": {"type":"string", "index": "not_analyzed"},
+				"component":{
+					  "properties":{
+							 "analyte_category":{"type":"string", "index": "not_analyzed"},
+							 "analyte": {"type":"string", "index": "not_analyzed"},
+							 "wet_weight": {"type":"string", "index": "not_analyzed"},
+							 "fat_weight": {"type":"string", "index": "not_analyzed"},
+							 "corrected_blank_contamination":{"type":"string", "index": "not_analyzed"},
+							 "percent_recovery": {"type":"float", "index": "not_analyzed"},
+							 "unit": {"type":"string", "index": "not_analyzed"},
+							 "detection_limit": {"type":"float", "index": "not_analyzed"}
+				}},
+				"people":{
+					  "properties":{
+							 "id":{"type":"string", "index": "not_analyzed"},
+							 "first_name": {"type":"string", "index": "not_analyzed"},
+							 "last_name": {"type":"string", "index": "not_analyzed"},
+							 "organisation": {"type":"string", "index": "not_analyzed"}
+				}},
+				"unit":{"type":"string", "index": "not_analyzed"},
+				"date_sample_collected": {"type":"date","format":"dateOptionalTime", "index": "not_analyzed"},
+				"date_report": {"type":"date","format":"dateOptionalTime", "index": "not_analyzed"},
+				"latitude": {"type":"float", "index": "not_analyzed"},
+        "longitude": {"type":"float", "index": "not_analyzed"},
+				"placename": {"type":"string", "index": "not_analyzed"},
+				"ownership":{"type":"string", "index": "not_analyzed"},
+        "excel_uri":{"type":"string", "index": "not_analyzed"},
+				"excel_filename":{"type":"string", "index": "not_analyzed"},
+				"excel_type":{"type":"string", "index": "not_analyzed"},
+				"excel_length":{"type":"integer", "index": "not_analyzed"},
+        "comment": {"type":"string", "index": "not_analyzed"},
+				"created":{"type":"date","format":"dateOptionalTime", "index": "not_analyzed"},
+				"updated":{"type":"date","format":"dateOptionalTime", "index": "not_analyzed"},
+				"created_by":{"type":"string", "index": "not_analyzed"},
+				"updated_by":{"type":"string", "index": "not_analyzed"},
+				"_id":{"type":"string", "index": "not_analyzed"},
+				"_rev":{"type":"string", "index": "not_analyzed"},
+				"_deleted":{"type":"string", "index": "not_analyzed"}
+}
+}
+}
