@@ -25,7 +25,7 @@
        "http://api.npolar.no"
      ]
     },
-    "language": {
+    "lang": {
       "description": "The language of the document.",
       "type": "string",
       "enum": [
@@ -38,10 +38,6 @@
       "enum": [
         "ecotox-files"
       ]
-    },
-    "rights": {
-     "description": "The licence web address, f.ex. licenced under Creative Commons",
-     "type": "string"
     },
     "uri": {
       "type": "string",
