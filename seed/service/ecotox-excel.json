@@ -1,0 +1,62 @@
+{
+  "_id": "ecotox-excel-api",
+  "id": "ecotox-excel-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "path": "/ecotox-excel",
+  "title": "Ecotox excel files API",
+  "summary": "NPI researcher's ecotox excel files",
+  "storage": "Couch",
+  "database": "ecotox-excel",
+  "model": "EcotoxExcel",
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "ecotox-excel",
+    "type": "ecotox-excel",
+    "log": false,
+    "params": {
+      "facets": "filename,type",
+      "date-year": "updated",
+      "size-facet": 1000
+    }
+  },
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "https://api.npolar.no/schema/ecotox-excel.json"
+  },
+  "category": [
+    "CouchDB",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "middleware": [
+    [
+      "::Rack::Gouncer",
+      {
+        "url": "https://api-test.data.npolar.no:8950",
+        "open": true,
+        "system": "https://api-test.data.npolar.no/ecotox-excel"
+      }
+    ]
+  ],
+  "updated": "2018-04-05T08:47:21Z",
+  "updated_by": "siri.uldal@npolar.no",
+  "created": "2018-05-30T08:47:21Z",
+  "created_by": "siri.uldal@npolar.no"
+}
