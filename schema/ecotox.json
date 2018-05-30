@@ -242,7 +242,7 @@
     },
     "excel_length":{
           "description": "Excel file length",
-          "type": "string"
+          "type": "integer"
 },
       "collection": {
         "description": "The storage collection the document belongs to.",

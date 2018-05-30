@@ -6,7 +6,7 @@
   "type": "object",
   "required":[
      "schema",
-     "files"
+     "base"
   ],
   "properties": {
     "id": {
