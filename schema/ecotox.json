@@ -188,11 +188,6 @@
        }
      }
 },
-    "unit": {
-      "description": "measured  unit",
-      "type": "string",
-      "enum": ["ng/g","pg/g"]
-    },
     "date_sample_collected": {
       "description": "The event day for date sampling",
       "type": "string",
