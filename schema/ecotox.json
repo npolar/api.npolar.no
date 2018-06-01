@@ -145,7 +145,7 @@
                },
                "corrected_blank_contamination":{
                    "type": "string",
-                   "enum": ["no","yes"]
+                   "enum": ["no","yes","unknown"]
                },
                "percent_recovery": {
                  "description": "How many percent was recovered compared to control sample",
@@ -184,7 +184,8 @@
            "type": [
              "string",
              "null"
-           ]
+           ],
+           "enum": ["NPI","UIT","UIO","NTNU","NMBU"]
          }
        }
      }
