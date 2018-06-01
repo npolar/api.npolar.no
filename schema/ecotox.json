@@ -48,7 +48,8 @@
     },
     "sex": {
       "description": "Sex species",
-      "type": "string"
+      "enum": ["F","M"],
+      "type": ["string","null"]
     },
     "matrix": {
       "description": "Type of sample - eggs, blood etc",
