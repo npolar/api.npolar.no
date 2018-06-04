@@ -108,7 +108,7 @@
                  "type": "string",
                  "enum": ["HCB","a-HCH","b-HCH","g-HCH",
                    "heptachlor", "oxy-CHL", "t-CHL", "c-CHL",
-                   "tn-CHL", "cn-CHL", "op-DDE",
+                   "tn-CHL", "cn-CHL", "op-DDE", "pp-DDE",
                    "op-DDD", "pp-DDD", "op-DDT", "pp-DDT","mirex",
                    "aldrin","dieldrin","endrin","heptachlor epoxide",
                   "CHB-26","CHB-40","CHB-41","CHB-44","CHB-50","CHB-62",
