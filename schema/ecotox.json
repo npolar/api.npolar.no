@@ -59,32 +59,33 @@
               "whole blood",
               "plasma",
               "serum",
-              "fat",
+              "abdominal fat",
               "subcutaneous fat",
               "blubber",
               "hair",
               "feather",
               "muscle",
               "liver",
-              "brain"]
+              "brain",
+              "whole animal"]
     },
     "sample_id":{
       "description": "Id given by the researchers",
       "type": "string"
     },
-    "NPI_species_id":{
+    "NPI_sample_id":{
       "description": "Internal NPI id",
       "type": "string"
     },
-    "lab_ref":{
-      "description": "Ref given by the lab",
+    "lab_id":{
+      "description": "Id given by the lab",
       "type": "string"
     },
     "fat_percentage":{
       "description": "Sample fat percentage",
       "type": "string"
     },
-    "component": {
+    "compound": {
            "type": "array",
            "additionalItems": false,
            "items": {
@@ -92,15 +93,14 @@
              "additionalProperties": false,
              "properties": {
                "analyte_category": {
-                 "description": "Category of toxic material",
+                 "description": "Category of compound",
                  "type": "string",
                  "enum": ["polychlorinated biphenyls (PCBs)",
                           "brominated flame retardants (BFRs)",
                           "hydroxyl polychlorinated biphenyls (OH-PCBs)",
-                          "hydroxylated polybrominated diphenyl ethers metabolites (OH-PBDEs)", 
+                          "hydroxyl polybrominated diphenyl ethers (OH-PBDEs)",
                           "poly- and perfluoroalkyl subtances (PFAS)",
-			  "organochlorine pesticides (OCPs)",
-                          "toxaphenes"
+			                    "organochlorine pesticides (OCPs)"
                        ]
                },
                "analyte": {
@@ -108,12 +108,12 @@
                  "type": "string",
                  "enum": ["HCB","a-HCH","b-HCH","g-HCH",
                    "heptachlor", "oxy-CHL", "t-CHL", "c-CHL",
-                   "tn-CHL", "cn-CHL", "pp-DDE",
+                   "tn-CHL", "cn-CHL", "op-DDE",
                    "op-DDD", "pp-DDD", "op-DDT", "pp-DDT","mirex",
                    "PCB-28", "PCB-29", "PCB-31", "PCB-47", "PCB-52",
                    "PCB-56", "PCB-66", "PCB-74", "PCB-87", "PCB-99",
                    "PCB-101", "PCB-105", "PCB-110", "PCB-112", "PCB-114",
-                   "PCB-118", "PCB-123","PCB-128", "PCB-132", 
+                   "PCB-118", "PCB-123","PCB-128", "PCB-132",
 		   "PCB-136", "PCB-137",
                    "PCB-138", "PCB-141", "PCB-149", "PCB-151", "PCB-153",
                    "PCB-156", "PCB-157", "PCB-167","PCB-170", "PCB-180", "PCB-183", "PCB-187", "PCB-189",
@@ -139,8 +139,8 @@
                    "description":"weight of pollutant found in wet weight including n.a. and n.d",
                    "type":"string"
                },
-               "fat_weight":{
-                   "description":"weight of pollutant found in fat weight including n.a. and n.d",
+               "lipid_weight":{
+                   "description":"weight of pollutant found in lipid weight including n.a. and n.d",
                    "type":"string"
                },
                "corrected_blank_contamination":{
@@ -148,7 +148,7 @@
                    "enum": ["no","yes","unknown"]
                },
                "percent_recovery": {
-                 "description": "How many percent was recovered compared to control sample",
+                 "description": "Percentage recovered of a spiked reference sample",
                  "type": "number"
                },
                "unit": {
@@ -157,7 +157,7 @@
                 "enum": ["ng/g","pg/g"]
                },
                "detection_limit": {
-                 "description": "The smallest limit detectable",
+                 "description": "Smallest concentration detectable",
                  "type": "number"
                }
              }
