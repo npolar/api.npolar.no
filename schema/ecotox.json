@@ -43,13 +43,17 @@
       "type": "string"
     },
     "age": {
-      "description": "Age species",
+      "description": "Age of species",
       "type": "string"
     },
     "sex": {
       "description": "Sex species",
       "enum": ["F","M"],
       "type": ["string","null"]
+    },
+    "age_group":{
+      "description": "Age group",
+      "type": "string"
     },
     "matrix": {
       "description": "Type of sample - eggs, blood etc",
