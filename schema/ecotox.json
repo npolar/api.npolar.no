@@ -86,7 +86,7 @@
     },
     "fat_percentage":{
       "description": "Sample fat percentage",
-      "type": "number"
+      "type": ["number","null"]
     },
     "compound": {
            "type": "array",
@@ -139,11 +139,11 @@
                },
                "wet_weight":{
                    "description":"weight of pollutant found in wet weight including n.a. and n.d",
-                   "type":"number"
+                   "type":["number","null"]
                },
                "lipid_weight":{
                    "description":"weight of pollutant found in lipid weight including n.a. and n.d",
-                   "type":"string"
+                   "type":["number","null"]
                },
                "corrected_blank_contamination":{
                    "type": "string",
@@ -151,7 +151,7 @@
                },
                "percent_recovery": {
                  "description": "Percentage recovered of a spiked reference sample",
-                 "type": "number"
+                 "type": ["number","null"]
                },
                "unit": {
                 "description": "measured  unit",
@@ -160,7 +160,7 @@
                },
                "detection_limit": {
                  "description": "Smallest concentration detectable",
-                 "type": "number"
+                 "type": ["number","null"]
                }
              }
            }
@@ -203,12 +203,12 @@
       "format": "/^[0-9]{4}/"
     },
     "latitude": {
-      "type": "number",
+      "type": ["number","null"],
       "minimum": -90.0,
       "maximum": 90.0
     },
     "longitude": {
-      "type": "number",
+      "type": ["number","null"],
       "minimum": -180.0,
       "maximum": 180.0
     },
@@ -252,7 +252,7 @@
       },
       "comment": {
         "description": "A free text comment for anything of importance to the expedition description.",
-        "type": "string"
+        "type": ["string","null"]
       },
       "created": {
         "description": "The date the document was created.",
