@@ -6,8 +6,7 @@
   "type": "object",
   "required":[
        "species",
-       "sample_id",
-       "lab_ref"
+       "matrix"
   ],
   "properties": {
     "id": {
