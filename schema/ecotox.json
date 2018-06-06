@@ -139,7 +139,7 @@
                },
                "wet_weight":{
                    "description":"weight of pollutant found in wet weight including n.a. and n.d",
-                   "type":"string"
+                   "type":"number"
                },
                "lipid_weight":{
                    "description":"weight of pollutant found in lipid weight including n.a. and n.d",
