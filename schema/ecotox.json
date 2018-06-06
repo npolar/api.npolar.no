@@ -86,7 +86,7 @@
     },
     "fat_percentage":{
       "description": "Sample fat percentage",
-      "type": "string"
+      "type": "number"
     },
     "compound": {
            "type": "array",
