@@ -195,13 +195,11 @@
 },
     "date_sample_collected": {
       "description": "The event day for date sampling",
-      "type": "string",
-      "format": "/^[0-9]{4}/"
+      "type": "string"
     },
     "date_report": {
       "description": "Date when report was written",
-      "type": "string",
-      "format": "/^[0-9]{4}/"
+      "type": "string"
     },
     "latitude": {
       "type": ["number","null"],
