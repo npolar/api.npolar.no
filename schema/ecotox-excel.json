@@ -36,7 +36,7 @@
       "description": "The storage collection the document belongs to.",
       "type": "string",
       "enum": [
-        "ecotox-files"
+        "ecotox-excel"
       ]
     },
     "uri": {
