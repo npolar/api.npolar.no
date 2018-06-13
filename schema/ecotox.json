@@ -28,7 +28,7 @@
     },
     "project": {
       "description": "Project name or other identificator",
-      "enum": ["BearHealth","BearEnergy","MOSJ"],
+      "enum": ["BearHealth","BearEnergy","MOSJ","thesis"],
       "type": "string"
     },
     "laboratory": {
@@ -55,6 +55,18 @@
       "enum":["coy","yrlg","2yr","subad","ad"],
       "type": "string"
     },
+    "bodymass": {
+      "type": ["number","null"]
+   },
+   "girth": {
+     "type": ["number","null"]
+   },
+   "standard_length": {
+     "type": ["number","null"]
+   },
+   "blubber_thinkness_back": {
+     "type": ["number","null"]
+   },
     "matrix": {
       "description": "Type of sample - eggs, blood etc",
       "type": "string",
@@ -88,6 +100,16 @@
     "fat_percentage":{
       "description": "Sample fat percentage",
       "type": ["number","null"]
+    },
+    "references": {
+           "type": "array",
+           "additionalItems": false,
+           "items": {
+             "type": "object",
+               "reference":{
+                 "type": "string"
+               }
+        }
     },
     "compound": {
            "type": "array",
@@ -145,10 +167,6 @@
                "lipid_weight":{
                    "description":"weight of pollutant found in lipid weight including n.a. and n.d",
                    "type":["number","null","n.a","n.d"]
-               },
-               "corrected_blank_contamination":{
-                   "type": "string",
-                   "enum": ["no","yes","unknown"]
                },
                "percent_recovery": {
                  "description": "Percentage recovered of a spiked reference sample",
