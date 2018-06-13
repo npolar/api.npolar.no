@@ -238,8 +238,8 @@
         "NPI",
         "NTNU",
         "UiO",
-        "NPI and UiO",
-        "NPI and NTNU"
+        "NPI,UiO",
+        "NPI,NTNU,NMBU"
       ],
       "type": "string"
     },
