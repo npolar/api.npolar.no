@@ -239,6 +239,7 @@
         "NTNU",
         "UiO",
         "NPI,UiO",
+        "NPI,NMBU",
         "NPI,NTNU,NMBU"
       ],
       "type": "string"
