@@ -206,7 +206,7 @@
              "string",
              "null"
            ],
-           "enum": ["NPI","UIT","UIO","NTNU","NMBU"]
+           "enum": ["NPI","UiT","UiO","NTNU","NMBU"]
          }
        }
      }
