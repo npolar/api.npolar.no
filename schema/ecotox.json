@@ -164,7 +164,7 @@
                    "ATE","BTBPE","TBP","1-3-DCB","1-4-DCB","1-2-DCB",
                    "1-3-5-TCB","1-2-4-TCB","1-2-3-TCB","hexachlorobutadiene",
                    "1-2-3-4-TTCB","PECB","pentachloroanisole","octachlorostyrene",
-                   "g-chlordane","a-endosulfan","a-chlordane","b-endosulfan","methoxychlor"]
+                   ,"a-endosulfan","b-endosulfan","methoxychlor"]
                },
                "wet_weight":{
                    "description":"weight of pollutant found in wet weight including n.a. and n.d",
