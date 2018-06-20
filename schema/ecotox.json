@@ -140,7 +140,7 @@
                    "tn-CHL", "cn-CHL", "op-DDE", "pp-DDE",
                    "op-DDD", "pp-DDD", "op-DDT", "pp-DDT","mirex",
                    "aldrin","dieldrin","endrin","heptachlor epoxide",
-                  "CHB-26","CHB-40","CHB-41","CHB-44","CHB-50","CHB-62",
+                   "CHB-26","CHB-40","CHB-41","CHB-44","CHB-50","CHB-62",
                    "PCB-28", "PCB-29", "PCB-31", "PCB-47", "PCB-52",
                    "PCB-56", "PCB-66", "PCB-74", "PCB-87", "PCB-99",
                    "PCB-101", "PCB-105", "PCB-110", "PCB-112", "PCB-114",
@@ -152,7 +152,7 @@
                    "BDE-77", "BDE-28", "BDE-47", "BDE-99", "BDE-100", "BDE-153", "BDE-154",
                    "BDE-183", "BDE-206","BDE-207","BDE-208",
 		               "BDE-209","HBCDD","PBT","PBEB","DPTE","HBB",
-                   "PCP","ATE","BTBPE","TBP","4-OH-CB106","4-OH-CB107","4-OH-CB108",
+                   "PCP","4-OH-CB106","4-OH-CB107","4-OH-CB108",
                    "3-OH-CB118","4-OH-BDE42","3-OH-BDE47",
                    "6-OH-BDE47","4-OH-BDE49","2-OH-BDE68",
                    "4-OH-CB130","3-OH-CB138",
@@ -161,8 +161,10 @@
                    "PFHxA","PFHpA","PFOA","PFNA","PFDA","PFUnDA",
                    "PFDoDA","PFTrDA","PFTeDA","PFBS","PFHxS","PFOS",
                    "FOSA","N-MeFOSA","N-MeFOSE","N-EtFOSA","N-EtFOSE",
-
-                 ]
+                   "ATE","BTBPE","TBP","1-3-DCB","1-4-DCB","1-2-DCB",
+                   "1-3-5-TCB","1-2-4-TCB","1-2-3-TCB","hexachlorobutadiene",
+                   "1-2-3-4-TTCB","PECB","pentachloroanisole","octachlorostyrene",
+                   "g-chlordane","a-endosulfan","a-chlordane","b-endosulfan","methoxychlor"]
                },
                "wet_weight":{
                    "description":"weight of pollutant found in wet weight including n.a. and n.d",
