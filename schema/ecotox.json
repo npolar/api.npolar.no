@@ -67,6 +67,9 @@
    "blubber_thinkness_back": {
      "type": ["number","null"]
    },
+   "molt": {
+     "type": ["boolean","null"]
+   },
     "matrix": {
       "description": "Type of sample - eggs, blood etc",
       "type": "string",
@@ -149,7 +152,7 @@
                    "BDE-77", "BDE-28", "BDE-47", "BDE-99", "BDE-100", "BDE-153", "BDE-154",
                    "BDE-183", "BDE-206","BDE-207","BDE-208",
 		               "BDE-209","HBCDD","PBT","PBEB","DPTE","HBB",
-                   "PCP","4-OH-CB106","4-OH-CB107","4-OH-CB108",
+                   "PCP","ATE","BTBPE","TBP","4-OH-CB106","4-OH-CB107","4-OH-CB108",
                    "3-OH-CB118","4-OH-BDE42","3-OH-BDE47",
                    "6-OH-BDE47","4-OH-BDE49","2-OH-BDE68",
                    "4-OH-CB130","3-OH-CB138",
@@ -157,7 +160,8 @@
                    "3-OH-CB180","4-OH-CB187",
                    "PFHxA","PFHpA","PFOA","PFNA","PFDA","PFUnDA",
                    "PFDoDA","PFTrDA","PFTeDA","PFBS","PFHxS","PFOS",
-                   "FOSA","N-MeFOSA","N-MeFOSE","N-EtFOSA","N-EtFOSE"
+                   "FOSA","N-MeFOSA","N-MeFOSE","N-EtFOSA","N-EtFOSE",
+
                  ]
                },
                "wet_weight":{
