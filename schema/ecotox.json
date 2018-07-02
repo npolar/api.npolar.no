@@ -175,15 +175,15 @@
                },
                "wet_weight":{
                    "description":"weight of pollutant found in wet weight including n.a. and n.d",
-                   "type":["number","null","n.a.","n.d"]
+                   "type":["string","null"]
                },
                "lipid_weight":{
                    "description":"weight of pollutant found in lipid weight including n.a. and n.d",
-                   "type":["number","null","n.a","n.d"]
+                   "type":["string","null"]
                },
                "percent_recovery": {
                  "description": "Percentage recovered of a spiked reference sample",
-                 "type": ["number","null"]
+                 "type": ["string","null"]
                },
                "unit": {
                 "description": "measured  unit",
@@ -192,7 +192,7 @@
                },
                "detection_limit": {
                  "description": "Smallest concentration detectable",
-                 "type": ["number","null"]
+                 "type": ["string","null"]
                }
              }
            }
