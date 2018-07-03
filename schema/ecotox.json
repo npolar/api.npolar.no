@@ -28,7 +28,7 @@
     },
     "project": {
       "description": "Project name or other identificator",
-      "enum": ["BearHealth","BearEnergy","MOSJ","thesis"],
+      "enum": ["BearHealth","BearEnergy","MOSJ","thesis","screening"],
       "type": "string"
     },
     "laboratory": {
