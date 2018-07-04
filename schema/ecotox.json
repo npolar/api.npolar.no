@@ -38,7 +38,17 @@
     },
     "species": {
       "description": "Latin species name",
-      "enum": ["ursus maritimus"],
+      "enum": ["ursus maritimus", "vulpes lagopus",
+               "boreogadus saida","salvelinus alpinus","mallotus villosus",
+               "clupea harengus",
+               "phoca vitulina","pagophilus groenlandicus",
+               "cystophora cristata","pusa hispida",
+               "odobenus rosmarus","leptonychotes weddellii",
+               "orcinus orca","delphinapterus leucas", "monodon monoceros",
+               "bubo scandiacus","larus hyperboreus","uria lomvia","uria aalge","rissa tridactyla",
+               "somateria mollissima","fratercula arctica","phalacrocorax aristotelis",
+               "larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle"
+             ],
       "type": "string"
     },
     "age": {
