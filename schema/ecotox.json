@@ -277,15 +277,23 @@
                  "description": "Percentage recovered of a spiked reference sample",
                  "type": ["string","null"]
                },
+               "percent_recovery_c13": {
+                 "description": "Percentage recovered per sample",
+                 "type": ["string","null"]
+               },
                "unit": {
                 "description": "measured  unit",
                 "type": "string",
                 "enum": ["ng/g","pg/g"]
                },
                "detection_limit": {
-                 "description": "Smallest concentration detectable",
+                 "description": "Smallest concentration detectable (LOD)",
                  "type": ["string","null"]
-               }
+               },
+                "level_of_quantification": {
+                  "description": "The amount measued above this limit is more accurate (LOQ)",
+                  "type": ["string","null"]
+                }
              }
            }
 },
