@@ -83,6 +83,15 @@
    "molt": {
      "type": ["boolean","null"]
    },
+   "tusk_volume":{
+     "type":["number",null]
+  },
+  "tusk_length":{
+     "type":["number",null]
+  },
+  "tusk_girth":{
+     "type":["number",null]
+  },
     "matrix": {
       "description": "Type of sample - eggs, blood etc",
       "type": "string",
