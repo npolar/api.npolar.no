@@ -329,7 +329,30 @@
     },
     "species": {
       "description": "Which species",
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "Kittiwake",
+        "Common Eider",
+        "Glaucous Gull",
+        "Black Guillemot",
+        "Brünnich's Guillemot",
+        "Little Auk",
+        "Arctic Tern",
+        "Fulmar",
+        "Barnacle Goose",
+        "Puffin",
+        "Brent Goose",
+        "Ivory Gull",
+        "Greater Black-backed Gull",
+        "Pink-footed Goose",
+        "Great Skua",
+        "Common Guillemot",
+        "King Eider",
+        "Sabine's Gull",
+        "Razorbill",
+        "Herring Gull",
+        "Lesser Black-backed Gull"
+     ]
     },
     "start_date": {
       "description": "Start date of counting",
