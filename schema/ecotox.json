@@ -110,7 +110,12 @@
               "liver",
               "brain",
               "adrenal",
-              "whole animal"]
+              "whole animal",
+              "gonad",
+              "whole animal except lower part of foot",
+              "whole animal except closing muscle and siphon",
+              "digestive gland"
+    ]
     },
     "sample_id":{
       "description": "Id given by the researchers",
