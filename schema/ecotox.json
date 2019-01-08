@@ -25,6 +25,10 @@
       "default": "en",
       "pattern": "^[a-z]{2}$"
     },
+    "ecotox_template": {
+      "description": "Collection for a project/research",
+      "type": "string"
+    },
     "project": {
       "description": "Project name or other identificator",
       "enum": ["BearHealth","BearEnergy","MOSJ","thesis","screening"],
@@ -128,10 +132,6 @@
       "description": "comments to sample",
       "type": "string"
     },
-    "identified_by":{
-      "description": "comments to sample",
-      "type": "string"
-    },
     "latitude": {
       "type": ["number","null"],
       "minimum": -90.0,
@@ -168,7 +168,11 @@
                  "null"
                ],
                "enum": ["NPI","UiT","UiO","NTNU","NMBU"]
-             }
+             },
+             "role": {
+               "type": "string",
+               "enum": ["responsible","collector"]
+             },
            }
          }
     },
@@ -312,7 +316,6 @@
           "organisation": "https://schema.org/affiliation",
           "species_identification": "http://rs.tdwg.org/dwc/terms/identificationID",
           "additional_fields":"http://rs.tdwg.org/dwc/terms/dynamicProperties",
-          "identified_by":"http://rs.tdwg.org/dwc/terms/identifiedBy",
           "ecotox_lab":"https://api.npolar.no/ecotox-lab",
           "ris_id":"https://www.researchinsvalbard.no/search/result?q="
 }
