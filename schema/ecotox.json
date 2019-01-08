@@ -252,6 +252,10 @@
                  "type": "string"
               }
         },
+        "comment":{
+           "description":"Field comment",
+           "type":"string"
+        },
         "collection": {
           "description": "The storage collection the document belongs to.",
           "type": "string",
