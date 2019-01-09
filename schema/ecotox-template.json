@@ -77,9 +77,6 @@
              "properties": {
                "once": {
                "type": "boolean"
-             },
-               "list":{
-               "enum":["species"]
              }
         }
    },
