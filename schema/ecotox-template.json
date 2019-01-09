@@ -128,7 +128,9 @@
              "properties": {
                "once": {
                "type": "boolean"
-             }
+             },
+               "list": {
+               "enum":["placename"]
         }
    },
    "latitude": {
@@ -136,16 +138,22 @@
              "properties": {
                "once": {
                "type": "boolean"
-             }
+             },
+             "list":{
+             "enum":["placename"]
         }
+     }
    },
    "longitude": {
              "type": "object",
              "properties": {
                "once": {
                "type": "boolean"
-             }
+              },
+              "list":{
+                "enum":["placename"]
         }
+   }
    },
    "people_collector": {
              "type": "object",
@@ -320,3 +328,4 @@
         }
       }
   }
+}
