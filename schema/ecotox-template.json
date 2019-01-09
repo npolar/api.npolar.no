@@ -61,9 +61,6 @@
              "properties": {
                "once": {
                "type": "boolean"
-             },
-               "list":{
-               "enum":["rightsholder"]
              }
         }
    },
