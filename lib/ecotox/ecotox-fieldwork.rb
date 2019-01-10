@@ -5,13 +5,13 @@ require "time"
 module Ecotox
 
   # Parameter model
-  class Ecotox < Hashie::Mash
+  class Fieldwork < Hashie::Mash
 
     include Npolar::Validation::MultiJsonSchemaValidator
 
     # @override MultiJsonSchemaValidator
     def schemas
-      ["ecotox.json"]
+      ["ecotox-fieldwork.json"]
     end
 
   end

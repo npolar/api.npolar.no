@@ -1,7 +1,7 @@
 {
-  "id": "http://api.npolar.no/schema/ecotox",
+  "id": "http://api.npolar.no/schema/ecotox-fieldwork",
   "$schema": "http://json-schema.org/draft-04/schema",
-  "title": "Ecotox",
+  "title": "Ecotox-fieldwork",
   "description": "Norwegian Polar Institute's ecotox database.",
   "type": "object",
   "required":[
