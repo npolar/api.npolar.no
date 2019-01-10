@@ -1,0 +1,63 @@
+{
+  "_id": "ecotox-fieldwork-api",
+  "id": "ecotox-fieldwork-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "path": "/ecotox/fieldwork",
+  "title": "NPI's ecotox database",
+  "summary": "Norwegian Polar Institute's archive for ecotoxicological samples.",
+  "storage": "Couch",
+  "database": "ecotox-fieldwork",
+  "model": "Ecotox::Fieldwork",
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "ecotox-fieldwork",
+    "type": "ecotox-fieldwork",
+    "log": false,
+    "params": {
+      "facets": "project,species,sample_id,sex,age,fat_percentage,component.analyte_category,analyte,corrected_blank_contamination,detection_limit,date_sample_collected,people.last_name,people.first_name",
+      "date-year": "updated",
+      "size-facet": 100
+    }
+  },
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "https://api.npolar.no/schema/ecotox-fieldwork.json"
+  },
+  "category": [
+    "CouchDB",
+    "Elasticsearch",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "middleware": [
+    [
+      "::Rack::Gouncer",
+      {
+        "url": "https://api-test.data.npolar.no/user",
+        "open": true,
+        "system": "https://api-test.data.npolar.no/ecotox"
+      }
+    ]
+  ],
+  "updated": "2018-05-30T08:47:21Z",
+  "updated_by": "siri.uldal@npolar.no",
+  "created": "2018-05-30T08:47:21Z",
+  "created_by": "siri.uldal@npolar.no"
+}
