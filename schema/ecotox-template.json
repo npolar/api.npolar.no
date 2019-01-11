@@ -21,7 +21,6 @@
     },
    "title": {
      "description": "Template name",
-     "format": "date-time",
      "type": "string"
     },
     "project": {
