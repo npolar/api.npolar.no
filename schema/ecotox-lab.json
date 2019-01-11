@@ -47,8 +47,8 @@
       "description": "Sample ID used by the lab",
       "type": "string"
     },
-    "ecotox_id":{
-      "description": "Link to the ecotox database",
+    "ecotox_fieldwork_id":{
+      "description": "Link to the ecotox fieldwork database",
       "type": "string",
       "format":"uri"
     },
@@ -305,7 +305,7 @@
       "@context": {
           "ecotox_id":"https://api.npolar.no/ecotox-lab",
           "NPI_sample_id":{
-            "@id":"https://api-test.data.npolar.no/ecotox/?q=&filter-NPI_sample_id="
+            "@id":"https://api-test.data.npolar.no/ecotox-fieldwork/?q=&filter-NPI_sample_id="
 	   }
     }
     }

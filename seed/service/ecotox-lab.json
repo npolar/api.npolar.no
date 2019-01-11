@@ -1,22 +1,22 @@
 {
-  "_id": "ecotox-excel-api",
-  "id": "ecotox-excel-api",
+  "_id": "ecotox-lab-api",
+  "id": "ecotox-lab-api",
   "schema": "http://api.npolar.no/schema/api",
-  "path": "/ecotox/excel",
-  "title": "Ecotox excel files API",
-  "summary": "NPI researcher's ecotox excel files",
+  "path": "/ecotox/lab",
+  "title": "NPI's ecotox database",
+  "summary": "Norwegian Polar Institute's archive for lab results ecotoxicology",
   "storage": "Couch",
-  "database": "ecotox-excel",
-  "model": "Ecotox::Excel",
+  "database": "ecotox-lab",
+  "model": "Ecotox::Lab",
   "search": {
     "engine": "Elasticsearch",
-    "index": "ecotox-excel",
-    "type": "ecotox-excel",
+    "index": "ecotox-lab",
+    "type": "ecotox-lab",
     "log": false,
     "params": {
-      "facets": "filename,type",
+      "facets": "ecotox_fieldwork_id,lab_sample_id,NPI_sample_id,lab_report_id,laboratory,date_report,excel.file_name",
       "date-year": "updated",
-      "size-facet": 1000
+      "size-facet": 100
     }
   },
   "verbs": [
@@ -31,10 +31,11 @@
     "json": "application/json"
   },
   "accepts": {
-    "application/json": "https://api.npolar.no/schema/ecotox-excel.json"
+    "application/json": "https://api.npolar.no/schema/ecotox-lab.json"
   },
   "category": [
     "CouchDB",
+    "Elasticsearch",
     "Lucene",
     "REST",
     "Search",
@@ -49,13 +50,13 @@
     [
       "::Rack::Gouncer",
       {
-        "url": "https://api-test.data.npolar.no:8950",
+        "url": "https://api-test.data.npolar.no/user",
         "open": true,
         "system": "https://api-test.data.npolar.no/ecotox"
       }
     ]
   ],
-  "updated": "2018-04-05T08:47:21Z",
+  "updated": "2018-05-30T08:47:21Z",
   "updated_by": "siri.uldal@npolar.no",
   "created": "2018-05-30T08:47:21Z",
   "created_by": "siri.uldal@npolar.no"

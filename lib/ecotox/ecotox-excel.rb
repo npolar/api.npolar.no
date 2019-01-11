@@ -1,6 +1,10 @@
 require "hashie"
+require "date"
+require "time"
 
-class EcotoxExcel < Hashie::Mash
+module Ecotox
+
+class Excel < Hashie::Mash
   include Npolar::Validation::MultiJsonSchemaValidator
 
   def schemas
