@@ -172,7 +172,7 @@
              "role": {
                "type": "string",
                "enum": ["responsible","collector"]
-             },
+             }
            }
          }
     },
@@ -319,5 +319,6 @@
           "ecotox_lab":"https://api.npolar.no/ecotox-lab",
           "ris_id":"https://www.researchinsvalbard.no/search/result?q="
 }
-      }
+      },
+"additionalProperties": true
   }
