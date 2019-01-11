@@ -16,7 +16,7 @@
       "description": "Schema defining this object (this schema).",
       "type": "string",
       "enum": [
-        "http://api.npolar.no/schema/ecotox"
+        "http://api.npolar.no/schema/ecotox-fieldwork"
       ]
     },
     "lang": {
@@ -45,7 +45,6 @@
     },
     "event_date":{
       "description": "Date the sample was collected",
-      "format": "date-time",
       "type": "string"
     },
     "ris_id":{
@@ -264,7 +263,7 @@
           "description": "The storage collection the document belongs to.",
           "type": "string",
           "enum": [
-            "ecotox"
+            "ecotox-fieldwork"
           ]
         },
         "created": {
