@@ -14,7 +14,7 @@
     "type": "ecotox-template",
     "log": false,
     "params": {
-      "facets": "project.once,species.once,sex.once,age.once,age_group.once,title,additional",
+      "facets": "title,additional,matrix.once,species.once",
       "date-year": "created",
       "size-facet": 100
     }
