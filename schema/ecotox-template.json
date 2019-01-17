@@ -171,9 +171,8 @@
                 "enum":[true]
              },
                "list": {
-               "type":["string","null"],
-               "enum":["placename"]
-        }
+               "type":"boolean"
+             }
    },
    "latitude": {
              "type": "object",
@@ -186,9 +185,8 @@
                "type": "boolean"
                },
              "list":{
-             "type":["string","null"],
-             "enum":["placename"]
-        }
+             "type":"boolean"
+              }
      }
    },
    "longitude": {
@@ -202,8 +200,7 @@
                "type": "boolean"
               },
               "list":{
-                "type":["string","null"],
-                "enum":["placename"]
+                "type":"boolean"
         }
    }
    },
