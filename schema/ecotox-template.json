@@ -26,6 +26,9 @@
     "project": {
               "type": "object",
               "properties": {
+                "needed":{
+                "type": "boolean"
+                },
                 "once": {
                 "type": "boolean"
               }
@@ -34,6 +37,9 @@
     "parent_event_id": {
               "type": "object",
               "properties": {
+                "needed":{
+                "type": "boolean"
+                },
                 "once": {
                 "type": "boolean"
               }
@@ -42,6 +48,10 @@
    "event_date": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
              }
@@ -50,6 +60,9 @@
    "ris_id": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -58,6 +71,10 @@
    "rightsholder": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
              }
@@ -66,6 +83,9 @@
    "reference": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -74,6 +94,10 @@
    "species": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
              }
@@ -82,6 +106,10 @@
    "species_identification": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
              }
@@ -90,6 +118,10 @@
    "matrix": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
              }
@@ -98,6 +130,9 @@
    "label_name": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -106,6 +141,9 @@
    "no_samples_amount": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -114,6 +152,9 @@
    "samples_remarks": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -122,20 +163,30 @@
    "placename": {
              "type": "object",
              "properties": {
-               "once": {
+               "needed":{
                "type": "boolean"
+               },
+               "once": {
+               "type": "boolean",
+                "enum":[true]
              },
                "list": {
+               "type":["string","null"],
                "enum":["placename"]
         }
    },
    "latitude": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
-             },
+               },
              "list":{
+             "type":["string","null"],
              "enum":["placename"]
         }
      }
@@ -143,10 +194,15 @@
    "longitude": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
               },
               "list":{
+                "type":["string","null"],
                 "enum":["placename"]
         }
    }
@@ -154,6 +210,9 @@
    "people_collector": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -162,6 +221,10 @@
    "people_responsible": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
              }
@@ -170,14 +233,20 @@
    "age": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
-             }
+               }
         }
    },
    "stage": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -186,6 +255,9 @@
    "sex": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -194,6 +266,9 @@
    "age_group": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -202,6 +277,9 @@
    "weight": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -210,6 +288,9 @@
    "girth": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -218,6 +299,9 @@
    "length": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -226,6 +310,9 @@
    "blubber_thinkness_back": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -234,6 +321,9 @@
    "molt": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -242,6 +332,9 @@
    "tusk_volume": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -250,6 +343,9 @@
    "tusk_length": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -258,6 +354,9 @@
    "tusk_girth": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -266,6 +365,10 @@
    "ecotox_lab": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean",
+               "enum":[true]
+               },
                "once": {
                "type": "boolean"
              }
@@ -274,6 +377,9 @@
    "comment": {
              "type": "object",
              "properties": {
+               "needed":{
+               "type": "boolean"
+               },
                "once": {
                "type": "boolean"
              }
@@ -281,7 +387,9 @@
    },
    "additional":{
         "description": "Name of additional data fields",
+        "additionalItems":false,
         "type": "array",
+        "uniqueItems":true,
          "items": {
           "type": "string"
    }},
