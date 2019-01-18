@@ -165,53 +165,6 @@
              }
         }
    },
-   "placename": {
-             "type": "object",
-             "properties": {
-               "needed":{
-               "type": "boolean",
-               "default": true,
-               "enum":[true]
-               },
-               "once": {
-               "type": "boolean"
-             },
-               "list": {
-               "type":"boolean"
-             }
-   },
-   "latitude": {
-             "type": "object",
-             "properties": {
-               "needed":{
-               "type": "boolean",
-               "default": true,
-               "enum":[true]
-               },
-               "once": {
-               "type": "boolean"
-               },
-             "list":{
-             "type":"boolean"
-              }
-     }
-   },
-   "longitude": {
-             "type": "object",
-             "properties": {
-               "needed":{
-               "type": "boolean",
-               "default": true,
-               "enum":[true]
-               },
-               "once": {
-               "type": "boolean"
-              },
-              "list":{
-                "type":"boolean"
-        }
-   }
-   },
    "people_collector": {
              "type": "object",
              "properties": {
@@ -400,12 +353,63 @@
          "items": {
           "type": "string"
    }},
+   "placename": {
+             "type": "object",
+             "properties": {
+               "needed":{
+               "type": "boolean",
+               "default": true,
+               "enum":[true]
+               },
+               "once": {
+               "type": "boolean"
+             },
+               "list": {
+               "type":"boolean"
+             }
+   },
+   "lat": {
+             "type": "object",
+             "properties": {
+               "needed":{
+               "type": "boolean",
+               "default": true,
+               "enum":[true]
+               },
+               "once": {
+               "type": "boolean"
+               },
+             "list":{
+             "type":"boolean"
+              }
+     }
+   },
+   "lng": {
+             "type": "object",
+             "properties": {
+               "needed":{
+               "type": "boolean",
+               "default": true,
+               "enum":[true]
+               },
+               "once": {
+               "type": "boolean"
+              },
+              "list":{
+                "type":"boolean"
+        }
+   }
+   },
     "collection": {
           "description": "The storage collection the document belongs to.",
           "type": "string",
           "enum": [
             "ecotox-template"
           ]
+        },
+        "comment": {
+          "description": "Major revisions to the document",
+          "type": "string"
         },
         "created": {
           "description": "The date the document was created.",
