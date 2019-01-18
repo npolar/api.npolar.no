@@ -357,7 +357,7 @@
                "type":"boolean"
              }
    },
-   "latitude_decimal": {
+   "decimal_lat": {
              "type": "object",
              "properties": {
                "needed":{
@@ -373,7 +373,7 @@
               }
      }
    },
-   "longitude_decimal": {
+   "decimal_lng": {
              "type": "object",
              "properties": {
                "needed":{
