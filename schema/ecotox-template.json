@@ -334,17 +334,6 @@
              }
         }
    },
-   "comment": {
-             "type": "object",
-             "properties": {
-               "needed":{
-               "type": "boolean"
-               },
-               "once": {
-               "type": "boolean"
-             }
-        }
-   },
    "additional":{
         "description": "Name of additional data fields",
         "additionalItems":false,
@@ -368,7 +357,7 @@
                "type":"boolean"
              }
    },
-   "lat": {
+   "latitude_decimal": {
              "type": "object",
              "properties": {
                "needed":{
@@ -384,7 +373,7 @@
               }
      }
    },
-   "lng": {
+   "longitude_decimal": {
              "type": "object",
              "properties": {
                "needed":{
