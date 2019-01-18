@@ -357,7 +357,7 @@
                "type":"boolean"
              }
    },
-   "decimal_lat": {
+   "decimal_ns": {
              "type": "object",
              "properties": {
                "needed":{
@@ -373,7 +373,7 @@
               }
      }
    },
-   "decimal_lng": {
+   "decimal_ew": {
              "type": "object",
              "properties": {
                "needed":{
