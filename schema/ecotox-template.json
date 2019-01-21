@@ -4,9 +4,6 @@
 	"title": "Ecotox-template",
 	"description": "Templates for Norwegian Polar Institute's ecotox database.",
 	"type": "object",
-	"required": [
-		"id"
-	],
 	"properties": {
 		"id": {
 			"description": "Resource identifier (UUID).",
