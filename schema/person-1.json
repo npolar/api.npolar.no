@@ -200,11 +200,12 @@
       "items": {
         "type": "string",
         "enum": [
+          "section-leader",
+          "programme-leader",
+          "department-director",
           "director-staff",
           "leader-group",
           "emergency",
-          "section-leader",
-          "department-director",
           "media-contact",
           "phd",
           "postdoc"
