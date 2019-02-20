@@ -104,39 +104,38 @@
         "description": "Geologist's name",
         "type": "string"
     },
-  "links": {
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "rel": {
-                  "type": "string",
-                  "enum": [
-                    "related",
-                    "project",
-                    "publication",
-                    "dataset",
-                    "expedition"
-                  ]
-                },
-                "href": {
-                  "type": "string",
-                  "format": "uri"
-                },
-                "title": {
-                  "type": ["string", "null"]
-                },
-                "hreflang": {
-                  "type": ["string", "null"]
-                },
-                "type": {
-                  "type": "string"
-                }
-              }
+    "links": {
+        "type": "array",
+        "additionalItems": false,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "rel": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string",
+              "format": "uri"
+            },
+            "hreflang": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "title": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": {
+              "type": "string"
             }
-     },
+          }
+        }
+  },
      "files": {
              "type": "array",
             "uniqueItems": true,
