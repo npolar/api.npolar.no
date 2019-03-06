@@ -4,6 +4,9 @@
 	"title": "Ecotox-template",
 	"description": "Templates for Norwegian Polar Institute's ecotox database.",
 	"type": "object",
+	"required":[
+			"title"
+  ],
 	"properties": {
 		"id": {
 			"description": "Resource identifier (UUID).",
@@ -20,315 +23,124 @@
 			"description": "Template name",
 			"type": "string"
 		},
-		"project": {
+		"parameters": {
+			"description": "Collection of fixed parameters",
 			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"parent_event_id": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"event_date": {
-			"type": "object",
-			"properties": {
-				"needed": {
+      "additionalProperties": false,
+		  "project": {
+			    "description": "Project work is a part of",
 					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"ris_id": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"rightsholder": {
-			"type": "object",
-			"properties": {
-				"needed": {
+					"default": true
+		  },
+		  "parent_event_id": {
+			    "description": "Connection to expedition database",
 					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
+					"default": true
+		  },
+		  "event_date": {
+			    "description": "Date of event/work carried out",
+		      "type": "boolean",
+					"default": true
+      },
+		  "ris_id": {
+		      "description": "RiS number",
 					"type": "boolean"
-				}
-			}
-		},
-		"reference": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"species": {
-			"type": "object",
-			"properties": {
-				"needed": {
+		  },
+		  "rightsholder": {
+			    "description": "Institution(s) who owns the collected data",
 					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"species_identification": {
-			"type": "object",
-			"properties": {
-				"needed": {
+					"default": true
+		  },
+			"people_responsible": {
+				"description": "Name of sample collector",
+				"type": "boolean"
+		 },
+		  "reference": {
+			    "description": "Reference that describes the data",
+			    "type": "boolean"
+		  },
+		  "species": {
+			    "description": "Species name",
 					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
+					"default": true
+		  },
+		  "samples_remarks": {
+	        "description": "Comment/remark about the samples",
 					"type": "boolean"
-				}
+		  },
+		  "people_collector": {
+			   "description": "Name of sample collector",
+			   "type": "boolean"
+		  },
+		  "age": {
+			   "description": "Age of species sample is collected from",
+			   "type": "boolean"
+		  },
+		  "stage": {
+			   "description": "Stage of species sample is collected from",
+		     "type": "boolean"
+		  },
+		  "sex": {
+			   "description": "Sex of species sample is collected from",
+		     "type": "boolean"
+		  },
+		  "age_group": {
+			   "description": "Age group of species sample is collected from",
+		     "type": "boolean"
+		  },
+		  "weight": {
+			    "description": "Weight of species sample is collected from",
+					"type": "boolean"
+		  },
+		  "girth": {
+			    "description": "Girth of species sample is collected from",
+			    "type": "boolean"
+		  },
+		  "length": {
+			    "description": "Length of species sample is collected from",
+		      "type": "boolean"
+		  },
+		  "blubber_thinkness_back": {
+			    "description": "Length of species sample is collected from",
+		      "type": "boolean"
+		  },
+		  "molt": {
+			    "description": "Was species molting",
+		      "type": "boolean"
+		  },
+		  "tusk_volume": {
+			    "description": "Tusk volume",
+		      "type": "boolean"
+		  },
+		  "tusk_length": {
+			    "description": "Tusk length",
+		      "type": "boolean"
+		  },
+		  "tusk_girth": {
+			    "description": "Tusk girth",
+		      "type": "boolean"
+		  },
+			"placename": {
+				"description": "Placename",
+				"type": "boolean"
+			},
+			"latitude": {
+				 "description": "Latitude",
+				 "type": "boolean"
+			},
+			"longitude": {
+				 "description": "Latitude",
+				"type": "boolean"
 			}
 		},
-		"matrix": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"label_name": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"no_samples_amount": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"samples_remarks": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"people_collector": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"people_responsible": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"age": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"stage": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"sex": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"age_group": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"weight": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"girth": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"length": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"blubber_thinkness_back": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"molt": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"tusk_volume": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"tusk_length": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"tusk_girth": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean"
-				},
-				"once": {
-					"type": "boolean"
-				}
-			}
-		},
-		"ecotox_lab": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
-					"type": "boolean"
-				}
+		"use_list": {
+			"description": "Name of additional data fields",
+			"additionalItems": false,
+			"type": "array",
+			"uniqueItems": true,
+			"parameters": {
+				 "description": "Parameter name used for lists",
+				 "type": "string"
 			}
 		},
 		"additional": {
@@ -336,8 +148,13 @@
 			"additionalItems": false,
 			"type": "array",
 			"uniqueItems": true,
-			"items": {
-				"type": "string"
+			"parameter_name": {
+				 "description": "Parameter name",
+				 "type": "string"
+			},
+			"parameter_description": {
+				 "description": "Parameter description",
+				 "type": "string"
 			}
 		},
 		"collection": {
@@ -346,54 +163,6 @@
 			"enum": [
 				"ecotox-template"
 			]
-		},
-		"placename": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
-					"type": "boolean"
-				},
-				"use_list": {
-					"type": "boolean"
-				}
-			}
-		},
-		"latitude": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
-					"type": "boolean"
-				},
-				"use_list": {
-					"type": "boolean"
-				}
-			}
-		},
-		"longitude": {
-			"type": "object",
-			"properties": {
-				"needed": {
-					"type": "boolean",
-					"default": true,
-					"enum": [true]
-				},
-				"once": {
-					"type": "boolean"
-				},
-				"use_list": {
-					"type": "boolean"
-				}
-			}
 		},
 		"comment": {
 			"description": "Major revisions to the document",

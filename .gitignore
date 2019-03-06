@@ -39,6 +39,5 @@ bin/shotgun
 bin/thin
 bin/unicorn
 bin/unicorn_rails
-seed*
 migration*
 search*
