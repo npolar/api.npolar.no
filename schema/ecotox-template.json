@@ -27,6 +27,7 @@
 			"description": "Collection of fixed parameters",
 			"type": "object",
       "additionalProperties": false,
+			"properties":{
 		  "project": {
 			    "description": "Project work is a part of",
 					"type": "boolean",
@@ -131,23 +132,26 @@
 			"longitude": {
 				 "description": "Latitude",
 				"type": "boolean"
-			}
+			}}
 		},
 		"use_list": {
-			"description": "Name of additional data fields",
-			"additionalItems": false,
-			"type": "array",
-			"uniqueItems": true,
-			"parameters": {
-				 "description": "Parameter name used for lists",
-				 "type": "string"
-			}
-		},
+		 "title": "Use Svalbard Placenames on these fields",
+		 "type": "array",
+		 "uniqueItems": true,
+		 "additionalItems": false,
+		 "items": {
+			 "type": "string",
+			 "enum": [
+				 "placename",
+				 "latitude",
+				 "longitude"
+    ]}},
 		"additional": {
 			"description": "Name of additional data fields",
-			"additionalItems": false,
 			"type": "array",
-			"uniqueItems": true,
+		  "items": {
+				"type":"object",
+				"properties": {
 			"parameter_name": {
 				 "description": "Parameter name",
 				 "type": "string"
@@ -155,7 +159,7 @@
 			"parameter_description": {
 				 "description": "Parameter description",
 				 "type": "string"
-			}
+			}}}
 		},
 		"collection": {
 			"description": "The storage collection the document belongs to.",
