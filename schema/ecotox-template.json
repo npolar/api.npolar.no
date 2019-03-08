@@ -23,7 +23,7 @@
 			"description": "Template name",
 			"type": "string"
 		},
-		"parameters": {
+		"parameters_background": {
 			"description": "Collection of fixed parameters",
 			"type": "object",
       "additionalProperties": false,
@@ -38,11 +38,6 @@
 					"type": "boolean",
 					"default": true
 		  },
-		  "event_date": {
-			    "description": "Date of event/work carried out",
-		      "type": "boolean",
-					"default": true
-      },
 		  "ris_id": {
 		      "description": "RiS number",
 					"type": "boolean"
@@ -56,11 +51,42 @@
 				"description": "Name of sample collector",
 				"type": "boolean"
 		 },
-		  "reference": {
-			    "description": "Reference that describes the data",
-			    "type": "boolean"
+		  "people_collector": {
+			   "description": "Name of sample collector",
+			   "type": "boolean"
 		  },
-		  "species": {
+			"reference": {
+ 			    "description": "Reference that describes the data",
+ 			    "type": "boolean"
+ 		  }}
+		},
+		"parameters_time_and_place": {
+			"description": "Time and place",
+			"type": "object",
+			"properties":{
+			"event_date": {
+				 "description": "Date of event/work carried out",
+				 "type": "boolean",
+				 "default": true
+		 },
+		 "placename": {
+				"description": "Placename",
+				"type": "boolean"
+			},
+			"latitude": {
+				 "description": "Latitude",
+				 "type": "boolean"
+			},
+			"longitude": {
+				 "description": "Latitude",
+				"type": "boolean"
+			}}
+		},
+		"parameters_base": {
+			"description": "Birds",
+			"type": "object",
+			"properties":{
+				"species": {
 			    "description": "Species name",
 					"type": "boolean",
 					"default": true
@@ -68,10 +94,6 @@
 		  "samples_remarks": {
 	        "description": "Comment/remark about the samples",
 					"type": "boolean"
-		  },
-		  "people_collector": {
-			   "description": "Name of sample collector",
-			   "type": "boolean"
 		  },
 		  "age": {
 			   "description": "Age of species sample is collected from",
@@ -100,40 +122,41 @@
 		  "length": {
 			    "description": "Length of species sample is collected from",
 		      "type": "boolean"
-		  },
-		  "blubber_thickness_back": {
-			    "description": "Length of species sample is collected from",
-		      "type": "boolean"
-		  },
-		  "molt": {
-			    "description": "Was species molting",
-		      "type": "boolean"
-		  },
-		  "tusk_volume": {
-			    "description": "Tusk volume",
-		      "type": "boolean"
-		  },
-		  "tusk_length": {
-			    "description": "Tusk length",
-		      "type": "boolean"
-		  },
-		  "tusk_girth": {
-			    "description": "Tusk girth",
-		      "type": "boolean"
-		  },
-			"placename": {
-				"description": "Placename",
-				"type": "boolean"
-			},
-			"latitude": {
-				 "description": "Latitude",
-				 "type": "boolean"
-			},
-			"longitude": {
-				 "description": "Latitude",
-				"type": "boolean"
-			}}
-		},
+		  }
+		  }
+    },
+		"parameters_birds": {
+			"description": "Birds",
+			"type": "object",
+			"properties":{
+				"molt": {
+					 "description": "Molt",
+					 "type": "boolean"
+				}
+		  }
+    },
+		"parameters_mammals": {
+			"description": "Mammals",
+			"type": "object",
+			"properties":{
+					"blubber_thickness_back": {
+							"description": "Length of species sample is collected from",
+							"type": "boolean"
+					},
+					"tusk_volume": {
+							"description": "Tusk volume",
+							"type": "boolean"
+					},
+					"tusk_length": {
+							"description": "Tusk length",
+							"type": "boolean"
+					},
+					"tusk_girth": {
+							"description": "Tusk girth",
+							"type": "boolean"
+					}
+		  }
+    },
 		"use_list": {
 		 "title": "Use Svalbard Placenames on these fields",
 		 "type": "array",
