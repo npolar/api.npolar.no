@@ -48,11 +48,12 @@
 					"default": true
 		  },
 			"people_responsible": {
-				"description": "Name of sample collector",
-				"type": "boolean"
+				"description": "People responsible for the dataset",
+				"type": "boolean",
+				"default": true
 		 },
 		  "people_collector": {
-			   "description": "Name of sample collector",
+			   "description": "Person collecting the sample",
 			   "type": "boolean"
 		  },
 			"reference": {
