@@ -101,7 +101,7 @@
 			    "description": "Length of species sample is collected from",
 		      "type": "boolean"
 		  },
-		  "blubber_thinkness_back": {
+		  "blubber_thickness_back": {
 			    "description": "Length of species sample is collected from",
 		      "type": "boolean"
 		  },
@@ -147,7 +147,7 @@
 				 "longitude"
     ]}},
 		"additional": {
-			"description": "Name of additional data fields",
+			"title": "Name of additional data fields",
 			"type": "array",
 		  "items": {
 				"type":"object",
