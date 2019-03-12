@@ -4,7 +4,7 @@
     "path": "/weather/troll",
     "title": "Weather data from the Troll station and airstrip in Donning Maud Land Antarctica.",
     "storage": "Couch",
-    "database": "weather-troll",
+    "database": "troll-weather",
     "search": {
         "engine": "Elasticsearch",
         "type": "observation",
