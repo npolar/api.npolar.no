@@ -28,7 +28,7 @@
 		},
 		"laboratory": {
 			"description": "Name of laboratory performing analysis",
-			"enum": ["Institute for Energy Technology"],
+			"enum": ["IFE", "UAA"],
 			"type": "string"
 		},
 		"lab_report_no": {
