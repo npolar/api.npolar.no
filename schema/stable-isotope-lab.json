@@ -100,7 +100,7 @@
 			"description": "A free text comment for anything of importance to the batch samples.",
 			"type": ["string", "null"]
 		},
-		"compound": {
+		"stable_isotopes": {
 			"type": "array",
 			"additionalItems": false,
 			"items": {
@@ -110,27 +110,26 @@
 					"stable isotope": {
 						"description": "Name of stable isotope",
 						"type": "string",
-						"enum": ["d13Cpdb-EA", "d15Nair-EA"]
+						"enum": ["d13C", "d15N"]
+					},
+					"W_percent_C": {
+								"description": "??",
+								"type": "float"
+					},
+					"W_percent_N": {
+								"description": "??",
+								"type": "float"
 					},
 					"C_N": {
-						"description": "??",
-						"type": "float"
+								"description": "Carbon to Nitrogen ratio",
+								"type": "float"
 					},
 					"value_permille": {
 						"description": "stable isotope percent value",
 						"type": ["number", "null"]
 					},
-					"unit": {
-						"description": "measured  unit – needed ?????",
-						"type": "string",
-						"enum": [""]
-					},
 					"procedure": {
 						"description": "Lab procedure to find the stable isotopes",
-						"type": ["string", "null"]
-					},
-					"quality_assurance": {
-						"description": "Standard accuracy and precision of analysis",
 						"type": ["string", "null"]
 					},
 					"comment": {
