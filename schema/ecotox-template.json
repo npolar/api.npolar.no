@@ -23,118 +23,146 @@
 			"description": "Template name",
 			"type": "string"
 		},
-		"parameters_background": {
+		"parameters_metadata": {
 			"description": "Collection of fixed parameters",
 			"type": "object",
       "additionalProperties": false,
 			"properties":{
-		  "project": {
-			    "description": "Project work is a part of",
-					"type": "boolean",
-					"default": true
-		  },
-		  "parent_event_id": {
-			    "description": "Connection to expedition database",
-					"type": "boolean",
-					"default": true
-		  },
-		  "ris_id": {
-		      "description": "RiS number",
-					"type": "boolean"
-		  },
-		  "rightsholder": {
-			    "description": "Institution(s) who owns the collected data",
-					"type": "boolean",
-					"default": true
-		  },
-			"people_responsible": {
-				"description": "People responsible for the dataset",
-				"type": "boolean",
-				"default": true
-		 },
-		  "people_collector": {
-			   "description": "Person collecting the sample",
-			   "type": "boolean"
-		  },
-			"reference": {
- 			    "description": "Reference that describes the data",
- 			    "type": "boolean"
- 		  }}
-		},
+		      "project": {
+			       "description": "Project data belongs to",
+					   "type": "boolean",
+					   "default": true
+		      },
+		      "parent_event_id": {
+					    "description": "Connection to expedition database",
+							"type": "boolean",
+							"default": true
+				  },
+		      "ris_id": {
+		          "description": "RiS number",
+					    "type": "boolean"
+		      },
+		      "rightsholder": {
+			       "description": "Institution(s) who owns the collected data",
+					   "type": "boolean",
+					   "default": true
+		      },
+					"people_responsible": {
+						"description": "People responsible for the dataset and organisation",
+						"type": "boolean",
+						"default": true
+				  },
+				  "people_collector": {
+					   "description": "Person collecting the sample",
+					   "type": "boolean"
+				  },
+					"reference": {
+		 			    "description": "Reference that describes the data",
+		 			    "type": "boolean"
+		 		  }}
+				},
 		"parameters_time_and_place": {
 			"description": "Time and place",
 			"type": "object",
 			"properties":{
-			"event_date": {
-				 "description": "Date of event/work carried out",
-				 "type": "boolean",
-				 "default": true
+			  "event_date": {
+						 "description": "Date of event/work carried out",
+						 "type": "boolean",
+						 "default": true
+				 },
+				"placename": {
+						"description": "Placename",
+						"type": "boolean"
+				},
+				"latitude": {
+						 "description": "Latitude",
+						 "type": "boolean"
+				},
+				"longitude": {
+						"description": "Latitude",
+						"type": "boolean"
+				}}
 		 },
-		 "placename": {
-				"description": "Placename",
-				"type": "boolean"
-			},
-			"latitude": {
-				 "description": "Latitude",
-				 "type": "boolean"
-			},
-			"longitude": {
-				 "description": "Latitude",
-				"type": "boolean"
-			}}
-		},
-		"parameters_base": {
-			"description": "Birds",
-			"type": "object",
-			"properties":{
-				"species": {
-			    "description": "Species name",
-					"type": "boolean",
-					"default": true
-		  },
-		  "samples_remarks": {
-	        "description": "Comment/remark about the samples",
-					"type": "boolean"
-		  },
-		  "age": {
-			   "description": "Age of species sample is collected from",
-			   "type": "boolean"
-		  },
-		  "stage": {
-			   "description": "Stage of species sample is collected from",
-		     "type": "boolean"
-		  },
-		  "sex": {
-			   "description": "Sex of species sample is collected from",
-		     "type": "boolean"
-		  },
-		  "age_group": {
-			   "description": "Age group of species sample is collected from",
-		     "type": "boolean"
-		  },
-		  "weight": {
-			    "description": "Weight of species sample is collected from",
-					"type": "boolean"
-		  },
-		  "girth": {
-			    "description": "Girth of species sample is collected from",
-			    "type": "boolean"
-		  },
-		  "length": {
-			    "description": "Length of species sample is collected from",
-		      "type": "boolean"
-		  }
-		  }
+		 "parameters_base": {
+			 "description": "Base",
+			 "type": "object",
+			 "properties":{
+				  "species": {
+					    "description": "Species name",
+							"type": "boolean",
+							"default": true
+				  },
+				  "samples_remarks": {
+			        "description": "Comment/remark about the samples",
+							"type": "boolean"
+				  },
+					"matrix":{
+						"description": "Sample matrix",
+						"type": "boolean"
+					},
+				  "age": {
+					   "description": "Age of species sample is collected from",
+					   "type": "boolean"
+				  },
+				  "stage": {
+					   "description": "Stage of species sample is collected from",
+				     "type": "boolean"
+				  },
+				  "sex": {
+					   "description": "Sex of species sample is collected from",
+				     "type": "boolean"
+				  },
+				  "age_group": {
+					   "description": "Age group of species sample is collected from",
+				     "type": "boolean"
+				  },
+				  "weight": {
+					    "description": "Weight of species sample is collected from",
+							"type": "boolean"
+				  },
+				  "girth": {
+					    "description": "Girth of species sample is collected from",
+					    "type": "boolean"
+				  },
+				  "length": {
+					    "description": "Length of species sample is collected from",
+				      "type": "boolean"
+				  },
+					"condition": {
+						 "description": "Bird/animal condition",
+						 "type": "boolean"
+				  }
+				  }
     },
 		"parameters_birds": {
 			"description": "Birds",
 			"type": "object",
 			"properties":{
-				"molt": {
-					 "description": "Molt",
-					 "type": "boolean"
-				}
-		  }
+					"molt": {
+						 "description": "Molting",
+						 "type": "boolean"
+					},
+					"tarsus": {
+						 "description": "Tarsus",
+						 "type": "boolean"
+					},
+					"bill": {
+						 "description": "Bill length",
+						 "type": "boolean"
+					},
+					"bill_height": {
+						 "description": "Bill height",
+						 "type": "boolean"
+					},
+					"scull": {
+						 "description": "Head and bill length, or just head or scull",
+						 "type": "boolean"
+					},
+					"wing": {
+						 "description": "Maximum flatted cord in mm",
+						 "type": "boolean"
+					}
+			  }
     },
 		"parameters_mammals": {
 			"description": "Mammals",
@@ -158,32 +186,43 @@
 					}
 		  }
     },
+		"parameters_marine_life": {
+			"description": "Sea life, ocean life",
+			"type": "object",
+			"properties":{
+				"caudal_length": {
+					 "description": "Caudal length",
+					 "type": "boolean"
+				}
+		  }
+    },
 		"use_list": {
-		 "title": "Use Svalbard Placenames on these fields",
+		 "title": "Fetch information from Svalbard Placenames on these fields",
 		 "type": "array",
 		 "uniqueItems": true,
 		 "additionalItems": false,
 		 "items": {
-			 "type": "string",
-			 "enum": [
+			  "type": "string",
+			  "enum": [
 				 "placename",
 				 "latitude",
 				 "longitude"
-    ]}},
+    		]}
+	  },
 		"additional": {
 			"title": "Name of additional data fields",
 			"type": "array",
 		  "items": {
 				"type":"object",
 				"properties": {
-			"parameter_name": {
-				 "description": "Parameter name",
-				 "type": "string"
-			},
-			"parameter_description": {
-				 "description": "Parameter description",
-				 "type": "string"
-			}}}
+			    "parameter_name": {
+				    "description": "Parameter name",
+				    "type": "string"
+			    },
+			    "parameter_description": {
+				    "description": "Parameter description",
+				    "type": "string"
+			    }}}
 		},
 		"collection": {
 			"description": "The storage collection the document belongs to.",
