@@ -49,7 +49,7 @@
     },
     "ris_id":{
       "description": "Project number ResearchInSvalbard database",
-      "type": "integer"
+      "type": "string"
     },
     "rightsholder":{
       "description": "Name of institutions owning the data",
