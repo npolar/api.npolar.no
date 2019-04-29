@@ -94,6 +94,15 @@
         "description": "bird ring, polar bear id, polar fox id etc",
         "type": "string"
       },
+      "colour_ring":{
+        "description":"birdring colour",
+        "type": "string"
+      },
+      "euring_code":{
+        "description":"ring code EU",
+        "type":"string",
+        "enum": ["NOS"]
+      },
       "matrix":{
       "description": "type of tissue",
       "type": "string",

@@ -92,6 +92,10 @@
 							"type": "boolean",
 							"default": true
 				  },
+                                  "species_identification": {
+                                         "description": "Ring id, fox/polar bear id etc",
+                                         "type":"boolean"
+                                  },
 				  "samples_remarks": {
 			        "description": "Comment/remark about the samples",
 							"type": "boolean"
@@ -138,6 +142,14 @@
 			"description": "Birds",
 			"type": "object",
 			"properties":{
+					"colour_ring":{
+						"description":"Color of ring",
+                                                "type": "boolean"
+                                        },
+					"euring_code":{
+						"description":"EU ring code, mostly NOS",
+						"type":"boolean"
+                                        },
 					"molt": {
 						 "description": "Molting",
 						 "type": "boolean"
