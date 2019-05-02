@@ -29,9 +29,14 @@
       "description": "Collection for a project/research",
       "type": "string"
     },
-    "project": {
+    "project_name": {
       "description": "Project name or other identificator",
-      "enum": ["BearHealth","BearEnergy","MOSJ","thesis","screening"],
+      "enum": ["BearHealth","BearEnergy","MOSJ","thesis"],
+      "type": "string"
+    },
+    "project_category": {
+      "description": "Type of project",
+      "enum": ["research","screening","monitoring"],
       "type": "string"
     },
     "basis_of_record":{
@@ -75,19 +80,28 @@
       }},
       "species":{
         "description": "Sample taken from species (Latin name)",
-        "enum": ["ursus maritimus", "vulpes lagopus",
+        "enum": ["ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",
+                 "lagopus muta hyperborea", "microtus levis",
                  "boreogadus saida","salvelinus alpinus","mallotus villosus",
                  "strongylocentrotus droebachiensis","hyas araneus","buccinum undatum",
                  "buccinum glaciale", "mya truncata",
                  "gymnacanthus tricuspis","myoxocephalus scorpius",
-                 "phoca vitulina","pagophilus groenlandicus",
-                 "cystophora cristata","pusa hispida",
+                 "phoca vitulina","erignathus barbatus", "pagophilus groenlandicus",
+                 "cystophora cristata","pusa hispida", "phoca groenlandica",
                  "odobenus rosmarus","leptonychotes weddellii",
-                 "orcinus orca","delphinapterus leucas", "monodon monoceros",
+                 "orcinus orca","balaenoptera musculus","delphinapterus leucas", "megaptera novaeangliae",
+                 "monodon monoceros","hyperoodon ampullatus",
+                 "lagenorhynchus albirostris", "blaenoptera acutorostrata", "hyseter macrocephalus",
+                 "balaenoptera physalus","monodon monoceros", "globicephala melas", "balaena mysticetus",
                  "bubo scandiacus","larus hyperboreus","uria lomvia","uria aalge","rissa tridactyla",
-                 "somateria mollissima","fratercula arctica","phalacrocorax aristotelis",
-                 "larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle"
-               ],
+                 "somateria mollissima","somateria spectabilis","fratercula arctica","phalacrocorax aristotelis",
+                 "larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle", "alca torda",
+                 "phalaropus lobatus","phalaropus fulicarius","stercocarius parasiticus","stercorarius pomarinus",
+                 "stercorarius skua","stercorarius longicaudus", "calidris maritima", "clangula hyemalis", "pluvialis apricaria",
+                 "branta leucopsis", "branta bernicla", "gavia immer", "gavia stellata","plectrophenax nivalis",
+                 "pagophila eburnea", "anser brachyrhynchus", "calidris alpina",
+                 "sterna paradisaea", "cepphus grylle", "larus marinus", "rhodostethia rosea","xema sabini",
+                 "charadrius hiaticula","calidris alba","arenaria interpres"],
         "type": "string"
       },
       "species_identification":{
@@ -96,7 +110,8 @@
       },
       "colour_ring":{
         "description":"birdring colour",
-        "type": "string"
+        "type": "string",
+        "enum":["AAD","AAJ","AAV","ABX","ACX","ADB","ADD","AHB","BAB","BAD","BAP","BCD","BDA","BDB","CAA","CAJ","CCA","CCB","CCC","CCD"]
       },
       "euring_code":{
         "description":"ring code EU",
@@ -136,8 +151,8 @@
       "description": "number of samples taken, amount, size etc",
       "type": "string"
     },
-    "sample_remarks":{
-      "description": "comments to sample",
+    "comment":{
+      "description": "Sample comment",
       "type": "string"
     },
     "latitude": {
@@ -149,6 +164,11 @@
       "type": ["number","null"],
       "minimum": -180.0,
       "maximum": 180.0
+    },
+    "position_accuracy": {
+        "description": "Accuracy of latitude and longitude measurement",
+        "type": "string",
+        "enum": ["<10 meter","<100 meter","< 1 km","> 1 km"]
     },
      "placename": {
        "type": "string"
@@ -263,10 +283,6 @@
                  "description": "uuid to lab result",
                  "type": "string"
               }
-        },
-        "comment":{
-           "description":"Field comment",
-           "type":"string"
         },
         "collection": {
           "description": "The storage collection the document belongs to.",

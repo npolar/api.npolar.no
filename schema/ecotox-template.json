@@ -28,11 +28,14 @@
 			"type": "object",
       "additionalProperties": false,
 			"properties":{
-		      "project": {
-			       "description": "Project data belongs to",
-					   "type": "boolean",
-					   "default": true
+		      "project_name": {
+			       "description": "Projectname data belongs to (if larger project)",
+					   "type": "boolean"
 		      },
+					"project_category": {
+						"type": "boolean",
+						"default": true
+					},
 		      "parent_event_id": {
 					    "description": "Connection to expedition database",
 							"type": "boolean",
@@ -72,16 +75,25 @@
 				 },
 				"placename": {
 						"description": "Placename",
-						"type": "boolean"
+						"type": "boolean",
+						 "default": true
 				},
 				"latitude": {
 						 "description": "Latitude",
-						 "type": "boolean"
+						 "type": "boolean",
+						 "default": true
 				},
 				"longitude": {
 						"description": "Latitude",
-						"type": "boolean"
-				}}
+						"type": "boolean",
+						"default": true
+				},
+        "position_accuracy": {
+					  "description": "Accuracy of latitude and longitude measurement",
+						"type": "boolean",
+						"default": true
+				}
+			}
 		 },
 		 "parameters_base": {
 			 "description": "Base",
@@ -92,14 +104,10 @@
 							"type": "boolean",
 							"default": true
 				  },
-                                  "species_identification": {
-                                         "description": "Ring id, fox/polar bear id etc",
-                                         "type":"boolean"
-                                  },
-				  "samples_remarks": {
-			        "description": "Comment/remark about the samples",
-							"type": "boolean"
-				  },
+          "species_identification": {
+              "description": "Ring id, fox/polar bear id etc",
+              "type":"boolean"
+          },
 					"matrix":{
 						"description": "Sample matrix",
 						"type": "boolean"
@@ -112,12 +120,12 @@
 					   "description": "Stage of species sample is collected from",
 				     "type": "boolean"
 				  },
+					"age_group": {
+						"description": "Age group of species sample is collected from",
+						"type": "boolean"
+				  },
 				  "sex": {
 					   "description": "Sex of species sample is collected from",
-				     "type": "boolean"
-				  },
-				  "age_group": {
-					   "description": "Age group of species sample is collected from",
 				     "type": "boolean"
 				  },
 				  "weight": {
@@ -135,6 +143,14 @@
 					"condition": {
 						 "description": "Bird/animal condition",
 						 "type": "boolean"
+				  },
+					"no_samples_amount":{
+						"description": "Number of samples taken, amount, sample size etc",
+						"type": "string"
+					},
+					"comment": {
+						 "description": "Comment/remark about the sample",
+						 "type": "boolean"
 				  }
 				  }
     },
@@ -144,12 +160,12 @@
 			"properties":{
 					"colour_ring":{
 						"description":"Color of ring",
-                                                "type": "boolean"
-                                        },
+            "type": "boolean"
+          },
 					"euring_code":{
-						"description":"EU ring code, mostly NOS",
+						"description":"EU ring code, usually NOS",
 						"type":"boolean"
-                                        },
+          },
 					"molt": {
 						 "description": "Molting",
 						 "type": "boolean"
@@ -167,11 +183,15 @@
 						 "type": "boolean"
 					},
 					"scull": {
-						 "description": "Head and bill length, or just head or scull",
+						 "description": "Head+bill length, or just head or scull",
 						 "type": "boolean"
 					},
 					"wing": {
 						 "description": "Maximum flatted cord in mm",
+						 "type": "boolean"
+					},
+					"nest_id":  {
+						 "description": "Id of nest",
 						 "type": "boolean"
 					}
 			  }
@@ -242,10 +262,6 @@
 			"enum": [
 				"ecotox-template"
 			]
-		},
-		"comment": {
-			"description": "Major revisions to the document",
-			"type": "string"
 		},
 		"created": {
 			"description": "The date the document was created.",
