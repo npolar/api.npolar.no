@@ -1,63 +1,62 @@
 {
-  "_id": "ecotox-template-api",
-  "id": "ecotox-template-api",
-  "schema": "http://api.npolar.no/schema/api",
-  "path": "/ecotox/template",
-  "title": "Templates for NPI's ecotox database",
-  "summary": "Templates for Norwegian Polar Institute's archive for ecotoxicological samples.",
-  "storage": "Couch",
-  "database": "ecotox-template",
-  "model": "Ecotox::Template",
-  "search": {
-    "engine": "Elasticsearch",
-    "index": "ecotox-template",
-    "type": "ecotox-template",
-    "log": false,
-    "params": {
-      "facets": "title,matrix.once,species.once",
-      "date-year": "created",
-      "size-facet": 100
+    "_id": "ecotox-template-api",
+    "id": "ecotox-template-api",
+    "schema": "http://api.npolar.no/schema/api",
+    "path": "/ecotox/template",
+    "title": "Templates for NPI's ecotox database",
+    "summary": "Templates for Norwegian Polar Institute's archive for ecotoxicological samples.",
+    "storage": "Couch",
+    "database": "ecotox-template",
+    "model": "Ecotox::Template",
+    "search": {
+        "engine": "Elasticsearch",
+        "index": "ecotox-template",
+        "type": "ecotox-template",
+        "log": false,
+        "params": {
+            "facets": "title,matrix.once,species.once",
+            "date-year": "created",
+            "size-facet": 100
+        }
+    },
+    "verbs": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "OPTIONS"
+    ],
+    "formats": {
+        "json": "application/json"
+    },
+    "accepts": {
+        "application/json": "https://api.npolar.no/schema/ecotox-template.json"
+    },
+    "category": [
+        "CouchDB",
+        "Elasticsearch",
+        "Lucene",
+        "REST",
+        "Search",
+        "JSON",
+        "JSON Schema",
+        "HTTP"
+    ],
+    "lifecycle": "production",
+    "run": "Npolar::Api::Json",
+    "open": true,
+    "middleware": [
+        [
+            "::Rack::Gouncer",
+            {
+                "url": "https://api.npolar.no/user",
+                "open": true,
+                "system": "https://api.npolar.no/ecotox"
+            }
+        ]
+    ],
+    "editlog": {
+        "disabled": true
     }
-  },
-  "verbs": [
-    "DELETE",
-    "GET",
-    "HEAD",
-    "POST",
-    "PUT",
-    "OPTIONS"
-  ],
-  "formats": {
-    "json": "application/json"
-  },
-  "accepts": {
-    "application/json": "https://api.npolar.no/schema/ecotox-template.json"
-  },
-  "category": [
-    "CouchDB",
-    "Elasticsearch",
-    "Lucene",
-    "REST",
-    "Search",
-    "JSON",
-    "JSON Schema",
-    "HTTP"
-  ],
-  "lifecycle": "production",
-  "run": "Npolar::Api::Json",
-  "open": true,
-  "middleware": [
-    [
-      "::Rack::Gouncer",
-      {
-        "url": "https://api-test.data.npolar.no/user",
-        "open": true,
-        "system": "https://api-test.data.npolar.no/ecotox"
-      }
-    ]
-  ],
-  "updated": "2018-05-30T08:47:21Z",
-  "updated_by": "siri.uldal@npolar.no",
-  "created": "2018-05-30T08:47:21Z",
-  "created_by": "siri.uldal@npolar.no"
 }
