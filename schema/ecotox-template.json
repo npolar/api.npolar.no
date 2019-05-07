@@ -140,9 +140,17 @@
 						 "description": "Bird/animal condition",
 						 "type": "boolean"
 				  },
+					"morphology":  {
+						 "description": "Morphology on fauna",
+						 "type": "boolean"
+					},
+					"subspecies":  {
+						 "description": "Subspecies of specified species",
+						 "type": "boolean"
+					},
 					"no_samples_amount":{
 						"description": "Number of samples taken, amount, sample size etc",
-						"type": "string"
+						"type": "boolean"
 					},
 					"comment": {
 						 "description": "Comment/remark about the sample",
@@ -150,6 +158,40 @@
 				  }
 				  }
     },
+		"parameters_loggers": {
+			"description": "Loggers",
+			"type": "object",
+			"properties":{
+				"logger_status":  {
+					 "description": "Status of logger",
+					 "type": "boolean"
+				},
+				"logger_model_retrieved":  {
+					 "description": "Model name of logger retrived",
+					 "type": "boolean"
+				},
+				"logger_id_retrieved":  {
+					 "description": "Id of logger retrived from bird",
+					 "type": "boolean"
+				},
+				"logger_model_deployed":  {
+					 "description": "Model name of logger deployed on bird",
+					 "type": "boolean"
+				},
+				"logger_id_deployed":  {
+					 "description": "Id of logger deployed on bird",
+					 "type": "boolean"
+				},
+				"logger_mount_method":  {
+					 "description": "Where was the logger mounted",
+					 "type": "boolean"
+				},
+				"comment": {
+					 "description": "Comment/remark about the sample",
+					 "type": "boolean"
+				}
+				}
+	 },
 		"parameters_birds": {
 			"description": "Birds",
 			"type": "object",
@@ -206,34 +248,6 @@
 						 "description": "Number of chick able to fledge",
 						 "type": "boolean"
 					},
-					"logger_status":  {
-						 "description": "Status of logger on bird",
-						 "type": "boolean"
-					},
-					"logger_model_retrieved":  {
-						 "description": "Model name of logger retrived from bird",
-						 "type": "boolean"
-					},
-					"logger_id_retrieved":  {
-						 "description": "Id of logger retrived from bird",
-						 "type": "boolean"
-					},
-					"logger_model_deployed":  {
-						 "description": "Model name of logger deployed on bird",
-						 "type": "boolean"
-					},
-					"logger_id_deployed":  {
-						 "description": "Id of logger deployed on bird",
-						 "type": "boolean"
-					},
-					"morphology":  {
-						 "description": "Morphology on bird",
-						 "type": "boolean"
-					},
-					"subspecies":  {
-						 "description": "subspecies of specified species",
-						 "type": "boolean"
-					},
 					"method_deciding_sex":  {
 						 "description": "method used to decide sex",
 						 "type": "boolean"
@@ -243,10 +257,6 @@
 						 "type": "boolean"
 					},
 					"bird_returned_to_nest":  {
-						 "description": "describe the severety of disturbance - has the brid returned to the nest afterwards",
-						 "type": "boolean"
-					},
-					"logger_mount_method":  {
 						 "description": "describe the severety of disturbance - has the brid returned to the nest afterwards",
 						 "type": "boolean"
 					}
