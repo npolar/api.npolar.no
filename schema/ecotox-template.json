@@ -117,10 +117,6 @@
 					   "description": "Stage of species sample is collected from",
 				     	   "type": "boolean"
 				},
-				"age_group": {
-					   "description": "Age group of species sample is collected from",
-					   "type": "boolean"
-				},
 				"sex": {
 					   "description": "Sex of species sample is collected from",
 				           "type": "boolean"

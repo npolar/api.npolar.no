@@ -29,224 +29,283 @@
       "description": "Collection for a project/research",
       "type": "string"
     },
-    "project_name": {
-      "description": "Project name or other identificator",
-      "enum": ["BearHealth","BearEnergy","MOSJ","thesis"],
-      "type": "string"
-    },
-    "project_category": {
-      "description": "Type of project",
-      "enum": ["research","screening","monitoring"],
-      "type": "string"
-    },
-    "basis_of_record":{
-      "description": "Darwin core term",
-      "enum": ["PreservedSample"],
-      "type": "string"
-    },
-    "parent_event_id":{
-      "description": "ID to parent expedition database",
-      "type": "string"
-    },
-    "event_date":{
-      "description": "Date the sample was collected",
-      "type": "string"
-    },
-    "ris_id":{
-      "description": "Project number ResearchInSvalbard database",
-      "type": "string"
-    },
-    "rightsholder":{
-      "description": "Name of institutions owning the data",
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-      "enum": [
-        "NPI",
-        "NTNU",
-        "UiO",
-        "NPI,UiO",
-        "NPI,NMBU",
-        "NPI,NTNU,NMBU"
-      ],
-        "type": "string"
-      }},
-      "reference":{
-        "description": "Published papers using the sample",
-        "type": "array",
-        "additionalItems": false,
-        "items": {
-          "type": "string"
-      }},
-      "species":{
-        "description": "Sample taken from species (Latin name)",
-        "enum": ["ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",
-                 "lagopus muta hyperborea", "microtus levis",
-                 "boreogadus saida","salvelinus alpinus","mallotus villosus",
-                 "strongylocentrotus droebachiensis","hyas araneus","buccinum undatum",
-                 "buccinum glaciale", "mya truncata",
-                 "gymnacanthus tricuspis","myoxocephalus scorpius",
-                 "phoca vitulina","erignathus barbatus", "pagophilus groenlandicus",
-                 "cystophora cristata","pusa hispida", "phoca groenlandica",
-                 "odobenus rosmarus","leptonychotes weddellii",
-                 "orcinus orca","balaenoptera musculus","delphinapterus leucas", "megaptera novaeangliae",
-                 "monodon monoceros","hyperoodon ampullatus",
-                 "lagenorhynchus albirostris", "blaenoptera acutorostrata", "hyseter macrocephalus",
-                 "balaenoptera physalus","monodon monoceros", "globicephala melas", "balaena mysticetus",
-                 "bubo scandiacus","larus hyperboreus","uria lomvia","uria aalge","rissa tridactyla",
-                 "somateria mollissima","somateria spectabilis","fratercula arctica","phalacrocorax aristotelis",
-                 "larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle", "alca torda",
-                 "phalaropus lobatus","phalaropus fulicarius","stercocarius parasiticus","stercorarius pomarinus",
-                 "stercorarius skua","stercorarius longicaudus", "calidris maritima", "clangula hyemalis", "pluvialis apricaria",
-                 "branta leucopsis", "branta bernicla", "gavia immer", "gavia stellata","plectrophenax nivalis",
-                 "pagophila eburnea", "anser brachyrhynchus", "calidris alpina",
-                 "sterna paradisaea", "cepphus grylle", "larus marinus", "rhodostethia rosea","xema sabini",
-                 "charadrius hiaticula","calidris alba","arenaria interpres"],
-        "type": "string"
-      },
-      "species_identification":{
-        "description": "bird ring, polar bear id, polar fox id etc",
-        "type": "string"
-      },
-      "colour_ring":{
-        "description":"birdring colour",
-        "type": "string",
-        "enum":["AAD","AAJ","AAV","ABX","ACX","ADB","ADD","AHB","BAB","BAD","BAP","BCD","BDA","BDB","CAA","CAJ","CCA","CCB","CCC","CCD"]
-      },
-      "euring_code":{
-        "description":"ring code EU",
-        "type":"string",
-        "enum": ["NOS"]
-      },
-      "matrix":{
-      "description": "type of tissue",
-      "type": "string",
-      "enum": ["egg",
-              "milk",
-              "whole blood",
-              "blood cell",
-              "plasma",
-              "serum",
-              "abdominal fat",
-              "subcutaneous fat",
-              "blubber",
-              "hair",
-              "feather",
-              "muscle",
-              "liver",
-              "brain",
-              "adrenal",
-              "whole animal",
-              "gonad",
-              "whole animal except lower part of foot",
-              "whole animal except closing muscle and siphon",
-              "digestive gland"
-    ]
-    },
-    "label_name":{
-      "description": "physical sample labeled name",
-      "type": "string"
-    },
-    "no_samples_amount":{
-      "description": "number of samples taken, amount, size etc",
-      "type": "string"
-    },
-    "comment":{
-      "description": "Sample comment",
-      "type": "string"
-    },
-    "latitude": {
-      "type": ["number","null"],
-      "minimum": -90.0,
-      "maximum": 90.0
-    },
-    "longitude": {
-      "type": ["number","null"],
-      "minimum": -180.0,
-      "maximum": 180.0
-    },
-    "position_accuracy": {
-        "description": "Accuracy of latitude and longitude measurement",
-        "type": "string",
-        "enum": ["<10 meter","<100 meter","< 1 km","> 1 km"]
-    },
-     "placename": {
-       "type": "string"
-    },
-    "people": {
-         "description": "People responsible for the dataset",
-         "type": "array",
-         "additionalItems": false,
-         "items": {
-           "type": "object",
-           "additionalProperties": false,
-           "properties": {
-             "id": {
-               "type": "string"
-             },
-             "first_name": {
-               "type": "string"
-             },
-             "last_name": {
-               "type": "string"
-             },
-             "organisation": {
-               "type": [
-                 "string",
-                 "null"
-               ],
-               "enum": ["NPI","UiT","UiO","NTNU","NMBU"]
-             },
-             "role": {
-               "type": "string",
-               "enum": ["responsible","collector"]
-             }
-           }
-         }
-    },
-    "age": {
-      "description": "Age of species",
-      "type": "string"
-    },
-    "stage":{
-      "description": "Stage plankton",
-      "type": "string"
-    },
-    "sex": {
-      "description": "Sex species",
-      "enum": ["F","M","unknown"],
-      "type": ["string","null"]
-    },
-    "age_group":{
-      "description": "Species age group",
-      "enum":["coy","yrlg","2yr","subad","ad"],
-      "type": "string"
-    },
-    "weight": {
-      "description":"bodymass or sample mass",
-      "type": ["number","null"]
-   },
-   "girth": {
-     "type": ["number","null"]
-   },
-   "length": {
-     "type": ["number","null"]
-   },
-   "blubber_thinkness_back": {
-     "type": ["number","null"]
-   },
-   "molt": {
-     "type": ["boolean","null"]
-   },
-   "tusk_volume":{
-     "type":["number",null]
-   },
-   "tusk_length":{
-     "type":["number",null]
-   },
-   "tusk_girth":{
-     "type":["number",null]
-   },
+    "entry":{
+      "title": "List of all entries corresponding to excel rows",
+			"type": "array",
+		  "items": {
+          "project_group": {
+            "description": "Project name or other group identificator. Use project name if possible.",
+            "enum": ["BearEnergy","BearHealth", "Giants of the ocean",
+                     "MILKYS","MOSJ","Multistress","SEAPOP","SEATRACK",
+                     "thesis", "screening","monitoring"],
+            "type": "string"
+          },
+          "parent_event_id":{
+            "description": "ID to parent expedition database",
+            "type": "string"
+          },
+          "ris_id":{
+            "description": "Project number ResearchInSvalbard database",
+            "type": "string"
+          },
+          "rightsholder":{
+            "description": "Name of institutions owning the data",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+            "enum": [
+              "NPI",
+              "NTNU",
+              "UiO",
+              "NPI,UiO",
+              "NPI,NMBU",
+              "NPI,NTNU,NMBU"
+            ],
+              "type": "string"
+            }},
+            "people_collector":{
+              "description": "Who collected the data",
+              "type": "string"
+            },
+            "reference":{
+              "description": "Published papers using the sample",
+              "type": "array",
+              "additionalItems": false,
+              "items": {
+                "type": "string"
+            }},
+            "event_date":{
+              "description": "Date the sample was collected",
+              "type": "string"
+            },
+            "placename": {
+              "type": "string"
+            },
+            "latitude": {
+              "type": ["number","null"],
+              "minimum": -90.0,
+              "maximum": 90.0
+            },
+            "longitude": {
+              "type": ["number","null"],
+              "minimum": -180.0,
+              "maximum": 180.0
+            },
+            "position_accuracy": {
+                "description": "Accuracy of latitude and longitude measurement",
+                "type": "string",
+                "enum": ["<10 meter","<100 meter","< 1 km","> 1 km"]
+            },
+            "species":{
+              "description": "Sample taken from species (Latin name)",
+              "enum": ["ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",
+                       "lagopus muta hyperborea", "microtus levis",
+                       "boreogadus saida","salvelinus alpinus","mallotus villosus",
+                       "strongylocentrotus droebachiensis","hyas araneus","buccinum undatum",
+                       "buccinum glaciale", "mya truncata",
+                       "gymnacanthus tricuspis","myoxocephalus scorpius",
+                       "phoca vitulina","erignathus barbatus", "pagophilus groenlandicus",
+                       "cystophora cristata","pusa hispida", "phoca groenlandica",
+                       "odobenus rosmarus","leptonychotes weddellii",
+                       "orcinus orca","balaenoptera musculus","delphinapterus leucas", "megaptera novaeangliae",
+                       "monodon monoceros","hyperoodon ampullatus",
+                       "lagenorhynchus albirostris", "blaenoptera acutorostrata", "hyseter macrocephalus",
+                       "balaenoptera physalus","monodon monoceros", "globicephala melas", "balaena mysticetus",
+                       "bubo scandiacus","larus hyperboreus","uria lomvia","uria aalge","rissa tridactyla",
+                       "somateria mollissima","somateria spectabilis","fratercula arctica","phalacrocorax aristotelis",
+                       "larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle", "alca torda",
+                       "phalaropus lobatus","phalaropus fulicarius","stercocarius parasiticus","stercorarius pomarinus",
+                       "stercorarius skua","stercorarius longicaudus", "calidris maritima", "clangula hyemalis", "pluvialis apricaria",
+                       "branta leucopsis", "branta bernicla", "gavia immer", "gavia stellata","plectrophenax nivalis",
+                       "pagophila eburnea", "anser brachyrhynchus", "calidris alpina",
+                       "sterna paradisaea", "cepphus grylle", "larus marinus", "rhodostethia rosea","xema sabini",
+                       "charadrius hiaticula","calidris alba","arenaria interpres"],
+              "type": "string"
+            },
+            "species_identification":{
+              "description": "bird ring, polar bear id, polar fox id etc",
+              "type": "string"
+            },
+            "matrix":{
+            "description": "type of tissue",
+            "type": "string",
+            "enum": ["egg",
+                    "milk",
+                    "whole blood",
+                    "blood cell",
+                    "plasma",
+                    "serum",
+                    "abdominal fat",
+                    "subcutaneous fat",
+                    "blubber",
+                    "hair",
+                    "feather",
+                    "muscle",
+                    "liver",
+                    "brain",
+                    "adrenal",
+                    "whole animal",
+                    "gonad",
+                    "whole animal except lower part of foot",
+                    "whole animal except closing muscle and siphon",
+                    "digestive gland"
+          ]
+          },
+            "colour_ring":{
+              "description":"birdring colour",
+              "type": "string"
+          },
+            "euring_code":{
+              "description":"ring code EU",
+              "type":"string",
+              "enum": ["NOS","ISR","RUM"]
+            },
+          "label_name":{
+            "description": "physical sample labeled name",
+            "type": "string"
+          },
+          "no_samples_amount":{
+            "description": "number of samples taken, amount, size etc",
+            "type": "string"
+          },
+          "comment":{
+            "description": "Sample comment",
+            "type": "string"
+          },
+          "age": {
+            "description": "Age of species or age group",
+            "type": "string"
+          },
+          "stage":{
+            "description": "Stage plankton",
+            "type": "string"
+          },
+          "sex": {
+            "description": "Sex species",
+            "enum": ["female","male","unknown"],
+            "type": ["string","null"]
+          },
+          "weight": {
+            "description":"bodymass or sample mass",
+            "type": "string"
+         },
+         "girth": {
+           "type": "string",
+         },
+         "length": {
+           "type": "string"
+         },
+         "condition": {
+           "type": "string"
+         },
+         "morphology": {
+           "type": "string"
+         },
+         "subspecies": {
+           "type": "string"
+         },
+         "no_samples_amount": {
+           "type": "string"
+         },
+         "comment": {
+           "type": "string"
+         },
+         "logger_status": {
+           "type": "string",
+           "enum": ["individual caught (first deployment)",
+                    "individual caught (logger retrieved and replaced)",
+                    "individual caught (logger lost and replaced)",
+                    "individual caught (logger retrieved, individual released without logger)",
+                    "individual caught (logger lost, bird released without logger)",
+                    "individual observed (logger still attached)",
+                    "individual observed (logger lost)",
+                    "individual observed (logger status unknown)",
+                    "individual found dead (logger still attached)",
+                    "individual found dead (logger lost)",
+                    "logger not used"]
+         },
+         "logger_id_retrieved": {
+            "type": "string"
+          },
+          "logger_model_deployed": {
+             "type": "string"
+          },
+          "logger_id_deployed": {
+              "type": "string"
+          },
+          "logger_mount_method": {
+              "type": "string",
+              "enum":["tarsus","tibia","back"]
+          },
+          "colour_ring": {
+              "type": "string"
+          },
+          "euring_code": {
+              "type": "string"
+          },
+          "molt": {
+              "type": "string"
+          },
+          "tarsus": {
+              "type": "string"
+          },
+          "bill": {
+              "type": "string"
+          },
+          "bill_height": {
+              "type": "string"
+          },
+          "scull": {
+              "type": "string"
+          },
+          "wing": {
+              "type": "string"
+          },
+          "nest_id": {
+              "type": "string"
+          },
+          "egg_length": {
+              "type": "string"
+          },
+          "egg_width": {
+              "type": "string"
+          },
+          "clutch_size": {
+              "type": "string"
+          },
+          "fledge_chicks": {
+              "type": "string"
+          },
+          "method_deciding_sex": {
+              "type": "string",
+              "enum":["dna","morphology",
+                     "behaviour","non_yet"]
+          },
+          "breeding_stage": {
+              "type": "string",
+              "enum":["rearing chicks",
+                      "unknown",
+                      "incubating",
+                      "prebreeding"]
+          },
+          "bird_returned_to_nest": {
+              "type": "string"
+          },
+         "blubber_thinkness_back": {
+           "type": ["number","null"]
+         },
+         "tusk_volume":{
+           "type":["number",null]
+         },
+         "tusk_length":{
+           "type":["number",null]
+         },
+         "tusk_girth":{
+           "type":["number",null]
+         },
+         "caudal_length":{
+           "type":["number",null]
+         },
    "excel": {
        "description": "Original excel file(s)",
        "type": "array",
