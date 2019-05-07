@@ -46,7 +46,7 @@
 			       		"type": "boolean",
 			       		"default": true
 		        	},
-				"people_responsible": {
+							"people_responsible": {
 			       		"description": "People responsible for the dataset and organisation",
 			       		"type": "boolean",
 			       		"default": true
@@ -55,42 +55,43 @@
 			       		"description": "Person collecting the sample",
 			       		"type": "boolean"
 		        	},
-				"reference": {
+							"reference": {
 		 	       		"description": "Reference that describes the data",
-		 	       		"type": "boolean"
+		 	       		"type": "boolean",
+								"default": true
 		 		}}
 				},
 		"parameters_time_and_place": {
 			"description": "Time and place",
 			"type": "object",
 			"properties":{
-			  	"event_date": {
-					"description": "Date of event/work carried out",
-						 "type": "boolean",
-						 "default": true
-				 },
-				"placename": {
-						"description": "Placename",
-						"type": "boolean",
-						 "default": true
-				},
-				"latitude": {
-						 "description": "Latitude",
-						 "type": "boolean",
-						 "default": true
-				},
-				"longitude": {
-						"description": "Latitude",
-						"type": "boolean",
-						"default": true
-				},
-        			"position_accuracy": {
-					  	"description": "Accuracy of latitude and longitude measurement",
-						"type": "boolean",
-						"default": true
-				}
-				}
-		 		},
+					  	"event_date": {
+							"description": "Date of event/work carried out",
+								 "type": "boolean",
+								 "default": true
+						 },
+						"placename": {
+								"description": "Placename",
+								"type": "boolean",
+								 "default": true
+						},
+						"latitude": {
+								 "description": "Latitude",
+								 "type": "boolean",
+								 "default": true
+						},
+						"longitude": {
+								"description": "Latitude",
+								"type": "boolean",
+								"default": true
+						},
+        		"position_accuracy": {
+					  	   "description": "Accuracy of latitude and longitude measurement",
+								 "type": "boolean",
+								 "default": true
+							 }
+						 }
+		 			},
 	       "parameters_base": {
 			"description": "Base",
 			"type": "object",
