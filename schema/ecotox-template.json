@@ -249,8 +249,7 @@
 					"logger_mount_method":  {
 						 "description": "describe the severety of disturbance - has the brid returned to the nest afterwards",
 						 "type": "boolean"
-					},
-
+					}
 			  }
     },
 		"parameters_mammals": {
