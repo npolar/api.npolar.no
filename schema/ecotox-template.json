@@ -28,14 +28,10 @@
 			"type": "object",
       "additionalProperties": false,
 			"properties":{
-		      "project_name": {
-			       "description": "Projectname data belongs to (if larger project)",
+		      "project_group": {
+			       "description": "Projectname data belongs to (if larger project) or type of project",
 					   "type": "boolean"
 		      },
-					"project_category": {
-						"type": "boolean",
-						"default": true
-					},
 		      "parent_event_id": {
 					    "description": "Connection to expedition database",
 							"type": "boolean",
@@ -193,7 +189,68 @@
 					"nest_id":  {
 						 "description": "Id of nest",
 						 "type": "boolean"
-					}
+					},
+					"egg_length":  {
+						 "description": "Egg length",
+						 "type": "boolean"
+					},
+					"egg_width":  {
+						 "description": "Egg length",
+						 "type": "boolean"
+					},
+					"clutch_size":  {
+						 "description": "Number of eggs in clutch",
+						 "type": "boolean"
+					},
+					"fledge_chicks":  {
+						 "description": "Number of chick able to fledge",
+						 "type": "boolean"
+					},
+					"logger_status":  {
+						 "description": "Status of logger on bird",
+						 "type": "boolean"
+					},
+					"logger_model_retrieved":  {
+						 "description": "Model name of logger retrived from bird",
+						 "type": "boolean"
+					},
+					"logger_id_retrieved":  {
+						 "description": "Id of logger retrived from bird",
+						 "type": "boolean"
+					},
+					"logger_model_deployed":  {
+						 "description": "Model name of logger deployed on bird",
+						 "type": "boolean"
+					},
+					"logger_id_deployed":  {
+						 "description": "Id of logger deployed on bird",
+						 "type": "boolean"
+					},
+					"morphology":  {
+						 "description": "Morphology on bird",
+						 "type": "boolean"
+					},
+					"subspecies":  {
+						 "description": "subspecies of specified species",
+						 "type": "boolean"
+					},
+					"method_deciding_sex":  {
+						 "description": "method used to decide sex",
+						 "type": "boolean"
+					},
+					"breeding_stage":  {
+						 "description": "stage describing the breeding process",
+						 "type": "boolean"
+					},
+					"bird_returned_to_nest":  {
+						 "description": "describe the severety of disturbance - has the brid returned to the nest afterwards",
+						 "type": "boolean"
+					},
+					"logger_mount_method":  {
+						 "description": "describe the severety of disturbance - has the brid returned to the nest afterwards",
+						 "type": "boolean"
+					},
+
 			  }
     },
 		"parameters_mammals": {
