@@ -65,27 +65,27 @@
 					"description": "Time and place",
 					"type": "object",
 					"properties":{
-						"event_date": {
+						"event_date_fieldwork": {
 							  "description": "Date of event/work carried out",
 								"type": "boolean",
 								"default": true
 		         },
-						"placename": {
+						"placename_fieldwork": {
 								"description": "Placename",
 								"type": "boolean",
 								 "default": true
 						},
-						"latitude": {
+						"latitude_fieldwork": {
 								 "description": "Latitude",
 								 "type": "boolean",
 								 "default": true
 						},
-						"longitude": {
+						"longitude_fieldwork": {
 								"description": "Latitude",
 								"type": "boolean",
 								"default": true
 						},
-        		"position_accuracy": {
+        		"position_accuracy_fieldwork": {
 					  	   "description": "Accuracy of latitude and longitude measurement",
 								 "type": "boolean",
 								 "default": true
