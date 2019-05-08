@@ -65,6 +65,10 @@
 						"type": "string"
 					}
 				},
+                                "people_responsible":{
+                                      "description":"Name of persons and institution responsible for the dataset",
+                                "type":"string"
+                                },
 				"people_collector": {
 					"description": "Who collected the data",
 					"type": "string"
