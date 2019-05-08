@@ -106,7 +106,7 @@
           			},
 				"matrix":{
 						"description": "Sample matrix",
-						"type": "boolean"
+						"type": "boolean",
                                                 "default":true
 				},
 				"age": {
