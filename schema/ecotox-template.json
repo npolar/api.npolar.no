@@ -108,6 +108,7 @@
 				"matrix":{
 						"description": "Sample matrix",
 						"type": "boolean"
+                                                "default":true
 				},
 				"age": {
 					   "description": "Age of species sample is collected from",
