@@ -51,19 +51,15 @@
 				},
 				"rightsholder": {
 					"description": "Name of institutions owning the data",
-					"type": "array",
-					"additionalItems": false,
-					"items": {
-						"enum": [
-							"NPI",
-							"NTNU",
-							"UiO",
-							"NPI,UiO",
-							"NPI,NMBU",
-							"NPI,NTNU,NMBU"
-						],
-						"type": "string"
-					}
+					"type": "string",
+				        "enum": [
+						"NPI",
+						"NTNU",
+						"UiO",
+						"NPI,UiO",
+						"NPI,NMBU",
+						"NPI,NTNU,NMBU"
+						]
 				},
                                 "people_responsible":{
                                       "description":"Name of persons and institution responsible for the dataset",
@@ -75,11 +71,7 @@
 				},
 				"reference": {
 					"description": "Published papers using the sample",
-					"type": "array",
-					"additionalItems": false,
-					"items": {
-						"type": "string"
-					}
+					"type": "string"
 				},
 				"event_date": {
 					"description": "Date the sample was collected",
@@ -291,19 +283,19 @@
 					"type": "string"
 				},
 				"blubber_thinkness_back": {
-					"type": ["number", "null"]
+					"type": "string"
 				},
 				"tusk_volume": {
-					"type": ["number", null]
+					"type": "string"
 				},
 				"tusk_length": {
-					"type": ["number", null]
+					"type": "string"
 				},
 				"tusk_girth": {
-					"type": ["number", null]
+					"type": "string"
 				},
 				"caudal_length": {
-					"type": ["number", null]
+					"type": "string"
 				}
 			}
 		},
