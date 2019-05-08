@@ -61,15 +61,15 @@
 								"default": true
 		 		}}
 				},
-		"parameters_time_and_place": {
-			"description": "Time and place",
-			"type": "object",
-			"properties":{
-					  	"event_date": {
-							"description": "Date of event/work carried out",
-								 "type": "boolean",
-								 "default": true
-						 },
+				"parameters_time_and_place": {
+					"description": "Time and place",
+					"type": "object",
+					"properties":{
+						"event_date": {
+							  "description": "Date of event/work carried out",
+								"type": "boolean",
+								"default": true
+		         },
 						"placename": {
 								"description": "Placename",
 								"type": "boolean",
