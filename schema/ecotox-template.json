@@ -34,8 +34,7 @@
 		        	},
 		        	"parent_event_id": {
 			       		"description": "Connection to expedition database",
-			       		"type": "boolean",
-			       		"default": true
+			       		"type": "boolean"
 		        	},
 		        	"ris_id": {
 		               		"description": "RiS number",
