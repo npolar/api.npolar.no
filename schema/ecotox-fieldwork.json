@@ -221,6 +221,9 @@
 				"logger_id_retrieved": {
 					"type": "string"
 				},
+                                "logger_model_deployed":{
+                                        "type": "string"
+                                },
 				"logger_model_deployed": {
 					"type": "string"
 				},
