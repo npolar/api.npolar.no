@@ -38,9 +38,9 @@
                                 },
 				"project_group": {
 					"description": "Project name or other group identificator. Use project name if possible.",
-					"enum": ["BearEnergy", "BearHealth", "Giants of the ocean",
+					"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
 						"MILKYS", "MOSJ", "Multistress", "SEAPOP", "SEATRACK",
-						"thesis", "screening", "monitoring"
+						"thesis", "screening", "monitoring","miljoprovebanken"
 					],
 					"type": "string"
 				},
@@ -55,19 +55,22 @@
 				"rightsholder": {
 					"description": "Name of institutions owning the data",
 					"type": "string",
-				        "enum": [
-						"NPI",
-						"NTNU",
-						"UiO",
-						"NPI,UiO",
-						"NPI,NMBU",
-						"NPI,NTNU,NMBU"
-						]
+				  "enum": [
+								"unknown",
+								"NPI",
+								"NTNU",
+								"UiO",
+								"NPI,UiO",
+								"NPI, NIVA",
+								"NPI, APN, NILU, NINA",
+								"NPI,NMBU",
+								"NPI,NTNU,NMBU"
+								]
 				},
-                                "people_responsible":{
-                                      "description":"Name of persons and institution responsible for the dataset",
-                                "type":"string"
-                                },
+        "people_responsible":{
+           "description":"Name of persons and institution responsible for the dataset",
+           "type":"string"
+        },
 				"people_collector": {
 					"description": "Who collected the data",
 					"type": "string"
@@ -97,11 +100,11 @@
 				"position_accuracy": {
 					"description": "Accuracy of latitude and longitude measurement",
 					"type": "string",
-					"enum": ["<10 meter", "<100 meter", "< 1 km", "> 1 km"]
+					"enum": ["unknown","<10 meter", "<100 meter", "< 1 km", "> 1 km"]
 				},
 				"species": {
 					"description": "Sample taken from species (Latin name)",
-					"enum": ["ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",
+					"enum": ["unknown","ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",
 						"lagopus muta hyperborea", "microtus levis",
 						"boreogadus saida", "salvelinus alpinus", "mallotus villosus",
 						"strongylocentrotus droebachiensis", "hyas araneus", "buccinum undatum",
@@ -133,12 +136,11 @@
 				"matrix": {
 					"description": "type of tissue",
 					"type": "string",
-					"enum": ["egg",
+					"enum": ["unknown",
+						"egg",
 						"milk",
 						"whole blood",
-						"blood cell",
-						"plasma",
-						"serum",
+						"whole blood, feather",
 						"abdominal fat",
 						"subcutaneous fat",
 						"blubber",
@@ -182,7 +184,7 @@
 				},
 				"sex": {
 					"description": "Sex species",
-					"enum": ["female", "male", "unknown"],
+					"enum": ["unknown", "female", "male"],
 					"type": ["string", "null"]
 				},
 				"weight": {
@@ -209,7 +211,8 @@
 				},
 				"logger_status": {
 					"type": "string",
-					"enum": ["individual caught (first deployment)",
+					"enum": ["unknown",
+						"individual caught (first deployment)",
 						"individual caught (logger retrieved and replaced)",
 						"individual caught (logger lost and replaced)",
 						"individual caught (logger retrieved, individual released without logger)",
@@ -236,7 +239,7 @@
 				},
 				"logger_mount_method": {
 					"type": "string",
-					"enum": ["tarsus", "tibia", "back"]
+					"enum": ["unknown","tarsus", "tibia", "back"]
 				},
 
 				"molt": {
@@ -267,28 +270,35 @@
 					"type": "string"
 				},
 				"clutch_size": {
-					"type": "string"
+					"type": "string",
+					"enum": ["unknown",
+						"0","1","2","3","4",
+						"5","6","7","8","9","10"]
 				},
 				"fledge_chicks": {
 					"type": "string"
 				},
 				"method_deciding_sex": {
 					"type": "string",
-					"enum": ["dna", "morphology",
+					"enum": ["unknown","dna", "morphology",
 						"behaviour", "non_yet"
 					]
 				},
 				"breeding_stage": {
 					"type": "string",
-					"enum": ["rearing chicks",
-						"unknown",
+					"enum": ["unknown",
+						"rearing chicks",
 						"incubating",
 						"prebreeding"
 					]
 				},
 				"bird_returned_to_nest": {
-					"type": "string"
-				},
+					"type": "string",
+					"enum": [
+						"unknown",
+						"yes",
+						"no"
+				   ]},
 				"blubber_thinkness_back": {
 					"type": "string"
 				},

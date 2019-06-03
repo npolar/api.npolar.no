@@ -37,6 +37,27 @@
     },
     "sub_matrix":{
       "description": "matrix or tissue analysed by the lab",
+      "enum": ["egg",
+						"milk",
+						"whole blood",
+						"blood cell",
+						"plasma",
+						"serum",
+						"abdominal fat",
+						"subcutaneous fat",
+						"blubber",
+						"hair",
+						"feather",
+						"muscle",
+						"liver",
+						"brain",
+						"adrenal",
+						"whole animal",
+						"gonad",
+						"whole animal except lower part of foot",
+						"whole animal except closing muscle and siphon",
+						"digestive gland"
+]
       "type": "string"
     },
     "NPI_sample_id":{
