@@ -42,13 +42,11 @@
 		        	},
 		        	"rightsholder": {
 			       		"description": "Institution(s) who owns the collected data",
-			       		"type": "boolean",
-			       		"default": true
+			       		"type": "boolean"
 		        	},
 							"people_responsible": {
 			       		"description": "People responsible for the dataset and organisation",
-			       		"type": "boolean",
-			       		"default": true
+			       		"type": "boolean"
 		        	},
 		        	"people_collector": {
 			       		"description": "Person collecting the sample",
@@ -56,8 +54,7 @@
 		        	},
 							"reference": {
 		 	       		"description": "Reference that describes the data",
-		 	       		"type": "boolean",
-								"default": true
+		 	       		"type": "boolean"
 		 		}}
 				},
 				"parameters_time_and_place": {
@@ -66,28 +63,23 @@
 					"properties":{
 						"event_date": {
 							  "description": "Date of event/work carried out",
-								"type": "boolean",
-								"default": true
+								"type": "boolean"
 		         },
 						"placename": {
 								"description": "Placename",
-								"type": "boolean",
-								 "default": true
+								"type": "boolean"
 						},
 						"latitude": {
 								 "description": "Latitude",
-								 "type": "boolean",
-								 "default": true
+								 "type": "boolean"
 						},
 						"longitude": {
 								"description": "Latitude",
-								"type": "boolean",
-								"default": true
+								"type": "boolean"
 						},
         		"position_accuracy": {
 					  	   "description": "Accuracy of latitude and longitude measurement",
-								 "type": "boolean",
-								 "default": true
+								 "type": "boolean"
 							 }
 						 }
 		 			},
@@ -97,17 +89,15 @@
 			"properties":{
 				"species": {
 					    	"description": "Species name",
-						"type": "boolean",
-						"default": true
+						    "type": "boolean"
 				 },
-          			"species_identification": {
-              					"description": "Ring id, fox/polar bear id etc",
-              					"type":"boolean"
+        "species_identification": {
+              	"description": "Ring id, fox/polar bear id etc",
+              	"type":"boolean"
           			},
 				"matrix":{
 						"description": "Sample matrix",
-						"type": "boolean",
-                                                "default":true
+						"type": "boolean"
 				},
 				"age": {
 					   "description": "Age of species sample is collected from",
@@ -131,7 +121,7 @@
 				},
 				"length": {
 					   "description": "Length of species sample is collected from",
-				      	   "type": "boolean"
+				     "type": "boolean"
 				},
 				"condition": {
 					   "description": "Bird/animal condition",
@@ -142,7 +132,7 @@
 					   "type": "boolean"
 				},
 				"subspecies":  {
-				           "description": "Subspecies of specified species",
+				     "description": "Subspecies of specified species",
 					   "type": "boolean"
 				},
 				"no_samples_amount":{
