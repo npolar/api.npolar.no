@@ -52,7 +52,7 @@
             {
                 "url": "https://api.npolar.no/user",
                 "open": true,
-                "system": "https://api.npolar.no/ecotox"
+                "system": "https://api.npolar.no/ecotox/template"
             }
         ]
     ],
