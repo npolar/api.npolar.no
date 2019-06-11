@@ -51,7 +51,7 @@
             "::Rack::Gouncer",
             {
                 "url": "https://api.npolar.no/user",
-                "open": true,
+                "open": false,
                 "system": "https://api.npolar.no/ecotox/template"
             }
         ]
