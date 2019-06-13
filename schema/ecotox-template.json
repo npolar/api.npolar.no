@@ -27,7 +27,7 @@
 			"description": "Collection of fixed parameters",
 			"type": "object",
       			"additionalProperties": false,
-			"properties":{
+			      "properties":{
 		      		"project_group": {
 			       		"description": "Projectname data belongs to (if larger project) or type of project",
 			       		"type": "boolean"
@@ -277,6 +277,52 @@
 				}
 		  	}
     		},
+				"parameters_medium": {
+					"description": "Non-biota",
+					"type": "object",
+					"properties":{
+						"medium": {
+							 "description": "Type of sample, ice, sediment etc",
+							 "type": "boolean"
+						},
+						"volume": {
+							 "description": "Sample volume in liters",
+							 "type": "boolean"
+						},
+						"depth": {
+							 "description": "Sample depth in meters",
+							 "type": "boolean"
+						},
+						"salinity": {
+							 "description": "Salinity in psu (practical salinity unit)",
+							 "type": "boolean"
+						},
+						"pressure": {
+							 "description": "Pressure in dbar (decibars)",
+							 "type": "boolean"
+						},
+						"temperature": {
+							 "description": "Water temperature",
+							 "type": "boolean"
+						},
+						"ice_thickness": {
+							 "description": "Thickness ice sample",
+							 "type": "boolean"
+						},
+						"ice_core_depth": {
+							 "description": "Core depth of ice sample",
+							 "type": "boolean"
+						},
+						"sediment_core_depth": {
+							 "description": "Core depth of sediment sample",
+							 "type": "boolean"
+						},
+						"core_area": {
+							 "description": "Area of sediment or ice core",
+							 "type": "boolean"
+						}
+				  	}
+		    		},
 		"use_list": {
 		 "title": "Fetch information from Svalbard Placenames on these fields",
 		 "type": "array",
@@ -304,6 +350,17 @@
 				    "description": "Parameter description",
 				    "type": "string"
 			}}}
+		},
+		"database_owner": {
+			"title": "Name of database owner",
+			"type": "array",
+		  	"items": {
+				"type":"object",
+				"properties": {
+			    "email": {
+				    "description": "Parameter name",
+				    "type": "string"
+			    }}}
 		},
 		"collection": {
 			"description": "The storage collection the document belongs to.",

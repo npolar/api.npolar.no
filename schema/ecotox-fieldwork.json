@@ -228,9 +228,9 @@
 				"logger_id_retrieved": {
 					"type": "string"
 				},
-                                "logger_model_retrieved":{
-                                        "type": "string"
-                                },
+        "logger_model_retrieved":{
+          "type": "string"
+        },
 				"logger_model_deployed": {
 					"type": "string"
 				},
@@ -241,7 +241,6 @@
 					"type": "string",
 					"enum": ["unknown","tarsus", "tibia", "back"]
 				},
-
 				"molt": {
 					"type": "string"
 				},
@@ -312,6 +311,33 @@
 					"type": "string"
 				},
 				"caudal_length": {
+					"type": "string"
+				},
+				"medium": {
+					"type": "string"
+				},
+				"volume": {
+					"type": "string"
+				},
+				"depth": {
+					"type": "string"
+				},
+				"salinity": {
+					"type": "string"
+				},
+				"pressure": {
+					"type": "string"
+				},
+				"temperature": {
+					"type": "string"
+				},
+				"ice_thickness": {
+					"type": "string"
+				},
+				"core_depth": {
+					"type": "string"
+				},
+				"core_area": {
 					"type": "string"
 				}
 			}
