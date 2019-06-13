@@ -277,8 +277,8 @@
 				}
 		  	}
     		},
-				"parameters_non_biota": {
-					"description": "Non-biota",
+				"parameters_sediment": {
+					"description": "Sediments,cryosphere and water",
 					"type": "object",
 					"properties":{
 						"medium": {
