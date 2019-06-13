@@ -316,6 +316,7 @@
 				"medium": {
 					"type": "string",
 					"enum": [
+                                                "unknown",
 						"seawater",
 						"freshwater",
 						"sediment",
