@@ -314,7 +314,14 @@
 					"type": "string"
 				},
 				"medium": {
-					"type": "string"
+					"type": "string",
+					"enum": [
+						"seawater",
+						"freshwater",
+						"sediment",
+						"ice",
+						"snow"
+				   ]
 				},
 				"volume": {
 					"type": "string"
