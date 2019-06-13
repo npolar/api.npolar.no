@@ -232,15 +232,15 @@
 					"type": "boolean"
 					},
 				"method_deciding_sex":  {
-					"description": "method used to decide sex",
+					"description": "Method used to decide sex",
 					"type": "boolean"
 					},
 				"breeding_stage":  {
-					"description": "stage describing the breeding process",
+					"description": "Stage describing the breeding process",
 					"type": "boolean"
 					},
 				"bird_returned_to_nest":  {
-					"description": "describe the severety of disturbance - has the brid returned to the nest afterwards",
+					"description": "Describe the severety of disturbance - has the bird returned to the nest afterwards",
 					"type": "boolean"
 					}
 			  	}
@@ -277,7 +277,7 @@
 				}
 		  	}
     		},
-				"parameters_medium": {
+				"parameters_non_biota": {
 					"description": "Non-biota",
 					"type": "object",
 					"properties":{
