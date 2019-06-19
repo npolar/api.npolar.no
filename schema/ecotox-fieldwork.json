@@ -33,9 +33,9 @@
 			"title": "List of all entries corresponding to excel rows",
 			"type": "array",
 			"items": {
-                                "dataset_name": {
-                                     "type":"string"
-                                },
+        "dataset_name": {
+              "type":"string"
+        },
 				"project_group": {
 					"description": "Project name or other group identificator. Use project name if possible.",
 					"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
@@ -156,6 +156,17 @@
 						"whole animal except closing muscle and siphon",
 						"digestive gland"
 					]
+				},
+				"medium": {
+					"type": "string",
+					"enum": [
+            "unknown",
+						"seawater",
+						"freshwater",
+						"sediment",
+						"ice",
+						"snow"
+				   ]
 				},
 				"colour_ring": {
 					"description": "birdring colour",
@@ -313,39 +324,16 @@
 				"caudal_length": {
 					"type": "string"
 				},
-				"medium": {
-					"type": "string",
-					"enum": [
-                                                "unknown",
-						"seawater",
-						"freshwater",
-						"sediment",
-						"ice",
-						"snow"
-				   ]
+				"sampling_equipment": {
+					"type": "string"
 				},
 				"volume": {
 					"type": "string"
 				},
-				"depth": {
+				"sediment_core_depth": {
 					"type": "string"
 				},
-				"salinity": {
-					"type": "string"
-				},
-				"pressure": {
-					"type": "string"
-				},
-				"temperature": {
-					"type": "string"
-				},
-				"ice_thickness": {
-					"type": "string"
-				},
-				"core_depth": {
-					"type": "string"
-				},
-				"core_area": {
+				"surface_area_sampled": {
 					"type": "string"
 				}
 			}

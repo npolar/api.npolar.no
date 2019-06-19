@@ -83,29 +83,33 @@
 							 }
 						 }
 		 			},
-	       "parameters_base": {
+	    "parameters_base": {
 			"description": "Base",
 			"type": "object",
 			"properties":{
 				"species": {
 					    	"description": "Species name",
 						    "type": "boolean"
-				 },
+				},
         "species_identification": {
               	"description": "Ring id, fox/polar bear id etc",
               	"type":"boolean"
-          			},
+        },
 				"matrix":{
-						"description": "Sample matrix",
-						"type": "boolean"
+						    "description": "Sample matrix",
+						    "type": "boolean"
 				},
+        "medium":{
+                "description": "Sample medium",
+     						"type":"boolean"
+        },
 				"age": {
-					   "description": "Age of species sample is collected from",
-					   "type": "boolean"
+					      "description": "Age of species sample is collected from",
+					      "type": "boolean"
 				},
 				"stage": {
-					   "description": "Stage of species sample is collected from",
-				     	   "type": "boolean"
+					      "description": "Stage of species sample is collected from",
+				     	  "type": "boolean"
 				},
 				"sex": {
 					   "description": "Sex of species sample is collected from",
@@ -144,7 +148,7 @@
 					   "type": "boolean"
 				}
 				}
-    				},
+    	},
 	    "parameters_loggers": {
 			"description": "Loggers",
 			"type": "object",
@@ -179,69 +183,69 @@
 		     "description": "Birds",
 		     "type": "object",
 		     "properties":{
-				"colour_ring":{
-					"description":"Color of ring",
-            				"type": "boolean"
-          			},
+				 "colour_ring":{
+					     "description":"Color of ring",
+               "type": "boolean"
+         },
 				"euring_code":{
-					"description":"EU ring code, usually NOS",
-					"type":"boolean"
-          			},
+					    "description":"EU ring code, usually NOS",
+					    "type":"boolean"
+        },
 				"molt": {
-					"description": "Molting",
-					"type": "boolean"
+					   "description": "Molting",
+					   "type": "boolean"
 					},
 				"tarsus": {
-					"description": "Tarsus",
-					"type": "boolean"
+					   "description": "Tarsus",
+					   "type": "boolean"
 					},
 				"bill": {
-					"description": "Bill length",
-					"type": "boolean"
+					   "description": "Bill length",
+					   "type": "boolean"
 					},
 				"bill_height": {
-					"description": "Bill height",
-					"type": "boolean"
+					   "description": "Bill height",
+					   "type": "boolean"
 					},
 				"scull": {
-					"description": "Head+bill length, or just head or scull",
-					"type": "boolean"
+					   "description": "Head+bill length, or just head or scull",
+					   "type": "boolean"
 					},
 				"wing": {
-					"description": "Maximum flatted cord in mm",
-					"type": "boolean"
+					   "description": "Maximum flatted cord in mm",
+					   "type": "boolean"
 					},
 				"nest_id":  {
-					"description": "Id of nest",
-					"type": "boolean"
+					   "description": "Id of nest",
+					   "type": "boolean"
 					},
 				"egg_length":  {
-					"description": "Egg length",
-					"type": "boolean"
+					   "description": "Egg length",
+					   "type": "boolean"
 					},
 				"egg_width":  {
-					"description": "Egg width",
-					"type": "boolean"
+					   "description": "Egg width",
+					   "type": "boolean"
 					},
 				"clutch_size":  {
-					"description": "Number of eggs in clutch",
-					"type": "boolean"
+					   "description": "Number of eggs in clutch",
+					   "type": "boolean"
 					},
 				"fledge_chicks":  {
-					"description": "Number of chick able to fledge",
-					"type": "boolean"
+					  "description": "Number of chick able to fledge",
+					  "type": "boolean"
 					},
 				"method_deciding_sex":  {
-					"description": "Method used to decide sex",
-					"type": "boolean"
+					  "description": "Method used to decide sex",
+					  "type": "boolean"
 					},
 				"breeding_stage":  {
-					"description": "Stage describing the breeding process",
-					"type": "boolean"
+					  "description": "Stage describing the breeding process",
+					  "type": "boolean"
 					},
 				"bird_returned_to_nest":  {
-					"description": "Describe the severety of disturbance - has the bird returned to the nest afterwards",
-					"type": "boolean"
+					  "description": "Describe the severety of disturbance - has the bird returned to the nest afterwards",
+					  "type": "boolean"
 					}
 			  	}
     				},
@@ -281,48 +285,58 @@
 					"description": "Sediments,cryosphere and water",
 					"type": "object",
 					"properties":{
-						"medium": {
-							 "description": "Type of sample, ice, sediment etc",
+						"sampling_equipment": {
+							 "description": "   ",
 							 "type": "boolean"
 						},
 						"volume": {
-							 "description": "Sample volume in liters",
-							 "type": "boolean"
-						},
-						"depth": {
-							 "description": "Sample depth in meters",
-							 "type": "boolean"
-						},
-						"salinity": {
-							 "description": "Salinity in psu (practical salinity unit)",
-							 "type": "boolean"
-						},
-						"pressure": {
-							 "description": "Pressure in dbar (decibars)",
-							 "type": "boolean"
-						},
-						"temperature": {
-							 "description": "Water temperature",
-							 "type": "boolean"
-						},
-						"ice_thickness": {
-							 "description": "Thickness ice sample",
-							 "type": "boolean"
-						},
-						"ice_core_depth": {
-							 "description": "Core depth of ice sample",
+							 "description": "Sample volume",
 							 "type": "boolean"
 						},
 						"sediment_core_depth": {
 							 "description": "Core depth of sediment sample",
 							 "type": "boolean"
 						},
-						"core_area": {
+						"surface_area_sampled": {
 							 "description": "Area of sediment or ice core",
 							 "type": "boolean"
 						}
 				  	}
 		    		},
+						"parameters_ice_water": {
+							"description": "Ice and water",
+							"type": "object",
+							"properties":{
+								"sampling_equipment_H2O": {
+									 "description": "Equiment used to fetch sample",
+									 "type": "boolean"
+								},
+								"depth": {
+									 "description": "Sample depth in meters",
+									 "type": "boolean"
+								},
+								"salinity": {
+									 "description": "Salinity in psu (practical salinity unit)",
+									 "type": "boolean"
+								},
+								"pressure": {
+									 "description": "Pressure in dbar (decibars)",
+									 "type": "boolean"
+								},
+								"temperature": {
+									 "description": "Water temperature in celsius",
+									 "type": "boolean"
+								},
+								"ice_thickness": {
+									 "description": "Thickness ice sample",
+									 "type": "boolean"
+								},
+								"ice_core_depth": {
+									 "description": "Core depth of ice sample",
+									 "type": "boolean"
+								}
+								}
+								},
 		"use_list": {
 		 "title": "Fetch information from Svalbard Placenames on these fields",
 		 "type": "array",
