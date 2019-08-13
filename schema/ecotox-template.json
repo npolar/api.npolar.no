@@ -70,11 +70,11 @@
 								"type": "boolean"
 						},
 						"latitude": {
-								 "description": "Latitude",
+								 "description": "Latitude in decimal degrees",
 								 "type": "boolean"
 						},
 						"longitude": {
-								"description": "Latitude",
+								"description": "Latitude in decimal degrees",
 								"type": "boolean"
 						},
         		"position_accuracy": {
@@ -116,15 +116,15 @@
 				           "type": "boolean"
 				},
 				"weight": {
-					   "description": "Weight of species sample is collected from",
+					   "description": "Weight of species, birds in gram, mammals in kg",
 					   "type": "boolean"
 				},
 				"girth": {
-					   "description": "Girth of species sample is collected from",
+					   "description": "Girth of species sample is collected from in cm",
 					   "type": "boolean"
 				},
 				"length": {
-					   "description": "Length of species sample is collected from",
+					   "description": "Length of species sample in cm",
 				     "type": "boolean"
 				},
 				"condition": {
@@ -196,23 +196,23 @@
 					   "type": "boolean"
 					},
 				"tarsus": {
-					   "description": "Tarsus",
+					   "description": "Tarsus in mm",
 					   "type": "boolean"
 					},
 				"bill": {
-					   "description": "Bill length",
+					   "description": "Bill length in mm",
 					   "type": "boolean"
 					},
 				"bill_height": {
-					   "description": "Bill height",
+					   "description": "Bill height in mm",
 					   "type": "boolean"
 					},
 				"scull": {
-					   "description": "Head+bill length, or just head or scull",
+					   "description": "Head+bill length, or just head or scull in mm",
 					   "type": "boolean"
 					},
 				"wing": {
-					   "description": "Maximum flatted cord in mm",
+					   "description": "Maximum flatted cord in cm",
 					   "type": "boolean"
 					},
 				"nest_id":  {
@@ -220,11 +220,11 @@
 					   "type": "boolean"
 					},
 				"egg_length":  {
-					   "description": "Egg length",
+					   "description": "Egg length in mm",
 					   "type": "boolean"
 					},
 				"egg_width":  {
-					   "description": "Egg width",
+					   "description": "Egg width in mm",
 					   "type": "boolean"
 					},
 				"clutch_size":  {
@@ -258,15 +258,15 @@
 							"type": "boolean"
 					},
 					"tusk_volume": {
-							"description": "Tusk volume",
+							"description": "Tusk volume in cm3",
 							"type": "boolean"
 					},
 					"tusk_length": {
-							"description": "Tusk length",
+							"description": "Tusk length in cm",
 							"type": "boolean"
 					},
 					"tusk_girth": {
-							"description": "Tusk girth",
+							"description": "Tusk girth in cm",
 							"type": "boolean"
 					}
 		  		}
