@@ -1,5 +1,5 @@
 {
-  "id": "http://api.npolar.no/schema/ecotox-lab",
+  "id": "http://api.npolar.no/schema/lab-ecotox",
   "$schema": "http://json-schema.org/draft-04/schema",
   "title": "Ecotox lab results",
   "description": "Norwegian Polar Institute's ecotox lab results database.",
@@ -17,7 +17,7 @@
       "description": "Schema defining this object (this schema).",
       "type": "string",
       "enum": [
-        "http://api.npolar.no/schema/ecotox-lab"
+        "http://api.npolar.no/schema/lab-ecotox"
       ]
     },
     "lang": {
@@ -56,8 +56,7 @@
 						"gonad",
 						"whole animal except lower part of foot",
 						"whole animal except closing muscle and siphon",
-						"digestive gland"
-]
+						"digestive gland"],
       "type": "string"
     },
     "NPI_sample_id":{
@@ -324,7 +323,7 @@
         "type": "string"
       },
       "@context": {
-          "ecotox_id":"https://api.npolar.no/ecotox-lab",
+          "ecotox_id":"https://api.npolar.no/lab-ecotox",
           "NPI_sample_id":{
             "@id":"https://api-test.data.npolar.no/ecotox-fieldwork/?q=&filter-NPI_sample_id="
 	   }
