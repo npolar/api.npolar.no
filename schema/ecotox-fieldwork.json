@@ -495,7 +495,7 @@
 			"organisation": "https://schema.org/affiliation",
 			"species_identification": "http://rs.tdwg.org/dwc/terms/identificationID",
 			"additional_fields": "http://rs.tdwg.org/dwc/terms/dynamicProperties",
-			"ecotox_lab": "https://api.npolar.no/ecotox-lab",
+			"ecotox_lab": "https://api.npolar.no/lab-ecotox",
 			"ris_id": "https://www.researchinsvalbard.no/search/result?q="
 		}
 	},

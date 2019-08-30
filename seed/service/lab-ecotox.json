@@ -1,17 +1,17 @@
 {
-  "_id": "ecotox-lab-api",
-  "id": "ecotox-lab-api",
+  "_id": "lab-ecotox-api",
+  "id": "lab-ecotox-api",
   "schema": "http://api.npolar.no/schema/api",
-  "path": "/ecotox/lab",
+  "path": "/lab/ecotox",
   "title": "NPI's ecotox database",
   "summary": "Norwegian Polar Institute's archive for lab results ecotoxicology",
   "storage": "Couch",
-  "database": "ecotox-lab",
-  "model": "Ecotox::Lab",
+  "database": "lab-ecotox",
+  "model": "Lab::Ecotox",
   "search": {
     "engine": "Elasticsearch",
-    "index": "ecotox-lab",
-    "type": "ecotox-lab",
+    "index": "lab-ecotox",
+    "type": "lab-ecotox",
     "log": false,
     "params": {
       "facets": "ecotox_fieldwork_id,lab_sample_id,NPI_sample_id,lab_report_id,laboratory,date_report,excel.file_name",
@@ -31,7 +31,7 @@
     "json": "application/json"
   },
   "accepts": {
-    "application/json": "https://api.npolar.no/schema/ecotox-lab.json"
+    "application/json": "https://api.npolar.no/schema/lab-ecotox.json"
   },
   "category": [
     "CouchDB",
@@ -52,7 +52,7 @@
       {
         "url": "https://api-test.data.npolar.no/user",
         "open": true,
-        "system": "https://api-test.data.npolar.no/ecotox"
+        "system": "https://api-test.data.npolar.no/lab-ecotox"
       }
     ]
   ],

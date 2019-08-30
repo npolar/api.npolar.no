@@ -2,16 +2,16 @@ require "hashie"
 require "date"
 require "time"
 
-module Ecotox
+module Lab
 
   # Parameter model
-  class Lab < Hashie::Mash
+  class Ecotox < Hashie::Mash
 
     include Npolar::Validation::MultiJsonSchemaValidator
 
     # @override MultiJsonSchemaValidator
     def schemas
-      ["ecotox-lab.json"]
+      ["lab-ecotox.json"]
     end
 
   end
