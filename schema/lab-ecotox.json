@@ -101,6 +101,38 @@
 						],
 						"type": "string"
 					},
+          "taxon": {
+            "description": "To be used if species is not specified",
+            "type": "string"
+          },
+          "species": {
+            "description": "Species",
+            "type": "string"
+          },
+          "sex": {
+            "description": "Sex",
+            "type": "string"
+          },
+          "stage": {
+            "description": "Stage",
+            "type": "string"
+          },
+          "tissue": {
+            "description": "Tissue",
+            "type": "string"
+          },
+          "length": {
+            "description": "Length in cm",
+            "type": "string"
+          },
+          "no_of_individuals": {
+            "description": "Number of individuals per sample",
+            "type": "string"
+          },
+          "weight": {
+            "description": "weight in gram",
+            "type": "string"
+          },
 					"NPI_sample_id": {
 						"description": "Sample ID used by NPI",
 						"type": "string"
