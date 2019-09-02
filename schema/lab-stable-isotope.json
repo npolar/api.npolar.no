@@ -132,19 +132,19 @@
 					"format": "uri"
 				},
 				"d13Cpdb_EA": {
-					"description": "delta13Carbon isotope. The ratio of the naturally occuring carbon isotopes 13Carbon/12Carbon (d13C=13C/12C).pdb-EA refers to he internal standard, Pee Dee Belemnite for ?13C (PDB: USGS 24)",
+					"description": "delta13Carbon isotope. The ratio of the naturally occuring carbon isotopes 13Carbon/12Carbon (d13C=13C/12C).pdb-EA refers to he internal standard, Pee Dee Belemnite for ?13C (PDB: USGS 24).In per-mille.",
 					"type": "string"
 				},
 				"d15Nair_EA": {
-					"description": "delta15Nitrogen isotope. The ratio of the naturally occuring Nitrogen isotope 15Nitrogen/14Nitrogen (d15N/14N) air",
+					"description": "delta15Nitrogen isotope. The ratio of the naturally occuring Nitrogen isotope 15Nitrogen/14Nitrogen (d15N/14N) air. In per-mille.",
 					"type": ["string", "null"]
 				},
 				"W_percent_C": {
-					"description": "Weight % Carbon",
+					"description": "Weight % Carbon in percent",
 					"type": ["string", "null"]
 				},
 				"W_percent_N": {
-					"description": "Weight % Nitrogen",
+					"description": "Weight % Nitrogen in percent",
 					"type": ["string", "null"]
 				},
 				"C_ratio_N": {
