@@ -1,332 +1,331 @@
 {
-  "id": "http://api.npolar.no/schema/lab-ecotox",
-  "$schema": "http://json-schema.org/draft-04/schema",
-  "title": "Ecotox lab results",
-  "description": "Norwegian Polar Institute's ecotox lab results database.",
-  "type": "object",
-  "required":[
-       "id",
-       "schema"
-  ],
-  "properties": {
-    "id": {
-      "description": "Resource identifier (UUID).",
-      "type": "string"
-    },
-    "schema": {
-      "description": "Schema defining this object (this schema).",
-      "type": "string",
-      "enum": [
-        "http://api.npolar.no/schema/lab-ecotox"
-      ]
-    },
-    "lang": {
-      "description": "The language of the document",
-      "type": "string",
-      "default": "en",
-      "pattern": "^[a-z]{2}$"
-    },
-    "laboratory": {
-      "description": "Name of laboratory performing analysis",
-      "enum": ["NMBU","NILU","Örebro University","Environment Canada"],
-      "type": "string"
-    },
-    "lab_report_id":{
-      "description": "report id given by the lab (batch job of results)",
-      "type": "string"
-    },
-    "sub_matrix":{
-      "description": "matrix or tissue analysed by the lab",
-      "enum": ["egg",
-						"milk",
-						"whole blood",
-						"blood cell",
-						"plasma",
-						"serum",
-						"abdominal fat",
-						"subcutaneous fat",
-						"blubber",
-						"hair",
-						"feather",
-						"muscle",
-						"liver",
-						"brain",
-						"adrenal",
-						"whole animal",
-						"gonad",
-						"whole animal except lower part of foot",
-						"whole animal except closing muscle and siphon",
-						"digestive gland"],
-      "type": "string"
-    },
-    "NPI_sample_id":{
-      "description": "Sample ID used by NPI",
-      "type": "string"
-    },
-    "lab_sample_id":{
-      "description": "Sample ID used by the lab",
-      "type": "string"
-    },
-    "ecotox_fieldwork_id":{
-      "description": "Link to the ecotox fieldwork database",
-      "type": "string",
-      "format":"uri"
-    },
-    "date_report":{
-        "description": "Date of the report",
-        "format": "date-time",
-        "type": "string"
-    },
-    "excel": {
-         "description": "Original excel file(s)",
-         "type": "array",
-         "additionalItems": false,
-         "items": {
-           "type": "object",
-           "additionalProperties": false,
-           "properties": {
-             "excel_uri": {
-              "description": "Uri to excel form",
-              "type": "string",
-              "format": "uri"
-        },
-        "excel_filename": {
-              "description": "Excel filename",
-              "type": "string"
-        },
-        "excel_type":{
-              "description": "Excel type",
-              "type": "string"
-        },
-        "excel_length":{
-              "description": "Excel file length",
-              "type": "integer"
+	"id": "http://api.npolar.no/schema/lab-ecotox",
+	"$schema": "http://json-schema.org/draft-04/schema",
+	"title": "Ecotox lab results",
+	"description": "Norwegian Polar Institute's ecotox lab results database.",
+	"type": "object",
+	"required": [
+		"id",
+		"schema"
+	],
+	"properties": {
+		"id": {
+			"description": "Resource identifier (UUID).",
+			"type": "string"
+		},
+		"schema": {
+			"description": "Schema defining this object (this schema).",
+			"type": "string",
+			"enum": [
+				"http://api.npolar.no/schema/lab-ecotox"
+			]
+		},
+		"lang": {
+			"description": "The language of the document",
+			"type": "string",
+			"default": "en",
+			"pattern": "^[a-z]{2}$"
+		},
+		"laboratory": {
+			"description": "Name of laboratory performing analysis",
+			"enum": ["NMBU", "NILU", "Örebro University", "Environment Canada"],
+			"type": "string"
+		},
+		"lab_report_id": {
+			"description": "report id given by the lab (batch job of results)",
+			"type": "string"
+		},
+		"date_report": {
+			"description": "Date of the report",
+			"format": "date-time",
+			"type": "string"
+		},
+		"excel": {
+			"description": "Original excel file(s)",
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"excel_uri": {
+						"description": "Uri to excel form",
+						"type": "string",
+						"format": "uri"
+					},
+					"excel_filename": {
+						"description": "Excel filename",
+						"type": "string"
+					},
+					"excel_type": {
+						"description": "Excel type",
+						"type": "string"
+					},
+					"excel_length": {
+						"description": "Excel file length",
+						"type": "integer"
+					}
+				}
+			}
+		},
+		"sample": {
+			"title": "List of all entries corresponding to excel rows",
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"matrix": {
+						"description": "matrix or tissue analysed by the lab",
+						"enum": ["egg",
+							"milk",
+							"whole blood",
+							"blood cell",
+							"plasma",
+							"serum",
+							"abdominal fat",
+							"subcutaneous fat",
+							"blubber",
+							"hair",
+							"feather",
+							"muscle",
+							"liver",
+							"brain",
+							"adrenal",
+							"whole animal",
+							"gonad",
+							"whole animal except lower part of foot",
+							"whole animal except closing muscle and siphon",
+							"digestive gland"
+						],
+						"type": "string"
+					},
+					"NPI_sample_id": {
+						"description": "Sample ID used by NPI",
+						"type": "string"
+					},
+					"lab_sample_id": {
+						"description": "Sample ID used by the lab",
+						"type": "string"
+					},
+					"NP_field_database": {
+						"description": "NP database sample information fetched from.",
+						"enum": ["ecotox-fieldwork", "marine-biology-sample"],
+						"type": "string"
+					},
+					"NP_field_database_id": {
+						"description": "Sample ID in NP's field database",
+						"type": "string",
+						"format": "uri"
+					},
+					"analyte_category": {
+						"description": "Category of compound",
+						"type": "string",
+						"enum": ["polychlorinated biphenyls (PCBs)",
+							"brominated flame retardants (BFRs)",
+							"hydroxyl polychlorinated biphenyls (OH-PCBs)",
+							"hydroxyl polybrominated diphenyl ethers (OH-PBDEs)",
+							"poly- and perfluoroalkyl subtances (PFAS)",
+							"organochlorine pesticides (OCPs)"
+						]
+					},
+					"analyte": {
+						"description": "Type of toxic material",
+						"type": "string",
+						"enum": ["HCB", "a-HCH", "b-HCH", "g-HCH",
+							"heptachlor", "oxy-CHL", "t-CHL", "c-CHL",
+							"tn-CHL", "cn-CHL", "op-DDE", "pp-DDE",
+							"op-DDD", "pp-DDD", "op-DDT", "pp-DDT", "mirex",
+							"aldrin", "dieldrin", "endrin", "heptachlor epoxide",
+							"CHB-26", "CHB-40", "CHB-41", "CHB-44", "CHB-50", "CHB-62",
+							"PCB-28", "PCB-29", "PCB-31", "PCB-47",
+							"PCB-52", "PCB-56", "PCB-66", "PCB-74", "PCB-87", "PCB-99",
+							"PCB-101", "PCB-105", "PCB-110", "PCB-112", "PCB-114",
+							"PCB-118", "PCB-123", "PCB-128", "PCB-132",
+							"PCB-136", "PCB-137", "PCB-138", "PCB-141", "PCB-149", "PCB-151",
+							"PCB-153", "PCB-156", "PCB-157", "PCB-167", "PCB-170",
+							"PCB-180", "PCB-183", "PCB-187", "PCB-189", "PCB-194",
+							"PCB-196", "PCB-199",
+							"PCB-206", "PCB-207", "PCB-209",
+							"BDE-28", "BDE-47", "BDE-77", "BDE-99", "BDE-100",
+							"BDE-153", "BDE-154",
+							"BDE-183", "BDE-206",
+							"BDE-207", "BDE-208", "BDE-209",
+							"HBCDD", "PBT", "PBEB", "DPTE", "HBB",
+							"PCP", "4-OH-CB106", "4-OH-CB107", "4-OH-CB108",
+							"3-OH-CB118", "4-OH-BDE42", "3-OH-BDE47",
+							"6-OH-BDE47", "4-OH-BDE49", "2-OH-BDE68",
+							"4-OH-CB130", "3-OH-CB138",
+							"4-OH-CB146", "4-OH-CB159",
+							"4-OH-CB172", "3-OH-CB180", "4-OH-CB187",
+							"PFHxA", "PFHpA", "PFOA", "PFNA", "PFDA", "PFUnDA",
+							"PFDoDA", "PFTrDA", "PFTeDA", "PFBS", "PFHxS", "PFOS",
+							"FOSA", "N-MeFOSA", "N-MeFOSE", "N-EtFOSA", "N-EtFOSE",
+							"brPFOS", "linPFOS", "PFOSbr2", "PFOSlin2", "FTSA", "PFHpS",
+							"PFPeA", "PFPeDA", "PECB", "PFNS", "PFDS", "PFBA",
+							"1-3-DCB", "1-4-DCB", "1-2-DCB",
+							"1-3-5-TCB", "1-2-4-TCB", "1-2-3-TCB", "hexachlorobutadiene",
+							"1-2-3-4-TTCB", "pentachloroanisole", "octachlorostyrene",
+							"a-endosulfan", "b-endosulfan", "methoxychlor",
+							"4-2_FTS", "6-2_FTS", "8-2_FTS", "8-2_FTCA", "8-2_FTUCA",
+							"10-2_FTCA", "10-2_FTUCA", "CHB-32", "CHB-38", "CHB-58", "CHB-69",
+							"BCP", "3-MeSO2-DDE", "CDT", "DDE-PCB-87", "OCS", "photomirex",
+							"HCBD", "ChCl", "MC6",
+							"B6-923a", "B7-499", "B7-515", "B7-1474_B7-1440", "B7-1001", "B7-1059a",
+							"B7-1450", "B8-531", "B8-789", "B8-806", "B8-810", "B8-1412", "B8-1413",
+							"B8-1414", "B8-1471", "B8-2229", "B9-715", "B9-718", "B9-743_B9-2006",
+							"B9-1025", "B9-1046", "B9-1679", "B10-1110",
+							"PCB-1", "PCB-3", "PCB-4-10",
+							"PCB-6", "PCB-7-9", "PCB-8-5", "PCB-12-13", "PCB-15-17", "PCB-16-32",
+							"PCB-18", "PCB-19", "PCB-20", "PCB-22", "PCB-24-27", "PCB-25", "PCB-26",
+							"PCB-28-31", "PCB-31-28", "PCB-33", "PCB-33-20", "PCB-37", "PCB-38",
+							"PCB-40", "PCB-42", "PCB-43", "PCB-44",
+							"PCB-45", "PCB-46", "PCB-48", "PCB-49", "PCB-47-48", "PCB-47-49", "PCB-50", "PCB-51",
+							"PCB-53", "PCB-54-29", "PCB-55", "PCB-56-60", "PCB-59", "PCB-60", "PCB-63",
+							"PCB-64", "PCB-64-41", "PCB-66-95", "PCB-70", "PCB-70-74", "PCB-70-76", "PCB-70-76-98",
+							"PCB-71-41-64", "PCB-76", "PCB-77", "PCB-81", "PCB-81-87", "PCB-82",
+							"PCB-83", "PCB-84", "PCB-85", "PCB-91", "PCB-92", "PCB-95", "PCB-97",
+							"PCB-99-113", "PCB-100", "PCB-101-90", "PCB-107", "PCB-113", "PCB-114-122", "PCB-119", "PCB-122",
+							"PCB-126", "PCB-129", "PCB-129-178",
+							"PCB-130", "PCB-133", "PCB-134-131", "PCB-135-144",
+							"PCB-138-164", "PCB-146", "PCB-147", "PCB-157-201", "PCB-158", "PCB-163-138",
+							"PCB-169", "PCB-170-190", "PCB-171", "PCB-171-202", "PCB-171-202-156", "PCB-172",
+							"PCB-172-192", "PCB-173", "PCB-174", "PCB-175", "PCB-176", "PCB-177", "PCB-178", "PCB-179",
+							"PCB-180-193", "PCB-182-187", "PCB-185", "PCB-191", "PCB-193", "PCB-195", "PCB-196-203",
+							"PCB-196", "PCB-197", "PCB-198", "PCB-200", "PCB-201", "PCB-201-204", "PCB-202",
+							"PCB-202-171", "PCB-203", "PCB-203-196",
+							"PCB-204", "PCB-205", "PCB-208", "PCB-208-195",
+							"PCB-138-163", "PCB-153-132",
+							"4-OH-CB79", "3-OH-CB85", "4-OH-CB97", "4-OH-CB104", "4-OH-CB107",
+							"4-OH-CB107_4-OH-CB108", "4-OH-CB112", "2-OH-CB114", "4-OH-CB120",
+							"4-OH-CB127", "4-OH-CB134", "3-OH-CB153",
+							"4-OH-CB162", "4-OH-CB163", "4-OH-CB165", "4-OH-CB172", "4-OH-CB177",
+							"4-OH-CB178", "3-OH-CB182", "3-OH-CB183", "3-OH-CB184",
+							"4-OH-CB193", "4-OH-CB198", "4-OH-CB199", "4-OH-CB200", "4-OH-CB201", "4-OH-CB202",
+							"44-diOH-CB202", "3-OH-CB203", "4-OH-CB208", "10-OH-CB",
+							"3-MeSO2-CB49", "4-MeSO2-CB49", "3-MeSO2-CB52", "4-MeSO2-CB52", "4-MeSO2-CB64",
+							"3-MeSO2-CB70", "4-MeSO2-CB70", "3-MeSO2-CB87", "4-MeSO2-CB87", "3-MeSO2-CB91",
+							"4-MeSO2-CB91", "3-MeSO2-CB101", "4-MeSO2-CB101", "3-MeSO2-CB110", "4-MeSO2-CB110",
+							"3-MeSO2-CB149", "4-MeSO2-CB149", "3-MeSO2-CB132", "4-MeSO2-CB132",
+							"3-MeSO2-CB141", "4-MeSO2-CB141", "3-MeSO2-CB174", "4-MeSO2-CB174", "19-MeSO2-CB",
+							"BDE-17", "BDE-25", "BDE-49", "BDE-54", "BDE-66", "BDE-71", "BDE-71-49", "BDE-75",
+							"BDE-85", "BDE-116", "BDE-119", "BDE-126", "BDE-138", "BDE-139", "BDE-140", "BDE-155",
+							"BDE-100_5-MeO-BDE47", "BDE-154_BB153", "BDE-156", "BDE-171", "BDE-180", "BDE-181",
+							"BDE-184", "BDE-190", "BDE-191", "BDE-196", "BDE-197", "BDE-201", "BDE-202", "BDE-203",
+							"BDE-205", "BDE-208-207", "a-HBCD", "b-HBCD", "g-HBCD",
+							"TBPA", "BTBPE", "TBB", "TBBPA-DBPE", "DPDPE", "ATE", "BEHTBP", "TBP", "BTBPI", "TBBPA-DAE",
+							"EHTBB", "DBDPE", "TBA", "TBBPA", "4-OH-HpCS", "44-DiBB", "2255-TetBB", "224455-HexBB",
+							"6-MeO-BDE17", "4-MeO-BDE17", "2-MeO-BDE28", "4-MeO-BDE42", "6-MeO-BDE47",
+							"3-MeO-BDE47", "5-MeO-BDE47", "5-MeO-BDE47_4-MeO-BDE49", "4-MeO-BDE49", "6-MeO-BDE49",
+							"2-MeO-BDE68", "6-MeO-BDE85", "6-MeO-BDE90", "6-MeO-BDE99", "2-MeO-BDE123", "6-MeO-BDE137",
+							"8-OH-BDE", "6-OH-BDE17", "4-OH-BDE17", "5-OH-BDE47",
+							"6-OH-BDE47-75", "6-OH-BDE49", "6-OH-BDE85",
+							"6-OH-BDE90", "5-OH-BDE99", "5-OH-BDE100", "4-OH-BDE101", "4-OH-BDE103", "2-OH-BDE123",
+							"6-OH-BDE137",
+							"naphthalene", "2-metylnaphtalene", "1-metylnaphtalene", "biphenyl", "acenaphthylene",
+							"acenaphthene", "dibenzofuran", "fluorene", "dibenzotiophene", "phenanthrene",
+							"antracene", "3-metylphenantrene", "2-metylphenantrene", "2-metylantracene",
+							"9-metylphenantrene", "1-metylphenantrene", "fluoranthene", "pyrene", "benzo_a_fluorene",
+							"retene", "benzo_b_fluorene", "benzo_ghi_fluoranthene", "cyclopenta_cd_pyrene",
+							"benzo_a_anthracene", "chrysene", "benzo_bjk_fluoranthene", "benzo_b_fluoranthene",
+							"benzo_k_fluoranthene", "benzo_a_fluoranthene", "benzo_e_pyrene", "benzo_a_pyrene",
+							"perylene", "indeno_123-cd_pyrene", "dibenzo_ac_ah_antracen", "benzo_ghi_perylen",
+							"antanthrene", "coronene", "dibenz_ae_pyrene", "dibenz_ai_pyrene", "dibenz_ah_pyrene",
+							"SCCP", "MCCP", "siloxane-D5", "nonPH", "octPH", "135TriCHLB", "123TriCHLB", "124TriCHLB",
+							"2378-TCDD", "12378-PeCDD", "123478-HxCDD", "123678-HxCDD",
+							"123789-HxCDD", "1234678-HpCDD", "OCDF", "OCDD",
+							"2378-TCDF", "12378_12348-PeCDF", "23478-PeCDF", "123478_123479-HxCDF", "123678-HxCDF",
+							"123789-HxCDF", "234678-HxCDF", "1234678-HpCDF", "1234789-HpCDF",
+							"TiBP", "TCEP", "TCPP", "TDCPP", "TBEP", "TEHP", "TPhP", "EHDPP", "ToCrP",
+							"TCrP", "DBPhP", "DPhBP", "MeHg", "Hg",
+							"CN-33-34-37", "CN-47", "CN-28-43", "CN-32", "CN-35", "CN-52-60", "CN-58", "CN-61",
+							"CN-57", "CN-62", "CN-53", "CN-59", "CN-63", "CN-64-68", "CN-65", "CN-66-67",
+							"CN-69", "CN-71-72", "CN-73", "CN-74",
+							"1357-TeCN", "1256-TeCN", "2367-TeCN", "12357-PeCN", "12367-PeCN", "12358-PeCN",
+							"123467-HxCN_123567-HxCN", "123568-HxCN", "124568-HxCN_124578-HxCN", "123678-HxCN",
+							"1234567-HpCN", "1234568-HpCN", "TCN", "1245-TeCBz", "1234-TeCBz",
+							"HxCBz", "PnCBz", "TCPM", "BB101"
+						]
+					},
+					"fat_percentage": {
+						"description": "Sample fat percentage",
+						"type": ["number", "null"]
+					},
+					"wet_weight": {
+						"description": "weight of pollutant found in wet weight including n.a.,n.d, <LOQ",
+						"type": ["string", "null"]
+					},
+					"lipid_weight": {
+						"description": "weight of pollutant found in lipid weight including n.a., n.d, <LOQ",
+						"type": ["string", "null"]
+					},
+					"percent_recovery": {
+						"description": "Percentage recovered of a spiked reference sample",
+						"type": ["string", "null"]
+					},
+					"unit": {
+						"description": "measured  unit",
+						"type": "string",
+						"enum": ["ng/g", "pg/g"]
+					},
+					"detection_limit": {
+						"description": "Smallest concentration detectable (LOD)",
+						"type": ["string", "null"]
+					},
+					"level_of_quantification": {
+						"description": "The amount measured above this limit is more accurate (LOQ)",
+						"type": ["string", "null"]
+					},
+          "comment": {
+            "description": "Sample comment",
+            "type": ["string","null"]
           }
-             }
-           }
-    },
-    "comment": {
-      "description": "A free text comment for anything of importance to the batch samples.",
-      "type": ["string","null"]
-    },
-    "unit":{
-        "description": "Date of the report",
-        "format": "date-time",
-        "type": "string"
-    },
-    "compound": {
-           "type": "array",
-           "additionalItems": false,
-           "items": {
-             "type": "object",
-             "additionalProperties": false,
-             "properties": {
-               "analyte_category": {
-                 "description": "Category of compound",
-                 "type": "string",
-                 "enum": ["polychlorinated biphenyls (PCBs)",
-                          "brominated flame retardants (BFRs)",
-                          "hydroxyl polychlorinated biphenyls (OH-PCBs)",
-                          "hydroxyl polybrominated diphenyl ethers (OH-PBDEs)",
-                          "poly- and perfluoroalkyl subtances (PFAS)",
-			                    "organochlorine pesticides (OCPs)"
-                       ]
-               },
-               "analyte": {
-                 "description": "Type of toxic material",
-                 "type": "string",
-                 "enum": ["HCB","a-HCH","b-HCH","g-HCH",
-                   "heptachlor", "oxy-CHL", "t-CHL", "c-CHL",
-                   "tn-CHL", "cn-CHL", "op-DDE", "pp-DDE",
-                   "op-DDD", "pp-DDD", "op-DDT", "pp-DDT","mirex",
-                   "aldrin","dieldrin","endrin","heptachlor epoxide",
-                   "CHB-26", "CHB-40","CHB-41","CHB-44","CHB-50","CHB-62",
-                   "PCB-28", "PCB-29", "PCB-31", "PCB-47",
-                   "PCB-52","PCB-56", "PCB-66", "PCB-74", "PCB-87", "PCB-99",
-                   "PCB-101", "PCB-105", "PCB-110", "PCB-112", "PCB-114",
-                   "PCB-118", "PCB-123","PCB-128", "PCB-132",
-                   "PCB-136", "PCB-137","PCB-138","PCB-141","PCB-149","PCB-151",
-                   "PCB-153","PCB-156", "PCB-157", "PCB-167","PCB-170",
-		               "PCB-180","PCB-183", "PCB-187", "PCB-189","PCB-194",
-                   "PCB-196", "PCB-199",
-                   "PCB-206", "PCB-207",  "PCB-209",
-                   "BDE-28", "BDE-47","BDE-77","BDE-99", "BDE-100",
-                   "BDE-153", "BDE-154",
-                   "BDE-183","BDE-206",
-                   "BDE-207","BDE-208","BDE-209",
-                   "HBCDD","PBT","PBEB","DPTE","HBB",
-                   "PCP","4-OH-CB106","4-OH-CB107","4-OH-CB108",
-                   "3-OH-CB118","4-OH-BDE42","3-OH-BDE47",
-                   "6-OH-BDE47","4-OH-BDE49","2-OH-BDE68",
-                   "4-OH-CB130","3-OH-CB138",
-                   "4-OH-CB146","4-OH-CB159",
-                   "4-OH-CB172","3-OH-CB180","4-OH-CB187",
-                   "PFHxA","PFHpA","PFOA","PFNA","PFDA","PFUnDA",
-                   "PFDoDA","PFTrDA","PFTeDA","PFBS","PFHxS","PFOS",
-                   "FOSA","N-MeFOSA","N-MeFOSE","N-EtFOSA","N-EtFOSE",
-                   "brPFOS","linPFOS","PFOSbr2","PFOSlin2","FTSA", "PFHpS",
-                   "PFPeA","PFPeDA","PECB","PFNS","PFDS","PFBA",
-                   "1-3-DCB","1-4-DCB","1-2-DCB",
-                   "1-3-5-TCB","1-2-4-TCB","1-2-3-TCB","hexachlorobutadiene",
-                   "1-2-3-4-TTCB","pentachloroanisole","octachlorostyrene",
-                   "a-endosulfan","b-endosulfan","methoxychlor",
-                   "4-2_FTS","6-2_FTS","8-2_FTS","8-2_FTCA","8-2_FTUCA",
-                    "10-2_FTCA","10-2_FTUCA","CHB-32","CHB-38","CHB-58", "CHB-69",
-                    "BCP","3-MeSO2-DDE","CDT","DDE-PCB-87","OCS","photomirex",
-                    "HCBD","ChCl", "MC6",
-                    "B6-923a","B7-499","B7-515","B7-1474_B7-1440","B7-1001","B7-1059a",
-                    "B7-1450","B8-531","B8-789","B8-806","B8-810","B8-1412","B8-1413",
-                    "B8-1414","B8-1471","B8-2229","B9-715","B9-718","B9-743_B9-2006",
-                    "B9-1025","B9-1046","B9-1679","B10-1110",
-                    "PCB-1","PCB-3","PCB-4-10",
-                    "PCB-6","PCB-7-9","PCB-8-5","PCB-12-13","PCB-15-17","PCB-16-32",
-                    "PCB-18","PCB-19","PCB-20","PCB-22","PCB-24-27","PCB-25","PCB-26",
-                    "PCB-28-31","PCB-31-28","PCB-33","PCB-33-20","PCB-37","PCB-38",
-                    "PCB-40","PCB-42","PCB-43","PCB-44",
-                    "PCB-45","PCB-46","PCB-48","PCB-49","PCB-47-48","PCB-47-49","PCB-50","PCB-51",
-                    "PCB-53","PCB-54-29","PCB-55","PCB-56-60","PCB-59","PCB-60","PCB-63",
-                    "PCB-64","PCB-64-41","PCB-66-95","PCB-70","PCB-70-74","PCB-70-76","PCB-70-76-98",
-                    "PCB-71-41-64","PCB-76","PCB-77","PCB-81","PCB-81-87","PCB-82",
-                    "PCB-83","PCB-84","PCB-85","PCB-91","PCB-92","PCB-95","PCB-97",
-                    "PCB-99-113","PCB-100","PCB-101-90","PCB-107","PCB-113","PCB-114-122","PCB-119","PCB-122",
-                    "PCB-126","PCB-129","PCB-129-178",
-                    "PCB-130","PCB-133","PCB-134-131","PCB-135-144",
-                    "PCB-138-164","PCB-146","PCB-147","PCB-157-201","PCB-158","PCB-163-138",
-                    "PCB-169","PCB-170-190","PCB-171","PCB-171-202","PCB-171-202-156","PCB-172",
-                    "PCB-172-192","PCB-173","PCB-174","PCB-175","PCB-176","PCB-177","PCB-178","PCB-179",
-                    "PCB-180-193","PCB-182-187","PCB-185","PCB-191","PCB-193","PCB-195","PCB-196-203",
-                    "PCB-196","PCB-197","PCB-198","PCB-200","PCB-201","PCB-201-204","PCB-202",
-                    "PCB-202-171","PCB-203","PCB-203-196",
-                    "PCB-204","PCB-205","PCB-208","PCB-208-195",
-                    "PCB-138-163","PCB-153-132",
-                    "4-OH-CB79","3-OH-CB85","4-OH-CB97","4-OH-CB104","4-OH-CB107",
-                    "4-OH-CB107_4-OH-CB108","4-OH-CB112","2-OH-CB114","4-OH-CB120",
-                    "4-OH-CB127","4-OH-CB134","3-OH-CB153",
-                    "4-OH-CB162","4-OH-CB163","4-OH-CB165","4-OH-CB172","4-OH-CB177",
-                    "4-OH-CB178","3-OH-CB182","3-OH-CB183","3-OH-CB184",
-                    "4-OH-CB193","4-OH-CB198","4-OH-CB199","4-OH-CB200","4-OH-CB201","4-OH-CB202",
-                    "44-diOH-CB202","3-OH-CB203","4-OH-CB208","10-OH-CB",
-                    "3-MeSO2-CB49","4-MeSO2-CB49","3-MeSO2-CB52","4-MeSO2-CB52","4-MeSO2-CB64",
-                    "3-MeSO2-CB70","4-MeSO2-CB70","3-MeSO2-CB87","4-MeSO2-CB87","3-MeSO2-CB91",
-                    "4-MeSO2-CB91","3-MeSO2-CB101","4-MeSO2-CB101","3-MeSO2-CB110","4-MeSO2-CB110",
-                    "3-MeSO2-CB149","4-MeSO2-CB149","3-MeSO2-CB132","4-MeSO2-CB132",
-                    "3-MeSO2-CB141","4-MeSO2-CB141","3-MeSO2-CB174","4-MeSO2-CB174","19-MeSO2-CB",
-                    "BDE-17","BDE-25","BDE-49","BDE-54","BDE-66","BDE-71","BDE-71-49","BDE-75",
-                    "BDE-85","BDE-116","BDE-119","BDE-126","BDE-138","BDE-139","BDE-140","BDE-155",
-                    "BDE-100_5-MeO-BDE47","BDE-154_BB153","BDE-156","BDE-171","BDE-180","BDE-181",
-                    "BDE-184","BDE-190","BDE-191","BDE-196","BDE-197","BDE-201","BDE-202","BDE-203",
-                    "BDE-205","BDE-208-207","a-HBCD","b-HBCD","g-HBCD",
-                    "TBPA","BTBPE","TBB","TBBPA-DBPE","DPDPE","ATE","BEHTBP","TBP","BTBPI","TBBPA-DAE",
-                    "EHTBB","DBDPE","TBA","TBBPA","4-OH-HpCS","44-DiBB","2255-TetBB","224455-HexBB",
-                    "6-MeO-BDE17","4-MeO-BDE17","2-MeO-BDE28","4-MeO-BDE42","6-MeO-BDE47",
-                    "3-MeO-BDE47","5-MeO-BDE47","5-MeO-BDE47_4-MeO-BDE49","4-MeO-BDE49","6-MeO-BDE49",
-                    "2-MeO-BDE68","6-MeO-BDE85","6-MeO-BDE90","6-MeO-BDE99","2-MeO-BDE123","6-MeO-BDE137",
-                    "8-OH-BDE","6-OH-BDE17","4-OH-BDE17","5-OH-BDE47",
-                    "6-OH-BDE47-75","6-OH-BDE49","6-OH-BDE85",
-                    "6-OH-BDE90","5-OH-BDE99","5-OH-BDE100","4-OH-BDE101","4-OH-BDE103","2-OH-BDE123",
-                    "6-OH-BDE137",
-                    "naphthalene","2-metylnaphtalene","1-metylnaphtalene","biphenyl","acenaphthylene",
-                    "acenaphthene","dibenzofuran","fluorene","dibenzotiophene","phenanthrene",
-                    "antracene","3-metylphenantrene","2-metylphenantrene","2-metylantracene",
-                    "9-metylphenantrene","1-metylphenantrene","fluoranthene","pyrene","benzo_a_fluorene",
-                    "retene","benzo_b_fluorene","benzo_ghi_fluoranthene","cyclopenta_cd_pyrene",
-                    "benzo_a_anthracene","chrysene","benzo_bjk_fluoranthene","benzo_b_fluoranthene",
-                    "benzo_k_fluoranthene","benzo_a_fluoranthene","benzo_e_pyrene","benzo_a_pyrene",
-                    "perylene","indeno_123-cd_pyrene","dibenzo_ac_ah_antracen","benzo_ghi_perylen",
-                    "antanthrene","coronene","dibenz_ae_pyrene","dibenz_ai_pyrene","dibenz_ah_pyrene",
-                    "SCCP","MCCP","siloxane-D5","nonPH","octPH","135TriCHLB","123TriCHLB","124TriCHLB",
-                    "2378-TCDD","12378-PeCDD","123478-HxCDD","123678-HxCDD",
-                    "123789-HxCDD","1234678-HpCDD","OCDF","OCDD",
-                    "2378-TCDF","12378_12348-PeCDF","23478-PeCDF","123478_123479-HxCDF","123678-HxCDF",
-                    "123789-HxCDF","234678-HxCDF","1234678-HpCDF","1234789-HpCDF",
-                    "TiBP","TCEP","TCPP","TDCPP",	"TBEP","TEHP","TPhP","EHDPP","ToCrP",
-                    "TCrP","DBPhP","DPhBP","MeHg","Hg",
-                    "CN-33-34-37","CN-47","CN-28-43","CN-32","CN-35","CN-52-60","CN-58","CN-61",
-                    "CN-57","CN-62","CN-53","CN-59","CN-63","CN-64-68","CN-65","CN-66-67",
-                    "CN-69","CN-71-72","CN-73","CN-74",
-                    "1357-TeCN","1256-TeCN","2367-TeCN","12357-PeCN","12367-PeCN","12358-PeCN",
-                    "123467-HxCN_123567-HxCN","123568-HxCN","124568-HxCN_124578-HxCN", "123678-HxCN",
-                    "1234567-HpCN","1234568-HpCN","TCN","1245-TeCBz","1234-TeCBz",
-                    "HxCBz","PnCBz","TCPM","BB101"]
-               },
-               "fat_percentage":{
-                 "description": "Sample fat percentage",
-                 "type": ["number","null"]
-               },
-               "wet_weight":{
-                   "description":"weight of pollutant found in wet weight including n.a.,n.d, <LOQ",
-                   "type":["string","null"]
-               },
-               "lipid_weight":{
-                   "description":"weight of pollutant found in lipid weight including n.a., n.d, <LOQ",
-                   "type":["string","null"]
-               },
-               "percent_recovery": {
-                 "description": "Percentage recovered of a spiked reference sample",
-                 "type": ["string","null"]
-               },
-               "unit": {
-                "description": "measured  unit",
-                "type": "string",
-                "enum": ["ng/g","pg/g"]
-               },
-               "detection_limit": {
-                 "description": "Smallest concentration detectable (LOD)",
-                 "type": ["string","null"]
-               },
-                "level_of_quantification": {
-                  "description": "The amount measured above this limit is more accurate (LOQ)",
-                  "type": ["string","null"]
-                },
-                "comment": {
-                  "description": "Sample comment",
-                  "type": ["string","null"]
-                }
-             }
-           }
-},
-      "collection": {
-        "description": "The storage collection the document belongs to.",
-        "type": "string",
-        "enum": [
-          "ecotox"
-        ]
-      },
-      "created": {
-        "description": "The date the document was created.",
-        "type": "string",
-        "format": "date-time"
-      },
-      "updated": {
-        "description": "The date the document was last updated.",
-        "type": "string",
-        "format": "date-time"
-      },
-      "created_by": {
-        "description": "The username of the person who first created the document in the system.",
-        "type": "string"
-      },
-      "updated_by": {
-        "description": "The username of the person who last updated the document in the system.",
-        "type": "string"
-      },
-      "_id": {
-        "description": "Internal resource identifier.",
-        "type": "string"
-      },
-      "_rev": {
-        "description": "Internal revision number.",
-        "type": "string"
-      },
-      "_deleted":{
-        "description": "Deleted entry",
-        "type": "string"
-      },
-      "@context": {
-          "ecotox_id":"https://api.npolar.no/lab-ecotox",
-          "NPI_sample_id":{
-            "@id":"https://api-test.data.npolar.no/ecotox-fieldwork/?q=&filter-NPI_sample_id="
-	   }
-    }
-    }
+				}
+			}
+		},
+		"collection": {
+			"description": "The storage collection the document belongs to.",
+			"type": "string",
+			"enum": [
+				"ecotox"
+			]
+		},
+		"created": {
+			"description": "The date the document was created.",
+			"type": "string",
+			"format": "date-time"
+		},
+		"updated": {
+			"description": "The date the document was last updated.",
+			"type": "string",
+			"format": "date-time"
+		},
+		"created_by": {
+			"description": "The username of the person who first created the document in the system.",
+			"type": "string"
+		},
+		"updated_by": {
+			"description": "The username of the person who last updated the document in the system.",
+			"type": "string"
+		},
+		"_id": {
+			"description": "Internal resource identifier.",
+			"type": "string"
+		},
+		"_rev": {
+			"description": "Internal revision number.",
+			"type": "string"
+		},
+		"_deleted": {
+			"description": "Deleted entry",
+			"type": "string"
+		},
+		"@context": {
+			"ecotox_id": "https://api.npolar.no/lab-ecotox",
+			"NPI_sample_id": {
+				"@id": "https://api-test.data.npolar.no/ecotox-fieldwork/?q=&filter-NPI_sample_id="
+			}
+		}
+	}
 }
