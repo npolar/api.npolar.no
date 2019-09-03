@@ -52,7 +52,7 @@
       {
         "url": "https://api-test.data.npolar.no/user",
         "open": true,
-        "system": "https://api-test.data.npolar.no/lab-ecotox"
+        "system": "https://api-test.data.npolar.no/lab"
       }
     ]
   ],
