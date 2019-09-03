@@ -1,20 +1,20 @@
 {
-  "_id": "lab-ecotox-api",
-  "id": "lab-ecotox-api",
+  "_id": "lab-stable-isotope-api",
+  "id": "lab-stable-isotope-api",
   "schema": "http://api.npolar.no/schema/api",
-  "path": "/lab/ecotox",
-  "title": "NPI's ecotox database",
-  "summary": "Norwegian Polar Institute's archive for lab results ecotoxicology",
+  "path": "/lab/stable-isotope",
+  "title": "NPI's stable isotope database",
+  "summary": "Norwegian Polar Institute's archive for lab results stable isotopes",
   "storage": "Couch",
-  "database": "lab-ecotox",
-  "model": "Lab::Ecotox",
+  "database": "lab-stable-isotope",
+  "model": "Lab::StableIsotope",
   "search": {
     "engine": "Elasticsearch",
-    "index": "lab-ecotox",
-    "type": "lab-ecotox",
+    "index": "lab-stable-isotope",
+    "type": "lab-stable-isotope",
     "log": false,
     "params": {
-      "facets": "sample.matrix,sample.species,NPI_field_database,NPI_field_databse_id,lab_report_id,laboratory,date_report,excel.file_name",
+      "facets": "NP_field_database_id,NP_field_database,sample.matrix,sample.species,lab_report_id,laboratory,date_report,excel.file_name",
       "date-year": "updated",
       "size-facet": 100
     }
@@ -31,7 +31,7 @@
     "json": "application/json"
   },
   "accepts": {
-    "application/json": "https://api.npolar.no/schema/lab-ecotox.json"
+    "application/json": "https://api.npolar.no/schema/lab-stable-isotope.json"
   },
   "category": [
     "CouchDB",
@@ -52,7 +52,7 @@
       {
         "url": "https://api-test.data.npolar.no/user",
         "open": true,
-        "system": "https://api-test.data.npolar.no/lab-ecotox"
+        "system": "https://api-test.data.npolar.no/lab-stable-isotope"
       }
     ]
   ],

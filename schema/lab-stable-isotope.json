@@ -1,8 +1,8 @@
 {
-	"id": "http://api.npolar.no/schema/lab-ecotox",
+	"id": "http://api.npolar.no/schema/lab-stable-isotope",
 	"$schema": "http://json-schema.org/draft-04/schema",
-	"title": "Ecotox lab results",
-	"description": "Norwegian Polar Institute's ecotox lab results database.",
+	"title": "Lab results stable isotopes.",
+	"description": "Norwegian Polar Institute's stable isotope results database.",
 	"type": "object",
 	"required": [
 		"id",
@@ -17,7 +17,7 @@
 			"description": "Schema defining this object (this schema).",
 			"type": "string",
 			"enum": [
-				"http://api.npolar.no/schema/lab-ecotox"
+				"http://api.npolar.no/schema/lab-stable-isotope"
 			]
 		},
 		"lang": {
@@ -72,7 +72,7 @@
 				}
 			}
 		},
-		"entry": {
+		"sample": {
 			"title": "List of all entries corresponding to excel rows",
 			"type": "array",
 			"items": {
@@ -110,7 +110,7 @@
 					"type": "string"
 				},
 				"weight": {
-					"description": "weight in gram",
+					"description": "Weight in gram",
 					"type": "string"
 				},
 				"NPI_sample_id": {
@@ -121,22 +121,22 @@
 					"description": "Running number for each sample used at the lab",
 					"type": "string"
 				},
-				"NP_field_database": {
+				"NPI_field_database": {
 					"description": "NP database sample information fetched from.",
 					"enum": ["ecotox-fieldwork", "marine-biology-sample"],
 					"type": "string"
 				},
-				"NP_field_database_id": {
+				"NPI_field_database_id": {
 					"description": "Sample ID in NP's field database",
 					"type": "string",
 					"format": "uri"
 				},
 				"d13Cpdb_EA": {
-					"description": "delta13Carbon isotope. The ratio of the naturally occuring carbon isotopes 13Carbon/12Carbon (d13C=13C/12C).pdb-EA refers to he internal standard, Pee Dee Belemnite for ?13C (PDB: USGS 24).In per-mille.",
+					"description": "Delta13Carbon isotope. The ratio of the naturally occuring carbon isotopes 13Carbon/12Carbon (d13C=13C/12C).pdb-EA refers to he internal standard, Pee Dee Belemnite for ?13C (PDB: USGS 24).In per-mille.",
 					"type": "string"
 				},
 				"d15Nair_EA": {
-					"description": "delta15Nitrogen isotope. The ratio of the naturally occuring Nitrogen isotope 15Nitrogen/14Nitrogen (d15N/14N) air. In per-mille.",
+					"description": "Delta15Nitrogen isotope. The ratio of the naturally occuring Nitrogen isotope 15Nitrogen/14Nitrogen (d15N/14N) air. In per-mille.",
 					"type": ["string", "null"]
 				},
 				"W_percent_C": {
@@ -148,7 +148,7 @@
 					"type": ["string", "null"]
 				},
 				"C_ratio_N": {
-					"description": "weight ratio of Carbon/Nitrogen wt/wt",
+					"description": "Weight ratio of Carbon/Nitrogen wt/wt",
 					"type": ["string", "null"]
 				},
 				"comment": {
@@ -161,7 +161,7 @@
 			"description": "The storage collection the document belongs to.",
 			"type": "string",
 			"enum": [
-				"ecotox"
+				"lab-stable-isotope"
 			]
 		},
 		"created": {
@@ -195,7 +195,6 @@
 			"type": "string"
 		},
 		"@context": {
-			"NP_id": "https://api.npolar.no/lab-stable-isotop",
 			"NPI_field_database_id": {
 				"@id": "https://api-test.data.npolar.no/ecotox-fieldwork/?q=&filter-NPI_sample_id="
 			}
