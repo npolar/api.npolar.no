@@ -373,17 +373,6 @@
 				    "type": "string"
 			}}}
 		},
-		"database_owner": {
-			"title": "Name of database owner",
-			"type": "array",
-		  	"items": {
-				"type":"object",
-				"properties": {
-			    "email": {
-				    "description": "Parameter name",
-				    "type": "string"
-			    }}}
-		},
 		"collection": {
 			"description": "The storage collection the document belongs to.",
 			"type": "string",
