@@ -31,7 +31,7 @@
     "json": "application/json"
   },
   "accepts": {
-    "application/json": "https://api.npolar.no/schema/lab-stable-isotope.json"
+    "application/json": "https://api-test.data.npolar.no/schema/lab-stable-isotope.json"
   },
   "category": [
     "CouchDB",
