@@ -33,9 +33,9 @@
 			"title": "List of all entries corresponding to excel rows",
 			"type": "array",
 			"items": {
-        "dataset_name": {
-              "type":"string"
-        },
+       				"dataset_name": {
+              				"type":"string"
+        			},
 				"project_group": {
 					"description": "Projectname data belongs to (larger project) or type of project",
 					"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
@@ -55,7 +55,7 @@
 				"rightsholder": {
 					"description": "Institution(s) who owns the collected data",
 					"type": "string",
-				  "enum": [
+				 	 "enum": [
 								"unknown",
 								"NPI",
 								"NTNU",
@@ -67,10 +67,10 @@
 								"NPI,NTNU,NMBU"
 								]
 				},
-        "people_responsible":{
-           "description":"People responsible for the dataset and organisation",
-           "type":"string"
-        },
+        			"people_responsible":{
+           				"description":"People responsible for the dataset and organisation",
+           				"type":"string"
+       				},
 				"people_collector": {
 					"description": "Person collecting the sample",
 					"type": "string"
@@ -179,7 +179,7 @@
 						"sediment",
 						"ice",
 						"snow",
-						"earth"
+						"soil"
 				   ]
 				},
 				"age": {
