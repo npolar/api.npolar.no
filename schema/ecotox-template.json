@@ -83,7 +83,7 @@
 						},
 						"station_name":{
 								"description":"Name/Id of station/place research was carried out",
-								"type":"string"
+								"type":"boolean"
 						}
 						 }
 		 			},
