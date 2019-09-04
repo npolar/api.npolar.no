@@ -148,7 +148,7 @@
 						"milk",
 						"whole blood",
 						"whole blood, feather",
-            "whole blood, feather, egg",
+					        "whole blood, feather, egg",
 						"abdominal fat",
 						"subcutaneous fat",
 						"blubber",
@@ -169,12 +169,13 @@
 					"description":"Sample medium",
 					"type": "string",
 					"enum": [
-            "unknown",
+            					"unknown",
 						"seawater",
 						"freshwater",
 						"sediment",
 						"ice",
-						"snow"
+						"snow",
+						"earth"
 				   ]
 				},
 				"age": {
