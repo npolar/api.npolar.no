@@ -105,6 +105,10 @@
 					"type": "string",
 					"enum": ["unknown","<10 meter", "<100 meter", "< 1 km", "> 1 km"]
 				},
+                                "station_name": {
+                                         "description": "Name/Id of station/place research was carried out",
+                                         "type":"string"
+                                },
 				"species": {
 					"description": "Sample taken from species (Latin name)",
 					"enum": ["unknown","ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",

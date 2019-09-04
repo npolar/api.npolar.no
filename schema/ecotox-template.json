@@ -77,10 +77,14 @@
 								"description": "Latitude in decimal degrees",
 								"type": "boolean"
 						},
-        		"position_accuracy": {
-					  	   "description": "Accuracy of latitude and longitude measurement",
+        					"position_accuracy": {
+					  			 "description": "Accuracy of latitude and longitude measurement",
 								 "type": "boolean"
-							 }
+						},
+						"station_name":{
+								"description":"Name/Id of station/place research was carried out",
+								"type":"string"
+						}
 						 }
 		 			},
 	    "parameters_base": {
