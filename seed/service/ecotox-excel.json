@@ -51,7 +51,7 @@
       {
         "url": "https://api-test.data.npolar.no:8950",
         "open": true,
-        "system": "https://api-test.data.npolar.no/ecotox"
+        "system": "https://api-test.data.npolar.no/ecotox/excel"
       }
     ]
   ],
