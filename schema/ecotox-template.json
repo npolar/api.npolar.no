@@ -77,8 +77,12 @@
 								"description": "Latitude in decimal degrees",
 								"type": "boolean"
 						},
-        					"position_accuracy": {
-					  			 "description": "Accuracy of latitude and longitude measurement",
+						"altitude":{
+							   "description": "altitude in meters",
+								 "type": "boolean"
+						},
+        		"position_accuracy": {
+					  		 "description": "Accuracy of latitude and longitude measurement",
 								 "type": "boolean"
 						},
 						"station_name":{

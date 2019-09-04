@@ -100,6 +100,10 @@
 					"minimum": -180.0,
 					"maximum": 180.0
 				},
+				"altitude": {
+					"description": "Altitude in meters",
+					"type": "number"
+        },
 				"position_accuracy": {
 					"description": "Accuracy of latitude and longitude measurement",
 					"type": "string",
