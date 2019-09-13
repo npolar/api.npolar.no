@@ -142,16 +142,6 @@
 							"description": "Sample ID used by the lab",
 							"type": "string"
 		  		},
-	  			"NPI_field_database": {
-							"description": "NP database sample information fetched from.",
-							"enum": ["ecotox-fieldwork", "marine-biology-sample"],
-							"type": "string"
-		  		},
-	  			"NPI_field_database_id": {
-							"description": "Sample ID in NP's field database",
-							"type": "string",
-							"format": "uri"
-		  		},
 	  			"analyte_category": {
 							"description": "Category of compound",
 							"type": "string",
@@ -314,7 +304,46 @@
           "comment": {
             	"description": "Sample comment",
             	"type": ["string","null"]
-          }
+          },
+					"links": {
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"rel": {
+						"type": "string",
+						"enum": [
+							"data"
+						]
+					},
+					"href": {
+						"description": "The actual link either to ecotox-fieldwork or marine-biology-sample",
+						"type": "string",
+						"format": "uri"
+					},
+					"title": {
+						"description": "Title of linked resource",
+						"type": "string",
+						"enum": [
+							"collected sample"
+						]
+					},
+					"hreflang": {
+						"description": "Language of the linked resource",
+						"type": "string",
+						"enum": [
+							"collected sample"
+						]
+					},
+					"type": {
+						"description": "Mime-type of linked resource",
+						"type": "string"
+					}
+				}
+			}
+			}
 				}
 			}
 		},

@@ -28,11 +28,7 @@
 		},
 		"laboratory": {
 			"description": "Name of laboratory performing analysis",
-			"enum": ["NMBU", "NILU", "Örebro University", "Environment Canada"],
-			"type": "string"
-		},
-		"lab_report_id": {
-			"description": "report id (if existing)",
+			"enum": ["UiT"],
 			"type": "string"
 		},
 		"date_report": {
@@ -68,136 +64,153 @@
 				}
 			}
 		},
-		"sample": {
+		"sample_collection":{
 			"title": "List of all entries corresponding to excel rows",
 			"type": "array",
 			"additionalItems": false,
 			"items": {
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"matrix": {
-						"description": "matrix or tissue analysed by the lab",
-						"enum": [
-							"egg",
-							"milk",
-							"whole blood",
-							"blood cell",
-							"plasma",
-							"serum",
-							"abdominal fat",
-							"subcutaneous fat",
-							"blubber",
-							"hair",
-							"feather",
-							"muscle",
-							"liver",
-							"brain",
-							"adrenal",
-							"whole animal",
-							"gonad",
-							"whole animal except lower part of foot",
-							"whole animal except closing muscle and siphon",
-							"digestive gland"
-						],
-						"type": "string"
-					},
-          "taxon": {
-            "description": "To be used if species is not specified",
-            "type": "string"
-          },
-          "species": {
-            "description": "Species",
-            "type": "string"
-          },
-          "sex": {
-            "description": "Sex",
-            "type": "string"
-          },
-          "stage": {
-            "description": "Stage",
-            "type": "string"
-          },
-          "tissue": {
-            "description": "Tissue",
-            "type": "string"
-          },
-          "length": {
-            "description": "Length in cm",
-            "type": "string"
-          },
-          "no_of_individuals": {
-            "description": "Number of individuals per sample",
-            "type": "string"
-          },
-          "weight": {
-            "description": "weight in gram",
-            "type": "string"
-          },
-	  		  "NPI_sample_id": {
-							"description": "Sample ID used by NPI",
-							"type": "string"
-		  		},
-	  		  "lab_sample_id": {
-							"description": "Sample ID used by the lab (if not the same as NPI_sample_id)",
-							"type": "string"
-		  		},
-	  			"NPI_field_database": {
-							"description": "NP database sample information fetched from.",
-							"enum": ["ecotox-fieldwork", "marine-biology-sample"],
-							"type": "string"
-		  		},
-	  			"NPI_field_database_id": {
-							"description": "Sample ID in NP's field database",
-							"type": "string",
-							"format": "uri"
-		  		},
-	  			"biomarker_category": {
-							"description": "Category of biomarker",
-							"type": "string",
-							"enum": [
+				 "sample_name": {
+					 "description": "Collection of the same sample run through analysis a number of times",
+					 "type": "integer"
+				 },
+				 "sample": {
+						"title": "List of all entries corresponding to excel rows",
+						"type": "array",
+						"additionalItems": false,
+						"items": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"matrix": {
+									"description": "matrix or tissue analysed by the lab",
+									"enum": [
+										"egg",
+										"milk",
+										"whole blood",
+										"blood cell",
+										"plasma",
+										"serum",
+										"abdominal fat",
+										"subcutaneous fat",
+										"blubber",
+										"hair",
+										"feather",
+										"muscle",
+										"liver",
+										"brain",
+										"adrenal",
+										"whole animal",
+										"gonad",
+										"whole animal except lower part of foot",
+										"whole animal except closing muscle and siphon",
+										"digestive gland"
+									],
+									"type": "string"
+								},
+			          "species": {
+			            "description": "Species",
+			            "type": "string"
+			          },
+				  		  "NPI_sample_id": {
+										"description": "Sample ID used by NPI",
+										"type": "string"
+					  		},
+				  		  "lab_sample_id": {
+										"description": "Sample ID used by the lab (if not the same as NPI_sample_id)",
+										"type": "string"
+					  		},
+				  			"biomarker_category": {
+										"description": "Category of biomarker",
+										"type": "string",
+										"enum": [
 
-								]
-					},
-					"biomarker": {
-							"description": "Type of biomarker",
-							"type": "string",
-							"enum": ["cholesterol",
-							"triglycerides",
-							"EROD",
-							"retinol",
-							"retinol_palmitate",
-							"resorufin",
-							"testosterone_6B",
-							"uro_porphyrin",
-							"hepta_porphyrin",
-							"hexa_porphyrin",
-							"penta_porphyrin",
-							"copro_porphyrin",
-							"proto_porphyrin"]
-						},
-					"value": {
-							"description": "Measured value for biomarker",
-							"type": ["number", "null"]
-					},
-					"unit": {
-							"description": "Unit of biomarker value",
-							"type": ["string", "null"]
-					},
-					"detection_limit": {
-							"description": "Smallest concentration detectable (LOD)",
-							"type": ["string", "null"]
-					},
-					"level_of_quantification": {
-							"description": "The amount measured above this limit is more accurate (LOQ)",
-							"type": ["string", "null"]
-					},
-          "comment": {
-            	"description": "Sample comment",
-            	"type": ["string","null"]
+											]
+								},
+								"biomarker": {
+										"description": "Type of biomarker",
+										"type": "string",
+										"enum": [
+											"cholesterol",
+											"triglycerides",
+											"EROD",
+											"retinol",
+											"retinyl_palmitate",
+											"resorufin",
+											"testosterone_6B",
+											"uro_porphyrin",
+											"hepta_porphyrin",
+											"hexa_porphyrin",
+											"penta_porphyrin",
+											"copro_porphyrin",
+											"proto_porphyrin"
+										]
+									},
+								"value": {
+										"description": "Measured value for biomarker",
+										"type": ["number", "null"]
+								},
+								"efficiency": {
+										"description": "Efficiency for gene expressions",
+										"type": ["number", "null"]
+								},
+								"unit": {
+										"description": "Unit of biomarker value",
+										"type": ["string", "null"]
+								},
+								"detection_limit": {
+										"description": "Smallest concentration detectable (LOD)",
+										"type": ["string", "null"]
+								},
+								"level_of_quantification": {
+										"description": "The amount measured above this limit is more accurate (LOQ)",
+										"type": ["string", "null"]
+								},
+			          "comment": {
+			            	"description": "Sample comment",
+			            	"type": ["string","null"]
+			          },
+								"links": {
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "rel": {
+                  "type": "string",
+                  "enum": [
+                    "data"
+                  ]
+                },
+                "href": {
+									"description": "The actual link either to ecotox-fieldwork or marine-biology-sample",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "title": {
+									"description": "Title of linked resource",
+                  "type": "string",
+									"enum": [
+										"collected sample"
+									]
+                },
+                "hreflang": {
+									"description": "Language of the linked resource",
+                  "type": "string",
+									"enum": [
+										"collected sample"
+									]
+                },
+                "type": {
+									"description": "Mime-type of linked resource",
+                  "type": "string"
+                }
+              }
+            }
           }
+							}
 				}
-			}
+			}}
 		},
 		"collection": {
 				"description": "The storage collection the document belongs to.",

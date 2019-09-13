@@ -121,16 +121,6 @@
 					"description": "Running number for each sample used at the lab",
 					"type": "string"
 				},
-				"NPI_field_database": {
-					"description": "NP database sample information fetched from.",
-					"enum": ["ecotox-fieldwork", "marine-biology-sample"],
-					"type": "string"
-				},
-				"NPI_field_database_id": {
-					"description": "Sample ID in NP's field database",
-					"type": "string",
-					"format": "uri"
-				},
 				"d13Cpdb_EA": {
 					"description": "Delta13Carbon isotope. The ratio of the naturally occuring carbon isotopes 13Carbon/12Carbon (d13C=13C/12C).pdb-EA refers to he internal standard, Pee Dee Belemnite for ?13C (PDB: USGS 24).In per-mille.",
 					"type": "string"
@@ -154,7 +144,46 @@
 				"comment": {
 					"description": "A free text comment for anything of importance to the batch samples.",
 					"type": ["string", "null"]
+				},
+				"links": {
+		"type": "array",
+		"additionalItems": false,
+		"items": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"rel": {
+					"type": "string",
+					"enum": [
+						"data"
+					]
+				},
+				"href": {
+					"description": "The actual link either to ecotox-fieldwork or marine-biology-sample",
+					"type": "string",
+					"format": "uri"
+				},
+				"title": {
+					"description": "Title of linked resource",
+					"type": "string",
+					"enum": [
+						"collected sample"
+					]
+				},
+				"hreflang": {
+					"description": "Language of the linked resource",
+					"type": "string",
+					"enum": [
+						"collected sample"
+					]
+				},
+				"type": {
+					"description": "Mime-type of linked resource",
+					"type": "string"
 				}
+			}
+		}
+		}
 			}
 		},
 		"collection": {

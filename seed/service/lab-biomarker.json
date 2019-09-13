@@ -1,0 +1,63 @@
+{
+  "_id": "lab-biomarker-api",
+  "id": "lab-biomarker-api",
+  "schema": "http://api.npolar.no/schema/api",
+  "path": "/lab/biomarker",
+  "title": "NPI's biomarker database",
+  "summary": "Norwegian Polar Institute's archive for lab results measuring biomarkers",
+  "storage": "Couch",
+  "database": "lab-biomarker",
+  "model": "Lab::Biomarker",
+  "search": {
+    "engine": "Elasticsearch",
+    "index": "lab-biomarker",
+    "type": "lab-biomarker",
+    "log": false,
+    "params": {
+      "facets": "links.url,sample.matrix,sample.species,laboratory,date_report,excel.file_name",
+      "date-year": "updated",
+      "size-facet": 100
+    }
+  },
+  "verbs": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "OPTIONS"
+  ],
+  "formats": {
+    "json": "application/json"
+  },
+  "accepts": {
+    "application/json": "https://api-test.data.npolar.no/schema/lab-biomarker.json"
+  },
+  "category": [
+    "CouchDB",
+    "Elasticsearch",
+    "Lucene",
+    "REST",
+    "Search",
+    "JSON",
+    "JSON Schema",
+    "HTTP"
+  ],
+  "lifecycle": "production",
+  "run": "Npolar::Api::Json",
+  "open": true,
+  "middleware": [
+    [
+      "::Rack::Gouncer",
+      {
+        "url": "https://api-test.data.npolar.no/user",
+        "open": true,
+        "system": "https://api-test.data.npolar.no/lab"
+      }
+    ]
+  ],
+  "updated": "2019-09-13T08:47:21Z",
+  "updated_by": "siri.uldal@npolar.no",
+  "created": "2019-09-13T08:47:21Z",
+  "created_by": "siri.uldal@npolar.no"
+}
