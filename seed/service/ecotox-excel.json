@@ -14,9 +14,9 @@
     "type": "ecotox-excel",
     "log": false,
     "params": {
-      "facets": "filename,type",
+      "facets": "filename,type,url",
       "date-year": "updated",
-      "size-facet": 1000
+      "size-facet": 100
     }
   },
   "verbs": [
@@ -49,9 +49,9 @@
     [
       "::Rack::Gouncer",
       {
-        "url": "https://api-test.data.npolar.no:8950",
+        "url": "https://api.npolar.no/user",
         "open": true,
-        "system": "https://api-test.data.npolar.no/ecotox"
+        "system": "https://api-test.data.npolar.no/ecotox/excel"
       }
     ]
   ],
