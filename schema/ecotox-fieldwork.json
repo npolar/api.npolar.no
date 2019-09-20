@@ -33,412 +33,419 @@
 			"title": "List of all entries corresponding to excel rows",
 			"type": "array",
 			"items": {
-       				"dataset_name": {
+       				 "dataset_name": {
               				"type":"string"
-        			},
-				"project_group": {
-					"description": "Projectname data belongs to (larger project) or type of project",
-					"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
-						"MILKYS", "MOSJ", "Multistress", "SEAPOP", "SEATRACK","Arctic terns energetics and pollution",
-						"thesis", "screening", "monitoring","miljoprovebanken"
-					],
-					"type": "string"
-				},
-				"parent_event_id": {
-					"description": "ID in expedition database",
-					"type": "string"
-				},
-				"ris_id": {
-					"description": "Project number ResearchInSvalbard database",
-					"type": "string"
-				},
-				"rightsholder": {
-					"description": "Institution(s) who owns the collected data",
-					"type": "string",
-				 	 "enum": [
-								"unknown",
-								"NPI",
-								"NTNU",
-								"UiO",
-								"NPI,UiO",
-								"NPI, NIVA",
-								"NPI, APN, NILU, NINA",
-								"NPI,NMBU",
-								"NPI,NTNU,NMBU"
-								]
-				},
-        			"people_responsible":{
-           				"description":"People responsible for the dataset and organisation",
-           				"type":"string"
-       				},
-				"people_collector": {
-					"description": "Person collecting the sample",
-					"type": "string"
-				},
-				"reference": {
-					"description": "Reference describing the data",
-					"type": "string"
-				},
-				"event_date": {
-					"description": "Date of event/work carried out",
-					"type": "string",
-					"format": "date-time"
-				},
-				"placename": {
-					"description": "Placename where sample collected",
-					"type": "string"
-				},
-				"latitude": {
-					"description": "Latitude in decimal degrees",
-					"type": ["number", "null"],
-					"minimum": -90.0,
-					"maximum": 90.0
-				},
-				"longitude": {
-					"description": "Longitude in decimal degrees",
-					"type": ["number", "null"],
-					"minimum": -180.0,
-					"maximum": 180.0
-				},
-				"altitude": {
-					"description": "Altitude in meters",
-					"type": "number"
-        },
-				"position_accuracy": {
-					"description": "Accuracy of latitude and longitude measurement",
-					"type": "string",
-					"enum": ["unknown","<10 meter", "<100 meter", "< 1 km", "> 1 km"]
-				},
-                                "station_name": {
-                                         "description": "Name/Id of station/place research was carried out",
-                                         "type":"string"
-                                },
-				"species": {
-					"description": "Sample taken from species (Latin name)",
-					"enum": ["unknown","ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",
-						"lagopus muta hyperborea", "microtus levis",
-						"boreogadus saida", "salvelinus alpinus", "mallotus villosus",
-						"strongylocentrotus droebachiensis", "hyas araneus", "buccinum undatum",
-						"buccinum glaciale", "mya truncata",
-						"gymnacanthus tricuspis", "myoxocephalus scorpius",
-						"phoca vitulina", "erignathus barbatus", "pagophilus groenlandicus",
-						"cystophora cristata", "pusa hispida", "phoca groenlandica",
-						"odobenus rosmarus", "leptonychotes weddellii",
-						"orcinus orca", "balaenoptera musculus", "delphinapterus leucas", "megaptera novaeangliae",
-						"monodon monoceros", "hyperoodon ampullatus",
-						"lagenorhynchus albirostris", "blaenoptera acutorostrata", "hyseter macrocephalus",
-						"balaenoptera physalus", "monodon monoceros", "globicephala melas", "balaena mysticetus",
-						"bubo scandiacus", "larus hyperboreus", "uria lomvia", "uria aalge", "rissa tridactyla",
-						"somateria mollissima", "somateria spectabilis", "fratercula arctica", "phalacrocorax aristotelis",
-						"larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle", "alca torda",
-						"phalaropus lobatus", "phalaropus fulicarius", "stercocarius parasiticus", "stercorarius pomarinus",
-						"stercorarius skua", "stercorarius longicaudus", "calidris maritima", "clangula hyemalis", "pluvialis apricaria",
-						"branta leucopsis", "branta bernicla", "gavia immer", "gavia stellata", "plectrophenax nivalis",
-						"pagophila eburnea", "anser brachyrhynchus", "calidris alpina",
-						"sterna paradisaea", "cepphus grylle", "larus marinus", "rhodostethia rosea", "xema sabini",
-						"charadrius hiaticula", "calidris alba", "arenaria interpres"
-					],
-					"type": "string"
-				},
-				"species_identification": {
-					"description": "Bird ring, polar bear id, polar fox id etc",
-					"type": "string"
-				},
-				"matrix": {
-					"description": "Type of tissue",
-					"type": "string",
-					"enum": ["unknown",
-						"egg",
-						"milk",
-						"whole blood",
-						"whole blood, feather",
-					        "whole blood, feather, egg",
-						"abdominal fat",
-						"subcutaneous fat",
-						"blubber",
-						"hair",
-						"feather",
-						"muscle",
-						"liver",
-						"brain",
-						"adrenal",
-						"whole animal",
-						"gonad",
-						"whole animal except lower part of foot",
-						"whole animal except closing muscle and siphon",
-						"digestive gland"
-					]
-				},
-				"medium": {
-					"description":"Sample medium",
-					"type": "string",
-					"enum": [
-            					"unknown",
-						"seawater",
-						"freshwater",
-						"sediment",
-						"ice",
-						"snow",
-						"soil"
-				   ]
-				},
-				"age": {
-					"description": "Age of species or age group",
-					"type": "string"
-				},
-				"stage": {
-					"description": "Stage of species sample is collected from",
-					"type": "string"
-				},
-				"sex": {
-					"description": "Sex species sample is collected from",
-					"enum": ["unknown", "female", "male"],
-					"type": ["string", "null"]
-				},
-				"weight": {
-					"description": "Weight, birds in gram, mammals in kg",
-					"type": "string"
-				},
-				"girth": {
-					"description": "Girth in cm",
-					"type": "string"
-				},
-				"length": {
-					"description": "Length of species in cm",
-					"type": "string"
-				},
-				"condition": {
-					"description": "Bird/animal condition",
-					"type": "string"
-				},
-				"morphology": {
-					"description": "Morphology on fauna",
-					"type": "string"
-				},
-				"subspecies": {
-					"description": "Subspecies of specified species",
-					"type": "string"
-				},
-				"no_samples_amount": {
-					"description": "Number of samples taken, amount, sample size etc",
-					"type": "string"
-				},
-				"comment": {
-					"description": "Sample comment",
-					"type": "string"
-				},
-				"logger_status": {
-					"description": "Status of logger",
-					"type": "string",
-					"enum": ["unknown",
-						"individual caught (first deployment)",
-						"individual caught (logger retrieved and replaced)",
-						"individual caught (logger lost and replaced)",
-						"individual caught (logger retrieved, individual released without logger)",
-						"individual caught (logger lost, bird released without logger)",
-						"individual observed (logger still attached)",
-						"individual observed (logger lost)",
-						"individual observed (logger status unknown)",
-						"individual found dead (logger still attached)",
-						"individual found dead (logger lost)",
-						"logger not used"
-					]
-				},
-				"logger_model_retrieved":{
-					"description": "Model name of logger retrived",
-					"type": "string"
-				},
-				"logger_id_retrieved": {
-					"description": "Id of logger retrived from bird",
-					"type": "string"
-				},
-				"logger_model_deployed": {
-					"description": "Model name of logger deployed on bird",
-					"type": "string"
-				},
-				"logger_id_deployed": {
-					"description": "Id of logger deployed on bird",
-					"type": "string"
-				},
-				"logger_mount_method": {
-					"description": "Where was the logger mounted",
-					"type": "string",
-					"enum": ["unknown","tarsus", "tibia", "back"]
-				},
-				"colour_ring": {
-					"description": "bird ring colour",
-					"type": "string"
-				},
-				"euring_code": {
-					"description": "EU ring code, usually NOS",
-					"type": "string",
-					"enum": ["NOS", "ISR", "RUM"]
-				},
-				"molt": {
-					"description": "Currently molting",
-					"type": "string"
-				},
-				"tarsus": {
-					"description": "Tarsus in mm",
-					"type": "string"
-				},
-				"bill": {
-					"description": "Bill length in mm",
-					"type": "string"
-				},
-				"bill_height": {
-					"description": "Bill height in mm",
-					"type": "string"
-				},
-				"scull": {
-					"description": "Head+bill length, or just head or scull in mm",
-					"type": "string"
-				},
-				"wing": {
-					"description": "Maximum flatted cord in cm",
-					"type": "string"
-				},
-				"nest_id": {
-					"description": "Id of nest",
-					"type": "string"
-				},
-				"egg_length": {
-					"description": "Egg length in mm",
-					"type": "string"
-				},
-				"egg_width": {
-					"description": "Egg width in mm",
-					"type": "string"
-				},
-				"clutch_size": {
-					"description": "Number of eggs in clutch",
-					"type": "string",
-					"enum": ["unknown",
-						"0","1","2","3","4",
-						"5","6","7","8","9","10"]
-				},
-				"fledge_chicks": {
-					"description": "Number of chick able to fledge",
-					"type": "string"
-				},
-				"method_deciding_sex": {
-					"description": "Method used to decide sex",
-					"type": "string",
-					"enum": ["unknown","dna", "morphology",
-						"behaviour", "non_yet"
-					]
-				},
-				"breeding_stage": {
-					"description": "Stage describing the breeding process",
-					"type": "string",
-					"enum": ["unknown",
-						"rearing chicks",
-						"incubating",
-						"prebreeding"
-					]
-				},
-				"bird_returned_to_nest": {
-					"description": "Describe the severety of disturbance - has the bird returned to the nest afterwards",
-					"type": "string",
-					"enum": [
-						"unknown",
-						"yes",
-						"no"
-				   ]},
-				"blubber_thinkness_back": {
-					"description": "Length of species sample is collected from",
-					"type": "string"
-				},
-				"tusk_volume": {
-					"description": "Tusk volume in cm3",
-					"type": "string"
-				},
-				"tusk_length": {
-					"description": "Tusk length in cm",
-					"type": "string"
-				},
-				"tusk_girth": {
-					"description": "Tusk girth in cm",
-					"type": "string"
-				},
-				"caudal_length": {
-					"description": "Caudal length",
-					"type": "string"
-				},
-				"sampling_equipment": {
-					"description": "Equiment type used for collecting sample",
-					"type": "string"
-				},
-				"volume": {
-					"description": "Sample volume",
-					"type": "string"
-				},
-				"sediment_core_depth": {
-					"description": "Core depth of sediment sample",
-					"type": "string"
-				},
-				"surface_area_sampled": {
-					"description": "Area of sediment or ice core",
-					"type": "string"
-				},
-				"sampling_equipment_H2O": {
-					 "description": "Equiment used to fetch sample",
-					 "type": "string"
-				},
-			 "depth": {
-					 "description": "Sample depth in meters",
-		       "type": "string"
-				},
-			 "salinity":{
-					 "description": "Salinity in psu (practical salinity unit)",
-					 "type": "string"
-				},
-			 "pressure": {
-					 "description": "Pressure in dbar (decibars)",
-					 "type": "number"
-				},
-			 "temperature": {
-					 "description": "Water temperature in celsius",
-					 "type": "string"
-			 },
-			 "ice_thickness": {
-					 "description": "Thickness ice sample",
-					 "type": "string"
-				},
-			 "ice_core_depth": {
-					 "description": "Core depth of ice sample",
-					 "type": "string"
-			}
-		}
-		},
-		"excel": {
-			"description": "Original excel file(s)",
-			"type": "array",
-			"additionalItems": false,
-			"items": {
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"excel_uri": {
-						"description": "Uri to excel form",
-						"type": "string",
-						"format": "uri"
-					},
-					"excel_filename": {
-						"description": "Excel filename",
-						"type": "string"
-					},
-					"excel_type": {
-						"description": "Excel type",
-						"type": "string"
-					},
-					"excel_length": {
-						"description": "Excel file length",
-						"type": "integer"
+        			 },
+								"project_group": {
+									"description": "Projectname data belongs to (larger project) or type of project",
+									"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
+										"MILKYS", "MOSJ", "Multistress", "SEAPOP", "SEATRACK","Arctic terns energetics and pollution",
+										"thesis", "screening", "monitoring","miljoprovebanken"
+									],
+									"type": "string"
+								},
+								"parent_event_id": {
+										"description": "ID in expedition database",
+										"type": "string"
+								},
+								"ris_id": {
+										"description": "Project number ResearchInSvalbard database",
+										"type": "string"
+								},
+								"rightsholder": {
+										"description": "Institution(s) who owns the collected data",
+										"type": "string",
+								 	 	"enum": [
+												"unknown",
+												"NPI",
+												"NTNU",
+												"UiO",
+												"NPI,UiO",
+												"NPI, NIVA",
+												"NPI, APN, NILU, NINA",
+												"NPI,NMBU",
+												"NPI,NTNU,NMBU"
+												]
+								},
+				        "people_responsible":{
+				           	"description":"People responsible for the dataset and organisation",
+				           	"type":"string"
+				       	},
+								"people_collector": {
+										"description": "Person collecting the sample",
+										"type": "string"
+								},
+								"reference": {
+									"description": "Reference describing the data",
+									"type": "string"
+								},
+								"event_date": {
+									"description": "Date of event/work carried out",
+									"type": "string",
+									"format": "date-time"
+								},
+								"placename": {
+									"description": "Placename where sample collected",
+									"type": "string"
+								},
+								"latitude": {
+									"description": "Latitude in decimal degrees",
+									"type": ["number", "null"],
+									"minimum": -90.0,
+									"maximum": 90.0
+								},
+								"longitude": {
+									"description": "Longitude in decimal degrees",
+									"type": ["number", "null"],
+									"minimum": -180.0,
+									"maximum": 180.0
+								},
+								"altitude": {
+									"description": "Altitude in meters",
+									"type": "number"
+        				},
+								"position_accuracy": {
+									"description": "Accuracy of latitude and longitude measurement",
+									"type": "string",
+									"enum": ["unknown","<10 meter", "<100 meter", "< 1 km", "> 1 km"]
+								},
+				        "station_name": {
+				           "description": "Name/Id of station/place research was carried out",
+                   "type":"string"
+                },
+								"species": {
+									"description": "Sample taken from species (Latin name)",
+									"enum": ["unknown","ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",
+										"lagopus muta hyperborea", "microtus levis",
+										"boreogadus saida", "salvelinus alpinus", "mallotus villosus",
+										"strongylocentrotus droebachiensis", "hyas araneus", "buccinum undatum",
+										"buccinum glaciale", "mya truncata",
+										"gymnacanthus tricuspis", "myoxocephalus scorpius",
+										"phoca vitulina", "erignathus barbatus", "pagophilus groenlandicus",
+										"cystophora cristata", "pusa hispida", "phoca groenlandica",
+										"odobenus rosmarus", "leptonychotes weddellii",
+										"orcinus orca", "balaenoptera musculus", "delphinapterus leucas", "megaptera novaeangliae",
+										"monodon monoceros", "hyperoodon ampullatus",
+										"lagenorhynchus albirostris", "blaenoptera acutorostrata", "hyseter macrocephalus",
+										"balaenoptera physalus", "monodon monoceros", "globicephala melas", "balaena mysticetus",
+										"bubo scandiacus", "larus hyperboreus", "uria lomvia", "uria aalge", "rissa tridactyla",
+										"somateria mollissima", "somateria spectabilis", "fratercula arctica", "phalacrocorax aristotelis",
+										"larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle", "alca torda",
+										"phalaropus lobatus", "phalaropus fulicarius", "stercocarius parasiticus", "stercorarius pomarinus",
+										"stercorarius skua", "stercorarius longicaudus", "calidris maritima", "clangula hyemalis", "pluvialis apricaria",
+										"branta leucopsis", "branta bernicla", "gavia immer", "gavia stellata", "plectrophenax nivalis",
+										"pagophila eburnea", "anser brachyrhynchus", "calidris alpina",
+										"sterna paradisaea", "cepphus grylle", "larus marinus", "rhodostethia rosea", "xema sabini",
+										"charadrius hiaticula", "calidris alba", "arenaria interpres"
+									],
+									"type": "string"
+								},
+								"species_identification": {
+								  "description": "Bird ring, polar bear id, polar fox id etc",
+								  "type": "string"
+								},
+								"matrix": {
+									"description": "Type of tissue",
+									"type": "string",
+									"enum": ["unknown",
+										"egg",
+										"milk",
+										"whole blood",
+										"whole blood, feather",
+									  "whole blood, feather, egg",
+										"abdominal fat",
+										"subcutaneous fat",
+										"blubber",
+										"hair",
+										"feather",
+										"muscle",
+										"liver",
+										"brain",
+										"adrenal",
+										"whole animal",
+										"gonad",
+										"whole animal except lower part of foot",
+										"whole animal except closing muscle and siphon",
+										"digestive gland"
+									]
+								},
+								"medium": {
+									"description":"Sample medium",
+									"type": "string",
+									"enum": [
+				            					"unknown",
+										"seawater",
+										"freshwater",
+										"sediment",
+										"ice",
+										"snow",
+										"soil"
+								   ]
+								},
+								"age": {
+									"description": "Age of species or age group",
+									"type": "string"
+								},
+								"stage": {
+									"description": "Stage of species sample is collected from",
+									"type": "string"
+								},
+								"sex": {
+									"description": "Sex species sample is collected from",
+									"enum": ["unknown", "female", "male"],
+									"type": ["string", "null"]
+								},
+								"weight": {
+									"description": "Weight, birds in gram, mammals in kg",
+									"type": "string"
+								},
+								"girth": {
+									"description": "Girth in cm",
+									"type": "string"
+								},
+								"length": {
+									"description": "Length of species in cm",
+									"type": "string"
+								},
+								"condition": {
+									"description": "Bird/animal condition",
+									"type": "string"
+								},
+								"morphology": {
+									"description": "Morphology on fauna",
+									"type": "string"
+								},
+								"subspecies": {
+									"description": "Subspecies of specified species",
+									"type": "string"
+								},
+								"no_samples_amount": {
+									"description": "Number of samples taken, amount, sample size etc",
+									"type": "string"
+								},
+								"comment": {
+									"description": "Sample comment",
+									"type": "string"
+								},
+								"logger_status": {
+									"description": "Status of logger",
+									"type": "string",
+									"enum": ["unknown",
+										"individual caught (first deployment)",
+										"individual caught (logger retrieved and replaced)",
+										"individual caught (logger lost and replaced)",
+										"individual caught (logger retrieved, individual released without logger)",
+										"individual caught (logger lost, bird released without logger)",
+										"individual observed (logger still attached)",
+										"individual observed (logger lost)",
+										"individual observed (logger status unknown)",
+										"individual found dead (logger still attached)",
+										"individual found dead (logger lost)",
+										"logger not used"
+									]
+								},
+								"logger_model_retrieved":{
+									"description": "Model name of logger retrived",
+									"type": "string"
+								},
+								"logger_id_retrieved": {
+									"description": "Id of logger retrived from bird",
+									"type": "string"
+								},
+								"logger_model_deployed": {
+									"description": "Model name of logger deployed on bird",
+									"type": "string"
+								},
+								"logger_id_deployed": {
+									"description": "Id of logger deployed on bird",
+									"type": "string"
+								},
+								"logger_mount_method": {
+									"description": "Where was the logger mounted",
+									"type": "string",
+									"enum": ["unknown","tarsus", "tibia", "back"]
+								},
+								"colour_ring": {
+									"description": "bird ring colour",
+									"type": "string"
+								},
+								"euring_code": {
+									"description": "EU ring code, usually NOS",
+									"type": "string",
+									"enum": ["NOS", "ISR", "RUM"]
+								},
+								"molt": {
+									"description": "Currently molting",
+									"type": "string"
+								},
+								"tarsus": {
+									"description": "Tarsus in mm",
+									"type": "string"
+								},
+								"bill": {
+									"description": "Bill length in mm",
+									"type": "string"
+								},
+								"bill_height": {
+									"description": "Bill height in mm",
+									"type": "string"
+								},
+								"scull": {
+									"description": "Head+bill length, or just head or scull in mm",
+									"type": "string"
+								},
+								"wing": {
+									"description": "Maximum flatted cord in cm",
+									"type": "string"
+								},
+								"nest_id": {
+									"description": "Id of nest",
+									"type": "string"
+								},
+								"egg_length": {
+									"description": "Egg length in mm",
+									"type": "string"
+								},
+								"egg_width": {
+									"description": "Egg width in mm",
+									"type": "string"
+								},
+								"clutch_size": {
+									"description": "Number of eggs in clutch",
+									"type": "string",
+									"enum": ["unknown",
+										"0","1","2","3","4",
+										"5","6","7","8","9","10"]
+								},
+								"fledge_chicks": {
+									"description": "Number of chick able to fledge",
+									"type": "string"
+								},
+								"method_deciding_sex": {
+										"description": "Method used to decide sex",
+										"type": "string",
+										"enum": ["unknown","dna", "morphology",
+											"behaviour", "non_yet"
+										]
+									},
+								"breeding_stage": {
+										"description": "Stage describing the breeding process",
+										"type": "string",
+										"enum": ["unknown",
+											"rearing chicks",
+											"incubating",
+											"prebreeding"
+										]
+									},
+								"bird_returned_to_nest": {
+										"description": "Describe the severety of disturbance - has the bird returned to the nest afterwards",
+										"type": "string",
+										"enum": [
+											"unknown",
+											"yes",
+											"no"
+									   ]},
+									"blubber_thinkness_back": {
+										"description": "Length of species sample is collected from",
+										"type": "string"
+									},
+									"tusk_volume": {
+										"description": "Tusk volume in cm3",
+										"type": "string"
+									},
+									"tusk_length": {
+										"description": "Tusk length in cm",
+										"type": "string"
+									},
+									"tusk_girth": {
+										"description": "Tusk girth in cm",
+										"type": "string"
+									},
+									"caudal_length": {
+										"description": "Caudal length",
+										"type": "string"
+									},
+									"sampling_equipment": {
+										"description": "Equiment type used for collecting sample",
+										"type": "string"
+									},
+									"volume": {
+										"description": "Sample volume",
+										"type": "string"
+									},
+									"sediment_core_depth": {
+										"description": "Core depth of sediment sample",
+										"type": "string"
+									},
+									"surface_area_sampled": {
+										"description": "Area of sediment or ice core",
+										"type": "string"
+									},
+									"sampling_equipment_H2O": {
+										 "description": "Equiment used to fetch sample",
+										 "type": "string"
+									},
+								 "depth": {
+										 "description": "Sample depth in meters",
+							       "type": "string"
+									},
+								 "salinity":{
+										 "description": "Salinity in psu (practical salinity unit)",
+										 "type": "string"
+									},
+								 "pressure": {
+										 "description": "Pressure in dbar (decibars)",
+										 "type": "number"
+									},
+								 "temperature": {
+										 "description": "Water temperature in celsius",
+										 "type": "string"
+								 },
+								 "ice_thickness": {
+										 "description": "Thickness ice sample",
+										 "type": "string"
+									},
+								 "ice_core_depth": {
+										 "description": "Core depth of ice sample",
+										 "type": "string"
+								}
+							}
+			},
+			"files": {
+		      "type": "array",
+		      "uniqueItems": true,
+		      "description": "",
+		      "items": {
+		        "type": "object",
+		        "properties": {
+								"uri": {
+									"description": "link to form",
+									"type": "string",
+									"format": "uri"
+								},
+								"filename": {
+									"description": "Excel filename",
+									"type": "string"
+								},
+								"title": {
+			            "type": "string",
+			            "description": "Title"
+			          },
+								"type": {
+									"description": "Excel type",
+									"type": "string"
+								},
+								"length": {
+									"description": "Excel file length",
+									"type": "integer"
+								},
+								"hash": {
+					 				"type": "string",
+					 			  "description": "MD5 hash of file name"
+				 			 }
 					}
 				}
-			}
-		},
+			},
 		"ecotox_lab": {
 			"description": "Lab results",
 			"type": "array",

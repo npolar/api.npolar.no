@@ -44,31 +44,38 @@
 			"type": "string",
 			"format": "date-time"
 		},
-		"excel": {
-			"description": "Original excel file(s)",
-			"type": "array",
-			"additionalItems": false,
-			"items": {
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"excel_uri": {
-						"description": "Uri to excel form",
-						"type": "string",
-						"format": "uri"
-					},
-					"excel_filename": {
-						"description": "Excel filename",
-						"type": "string"
-					},
-					"excel_type": {
-						"description": "Excel type",
-						"type": "string"
-					},
-					"excel_length": {
-						"description": "Excel file length",
-						"type": "integer"
-					}
+		"files": {
+	      "type": "array",
+	      "uniqueItems": true,
+	      "description": "",
+	      "items": {
+	        "type": "object",
+	        "properties": {
+							"uri": {
+								"description": "link to form",
+								"type": "string",
+								"format": "uri"
+							},
+							"filename": {
+								"description": "Excel filename",
+								"type": "string"
+							},
+							"title": {
+		            "type": "string",
+		            "description": "Title"
+		          },
+							"type": {
+								"description": "Excel type",
+								"type": "string"
+							},
+							"length": {
+								"description": "Excel file length",
+								"type": "integer"
+							},
+							"hash": {
+				 				"type": "string",
+				 			  "description": "MD5 hash of file name"
+			 			 }
 				}
 			}
 		},
@@ -144,48 +151,47 @@
 				"comment": {
 					"description": "A free text comment for anything of importance to the batch samples.",
 					"type": ["string", "null"]
-				},
-				"links": {
-		"type": "array",
-		"additionalItems": false,
-		"items": {
-			"type": "object",
-			"additionalProperties": false,
-			"properties": {
-				"rel": {
-					"type": "string",
-					"enum": [
-						"data"
-					]
-				},
-				"href": {
-					"description": "The actual link either to ecotox-fieldwork or marine-biology-sample",
-					"type": "string",
-					"format": "uri"
-				},
-				"title": {
-					"description": "Title of linked resource",
-					"type": "string",
-					"enum": [
-						"collected sample"
-					]
-				},
-				"hreflang": {
-					"description": "Language of the linked resource",
-					"type": "string",
-					"enum": [
-						"collected sample"
-					]
-				},
-				"type": {
-					"description": "Mime-type of linked resource",
-					"type": "string"
+				}
+						}
+					}
+	  },
+		"links": {
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"rel": {
+						"type": "string",
+						"enum": [
+							"data"
+						]
+					},
+					"href": {
+						"description": "The actual link either to ecotox-fieldwork or marine-biology-sample",
+						"type": "string",
+						"format": "uri"
+					},
+					"title": {
+						"description": "Title of linked resource",
+						"type": "string",
+						"enum": [
+							"lab report",
+							"related document"
+						]
+					},
+					"hreflang": {
+						"description": "Language of the linked resource",
+						"type": ["string", "null"]
+					},
+					"type": {
+						"description": "Mime-type of linked resource",
+						"type": "string"
+					}
 				}
 			}
-		}
-		}
-			}
-		},
+},
 		"collection": {
 			"description": "The storage collection the document belongs to.",
 			"type": "string",
@@ -228,5 +234,4 @@
 				"@id": "https://api-test.data.npolar.no/ecotox-fieldwork/?q=&filter-NPI_sample_id="
 			}
 		}
-	}
 }
