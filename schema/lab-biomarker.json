@@ -154,11 +154,11 @@
 									},
 								"value": {
 										"description": "Measured value for biomarker",
-										"type": ["number", "null"]
+										"type": ["string", "null"]
 								},
 								"efficiency": {
 										"description": "Efficiency for gene expressions",
-										"type": ["number", "null"]
+										"type": ["string", "null"]
 								},
 								"unit": {
 										"description": "Unit of biomarker value",
