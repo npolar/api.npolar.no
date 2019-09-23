@@ -40,253 +40,209 @@
 			"format": "date-time",
 			"type": "string"
 		},
-		"files": {
-	      "type": "array",
-	      "uniqueItems": true,
-	      "description": "",
-	      "items": {
-	        "type": "object",
-	        "properties": {
-							"uri": {
-								"description": "Uri to excel form",
+		"matrix": {
+			"description": "matrix or tissue analysed by the lab",
+			"enum": [
+				"egg",
+				"milk",
+				"whole blood",
+				"blood cell",
+				"plasma",
+				"serum",
+				"abdominal fat",
+				"subcutaneous fat",
+				"blubber",
+				"hair",
+				"feather",
+				"muscle",
+				"liver",
+				"brain",
+				"adrenal",
+				"whole animal",
+				"gonad",
+				"whole animal except lower part of foot",
+				"whole animal except closing muscle and siphon",
+				"digestive gland"
+			],
+			"type": "string"
+		  },
+			"taxon": {
+				"description": "To be used if species is not specified",
+				"type": "string"
+			},
+			"species": {
+				"description": "Species",
+				"type": "string"
+			},
+			"sex": {
+				"description": "Sex",
+				"type": "string"
+			},
+			"stage": {
+				"description": "Stage",
+				"type": "string"
+			},
+			"tissue": {
+				"description": "Tissue",
+				"type": "string"
+			},
+			"length": {
+				"description": "Length in cm",
+				"type": "string"
+			},
+			"no_of_individuals": {
+				"description": "Number of individuals per sample",
+				"type": "string"
+			},
+			"weight": {
+				"description": "weight in gram",
+				"type": "string"
+			},
+			"NPI_sample_id": {
+				"description": "Sample ID used by NPI",
+				"type": "string"
+			},
+			"lab_sample_id": {
+				"description": "Sample ID used by the lab",
+				"type": "string"
+			},
+			"fat_percentage": {
+				"description": "Sample fat percentage",
+				"type": ["number", "null"]
+			},
+			"unit": {
+				"description": "measured  unit",
+				"type": "string",
+				"enum": ["ng/g", "pg/g"]
+			},
+			"comment": {
+				"description": "Sample comment",
+				"type": ["string", "null"]
+			},
+			"sample_analyte": {
+				"title": "List of all entries corresponding to excel rows",
+				"type": "array",
+				"additionalItems": false,
+				"items": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+							"analyte_category": {
+								"description": "Category of compound",
 								"type": "string",
-								"format": "uri"
+								"enum": [
+									"polychlorinated biphenyls (PCBs)",
+									"brominated flame retardants (BFRs)",
+									"hydroxyl polychlorinated biphenyls (OH-PCBs)",
+									"hydroxyl polybrominated diphenyl ethers (OH-PBDEs)",
+									"poly- and perfluoroalkyl subtances (PFAS)",
+									"organochlorine pesticides (OCPs)"
+								]
 							},
-							"filename": {
-								"description": "Excel filename",
-								"type": "string"
+							"analyte": {
+										"description": "Type of toxic material",
+										"type": "string",
+										"enum": ["HCB", "a_HCH", "b_HCH", "g_HCH", "heptachlor", "oxy_CHL", "t_CHL", "c_CHL", "tn_CHL", "cn_CHL", "op_DDE", "pp_DDE",
+											"op_DDD", "pp_DDD", "op_DDT", "pp_DDT", "mirex", "aldrin", "dieldrin", "endrin", "heptachlor_epoxide", "CHB_26",
+											"CHB_40", "CHB_41", "CHB_44", "CHB_50", "CHB_62", "PCB_28", "PCB_29", "PCB_31", "PCB_47", "PCB_52", "PCB_56", "PCB_66",
+											"PCB_74", "PCB_87", "PCB_99", "PCB_101", "PCB_105", "PCB_110", "PCB_112", "PCB_114", "PCB_118", "PCB_123", "PCB_128",
+											"PCB_132", "PCB_136", "PCB_137", "PCB_138", "PCB_141", "PCB_149", "PCB_151", "PCB_153", "PCB_156", "PCB_157", "PCB_167",
+											"PCB_170", "PCB_180", "PCB_183", "PCB_187", "PCB_189", "PCB_194", "PCB_196", "PCB_199", "PCB_206", "PCB_207", "PCB_209",
+											"BDE_28", "BDE_47", "BDE_77", "BDE_99", "BDE_100", "BDE_153", "BDE_154", "BDE_183", "BDE_206", "BDE_207", "BDE_208",
+											"BDE_209", "HBCDD", "PBT", "PBEB", "DPTE", "HBB", "PCP", "Z4_OH_CB106", "Z4_OH_CB107", "Z4_OH_CB108", "Z3_OH_CB118",
+											"Z4_OH_BDE42", "Z3_OH_BDE47", "Z6_OH_BDE47", "Z4_OH_BDE49", "Z2_OH_BDE68", "Z4_OH_CB130", "Z3_OH_CB138", "Z4_OH_CB146",
+											"Z4_OH_CB159", "Z4_OH_CB172", "Z3_OH_CB180", "Z4_OH_CB187", "PFHxA", "PFHpA", "PFOA", "PFNA", "PFDA", "PFUnDA",
+											"PFDoDA", "PFTrDA", "PFTeDA", "PFBS", "PFHxS", "PFOS", "FOSA", "N_MeFOSA", "N_MeFOSE", "N_EtFOSA", "N_EtFOSE",
+											"reference", "brPFOS", "linPFOS", "PFOSbr2", "PFOSlin2", "FTSA", "PFHpS", "PFPeA", "PFPeDA", "PECB", "PFNS", "PFDS",
+											"PFBA", "Z1_3_DCB", "Z1_4_DCB", "Z1_2_DCB", "Z1_3_5_TCB", "Z1_2_4_TCB", "Z1_2_3_TCB", "hexachlorobutadiene",
+											"Z1_2_3_4_TTCB", "pentachloroanisole", "octachlorostyrene", "a_endosulfan", "b_endosulfan", "methoxychlor",
+											"Z4_2_FTS", "Z6_2_FTS", "Z8_2_FTS", "Z8_2_FTCA", "Z8_2_FTUCA", "Z10_2_FTCA", "Z10_2_FTUCA", "CHB_32", "CHB_38",
+											"CHB_58", "CHB_69", "BCP", "Z3_MeSO2_DDE", "CDT", "DDE_PCB_87", "OCS", "photomirex", "HCBD", "ChCl", "MC6", "B6_923a",
+											"B7_499", "B7_515", "B7_1474_B7_1440", "B7_1001", "B7_1059a", "B7_1450", "B8_531", "B8_789", "B8_806", "B8_810",
+											"B8_1412", "B8_1413", "B8_1414", "B8_1471", "B8_2229", "B9_715", "B9_718", "B9_743_B9_2006", "B9_1025", "B9_1046",
+											"B9_1679", "B10_1110", "PCB_1", "PCB_3", "PCB_4_10", "PCB_6", "PCB_7_9", "PCB_8_5", "PCB_12_13", "PCB_15_17", "PCB_16_32",
+											"PCB_18", "PCB_19", "PCB_20", "PCB_22", "PCB_24_27", "PCB_25", "PCB_26", "PCB_28_31", "PCB_31_28", "PCB_33", "PCB_33_20",
+											"PCB_37", "PCB_38", "PCB_40", "PCB_42", "PCB_43", "PCB_44", "PCB_45", "PCB_46", "PCB_48", "PCB_49", "PCB_47_48", "PCB_47_49",
+											"PCB_50", "PCB_51", "PCB_53", "PCB_54_29", "PCB_55", "PCB_56_60", "PCB_59", "PCB_60", "PCB_63", "PCB_64", "PCB_64_41",
+											"PCB_66_95", "PCB_70", "PCB_70_74", "PCB_70_76", "PCB_70_76_98", "PCB_71_41_64", "PCB_76", "PCB_77", "PCB_81", "PCB_81_87",
+											"PCB_82", "PCB_83", "PCB_84", "PCB_85", "PCB_91", "PCB_92", "PCB_95", "PCB_97", "PCB_99_113", "PCB_100", "PCB_101_90",
+											"PCB_107", "PCB_113", "PCB_114_122", "PCB_119", "PCB_122", "PCB_126", "PCB_129", "PCB_129_178", "PCB_130",
+											"PCB_133", "PCB_134_131", "PCB_135_144", "PCB_138_164", "PCB_146", "PCB_147", "PCB_157_201", "PCB_158", "PCB_163_138",
+											"PCB_169", "PCB_170_190", "PCB_171", "PCB_171_202", "PCB_171_202_156", "PCB_172", "PCB_172_192", "PCB_173", "PCB_174",
+											"PCB_175", "PCB_176", "PCB_177", "PCB_178", "PCB_179", "PCB_180_193", "PCB_182_187", "PCB_185", "PCB_191", "PCB_193",
+											"PCB_195", "PCB_196_203", "PCB_197", "PCB_198", "PCB_200", "PCB_201", "PCB_201_204", "PCB_202", "PCB_202_171", "PCB_203",
+											"PCB_203_196", "PCB_204", "PCB_205", "PCB_208", "PCB_208_195", "PCB_138_163", "PCB_153_132", "Z4_OH_CB79", "Z3_OH_CB85",
+											"Z4_OH_CB97", "Z4_OH_CB104", "Z4_OH_CB107_4_OH_CB108", "Z4_OH_CB112", "Z2_OH_CB114", "Z4_OH_CB120", "Z4_OH_CB127",
+											"Z4_OH_CB134", "Z3_OH_CB153", "Z4_OH_CB162", "Z4_OH_CB163", "Z4_OH_CB165", "Z4_OH_CB177", "Z4_OH_CB178", "Z3_OH_CB182",
+											"Z3_OH_CB183", "Z3_OH_CB184", "Z4_OH_CB193", "Z4_OH_CB198", "Z4_OH_CB199", "Z4_OH_CB200", "Z4_OH_CB201", "Z4_OH_CB202",
+											"Z44_diOH_CB202", "Z3_OH_CB203", "Z4_OH_CB208", "Z10_OH_CB", "Z3_MeSO2_CB49", "Z4_MeSO2_CB49", "Z3_MeSO2_CB52",
+											"Z4_MeSO2_CB52", "Z4_MeSO2_CB64", "Z3_MeSO2_CB70", "Z4_MeSO2_CB70", "Z3_MeSO2_CB87", "Z4_MeSO2_CB87", "Z3_MeSO2_CB91",
+											"Z4_MeSO2_CB91", "Z3_MeSO2_CB101", "Z4_MeSO2_CB101", "Z3_MeSO2_CB110", "Z4_MeSO2_CB110", "Z3_MeSO2_CB149",
+											"Z4_MeSO2_CB149", "Z3_MeSO2_CB132", "Z4_MeSO2_CB132", "Z3_MeSO2_CB141", "Z4_MeSO2_CB141", "Z3_MeSO2_CB174",
+											"Z4_MeSO2_CB174", "Z19_MeSO2_CB", "BDE_17", "BDE_25", "BDE_49", "BDE_54", "BDE_66", "BDE_71", "BDE_71_49", "BDE_75",
+											"BDE_85", "BDE_116", "BDE_119", "BDE_126", "BDE_138", "BDE_139", "BDE_140", "BDE_155", "BDE_100_5_MeO_BDE47",
+											"BDE_154_BB153", "BDE_156", "BDE_171", "BDE_180", "BDE_181", "BDE_184", "BDE_190", "BDE_191", "BDE_196", "BDE_197",
+											"BDE_201", "BDE_202", "BDE_203", "BDE_205", "BDE_208_207", "a_HBCD", "b_HBCD", "g_HBCD", "TBPA", "BTBPE", "TBB", "TBBPA_DBPE",
+											"DPDPE", "ATE", "BEHTBP", "TBP", "BTBPI", "TBBPA_DAE", "EHTBB", "DBDPE", "TBA", "TBBPA", "Z4_OH_HpCS", "Z44_DiBB",
+											"Z2255_TetBB", "Z224455_HexBB", "Z6_MeO_BDE17", "Z4_MeO_BDE17", "Z2_MeO_BDE28", "Z4_MeO_BDE42", "Z6_MeO_BDE47",
+											"Z3_MeO_BDE47", "Z5_MeO_BDE47", "Z5_MeO_BDE47_4_MeO_BDE49", "Z4_MeO_BDE49", "Z6_MeO_BDE49", "Z2_MeO_BDE68",
+											"Z6_MeO_BDE85", "Z6_MeO_BDE90", "Z6_MeO_BDE99", "Z2_MeO_BDE123", "Z6_MeO_BDE137", "Z8_OH_BDE", "Z6_OH_BDE17",
+											"Z4_OH_BDE17", "Z5_OH_BDE47", "Z6_OH_BDE47_75", "Z6_OH_BDE49", "Z6_OH_BDE85", "Z6_OH_BDE90", "Z5_OH_BDE99",
+											"Z5_OH_BDE100", "Z4_OH_BDE101", "Z4_OH_BDE103", "Z2_OH_BDE123", "Z6_OH_BDE137", "naphthalene",
+											"Z2_metylnaphtalene", "Z1_metylnaphtalene", "biphenyl", "acenaphthylene", "acenaphthene", "dibenzofuran",
+											"fluorene", "dibenzotiophene", "phenanthrene", "antracene", "Z3_metylphenantrene", "Z2_metylphenantrene",
+											"Z2_metylantracene", "Z9_metylphenantrene", "Z1_metylphenantrene", "fluoranthene", "pyrene", "benzo_a_fluorene",
+											"retene", "benzo_b_fluorene", "benzo_ghi_fluoranthene", "cyclopenta_cd_pyrene", "benzo_a_anthracene",
+											"chrysene", "benzo_bjk_fluoranthene", "benzo_b_fluoranthene", "benzo_k_fluoranthene", "benzo_a_fluoranthene",
+											"benzo_e_pyrene", "benzo_a_pyrene", "perylene", "indeno_123_cd_pyrene", "dibenzo_ac_ah_antracen",
+											"benzo_ghi_perylen", "antanthrene", "coronene", "dibenz_ae_pyrene", "dibenz_ai_pyrene", "dibenz_ah_pyrene",
+											"SCCP", "MCCP", "siloxane_D5", "Z135TriCHLB", "Z123TriCHLB", "Z124TriCHLB", "Z2378_TCDD",
+											"Z12378_PeCDD", "Z123478_HxCDD", "Z123678_HxCDD", "Z123789_HxCDD", "Z1234678_HpCDD", "OCDF", "OCDD", "Z2378_TCDF",
+											"Z12378_12348_PeCDF", "Z23478_PeCDF", "Z123478_123479_HxCDF", "Z123678_HxCDF", "Z123789_HxCDF", "Z234678_HxCDF",
+											"Z1234678_HpCDF", "Z1234789_HpCDF", "TiBP", "TCEP", "TCPP", "TDCPP", "TBEP", "TEHP", "TPhP", "EHDPP", "ToCrP", "TCrP",
+											"DBPhP", "DPhBP", "MeHg", "Hg", "CN_33_34_37", "CN_47", "CN_28_43", "CN_32", "CN_35", "CN_52_60", "CN_58", "CN_61",
+											"CN_57", "CN_62", "CN_53", "CN_59", "CN_63", "CN_64_68", "CN_65", "CN_66_67", "CN_69", "CN_71_72", "CN_73", "CN_74",
+											"Z1357_TeCN", "Z1256_TeCN", "Z2367_TeCN", "Z12357_PeCN", "Z12367_PeCN", "Z12358_PeCN", "Z123467_HxCN_123567_HxCN",
+											"Z123568_HxCN", "Z124568_HxCN_124578_HxCN", "Z123678_HxCN", "Z1234567_HpCN", "Z1234568_HpCN", "TCN", "Z1245_TeCBz",
+											"Z1234_TeCBz", "HxCBz", "PnCBz", "TCPM", "BB101", "CHB_40_41", "op_DDT_pp_DDD",
+											"PCB_74_76", "PCB_128_167", "dibenzo_ah_antracene", "V6", "DDE", "PFDcS", "B8_1414_B8_1945",
+											"Z4_MeO_HpCS", "Z4_MeO_CB104", "Z4_MeO_CB146", "Z3_MeO_CB85", "Z4_MeO_CB120", "Z4_MeO_CB112", "Z4_MeO_CB107",
+											"Z4_MeO_CB165", "Z3_MeO_CB138", "Z4_MeO_CB130", "Z4_MeO_CB187", "Z4_MeO_CB159", "Z3_MeO_CB180", "Z4_MeO_CB193",
+											"unidentified_MeSO2_Cl6_PCB", "sum_PCB", "sum_DDT", "Pb", "Cd", "Cu", "Zn", "Se",
+											"As", "Z6_MeO_BDE47_2_MeO_BDE75", "Z5_MeO_BDE100", "Z4_MeO_BDE103", "Z5_MeO_BDE99", "Z4_MeO_BDE101",
+											"DPhT_B", "TPhT_B", "MBT_B", "DBT_B", "TBT_B", "MPhT_B", "Cr", "Ni", "Co", "CS_137", "K_40", "Nonylphenol", "Octaphenol",
+											"Z4_MeSO2_CB110_4_MeSO2_CB87", "CHB_2", "CHB_42", "TPrP", "BdPhP", "TPP", "TnBP", "ToCrP", "EHDP", "TXP", "TIPPP", "TTBPP", "DMP",
+											"DEP", "DiBP", "DnBP", "BBP", "DCHP", "DMPP", "DHxP", "DEHP", "DOP", "DiNP", "DNP", "DiDCP", "TEP", "PFPS",
+											"PFPA", "PFDcA", "tn_CHL_MC6", "Z4_MeO_CB79", "Z4_Meo_CB101", "Z2_MeO_CB114", "Z3_MeO_CB182", "Z3_MeO_CB183",
+											"Z4_MeO_CB97", "Z4_MeO_CB200", "Z44_diMeO_CB202", "Z4_MeO_CB127", "Z4_MeO_CB201", "Z3_MeO_CB203_4_MeO_CB198",
+											"Z2_MeO_BDE66", "Z6_MeO_BDE90_6MeO_BDE99", "Z6_OH_BDE99", "PBP"
+										]
 							},
-							"title": {
-		     				"type": "string",
-		            "description": "Title"
-		          },
-							"type": {
-								"description": "Excel type",
-								"type": "string"
+							"wet_weight": {
+										"description": "weight of pollutant found in wet weight including n.a.,n.d, <LOQ",
+										"type": ["string", "null"]
+									},
+							"lipid_weight": {
+										"description": "weight of pollutant found in lipid weight including n.a., n.d, <LOQ",
+										"type": ["string", "null"]
+									},
+							"percent_recovery": {
+									"description": "Percentage recovered of a spiked reference sample",
+									"type": ["string", "null"]
 							},
-							"length": {
-								"description": "Excel file length",
-								"type": "integer"
+							"detection_limit": {
+									"description": "Smallest concentration detectable (LOD)",
+									"type": ["string", "null"]
 							},
-							"hash": {
-				 				"type": "string",
-				 			  "description": "MD5 hash of file name"
-			 			 }
-				}
-			}
-		},
-		"sample": {
-			"title": "List of all entries corresponding to excel rows",
-			"type": "array",
-			"additionalItems": false,
-			"items": {
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"matrix": {
-						"description": "matrix or tissue analysed by the lab",
-						"enum": [
-							"egg",
-							"milk",
-							"whole blood",
-							"blood cell",
-							"plasma",
-							"serum",
-							"abdominal fat",
-							"subcutaneous fat",
-							"blubber",
-							"hair",
-							"feather",
-							"muscle",
-							"liver",
-							"brain",
-							"adrenal",
-							"whole animal",
-							"gonad",
-							"whole animal except lower part of foot",
-							"whole animal except closing muscle and siphon",
-							"digestive gland"
-						],
-						"type": "string"
-					},
-					"taxon": {
-						"description": "To be used if species is not specified",
-						"type": "string"
-					},
-					"species": {
-						"description": "Species",
-						"type": "string"
-					},
-					"sex": {
-						"description": "Sex",
-						"type": "string"
-					},
-					"stage": {
-						"description": "Stage",
-						"type": "string"
-					},
-					"tissue": {
-						"description": "Tissue",
-						"type": "string"
-					},
-					"length": {
-						"description": "Length in cm",
-						"type": "string"
-					},
-					"no_of_individuals": {
-						"description": "Number of individuals per sample",
-						"type": "string"
-					},
-					"weight": {
-						"description": "weight in gram",
-						"type": "string"
-					},
-					"NPI_sample_id": {
-						"description": "Sample ID used by NPI",
-						"type": "string"
-					},
-					"lab_sample_id": {
-						"description": "Sample ID used by the lab",
-						"type": "string"
-					},
-					"fat_percentage": {
-						"description": "Sample fat percentage",
-						"type": ["number", "null"]
-					},
-					"unit": {
-						"description": "measured  unit",
-						"type": "string",
-						"enum": ["ng/g", "pg/g"]
-					},
-					"comment": {
-						"description": "Sample comment",
-						"type": ["string", "null"]
-					},
-					"sample_analyte": {
-						"title": "List of all entries corresponding to excel rows",
-						"type": "array",
-						"additionalItems": false,
-						"items": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-											"analyte_category": {
-												"description": "Category of compound",
-												"type": "string",
-												"enum": [
-													"polychlorinated biphenyls (PCBs)",
-													"brominated flame retardants (BFRs)",
-													"hydroxyl polychlorinated biphenyls (OH-PCBs)",
-													"hydroxyl polybrominated diphenyl ethers (OH-PBDEs)",
-													"poly- and perfluoroalkyl subtances (PFAS)",
-													"organochlorine pesticides (OCPs)"
-												]
-											},
-											"analyte": {
-												"description": "Type of toxic material",
-												"type": "string",
-												"enum": ["HCB", "a_HCH", "b_HCH", "g_HCH", "heptachlor", "oxy_CHL", "t_CHL", "c_CHL", "tn_CHL", "cn_CHL", "op_DDE", "pp_DDE",
-													"op_DDD", "pp_DDD", "op_DDT", "pp_DDT", "mirex", "aldrin", "dieldrin", "endrin", "heptachlor_epoxide", "CHB_26",
-													"CHB_40", "CHB_41", "CHB_44", "CHB_50", "CHB_62", "PCB_28", "PCB_29", "PCB_31", "PCB_47", "PCB_52", "PCB_56", "PCB_66",
-													"PCB_74", "PCB_87", "PCB_99", "PCB_101", "PCB_105", "PCB_110", "PCB_112", "PCB_114", "PCB_118", "PCB_123", "PCB_128",
-													"PCB_132", "PCB_136", "PCB_137", "PCB_138", "PCB_141", "PCB_149", "PCB_151", "PCB_153", "PCB_156", "PCB_157", "PCB_167",
-													"PCB_170", "PCB_180", "PCB_183", "PCB_187", "PCB_189", "PCB_194", "PCB_196", "PCB_199", "PCB_206", "PCB_207", "PCB_209",
-													"BDE_28", "BDE_47", "BDE_77", "BDE_99", "BDE_100", "BDE_153", "BDE_154", "BDE_183", "BDE_206", "BDE_207", "BDE_208",
-													"BDE_209", "HBCDD", "PBT", "PBEB", "DPTE", "HBB", "PCP", "Z4_OH_CB106", "Z4_OH_CB107", "Z4_OH_CB108", "Z3_OH_CB118",
-													"Z4_OH_BDE42", "Z3_OH_BDE47", "Z6_OH_BDE47", "Z4_OH_BDE49", "Z2_OH_BDE68", "Z4_OH_CB130", "Z3_OH_CB138", "Z4_OH_CB146",
-													"Z4_OH_CB159", "Z4_OH_CB172", "Z3_OH_CB180", "Z4_OH_CB187", "PFHxA", "PFHpA", "PFOA", "PFNA", "PFDA", "PFUnDA",
-													"PFDoDA", "PFTrDA", "PFTeDA", "PFBS", "PFHxS", "PFOS", "FOSA", "N_MeFOSA", "N_MeFOSE", "N_EtFOSA", "N_EtFOSE",
-													"reference", "brPFOS", "linPFOS", "PFOSbr2", "PFOSlin2", "FTSA", "PFHpS", "PFPeA", "PFPeDA", "PECB", "PFNS", "PFDS",
-													"PFBA", "Z1_3_DCB", "Z1_4_DCB", "Z1_2_DCB", "Z1_3_5_TCB", "Z1_2_4_TCB", "Z1_2_3_TCB", "hexachlorobutadiene",
-													"Z1_2_3_4_TTCB", "pentachloroanisole", "octachlorostyrene", "a_endosulfan", "b_endosulfan", "methoxychlor",
-													"Z4_2_FTS", "Z6_2_FTS", "Z8_2_FTS", "Z8_2_FTCA", "Z8_2_FTUCA", "Z10_2_FTCA", "Z10_2_FTUCA", "CHB_32", "CHB_38",
-													"CHB_58", "CHB_69", "BCP", "Z3_MeSO2_DDE", "CDT", "DDE_PCB_87", "OCS", "photomirex", "HCBD", "ChCl", "MC6", "B6_923a",
-													"B7_499", "B7_515", "B7_1474_B7_1440", "B7_1001", "B7_1059a", "B7_1450", "B8_531", "B8_789", "B8_806", "B8_810",
-													"B8_1412", "B8_1413", "B8_1414", "B8_1471", "B8_2229", "B9_715", "B9_718", "B9_743_B9_2006", "B9_1025", "B9_1046",
-													"B9_1679", "B10_1110", "PCB_1", "PCB_3", "PCB_4_10", "PCB_6", "PCB_7_9", "PCB_8_5", "PCB_12_13", "PCB_15_17", "PCB_16_32",
-													"PCB_18", "PCB_19", "PCB_20", "PCB_22", "PCB_24_27", "PCB_25", "PCB_26", "PCB_28_31", "PCB_31_28", "PCB_33", "PCB_33_20",
-													"PCB_37", "PCB_38", "PCB_40", "PCB_42", "PCB_43", "PCB_44", "PCB_45", "PCB_46", "PCB_48", "PCB_49", "PCB_47_48", "PCB_47_49",
-													"PCB_50", "PCB_51", "PCB_53", "PCB_54_29", "PCB_55", "PCB_56_60", "PCB_59", "PCB_60", "PCB_63", "PCB_64", "PCB_64_41",
-													"PCB_66_95", "PCB_70", "PCB_70_74", "PCB_70_76", "PCB_70_76_98", "PCB_71_41_64", "PCB_76", "PCB_77", "PCB_81", "PCB_81_87",
-													"PCB_82", "PCB_83", "PCB_84", "PCB_85", "PCB_91", "PCB_92", "PCB_95", "PCB_97", "PCB_99_113", "PCB_100", "PCB_101_90",
-													"PCB_107", "PCB_113", "PCB_114_122", "PCB_119", "PCB_122", "PCB_126", "PCB_129", "PCB_129_178", "PCB_130",
-													"PCB_133", "PCB_134_131", "PCB_135_144", "PCB_138_164", "PCB_146", "PCB_147", "PCB_157_201", "PCB_158", "PCB_163_138",
-													"PCB_169", "PCB_170_190", "PCB_171", "PCB_171_202", "PCB_171_202_156", "PCB_172", "PCB_172_192", "PCB_173", "PCB_174",
-													"PCB_175", "PCB_176", "PCB_177", "PCB_178", "PCB_179", "PCB_180_193", "PCB_182_187", "PCB_185", "PCB_191", "PCB_193",
-													"PCB_195", "PCB_196_203", "PCB_197", "PCB_198", "PCB_200", "PCB_201", "PCB_201_204", "PCB_202", "PCB_202_171", "PCB_203",
-													"PCB_203_196", "PCB_204", "PCB_205", "PCB_208", "PCB_208_195", "PCB_138_163", "PCB_153_132", "Z4_OH_CB79", "Z3_OH_CB85",
-													"Z4_OH_CB97", "Z4_OH_CB104", "Z4_OH_CB107_4_OH_CB108", "Z4_OH_CB112", "Z2_OH_CB114", "Z4_OH_CB120", "Z4_OH_CB127",
-													"Z4_OH_CB134", "Z3_OH_CB153", "Z4_OH_CB162", "Z4_OH_CB163", "Z4_OH_CB165", "Z4_OH_CB177", "Z4_OH_CB178", "Z3_OH_CB182",
-													"Z3_OH_CB183", "Z3_OH_CB184", "Z4_OH_CB193", "Z4_OH_CB198", "Z4_OH_CB199", "Z4_OH_CB200", "Z4_OH_CB201", "Z4_OH_CB202",
-													"Z44_diOH_CB202", "Z3_OH_CB203", "Z4_OH_CB208", "Z10_OH_CB", "Z3_MeSO2_CB49", "Z4_MeSO2_CB49", "Z3_MeSO2_CB52",
-													"Z4_MeSO2_CB52", "Z4_MeSO2_CB64", "Z3_MeSO2_CB70", "Z4_MeSO2_CB70", "Z3_MeSO2_CB87", "Z4_MeSO2_CB87", "Z3_MeSO2_CB91",
-													"Z4_MeSO2_CB91", "Z3_MeSO2_CB101", "Z4_MeSO2_CB101", "Z3_MeSO2_CB110", "Z4_MeSO2_CB110", "Z3_MeSO2_CB149",
-													"Z4_MeSO2_CB149", "Z3_MeSO2_CB132", "Z4_MeSO2_CB132", "Z3_MeSO2_CB141", "Z4_MeSO2_CB141", "Z3_MeSO2_CB174",
-													"Z4_MeSO2_CB174", "Z19_MeSO2_CB", "BDE_17", "BDE_25", "BDE_49", "BDE_54", "BDE_66", "BDE_71", "BDE_71_49", "BDE_75",
-													"BDE_85", "BDE_116", "BDE_119", "BDE_126", "BDE_138", "BDE_139", "BDE_140", "BDE_155", "BDE_100_5_MeO_BDE47",
-													"BDE_154_BB153", "BDE_156", "BDE_171", "BDE_180", "BDE_181", "BDE_184", "BDE_190", "BDE_191", "BDE_196", "BDE_197",
-													"BDE_201", "BDE_202", "BDE_203", "BDE_205", "BDE_208_207", "a_HBCD", "b_HBCD", "g_HBCD", "TBPA", "BTBPE", "TBB", "TBBPA_DBPE",
-													"DPDPE", "ATE", "BEHTBP", "TBP", "BTBPI", "TBBPA_DAE", "EHTBB", "DBDPE", "TBA", "TBBPA", "Z4_OH_HpCS", "Z44_DiBB",
-													"Z2255_TetBB", "Z224455_HexBB", "Z6_MeO_BDE17", "Z4_MeO_BDE17", "Z2_MeO_BDE28", "Z4_MeO_BDE42", "Z6_MeO_BDE47",
-													"Z3_MeO_BDE47", "Z5_MeO_BDE47", "Z5_MeO_BDE47_4_MeO_BDE49", "Z4_MeO_BDE49", "Z6_MeO_BDE49", "Z2_MeO_BDE68",
-													"Z6_MeO_BDE85", "Z6_MeO_BDE90", "Z6_MeO_BDE99", "Z2_MeO_BDE123", "Z6_MeO_BDE137", "Z8_OH_BDE", "Z6_OH_BDE17",
-													"Z4_OH_BDE17", "Z5_OH_BDE47", "Z6_OH_BDE47_75", "Z6_OH_BDE49", "Z6_OH_BDE85", "Z6_OH_BDE90", "Z5_OH_BDE99",
-													"Z5_OH_BDE100", "Z4_OH_BDE101", "Z4_OH_BDE103", "Z2_OH_BDE123", "Z6_OH_BDE137", "naphthalene",
-													"Z2_metylnaphtalene", "Z1_metylnaphtalene", "biphenyl", "acenaphthylene", "acenaphthene", "dibenzofuran",
-													"fluorene", "dibenzotiophene", "phenanthrene", "antracene", "Z3_metylphenantrene", "Z2_metylphenantrene",
-													"Z2_metylantracene", "Z9_metylphenantrene", "Z1_metylphenantrene", "fluoranthene", "pyrene", "benzo_a_fluorene",
-													"retene", "benzo_b_fluorene", "benzo_ghi_fluoranthene", "cyclopenta_cd_pyrene", "benzo_a_anthracene",
-													"chrysene", "benzo_bjk_fluoranthene", "benzo_b_fluoranthene", "benzo_k_fluoranthene", "benzo_a_fluoranthene",
-													"benzo_e_pyrene", "benzo_a_pyrene", "perylene", "indeno_123_cd_pyrene", "dibenzo_ac_ah_antracen",
-													"benzo_ghi_perylen", "antanthrene", "coronene", "dibenz_ae_pyrene", "dibenz_ai_pyrene", "dibenz_ah_pyrene",
-													"SCCP", "MCCP", "siloxane_D5", "Z135TriCHLB", "Z123TriCHLB", "Z124TriCHLB", "Z2378_TCDD",
-													"Z12378_PeCDD", "Z123478_HxCDD", "Z123678_HxCDD", "Z123789_HxCDD", "Z1234678_HpCDD", "OCDF", "OCDD", "Z2378_TCDF",
-													"Z12378_12348_PeCDF", "Z23478_PeCDF", "Z123478_123479_HxCDF", "Z123678_HxCDF", "Z123789_HxCDF", "Z234678_HxCDF",
-													"Z1234678_HpCDF", "Z1234789_HpCDF", "TiBP", "TCEP", "TCPP", "TDCPP", "TBEP", "TEHP", "TPhP", "EHDPP", "ToCrP", "TCrP",
-													"DBPhP", "DPhBP", "MeHg", "Hg", "CN_33_34_37", "CN_47", "CN_28_43", "CN_32", "CN_35", "CN_52_60", "CN_58", "CN_61",
-													"CN_57", "CN_62", "CN_53", "CN_59", "CN_63", "CN_64_68", "CN_65", "CN_66_67", "CN_69", "CN_71_72", "CN_73", "CN_74",
-													"Z1357_TeCN", "Z1256_TeCN", "Z2367_TeCN", "Z12357_PeCN", "Z12367_PeCN", "Z12358_PeCN", "Z123467_HxCN_123567_HxCN",
-													"Z123568_HxCN", "Z124568_HxCN_124578_HxCN", "Z123678_HxCN", "Z1234567_HpCN", "Z1234568_HpCN", "TCN", "Z1245_TeCBz",
-													"Z1234_TeCBz", "HxCBz", "PnCBz", "TCPM", "BB101", "CHB_40_41", "op_DDT_pp_DDD",
-													"PCB_74_76", "PCB_128_167", "dibenzo_ah_antracene", "V6", "DDE", "PFDcS", "B8_1414_B8_1945",
-													"Z4_MeO_HpCS", "Z4_MeO_CB104", "Z4_MeO_CB146", "Z3_MeO_CB85", "Z4_MeO_CB120", "Z4_MeO_CB112", "Z4_MeO_CB107",
-													"Z4_MeO_CB165", "Z3_MeO_CB138", "Z4_MeO_CB130", "Z4_MeO_CB187", "Z4_MeO_CB159", "Z3_MeO_CB180", "Z4_MeO_CB193",
-													"unidentified_MeSO2_Cl6_PCB", "sum_PCB", "sum_DDT", "Pb", "Cd", "Cu", "Zn", "Se",
-													"As", "Z6_MeO_BDE47_2_MeO_BDE75", "Z5_MeO_BDE100", "Z4_MeO_BDE103", "Z5_MeO_BDE99", "Z4_MeO_BDE101",
-													"DPhT_B", "TPhT_B", "MBT_B", "DBT_B", "TBT_B", "MPhT_B", "Cr", "Ni", "Co", "CS_137", "K_40", "Nonylphenol", "Octaphenol",
-													"Z4_MeSO2_CB110_4_MeSO2_CB87", "CHB_2", "CHB_42", "TPrP", "BdPhP", "TPP", "TnBP", "ToCrP", "EHDP", "TXP", "TIPPP", "TTBPP", "DMP",
-													"DEP", "DiBP", "DnBP", "BBP", "DCHP", "DMPP", "DHxP", "DEHP", "DOP", "DiNP", "DNP", "DiDCP", "TEP", "PFPS",
-													"PFPA", "PFDcA", "tn_CHL_MC6", "Z4_MeO_CB79", "Z4_Meo_CB101", "Z2_MeO_CB114", "Z3_MeO_CB182", "Z3_MeO_CB183",
-													"Z4_MeO_CB97", "Z4_MeO_CB200", "Z44_diMeO_CB202", "Z4_MeO_CB127", "Z4_MeO_CB201", "Z3_MeO_CB203_4_MeO_CB198",
-													"Z2_MeO_BDE66", "Z6_MeO_BDE90_6MeO_BDE99", "Z6_OH_BDE99", "PBP"
-												]
-											},
-											"wet_weight": {
-												"description": "weight of pollutant found in wet weight including n.a.,n.d, <LOQ",
-												"type": ["string", "null"]
-											},
-											"lipid_weight": {
-												"description": "weight of pollutant found in lipid weight including n.a., n.d, <LOQ",
-												"type": ["string", "null"]
-											},
-											"percent_recovery": {
-												"description": "Percentage recovered of a spiked reference sample",
-												"type": ["string", "null"]
-											},
-											"detection_limit": {
-												"description": "Smallest concentration detectable (LOD)",
-												"type": ["string", "null"]
-											},
-											"level_of_quantification": {
-												"description": "The amount measured above this limit is more accurate (LOQ)",
-												"type": ["string", "null"]
-											}
-									}}}
+							"level_of_quantification": {
+									"description": "The amount measured above this limit is more accurate (LOQ)",
+									"type": ["string", "null"]
+							}
 
 				}
 			}
 		},
-					"links": {
+		"links": {
 						"type": "array",
 						"additionalItems": false,
 						"items": {
@@ -322,6 +278,41 @@
 								}
 							}
 						}
+		},
+		"files": {
+	      "type": "array",
+	      "uniqueItems": true,
+	      "description": "",
+	      "items": {
+	        "type": "object",
+	        "properties": {
+							"uri": {
+								"description": "Uri to excel form",
+								"type": "string",
+								"format": "uri"
+							},
+							"filename": {
+								"description": "Excel filename",
+								"type": "string"
+							},
+							"title": {
+		     				"type": "string",
+		            "description": "Title"
+		          },
+							"type": {
+								"description": "Excel type",
+								"type": "string"
+							},
+							"length": {
+								"description": "Excel file length",
+								"type": "integer"
+							},
+							"hash": {
+				 				"type": "string",
+				 			  "description": "MD5 hash of file name"
+			 			 }
+				   }
+			  }
 		},
 		"collection": {
 			"description": "The storage collection the document belongs to.",
