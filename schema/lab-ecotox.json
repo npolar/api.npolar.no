@@ -131,12 +131,18 @@
 								"description": "Category of compound",
 								"type": "string",
 								"enum": [
+									"pesticides and industrial by products",
+									"metabolized pesticides",
 									"polychlorinated biphenyls (PCBs)",
+									"metabolized polychlorinated biphenyls (PCBs)",
 									"brominated flame retardants (BFRs)",
-									"hydroxyl polychlorinated biphenyls (OH-PCBs)",
-									"hydroxyl polybrominated diphenyl ethers (OH-PBDEs)",
+									"metabolized brominated flame retardants (BFRs)",
 									"poly- and perfluoroalkyl subtances (PFAS)",
-									"organochlorine pesticides (OCPs)"
+									"fluorotelomer carboxylic acids (FTCAs)",
+									"organophosphates (OP)",
+									"heavy metals",
+									"radioactive compounds",
+									"phtalates"
 								]
 							},
 							"analyte": {
