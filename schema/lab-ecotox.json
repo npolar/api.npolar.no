@@ -28,8 +28,17 @@
 		},
 		"laboratory": {
 			"description": "Name of laboratory performing analysis",
-			"enum": ["NMBU", "NILU", "Örebro University", "Environment Canada"],
-			"type": "string"
+			"enum": [
+							"NMBU", "NILU", "Örebro University",
+							"Örebro University, University of Ottawa",
+							"Folkehelseinstituttet","NTNU","Akvaplan-NIVA",
+							"NIVA","Uppsala University","Stockholm University",
+							"University of Windsor, CA","National Wildlife Research Centre, CA",
+							"Environment and climate change Canada",
+							"NVH","GLIER/NWRI","GLIER + NWRI/NLET","GLIER","NWRC",
+							"NWRI","ALS","VI","IVM","NVH/Severinsen","APN", "IFE"
+							],
+							"type": "string"
 		},
 		"lab_report_id": {
 			"description": "report id given by the lab (batch job of results)",

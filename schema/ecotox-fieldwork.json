@@ -40,7 +40,8 @@
 									"description": "Projectname data belongs to (larger project) or type of project",
 									"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
 										"MILKYS", "MOSJ", "Multistress", "SEAPOP", "SEATRACK","Arctic terns energetics and pollution",
-										"thesis", "screening", "monitoring","miljoprovebanken"
+										"thesis", "screening", "monitoring","miljoprovebanken","COPOL","O-109111",
+										"SFT Screening","Project Nr: 111101","UA 1000","Sucking clams or hunting seals"
 									],
 									"type": "string"
 								},
@@ -64,7 +65,12 @@
 												"NPI, NIVA",
 												"NPI, APN, NILU, NINA",
 												"NPI,NMBU",
-												"NPI,NTNU,NMBU"
+												"NPI,NTNU,NMBU",
+												"NINA",
+												"NPI, NTNU",
+												"NPI, Örebro",
+												"NPI, Univ of Windsor",
+												"NPI, NILU"
 												]
 								},
 				        "people_responsible":{
