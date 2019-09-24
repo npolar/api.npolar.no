@@ -36,151 +36,109 @@
 			"format": "date-time",
 			"type": "string"
 		},
-		"files": {
-	      "type": "array",
-	      "uniqueItems": true,
-	      "description": "",
-	      "items": {
-	        "type": "object",
-	        "properties": {
-							"uri": {
-								"description": "Uri to excel form",
-								"type": "string",
-								"format": "uri"
-							},
-							"filename": {
-								"description": "Excel filename",
-								"type": "string"
-							},
-							"title": {
-		            "type": "string",
-		            "description": "Title"
-		          },
-							"type": {
-								"description": "Excel type",
-								"type": "string"
-							},
-							"length": {
-								"description": "Excel file length",
-								"type": "integer"
-							},
-							"hash": {
-				 				"type": "string",
-				 			  "description": "MD5 hash of file name"
-			 			 }
-					 }
-				}
-			},
-		"sample_collection":{
-			"title": "List of all entries corresponding to excel rows",
+		"matrix": {
+			"description": "matrix or tissue analysed by the lab",
+			"enum": [
+				"egg",
+				"milk",
+				"whole blood",
+				"blood cell",
+				"plasma",
+				"serum",
+				"abdominal fat",
+				"subcutaneous fat",
+				"blubber",
+				"hair",
+				"feather",
+				"muscle",
+				"liver",
+				"brain",
+				"adrenal",
+				"whole animal",
+				"gonad",
+				"whole animal except lower part of foot",
+				"whole animal except closing muscle and siphon",
+				"digestive gland"
+			],
+			"type": "string"
+		},
+		"species": {
+			"description": "Species",
+			"type": "string"
+		},
+		"NPI_sample_id": {
+				"description": "Sample ID used by NPI",
+				"type": "string"
+		},
+		"lab_sample_id": {
+				"description": "Sample ID used by the lab (if not the same as NPI_sample_id)",
+				"type": "string"
+		},
+		"sample":{
+			"title": "Same sample measured several times",
 			"type": "array",
 			"additionalItems": false,
 			"items": {
-				 "sample_name": {
-					 "description": "Collection of the same sample run through analysis a number of times",
-					 "type": "integer"
+				 "biomarker_category": {
+						 "description": "Category of biomarker",
+						 "type": "string",
+						 "enum": [
+							 "hormones",
+							 "metabolites",
+							 "oxidative stress",
+							 "vitamins"
+							 ]
 				 },
-				 "sample": {
-						"title": "List of all entries corresponding to excel rows",
-						"type": "array",
-						"additionalItems": false,
-						"items": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"matrix": {
-									"description": "matrix or tissue analysed by the lab",
-									"enum": [
-										"egg",
-										"milk",
-										"whole blood",
-										"blood cell",
-										"plasma",
-										"serum",
-										"abdominal fat",
-										"subcutaneous fat",
-										"blubber",
-										"hair",
-										"feather",
-										"muscle",
-										"liver",
-										"brain",
-										"adrenal",
-										"whole animal",
-										"gonad",
-										"whole animal except lower part of foot",
-										"whole animal except closing muscle and siphon",
-										"digestive gland"
-									],
-									"type": "string"
-								},
-			          "species": {
-			            "description": "Species",
-			            "type": "string"
-			          },
-				  		  "NPI_sample_id": {
-										"description": "Sample ID used by NPI",
+				 "biomarker": {
+						 "description": "Type of biomarker",
+						 "type": "string",
+						 "enum": [
+							 "cholesterol",
+							 "triglycerides",
+							 "EROD",
+							 "retinol",
+							 "retinyl_palmitate",
+							 "testosterone_6B",
+							 "uro_porphyrin",
+							 "hepta_porphyrin",
+							 "hexa_porphyrin",
+							 "penta_porphyrin",
+							 "copro_porphyrin",
+							 "proto_porphyrin"
+						 ]
+					 },
+					 "efficiency": {
+							 "description": "Efficiency for gene expressions",
+							 "type": ["string", "null"]
+					 },
+					 "unit": {
+							 "description": "Unit of biomarker value",
+							 "type": ["string", "null"]
+					 },
+					 "detection_limit": {
+							 "description": "Smallest concentration detectable (LOD)",
+							 "type": ["string", "null"]
+					 },
+					 "level_of_quantification": {
+							 "description": "The amount measured above this limit is more accurate (LOQ)",
+							 "type": ["string", "null"]
+					 },
+					 "comment": {
+							 "description": "Sample comment",
+							 "type": ["string","null"]
+					 },
+				   "sample_values": {
+								"title": "Measured value for biomarker",
+								"type": "array",
+								"additionalItems": false,
+								"uniqueItems": false,
+								"items": {
 										"type": "string"
-					  		},
-				  		  "lab_sample_id": {
-										"description": "Sample ID used by the lab (if not the same as NPI_sample_id)",
-										"type": "string"
-					  		},
-				  			"biomarker_category": {
-										"description": "Category of biomarker",
-										"type": "string",
-										"enum": [
-
-											]
-								},
-								"biomarker": {
-										"description": "Type of biomarker",
-										"type": "string",
-										"enum": [
-											"cholesterol",
-											"triglycerides",
-											"EROD",
-											"retinol",
-											"retinyl_palmitate",
-											"resorufin",
-											"testosterone_6B",
-											"uro_porphyrin",
-											"hepta_porphyrin",
-											"hexa_porphyrin",
-											"penta_porphyrin",
-											"copro_porphyrin",
-											"proto_porphyrin"
-										]
-									},
-								"value": {
-										"description": "Measured value for biomarker",
-										"type": ["string", "null"]
-								},
-								"efficiency": {
-										"description": "Efficiency for gene expressions",
-										"type": ["string", "null"]
-								},
-								"unit": {
-										"description": "Unit of biomarker value",
-										"type": ["string", "null"]
-								},
-								"detection_limit": {
-										"description": "Smallest concentration detectable (LOD)",
-										"type": ["string", "null"]
-								},
-								"level_of_quantification": {
-										"description": "The amount measured above this limit is more accurate (LOQ)",
-										"type": ["string", "null"]
-								},
-			          "comment": {
-			            	"description": "Sample comment",
-			            	"type": ["string","null"]
-			          }
-							}
-				}
-			}}
+								}
+				 }}
+			}
 		},
-								"links": {
+			"links": {
             "type": "array",
             "additionalItems": false,
             "items": {
@@ -194,7 +152,7 @@
                   ]
                 },
                 "href": {
-									"description": "The actual link either to ecotox-fieldwork or marine-biology-sample",
+									"description": "The actual link fieldwork data,likely to ecotox-fieldwork or marine-biology-sample",
                   "type": "string",
                   "format": "uri"
                 },
@@ -219,11 +177,46 @@
               }
             }
           },
+					"files": {
+				      "type": "array",
+				      "uniqueItems": true,
+				      "description": "",
+				      "items": {
+				        "type": "object",
+				        "properties": {
+										"uri": {
+											"description": "Uri to excel form",
+											"type": "string",
+											"format": "uri"
+										},
+										"filename": {
+											"description": "Excel filename",
+											"type": "string"
+										},
+										"title": {
+					            "type": "string",
+					            "description": "Title"
+					          },
+										"type": {
+											"description": "Excel type",
+											"type": "string"
+										},
+										"length": {
+											"description": "Excel file length",
+											"type": "integer"
+										},
+										"hash": {
+							 				"type": "string",
+							 			  "description": "MD5 hash of file name"
+						 			 }
+						}
+			}
+		},
 		"collection": {
 				"description": "The storage collection the document belongs to.",
 				"type": "string",
 				"enum": [
-					"lab-biomarker"
+					"lab"
 				]
 		},
 		"created": {
@@ -262,4 +255,3 @@
 			}
 		}
 	}
-}

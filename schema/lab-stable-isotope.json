@@ -196,7 +196,7 @@
 			"description": "The storage collection the document belongs to.",
 			"type": "string",
 			"enum": [
-				"lab-stable-isotope"
+				"lab"
 			]
 		},
 		"created": {

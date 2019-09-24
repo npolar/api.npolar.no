@@ -324,7 +324,7 @@
 			"description": "The storage collection the document belongs to.",
 			"type": "string",
 			"enum": [
-				"lab-ecotox"
+				"lab"
 			]
 		},
 		"created": {
