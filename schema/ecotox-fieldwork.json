@@ -445,15 +445,6 @@
 				 			 }
 					}
 				}
-			},
-		"ecotox_lab": {
-			"description": "Lab results",
-			"type": "array",
-			"additionalItems": false,
-			"items": {
-				"description": "uuid to lab result",
-				"type": "string"
-			}
 		},
 		"collection": {
 			"description": "The storage collection the document belongs to.",
