@@ -279,7 +279,7 @@
 									"description": "Title of linked resource",
 									"type": "string",
 									"enum": [
-										"lab report",
+										"fieldwork",
 										"related document"
 									]
 								},
