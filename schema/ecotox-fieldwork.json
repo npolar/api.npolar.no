@@ -32,17 +32,10 @@
 		"entry": {
 			"title": "List of all entries corresponding to excel rows",
 			"type": "array",
-			"items":
-							{
+			"items": {
 			 				"id": {
 											"type":"string"
 			 				},
-							{
-			 				"NPI_sample_id": {
-								      "description":"sample name given by researcher",
-											"type":"string"
-			 				},
-							{
        				 "dataset_name": {
               				"type":"string"
         			 },
