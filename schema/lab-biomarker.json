@@ -66,6 +66,10 @@
 			"description": "Species",
 			"type": "string"
 		},
+		"database_sample_id": {
+			"description": "Sample ID used by NPI",
+			"type": "string"
+		},
 		"NPI_sample_id": {
 				"description": "Sample ID used by NPI",
 				"type": "string"

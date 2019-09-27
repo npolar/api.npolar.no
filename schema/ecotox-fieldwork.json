@@ -33,13 +33,18 @@
 			"title": "List of all entries corresponding to excel rows",
 			"type": "array",
 			"items": {
-			 				"id": {
-											"type":"string"
-			 				},
+								"database_sample_id": {
+								 "description": "Sample ID used by NPI",
+								 "type": "string"
+							 },
+							 "NPI_sample_id": {
+								 "description": "Sample ID used by NPI",
+								 "type": "string"
+							 },
        				 "dataset_name": {
               				"type":"string"
         			 },
-								"project_group": {
+							 "project_group": {
 									"description": "Projectname data belongs to (larger project) or type of project",
 									"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
 										"MILKYS", "MOSJ", "Multistress", "SEAPOP", "SEATRACK","Arctic terns energetics and pollution",

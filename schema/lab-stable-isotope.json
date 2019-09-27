@@ -31,6 +31,14 @@
 			"enum": ["IFE"],
 			"type": "string"
 		},
+		"database_sample_id": {
+			"description": "Sample ID used by NPI",
+			"type": "string"
+		},
+		"NPI_sample_id": {
+			"description": "Sample ID used by NPI",
+			"type": "string"
+		},
 		"lab_report_id": {
 			"description": "Name/number of report given by the lab",
 			"type": "string"
@@ -118,14 +126,6 @@
 				},
 				"weight": {
 					"description": "Weight in gram",
-					"type": "string"
-				},
-				"NPI_sample_id": {
-					"description": "Sample ID used by NPI",
-					"type": "string"
-				},
-				"lab_sample_id": {
-					"description": "Running number for each sample used at the lab",
 					"type": "string"
 				},
 				"d13Cpdb_EA": {
