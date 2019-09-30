@@ -130,7 +130,7 @@
 								"species": {
 									"description": "Sample taken from species (Latin name)",
 									"enum": ["unknown","ursus maritimus", "vulpes lagopus", "rangifer tarandus platyrhynchus",
-										"lagopus muta hyperborea", "microtus levis",
+										"lagopus muta hyperborea", "calanus hyperboreus","microtus levis",
 										"boreogadus saida", "salvelinus alpinus", "mallotus villosus",
 										"strongylocentrotus droebachiensis", "hyas araneus", "buccinum undatum",
 										"buccinum glaciale", "mya truncata",
