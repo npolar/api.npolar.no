@@ -92,9 +92,33 @@
 			"type": "array",
 			"items": {
 				"matrix": {
-					"description": "matrix or tissue analysed by the lab",
-					"enum": ["whole animal"],
-					"type": "string"
+									"description": "Type of tissue",
+									"type": "string",
+									"enum": ["unknown",
+										"egg",
+										"milk",
+										"whole blood",
+										"whole blood, feather",
+									  "whole blood, feather, egg",
+										"abdominal fat",
+										"subcutaneous fat",
+										"blubber",
+										"biopsy skin",
+										"hair",
+										"feather",
+										"muscle",
+										"liver",
+										"brain",
+										"kidney",
+										"testicle",
+										"oedema",
+										"adrenal gland",
+										"whole animal",
+										"gonad",
+										"whole animal except lower part of foot",
+										"whole animal except closing muscle and siphon",
+										"digestive gland"
+									]
 				},
 				"taxon": {
 					"description": "To be used if species is not specified",
