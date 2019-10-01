@@ -14,10 +14,10 @@
     "type": "lab-ecotox",
     "log": false,
     "params": {
-      "facets": "sample.matrix,sample.species,lab_report_id,laboratory,date_report,excel.file_name,sample_analyte.analyte_category,sample_analyte.analyte,sample_analyte.wet_weight",
-      "date-year": "updated",
-      "size-facet": 100
-    }
+     "facets": "sample.matrix,sample.species,lab_report_id,laboratory,date_report,excel.file_name,sample_analyte.analyte_category,sample_analyte.analyte,sample_analyte.wet_weight",
+     "date-year": "updated",
+     "size-facet": 100
+   }
   },
   "verbs": [
     "DELETE",

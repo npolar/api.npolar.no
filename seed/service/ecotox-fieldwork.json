@@ -14,10 +14,10 @@
         "type": "ecotox-fieldwork",
         "log": false,
         "params": {
-            "facets": "project,species,sample_id,sex,age,fat_percentage,component.analyte_category,analyte,corrected_blank_contamination,detection_limit,date_sample_collected,people.last_name,people.first_name",
-            "date-year": "updated",
-            "size-facet": 100
-        }
+      "facets": "project,species,sex,age,age_group,matrix,event_date,latitude,longitude,placename,weight,rightsholder,people_responsible,project_group,ris_id,species_identification,files.filename",
+      "date-year": "created",
+      "size-facet": 9999
+    }
     },
     "verbs": [
         "DELETE",
