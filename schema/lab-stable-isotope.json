@@ -96,6 +96,7 @@
 									"type": "string",
 									"enum": ["unknown",
 										"egg",
+										"plasma",
 										"milk",
 										"whole blood",
 										"whole blood, feather",
