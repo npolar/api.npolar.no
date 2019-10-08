@@ -49,6 +49,30 @@
 			"format": "date-time",
 			"type": "string"
 		},
+		"rightsholder": {
+				"description": "Institution(s) who owns the collected data",
+				"type": "string",
+				"enum": [
+						"unknown",
+						"NPI",
+						"NTNU",
+						"UiO",
+						"NPI,UiO",
+						"NPI, NIVA",
+						"NPI, APN, NILU, NINA",
+						"NPI,NMBU",
+						"NPI,NTNU,NMBU",
+						"NINA",
+						"NPI, NTNU",
+						"NPI, Örebro",
+						"NPI, Univ of Windsor",
+						"NPI, NILU"
+						]
+		},
+		"people_responsible":{
+				"description":"People responsible for the dataset and organisation",
+				"type":"string"
+		},
 		"matrix": {
 			"description": "matrix or tissue analysed by the lab",
 			"enum": ["unknown",
