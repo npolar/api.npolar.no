@@ -267,10 +267,6 @@
 					"description": "weight of pollutant found in lipid weight including n.a., n.d, <LOQ",
 					"type": ["string", "null"]
 				},
-		"percent_recovery": {
-				"description": "Percentage recovered of a spiked reference sample",
-				"type": ["string", "null"]
-		},
 		"detection_limit": {
 				"description": "Smallest concentration detectable (LOD)",
 				"type": ["string", "null"]
