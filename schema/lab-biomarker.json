@@ -61,36 +61,36 @@
 				"type":"string"
 		},
 		"matrix": {
-									"description": "Type of tissue",
-									"type": "string",
-									"enum": ["unknown",
-										"egg",
-										"plasma",
-										"milk",
-										"blood cell",
-										"whole blood",
-										"whole blood, feather",
-									  "whole blood, feather, egg",
-										"abdominal fat",
-										"subcutaneous fat",
-										"blubber",
-										"biopsy skin",
-										"hair",
-										"feather",
-										"muscle",
-										"liver",
-										"brain",
-										"kidney",
-										"testicle",
-										"oedema",
-										"heart",
-										"adrenal gland",
-										"whole animal",
-										"gonad",
-										"whole animal except lower part of foot",
-										"whole animal except closing muscle and siphon",
-										"digestive gland"
-									]
+					"description": "Type of tissue",
+					"type": "string",
+					"enum": ["unknown",
+						"egg",
+						"plasma",
+						"milk",
+						"blood cell",
+						"whole blood",
+						"whole blood, feather",
+					  "whole blood, feather, egg",
+						"abdominal fat",
+						"subcutaneous fat",
+						"blubber",
+						"biopsy skin",
+						"hair",
+						"feather",
+						"muscle",
+						"liver",
+						"brain",
+						"kidney",
+						"testicle",
+						"oedema",
+						"heart",
+						"adrenal gland",
+						"whole animal",
+						"gonad",
+						"whole animal except lower part of foot",
+						"whole animal except closing muscle and siphon",
+						"digestive gland"
+				]
 		},
 		"species": {
 			"description": "Species",
@@ -108,68 +108,62 @@
 				"description": "Sample ID used by the lab (if not the same as NPI_sample_id)",
 				"type": "string"
 		},
-		"sample":{
-			"title": "Same sample measured several times",
-			"type": "array",
-			"additionalItems": false,
-			"items": {
-				 "biomarker_category": {
-						 "description": "Category of biomarker",
-						 "type": "string",
-						 "enum": [
-							 "hormones",
-							 "metabolites",
-							 "oxidative stress",
-							 "vitamins"
-							 ]
-				 },
-				 "biomarker": {
-						 "description": "Type of biomarker",
-						 "type": "string",
-						 "enum": [
-							 "cholesterol",
-							 "triglycerides",
-							 "EROD",
-							 "retinol",
-							 "retinyl_palmitate",
-							 "testosterone_6B",
-							 "uro_porphyrin",
-							 "hepta_porphyrin",
-							 "hexa_porphyrin",
-							 "penta_porphyrin",
-							 "copro_porphyrin",
-							 "proto_porphyrin"
-						 ]
-					 },
-					 "efficiency": {
-							 "description": "Efficiency for gene expressions",
-							 "type": ["string", "null"]
-					 },
-					 "unit": {
-							 "description": "Unit of biomarker value",
-							 "type": ["string", "null"]
-					 },
-					 "detection_limit": {
-							 "description": "Smallest concentration detectable (LOD)",
-							 "type": ["string", "null"]
-					 },
-					 "level_of_quantification": {
-							 "description": "The amount measured above this limit is more accurate (LOQ)",
-							 "type": ["string", "null"]
-					 },
-					 "comment": {
-							 "description": "Sample comment",
-							 "type": ["string","null"]
-					 },
-				   "sample_values": {
-								"title": "Measured value for biomarker",
-								"type": "array",
-								"additionalItems": false,
-								"uniqueItems": false,
-								"items": {
-										"type": "string"
-								}
-				 }}
+		 "biomarker_category": {
+				 "description": "Category of biomarker",
+				 "type": "string",
+				 "enum": [
+					 "hormones",
+					 "metabolites",
+					 "oxidative stress",
+					 "vitamins"
+					 ]
+		 },
+		 "biomarker": {
+				 "description": "Type of biomarker",
+				 "type": "string",
+				 "enum": [
+					 "cholesterol",
+					 "triglycerides",
+					 "EROD",
+					 "retinol",
+					 "retinyl_palmitate",
+					 "testosterone_6B",
+					 "uro_porphyrin",
+					 "hepta_porphyrin",
+					 "hexa_porphyrin",
+					 "penta_porphyrin",
+					 "copro_porphyrin",
+					 "proto_porphyrin"
+				 ]
+			 },
+			 "efficiency": {
+					 "description": "Efficiency for gene expressions",
+					 "type": ["string", "null"]
+			 },
+			 "unit": {
+					 "description": "Unit of biomarker value",
+					 "type": ["string", "null"]
+			 },
+			 "detection_limit": {
+					 "description": "Smallest concentration detectable (LOD)",
+					 "type": ["string", "null"]
+			 },
+			 "level_of_quantification": {
+					 "description": "The amount measured above this limit is more accurate (LOQ)",
+					 "type": ["string", "null"]
+			 },
+			 "comment": {
+					 "description": "Sample comment",
+					 "type": ["string","null"]
+			 },
+		   "sample_values": {
+						"title": "Measured value for biomarker",
+						"type": "array",
+						"additionalItems": false,
+						"uniqueItems": false,
+						"items": {
+								"type": "string"
+			 }
 			}
 		},
 			"links": {
