@@ -286,7 +286,7 @@
 									"type": "string",
 									"enum": ["unknown","tarsus", "tibia", "back"]
 								},
-								"colour_ring": {
+								"color_ring": {
 									"description": "bird ring colour",
 									"type": "string"
 								},

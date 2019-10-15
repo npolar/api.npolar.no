@@ -191,7 +191,7 @@
 		     "description": "Birds",
 		     "type": "object",
 		     "properties":{
-				 "colour_ring":{
+				 "color_ring":{
 					     "description":"Color of ring",
                "type": "boolean"
          },
