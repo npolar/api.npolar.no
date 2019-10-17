@@ -28,7 +28,7 @@
 		},
 		"laboratory": {
 			"description": "Name of laboratory performing analysis",
-			"enum": ["UiT"],
+			"enum": ["UiT","Akvaplan-niva"],
 			"type": "string"
 		},
 		"date_report": {
