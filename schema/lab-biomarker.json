@@ -28,7 +28,7 @@
 		},
 		"laboratory": {
 			"description": "Name of laboratory performing analysis",
-			"enum": ["UiT","Akvaplan-niva","NMBU"],
+			"enum": ["UiT","Akvaplan-niva","NMBU","IVM"],
 			"type": "string"
 		},
 		"date_report": {
