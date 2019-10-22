@@ -150,8 +150,20 @@
 										"branta leucopsis", "branta bernicla", "gavia immer", "gavia stellata", "plectrophenax nivalis",
 										"pagophila eburnea", "anser brachyrhynchus", "calidris alpina",
 										"sterna paradisaea", "cepphus grylle", "larus marinus", "rhodostethia rosea", "xema sabini",
-										"charadrius hiaticula", "calidris alba", "arenaria interpres"
-									],
+										"charadrius hiaticula", "calidris alba", "arenaria interpres",
+										"bathyarca","bathyarca glacialis","boreogadus saida","capnella glomerata",
+										"chirimia biceps","ciliatocardium ciliatum","ctenodiscus crispatus",
+										"eunoe oerstedi","gadus morhua","golfingia","gymnocanthus tricuspis",
+										"hippasteria phrygiana","hyas araneus","hyas","laonice cirrata",
+										"lebbeus polaris","leptagonus","leptagonus decagonus","lumbrinereis",
+										"lycodes pallidus pallidus","maldane","maldane sarsi","mallotus villosus",
+										"melanogrammus aeglefinus","myoxocephalus scorpius","nephtys ciliata",
+										"nephtys paradoxa","nephtys","nicomache lumbricalis","octopus",
+										"ophelina acuminata","ophelina","ophiacantha bidentata","ophiopholis",
+										"ophiopholis aculeata","ophiura sarsii","pandalus borealis",
+										"pectinaria hyperborea","pollachius pollachius","pollachius virens","praxilla praetermissa",
+										"sabinea septemcarinata","scoletoma fragilis",
+										"strongylocentrotus droebachiensis","triglops pingelii"],
 									"type": "string"
 								},
 								"species_identification": {
