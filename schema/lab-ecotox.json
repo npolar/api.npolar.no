@@ -195,7 +195,7 @@
 			"unit": {
 				"description": "measured  unit",
 				"type": "string",
-				"enum": ["ng/g", "pg/g"]
+				"enum": ["ng/g", "pg/g", "Bq/kg"]
 			},
 			"comment": {
 				"description": "Sample comment",
