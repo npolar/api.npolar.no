@@ -28,7 +28,7 @@
 		},
 		"laboratory": {
 			"description": "Name of laboratory performing analysis",
-			"enum": ["UiT","Akvaplan-niva","NMBU","IVM"],
+			"enum": ["UiT","Akvaplan-niva","NMBU","IVM","Uppsala University","National Wildlife Research Centre, CA"],
 			"type": "string"
 		},
 		"date_report": {
@@ -116,6 +116,7 @@
 				"pagophila eburnea", "anser brachyrhynchus", "calidris alpina",
 				"sterna paradisaea", "cepphus grylle", "larus marinus", "gallus gallus domesticus","rhodostethia rosea", "xema sabini",
 				"charadrius hiaticula", "calidris alba", "arenaria interpres",
+				"sprattus sprattus","clupea harengus","euphausiacea","eukrohnia hamata","parasagitta elegans",
 				"bathyarca","bathyarca glacialis","boreogadus saida","capnella glomerata",
 				"chirimia biceps","ciliatocardium ciliatum","ctenodiscus crispatus",
 				"eunoe oerstedi","gadus morhua","golfingia","gymnocanthus tricuspis",
