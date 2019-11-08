@@ -14,7 +14,7 @@
         "type": "ecotox-fieldwork",
         "log": false,
         "params": {
-      "facets": "project,species,sex,age,age_group,matrix,event_date,latitude,longitude,placename,weight,rightsholder,people_responsible,project_group,ris_id,species_identification,files.filename",
+      "facets": "entry.rightsholder,entry.people_responsible,entry.project_group,entry.ris_id,entry.event_date,entry.species,entry.species_identification,entry.matrix,entry.sex,entry.placename",
       "date-year": "created",
       "size-facet": 9999
     }

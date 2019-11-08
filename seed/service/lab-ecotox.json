@@ -14,7 +14,7 @@
     "type": "lab-ecotox",
     "log": false,
     "params": {
-     "facets": "sample.matrix,sample.species,lab_report_id,laboratory,date_report,files.filename,sample_analyte.analyte_category,sample_analyte.analyte,sample_analyte.wet_weight",
+     "facets": "laboratory,lab_report_id,date_report,rightsholder,people_responsible,matrix,species,sex,analyte_category,wet_weight",
      "date-year": "created",
      "size-facet": 9999
    }
