@@ -59,7 +59,7 @@
 								},
 								"ris_id": {
 										"description": "Project number ResearchInSvalbard database",
-										"type": "string"
+										"type": "integer"
 								},
 								"rightsholder": {
 										"description": "Institution(s) who owns the collected data",
@@ -142,7 +142,7 @@
 										"monodon monoceros", "hyperoodon ampullatus",
 										"lagenorhynchus albirostris", "blaenoptera acutorostrata", "hyseter macrocephalus",
 										"balaenoptera physalus", "monodon monoceros", "globicephala melas", "balaena mysticetus",
-										"bubo scandiacus", "larus hyperboreus", "uria lomvia", "uria aalge", "rissa tridactyla",
+										"bubo scandiacus",  "uria lomvia", "uria aalge", "larus hyperboreus","rissa tridactyla",
 										"somateria mollissima", "somateria spectabilis", "fratercula arctica", "phalacrocorax aristotelis",
 										"larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle", "alca torda",
 										"phalaropus lobatus", "phalaropus fulicarius", "stercocarius parasiticus", "stercorarius pomarinus",
@@ -232,11 +232,11 @@
 								},
 								"weight": {
 									"description": "Weight, birds in gram, mammals in kg",
-									"type": "string"
+									"type": "number"
 								},
 								"girth": {
 									"description": "Girth in cm",
-									"type": "string"
+									"type": "number"
 								},
 								"length": {
 									"description": "Length of species in cm",
@@ -315,23 +315,23 @@
 								},
 								"tarsus": {
 									"description": "Tarsus in mm",
-									"type": "string"
+									"type": "number"
 								},
 								"bill": {
 									"description": "Bill length in mm",
-									"type": "string"
+									"type": "number"
 								},
 								"bill_height": {
 									"description": "Bill height in mm",
-									"type": "string"
+									"type": "number"
 								},
 								"scull": {
 									"description": "Head+bill length, or just head or scull in mm",
-									"type": "string"
+									"type": "number"
 								},
 								"wing": {
 									"description": "Maximum flatted cord in cm",
-									"type": "string"
+									"type": "number"
 								},
 								"nest_id": {
 									"description": "Id of nest",
@@ -339,11 +339,11 @@
 								},
 								"egg_length": {
 									"description": "Egg length in mm",
-									"type": "string"
+									"type": "number"
 								},
 								"egg_width": {
 									"description": "Egg width in mm",
-									"type": "string"
+									"type": "number"
 								},
 								"clutch_size": {
 									"description": "Number of eggs in clutch",
@@ -386,19 +386,19 @@
 									},
 									"tusk_volume": {
 										"description": "Tusk volume in cm3",
-										"type": "string"
+										"type": "number"
 									},
 									"tusk_length": {
 										"description": "Tusk length in cm",
-										"type": "string"
+										"type": "number"
 									},
 									"tusk_girth": {
 										"description": "Tusk girth in cm",
-										"type": "string"
+										"type": "number"
 									},
 									"caudal_length": {
 										"description": "Caudal length",
-										"type": "string"
+										"type": "number"
 									},
 									"sampling_equipment": {
 										"description": "Equiment type used for collecting sample",
@@ -434,7 +434,7 @@
 									},
 								 "temperature": {
 										 "description": "Water temperature in celsius",
-										 "type": "string"
+										 "type": "number"
 								 },
 								 "ice_thickness": {
 										 "description": "Thickness ice sample",

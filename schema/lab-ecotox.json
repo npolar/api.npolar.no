@@ -154,8 +154,9 @@
 				"type": "string"
 			},
 			"sex": {
-				"description": "Sex",
-				"type": "string"
+					"description": "Sex species sample is collected from",
+					"enum": ["unknown", "female", "male"],
+					"type": ["string", "null"]
 			},
 			"stage": {
 				"description": "Stage",
@@ -167,7 +168,7 @@
 			},
 			"length": {
 				"description": "Length in cm",
-				"type": "string"
+				"type": "number"
 			},
 			"no_of_individuals": {
 				"description": "Number of individuals per sample",
@@ -175,7 +176,7 @@
 			},
 			"weight": {
 				"description": "weight in gram",
-				"type": "string"
+				"type": "number"
 			},
 			"database_sample_id": {
 				"description": "Sample ID used by NPI",
@@ -309,11 +310,11 @@
 				},
 		"detection_limit": {
 				"description": "Smallest concentration detectable (LOD)",
-				"type": ["string", "null"]
+				"type": ["number", "null"]
 		},
 		"level_of_quantification": {
 				"description": "The amount measured above this limit is more accurate (LOQ)",
-				"type": ["string", "null"]
+				"type": ["number", "null"]
 		},
 		"links": {
 						"type": "array",
