@@ -182,15 +182,15 @@
 			 },
 			 "percent_recovery": {
 	 				"description": "Percentage recovered of a spiked reference sample",
-	 				"type": ["string", "null"]
+	 				"type": ["number", "null"]
 	 		 },
 			 "detection_limit": {
 					 "description": "Smallest concentration detectable (LOD)",
-					 "type": ["string", "null"]
+					 "type": ["number", "null"]
 			 },
 			 "level_of_quantification": {
 					 "description": "The amount measured above this limit is more accurate (LOQ)",
-					 "type": ["string", "null"]
+					 "type": ["number", "null"]
 			 },
 			 "comment": {
 					 "description": "Sample comment",
