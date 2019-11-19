@@ -129,7 +129,7 @@
 				"ophiopholis aculeata","ophiura sarsii","pandalus borealis",
 				"pectinaria hyperborea","pollachius pollachius","pollachius virens","praxilla praetermissa",
 				"sabinea septemcarinata","scoletoma fragilis",
-				"strongylocentrotus droebachiensis","triglops pingelii","calanus finmarchicus"],
+				"strongylocentrotus droebachiensis","triglops pingelii","calanus finmarchicus","themisto libellula","thysanoessa inermis","themisto abyssorum"],
 			"type": "string"
 		},
 		"database_sample_id": {
