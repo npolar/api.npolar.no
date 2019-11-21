@@ -51,12 +51,8 @@
       {
         "url": "https://api.npolar.no/user",
         "open": true,
-        "system": "https://api-test.data.npolar.no/ecotox/excel"
+        "system": "https://api.npolar.no/ecotox/excel"
       }
     ]
-  ],
-  "updated": "2018-04-05T08:47:21Z",
-  "updated_by": "siri.uldal@npolar.no",
-  "created": "2018-05-30T08:47:21Z",
-  "created_by": "siri.uldal@npolar.no"
+  ]
 }

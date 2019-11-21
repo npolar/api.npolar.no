@@ -1,5 +1,4 @@
 {
-  "_id": "lab-ecotox-api",
   "id": "lab-ecotox-api",
   "schema": "http://api.npolar.no/schema/api",
   "path": "/lab/ecotox",
@@ -31,7 +30,7 @@
     "json": "application/json"
   },
   "accepts": {
-    "application/json": "https://api-test.data.npolar.no/schema/lab-ecotox.json"
+    "application/json": "https://api.npolar.no/schema/lab-ecotox.json"
   },
   "category": [
     "CouchDB",
@@ -50,14 +49,10 @@
     [
       "::Rack::Gouncer",
       {
-        "url": "https://api-test.data.npolar.no/user",
+        "url": "https://api.npolar.no/user",
         "open": true,
-        "system": "https://api-test.data.npolar.no/lab"
+        "system": "https://api.npolar.no/lab"
       }
     ]
-  ],
-  "updated": "2018-05-30T08:47:21Z",
-  "updated_by": "siri.uldal@npolar.no",
-  "created": "2018-05-30T08:47:21Z",
-  "created_by": "siri.uldal@npolar.no"
+  ]
 }
