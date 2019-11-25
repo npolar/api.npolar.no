@@ -52,6 +52,7 @@
 						"NINA",
 						"NPI, NTNU",
 						"NPI, Örebro",
+						"Akvaplan-niva",
 						"NPI, Univ of Windsor",
 						"NPI, NILU"
 						]
@@ -113,7 +114,7 @@
 				"phalaropus lobatus", "phalaropus fulicarius", "stercocarius parasiticus", "stercorarius pomarinus",
 				"stercorarius skua", "stercorarius longicaudus", "calidris maritima", "clangula hyemalis", "pluvialis apricaria",
 				"branta leucopsis", "branta bernicla", "gavia immer", "gavia stellata", "plectrophenax nivalis",
-				"pagophila eburnea", "anser brachyrhynchus", "calidris alpina",
+				"pagophila eburnea", "anser brachyrhynchus", "calidris alpina","hydrobates pelagicus",
 				"sterna paradisaea", "cepphus grylle", "larus marinus", "larus fuscus", "gallus gallus domesticus","rhodostethia rosea", "xema sabini","gallus gallus domesticus",
 				"charadrius hiaticula", "calidris alba", "arenaria interpres",
 				"sprattus sprattus","clupea harengus","euphausiacea","eukrohnia hamata","parasagitta elegans",
@@ -129,7 +130,9 @@
 				"ophiopholis aculeata","ophiura sarsii","pandalus borealis",
 				"pectinaria hyperborea","pollachius pollachius","pollachius virens","praxilla praetermissa",
 				"sabinea septemcarinata","scoletoma fragilis",
-				"strongylocentrotus droebachiensis","triglops pingelii","calanus finmarchicus","themisto libellula","thysanoessa inermis","themisto abyssorum","calanus glacialis"],
+				"strongylocentrotus droebachiensis","triglops pingelii","calanus finmarchicus",
+				"themisto libellula","thysanoessa inermis","themisto abyssorum",
+				"calanus glacialis"],
 			"type": "string"
 		},
 		"database_sample_id": {
