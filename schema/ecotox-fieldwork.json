@@ -332,7 +332,7 @@
 		},
 		"length": {
 			"description": "Length of species in cm",
-			"type": "string"
+			"type": "number"
 		},
 		"condition": {
 			"description": "Bird/animal condition",
