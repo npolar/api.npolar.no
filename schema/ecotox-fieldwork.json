@@ -30,11 +30,11 @@
 			"type": "string"
 		},
 		"database_sample_id_base": {
-		 "description": "Sample base ID used by NPI - this UUID connects entries in the same study (excel sheet)",
-		 "type": "string"
-	 },
-	 "NPI_sample_id": {
-		 "description": "Sample ID used by NPI",
+		 	"description": "Sample base ID used by NPI - this UUID connects entries in the same study (excel sheet)",
+		 	"type": "string"
+	 	},
+	 	"NPI_sample_id": {
+		 	"description": "Sample ID used by NPI",
 		 "type": "string"
 	 },
 		 "dataset_name": {
@@ -42,11 +42,12 @@
 	 },
 	 "project_group": {
 			"description": "Projectname data belongs to (larger project) or type of project",
-			"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
+				"enum": ["unknown","BearEnergy", "BearHealth", "Giants of the ocean",
 				"MILKYS", "MOSJ", "Multistress", "SEAPOP", "SEATRACK","Arctic terns energetics and pollution",
 				"thesis", "screening", "monitoring","miljoprovebanken","COPOL","O-109111",
-				"SFT Screening","Project Nr: 111101","UA 1000","Sucking clams or hunting seals"
-			],
+				"SFT Screening","Project Nr: 111101","UA 1000","Sucking clams or hunting seals",
+				"Miljøtoksokologiske undersøkelser av sjøfuglegg i Nord-Norge","Miljøgifter i hvithval",
+				"COPOL 2","Miljøgifter i pelagiske isbjørn"],
 			"type": "string"
 		},
 		"parent_event_id": {
