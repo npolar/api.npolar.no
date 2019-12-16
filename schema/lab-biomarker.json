@@ -229,9 +229,13 @@
 			"type": "string"
 		},
 		"database_sample_id": {
-			"description": "Sample ID used by NPI. Corresponds to database_sample_id_base in fieldwork",
+			"description": "Sample ID used by NPI. Corresponds to database_sample_id in fieldwork",
 			"type": "string"
 		},
+		"database_sample_id_base": {
+		 	"description": "Sample base ID used by NPI - this UUID connects entries in the same study (excel sheet)",
+		 	"type": "string"
+	 	},
 		"NPI_sample_id": {
 				"description": "Sample ID used by NPI",
 				"type": "string"

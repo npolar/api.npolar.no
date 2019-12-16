@@ -35,6 +35,10 @@
 			"description": "Sample ID used by NPI",
 			"type": "string"
 		},
+		"database_sample_id_base": {
+		 	"description": "Sample base ID used by NPI - this UUID connects entries in the same study (excel sheet)",
+		 	"type": "string"
+	 	},
 		"NPI_sample_id": {
 			"description": "Sample ID used by NPI",
 			"type": "string"
