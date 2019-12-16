@@ -320,7 +320,7 @@
 		},
 		"sex": {
 			"description": "Sex species sample is collected from",
-			"enum": ["unknown", "female", "male"],
+			"enum": ["unknown", "female", "male","juvenile"],
 			"type": ["string", "null"]
 		},
 		"weight": {
