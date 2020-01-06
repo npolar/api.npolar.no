@@ -400,7 +400,7 @@
 						"Z2_MeO_BDE66", "Z6_MeO_BDE90_6MeO_BDE99", "Z6_OH_BDE99", "PBP"
 					]
 		},
-		"analyte_weight": {
+		"analyte_value": {
 					"description": "weight of pollutant found in wet weight or lipid weight including n.a.,n.d, <LOQ",
 					"type": ["string", "null"]
 				},
