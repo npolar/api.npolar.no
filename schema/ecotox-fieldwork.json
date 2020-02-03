@@ -321,7 +321,7 @@
 		"sex": {
 			"description": "Sex species sample is collected from",
 			"enum": ["unknown", "female", "male","juvenile"],
-			"type": ["string", "null"]
+			"type": "string"
 		},
 		"weight": {
 			"description": "Weight, birds in gram, mammals in kg",
