@@ -400,7 +400,7 @@
 		"euring_code": {
 			"description": "EU ring code, usually NOS",
 			"type": "string",
-			"enum": ["NOS", "ISR", "RUM"]
+			"enum": ["unknown","NOS", "ISR", "RUM"]
 		},
 		"molt": {
 			"description": "Currently molting",
