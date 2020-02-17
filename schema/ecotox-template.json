@@ -23,6 +23,10 @@
 			"description": "Template name",
 			"type": "string"
 		},
+		"project_description": {
+			"description": "Please describe activity to separate it from other projects",
+			"type": "string"
+		},
 		"parameters_metadata": {
 			"description": "Collection of fixed parameters",
 			"type": "object",
@@ -37,7 +41,7 @@
 			       		"type": "boolean"
 		        	},
 		        	"ris_id": {
-		               		"description": "RiS number",
+		            "description": "RiS number",
 			       		"type": "boolean"
 		        	},
 		        	"rightsholder": {
