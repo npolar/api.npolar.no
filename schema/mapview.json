@@ -42,16 +42,16 @@
       "location": {
           "description": "Which tag to look for coord",
           "type": "string"
-     },
-     "map": {
+      },
+      "map": {
          "description": "Map options displayed - Arctic or Antarctica sep by comma",
          "type": "string"
-    },
-    "search_init": {
+      },
+      "search_init": {
         "description": "String to be included in all db searches, f.ex. exclude drafts",
         "type": "string"
-   },
-  "select": {
+      },
+      "select": {
         "description": "Select menus options",
         "type": "array",
         "additionalItems": false,
@@ -63,7 +63,7 @@
                   "description": "The matching database field",
                   "type":"string"
                 },
-                "alternatives": {
+                "enum": {
                   "description": "Parameters in select list",
                   "type": "array",
                   "additionalItems": false,
