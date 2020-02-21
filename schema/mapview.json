@@ -59,18 +59,19 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-                "enum": {
+                "entry": {
+                  "description": "The matching database field",
+                  "type":"string"
+                },
+                "alternatives": {
                   "description": "Parameters in select list",
                   "type": "array",
                   "additionalItems": false,
                   "items": {
                     "type": "string"
                   }
-                },
-                "entry": {
-                  "description": "The matching database field",
-                  "type":"string"
                 }
+
  	      }
       }
   },
