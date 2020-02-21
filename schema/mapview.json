@@ -65,7 +65,11 @@
                 },
                 "entry": {
                   "description": "The matching database field",
-                  "type": "string"
+                  "type": "array",
+                  "additionalItems": false,
+                  "items": {
+                    "type": "string"
+                  }
                 }
  	      }
       }
