@@ -61,15 +61,15 @@
           "properties": {
                 "enum": {
                   "description": "Parameters in select list",
-                  "type": "string"
-                },
-                "entry": {
-                  "description": "The matching database field",
                   "type": "array",
                   "additionalItems": false,
                   "items": {
                     "type": "string"
                   }
+                },
+                "entry": {
+                  "description": "The matching database field",
+                  "type":"string"
                 }
  	      }
       }
