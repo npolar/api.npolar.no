@@ -29,6 +29,9 @@
     "workplace": {
       "type": "string"
     },
+    "cristin_id":{
+      "type": "string"
+    },
     "currently_employed": {
       "type": "boolean"
     },
