@@ -216,18 +216,30 @@
           "format": "date-time"
     },
     "editor_assessment": {
-          "description": "red-yellow-green-unknown. unknown is set for new observations.",
-          "type": ["string", "null"],
+          "description": "Editor's assessment of entry quality",
+          "type": "string",
           "enum": [
-              "unknown",
-              "green",
-              "yellow",
-              "red"
+            "good",
+            "questionable",
+            "bad"
           ]
+    },
+    "editor_quality_test": {
+          "description": "quality test failed",
+          "type": "string"
     },
     "editor_comment": {
           "description": "comment about species observation",
-          "type": "string"
+          "type": ["string","null"]
+    },
+    "editor_date": {
+          "description": "Date of editor's assessment",
+          "type":  ["string", "null"],
+          "format": "date-time"
+    },
+    "editor_name": {
+          "description": "Date of editor's assessment",
+          "type":  ["string"]
     },
     "contact_info": {
           "description": "address, additional email etc",
