@@ -4,10 +4,10 @@
 
   {{#form}}
   <form id="{{id}}-form" action="{{self}}" method="get" class="yui3-skin-sam form-search">
-  
+
       <section class="span4">
         <header><h1>{{{h1_title}}} <a href="/">
-        <img title="api.npolar.no" width="60" alt="Norwegian Polar Institute (logo)" src="http://www.npolar.no/system/modules/no.npolar.site.npweb/resources/style/np-logo.svg" /></a></h1></header>
+        <img title="api.npolar.no" width="60" alt="Norwegian Polar Institute (logo)" src="//www.npolar.no/wp-content/uploads/2022/05/NP-logo-engelsk-skjerm.png" /></a></h1></header>
         {{#search?}}
         <input id="q" name="q" value="{{q}}" type="search" autofocus placeholder="{{placeholder}}" class="yui3-aclist-input" />
         <input type="submit" class="btn" value="Search" />
@@ -15,9 +15,9 @@
         {{#results?}}
         <ul class="nav nav-pills">
           {{#search-formats}}
-          <li class="{{active}}"><a href="{{base}}&amp;format={{format}}">{{format}}</a></li>              
+          <li class="{{active}}"><a href="{{base}}&amp;format={{format}}">{{format}}</a></li>
           {{/search-formats}}
-  
+
           {{!--<li class="dropdown">
             <a class="dropdown-toggle" id="drop-download" role="button" data-toggle="dropdown" href="#">maps + graphs <b class="caret"></b></a>
             <ul class="dropdown-menu" role="menu">
@@ -28,18 +28,18 @@
               <li><a href="#">json.zip</a></li>
             </ul>
           </li>
-          -->}}      
+          -->}}
         </ul>
-        
+
         <p>{{ result_text }} ({{ first_to_last }} {{#previous?}}<a href="{{previous_href}}">Previous</a>{{/previous?}} {{#next?}}<a href="{{next_href}}">Next</a>{{/next?}}{{#first?}}<a href="{{first_href}}">First</a>{{/first?}})</p>
         {{/results?}}
-  
+
         {{#q}}
           {{^results?}}
           <h5>{{totalResults}} results <a href="?q=">Reset</a></h5>
           {{/results?}}
         {{/q}}
-  
+
         {{#entries}}
 
         <p>
@@ -52,13 +52,13 @@
         {{^title?}}<pre>{{json}}</pre>{{/title?}}
         </p>
         {{/entries}}
-  
+
       </section>
-  
+
       <section class="span8">
-   
+
         <h5>{{#filters?}}<p>{{#filters}} <code>{{filter}}={{value}}&#160;<a href="{{remove_href}}">⨯</a></code> {{/filters}}</p>{{/filters?}}</h5>
-     
+
         {{#facets}}
         <dl class="dl-horizontal">
           <dt title="{{title}}">{{title}}</dt>
@@ -66,12 +66,12 @@
         </dl>
         {{/facets}}
 
-     
+
         {{#ranges?}}
 
         {{/ranges?}}
-  
-  
+
+
         {{#results?}}
         <!-- if date / if geo from service??? -->
         <!--
@@ -87,26 +87,26 @@
           <dt>sort</dt><dd><input id="sort" name="sort" value="{{sort}}" type="search"  /></dd>
           <!--<dt></dt><dd><input id="fields" name="fields" value="{{fields}}" type="hidden"  /></dd>-->
         </dl>
-  
+
         {{/results?}}
 
 
       </section>
-    
-  
+
+
   </form>
   {{/ form }}
 
 
 
-   
+
   </article>
  {{/map?}}
 
   {{#map?}}
   {{< _leaflet_map }}
   {{/map?}}
-  
+
   {{#graph?}}
     {{#pie?}}
       {{< _gchart_facet_pie }}
@@ -115,8 +115,8 @@
       {{< _gchart_column }}
     {{/column?}}
   {{/graph?}}
-  
-  
+
+
 {{#frontpage?}}
 <table class="table table-condensed">
 <thead>
@@ -141,7 +141,7 @@
 {{/frontpage?}}
 
 {{^frontpage?}}
-<!-- Search navigation -->  
+<!-- Search navigation -->
   <div class="pagination">
     <ul>
 {{#services}}
@@ -149,23 +149,23 @@
 
       <li><a href="{{href}}" title="{{title}}">{{text}}</a></li>
 
-   
+
   {{/services}}
  </ul>
-  </div>  
+  </div>
 {{/frontpage?}}
 
   <footer class="footer">
     <p><strong>api.npolar.no</strong> is <a href="https://github.com/npolar/api.npolar.no#readme">open source</a>.</p>
   </footer>
-  
+
   {{< _yui_loader }}
-  
+
   <script>
   {{# form }}
-  
+
     YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
-  
+
       Y.one('#q').plug(Y.Plugin.AutoComplete, {
         resultHighlighter: 'phraseMatch',
         resultListLocator: 'feed.entries',
@@ -176,17 +176,17 @@
           } else if (result.name) {
             return result.name;
           } else if (result.titles) {
-            
+
             var title = Y.Array.find(result.titles, function(t) {
               return (t.lang == "{{lang}}");
             });
-            
+
             Y.log(title.title);
-            
+
             return title.title;
           } else {
             return result.id;
-          }     
+          }
 
         },
         source: '{{{source}}}'
@@ -198,6 +198,6 @@
   {{{ foot }}}
 
 
-        
+
     </body>
 </html>
