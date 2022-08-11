@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<solr persistent="true">
-  <cores defaultCoreName="api" adminPath="/admin/cores" zkClientTimeout="${zkClientTimeout:15000}" hostPort="8983" hostContext="solr">
-    <core schema="schema.xml" instanceDir="api/" name="api" config="solrconfig.xml" dataDir="data"/>
-    <core schema="schema.xml" instanceDir="oceanography/" name="oceanography" config="solrconfig.xml" dataDir="data"/>
-    <core schema="schema.xml" instanceDir="gcmd/" name="gcmd" config="solrconfig.xml" dataDir="data"/>
-    <core schema="schema.xml" instanceDir="argos/" name="argos" config="solrconfig.xml" dataDir="data"/>
-  </cores>
-</solr>
