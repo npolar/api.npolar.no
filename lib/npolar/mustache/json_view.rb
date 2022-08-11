@@ -65,11 +65,11 @@ class Npolar::Mustache::JsonView < ::Mustache
   <meta name="viewport" content="width=1024, user-scalable=no">
 
   <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
   <!-- Boostrap 2 needed for wide right hand facet column -->
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -81,8 +81,8 @@ class Npolar::Mustache::JsonView < ::Mustache
       #map{ height: 100% }
     </style>
 
-    <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
     <script type="text/javascript" src="/js/leaflet.ajax.min.js"></script>
 
   {{{ head_links }}}
