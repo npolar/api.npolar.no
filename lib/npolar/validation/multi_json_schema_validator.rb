@@ -26,7 +26,7 @@ module Npolar
 
       # Local disk cache of JSON schemas
       JSON_SCHEMA_DISK = ENV["NPOLAR_VALIDATION_JSON_SCHEMA"] ||= File.expand_path(File.join(
-        File.dirname(__FILE__), "..", "..", "..", "schema"))
+        File.dirname(__FILE__), "..", "..", "..", "public", "schema"))
 
       attr_writer :schemas # User-provided Array of schemas, each Hash | string filename | string JSON
 
